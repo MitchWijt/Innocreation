@@ -1,0 +1,136 @@
+@font-face {
+    font-family: Corbert;
+    src: url(../fonts/Corbert-Regular.otf);
+}
+
+header{
+    font-family: Corbert;
+    background: #000000;
+    min-height: 100px;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 30px 0 30px;
+}
+
+.lower-header{
+    background: #C9CCCF;
+    -webkit-box-shadow: 0px 7px 24px 1px rgba(201,204,207,1);
+    -moz-box-shadow: 0px 7px 24px 1px rgba(201,204,207,1);
+    box-shadow: 0px 7px 24px 1px rgba(201,204,207,1);
+}
+
+.container{
+    width: 1200px;
+    font-family: Corbert;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.hidden{
+    display: none;
+}
+
+.hr{
+    border-top: 1px solid #95989A;
+    margin: 0 auto;
+    text-align: center;
+    width: 400px;
+}
+
+/*=======================================================HEADER===============================================*/
+.main-title{
+    text-align: center;
+}
+.title{
+    font-weight: bold;
+    font-size: 60px;
+    color: #00C5DE;
+}
+
+.slogan{
+    color: #C9CCCF;
+}
+
+.social-media-header{
+    display: flex;
+    flex-direction: row;
+    color: #00C5DE;
+    align-items: center;
+    margin-right: 150px;
+}
+
+.social-icon{
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    padding-top: 7px;
+}
+.circle{
+    border: 2px solid #C9CCCF;
+    border-radius: 100%;
+    margin-right: 20px;
+}
+
+.circle a{
+    text-decoration: none;
+    color: #00C5DE;
+}
+
+.accounts P{
+    margin-bottom: 5px;
+    color: #00C5DE;
+}
+
+#teamLink{
+    color: #FF6100;
+}
+
+.login{
+    color: #00C5DE;
+}
+
+.loginRegister{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main-navMenu li{
+    text-transform: uppercase;
+}
+.main-navMenu li a:hover{
+    text-decoration: underline;
+}
+
+.main-navMenu li a{
+    text-decoration: none;
+    padding: 0 10px 0 0;
+    cursor: pointer;
+    border-right: 1px solid #000000;
+    color: #000000;
+}
+
+.main-navMenu{
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    justify-content: center;
+}
+
+.main-navMenu li{
+    padding: 0 10px 0 0;
+}
+
+#last-child{
+    border: none;
+}
+
+#dreams{
+    text-transform: uppercase;
+    color: #FF6100;
+    text-decoration: underline;
+}
+
