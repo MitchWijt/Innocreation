@@ -34,10 +34,10 @@ header{
 }
 
 .hr{
-    border-top: 1px solid #95989A;
+    border-top: 1px solid #FF6100;
     margin: 0 auto;
     text-align: center;
-    width: 400px;
+    width: 800px;
 }
 
 /*=======================================================HEADER===============================================*/
@@ -48,6 +48,10 @@ header{
     font-weight: bold;
     font-size: 60px;
     color: #00C5DE;
+}
+.title-black{
+    font-weight: bold;
+    font-size: 60px;
 }
 
 .slogan{
@@ -118,6 +122,8 @@ header{
     flex-direction: row;
     list-style-type: none;
     justify-content: center;
+    margin-bottom: 0;
+    border-bottom: 1px solid #000000;
 }
 
 .main-navMenu li{
@@ -133,4 +139,53 @@ header{
     color: #FF6100;
     text-decoration: underline;
 }
+
+/*===========================================HOMEPAGE=============================================*/
+.home-background-wrapper{
+    background: url("/images/homepage.png");
+}
+
+.home-background-wrapper {
+    /* Set rules to fill background */
+    /*min-height: 40vh;*/
+    /*min-width: 1000px;*/
+
+    /* Set up proportionate scaling */
+    width: 100%;
+    height: 100vh;
+    /*max-height: 85vh;*/
+    /*min-height: 40vh;*/
+    /*overflow: hidden;*/
+    /*clear: both;*/
+
+    /* Set up positioning */
+    position: absolute;
+
+}
+
+.home-background-wrapper{
+    background-size: cover;
+    /*background-size:100% auto;*/
+}
+
+.main-content{
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    /*perspective: 800px;*/
+
+}
+
+.social-icon-home{
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    padding-top: 5px;
+}
+
+/*============================CURSOR==================================*/
+
 

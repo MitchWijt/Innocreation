@@ -1,9 +1,9 @@
 @section("header")
-<header>
+<header class="hidden headerShow">
     <div class="header">
         <div class="main-title">
             <h1 class="title">Innocreation</h1>
-            <p class="slogan">Help each other make <span id="dreams">Dreams</span> a reality</p>
+            <p class="slogan">Help each other make <span id="dreams">Dreams</span> become a reality</p>
         </div>
         <div class="social-media-header">
             <div class="circle">
