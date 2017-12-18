@@ -40,6 +40,17 @@ header{
     width: 800px;
 }
 
+.sub-title{
+    font-weight: lighter;
+    font-size: 40px;
+    color: #C9CCCF;
+}
+
+.sub-title-container{
+    display: flex;
+    justify-content: center;
+}
+
 /*=======================================================HEADER===============================================*/
 .main-title{
     text-align: center;
@@ -74,6 +85,18 @@ header{
 }
 .circle{
     border: 2px solid #C9CCCF;
+    border-radius: 100%;
+    margin-right: 20px;
+}
+
+.circle-instructions{
+    border: 2px solid #FF6100;
+    border-radius: 100%;
+    margin-right: 20px;
+}
+
+.circle-instructions-second{
+    border: 2px solid #00C5DE;
     border-radius: 100%;
     margin-right: 20px;
 }
@@ -185,7 +208,45 @@ header{
     text-align: center;
     padding-top: 5px;
 }
+/*========================================INSTRUCTIONS===============================*/
+.social-icon-instructions{
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    padding-top: 7px;
+}
 
-/*============================CURSOR==================================*/
+.instructions{
+    background: #000000;
+}
 
+.instructions-text{
+    font-size: 25px;
+    color: #C9CCCF;
+}
 
+.instructions-flex{
+    display: flex;
+    align-items: center;
+}
+
+.instructions-flex-right{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.instructions-flex-center{
+    display: flex;
+    align-items: center;
+    margin-left: 130px !important;
+}
+/*====================================INSTRUCTIONS-SECOND=================================*/
+.instructions-second{
+    background: #C9CCCF;
+}
+
+.instructions-second-text{
+    font-size: 25px;
+    color: #000000;
+}
