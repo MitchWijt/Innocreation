@@ -9,8 +9,19 @@ header{
     min-height: 100px;
 }
 
+footer{
+    font-family: Corbert;
+    background: #000000;
+    min-height: 100px;
+}
+
 .header{
     display: flex;
+    justify-content: space-between;
+    margin: 0 30px 0 30px;
+}
+
+.footer{
     justify-content: space-between;
     margin: 0 30px 0 30px;
 }
@@ -49,6 +60,18 @@ header{
 .sub-title-container{
     display: flex;
     justify-content: center;
+}
+
+.regular-link{
+    text-decoration: none;
+    cursor: pointer;
+    color: #FF6100;
+    padding: 0;
+}
+
+.regular-link:hover{
+    text-decoration: underline;
+    color: #FF6100;
 }
 
 /*=======================================================HEADER===============================================*/
@@ -108,7 +131,7 @@ header{
 
 .accounts P{
     margin-bottom: 5px;
-    color: #00C5DE;
+    color: #C9CCCF;
 }
 
 #teamLink{
@@ -116,7 +139,7 @@ header{
 }
 
 .login{
-    color: #00C5DE;
+    color: #C9CCCF;
 }
 
 .loginRegister{
@@ -161,6 +184,22 @@ header{
     text-transform: uppercase;
     color: #FF6100;
     text-decoration: underline;
+}
+/*========================================FOOTER==========================================*/
+.create-account{
+    border: 2px solid #C9CCCF;
+    border-radius: 15px;
+}
+
+.create-account:hover{
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.list-links{
+    flex-direction: column;
+    justify-content: center;
 }
 
 /*===========================================HOMEPAGE=============================================*/

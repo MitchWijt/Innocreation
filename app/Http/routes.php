@@ -12,3 +12,5 @@
 */
 
 Route::get("/","HomeController@index");
+
+Route::get("/includes/footer","HomeController@footer");

@@ -22,6 +22,13 @@
     padding-top: 20px !important;
 }
 
+.p-t-40{
+    padding-top: 40px !important;
+}
+.p-b-40{
+    padding-bottom: 40px !important;
+}
+
 .p-b-20{
     padding-bottom: 20px !important;
 }
@@ -34,3 +41,24 @@
 .vh100{
     height: 100vh !important;
 }
+
+.c-blue{
+    color: #00C5DE !important;
+}
+
+.c-gray{
+    color: #C9CCCF !important;
+}
+
+.td-none:hover{
+    text-decoration: none !important
+}
+
+.td-none{
+    text-decoration: none !important
+}
+
+.d-flex{
+    display: flex;
+}
+

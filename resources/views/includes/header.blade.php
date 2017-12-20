@@ -2,7 +2,7 @@
 <header class="hidden headerShow">
     <div class="header">
         <div class="main-title">
-            <h1 class="title">Innocreation</h1>
+            <h1 class="title" style="color: #C9CCCF">Inn<span style="color: #FF6100">o</span>creation</h1>
             <p class="slogan">Help each other make <span id="dreams">Dreams</span> become a reality</p>
         </div>
         <div class="social-media-header">
