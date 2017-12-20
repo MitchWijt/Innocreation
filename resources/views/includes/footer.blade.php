@@ -2,7 +2,7 @@
 <footer>
     <div class="footer d-flex p-t-20 p-b-20">
         <div class="footer-title text-center">
-            <h1 class="title" style="color: #C9CCCF">Inn<span style="color: #FF6100">o</span>creation</h1>
+            <h1 class="title" style="color: #C9CCCF">Inn<img class="cartwheelLogo" src="/images/cartwheel.png" alt="">creation</h1>
             <p class="instructions-text create-account">Create your account</p>
         </div>
         <div class="d-flex">

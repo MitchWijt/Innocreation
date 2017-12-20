@@ -14,3 +14,5 @@
 Route::get("/","HomeController@index");
 
 Route::get("/includes/footer","HomeController@footer");
+
+Route::get("/login", "LoginController@index");

@@ -57,6 +57,12 @@ footer{
     color: #C9CCCF;
 }
 
+.sub-title-black{
+    font-weight: lighter;
+    font-size: 40px;
+    color: #000000;
+}
+
 .sub-title-container{
     display: flex;
     justify-content: center;
@@ -72,6 +78,34 @@ footer{
 .regular-link:hover{
     text-decoration: underline;
     color: #FF6100;
+}
+
+.grey-background{
+    background: #C9CCCF !important;
+}
+
+.cartwheelLogo{
+    width:45px;
+    height:45px;
+}
+
+.btn-inno{
+    background: #000000;
+    border: 2px solid #FF6100 !important;
+    color: #C9CCCF;
+}
+
+.btn-inno:hover{
+    color: #000000 !important;
+    background: #C9CCCF !important;
+    cursor: pointer;
+
+}
+
+.input{
+    border: 1px solid #000000;
+    border-radius: 10px;
+    background: #C9CCCF
 }
 
 /*=======================================================HEADER===============================================*/
@@ -136,10 +170,6 @@ footer{
 
 #teamLink{
     color: #FF6100;
-}
-
-.login{
-    color: #C9CCCF;
 }
 
 .loginRegister{
@@ -246,6 +276,10 @@ footer{
     height: 60px;
     text-align: center;
     padding-top: 5px;
+}
+
+.scrollHomeBtn:hover{
+    cursor: pointer;
 }
 /*========================================INSTRUCTIONS===============================*/
 .social-icon-instructions{

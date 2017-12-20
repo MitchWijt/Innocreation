@@ -1,4 +1,4 @@
-@extends("layouts/app")
+@extends("layouts.app")
 @section("content")
 <div class="home-background-wrapper">
     <div class="container">
@@ -95,9 +95,11 @@
         }
     });
 
+    $(document).ready(function () {
+        $('.headerShow').hide();
+    });
 
     $(".scrollHomeBtn").click(function() {
-
         $(".headerShow").fadeIn();
         $(".home-background-wrapper").css("height","85vh");
         $(".homepage-mainContent").show();

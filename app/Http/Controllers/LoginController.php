@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class HomeController extends Controller
+class LoginController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-       return view("public/home/home");
+        return view("public/register/login");
     }
 
     /**
@@ -23,9 +23,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function footer()
+    public function register(Request $request)
     {
-        return view("includes/footer");
+        //
     }
 
     /**
