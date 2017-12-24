@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\User;
+use App\country;
+use Auth;
+use Session;
 
 class LoginController extends Controller
 {
@@ -14,8 +18,9 @@ class LoginController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view("public/register/login");
+    {   $test = Session::get("user_name");
+        $countries = Country::select("*")->orderBy("country")->get();
+        return view("public/register/login", compact("countries", "test"));
     }
 
     /**
@@ -25,7 +30,36 @@ class LoginController extends Controller
      */
     public function register(Request $request)
     {
-        //
+        $this->validate($request, [
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'password' => 'required',
+            'email' => 'required',
+            'expertises' => 'required',
+            'city' => 'required',
+            'postcode' => 'required',
+            'state' => 'required',
+            'country' => 'required',
+            'phonenumber' => 'required',
+
+        ]);
+        $user = New User;
+        $user->role = 2;
+        $user->firstname = $request->input("firstname");
+        if($request->input("middlename") != null){
+            $user->middlename = $request->input("middlename");
+        }
+        $user->lastname = $request->input("lastname");
+        $user->password = bcrypt(($request->input("password")));
+        $user->email = $request->input("email");
+        $user->city = $request->input("city");
+        $user->postalcode = $request->input("postcode");
+        $user->state = $request->input("state");
+        $user->country = $request->input("country");
+        $user->phonenumber = $request->input("phonenumber");
+        $user->save();
+
+        return redirect($_SERVER["HTTP_REFERER"])->with('success','Account created');
     }
 
     /**
@@ -34,9 +68,25 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function login(Request $request)
     {
-        //
+        $this->validate($request, [
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+
+        $email = $request->get('email');
+        $password = $request->get('password');
+//        dd($email);
+//        dd($password);
+        if(Auth::attempt(['email'=>$email,'password'=>$password])) {
+            $user = User::select("*")->where("email", $email)->first();
+            Session::set('user_name', $user->firstname);
+            Session::set('user_role', $user->role);
+            return redirect($_SERVER["HTTP_REFERER"])->with('success','Welcome ' . $user->firstname . '!');
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors('it seems you logged in with the wrong credentials');
+        }
     }
 
     /**
