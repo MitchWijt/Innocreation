@@ -6,7 +6,7 @@
             <h1 class="sub-title-black" id="titleLogin">Login</h1>
         </div>
         <div class="hr"></div>
-        <form action="loginUser" method="POST" class="loginForm">
+        <form action="/loginUser" method="POST" class="loginForm">
             <input type="hidden" name="_token" value="<?= csrf_token()?>">
             <div class="form-group d-flex js-center m-b-0 p-b-20">
                 <div class="d-flex fd-column col-sm-5 m-t-20">
@@ -23,7 +23,7 @@
                 </div>
             </div>
         </form>
-        <form action="register" method="POST" class="registerForm hidden">
+        <form action="/register" method="POST" class="registerForm hidden">
             <input type="hidden" name="_token" value="<?= csrf_token()?>">
             <div class="form-group d-flex js-center m-b-0 ">
                 <div class="d-flex fd-column col-sm-9 m-t-20">

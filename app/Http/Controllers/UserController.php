@@ -2,20 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
-use Session;
-use App\Http\Requests;
 
-class HomeController extends Controller
+use App\Http\Requests;
+use Session;
+
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function userAccount()
     {
-       return view("public/home/home");
+        if(Session::has("user_name")) {
+            $id = Session::get("user_id");
+            $user = User::select("*")->where("id", $id)->first();
+            return view("/public/user/userAccount", compact("user"));
+        } else {
+            return view("/public/home/home");
+        }
     }
 
     /**
@@ -23,9 +31,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function footer()
+    public function create()
     {
-        return view("includes/footer");
+        //
     }
 
     /**

@@ -2,6 +2,10 @@
     margin-top: 10px !important;
 }
 
+.m-l-0{
+    margin-left: 0 !important;
+}
+
 .m-0{
     margin: 0 !important;
 }
@@ -36,21 +40,36 @@
     padding-bottom: 20px !important;
 }
 
-
-.vh85{
-    height: 85vh !important;
+.p-b-10{
+    padding-bottom: 10px !important;
 }
 
-.vh100{
-    height: 100vh !important;
+.p-b-5{
+    padding-bottom: 5px !important;
 }
 
+.p-t-5{
+    padding-top: 5px !important;
+}
+/*==================================COLORS=============================*/
 .c-blue{
     color: #00C5DE !important;
 }
 
 .c-gray{
     color: #C9CCCF !important;
+}
+
+.c-orange{
+    color: #FF6100 !important;
+}
+/*=================================PLACEMENT+STYLE===========================*/
+.vh85{
+    height: 85vh !important;
+}
+
+.vh100{
+    height: 100vh !important;
 }
 
 .td-none:hover{
@@ -73,3 +92,49 @@
     justify-content: center !important;
 }
 
+.js-between{
+    justify-content: space-between !important
+}
+
+hr{
+ border-top: 1px solid #FF6100 !important;
+    margin-bottom: 5px !important;
+    margin-top: 5px !important;
+}
+
+/*=============================FONTS======================*/
+.f-12{
+    font-size: 12px !important;
+}
+
+.f-13{
+    font-size: 13px !important;
+}
+
+.f-14{
+    font-size: 14px !important;
+}
+
+.f-15{
+    font-size: 15px !important;
+}
+
+.f-16{
+    font-size: 16px !important;
+}
+
+.f-17{
+    font-size: 17px !important;
+}
+
+.f-18{
+    font-size: 18px !important;
+}
+
+.f-19{
+    font-size: 19px !important;
+}
+
+.f-20{
+    font-size: 20px !important;
+}

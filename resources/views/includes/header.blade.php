@@ -1,10 +1,12 @@
 @section("header")
 <header class="headerShow">
     <div class="header">
+        <a class="td-none" href="/">
         <div class="main-title">
             <h1 class="title" style="color: #C9CCCF">Inn<img class="cartwheelLogo" src="/images/cartwheel.png" alt="">creation</h1>
             <p class="slogan">Help each other make <span id="dreams">Dreams</span> become a reality</p>
         </div>
+        </a>
         <div class="social-media-header">
             <div class="circle">
                 <a href="">
@@ -24,11 +26,17 @@
         </div>
         <div class="loginRegister">
             <div class="accounts">
-                <a class="regular-link c-gray m-b-5" href="">My account</a>
+                <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
+                    <a class="regular-link c-gray m-b-5" href="/account">My account</a>
+                <? } ?>
                 <a class="regular-link" href=""><p id="teamLink" class="m-b-0">My team</p></a>
             </div>
             <div class="login">
-                <a class="regular-link c-gray" href="login">Login / Register</a>
+                <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
+                    <a class="regular-link c-gray" href="/logout">Logout</a>
+                <? } else { ?>
+                    <a class="regular-link c-gray" href="/login">Login / Register</a>
+                <? } ?>
             </div>
         </div>
     </div>

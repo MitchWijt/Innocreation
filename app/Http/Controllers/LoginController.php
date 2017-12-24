@@ -18,9 +18,9 @@ class LoginController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   $test = Session::get("user_name");
+    {
         $countries = Country::select("*")->orderBy("country")->get();
-        return view("public/register/login", compact("countries", "test"));
+        return view("public/register/login", compact("countries"));
     }
 
     /**
@@ -59,7 +59,15 @@ class LoginController extends Controller
         $user->phonenumber = $request->input("phonenumber");
         $user->save();
 
-        return redirect($_SERVER["HTTP_REFERER"])->with('success','Account created');
+        if(Auth::attempt(['email'=>$request->input("email"),'password'=>$request->input("password")])) {
+            $user = User::select("*")->where("email", $request->input("email"))->first();
+            Session::set('user_name', $user->firstname);
+            Session::set('user_role', $user->role);
+            Session::set('user_id', $user->id);
+            return redirect("/account");
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"])->with('success', 'Account created');
+        }
     }
 
     /**
@@ -83,7 +91,8 @@ class LoginController extends Controller
             $user = User::select("*")->where("email", $email)->first();
             Session::set('user_name', $user->firstname);
             Session::set('user_role', $user->role);
-            return redirect($_SERVER["HTTP_REFERER"])->with('success','Welcome ' . $user->firstname . '!');
+            Session::set('user_id', $user->id);
+            return redirect("/account");
         } else {
             return redirect($_SERVER["HTTP_REFERER"])->withErrors('it seems you logged in with the wrong credentials');
         }
@@ -95,9 +104,10 @@ class LoginController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function logout()
     {
-        //
+        Session::flush();
+        return view("public/home/home");
     }
 
     /**

@@ -108,6 +108,13 @@ footer{
     background: #C9CCCF
 }
 
+.sidebar{
+    min-width: 20vh;
+    max-width: 20px;
+    background: #000000;
+}
+
+
 /*=======================================================HEADER===============================================*/
 .main-title{
     text-align: center;

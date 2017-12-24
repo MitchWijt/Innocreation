@@ -1,0 +1,47 @@
+<div class="sidebar">
+    <div class="text-center">
+        <p class="c-gray f-20 text-center m-0"><?= \Illuminate\Support\Facades\Session::get("user_name")?></p>
+        <span class="c-orange f-12 m-0">(expertises)</span>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="">My Profile</a>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="">Expertises</a>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="">Team</a>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="">Interested expertises</a>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="">My support tickets</a>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="">Recent transactions</a>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="">Messages</a>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="">My portfolio</a>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="">Chat</a>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="">Favorite teams</a>
+    </div>
+    <hr>
+</div>

@@ -20,3 +20,9 @@ Route::get("/login", "LoginController@index");
 Route::post("/loginUser", "LoginController@login");
 
 Route::post("/register", "LoginController@register");
+
+Route::get("/logout", "LoginController@logout");
+
+Route::get("/account", "UserController@userAccount");
+
+
