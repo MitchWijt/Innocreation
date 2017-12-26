@@ -1,4 +1,10 @@
 @section("footer")
+{{--JS FILES--}}
+<script src="/js/login.js"></script>
+<script src="/js/home.js"></script>
+
+{{-------------------------------------------}}
+
 <footer>
     <div class="footer d-flex p-t-20 p-b-20">
         <div class="footer-title text-center">

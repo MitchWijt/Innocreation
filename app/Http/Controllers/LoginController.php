@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Expertises;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -20,7 +21,8 @@ class LoginController extends Controller
     public function index()
     {
         $countries = Country::select("*")->orderBy("country")->get();
-        return view("public/register/login", compact("countries"));
+        $expertises = Expertises::select("*")->get();
+        return view("public/register/login", compact("countries", "expertises"));
     }
 
     /**
@@ -58,6 +60,22 @@ class LoginController extends Controller
         $user->country = $request->input("country");
         $user->phonenumber = $request->input("phonenumber");
         $user->save();
+
+        $expertises = Expertises::select("*")->get();
+        $existingArray = [];
+        foreach($expertises as $existingExpertise){
+            array_push($existingArray, $existingExpertise->title);
+        }
+
+        $chosenExpertisesString = $request->input("expertises");
+        $chosenExpertises = explode(", ", $chosenExpertisesString);
+        foreach($chosenExpertises as $expertise){
+            if(!in_array(ucfirst($expertise), $existingArray)){
+                $newExpertise = New Expertises;
+                $newExpertise->title = ucfirst($expertise);
+                $newExpertise->save();
+            }
+        }
 
         if(Auth::attempt(['email'=>$request->input("email"),'password'=>$request->input("password")])) {
             $user = User::select("*")->where("email", $request->input("email"))->first();

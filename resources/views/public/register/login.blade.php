@@ -67,9 +67,8 @@
                 <div class="col-sm-9 m-t-10" style="padding-right: 0;">
                     <div class="row d-flex js-center">
                         <div class="col-sm-9">
-                            {{--Create like categorie hashtags for it--}}
                             <label class="m-0 col-sm-12 p-0">Expertises</label>
-                            <input type="text" name="expertises" class="expertises input col-sm-12">
+                            <input type="text" class="input col-sm-12" name="expertises" id="tokenfield" value="" />
                         </div>
                     </div>
                 </div>
@@ -127,16 +126,20 @@
 </div>
 
 <script>
-    $("#toRegister").on("click",function () {
-        $("#titleLogin").text("Register");
-        $(".loginForm").fadeOut();
-        $(".registerForm").fadeIn();
-    });
-
-    $("#toLogin").on("click",function () {
-        $("#titleLogin").text("Login");
-        $(".registerForm").fadeOut();
-        $(".loginForm").fadeIn();
+    $('#tokenfield').tokenfield({
+        autocomplete: {
+            source: [
+                <? foreach($expertises as $expertise) { ?>
+                    <? $title = $expertise->title?>
+                    <? if(strpos($expertise->title,"-") !== false) {
+                        $title = str_replace("-"," ",$title);
+                     } ?>
+                    <?= "'$title'"?>,
+                <? } ?>
+            ],
+            delay: 100
+        },
+        showAutocompleteOnFocus: true
     });
 </script>
 @endsection
