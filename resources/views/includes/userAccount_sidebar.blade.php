@@ -5,7 +5,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">My Profile</a>
+        <a class="regular-link c-gray" href="/my-account">My Profile</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

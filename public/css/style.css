@@ -34,7 +34,7 @@ footer{
 }
 
 .container{
-    width: 1200px;
+    width: 1200px !important;
     font-family: Corbert;
     margin: 0 auto;
     padding: 0;

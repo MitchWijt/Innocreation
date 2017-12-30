@@ -31,9 +31,15 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function userAccountCredentials()
     {
-        //
+        if(Session::has("user_name")) {
+            $id = Session::get("user_id");
+            $user = User::select("*")->where("id", $id)->first();
+            return view("/public/user/userAccountCredentials", compact("user"));
+        } else {
+            return view("/public/home/home");
+        }
     }
 
     /**
@@ -42,9 +48,15 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function saveUserAccount(Request $request)
     {
-        //
+        $user_id = $request->input("user_id");
+        $user = User::select("*")->where("id", $user_id)->first();
+        $user->skype = $request->input("skype");
+        $user->motivation = $request->input("motivation_user");
+        $user->introduction = $request->input("introduction_user");
+        $user->save();
+        return redirect($_SERVER["HTTP_REFERER"])->with('success', 'Account successfully saved');
     }
 
     /**

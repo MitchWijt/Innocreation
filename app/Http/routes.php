@@ -25,4 +25,8 @@ Route::get("/logout", "LoginController@logout");
 
 Route::get("/account", "UserController@userAccount");
 
+Route::get("/my-account", "UserController@userAccountCredentials");
+
+Route::post("account/saveUserAccount", "UserController@saveUserAccount");
+
 

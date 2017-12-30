@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Expertises;
+use App\expertises_linktable;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -59,11 +60,12 @@ class LoginController extends Controller
         $user->state = $request->input("state");
         $user->country = $request->input("country");
         $user->phonenumber = $request->input("phonenumber");
+        $user->created_at = date("Y-m-d H:i:s");
         $user->save();
 
-        $expertises = Expertises::select("*")->get();
+        $expertisesAll = Expertises::select("*")->get();
         $existingArray = [];
-        foreach($expertises as $existingExpertise){
+        foreach($expertisesAll as $existingExpertise){
             array_push($existingArray, $existingExpertise->title);
         }
 
@@ -74,6 +76,18 @@ class LoginController extends Controller
                 $newExpertise = New Expertises;
                 $newExpertise->title = ucfirst($expertise);
                 $newExpertise->save();
+
+                $userExpertise = New expertises_linktable;
+                $userExpertise->user_id = $user->id;
+                $userExpertise->expertise_id = $newExpertise->id;
+                $userExpertise->save();
+
+            } else {
+                $expertiseNewUser = Expertises::select("*")->where("title", $expertise)->first();
+                $userExpertise = New expertises_linktable;
+                $userExpertise->user_id = $user->id;
+                $userExpertise->expertise_id = $expertiseNewUser->id;
+                $userExpertise->save();
             }
         }
 
