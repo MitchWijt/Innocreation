@@ -27,6 +27,8 @@ Route::get("/account", "UserController@userAccount");
 
 Route::get("/my-account", "UserController@userAccountCredentials");
 
-Route::post("account/saveUserAccount", "UserController@saveUserAccount");
+Route::get("/my-account/expertises", "UserController@userAccountExpertises");
+
+Route::post("/my-account/saveUserAccount", "UserController@saveUserAccount");
 
 

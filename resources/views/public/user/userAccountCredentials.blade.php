@@ -7,7 +7,7 @@
             <h1 class="sub-title-black">My profile</h1>
         </div>
         <div class="hr"></div>
-        <form action="/account/saveUserAccount" method="post">
+        <form action="/my-account/saveUserAccount" method="post">
             <input type="hidden" name="_token" value="<?= csrf_token()?>">
             <input type="hidden" name="user_id" value="<? if(isset($user)) echo $user->id ?>">
             <div class="form-group d-flex js-center m-b-0 ">

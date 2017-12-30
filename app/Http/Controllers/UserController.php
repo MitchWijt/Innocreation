@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\expertises_linktable;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -65,9 +66,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function userAccountExpertises()
     {
-        //
+        $user_id = Session::get("user_id");
+        $expertises_linktable = expertises_linktable::select("*")->where("user_id", $user_id)->with("Users")->with("Expertises")->get();
+        return view("/public/user/userAccountExpertises", compact("expertises_linktable"));
     }
 
     /**

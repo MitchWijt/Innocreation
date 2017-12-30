@@ -41,7 +41,7 @@ footer{
 }
 
 .hidden{
-    display: none;
+    display: none !important;
 }
 
 .hr{
@@ -118,6 +118,13 @@ footer{
     min-width: 20vh;
     max-width: 20px;
     background: #000000;
+}
+/*=========================================CARD/PANEL===================================*/
+.card{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    width: 60vh !important;
+    border: 1px solid #FF6100 !important;
 }
 /*=======================================JQUERY UI===========================*/
 .ui-menu{

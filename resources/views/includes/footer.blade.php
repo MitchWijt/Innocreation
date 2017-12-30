@@ -2,6 +2,7 @@
 {{--JS FILES--}}
 <script src="/js/login.js"></script>
 <script src="/js/home.js"></script>
+<script src="/js/userAccountExpertises.js"></script>
 
 {{-------------------------------------------}}
 
