@@ -76,6 +76,10 @@
     height: 85vh !important;
 }
 
+.vh80{
+    height: 80vh !important;
+}
+
 .vh100{
     height: 100vh !important;
 }
@@ -103,6 +107,11 @@
 .js-between{
     justify-content: space-between !important
 }
+
+.js-around{
+    justify-content: space-around !important
+}
+
 
 hr{
  border-top: 1px solid #FF6100 !important;

@@ -50,6 +50,12 @@ footer{
     text-align: center;
     width: 800px;
 }
+.hr-card{
+    border-top: 1px solid #FF6100;
+    margin: 0 auto;
+    text-align: center;
+    width: 680px;
+}
 
 .sub-title{
     font-weight: lighter;
@@ -124,6 +130,13 @@ footer{
     background: #000000 !important;
     color: #C9CCCF !important;
     width: 60vh !important;
+    border: 1px solid #FF6100 !important;
+}
+
+.card-lg{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    width: 87vh !important;
     border: 1px solid #FF6100 !important;
 }
 /*=======================================JQUERY UI===========================*/
@@ -360,6 +373,10 @@ footer{
     display: flex;
     align-items: center;
     margin-left: 130px !important;
+}
+
+.instructions-list > .instructions-list-item{
+    color: #FF6100;
 }
 /*====================================INSTRUCTIONS-SECOND=================================*/
 .instructions-second{

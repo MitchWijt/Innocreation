@@ -96,6 +96,9 @@ class LoginController extends Controller
             Session::set('user_name', $user->firstname);
             Session::set('user_role', $user->role);
             Session::set('user_id', $user->id);
+            if($user->team_id != null) {
+                Session::set('team_id', $user->team_id);
+            }
             return redirect("/account");
         } else {
             return redirect($_SERVER["HTTP_REFERER"])->with('success', 'Account created');
@@ -124,6 +127,9 @@ class LoginController extends Controller
             Session::set('user_name', $user->firstname);
             Session::set('user_role', $user->role);
             Session::set('user_id', $user->id);
+            if($user->team_id != null) {
+                Session::set('team_id', $user->team_id);
+            }
             return redirect("/account");
         } else {
             return redirect($_SERVER["HTTP_REFERER"])->withErrors('it seems you logged in with the wrong credentials');

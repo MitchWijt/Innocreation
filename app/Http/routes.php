@@ -23,12 +23,19 @@ Route::post("/register", "LoginController@register");
 
 Route::get("/logout", "LoginController@logout");
 
+//========================USERACCOUNT================================
+
 Route::get("/account", "UserController@userAccount");
+
+Route::post("/my-account/saveUserAccount", "UserController@saveUserAccount");
 
 Route::get("/my-account", "UserController@userAccountCredentials");
 
 Route::get("/my-account/expertises", "UserController@userAccountExpertises");
 
-Route::post("/my-account/saveUserAccount", "UserController@saveUserAccount");
+Route::post("/saveUserExpertiseDescription", "UserController@saveUserExpertiseDescription");
+
+Route::get("/my-account/teamInfo", "UserController@teamBenefits");
+
 
 

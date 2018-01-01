@@ -79,9 +79,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function saveUserExpertiseDescription(Request $request)
     {
-        //
+        $user_id = $request->input("user_id");
+        $expertise_id = $request->input("expertise_id");
+        $description = $request->input("userExpertiseDescription");
+
+        $expertises = expertises_linktable::select("*")->where("user_id", $user_id)->where("expertise_id", $expertise_id)->first();
+        $expertises->description = $description;
+        $expertises->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
     }
 
     /**
@@ -91,9 +98,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function teamBenefits()
     {
-        //
+        return view("/public/user/teamBenefits");
+
     }
 
     /**

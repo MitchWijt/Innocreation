@@ -90,7 +90,7 @@
         if( event.originalEvent.detail > 0 || event.originalEvent.wheelDelta < 0 ) {
             $(".headerShow").fadeIn();
             $(".home-background-wrapper").css("height","85vh");
-            $(".homepage-mainContent").show();
+            $(".homepage-mainContent").removeClass("hidden");
             $(".footerView").load("/includes/footer");
         }
     });
@@ -102,7 +102,7 @@
     $(".scrollHomeBtn").click(function() {
         $(".headerShow").fadeIn();
         $(".home-background-wrapper").css("height","85vh");
-        $(".homepage-mainContent").show();
+        $(".homepage-mainContent").removeClass("hidden");
         $(".footerView").load("/includes/footer");
 
         $('html, body').animate({

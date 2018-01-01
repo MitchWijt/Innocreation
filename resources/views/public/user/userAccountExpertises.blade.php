@@ -17,6 +17,7 @@
                 </div>
                 <div class="hidden formHidden">
                     <form data-id="<?= $userExpertises->expertises->first()->id?>" action="/saveUserExpertiseDescription" method="post" class="d-flex js-center p-t-20 editUserExpertiseField">
+                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
                         <input type="hidden" name="user_id" value="<?= $userExpertises->users->first()->id?>">
                         <input type="hidden" name="expertise_id" value="<?= $userExpertises->expertises->first()->id?>">
                         <textarea name="userExpertiseDescription" class="input " cols="58" rows="8"><? if(isset($userExpertises->description)) echo $userExpertises->description?></textarea>
@@ -24,12 +25,12 @@
                 </div>
 
                 <div class="row m-t-10 d-flex js-center">
-                    <div class="expertise-description">
+                    <div data-id="<?= $userExpertises->expertises->first()->id?>" class="expertise-description">
                         <p style="width: 60vh;" class="desc"><?=$userExpertises->description?></p>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-9" id="expertiseButtons">
+                    <div class="col-sm-9 expertiseButtons">
                         <button data-expertise-id="<?= $userExpertises->expertises->first()->id?>" class="btn btn-inno pull-right saveDescriptionBtn m-b-5 hidden">Save description</button>
                         <button data-expertise-id="<?= $userExpertises->expertises->first()->id?>" class="btn btn-inno pull-right editDescriptionBtn m-b-5">Edit description</button>
                     </div>

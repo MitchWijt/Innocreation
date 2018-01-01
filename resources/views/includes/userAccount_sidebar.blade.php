@@ -13,7 +13,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Team</a>
+        <a class="regular-link c-gray" href="/my-account/teamInfo">Team</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
