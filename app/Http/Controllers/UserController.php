@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\expertises_linktable;
+use App\Team;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -57,7 +58,7 @@ class UserController extends Controller
         $user->motivation = $request->input("motivation_user");
         $user->introduction = $request->input("introduction_user");
         $user->save();
-        return redirect($_SERVER["HTTP_REFERER"])->with('success', 'Account successfully saved');
+        return redirect($_SERVER["HTTP_REFERER"]);
     }
 
     /**
@@ -100,7 +101,9 @@ class UserController extends Controller
      */
     public function teamBenefits()
     {
-        return view("/public/user/teamBenefits");
+        $user_id = Session::get("user_id");
+        $user = User::select("*")->where("id", $user_id)->first();
+        return view("/public/user/teamBenefits", compact("user"));
 
     }
 
@@ -110,8 +113,27 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function createNewTeam(Request $request)
     {
-        //
+        $team_name = $request->input("team_name");
+        $user_id = $request->input("user_id");
+        $all_teams = Team::select("*")->where("team_name", $team_name)->get();
+        if(count($all_teams) != 0){
+            $user = User::select("*")->where("id", $user_id)->first();
+            $error = "This name already exists";
+            return view("/public/user/teamBenefits", compact("error", "user"));
+        } else {
+            $team = new Team;
+            $team->team_name = $team_name;
+            $team->ceo_user_id = $user_id;
+            $team->created_at = date("Y-m-d H:i:s");
+            $team->save();
+
+            Session::set("team_id", $team->id);
+            Session::set("team_name", $team->team_name);
+
+
+            return redirect("/my-team");
+        }
     }
 }

@@ -13,7 +13,11 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-account/teamInfo">Team</a>
+        <? if(\Illuminate\Support\Facades\Session::has("team_id")) { ?>
+            <a class="regular-link c-gray" href="/my-team">Team</a>
+        <? } else { ?>
+            <a class="regular-link c-gray" href="/my-account/teamInfo">Team</a>
+        <? } ?>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

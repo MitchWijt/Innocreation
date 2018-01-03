@@ -9,7 +9,7 @@
             <div class="hr p-b-20"></div>
             <div class="d-flex js-around p-b-20">
                 <a class="btn btn-inno c-gray">Join a team</a>
-                <a class="btn btn-inno c-gray">Create a team</a>
+                <a class="btn btn-inno c-gray" data-toggle="modal" data-target="#myModal">Create a team</a>
             </div>
             <div class="row d-flex js-center p-b-20">
                 <div class="card card-lg text-center">
@@ -38,6 +38,39 @@
                                <p class="instructions-text f-19 m-0 p-b-10">Pay out your members easily</p>
                            </li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL CREATE A TEAM -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header d-flex js-center">
+                            <h4 class="modal-title text-center" id="modalLabel">Create your team!</h4>
+                        </div>
+                        <div class="modal-body ">
+                            <form action="/createTeam" method="post">
+                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                <div class="form-group">
+                                    <? if(isset($error)) { ?>
+                                        <div class="d-flex js-center">
+                                            <span class="c-orange"><?= $error ?></span>
+                                        </div>
+                                    <? } ?>
+                                    <div class="d-flex js-around text-center">
+                                        <p class="m-t-10">Team name:</p>
+                                        <input class="input m-t-10" type="text" name="team_name" id="" style="height: 30px;">
+                                    </div>
+                                    <div class="row m-t-20 ">
+                                        <div class="col-sm-11">
+                                            <button class="btn btn-inno pull-right">Create my team</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

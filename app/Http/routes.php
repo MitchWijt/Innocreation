@@ -37,5 +37,9 @@ Route::post("/saveUserExpertiseDescription", "UserController@saveUserExpertiseDe
 
 Route::get("/my-account/teamInfo", "UserController@teamBenefits");
 
+Route::post("/createTeam","UserController@createNewTeam");
 
+//==============================TEAM=====================================
+
+Route::get("/my-team", "TeamController@index");
 
