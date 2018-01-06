@@ -139,7 +139,41 @@ footer{
     width: 87vh !important;
     border: 1px solid #FF6100 !important;
 }
+.card-chosen{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    width: 40vh !important;
+    height: 40vh !important;
+    border: 2px solid #FF6100 !important;
+}
 
+.card-final{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    width: 40vh !important;
+    height: 40vh !important;
+    border: 1px solid #C9CCCF !important;
+}
+
+.card-final:hover{
+    background: #C9CCCF !important;
+    border: 3px solid #FF6100 !important;
+    color: #000000 !important;
+}
+
+.card-square{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    width: 40vh !important;
+    height: 40vh !important;
+    border: 1px solid #C9CCCF !important;
+}
+
+.card-square:hover{
+    background: #C9CCCF !important;
+    border: 3px solid #FF6100 !important;
+    color: #000000 !important;
+}
 /*=========================================MODAL STYLE===============================*/
 .modal-header{
     background: #C9CCCF !important;
@@ -155,6 +189,9 @@ footer{
     background: #C9CCCF !important;
 }
 
+.border-inno{
+    border: 3px solid #FF6100 !important;
+}
 
 /*=======================================JQUERY UI===========================*/
 .ui-menu{

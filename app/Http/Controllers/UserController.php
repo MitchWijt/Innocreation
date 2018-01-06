@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Expertises;
 use App\expertises_linktable;
+use App\Favorite_expertises_linktable;
 use App\Team;
 use App\User;
 use Illuminate\Http\Request;
@@ -118,8 +120,8 @@ class UserController extends Controller
         $team_name = $request->input("team_name");
         $user_id = $request->input("user_id");
         $all_teams = Team::select("*")->where("team_name", $team_name)->get();
+        $user = User::select("*")->where("id", $user_id)->first();
         if(count($all_teams) != 0){
-            $user = User::select("*")->where("id", $user_id)->first();
             $error = "This name already exists";
             return view("/public/user/teamBenefits", compact("error", "user"));
         } else {
@@ -129,11 +131,42 @@ class UserController extends Controller
             $team->created_at = date("Y-m-d H:i:s");
             $team->save();
 
+            $user->team_id = $team->id;
+            $user->save();
+
             Session::set("team_id", $team->id);
             Session::set("team_name", $team->team_name);
 
 
             return redirect("/my-team");
+        }
+    }
+
+    public function favoriteExpertisesUser(){
+        $user_id = Session::get("user_id");
+        $user = User::select("*")->where("id", $user_id)->first();
+        $expertises = Expertises::select("*")->inRandomOrder()->limit("6")->get();
+        $favoriteExpertisesUser = Favorite_expertises_linktable::select("*")->where("user_id", $user_id)->with("Users")->with("Expertises")->get();
+        return view("/public/user/favoriteExpertisesUser", compact("expertises", "user", "favoriteExpertisesUser"));
+    }
+
+    public function saveFavoriteExperisesUser(Request $request){
+        $user_id = $request->input("user_id");
+        $expertise_id = $request->input("expertise_id");
+        $existingFavExpertises = Favorite_expertises_linktable::select("*")->where("user_id",$user_id)->where("expertise_id", $expertise_id)->first();
+        $AllFavUser = Favorite_expertises_linktable::select("*")->where("user_id", $user_id)->get();
+        if(count($AllFavUser) >= 4){
+            return "max";
+        } else {
+            if (count($existingFavExpertises == 0)) {
+                $favoriteExpertise = new Favorite_expertises_linktable;
+                $favoriteExpertise->user_id = $user_id;
+                $favoriteExpertise->expertise_id = $expertise_id;
+                $favoriteExpertise->save();
+                return $favoriteExpertise->expertise_id;
+            } else {
+                return 2;
+            }
         }
     }
 }

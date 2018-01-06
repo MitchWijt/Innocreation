@@ -37,6 +37,12 @@ Route::post("/saveUserExpertiseDescription", "UserController@saveUserExpertiseDe
 
 Route::get("/my-account/teamInfo", "UserController@teamBenefits");
 
+Route::get("/my-account/favorite-expertises", "UserController@favoriteExpertisesUser");
+
+Route::post("/saveFavoriteExpertisesUser", "UserController@saveFavoriteExperisesUser");
+
+Route::post("/filterFavExpertises", "UserController@filterFavExpertises");
+
 Route::post("/createTeam","UserController@createNewTeam");
 
 //==============================TEAM=====================================

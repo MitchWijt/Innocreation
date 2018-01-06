@@ -21,6 +21,18 @@
     margin-bottom: 0 !important;
 }
 
+.m-b-10{
+    margin-bottom: 10px !important;
+}
+
+.m-b-15{
+    margin-bottom: 15px !important;
+}
+
+.m-b-20{
+    margin-bottom: 20px !important;
+}
+
 .m-r-20{
     margin-right: 20px !important;
 }
@@ -154,6 +166,14 @@ hr{
 
 .f-20{
     font-size: 20px !important;
+}
+
+.f-21{
+    font-size: 21px !important;
+}
+
+.f-22{
+    font-size: 22px !important;
 }
 
 .f-z-rem{

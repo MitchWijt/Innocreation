@@ -6,6 +6,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    public function team(){
+        return $this->hasMany("\App\Team", "id","team_id");
+    }
     /**
      * The attributes that are mass assignable.
      *

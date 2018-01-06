@@ -120,15 +120,14 @@ class LoginController extends Controller
 
         $email = $request->get('email');
         $password = $request->get('password');
-//        dd($email);
-//        dd($password);
         if(Auth::attempt(['email'=>$email,'password'=>$password])) {
-            $user = User::select("*")->where("email", $email)->first();
+            $user = User::select("*")->where("email", $email)->with("team")->first();
             Session::set('user_name', $user->firstname);
             Session::set('user_role', $user->role);
             Session::set('user_id', $user->id);
             if($user->team_id != null) {
                 Session::set('team_id', $user->team_id);
+                Session::set("team_name", $user->team->first()->team_name);
             }
             return redirect("/account");
         } else {
