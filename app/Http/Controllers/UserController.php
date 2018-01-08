@@ -8,6 +8,7 @@ use App\Favorite_expertises_linktable;
 use App\Team;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 use App\Http\Requests;
 use Session;
@@ -168,5 +169,18 @@ class UserController extends Controller
                 return 2;
             }
         }
+    }
+
+    public function saveUserProfilePictureAction(Request $request){
+        $user_id = $request->input("user_id");
+        $file = $request->file("profile_picture");
+        $destinationPath = public_path().'/images/profilePictures';
+        $fullname = $file->getClientOriginalName();
+
+        $user = User::select("*")->where("id", $user_id)->first();
+        $user->profile_picture = $fullname;
+        $user->save();
+        $file->move($destinationPath, $fullname);
+        return redirect($_SERVER["HTTP_REFERER"]);
     }
 }

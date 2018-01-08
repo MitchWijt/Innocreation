@@ -9,6 +9,10 @@ class User extends Authenticatable
     public function team(){
         return $this->hasMany("\App\Team", "id","team_id");
     }
+
+    public function getProfilePicture(){
+        return "/images/profilePictures/" . $this->profile_picture;
+    }
     /**
      * The attributes that are mass assignable.
      *

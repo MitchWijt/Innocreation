@@ -4,6 +4,7 @@
 <script src="/js/home.js"></script>
 <script src="/js/userAccountExpertises.js"></script>
 <script src="/js/favoriteExpertisesUser.js"></script>
+<script src="/js/userAccountCredentials.js"></script>
 
 {{-------------------------------------------}}
 

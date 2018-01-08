@@ -7,6 +7,25 @@
             <h1 class="sub-title-black">My profile</h1>
         </div>
         <div class="hr"></div>
+        <form action="/my-account/saveUserProfilePicture" enctype="multipart/form-data" method="post" class="saveUserProfilePicture">
+            <input type="hidden" name="_token" value="<?= csrf_token()?>">
+            <input type="hidden" name="user_id" value="<? if(isset($user)) echo $user->id ?>">
+            <div class="form-group d-flex js-center m-b-0 ">
+                <div class="d-flex fd-column col-sm-9 m-t-20">
+                    <div class="row text-center">
+                        <div class="col-sm-12">
+                            <input type="file" name="profile_picture" class="hidden uploadFile">
+                            <img style="width: 250px;" class="circle m-0" src="<?=$user->getProfilePicture()?>" alt="Profile picture">
+                        </div>
+                    </div>
+                    <div class="row text-center m-t-20 m-b-20">
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-inno editProfilePicture">Edit profile picture</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
         <form action="/my-account/saveUserAccount" method="post">
             <input type="hidden" name="_token" value="<?= csrf_token()?>">
             <input type="hidden" name="user_id" value="<? if(isset($user)) echo $user->id ?>">

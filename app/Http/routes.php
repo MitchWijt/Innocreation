@@ -43,6 +43,8 @@ Route::post("/saveFavoriteExpertisesUser", "UserController@saveFavoriteExperises
 
 Route::post("/filterFavExpertises", "UserController@filterFavExpertises");
 
+Route::post("/my-account/saveUserProfilePicture", "UserController@saveUserProfilePictureAction");
+
 Route::post("/createTeam","UserController@createNewTeam");
 
 //==============================TEAM=====================================
