@@ -7,6 +7,11 @@
                 <h1 class="sub-title-black">My expertises</h1>
             </div>
             <div class="hr p-b-20"></div>
+            <div class="row p-b-20">
+                <div class="col-sm-12 text-center">
+                    <button class="btn btn-sm btn-inno ">Add/delete expertises</button>
+                </div>
+            </div>
             <? foreach($expertises_linktable as $userExpertises) { ?>
                 <div class="row d-flex js-center">
                     <div class="card text-center">

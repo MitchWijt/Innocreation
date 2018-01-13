@@ -26,7 +26,7 @@
                                     <p class="instructions-text f-19 m-0 p-b-10">Keep yourself updated with development around your expertises</p>
                                 </li>
                                 <li class="instructions-list-item">
-                                    <p class="instructions-text f-19 m-0 p-b-10">Choose min 4 expertises</p>
+                                    <p class="instructions-text f-19 m-0 p-b-10">Choose max 4 expertises</p>
                                 </li>
                                 <li class="instructions-list-item">
                                     <p class="instructions-text f-19 m-0 p-b-10">Click to add one</p>
@@ -38,6 +38,12 @@
                 <div class="row">
                     <div class="col-sm-10 m-b-15">
                         <button class="btn btn-inno pull-right filterFavExpertises">New expertises</button>
+                    </div>
+                </div>
+            <? } else { ?>
+                <div class="row p-b-20">
+                    <div class="col-sm-12 text-center">
+                        <button class="btn btn-sm btn-inno editFavExpertisesBtn">Add/delete expertises</button>
                     </div>
                 </div>
             <? } ?>
@@ -53,6 +59,12 @@
                 <? } ?>
                     <div class="col-sm-4">
                         <div class="card card-final text-center" data-expertise-id="<?= $favExpertise->expertise_id?>" style="position: relative;">
+                            <form action="/editFavoriteExpertisesUser" method="post" class="editFavExpertises">
+                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                <input type="hidden" name="expertise_id" value="<?= $favExpertise->expertise_id?>">
+                                <input type="hidden" name="user_id" value="<?= $favExpertise->user_id?>">
+                                <span class="f-22 deleteCross hidden" style="position: absolute; left: 10px; top: 5px; color: #FF6100"><i class="zmdi zmdi-close"></i></span>
+                            </form>
                             <div class="card-block">
                                 <div class="row d-flex js-center">
                                     <div class="col-sm-8">

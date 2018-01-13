@@ -171,6 +171,14 @@ class UserController extends Controller
         }
     }
 
+    public function editFavoriteExpertisesUser(Request $request){
+        $user_id = $request->input("user_id");
+        $expertise_id = $request->input("expertise_id");
+        $favoriteExpertises = Favorite_expertises_linktable::select("*")->where("user_id", $user_id)->where("expertise_id", $expertise_id)->first();
+        $favoriteExpertises->delete();
+        return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
     public function saveUserProfilePictureAction(Request $request){
         $user_id = $request->input("user_id");
         $file = $request->file("profile_picture");

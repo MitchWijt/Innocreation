@@ -34,3 +34,11 @@ $(".filterFavExpertises").on("click",function () {
     location.reload();
 });
 
+$(".editFavExpertisesBtn").on("click",function () {
+    $(".deleteCross").removeClass("hidden");
+});
+
+$(".deleteCross").on("click",function () {
+    $(".editFavExpertises").submit();
+});
+

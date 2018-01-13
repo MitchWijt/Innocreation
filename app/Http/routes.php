@@ -41,6 +41,8 @@ Route::get("/my-account/favorite-expertises", "UserController@favoriteExpertises
 
 Route::post("/saveFavoriteExpertisesUser", "UserController@saveFavoriteExperisesUser");
 
+Route::post("/editFavoriteExpertisesUser", "UserController@editFavoriteExpertisesUser");
+
 Route::post("/filterFavExpertises", "UserController@filterFavExpertises");
 
 Route::post("/my-account/saveUserProfilePicture", "UserController@saveUserProfilePictureAction");

@@ -142,16 +142,16 @@ footer{
 .card-chosen{
     background: #000000 !important;
     color: #C9CCCF !important;
-    width: 40vh !important;
-    height: 40vh !important;
+    width: 375px !important;
+    height: 375px !important;
     border: 2px solid #FF6100 !important;
 }
 
 .card-final{
     background: #000000 !important;
     color: #C9CCCF !important;
-    width: 40vh !important;
-    height: 40vh !important;
+    width: 375px !important;
+    height: 375px !important;
     border: 1px solid #C9CCCF !important;
 }
 
@@ -164,8 +164,8 @@ footer{
 .card-square{
     background: #000000 !important;
     color: #C9CCCF !important;
-    width: 40vh !important;
-    height: 40vh !important;
+    width: 375px !important;
+    height: 375px !important;
     border: 1px solid #C9CCCF !important;
 }
 
