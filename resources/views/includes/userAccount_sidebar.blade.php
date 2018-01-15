@@ -37,7 +37,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">My portfolio</a>
+        <a class="regular-link c-gray" href="/my-account/portfolio">My portfolio</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

@@ -7,6 +7,7 @@ use App\expertises_linktable;
 use App\Favorite_expertises_linktable;
 use App\Team;
 use App\User;
+use App\UserPortfolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
@@ -190,5 +191,34 @@ class UserController extends Controller
         $user->save();
         $file->move($destinationPath, $fullname);
         return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function userAccountPortfolio(){
+        $userPortfolios = UserPortfolio::select("*")->get();
+        $user_id = Session::get("user_id");
+        $user = User::select("*")->where("id", $user_id)->first();
+        $amountPortfolios = count($userPortfolios);
+        return view("/public/user/userAccountPortfolio",compact("userPortfolios", "amountPortfolios", "user"));
+    }
+
+    public function saveUseraccountPortfolio(Request $request){
+        $destinationPath = public_path().'/images/portfolioImages';
+
+        $user_id = $request->input("user_id");
+        $portfolio_titles = $request->input("portfolio_title");
+        $portfolio_image = $request->file("portfolio_image");
+        $portfolio_descriptions = $request->input("description_portfolio");
+
+        $rowCount = count($portfolio_titles);
+
+        for ($i = 0; $i < $rowCount; $i++) {
+            $portfolio_image[$i]->move($destinationPath,$portfolio_image[$i]->getClientOriginalName());
+            $userPortfolio = new UserPortfolio;
+            $userPortfolio->user_id = $user_id;
+            $userPortfolio->title = $portfolio_titles[$i];
+            $userPortfolio->description = $portfolio_descriptions[$i];
+            $userPortfolio->image = $portfolio_image[$i]->getClientOriginalName();
+            $userPortfolio->save();
+        }
     }
 }

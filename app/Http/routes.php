@@ -47,6 +47,10 @@ Route::post("/filterFavExpertises", "UserController@filterFavExpertises");
 
 Route::post("/my-account/saveUserProfilePicture", "UserController@saveUserProfilePictureAction");
 
+Route::get("/my-account/portfolio", "UserController@userAccountPortfolio");
+
+Route::post("/my-account/saveUserPortfolio", "UserController@saveUseraccountPortfolio");
+
 Route::post("/createTeam","UserController@createNewTeam");
 
 //==============================TEAM=====================================
