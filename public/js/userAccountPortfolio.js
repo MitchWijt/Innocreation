@@ -15,13 +15,11 @@ $(".addPortfolio").on("click",function () {
     $(".fileName:last").text("");
 });
 
-$(".editPortfolioImage").on("click",function () {
-    $(".portfolio_image:last").click();
+$(document).on('click', '.editPortfolioImage', function() {
+    $(this).parents(".fileUpload").find(".portfolio_image").click();
 });
 
-$(".portfolio_image").on("change",function () {
-    console.log("test");
-    var filename = $(".portfolio_image").val().split('\\').pop();
-    console.log(filename);
-    $(".fileName").text(filename);
+$(document).on("change", ".portfolio_image",function () {
+    var filename = $(this).val().split('\\').pop();
+    $(".fileName:last").text(filename);
 });

@@ -28,7 +28,7 @@
                                 <div class="col-sm-9 m-t-10 p-r-0">
                                     <div class="row d-flex js-center">
                                         <div class="col-sm-9 d-flex row">
-                                            <img class="col-sm-12" src="<?= $userPortfolio->getUrl()?>" alt="">
+                                            <img class="col-sm-12 h-100" src="<?= $userPortfolio->getUrl()?>" alt="">
                                         </div>
                                         <div class="col-sm-9">
                                             <input type="file" class="portfolio_image hidden" name="portfolio_image">
@@ -70,8 +70,8 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12 text-center m-t-20 fileUpload">
-                            <input type="file" class="portfolio_image" name="portfolio_image[]">
-                            <button type="button" class="btn btn-inno editPortfolioImage">Upload picture</button>
+                            <input type="file" class="portfolio_image hidden" name="portfolio_image[]">
+                            <button type="button" class="btn btn-inno editPortfolioImage m-b-10">Upload picture</button>
                         </div>
                     </div>
                     <div class="row">

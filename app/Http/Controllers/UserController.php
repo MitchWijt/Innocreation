@@ -220,5 +220,6 @@ class UserController extends Controller
             $userPortfolio->image = $portfolio_image[$i]->getClientOriginalName();
             $userPortfolio->save();
         }
+        return redirect($_SERVER["HTTP_REFERER"]);
     }
 }
