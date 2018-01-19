@@ -125,6 +125,15 @@ footer{
     max-width: 20px;
     background: #000000;
 }
+.border-inno{
+    border: 3px solid #FF6100 !important;
+}
+.border-inno-black{
+    border: 3px solid #000000 !important;
+}
+.radius{
+    border-radius: 10px;
+}
 /*=========================================CARD/PANEL===================================*/
 .card{
     background: #000000 !important;
@@ -188,11 +197,6 @@ footer{
 .modal-body{
     background: #C9CCCF !important;
 }
-
-.border-inno{
-    border: 3px solid #FF6100 !important;
-}
-
 /*=======================================JQUERY UI===========================*/
 .ui-menu{
     background: #000000;

@@ -51,6 +51,10 @@ Route::get("/my-account/portfolio", "UserController@userAccountPortfolio");
 
 Route::post("/my-account/saveUserPortfolio", "UserController@saveUseraccountPortfolio");
 
+Route::post("/my-account/editUserPortfolio", "UserController@editUserPortfolio");
+
+Route::post("/deleteUserPortfolio", "UserController@deleteUserPortfolio");
+
 Route::post("/createTeam","UserController@createNewTeam");
 
 //==============================TEAM=====================================

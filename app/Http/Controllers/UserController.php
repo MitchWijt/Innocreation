@@ -194,9 +194,9 @@ class UserController extends Controller
     }
 
     public function userAccountPortfolio(){
-        $userPortfolios = UserPortfolio::select("*")->get();
         $user_id = Session::get("user_id");
         $user = User::select("*")->where("id", $user_id)->first();
+        $userPortfolios = UserPortfolio::select("*")->where("user_id",$user_id)->get();
         $amountPortfolios = count($userPortfolios);
         return view("/public/user/userAccountPortfolio",compact("userPortfolios", "amountPortfolios", "user"));
     }
@@ -209,17 +209,49 @@ class UserController extends Controller
         $portfolio_image = $request->file("portfolio_image");
         $portfolio_descriptions = $request->input("description_portfolio");
 
-        $rowCount = count($portfolio_titles);
 
-        for ($i = 0; $i < $rowCount; $i++) {
-            $portfolio_image[$i]->move($destinationPath,$portfolio_image[$i]->getClientOriginalName());
-            $userPortfolio = new UserPortfolio;
-            $userPortfolio->user_id = $user_id;
-            $userPortfolio->title = $portfolio_titles[$i];
-            $userPortfolio->description = $portfolio_descriptions[$i];
-            $userPortfolio->image = $portfolio_image[$i]->getClientOriginalName();
-            $userPortfolio->save();
+
+        if($portfolio_image[0] != null) {
+
+            $rowCount = count($portfolio_titles);
+
+            for ($i = 0; $i < $rowCount; $i++) {
+                $portfolio_image[$i]->move($destinationPath, $portfolio_image[$i]->getClientOriginalName());
+                $userPortfolio = new UserPortfolio;
+                $userPortfolio->user_id = $user_id;
+                $userPortfolio->title = $portfolio_titles[$i];
+                $userPortfolio->description = $portfolio_descriptions[$i];
+                $userPortfolio->image = $portfolio_image[$i]->getClientOriginalName();
+                $userPortfolio->save();
+            }
+            return redirect($_SERVER["HTTP_REFERER"]);
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"]);
         }
+    }
+
+    public function editUserPortfolio(Request $request){
+        $portfolio_id = $request->input("portfolio_id");
+        $image = $request->file("portfolio_image");
+        $title = $request->input("portfolio_title");
+        $description = $request->input("description_portfolio");
+
+        $userPortfolio = UserPortfolio::select("*")->where("id",$portfolio_id)->first();
+        $userPortfolio->title = $title;
+        $userPortfolio->description = $description;
+        if($image != null){
+            $destinationPath = public_path().'/images/portfolioImages';
+            $userPortfolio->image = $image->getClientOriginalName();
+            $image->move($destinationPath,$image->getClientOriginalName());
+        }
+        $userPortfolio->save();
         return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function deleteUserPortfolio(Request $request){
+        $portfolio_id = $request->input("portfolio_id");
+        $userPortfolio = UserPortfolio::select("*")->where("id", $portfolio_id)->first();
+        $userPortfolio->delete();
+        return 1;
     }
 }

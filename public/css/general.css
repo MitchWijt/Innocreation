@@ -32,9 +32,15 @@
 .m-b-20{
     margin-bottom: 20px !important;
 }
-
+.m-r-10{
+    margin-right: 10px !important;
+}
 .m-r-20{
     margin-right: 20px !important;
+}
+
+.m-t-15{
+    margin-top: 15px !important;
 }
 
 .m-t-20{
@@ -85,6 +91,9 @@
 
 .c-orange{
     color: #FF6100 !important;
+}
+.c-red{
+    color: #FF0000 !important
 }
 /*=================================PLACEMENT+STYLE===========================*/
 .vh85{
