@@ -17,7 +17,7 @@
                     <div class="row m-t-20">
                         <div class="col-sm-12">
                             <button class="btn btn-inno pull-right">Log in</button>
-                            <p class="m-t-10">Don't have an account? <a class="regular-link" href="#" id="toRegister">Sign up here!</a></p>
+                            <p class="m-t-10">Don't have an account? <a class="regular-link toRegister" href="#">Sign up here!</a></p>
                         </div>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                             <div class="row m-t-20 ">
                                 <div class="col-sm-12">
                                     <button class="btn btn-inno pull-right">Register</button>
-                                    <p class="m-t-10">Already have an account? <a class="regular-link" href="#" id="toLogin">Sign in here!</a></p>
+                                    <p class="m-t-10">Already have an account? <a class="regular-link toLogin" href="#">Sign in here!</a></p>
                                 </div>
                             </div>
                         </div>
@@ -142,4 +142,7 @@
         showAutocompleteOnFocus: true
     });
 </script>
+@endsection
+@section('pagescript')
+    <script src="/js/login.js"></script>
 @endsection

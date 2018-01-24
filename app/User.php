@@ -13,6 +13,10 @@ class User extends Authenticatable
     public function getProfilePicture(){
         return "/images/profilePictures/" . $this->profile_picture;
     }
+
+    public function getName(){
+        return $this->firstname . " " . $this->lastname;
+    }
     /**
      * The attributes that are mass assignable.
      *

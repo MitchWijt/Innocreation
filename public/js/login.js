@@ -1,11 +1,11 @@
-$("#toRegister").on("click",function () {
+$(".toRegister").on("click",function () {
     $("#titleLogin").text("Register");
-    $(".loginForm").fadeOut();
+    $(".loginForm").hide();
     $(".registerForm").removeClass("hidden");
 });
 
-$("#toLogin").on("click",function () {
+$(".toLogin").on("click",function () {
     $("#titleLogin").text("Login");
-    $(".registerForm").fadeOut();
-    $(".loginForm").removeClass("hidden")
+    $(".registerForm").addClass("hidden");
+    $(".loginForm").show();
 });

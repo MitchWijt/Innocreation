@@ -137,3 +137,6 @@
     </div>
 </div>
 @endsection
+@section('pagescript')
+    <script src="/js/favoriteExpertisesUser.js"></script>
+@endsection

@@ -445,3 +445,15 @@ footer{
     font-size: 25px;
     color: #000000;
 }
+
+/*====================================CHAT===========================*/
+
+.userChatSearchBar{
+    min-height: 70vh !important;
+    max-height: 70vh !important;
+}
+
+.chatImage{
+    width: 65px;
+    height: 65px;
+}

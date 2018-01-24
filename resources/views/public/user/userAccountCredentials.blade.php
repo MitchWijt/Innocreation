@@ -119,3 +119,6 @@
     </div>
 </div>
 @endsection
+@section('pagescript')
+    <script src="/js/userAccountCredentials.js"></script>
+@endsection

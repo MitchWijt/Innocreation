@@ -44,3 +44,6 @@
         </div>
     </div>
 @endsection
+@section('pagescript')
+    <script src="/js/userAccountExpertises.js"></script>
+@endsection

@@ -138,6 +138,12 @@
     justify-content: space-around !important
 }
 
+.o-scroll{
+    overflow: scroll;
+}
+.o-hidden{
+    overflow: hidden;
+}
 
 hr{
  border-top: 1px solid #FF6100 !important;
@@ -148,6 +154,11 @@ hr{
 .c-pointer{
     cursor: pointer;
 }
+
+.w-1200{
+    width: 110px !important;
+}
+
 /*=============================FONTS======================*/
 .f-12{
     font-size: 12px !important;

@@ -111,3 +111,6 @@
     })
 </script>
 @endsection
+@section('pagescript')
+    <script src="/js/home.js"></script>
+@endsection

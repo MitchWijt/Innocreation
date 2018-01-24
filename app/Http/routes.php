@@ -55,6 +55,14 @@ Route::post("/my-account/editUserPortfolio", "UserController@editUserPortfolio")
 
 Route::post("/deleteUserPortfolio", "UserController@deleteUserPortfolio");
 
+Route::get("/my-account/chats", "UserController@userAccountChats");
+
+Route::post("/searchChatUsers", "UserController@searchChatUsers");
+
+Route::post("/selectChatUser", "UserController@selectChatUser");
+
+Route::post("/sendMessageUser", "UserController@sendMessageUserAction");
+
 Route::post("/createTeam","UserController@createNewTeam");
 
 //==============================TEAM=====================================

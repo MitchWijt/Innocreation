@@ -12,3 +12,4 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
 }
+    date_default_timezone_set("Europe/Amsterdam");

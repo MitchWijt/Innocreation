@@ -152,3 +152,6 @@
         </div>
     </div>
 @endsection
+@section('pagescript')
+    <script src="/js/userAccountPortfolio.js"></script>
+@endsection

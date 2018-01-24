@@ -7,6 +7,7 @@ use App\expertises_linktable;
 use App\Favorite_expertises_linktable;
 use App\Team;
 use App\User;
+use App\UserMessage;
 use App\UserPortfolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -253,5 +254,56 @@ class UserController extends Controller
         $userPortfolio = UserPortfolio::select("*")->where("id", $portfolio_id)->first();
         $userPortfolio->delete();
         return 1;
+    }
+
+    public function userAccountChats(){
+        $user_id = Session::get("user_id");
+        $userMessages = UserMessage::select("*")->where("sender_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->with("Users")->get();
+        if(count($userMessages) != 0) {
+            return view("/public/user/userAccountChats", compact( "userMessages", "user_id"));
+        }
+            return view("/public/user/userAccountChats", compact("user_id"));
+    }
+
+    public function searchChatUsers(Request $request){
+        $user_id = Session::get("user_id");
+        $searchInput = $request->input("searchChatUsers");
+        $users = User::select("*")->get();
+        $idArray = [];
+        foreach($users as $user){
+            if(strpos($user->getName(), ucfirst($searchInput)) !== false){
+                array_push($idArray, $user->id);
+            }
+        }
+        $userMessages = UserMessage::select("*")->where("sender_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->with("Users")->get();
+        $searchedUsers = User::select("*")->whereIn("id", $idArray)->get();
+            return view("/public/user/userAccountChats", compact("searchedUsers", "user_id","userMessages"));
+    }
+
+    public function selectChatUser(Request $request){
+        $receiver_user_id = $request->input("receiver_user_id");
+        $sender_user_id = $request->input("sender_user_id");
+        $userMessage = new UserMessage();
+        $userMessage->sender_user_id = $sender_user_id;
+        $userMessage->receiver_user_id = $receiver_user_id;
+        $userMessage->created_at = date("Y-m-d H:i:s");
+        $userMessage->save();
+        return redirect("/my-account/chats");
+    }
+
+    public function sendMessageUserAction(Request $request){
+        $timeNow = date("H:i:s");
+        $time = (date("g:i a", strtotime($timeNow)));
+        $receiver_user_id = $request->input("receiver_user_id");
+        $sender_user_id = $request->input("sender_user_id");
+        $userMessage = new UserMessage();
+        $userMessage->sender_user_id = $sender_user_id;
+        $userMessage->receiver_user_id = $receiver_user_id;
+        $userMessage->time_sent = $time;
+        $userMessage->message = $request->input("message");
+        $userMessage->created_at = date("Y-m-d H:i:s");
+        $userMessage->save();
+        return redirect("/my-account/chats");
+
     }
 }

@@ -31,6 +31,7 @@
 @include('includes.header')
 @include('includes/flash')
 @yield('content')
+@yield('pagescript')
 @include('includes/footer')
 </body>
 </html>
