@@ -296,13 +296,20 @@ class UserController extends Controller
         $time = (date("g:i a", strtotime($timeNow)));
         $receiver_user_id = $request->input("receiver_user_id");
         $sender_user_id = $request->input("sender_user_id");
-        $userMessage = new UserMessage();
-        $userMessage->sender_user_id = $sender_user_id;
-        $userMessage->receiver_user_id = $receiver_user_id;
-        $userMessage->time_sent = $time;
-        $userMessage->message = $request->input("message");
-        $userMessage->created_at = date("Y-m-d H:i:s");
-        $userMessage->save();
+        $userMessages = UserMessage::select("*")->where("receiver_user_id", $receiver_user_id)->where("sender_user_id", $sender_user_id)->orWhere("receiver_user_id", $sender_user_id)->orWhere("sender_user_id", $receiver_user_id)->get();
+        if(count($userMessages) > 0) {
+            $userMessage = new UserMessage();
+            $userMessage->sender_user_id = $sender_user_id;
+            $userMessage->receiver_user_id = $receiver_user_id;
+            $userMessage->time_sent = $time;
+            $userMessage->message = $request->input("message");
+            $userMessage->created_at = date("Y-m-d H:i:s");
+            $userMessage->save();
+        } else {
+            $userMessages->message = $request->input("message");
+            $userMessages->time_sent = $time;
+            $userMessages->save();
+        }
         return redirect("/my-account/chats");
 
     }
