@@ -457,3 +457,8 @@ footer{
     width: 65px;
     height: 65px;
 }
+
+.messageSent{
+    background: #003366;
+    border-radius: 10px;
+}
