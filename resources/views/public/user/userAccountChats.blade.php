@@ -10,6 +10,7 @@
             <div class="d-flex js-around">
                 <div class="d-flex fd-column">
                     <form action="/searchChatUsers" class="searchChatUsersForm" method="post">
+                        <input type="hidden" class="url_content" name="url_content" value="<? if(isset($urlParameter)) echo $urlParameter?>">
                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                         <input type="text" placeholder="Search users..." class="searchChatUsers input m-t-20" name="searchChatUsers">
                     </form>
@@ -41,10 +42,11 @@
                                 <? if(!in_array($userMessage->receiver_user_id, $recentChats)) { ?>
                                 <? array_push($recentChats, $userMessage->receiver_user_id)?>
                                     <div class="row d-flex js-center">
-                                        <div class="card text-center">
-                                            <div class="card-block chat-card d-flex js-around" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userMessage->receiver_user_id?>">
+                                        <div class="card text-center" style="height: 90px;">
+                                            <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userMessage->receiver_user_id?>">
                                                 <img class="circle chatImage m-0" src="<?=$userMessage->users->First()->getProfilePicture()?>" alt="">
-                                                <p class="f-z-rem m-b-5 p-0"><?=$userMessage->users->First()->firstname?></p>
+                                                <p class="f-22 m-t-15 m-b-5 p-0"><?=$userMessage->users->First()->firstname?></p>
+                                                <p class="f-20 m-t-15"><?if($userMessage->users->First()->team_id != null) echo $userMessage->users->First()->team->First()->team_name?></p>
                                             </div>
                                         </div>
                                     </div>

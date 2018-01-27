@@ -256,11 +256,14 @@ class UserController extends Controller
         return 1;
     }
 
-    public function userAccountChats(){
+    public function userAccountChats(Request $request){
         $user_id = Session::get("user_id");
+        if(request()->has('user_id')){
+            $urlParameter = request()->user_id;
+        }
         $userMessages = UserMessage::select("*")->where("sender_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->with("Users")->get();
         if(count($userMessages) != 0) {
-            return view("/public/user/userAccountChats", compact( "userMessages", "user_id"));
+            return view("/public/user/userAccountChats", compact( "userMessages", "user_id", "urlParameter"));
         }
             return view("/public/user/userAccountChats", compact("user_id"));
     }
@@ -310,7 +313,7 @@ class UserController extends Controller
             $userMessages->time_sent = $time;
             $userMessages->save();
         }
-        return redirect("/my-account/chats");
+        return redirect("/my-account/chats?user_id=$receiver_user_id");
 
     }
 }

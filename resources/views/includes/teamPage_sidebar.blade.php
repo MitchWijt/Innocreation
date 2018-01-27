@@ -20,4 +20,8 @@
         <a class="regular-link c-gray" href="">Payments</a>
     </div>
     <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="">Join requests</a>
+    </div>
+    <hr>
 </div>

@@ -28,3 +28,12 @@ $(".chat-card").on("click",function () {
        }
    });
 });
+
+$(document).ready(function () {
+    var user_id = $(".url_content").val();
+    $(".collapse").each(function () {
+        if($(this).data("user-id") == user_id){
+            $(this).addClass("show");
+        }
+    });
+});
