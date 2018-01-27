@@ -286,9 +286,16 @@ class UserController extends Controller
     public function selectChatUser(Request $request){
         $receiver_user_id = $request->input("receiver_user_id");
         $sender_user_id = $request->input("sender_user_id");
+
         $userMessage = new UserMessage();
         $userMessage->sender_user_id = $sender_user_id;
         $userMessage->receiver_user_id = $receiver_user_id;
+        $userMessage->created_at = date("Y-m-d H:i:s");
+        $userMessage->save();
+
+        $userMessage = new UserMessage();
+        $userMessage->sender_user_id = $receiver_user_id;
+        $userMessage->receiver_user_id = $sender_user_id;
         $userMessage->created_at = date("Y-m-d H:i:s");
         $userMessage->save();
         return redirect("/my-account/chats");

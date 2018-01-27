@@ -74,7 +74,7 @@
                                                                     <p class=""><?=$message->message?></p>
                                                                 </div>
                                                                 <div class="col-sm-4">
-                                                                    <span class=""><?=$message->time_sent?></span>
+                                                                    <span class="f-12"><?=$message->time_sent?></span>
                                                                 </div>
                                                             </div>
                                                         <? } ?>
