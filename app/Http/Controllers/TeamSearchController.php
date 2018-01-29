@@ -16,7 +16,7 @@ class TeamSearchController extends Controller
      */
     public function index()
     {
-        $topTeams = Team::select("*")->limit(3)->get();
+        $topTeams = Team::select("*")->orderBy("support","DESC")->limit(3)->get();
         return view("/public/home/teamSearch",compact("topTeams"));
     }
 
@@ -25,9 +25,24 @@ class TeamSearchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function searchTeamsAction(Request $request)
     {
-        //
+        $topTeams = Team::select("*")->orderBy("support","DESC")->limit(3)->get();
+
+        $searchedTeam = $request->input("searchTeams");
+        if($searchedTeam != "") {
+            $teamIdArray = [];
+            $teams = Team::select("*")->get();
+            foreach ($teams as $team) {
+                if (strpos($team, ucfirst($searchedTeam)) !== false) {
+                    array_push($teamIdArray, $team->id);
+                }
+            }
+            $searchedTeams = Team::select("*")->whereIn("id", $teamIdArray)->get();
+            return view("/public/home/teamSearch", compact("searchedTeams", "topTeams"));
+        } else {
+            return redirect("/teams");
+        }
     }
 
     /**

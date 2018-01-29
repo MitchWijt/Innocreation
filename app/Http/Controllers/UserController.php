@@ -129,7 +129,7 @@ class UserController extends Controller
             return view("/public/user/teamBenefits", compact("error", "user"));
         } else {
             $team = new Team;
-            $team->team_name = $team_name;
+            $team->team_name = ucfirst($team_name);
             $team->ceo_user_id = $user_id;
             $team->created_at = date("Y-m-d H:i:s");
             $team->save();

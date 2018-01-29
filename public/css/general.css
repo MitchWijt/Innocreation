@@ -111,6 +111,9 @@
     color: #FF0000 !important
 }
 /*=================================PLACEMENT+STYLE===========================*/
+.v-center{
+    margin-top: 300px;
+}
 .vh85{
     min-height: 85vh !important;
 }
@@ -176,7 +179,7 @@ hr{
     width: 110px !important;
 }
 p{
-    margin-bottom: 0 !important;
+    /*margin-bottom: 0 !important;*/
 }
 /*=============================FONTS======================*/
 .f-12{

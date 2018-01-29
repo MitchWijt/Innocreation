@@ -68,6 +68,8 @@ Route::post("/createTeam","UserController@createNewTeam");
 
 Route::get("/teams", "TeamSearchController@index");
 
+Route::post("/team/searchTeams", "TeamSearchController@searchTeamsAction");
+
 //==============================TEAM===================================
 
 Route::get("/my-team", "TeamController@index");

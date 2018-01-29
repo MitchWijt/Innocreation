@@ -113,6 +113,12 @@ footer{
     border-radius: 10px !important;
     background: #C9CCCF !important;
 }
+.input-fat{
+    border: 1px solid #000000 !important;
+    border-radius: 10px !important;
+    background: #C9CCCF !important;
+    height: 50px;
+}
 
 .tokenfield{
     border: 1px solid #000000 !important;

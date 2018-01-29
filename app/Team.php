@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use DateTime;
 
 class Team extends Model
 {
@@ -16,9 +17,9 @@ class Team extends Model
     }
 
     public function calculateAge(){
-        $today = date("Y-m-d");
-        $date = date("Y-m-d",strtotime($this->created_at));
-        $age = strtotime($date) - strtotime($today);
-        return date("m-d", strtotime($age));
+        $today = new DateTime(date("Y-m-d"));
+        $date = new DateTime(date("Y-m-d",strtotime($this->created_at)));
+        $interval = $date->diff($today);
+        return $interval->format('%m months, %d days');
     }
 }
