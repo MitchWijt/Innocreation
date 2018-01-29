@@ -64,8 +64,11 @@ Route::post("/selectChatUser", "UserController@selectChatUser");
 Route::post("/sendMessageUser", "UserController@sendMessageUserAction");
 
 Route::post("/createTeam","UserController@createNewTeam");
+//==============================SEARCHTEAMSPAGE========================
 
-//==============================TEAM=====================================
+Route::get("/teams", "TeamSearchController@index");
+
+//==============================TEAM===================================
 
 Route::get("/my-team", "TeamController@index");
 

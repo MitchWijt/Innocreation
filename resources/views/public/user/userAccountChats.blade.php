@@ -24,7 +24,7 @@
                                     <div class="userCircle">
                                         <div class="d-flex fd-column  m-t-20">
                                             <div class="text-center">
-                                                <img class="circle chatImage m-0 text-center" src="<?= $searchedUser->getProfilePicture()?>" alt="">
+                                                <img class="circle circleImage m-0 text-center" src="<?= $searchedUser->getProfilePicture()?>" alt="">
                                                 <p class="text-center "><?= $searchedUser->getName()?></p>
                                             </div>
                                         </div>
@@ -44,7 +44,7 @@
                                     <div class="row d-flex js-center">
                                         <div class="card text-center" style="height: 90px;">
                                             <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userMessage->receiver_user_id?>">
-                                                <img class="circle chatImage m-0" src="<?=$userMessage->users->First()->getProfilePicture()?>" alt="">
+                                                <img class="circle circleImage m-0" src="<?=$userMessage->users->First()->getProfilePicture()?>" alt="">
                                                 <p class="f-22 m-t-15 m-b-5 p-0"><?=$userMessage->users->First()->firstname?></p>
                                                 <p class="f-20 m-t-15"><?if($userMessage->users->First()->team_id != null) echo $userMessage->users->First()->team->First()->team_name?></p>
                                             </div>

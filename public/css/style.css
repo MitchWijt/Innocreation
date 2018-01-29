@@ -135,6 +135,12 @@ footer{
     border-radius: 10px;
 }
 /*=========================================CARD/PANEL===================================*/
+.card-sm{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    width: 35vh !important;
+    border: 1px solid #FF6100 !important;
+}
 .card{
     background: #000000 !important;
     color: #C9CCCF !important;
@@ -453,7 +459,7 @@ footer{
     max-height: 70vh !important;
 }
 
-.chatImage{
+.circleImage{
     width: 65px;
     height: 65px;
 }

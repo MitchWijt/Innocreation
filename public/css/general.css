@@ -37,6 +37,9 @@
 .m-b-20{
     margin-bottom: 20px !important;
 }
+.m-r-0{
+    margin-right: 0 !important;
+}
 .m-r-10{
     margin-right: 10px !important;
 }
@@ -109,15 +112,15 @@
 }
 /*=================================PLACEMENT+STYLE===========================*/
 .vh85{
-    height: 85vh !important;
+    min-height: 85vh !important;
 }
 
 .vh80{
-    height: 80vh !important;
+    min-height: 80vh !important;
 }
 
 .vh100{
-    height: 100vh !important;
+    min-height: 100vh !important;
 }
 .h-100{
     height: 100% !important;
@@ -172,7 +175,9 @@ hr{
 .w-1200{
     width: 110px !important;
 }
-
+p{
+    margin-bottom: 0 !important;
+}
 /*=============================FONTS======================*/
 .f-12{
     font-size: 12px !important;

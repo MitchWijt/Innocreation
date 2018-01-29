@@ -29,7 +29,9 @@
                 <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
                     <a class="regular-link c-gray m-b-5" href="/account">My account</a>
                 <? } ?>
-                <a class="regular-link" href=""><p id="teamLink" class="m-b-0">My team</p></a>
+                <? if(\Illuminate\Support\Facades\Session::has("team_id")) { ?>
+                    <a class="regular-link" href="/my-team"><p id="teamLink" class="m-b-0">My team</p></a>
+                <? } ?>
             </div>
             <div class="login">
                 <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
@@ -42,8 +44,8 @@
     </div>
     <div class="lower-header">
         <ul class="main-navMenu">
-            <li><a href="">Home</a></li>
-            <li><a href="">Teams</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/teams">Teams</a></li>
             <li><a href="">Roles</a></li>
             <li><a href="">About us</a></li>
             <li><a href="">Shop</a></li>
