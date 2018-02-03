@@ -9,18 +9,19 @@ use Session;
 
 use App\Http\Requests;
 
-class TeamSearchController extends Controller
+class PageController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function singleTeamPageIndex(Request $request, $team_name)
     {
-        $user = User::select("*")->where("id", Session::get("user_id"))->first(); // gets the user who is logged in at the moment
-        $topTeams = Team::select("*")->orderBy("support","DESC")->limit(3)->get(); // gets the top 3 teams ordered by Support points descending
-        return view("/public/home/teamSearch",compact("topTeams", "user"));
+        // gets the team from the url team_name
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("team_name", $team_name)->first();
+        return view("/public/pages/singleTeamPage", compact("team","user"));
     }
 
     /**
@@ -28,24 +29,9 @@ class TeamSearchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function searchTeamsAction(Request $request)
+    public function create()
     {
-        $topTeams = Team::select("*")->orderBy("support","DESC")->limit(3)->get();
-        $user = User::select("*")->where("id", Session::get("user_id"))->first();
-        $searchedTeam = $request->input("searchTeams");
-        if($searchedTeam != "") { // checks if the search input is empty
-            $teamIdArray = [];
-            $teams = Team::select("*")->get();
-            foreach ($teams as $team) {
-                if (strpos($team, ucfirst($searchedTeam)) !== false) { //gets all the teams which the user searched on
-                    array_push($teamIdArray, $team->id);
-                }
-            }
-            $searchedTeams = Team::select("*")->whereIn("id", $teamIdArray)->get(); // all the teams where users searched on
-            return view("/public/home/teamSearch", compact("searchedTeams", "topTeams", "user"));
-        } else {
-            return redirect("/teams");
-        }
+        //
     }
 
     /**

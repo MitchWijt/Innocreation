@@ -17,6 +17,16 @@ class User extends Authenticatable
     public function getName(){
         return $this->firstname . " " . $this->lastname;
     }
+
+    public function getExpertises(){
+        $expertiseArray = [];
+        $expertiseLinktable = expertises_linktable::select("*")->where("user_id", $this->id)->with("Expertises")->get();
+        foreach($expertiseLinktable as $expertise){
+            array_push($expertiseArray, $expertise->expertise_id);
+        }
+        $expertises = Expertises::select("*")->whereIn("id", $expertiseArray)->get();
+        return $expertises;
+    }
     /**
      * The attributes that are mass assignable.
      *

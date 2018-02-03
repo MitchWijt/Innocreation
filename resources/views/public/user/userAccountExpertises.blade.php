@@ -31,7 +31,7 @@
 
                 <div class="row m-t-10 d-flex js-center">
                     <div data-id="<?= $userExpertises->expertises->first()->id?>" class="expertise-description">
-                        <p style="width: 60vh;" class="desc"><?=$userExpertises->description?></p>
+                        <p style="width: 640px;" class="desc"><?=$userExpertises->description?></p>
                     </div>
                 </div>
                 <div class="row">

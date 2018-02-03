@@ -269,6 +269,8 @@ class UserController extends Controller
     }
 
     public function searchChatUsers(Request $request){
+        // gets all the users where user searched on to chat with
+
         $user_id = Session::get("user_id");
         $searchInput = $request->input("searchChatUsers");
         $users = User::select("*")->get();
@@ -284,6 +286,8 @@ class UserController extends Controller
     }
 
     public function selectChatUser(Request $request){
+        // selects the user. The user wants to chat with and adds it to the database
+
         $receiver_user_id = $request->input("receiver_user_id");
         $sender_user_id = $request->input("sender_user_id");
 
@@ -302,6 +306,9 @@ class UserController extends Controller
     }
 
     public function sendMessageUserAction(Request $request){
+        // sends a message to the user. The user selected. with the sended time and return to the page with id.
+        // so the collapse stays open from the user you are chatting with
+
         $timeNow = date("H:i:s");
         $time = (date("g:i a", strtotime($timeNow)));
         $receiver_user_id = $request->input("receiver_user_id");
