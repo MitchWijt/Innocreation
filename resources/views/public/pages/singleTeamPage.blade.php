@@ -8,7 +8,7 @@
             <hr class="m-b-20">
             <div class="row">
                 <div class="col-sm-12 text-center">
-                    <img class="circle m-r-0" src="<?=$team->getProfilePicture()?>" alt="<?=$team->team_name?>">
+                    <img class="circle circleImgLg m-r-0" src="<?=$team->getProfilePicture()?>" alt="<?=$team->team_name?>">
                 </div>
             </div>
             <div class="row">
@@ -66,20 +66,51 @@
                                         <h3>Needed expertises</h3>
                                     </div>
                                 </div>
-                                <div class="d-flex fd-column">
+                                <div class="d-flex fd-column singleTeamNeededExpertises">
                                     <? foreach($team->getNeededExpertises() as $neededExpertise) { ?>
                                         <div class="col-sm-12 m-b-20 d-flex">
                                            <div class="col-sm-9">
-                                               <p><?= $neededExpertise->title?></p>
+                                               <p><?= $neededExpertise->Expertises->First()->title?></p>
                                            </div>
                                             <? if($user) { ?>
                                                 <? if($user->team_id == null) { ?>
                                                     <div class="col-sm-3">
-                                                        <button class="btn btn-inno">Apply for expertise</button>
+                                                        <button class="btn btn-inno openApplyModal" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
                                                     </div>
                                                 <? } ?>
                                             <? } ?>
                                         </div>
+                                        <? if($user) { ?>
+                                            <div class="modal applyForExpertise fade" data-expertise-id="<?=$neededExpertise->expertise_id?>" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header d-flex js-center">
+                                                            <h4 class="text-center c-black" id="modalLabel"><?=$neededExpertise->Expertises->First()->title?></h4>
+                                                        </div>
+                                                        <div class="modal-body ">
+                                                            <div class="c-black">
+                                                                <p><?= $neededExpertise->description?></p>
+                                                            </div>
+                                                            <div class="c-black">
+                                                                <h2 class="m-b-20">Requirements:</h2>
+                                                                <?=$neededExpertise->requirements?>
+                                                            </div>
+                                                            <form action="" method="post">
+                                                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                                <input type="hidden" name="expertise_id" value="<?=$neededExpertise->expertise_id?>">
+                                                                <input type="hidden" name="user_id" value="<?=$user->id?>">
+                                                                <input type="hidden" name="team_id" value="<?=$team->id?>">
+                                                                <div class="row">
+                                                                    <div class="col-sm-12 text-center">
+                                                                        <button class="btn btn-inno text-center">Apply here</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <? } ?>
                                     <? } ?>
                                 </div>
                             </div>

@@ -74,5 +74,10 @@ Route::post("/team/searchTeams", "TeamSearchController@searchTeamsAction");
 Route::get("/team/{team_name}", "PageController@singleTeamPageIndex");
 //==============================TEAM===================================
 
-Route::get("/my-team", "TeamController@index");
+Route::get("/my-team", "TeamController@teamPageCredentials");
+
+Route::post("/my-team/saveTeamProfilePicture", "TeamController@saveTeamProfilePictureAction");
+
+Route::post("/my-team/saveTeamPage", "TeamController@saveTeamPageAction");
+
 

@@ -11,7 +11,7 @@ class User extends Authenticatable
     }
 
     public function getProfilePicture(){
-        return "/images/profilePictures/" . $this->profile_picture;
+        return "/images/profilePicturesUsers/" . $this->profile_picture;
     }
 
     public function getName(){

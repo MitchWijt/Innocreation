@@ -8,3 +8,13 @@ $(".favoriteIconLiked").on("mouseleave",function () {
    $(".favoriteIcon").removeClass("hidden");
 
 });
+
+$(".openApplyModal").on("click",function () {
+    var expertise_id = $(this).data("expertise-id");
+
+    $(".applyForExpertise").each(function () {
+       if($(this).data("expertise-id") == expertise_id){
+           $(this).modal().toggle();
+       }
+    });
+});

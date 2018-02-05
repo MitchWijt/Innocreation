@@ -122,6 +122,10 @@
 .c-red{
     color: #FF0000 !important
 }
+
+.c-black{
+ color: #000000;
+}
 /*=================================PLACEMENT+STYLE===========================*/
 .v-center{
     margin-top: 300px;

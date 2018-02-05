@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Team;
+use App\User;
 use Illuminate\Http\Request;
 use Session;
 use App\Http\Requests;
@@ -14,11 +15,11 @@ class TeamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function teamPageCredentials()
     {
-        $team_id = Session::get("team_id");
-        $team = Team::select("*")->where("id", $team_id);
-        return view("/public/team/teamPage", compact("team"));
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+        return view("/public/team/teamPageCredentials", compact("team"));
     }
 
     /**
@@ -26,9 +27,20 @@ class TeamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function saveTeamProfilePictureAction(Request $request)
     {
-        //
+        $team_id = $request->input("team_id");
+
+
+        $file = $request->file("profile_picture");
+        $destinationPath = public_path().'/images/profilePicturesTeams';
+        $fullname = $file->getClientOriginalName();
+
+        $team = Team::select("*")->where("id", $team_id)->first();
+        $team->team_profile_picture = $fullname;
+        $team->save();
+        $file->move($destinationPath, $fullname);
+        return redirect($_SERVER["HTTP_REFERER"]);
     }
 
     /**
@@ -37,9 +49,20 @@ class TeamController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function saveTeamPageAction(Request $request)
     {
-        //
+        $team_id = $request->input("team_id");
+
+        $introduction = $request->input("introduction_team");
+        $motivation = $request->input("motivation_team");
+
+        $team = Team::select("*")->where("id", $team_id)->first();
+        $team->team_introduction = $introduction;
+        $team->team_motivation = $motivation;
+        $team->updated_at = date("Y-m-d H:i:s");
+        $team->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
+
     }
 
     /**

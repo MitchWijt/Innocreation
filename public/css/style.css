@@ -469,7 +469,10 @@ footer{
     width: 65px;
     height: 65px;
 }
-
+.circleImgLg{
+    width: 250px;
+    height: 250px;
+}
 .messageSent{
     background: #003366;
     border-radius: 10px;

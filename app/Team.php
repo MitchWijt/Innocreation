@@ -8,7 +8,7 @@ use DateTime;
 class Team extends Model
 {
     public function getProfilePicture(){
-        return "/images/profilePictures/" . $this->team_profile_picture;
+        return "/images/profilePicturesTeams/" . $this->team_profile_picture;
     }
 
     public function getMembers(){
@@ -27,12 +27,13 @@ class Team extends Model
 
     public function getNeededExpertises(){
         // gets the expertise the current team still needs
-        $neededExpertiseArray = [];
+
+//        $neededExpertiseArray = [];
         $neededExpertises  = NeededExpertiseLinktable::select("*")->where("team_id", $this->id)->with("Expertises")->with("Teams")->get();
-        foreach($neededExpertises as $neededExpertise){
-            array_push($neededExpertiseArray, $neededExpertise->expertise_id);
-        }
-        $expertises = Expertises::select("*")->whereIn("id", $neededExpertiseArray)->get();
-        return $expertises;
+//        foreach($neededExpertises as $neededExpertise){
+//            array_push($neededExpertiseArray, $neededExpertise->expertise_id);
+//        }
+//        $expertises = Expertises::select("*")->whereIn("id", $neededExpertiseArray)->get();
+        return $neededExpertises;
     }
 }

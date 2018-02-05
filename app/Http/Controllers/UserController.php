@@ -184,7 +184,7 @@ class UserController extends Controller
     public function saveUserProfilePictureAction(Request $request){
         $user_id = $request->input("user_id");
         $file = $request->file("profile_picture");
-        $destinationPath = public_path().'/images/profilePictures';
+        $destinationPath = public_path().'/images/profilePicturesUsers';
         $fullname = $file->getClientOriginalName();
 
         $user = User::select("*")->where("id", $user_id)->first();
