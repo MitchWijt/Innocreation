@@ -80,4 +80,8 @@ Route::post("/my-team/saveTeamProfilePicture", "TeamController@saveTeamProfilePi
 
 Route::post("/my-team/saveTeamPage", "TeamController@saveTeamPageAction");
 
+Route::get("/my-team/neededExpertises", "TeamController@neededExpertisesAction");
+
+Route::post("/my-team/addNeededExpertise", "TeamController@addNeededExpertiseAction");
+
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Expertises;
+use App\NeededExpertiseLinktable;
 use App\Team;
 use App\User;
 use Illuminate\Http\Request;
@@ -71,9 +73,12 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function neededExpertisesAction()
     {
-        //
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+        $expertises = Expertises::select("*")->get();
+        return view("/public/team/neededExpertisesTeam", compact("team","expertises"));
     }
 
     /**
@@ -82,9 +87,16 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function addNeededExpertiseAction(Request $request)
     {
-        //
+        $team_id = $request->input("team_id");
+        $expertise_id = $request->input("expertises");
+
+        $neededExpertise = new NeededExpertiseLinktable();
+        $neededExpertise->team_id = $team_id;
+        $neededExpertise->expertise_id = $expertise_id;
+        $neededExpertise->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
     }
 
     /**

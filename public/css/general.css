@@ -65,13 +65,21 @@
 .m-r-200{
     margin-right: 200px !important;
 }
-
+.m-t-5{
+    margin-top: 5px !important;
+}
+.m-t-8{
+    margin-top: 8px !important;
+}
 .m-t-15{
     margin-top: 15px !important;
 }
 
 .m-t-20{
     margin-top: 20px !important;
+}
+.m-t-25{
+    margin-top: 25px !important;
 }
 
 .m-t-30{
@@ -103,6 +111,9 @@
 
 .p-t-5{
     padding-top: 5px !important;
+}
+.p-l-0{
+    padding-left: 0 !important;
 }
 .p-r-0{
     padding-right: 0 !important;

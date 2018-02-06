@@ -5,7 +5,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">My Team</a>
+        <a class="regular-link c-gray" href="/my-team">My Team</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
@@ -25,7 +25,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">My needed expertises</a>
+        <a class="regular-link c-gray" href="/my-team/neededExpertises">My needed expertises</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
