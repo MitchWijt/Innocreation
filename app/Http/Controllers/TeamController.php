@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Expertises;
+use App\JoinRequestLinktable;
 use App\NeededExpertiseLinktable;
 use App\Team;
 use App\User;
@@ -91,12 +92,17 @@ class TeamController extends Controller
     {
         $team_id = $request->input("team_id");
         $expertise_id = $request->input("expertises");
-
-        $neededExpertise = new NeededExpertiseLinktable();
-        $neededExpertise->team_id = $team_id;
-        $neededExpertise->expertise_id = $expertise_id;
-        $neededExpertise->save();
-        return redirect($_SERVER["HTTP_REFERER"]);
+        $expertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
+        if(count($expertise) == 0) {
+            $neededExpertise = new NeededExpertiseLinktable();
+            $neededExpertise->team_id = $team_id;
+            $neededExpertise->expertise_id = $expertise_id;
+            $neededExpertise->save();
+            return redirect($_SERVER["HTTP_REFERER"]);
+        } else {
+            $error = "Already added this expertise. Please choose a new one";
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors("Already added this expertise. Please choose a new one");
+        }
     }
 
     /**
@@ -106,9 +112,28 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function saveNeededExpertiseAction(Request $request)
     {
-        //
+        $team_id = $request->input("team_id");
+        $expertise_id = $request->input("expertise_id");
+        $requirements = $request->input("requirements");
+        $description = $request->input("description_needed_expertise");
+        $requirementString = "";
+        foreach($requirements as $requirement){
+            if($requirement != "") {
+                if ($requirementString == "") {
+                    $requirementString = $requirement;
+                } else {
+                    $requirementString = $requirementString . "," . $requirement;
+                }
+            }
+        }
+
+        $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
+        $neededExpertise->requirements = $requirementString;
+        $neededExpertise->description = $description;
+        $neededExpertise->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
     }
 
     /**
@@ -117,8 +142,13 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function deleteNeededExpertiseAction(Request $request)
     {
-        //
+        $team_id = $request->input("team_id");
+        $expertise_id = $request->input("expertise_id");
+
+        $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
+        $neededExpertise->delete();
+        return 1;
     }
 }

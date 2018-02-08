@@ -84,4 +84,8 @@ Route::get("/my-team/neededExpertises", "TeamController@neededExpertisesAction")
 
 Route::post("/my-team/addNeededExpertise", "TeamController@addNeededExpertiseAction");
 
+Route::post("/my-team/saveNeededExpertise", "TeamController@saveNeededExpertiseAction");
+
+Route::post("/my-team/deleteNeededExpertise", "TeamController@deleteNeededExpertiseAction");
+
 

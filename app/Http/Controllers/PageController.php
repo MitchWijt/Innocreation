@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Team;
 use App\User;
+use App\JoinRequestLinktable;
 use Illuminate\Http\Request;
 use Session;
 
@@ -19,9 +20,14 @@ class PageController extends Controller
     public function singleTeamPageIndex(Request $request, $team_name)
     {
         // gets the team from the url team_name
+        $acceptedJoinRequests = JoinRequestLinktable::select("*")->where("accepted", 1)->get();
+        $acceptedExpertises = [];
+        foreach($acceptedJoinRequests as $acceptedJoinRequest){
+            array_push($acceptedExpertises, $acceptedJoinRequest->expertise_id);
+        }
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("team_name", $team_name)->first();
-        return view("/public/pages/singleTeamPage", compact("team","user"));
+        return view("/public/pages/singleTeamPage", compact("team","user", "acceptedExpertises"));
     }
 
     /**

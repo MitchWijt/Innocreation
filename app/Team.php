@@ -27,13 +27,25 @@ class Team extends Model
 
     public function getNeededExpertises(){
         // gets the expertise the current team still needs
-
-//        $neededExpertiseArray = [];
         $neededExpertises  = NeededExpertiseLinktable::select("*")->where("team_id", $this->id)->with("Expertises")->with("Teams")->get();
-//        foreach($neededExpertises as $neededExpertise){
-//            array_push($neededExpertiseArray, $neededExpertise->expertise_id);
-//        }
-//        $expertises = Expertises::select("*")->whereIn("id", $neededExpertiseArray)->get();
         return $neededExpertises;
+    }
+
+    public function getNeededExpertisesWithoutAcception(){
+        // gets the expertise the current team still needs without the accpedted members
+        $expertisesNoAcception = [];
+        $acceptedExpertises = [];
+        $expertises = JoinRequestLinktable::select("*")->where("team_id",$this->id)->where("accepted", 1)->get();
+        foreach($expertises as $expertise){
+            array_push($acceptedExpertises, $expertise->expertise_id);
+        }
+        $neededExpertises  = NeededExpertiseLinktable::select("*")->where("team_id", $this->id)->get();
+        foreach($neededExpertises as $neededExpertise){
+            if(!in_array($neededExpertise->expertise_id, $acceptedExpertises)){
+                array_push($expertisesNoAcception, $neededExpertise->expertise_id);
+            }
+        }
+        $NeededExpertisesNoAcception = NeededExpertiseLinktable::select("*")->where("team_id", $this->id)->whereIn("expertise_id", $expertisesNoAcception)->with("Expertises")->with("Teams")->get();
+        return $NeededExpertisesNoAcception;
     }
 }
