@@ -11,17 +11,30 @@
                     <img class="circle circleImgLg m-r-0" src="<?=$team->getProfilePicture()?>" alt="<?=$team->team_name?>">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12 text-center">
-                    <i style="font-size: 40px" class="favoriteIcon zmdi zmdi-favorite-outline m-t-20"></i>
-                    <i style="font-size: 40px" class="favoriteIconLiked c-orange hidden zmdi zmdi-favorite m-t-20"></i>
+            <? if($user) { ?>
+                <div class="row">
+                    <div class="col-sm-12 text-center favoriteIcons">
+                        <? if(isset($favoriteTeam)) { ?>
+                            <i style="font-size: 40px" class="favoriteIcon hidden zmdi zmdi-favorite-outline m-t-20"></i>
+                            <i style="font-size: 40px" class="favoriteIconLiked c-orange triggerLike hidden zmdi zmdi-favorite m-t-20" data-team-id="<?=$team->id?>"></i>
+                            <i style="font-size: 40px" class="triggerLike favAfterLike c-orange zmdi zmdi-favorite m-t-20 " data-team-id="<?=$team->id?>"></i>
+                        <? } else { ?>
+                            <i style="font-size: 40px" class="favoriteIcon zmdi zmdi-favorite-outline m-t-20"></i>
+                            <i style="font-size: 40px" class="favoriteIconLiked triggerLike c-orange hidden zmdi zmdi-favorite m-t-20" data-team-id="<?=$team->id?>"></i>
+                        <? } ?>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 text-center m-t-20">
-                    <button class="btn btn-inno">Send chat message</button>
+                <div class="row">
+                    <div class="col-sm-12 text-center m-t-20">
+                        <form action="/selectChatUser" method="post">
+                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                            <input type="hidden" name="sender_user_id" value="<?=$user->id?>">
+                            <input type="hidden" name="receiver_user_id" value="<?= $team->ceo_user_id?>">
+                            <button class="btn btn-inno">Send chat message</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            <? } ?>
             <div class="row">
                 <div class="col-sm-12">
                     <div class="d-flex js-center">
@@ -131,6 +144,37 @@
                                             <? } ?>
                                         <? } ?>
                                     <? } ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="d-flex js-center">
+                        <div class="card card-lg m-t-20 m-b-20">
+                            <div class="card-block m-t-10">
+                                <div class="row">
+                                    <div class="col-sm-12 m-l-20">
+                                        <h3>Team information</h3>
+                                    </div>
+                                </div>
+                                <div class="d-flex fd-column">
+                                    <div class="row d-flex js-center">
+                                        <div class="col-sm-11">
+                                            <p class="f-21 m-0">Our motivation</p>
+                                            <hr>
+                                            <p><?=$team->team_motivation?></p>
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex js-center">
+                                        <div class="col-sm-11">
+                                            <p class="f-21 m-0">Our introduction</p>
+                                            <hr>
+                                            <p><?=$team->team_introduction?></p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

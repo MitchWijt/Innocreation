@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Expertises;
 use App\expertises_linktable;
 use App\Favorite_expertises_linktable;
+use App\FavoriteTeamLinktable;
 use App\Team;
 use App\User;
 use App\UserMessage;
@@ -329,5 +330,21 @@ class UserController extends Controller
         }
         return redirect("/my-account/chats?user_id=$receiver_user_id");
 
+    }
+
+    public function favoriteTeamAction(Request $request){
+        $team_id = $request->input("team_id");
+        $user_id = Session::get("user_id");
+        $favoriteExists = FavoriteTeamLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->first();
+        if(count($favoriteExists) == 0) {
+            $favoriteTeam = new FavoriteTeamLinktable();
+            $favoriteTeam->team_id = $team_id;
+            $favoriteTeam->user_id = $user_id;
+            $favoriteTeam->save();
+            return 1;
+        } else {
+            $favoriteExists->delete();
+            return 2;
+        }
     }
 }

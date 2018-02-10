@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\FavoriteTeamLinktable;
 use App\Team;
 use App\User;
 use App\JoinRequestLinktable;
@@ -20,6 +21,7 @@ class PageController extends Controller
     public function singleTeamPageIndex(Request $request, $team_name)
     {
         // gets the team from the url team_name
+
         $acceptedJoinRequests = JoinRequestLinktable::select("*")->where("accepted", 1)->get();
         $acceptedExpertises = [];
         foreach($acceptedJoinRequests as $acceptedJoinRequest){
@@ -27,7 +29,10 @@ class PageController extends Controller
         }
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("team_name", $team_name)->first();
-        return view("/public/pages/singleTeamPage", compact("team","user", "acceptedExpertises"));
+        if($user) {
+            $favoriteTeam = FavoriteTeamLinktable::select("*")->where("team_id", $team->id)->where("user_id", $user->id)->first();
+        }
+        return view("/public/pages/singleTeamPage", compact("team","user", "acceptedExpertises", "favoriteTeam"));
     }
 
     /**

@@ -89,7 +89,7 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-11 m-b-20 m-t-20">
-                                                        <button class="btn btn-inno pull-right">Sent message</button>
+                                                        <button class="btn btn-inno pull-right">Send message</button>
                                                     </div>
                                                 </div>
                                             </form>

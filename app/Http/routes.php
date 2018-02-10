@@ -25,7 +25,7 @@ Route::get("/logout", "LoginController@logout");
 
 //========================USERACCOUNT================================
 
-Route::get("/account", "UserController@userAccount");
+Route::get("/account", "UserController@userAccountCredentials");
 
 Route::post("/my-account/saveUserAccount", "UserController@saveUserAccount");
 
@@ -64,6 +64,8 @@ Route::post("/selectChatUser", "UserController@selectChatUser");
 Route::post("/sendMessageUser", "UserController@sendMessageUserAction");
 
 Route::post("/createTeam","UserController@createNewTeam");
+
+Route::post("/favoriteTeam","UserController@favoriteTeamAction");
 //==============================SEARCHTEAMSPAGE========================
 
 Route::get("/teams", "TeamSearchController@index");
