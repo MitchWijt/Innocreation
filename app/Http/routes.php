@@ -66,6 +66,8 @@ Route::post("/sendMessageUser", "UserController@sendMessageUserAction");
 Route::post("/createTeam","UserController@createNewTeam");
 
 Route::post("/favoriteTeam","UserController@favoriteTeamAction");
+
+Route::post("/applyForTeam","UserController@applyForTeamAction");
 //==============================SEARCHTEAMSPAGE========================
 
 Route::get("/teams", "TeamSearchController@index");

@@ -101,9 +101,15 @@
                                                 <? } ?>
                                                 <? if($user) { ?>
                                                     <? if($user->team_id == null) { ?>
-                                                        <div class="col-sm-3">
-                                                            <button class="btn btn-inno openApplyModal" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
-                                                        </div>
+                                                        <? if($user->checkJoinRequests($neededExpertise->expertise_id, $team->id) == false) { ?>
+                                                            <div class="col-sm-3">
+                                                                <button class="btn btn-inno openApplyModal" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                            </div>
+                                                        <? } else { ?>
+                                                            <div class="col-sm-3">
+                                                                <p class="c-orange">Applied</p>
+                                                            </div>
+                                                        <? } ?>
                                                     <? } ?>
                                                 <? } ?>
                                             </div>
@@ -126,7 +132,7 @@
                                                                     <? } ?>
                                                                     </ul>
                                                                 </div>
-                                                                <form action="" method="post">
+                                                                <form action="/applyForTeam" method="post">
                                                                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                                                     <input type="hidden" name="expertise_id" value="<?=$neededExpertise->expertise_id?>">
                                                                     <input type="hidden" name="user_id" value="<?=$user->id?>">

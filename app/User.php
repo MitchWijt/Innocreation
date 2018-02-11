@@ -27,6 +27,15 @@ class User extends Authenticatable
         $expertises = Expertises::select("*")->whereIn("id", $expertiseArray)->get();
         return $expertises;
     }
+
+    public function checkJoinRequests($expertise_id, $team_id){
+        $bool = false;
+        $joinRequests = JoinRequestLinktable::select("*")->where("expertise_id", $expertise_id)->where("team_id", $team_id)->where("user_id", $this->id)->get();
+        if(count($joinRequests) > 0){
+            $bool = true;
+            return $bool;
+        }
+    }
     /**
      * The attributes that are mass assignable.
      *

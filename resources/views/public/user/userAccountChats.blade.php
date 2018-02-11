@@ -57,6 +57,7 @@
                                                 <input type="hidden" name="receiver_user_id" value="<?=$userMessage->receiver_user_id?>">
                                                 <input type="hidden" name="sender_user_id" value="<?=$user_id?>">
                                                 <div class="col-sm-12 o-scroll" style="max-height: 200px;">
+<!--                                                    --><?//dd($userMessage->getMessages($userMessage->receiver_user_id, $user_id))?>
                                                 <? foreach($userMessage->getMessages($userMessage->receiver_user_id, $user_id) as $message) { ?>
                                                     <? if($message->message != null) { ?>
                                                         <? if($message->sender_user_id == $user_id) { ?>

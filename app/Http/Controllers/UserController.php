@@ -6,6 +6,7 @@ use App\Expertises;
 use App\expertises_linktable;
 use App\Favorite_expertises_linktable;
 use App\FavoriteTeamLinktable;
+use App\JoinRequestLinktable;
 use App\Team;
 use App\User;
 use App\UserMessage;
@@ -346,5 +347,42 @@ class UserController extends Controller
             $favoriteExists->delete();
             return 2;
         }
+    }
+
+    public function applyForTeamAction(Request $request){
+        $team_id = $request->input("team_id");
+        $user_id = $request->input("user_id");
+        $expertise_id = $request->input("expertise_id");
+
+        $team = Team::select("*")->where("id", $team_id)->first();
+
+        $joinRequest = new JoinRequestLinktable();
+        $joinRequest->team_id = $team_id;
+        $joinRequest->user_id = $user_id;
+        $joinRequest->expertise_id = $expertise_id;
+        $joinRequest->accepted = 0;
+        $joinRequest->created_at = date("Y-m-d");
+        $joinRequest->save();
+
+        $ceoFirstname = $joinRequest->teams->First()->users->First()->firstname;
+        $timeNow = date("H:i:s");
+        $time = (date("g:i a", strtotime($timeNow)));
+
+        $message = new UserMessage();
+        $message->sender_user_id = $user_id;
+        $message->receiver_user_id = $team->ceo_user_id;
+        $message->message = "Hey $ceoFirstname I have done a request to join your team!";
+        $message->time_sent = $time;
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+
+        $message = new UserMessage();
+        $message->sender_user_id = $team->ceo_user_id;
+        $message->receiver_user_id = $user_id;
+        $message->message = null;
+        $message->time_sent = null;
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
     }
 }

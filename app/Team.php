@@ -7,6 +7,10 @@ use DateTime;
 
 class Team extends Model
 {
+    public function users(){
+        return $this->hasMany("\App\User", "id","ceo_user_id");
+    }
+
     public function getProfilePicture(){
         return "/images/profilePicturesTeams/" . $this->team_profile_picture;
     }

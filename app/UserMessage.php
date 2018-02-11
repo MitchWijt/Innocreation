@@ -19,8 +19,8 @@ class UserMessage extends Model
     public function getMessages($receiver, $sender){
         $receiver_user_id = $receiver;
         $sender_user_id = $sender;
-        $user = UserMessage::select("*")->where("receiver_user_id", $receiver_user_id)->where("sender_user_id", $sender_user_id)->orWhere("receiver_user_id", $sender_user_id)->orWhere("sender_user_id", $receiver_user_id)->get();
-        return $user;
+        $messages = UserMessage::select("*")->where("receiver_user_id", $receiver_user_id)->where("sender_user_id", $sender_user_id)->orWhere("receiver_user_id", $sender_user_id)->where("sender_user_id", $receiver_user_id)->get();
+        return $messages;
 
     }
 }
