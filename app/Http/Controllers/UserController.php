@@ -354,35 +354,46 @@ class UserController extends Controller
         $user_id = $request->input("user_id");
         $expertise_id = $request->input("expertise_id");
 
-        $team = Team::select("*")->where("id", $team_id)->first();
+        $checkJoinRequests = JoinRequestLinktable::select("*")->where("team_id",$team_id)->where("user_id", $user_id)->where("accepted", 0)->get();
+        if(count($checkJoinRequests) == 0) {
+            $team = Team::select("*")->where("id", $team_id)->first();
 
-        $joinRequest = new JoinRequestLinktable();
-        $joinRequest->team_id = $team_id;
-        $joinRequest->user_id = $user_id;
-        $joinRequest->expertise_id = $expertise_id;
-        $joinRequest->accepted = 0;
-        $joinRequest->created_at = date("Y-m-d");
-        $joinRequest->save();
+            $joinRequest = new JoinRequestLinktable();
+            $joinRequest->team_id = $team_id;
+            $joinRequest->user_id = $user_id;
+            $joinRequest->expertise_id = $expertise_id;
+            $joinRequest->accepted = 0;
+            $joinRequest->created_at = date("Y-m-d");
+            $joinRequest->save();
 
-        $ceoFirstname = $joinRequest->teams->First()->users->First()->firstname;
-        $timeNow = date("H:i:s");
-        $time = (date("g:i a", strtotime($timeNow)));
+            $ceoFirstname = $joinRequest->teams->First()->users->First()->firstname;
+            $timeNow = date("H:i:s");
+            $time = (date("g:i a", strtotime($timeNow)));
 
-        $message = new UserMessage();
-        $message->sender_user_id = $user_id;
-        $message->receiver_user_id = $team->ceo_user_id;
-        $message->message = "Hey $ceoFirstname I have done a request to join your team!";
-        $message->time_sent = $time;
-        $message->created_at = date("Y-m-d H:i:s");
-        $message->save();
+            $message = new UserMessage();
+            $message->sender_user_id = $user_id;
+            $message->receiver_user_id = $team->ceo_user_id;
+            $message->message = "Hey $ceoFirstname I have done a request to join your team!";
+            $message->time_sent = $time;
+            $message->created_at = date("Y-m-d H:i:s");
+            $message->save();
 
-        $message = new UserMessage();
-        $message->sender_user_id = $team->ceo_user_id;
-        $message->receiver_user_id = $user_id;
-        $message->message = null;
-        $message->time_sent = null;
-        $message->created_at = date("Y-m-d H:i:s");
-        $message->save();
-        return redirect($_SERVER["HTTP_REFERER"]);
+            $message = new UserMessage();
+            $message->sender_user_id = $team->ceo_user_id;
+            $message->receiver_user_id = $user_id;
+            $message->message = null;
+            $message->time_sent = null;
+            $message->created_at = date("Y-m-d H:i:s");
+            $message->save();
+            return redirect($_SERVER["HTTP_REFERER"]);
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already applied for this team");
+        }
+    }
+
+    public function userTeamJoinRequestsAction(){
+        $user_id = Session::get("user_id");
+        $teamJoinRequests = JoinRequestLinktable::select("*")->where("user_id", $user_id)->get();
+        return view("/public/user/userTeamJoinRequests", compact("teamJoinRequests"));
     }
 }

@@ -33,7 +33,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Team join requests</a>
+        <a class="regular-link c-gray" href="/my-account/team-join-requests">Join requests</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

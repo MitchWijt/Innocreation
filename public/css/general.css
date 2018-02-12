@@ -100,7 +100,9 @@
 .p-b-20{
     padding-bottom: 20px !important;
 }
-
+.p-b-15{
+    padding-bottom: 15px !important;
+}
 .p-b-10{
     padding-bottom: 10px !important;
 }
@@ -192,6 +194,12 @@
     overflow: hidden;
 }
 
+.p-relative{
+    position: relative;
+}
+.p-absolute{
+    position: absolute;
+}
 hr{
  border-top: 1px solid #FF6100 !important;
     margin-bottom: 5px !important;
@@ -255,6 +263,17 @@ hr{
 
 .f-22{
     font-size: 22px !important;
+}
+.f-23{
+    font-size: 23px !important;
+}
+
+.f-24{
+    font-size: 24px !important;
+}
+
+.f-25{
+    font-size: 25px !important;
 }
 
 .f-z-rem{

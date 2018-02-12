@@ -21,7 +21,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Join requests</a>
+        <a class="regular-link c-gray" href="/my-team/user-join-requests">Team join requests</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

@@ -36,7 +36,7 @@ class Team extends Model
     }
 
     public function getNeededExpertisesWithoutAcception(){
-        // gets the expertise the current team still needs without the accpedted members
+        // gets the expertise the current team still needs without the accepted members
         $expertisesNoAcception = [];
         $acceptedExpertises = [];
         $expertises = JoinRequestLinktable::select("*")->where("team_id",$this->id)->where("accepted", 1)->get();

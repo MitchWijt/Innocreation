@@ -7,6 +7,7 @@ use App\JoinRequestLinktable;
 use App\NeededExpertiseLinktable;
 use App\Team;
 use App\User;
+use App\UserMessage;
 use Illuminate\Http\Request;
 use Session;
 use App\Http\Requests;
@@ -150,5 +151,84 @@ class TeamController extends Controller
         $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
         $neededExpertise->delete();
         return 1;
+    }
+
+    public function teamUserJoinRequestsAction(){
+        $user_id = Session::get("user_id");
+        $team_id = Session::get("team_id");
+        $userJoinRequests = JoinRequestLinktable::select("*")->where("team_id", $team_id)->get();
+        return view("/public/team/teamUserJoinRequests", compact("userJoinRequests", "user_id"));
+    }
+
+    public function rejectUserFromTeamAction(Request $request){
+        $request_id = $request->input("request_id");
+        $request = JoinRequestLinktable::select("*")->where("id", $request_id)->first();
+        $request->accepted = 2;
+        $request->save();
+
+        $userName = $request->users->First()->getName();
+        $timeNow = date("H:i:s");
+        $time = (date("g:i a", strtotime($timeNow)));
+
+        $message = new UserMessage();
+        $message->sender_user_id = $request->teams->first()->ceo_user_id;
+        $message->receiver_user_id = $request->users->first()->id;
+        $message->message = "Hey $userName unfortunately we decided to reject you from our team";
+        $message->time_sent = $time;
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+
+        $message = new UserMessage();
+        $message->sender_user_id = $request->users->first()->id;
+        $message->receiver_user_id = $request->teams->first()->ceo_user_id;
+        $message->message = null;
+        $message->time_sent = null;
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
+
+    }
+
+    public function acceptUserInteamAction(Request $request){
+        $user_id = $request->input("user_id");
+        $request_id = $request->input("request_id");
+        $request = JoinRequestLinktable::select("*")->where("id", $request_id)->first();
+        $request->accepted = 1;
+        $request->save();
+
+
+        $otherRequests = JoinRequestLinktable::select("*")->where("user_id", $user_id)->where("accepted", 0)->get();
+        if(count($otherRequests) > 0) {
+            foreach ($otherRequests as $otherRequest) {
+                $otherRequest->accepted = 2;
+                $otherRequest->save();
+            }
+        }
+
+        $userName = $request->users->First()->getName();
+        $timeNow = date("H:i:s");
+        $time = (date("g:i a", strtotime($timeNow)));
+
+        $user = User::select("*")->where("id", $request->users->First()->id)->first();
+        $user->team_id = $request->team_id;
+        $user->save();
+
+        $message = new UserMessage();
+        $message->sender_user_id = $request->teams->first()->ceo_user_id;
+        $message->receiver_user_id = $request->users->first()->id;
+        $message->message = "Hey $userName we are happy to say, that we accepted you in our team. Welcome!";
+        $message->time_sent = $time;
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+
+        $message = new UserMessage();
+        $message->sender_user_id = $request->users->first()->id;
+        $message->receiver_user_id = $request->teams->first()->ceo_user_id;
+        $message->message = null;
+        $message->time_sent = null;
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
+
     }
 }

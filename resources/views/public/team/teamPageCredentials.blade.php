@@ -15,7 +15,7 @@
                         <div class="row text-center">
                             <div class="col-sm-12">
                                 <input type="file" name="profile_picture" class="hidden uploadFile">
-                                <img style="width: 250px; height: 250px;" class="circle m-0" src="<?=$team->getProfilePicture()?>" alt="Profile picture">
+                                <img style="width: 250px; height: 250px;" class="circle circleImgLg m-0" src="<?=$team->getProfilePicture()?>" alt="Profile picture">
                             </div>
                         </div>
                         <div class="row text-center m-t-20 m-b-20">

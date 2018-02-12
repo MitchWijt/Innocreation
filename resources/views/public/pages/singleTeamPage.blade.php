@@ -5,6 +5,15 @@
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black"><?=$team->team_name?></h1>
             </div>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <? if(count($errors) > 0){ ?>
+                        <? foreach($errors->all() as $error){ ?>
+                            <p class="c-orange"><?=$error?></p>
+                        <? } ?>
+                    <? } ?>
+                </div>
+            </div>
             <hr class="m-b-20">
             <div class="row">
                 <div class="col-sm-12 text-center">

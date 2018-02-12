@@ -68,6 +68,8 @@ Route::post("/createTeam","UserController@createNewTeam");
 Route::post("/favoriteTeam","UserController@favoriteTeamAction");
 
 Route::post("/applyForTeam","UserController@applyForTeamAction");
+
+Route::get("/my-account/team-join-requests","UserController@userTeamJoinRequestsAction");
 //==============================SEARCHTEAMSPAGE========================
 
 Route::get("/teams", "TeamSearchController@index");
@@ -91,5 +93,11 @@ Route::post("/my-team/addNeededExpertise", "TeamController@addNeededExpertiseAct
 Route::post("/my-team/saveNeededExpertise", "TeamController@saveNeededExpertiseAction");
 
 Route::post("/my-team/deleteNeededExpertise", "TeamController@deleteNeededExpertiseAction");
+
+Route::get("/my-team/user-join-requests", "TeamController@teamUserJoinRequestsAction");
+
+Route::post("/my-team/rejectUserFromTeam", "TeamController@rejectUserFromTeamAction");
+
+Route::post("/my-team/acceptUserInteam", "TeamController@acceptUserInteamAction");
 
 
