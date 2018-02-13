@@ -47,6 +47,19 @@ $(".triggerLike").on("click",function () {
     });
 });
 
-function favorite() {
-    
-}
+
+
+$(".star").on('mouseover', function () {
+   $(this).addClass("hover");
+   $(".star").each(function () {
+       if (!$(this).hasClass("hover")) {
+           $(this).addClass("zmdi-star");
+           $(this).removeClass("zmdi-star-outline");
+       }
+   });
+});
+
+// $(".star").on('mouseleave', function () {
+//     $(this).removeClass("zmdi-star");
+//     $(this).addClass("zmdi-star-outline");
+// });

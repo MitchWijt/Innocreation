@@ -110,15 +110,20 @@
 .p-b-5{
     padding-bottom: 5px !important;
 }
-
+.p-l-15{
+    padding-left: 15px !important;
+}
 .p-t-5{
     padding-top: 5px !important;
 }
 .p-l-0{
     padding-left: 0 !important;
 }
-.p-r-0{
+.p-r-0 {
     padding-right: 0 !important;
+}
+.p-r-15{
+    padding-right: 15px !important;
 }
 /*==================================COLORS=============================*/
 .c-blue{
@@ -128,7 +133,9 @@
 .c-gray{
     color: #C9CCCF !important;
 }
-
+.c-dark-grey{
+    color: #77787a;
+}
 .c-orange{
     color: #FF6100 !important;
 }
@@ -216,6 +223,7 @@ hr{
 
 .underline{
     text-decoration: underline;
+    text-decoration-color: #FF6100;
 }
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\FavoriteTeamLinktable;
 use App\Team;
+use App\TeamReview;
 use App\User;
 use App\JoinRequestLinktable;
 use Illuminate\Http\Request;
@@ -29,10 +30,11 @@ class PageController extends Controller
         }
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("team_name", $team_name)->first();
+        $reviews = TeamReview::select("*")->where("team_id", $team->id)->get();
         if($user) {
             $favoriteTeam = FavoriteTeamLinktable::select("*")->where("team_id", $team->id)->where("user_id", $user->id)->first();
         }
-        return view("/public/pages/singleTeamPage", compact("team","user", "acceptedExpertises", "favoriteTeam"));
+        return view("/public/pages/singleTeamPage", compact("team","user", "acceptedExpertises", "favoriteTeam", "reviews"));
     }
 
     /**

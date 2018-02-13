@@ -4,12 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FavoriteTeamLinktable extends Model
+class TeamReview extends Model
 {
-    public $table = "favorite_teams_linktable";
+    public $table = "team_review";
 
     public function users(){
-        return $this->hasMany("\App\User", "id","user_id");
+        return $this->hasMany("\App\User", "id","writer_user_id");
     }
 
     public function teams(){

@@ -196,6 +196,79 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="d-flex js-center">
+                        <div class="card card-lg m-t-20 m-b-20">
+                            <div class="card-block m-t-10">
+                                <div class="row">
+                                    <div class="col-sm-12 m-l-20">
+                                        <h3>Team reviews</h3>
+                                    </div>
+                                </div>
+                                <? foreach($reviews as $review) { ?>
+                                    <div class="row d-flex js-center">
+                                        <div class="col-sm-11 d-flex p-l-0">
+                                            <div class="col-sm-2">
+                                                <div class="c-orange">
+                                                    <i class="zmdi zmdi-star"></i>
+                                                    <i class="zmdi zmdi-star"></i>
+                                                    <i class="zmdi zmdi-star-outline"></i>
+                                                    <i class="zmdi zmdi-star-outline"></i>
+                                                    <i class="zmdi zmdi-star-outline"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-9 p-l-0">
+                                                <p class="f-17"><?= $review->title?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex js-center">
+                                        <div class="col-sm-11 p-l-0">
+                                            <div class="col-sm-12 p-l-0">
+                                                <p class="p-l-15 f-18"><?= $review->users->First()->getName()?></p>
+                                                <p class="p-l-15 m-b-0"><?= $review->review?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex js-center m-b-20">
+                                        <div class="col-sm-10">
+                                           <span class="pull-right f-13 c-dark-grey"><?= date("d-m-Y", strtotime($review->created_at))?></span>
+                                        </div>
+                                    </div>
+                                <? } ?>
+                                <hr>
+                                <form action="" method="post">
+                                    <div class="row d-flex js-center m-t-15">
+                                        <div class="col-sm-11 d-flex">
+                                            <div class="col-sm-4 p-l-0">
+                                                <input type="text" name="review_title" class="input" placeholder="Title">
+                                            </div>
+                                            <div class="col-sm-8 c-orange f-20 stars">
+                                                <i class="zmdi zmdi-star-outline star" data-star-value="1"></i>
+                                                <i class="zmdi zmdi-star-outline star" data-star-value="2"></i>
+                                                <i class="zmdi zmdi-star-outline star" data-star-value="3"></i>
+                                                <i class="zmdi zmdi-star-outline star" data-star-value="4"></i>
+                                                <i class="zmdi zmdi-star-outline star" data-star-value="5"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex js-center m-t-15">
+                                        <div class="col-sm-11">
+                                            <textarea placeholder="Write your review" name="review" rows="6" class="input col-sm-12"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 m-b-20">
+                                            <button class="btn btn-inno pull-right m-r-30">Post review</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
