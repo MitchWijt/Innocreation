@@ -50,16 +50,18 @@ $(".triggerLike").on("click",function () {
 
 
 $(".star").on('mouseover', function () {
-   $(this).addClass("hover");
-   $(".star").each(function () {
-       if (!$(this).hasClass("hover")) {
-           $(this).addClass("zmdi-star");
-           $(this).removeClass("zmdi-star-outline");
-       }
-   });
+   $(this).addClass("zmdi-star");
+   $(this).prevAll().addClass("zmdi-star");
 });
 
-// $(".star").on('mouseleave', function () {
-//     $(this).removeClass("zmdi-star");
-//     $(this).addClass("zmdi-star-outline");
-// });
+$(".star").on('mouseleave', function () {
+    $(this).removeClass("zmdi-star");
+});
+
+$(".star").on("click",function () {
+    var value = $(this).data("star-value");
+    $(".star_value").val(value);
+    $(this).addClass("zmdi-star");
+    $(this).unbind("mouseleave");
+    $(this).prevAll().unbind("mouseleave");
+});

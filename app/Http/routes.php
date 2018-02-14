@@ -70,6 +70,8 @@ Route::post("/favoriteTeam","UserController@favoriteTeamAction");
 Route::post("/applyForTeam","UserController@applyForTeamAction");
 
 Route::get("/my-account/team-join-requests","UserController@userTeamJoinRequestsAction");
+
+Route::post("/postTeamReview","UserController@postTeamReviewAction");
 //==============================SEARCHTEAMSPAGE========================
 
 Route::get("/teams", "TeamSearchController@index");

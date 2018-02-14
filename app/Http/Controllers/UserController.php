@@ -8,6 +8,7 @@ use App\Favorite_expertises_linktable;
 use App\FavoriteTeamLinktable;
 use App\JoinRequestLinktable;
 use App\Team;
+use App\TeamReview;
 use App\User;
 use App\UserMessage;
 use App\UserPortfolio;
@@ -395,5 +396,29 @@ class UserController extends Controller
         $user_id = Session::get("user_id");
         $teamJoinRequests = JoinRequestLinktable::select("*")->where("user_id", $user_id)->get();
         return view("/public/user/userTeamJoinRequests", compact("teamJoinRequests"));
+    }
+
+    public function postTeamReviewAction(Request $request){
+        $team_id = $request->input("team_id");
+        $user_id = $request->input("user_id");
+        $stars_value = $request->input("star_value");
+
+        $reviewMessage = $request->input("review");
+        $title = $request->input("review_title");
+
+        $review = new TeamReview();
+        $review->team_id = $team_id;
+        $review->writer_user_id = $user_id;
+        $review->title = $title;
+        $review->review = $reviewMessage;
+        $review->stars = $stars_value;
+        $review->created_at = date("Y-m-d H:i:s");
+        $review->save();
+
+        return redirect($_SERVER["HTTP_REFERER"]);
+
+
+//        AFTER CHAT SYSTEM TEAM. MESSAGE TO TEAM (NEW REVIEW)
+
     }
 }
