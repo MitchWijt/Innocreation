@@ -406,16 +406,27 @@ class UserController extends Controller
         $reviewMessage = $request->input("review");
         $title = $request->input("review_title");
 
-        $review = new TeamReview();
-        $review->team_id = $team_id;
-        $review->writer_user_id = $user_id;
-        $review->title = $title;
-        $review->review = $reviewMessage;
-        $review->stars = $stars_value;
-        $review->created_at = date("Y-m-d H:i:s");
-        $review->save();
+        $reviews = TeamReview::select("*")->where("team_id", $team_id)->where("writer_user_id", $user_id)->get();
+        $team = Team::select("*")->where("id", $team_id)->first();
+        if(count($reviews) == 0 && $user_id != $team->ceo_user_id) {
 
-        return redirect($_SERVER["HTTP_REFERER"]);
+            $review = new TeamReview();
+            $review->team_id = $team_id;
+            $review->writer_user_id = $user_id;
+            $review->title = $title;
+            $review->review = $reviewMessage;
+            $review->stars = $stars_value;
+            $review->created_at = date("Y-m-d H:i:s");
+            $review->save();
+
+
+            $team->support = $team->calculateSupport($stars_value, $team_id);
+            $team->save();
+
+            return redirect($_SERVER["HTTP_REFERER"]);
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already wrote a review or you are the CEO of this team");
+        }
 
 
 //        AFTER CHAT SYSTEM TEAM. MESSAGE TO TEAM (NEW REVIEW)

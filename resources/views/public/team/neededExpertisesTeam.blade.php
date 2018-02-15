@@ -35,11 +35,13 @@
                         </select>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12 d-flex js-center m-t-20">
-                        <button type="submit" class="btn btn-inno">Add expertise</button>
+                <? if($team->ceo_user_id == $user->id) { ?>
+                    <div class="row">
+                        <div class="col-sm-12 d-flex js-center m-t-20">
+                            <button type="submit" class="btn btn-inno">Add expertise</button>
+                        </div>
                     </div>
-                </div>
+                <? } ?>
                 <hr class="m-t-25">
             </form>
             <? foreach($team->getNeededExpertises() as $neededExpertise) { ?>
@@ -54,7 +56,9 @@
                     <div class="row d-flex js-center m-t-20">
                         <div class="card text-center">
                             <div class="card-block">
-                                <i class="zmdi zmdi-close pull-right m-r-10 m-t-5 c-orange deleteCross" data-team-id="<?= $neededExpertise->team_id?>" data-expertise-id="<?= $neededExpertise->expertise_id?>"></i>
+                                <? if($team->ceo_user_id == $user->id) { ?>
+                                    <i class="zmdi zmdi-close pull-right m-r-10 m-t-5 c-orange deleteCross" data-team-id="<?= $neededExpertise->team_id?>" data-expertise-id="<?= $neededExpertise->expertise_id?>"></i>
+                                <? } ?>
                                 <p class="f-z-rem m-b-5 p-0"><?=$neededExpertise->expertises->First()->title?></p>
                             </div>
                         </div>
@@ -84,17 +88,23 @@
                             <div class="requirement">
 
                             </div>
+                            <? if($team->ceo_user_id == $user->id) { ?>
+                                <div class="row">
+                                    <div class="col-sm-9 d-flex js-center m-t-10">
+                                        <i class="zmdi zmdi-plus c-pointer m-l-20 addEmptyRequirement" style="font-size: 20px;"></i>
+                                    </div>
+                                </div>
+                            <? } ?>
+                        </div>
+                        <? if($team->ceo_user_id == $user->id) { ?>
                             <div class="row">
-                                <div class="col-sm-9 d-flex js-center m-t-10">
-                                    <i class="zmdi zmdi-plus c-pointer m-l-20 addEmptyRequirement" style="font-size: 20px;"></i>
+                                <div class="col-sm-12 d-flex js-center m-b-10">
+                                    <button type="submit" class="btn btn-inno">Save</button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 d-flex js-center m-b-10">
-                                <button type="submit" class="btn btn-inno">Save</button>
-                            </div>
-                        </div>
+                        <? } else { ?>
+                            <div class="space m-b-20"></div>
+                        <? } ?>
                     </form>
                 </div>
             <? } ?>

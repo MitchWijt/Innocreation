@@ -14,7 +14,7 @@
                                     <p class="f-17 m-b-0 c-orange"><?= $topTeam->team_name?></p>
                                     <p class="m-b-0">Expertises needed: <?= count($topTeam->getNeededExpertisesWithoutAcception())?></p>
                                     <p class="m-b-0">Members: <?=count($topTeam->getMembers())?></p>
-                                    <p class="m-b-0">Support(later): <?=$topTeam->support?></p>
+                                    <p class="m-b-0">Support: <?=$topTeam->support?></p>
                                     <p class="m-b-0">Age: <?=$topTeam->calculateAge()?></p>
                                 </div>
                             </div>
@@ -63,7 +63,7 @@
                                                         <p class="f-17 m-b-0 c-orange"><?= $searchedTeam->team_name?></p>
                                                         <p class="m-b-0">Expertises needed: <?=count($searchedTeam->getNeededExpertises())?></p>
                                                         <p class="m-b-0">Members: <?=count($searchedTeam->getMembers())?></p>
-                                                        <p class="m-b-0">Support(later): <?=$searchedTeam->support?></p>
+                                                        <p class="m-b-0">Support: <?=$searchedTeam->support?></p>
                                                         <p class="m-b-0">Age: <?=$searchedTeam->calculateAge()?></p>
                                                     </div>
                                                 </div>

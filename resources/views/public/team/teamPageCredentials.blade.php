@@ -18,11 +18,13 @@
                                 <img style="width: 250px; height: 250px;" class="circle circleImgLg m-0" src="<?=$team->getProfilePicture()?>" alt="Profile picture">
                             </div>
                         </div>
-                        <div class="row text-center m-t-20 m-b-20">
-                            <div class="col-sm-12">
-                                <button type="button" class="btn btn-inno editProfilePicture">Edit profile picture</button>
+                        <? if($team->ceo_user_id == $user->id) { ?>
+                            <div class="row text-center m-t-20 m-b-20">
+                                <div class="col-sm-12">
+                                    <button type="button" class="btn btn-inno editProfilePicture">Edit profile picture</button>
+                                </div>
                             </div>
-                        </div>
+                        <? } ?>
                     </div>
                 </div>
             </form>
@@ -48,11 +50,13 @@
                                 <textarea class="input" name="introduction_team" cols="50" rows="8"><? if(isset($team->team_introduction)) echo $team->team_introduction ?></textarea>
                             </div>
                         </div>
-                        <div class="row m-t-20 p-b-20">
-                            <div class="col-sm-12">
-                                <button class="btn btn-inno pull-right">Save my team</button>
+                        <? if($team->ceo_user_id == $user->id) { ?>
+                            <div class="row m-t-20 p-b-20">
+                                <div class="col-sm-12">
+                                    <button class="btn btn-inno pull-right">Save my team</button>
+                                </div>
                             </div>
-                        </div>
+                        <? } ?>
                     </div>
                 </div>
             </form>

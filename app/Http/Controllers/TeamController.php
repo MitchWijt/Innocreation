@@ -21,9 +21,11 @@ class TeamController extends Controller
      */
     public function teamPageCredentials()
     {
+        // gets the user and team and gives them to the view
+
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
-        return view("/public/team/teamPageCredentials", compact("team"));
+        return view("/public/team/teamPageCredentials", compact("team","user"));
     }
 
     /**
@@ -33,6 +35,7 @@ class TeamController extends Controller
      */
     public function saveTeamProfilePictureAction(Request $request)
     {
+        // grabs the uploaded file moves it into the correct folder and adds it to the database for the team
         $team_id = $request->input("team_id");
 
 
@@ -55,6 +58,7 @@ class TeamController extends Controller
      */
     public function saveTeamPageAction(Request $request)
     {
+        // saves the description and motivation of the team (perhaps more in the future)
         $team_id = $request->input("team_id");
 
         $introduction = $request->input("introduction_team");
@@ -77,10 +81,11 @@ class TeamController extends Controller
      */
     public function neededExpertisesAction()
     {
+        // gets all the needed expertised for the team
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
         $expertises = Expertises::select("*")->get();
-        return view("/public/team/neededExpertisesTeam", compact("team","expertises"));
+        return view("/public/team/neededExpertisesTeam", compact("team","expertises", "user"));
     }
 
     /**
@@ -91,6 +96,7 @@ class TeamController extends Controller
      */
     public function addNeededExpertiseAction(Request $request)
     {
+        // Grabs the team id and expertise the team wants to add and adds it to the database for the team. Also checks for doubles
         $team_id = $request->input("team_id");
         $expertise_id = $request->input("expertises");
         $expertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
@@ -115,6 +121,7 @@ class TeamController extends Controller
      */
     public function saveNeededExpertiseAction(Request $request)
     {
+        // saves the description + requirements for the expertises the team decided to change
         $team_id = $request->input("team_id");
         $expertise_id = $request->input("expertise_id");
         $requirements = $request->input("requirements");
@@ -143,8 +150,9 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function deleteNeededExpertiseAction(Request $request)
-    {
+    public function deleteNeededExpertiseAction(Request $request){
+        // Grabs the needed expertise chosen and deletes the expertise from Database.
+
         $team_id = $request->input("team_id");
         $expertise_id = $request->input("expertise_id");
 
@@ -154,6 +162,7 @@ class TeamController extends Controller
     }
 
     public function teamUserJoinRequestsAction(){
+        // gets all the join requests for the team
         $user_id = Session::get("user_id");
         $team_id = Session::get("team_id");
         $userJoinRequests = JoinRequestLinktable::select("*")->where("team_id", $team_id)->get();
@@ -161,6 +170,8 @@ class TeamController extends Controller
     }
 
     public function rejectUserFromTeamAction(Request $request){
+        // Rejects user from team
+        // sends user a message for rejection
         $request_id = $request->input("request_id");
         $request = JoinRequestLinktable::select("*")->where("id", $request_id)->first();
         $request->accepted = 2;
@@ -190,6 +201,9 @@ class TeamController extends Controller
     }
 
     public function acceptUserInteamAction(Request $request){
+        // accepts user into team
+        // sends user message that he is welcome in team
+        // checks if user is requested for any other team. and rejects the user at that team
         $user_id = $request->input("user_id");
         $request_id = $request->input("request_id");
         $request = JoinRequestLinktable::select("*")->where("id", $request_id)->first();
@@ -230,5 +244,46 @@ class TeamController extends Controller
         $message->save();
         return redirect($_SERVER["HTTP_REFERER"]);
 
+    }
+
+    public function teamMembersPage(){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+        return view("/public/team/teamPageMembers", compact("team", "user"));
+    }
+
+    public function kickMemberFromTeamAction(Request $request){
+        $user_id = $request->input("user_id");
+        $team_id = $request->input("team_id");
+        $kickMessage = $request->input("kickMessage");
+
+        $team = Team::select("*")->where("id", $team_id)->first();
+
+        $user = User::select("*")->where("id", $user_id)->first();
+        $user->team_id = null;
+        $user->save();
+
+        $joinrequest = JoinRequestLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->where("accepted", 1)->first();
+        $joinrequest->delete();
+
+        $timeNow = date("H:i:s");
+        $time = (date("g:i a", strtotime($timeNow)));
+        $message = new UserMessage();
+        $message->sender_user_id =  $team->ceo_user_id;
+        $message->receiver_user_id = $user_id;
+        $message->message = "Your kick reason: " . $kickMessage;
+        $message->time_sent = $time;
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+
+        $message = new UserMessage();
+        $message->sender_user_id = $user_id;
+        $message->receiver_user_id = $team->ceo_user_id;
+        $message->message = null;
+        $message->time_sent = null;
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+
+        return redirect($_SERVER["HTTP_REFERER"]);
     }
 }

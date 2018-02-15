@@ -102,4 +102,10 @@ Route::post("/my-team/rejectUserFromTeam", "TeamController@rejectUserFromTeamAct
 
 Route::post("/my-team/acceptUserInteam", "TeamController@acceptUserInteamAction");
 
+Route::get("/my-team/members", "TeamController@teamMembersPage");
+
+Route::post("/my-team/kickMemberFromTeam", "TeamController@kickMemberFromTeamAction");
+
+
+
 

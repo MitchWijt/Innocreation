@@ -9,7 +9,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Team members</a>
+        <a class="regular-link c-gray" href="/my-team/members">Team members</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

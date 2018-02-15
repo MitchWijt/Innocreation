@@ -52,4 +52,33 @@ class Team extends Model
         $NeededExpertisesNoAcception = NeededExpertiseLinktable::select("*")->where("team_id", $this->id)->whereIn("expertise_id", $expertisesNoAcception)->with("Expertises")->with("Teams")->get();
         return $NeededExpertisesNoAcception;
     }
+
+    public function calculateSupport($stars, $team_id){
+        $team = Team::select("*")->where("id", $team_id)->first();
+        $support = $team->support;
+        if($stars >= 3){
+            $positive = true;
+        } else {
+            $positive = false;
+        }
+
+        if($positive){
+            if($stars == 3){
+                $support = $support + 50;
+            } else if($stars == 4){
+                $support = $support + 100;
+            } else if($stars == 5){
+                $support = $support + 200;
+            }
+        }
+
+        if($positive == false){
+            if($stars == 2){
+                $support = $support - 20;
+            } else if($stars == 1){
+                $support = $support - 50;
+            }
+        }
+        return $support;
+    }
 }
