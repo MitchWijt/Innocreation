@@ -38,7 +38,7 @@
                     <? $recentChats = [];?>
                     <? if(isset($userMessages)) { ?>
                         <? foreach($userMessages as $userMessage) { ?>
-                            <? if($userMessage->sender_user_id == $user_id) { ?>
+                            <? if($userMessage->sender_user_id == $user_id && $userMessage->team_id == null) { ?>
                                 <? if(!in_array($userMessage->receiver_user_id, $recentChats)) { ?>
                                 <? array_push($recentChats, $userMessage->receiver_user_id)?>
                                     <div class="row d-flex js-center">

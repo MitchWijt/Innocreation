@@ -316,7 +316,7 @@ class UserController extends Controller
         $time = (date("g:i a", strtotime($timeNow)));
         $receiver_user_id = $request->input("receiver_user_id");
         $sender_user_id = $request->input("sender_user_id");
-        $userMessages = UserMessage::select("*")->where("receiver_user_id", $receiver_user_id)->where("sender_user_id", $sender_user_id)->orWhere("receiver_user_id", $sender_user_id)->orWhere("sender_user_id", $receiver_user_id)->get();
+        $userMessages = UserMessage::select("*")->where("receiver_user_id", $receiver_user_id)->where("sender_user_id", $sender_user_id)->orWhere("receiver_user_id", $sender_user_id)->orWhere("sender_user_id", $receiver_user_id)->where("team_id", null)->get();
         if(count($userMessages) > 0) {
             $userMessage = new UserMessage();
             $userMessage->sender_user_id = $sender_user_id;

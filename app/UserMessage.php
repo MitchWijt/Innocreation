@@ -12,6 +12,10 @@ class UserMessage extends Model
         return $this->hasMany("\App\User", "id","receiver_user_id");
     }
 
+    public function sender(){
+        return $this->hasMany("\App\User", "id","sender_user_id");
+    }
+
 //    public function receivers(){
 //        return $this->hasMany("\App\User", "id","sender_user_id");
 //    }
@@ -21,6 +25,5 @@ class UserMessage extends Model
         $sender_user_id = $sender;
         $messages = UserMessage::select("*")->where("receiver_user_id", $receiver_user_id)->where("sender_user_id", $sender_user_id)->orWhere("receiver_user_id", $sender_user_id)->where("sender_user_id", $receiver_user_id)->get();
         return $messages;
-
     }
 }

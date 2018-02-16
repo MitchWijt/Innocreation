@@ -13,7 +13,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Team chat</a>
+        <a class="regular-link c-gray" href="/my-team/team-chat">Team chat</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

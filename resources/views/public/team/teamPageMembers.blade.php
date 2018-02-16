@@ -6,7 +6,7 @@
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">Team members</h1>
             </div>
-            <div class="hr"></div>
+            <hr>
             <? foreach ($team->getMembers() as $member) { ?>
                 <div class="row d-flex js-center m-t-20 fullMemberCard">
                     <div class="card text-center member">
@@ -20,8 +20,12 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="d-flex fd-column">
-                                        <? foreach($member->getExpertises() as $memberExpertise) { ?>
-                                        <p><?= $memberExpertise->title?></p>
+                                        <? if($member->id == $team->ceo_user_id) { ?>
+                                            <? foreach($member->getExpertises() as $memberExpertise) { ?>
+                                                <p><?= $memberExpertise->title?></p>
+                                            <? } ?>
+                                        <? } else { ?>
+                                                <p style="margin-top: 17px;"><?= $member->getJoinedExpertise()->expertises->first()->title?></p>
                                         <? } ?>
                                     </div>
                                 </div>
@@ -30,12 +34,21 @@
                         <div class="row">
                             <div class="col-sm-12 d-flex m-b-20 m-t-10">
                                 <? if($team->ceo_user_id == $user->id) { ?>
-                                    <div class="col-sm-6">
-                                        <button class="btn btn-inno btn-sm col-sm-12">Go to account</button>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <button class="btn btn-inno btn-sm col-sm-12 kickMember" data-user-id="<?=$member->id?>">Kick member</button>
-                                    </div>
+                                    <? if($member->id != $team->ceo_user_id) { ?>
+                                        <div class="col-sm-6">
+                                            <button class="btn btn-inno btn-sm col-sm-12">Go to account</button>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <button class="btn btn-inno btn-sm col-sm-12 kickMember" data-user-id="<?=$member->id?>">Kick member</button>
+                                        </div>
+                                    <? } else { ?>
+                                        <div class="col-sm-6">
+                                            <button class="btn btn-inno btn-sm col-sm-12">Go to account</button>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <button class="btn btn-inno btn-sm col-sm-12">CEO</button>
+                                        </div>
+                                    <? } ?>
                                 <? } else { ?>
                                     <div class="col-sm-12">
                                         <button class="btn btn-inno btn-sm col-sm-6">Go to account</button>
@@ -55,6 +68,9 @@
                                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                         <input type="hidden" name="user_id" value="<?= $member->id?>">
                                         <input type="hidden" name="team_id" value="<?= $team->id?>">
+                                        <? if($member->id != $team->ceo_user_id) { ?>
+                                            <input type="hidden" name="joined_expertise_id" value="<?=$member->getJoinedExpertise()->expertise_id?>">
+                                        <? } ?>
                                         <div class="row">
                                             <div class="col-sm-12 text-center">
                                                 <p class="pull-left">Reason for kick</p>

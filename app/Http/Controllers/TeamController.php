@@ -125,6 +125,7 @@ class TeamController extends Controller
         $team_id = $request->input("team_id");
         $expertise_id = $request->input("expertise_id");
         $requirements = $request->input("requirements");
+        $amountNeeded = $request->input("amountExpertise");
         $description = $request->input("description_needed_expertise");
         $requirementString = "";
         foreach($requirements as $requirement){
@@ -140,6 +141,7 @@ class TeamController extends Controller
         $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
         $neededExpertise->requirements = $requirementString;
         $neededExpertise->description = $description;
+        $neededExpertise->amount = $amountNeeded;
         $neededExpertise->save();
         return redirect($_SERVER["HTTP_REFERER"]);
     }
@@ -206,10 +208,15 @@ class TeamController extends Controller
         // checks if user is requested for any other team. and rejects the user at that team
         $user_id = $request->input("user_id");
         $request_id = $request->input("request_id");
+        $expertise_id = $request->input("expertise_id");
+        $team_id = $request->input("team_id");
         $request = JoinRequestLinktable::select("*")->where("id", $request_id)->first();
         $request->accepted = 1;
         $request->save();
 
+        $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
+        $neededExpertise->amount = $neededExpertise->amount - 1;
+        $neededExpertise->save();
 
         $otherRequests = JoinRequestLinktable::select("*")->where("user_id", $user_id)->where("accepted", 0)->get();
         if(count($otherRequests) > 0) {
@@ -255,9 +262,14 @@ class TeamController extends Controller
     public function kickMemberFromTeamAction(Request $request){
         $user_id = $request->input("user_id");
         $team_id = $request->input("team_id");
+        $expertise_id = $request->input("joined_expertise_id");
         $kickMessage = $request->input("kickMessage");
 
         $team = Team::select("*")->where("id", $team_id)->first();
+
+        $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
+        $neededExpertise->amount = $neededExpertise->amount +1;
+        $neededExpertise->save();
 
         $user = User::select("*")->where("id", $user_id)->first();
         $user->team_id = null;
@@ -281,6 +293,32 @@ class TeamController extends Controller
         $message->receiver_user_id = $team->ceo_user_id;
         $message->message = null;
         $message->time_sent = null;
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+
+        return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function teamChatAction(){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+        $messages = UserMessage::select("*")->where("team_id", $team->id)->get();
+
+        return view("/public/team/teamPageChat", compact("team", "user","messages"));
+    }
+
+    public function sendTeamMessageAction(Request $request){
+        $team_id = $request->input("team_id");
+        $sender_user_id = $request->input("sender_user_id");
+        $teamMessage = $request->input("teamMessage");
+
+        $timeNow = date("H:i:s");
+        $time = (date("g:i a", strtotime($timeNow)));
+        $message = new UserMessage();
+        $message->sender_user_id = $sender_user_id;
+        $message->team_id = $team_id;
+        $message->message = $teamMessage;
+        $message->time_sent = $time;
         $message->created_at = date("Y-m-d H:i:s");
         $message->save();
 

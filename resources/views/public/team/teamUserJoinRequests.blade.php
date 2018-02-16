@@ -41,6 +41,8 @@
                                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                         <input type="hidden" name="request_id" value="<?= $userJoinRequest->id?>">
                                         <input type="hidden" name="user_id" value="<?= $userJoinRequest->users->First()->id?>">
+                                        <input type="hidden" name="expertise_id" value="<?= $userJoinRequest->expertise_id?>">
+                                        <input type="hidden" name="team_id" value="<?= $userJoinRequest->team_id?>">
                                         <div class="circle circleImage p-relative pull-right c-pointer acceptUser">
                                             <span style="left: 22px; top: 9px" class="p-absolute f-25"><i class="zmdi zmdi-check c-orange"></i></span>
                                         </div>

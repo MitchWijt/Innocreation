@@ -90,7 +90,7 @@
                                 </div>
                                 <div class="d-flex fd-column singleTeamNeededExpertises">
                                     <? foreach($team->getNeededExpertises() as $neededExpertise) { ?>
-                                        <? if(!in_array($neededExpertise->expertise_id, $acceptedExpertises)) { ?>
+                                    <?if($neededExpertise->amount > 0) { ?>
                                             <? $requiredArray = []?>
                                             <? $counter = 0;?>
                                             <? $requirementExplode = explode(",",$neededExpertise->requirements)?>
@@ -100,23 +100,29 @@
                                             <? } ?>
                                             <div class="col-sm-12 m-b-20 d-flex">
                                                 <? if($user && $user->team_id == null) { ?>
-                                                   <div class="col-sm-9">
+                                                   <div class="col-sm-3">
                                                        <p><?= $neededExpertise->Expertises->First()->title?></p>
                                                    </div>
+                                                    <div class="col-sm-4 text-center">
+                                                        <p class="pull-right m-t-10">Amount needed: <?= $neededExpertise->amount?></p>
+                                                    </div>
                                                 <? } else { ?>
                                                     <div class="col-sm-5 m-b-10 border-inno text-center d-flex js-center">
                                                         <p class="m-t-10"><?= $neededExpertise->Expertises->First()->title?></p>
+                                                    </div>
+                                                    <div class="col-sm-7">
+                                                        <p class="pull-right m-t-10">Amount needed: <?= $neededExpertise->amount?></p>
                                                     </div>
                                                 <? } ?>
                                                 <? if($user) { ?>
                                                     <? if($user->team_id == null) { ?>
                                                         <? if($user->checkJoinRequests($neededExpertise->expertise_id, $team->id) == false) { ?>
-                                                            <div class="col-sm-3">
-                                                                <button class="btn btn-inno openApplyModal" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                            <div class="col-sm-5">
+                                                                <button class="btn btn-inno openApplyModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
                                                             </div>
                                                         <? } else { ?>
-                                                            <div class="col-sm-3">
-                                                                <p class="c-orange">Applied</p>
+                                                            <div class="col-sm-5">
+                                                                <p class="c-orange pull-right m-t-10">Applied</p>
                                                             </div>
                                                         <? } ?>
                                                     <? } ?>

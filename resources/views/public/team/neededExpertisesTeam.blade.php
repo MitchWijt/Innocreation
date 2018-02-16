@@ -35,6 +35,16 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-sm-12 d-flex js-center m-t-10">
+                    <div class="col-sm-7 p-l-0 text-center">
+                        <p class="m-b-10">Amount needed:</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 d-flex js-center">
+                        <input type="number" name="amountNewExpertise" max="10" min="1" class="input" value="1">
+                    </div>
+                </div>
                 <? if($team->ceo_user_id == $user->id) { ?>
                     <div class="row">
                         <div class="col-sm-12 d-flex js-center m-t-20">
@@ -53,17 +63,19 @@
                     <? array_push($requiredArray, $requirement)?>
                 <? } ?>
                 <div class="neededExpertise" data-expertise-id="<?= $neededExpertise->expertise_id?>">
-                    <div class="row d-flex js-center m-t-20">
-                        <div class="card text-center">
-                            <div class="card-block">
-                                <? if($team->ceo_user_id == $user->id) { ?>
-                                    <i class="zmdi zmdi-close pull-right m-r-10 m-t-5 c-orange deleteCross" data-team-id="<?= $neededExpertise->team_id?>" data-expertise-id="<?= $neededExpertise->expertise_id?>"></i>
-                                <? } ?>
-                                <p class="f-z-rem m-b-5 p-0"><?=$neededExpertise->expertises->First()->title?></p>
+                    <form action="/my-team/saveNeededExpertise" method="post">
+                        <div class="row d-flex js-center m-t-20">
+                            <div class="card text-center">
+                                <div class="card-block">
+                                    <? if($team->ceo_user_id == $user->id) { ?>
+                                        <i class="zmdi zmdi-close pull-right m-r-10 m-t-5 c-orange deleteCross" data-team-id="<?= $neededExpertise->team_id?>" data-expertise-id="<?= $neededExpertise->expertise_id?>"></i>
+                                    <? } ?>
+                                    <p class="f-z-rem m-b-5 p-0"><?=$neededExpertise->expertises->First()->title?></p>
+                                    <p class="c-orange m-t-15 m-b-5">Amount:</p>
+                                    <input type="number" name="amountExpertise" max="10" min="0" class="input m-b-15" value="<?=$neededExpertise->amount?>">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <form action="/my-team/saveNeededExpertise" method="post">
                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                         <input type="hidden" name="team_id" value="<?=$team->id?>">
                         <input type="hidden" name="expertise_id" value="<?=$neededExpertise->expertise_id?>">

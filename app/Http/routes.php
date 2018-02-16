@@ -106,6 +106,10 @@ Route::get("/my-team/members", "TeamController@teamMembersPage");
 
 Route::post("/my-team/kickMemberFromTeam", "TeamController@kickMemberFromTeamAction");
 
+Route::get("/my-team/team-chat", "TeamController@teamChatAction");
+
+Route::post("/my-team/sendTeamMessage", "TeamController@sendTeamMessageAction");
+
 
 
 

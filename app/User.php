@@ -28,13 +28,18 @@ class User extends Authenticatable
         return $expertises;
     }
 
+    public function getJoinedExpertise(){
+        $expertise = JoinRequestLinktable::select("*")->where("user_id", $this->id)->where("accepted", 1)->first();
+        return $expertise;
+    }
+
     public function checkJoinRequests($expertise_id, $team_id){
         $bool = false;
         $joinRequests = JoinRequestLinktable::select("*")->where("expertise_id", $expertise_id)->where("team_id", $team_id)->where("user_id", $this->id)->where("accepted", 0)->get();
         if(count($joinRequests) > 0){
             $bool = true;
-            return $bool;
         }
+        return $bool;
     }
     /**
      * The attributes that are mass assignable.

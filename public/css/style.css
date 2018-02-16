@@ -477,3 +477,7 @@ footer{
     background: #003366;
     border-radius: 10px;
 }
+.messageReceived{
+    background: #303030;
+    border-radius: 10px;
+}
