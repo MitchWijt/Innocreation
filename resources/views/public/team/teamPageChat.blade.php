@@ -8,7 +8,7 @@
             </div>
             <hr class="col-ms-12">
             <div class="row d-flex js-center">
-                <div class="card col-sm-11 member m-t-20">
+                <div class="card col-sm-11 member m-t-20 m-b-20">
                     <div class="card-block">
                         <div class="row text-center">
                             <div class="col-sm-12 m-t-20 m-b-20 d-flex">
@@ -27,6 +27,7 @@
                         <div class="d-flex js-center">
                             <hr class="col-sm-12 m-b-20">
                         </div>
+                        <div class="o-scroll" style="height: 400px;">
                         <? foreach($messages as $message) { ?>
                             <? if($message->sender_user_id == $user->id) { ?>
                                    <div class="row">
@@ -53,9 +54,11 @@
                                 </div>
                             <? } ?>
                         <? } ?>
+                        </div>
                         <div class="d-flex js-center">
                             <hr class="col-sm-12 m-b-20">
                         </div>
+                        <? if($user->muted <= date("Y-m-d H:i:s")) { ?>
                         <form action="/my-team/sendTeamMessage" method="post">
                             <input type="hidden" name="_token" value="<?= csrf_token()?>">
                             <input type="hidden" name="team_id" value="<?=$team->id?>">
@@ -72,6 +75,18 @@
                                 </div>
                             </div>
                         </form>
+                        <? } else { ?>
+                        <?
+                            $today = new DateTime(date("Y-m-d H:i:s"));
+                            $date = new DateTime(date("Y-m-d H:i:s",strtotime($user->muted)));
+                            $interval = $date->diff($today);
+                        ?>
+                        <div class="row m-t-20 m-b-10">
+                            <div class="col-sm-12 text-center">
+                                <p>You have been muted for <?= $interval->format('%h hours, %i minutes, %s seconds');?></p>
+                            </div>
+                        </div>
+                        <? } ?>
                     </div>
                 </div>
             </div>

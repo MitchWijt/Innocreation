@@ -1,7 +1,7 @@
 <div class="sidebar">
     <div class="text-center">
         <p class="c-gray f-20 text-center m-0"><?= \Illuminate\Support\Facades\Session::get("team_name")?></p>
-        <span class="c-orange f-12 m-0">(slug)</span>
+        <span class="c-orange  f-12 m-0">(slug)</span>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

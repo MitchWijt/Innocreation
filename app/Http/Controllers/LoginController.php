@@ -48,11 +48,11 @@ class LoginController extends Controller
         ]);
         $user = New User;
         $user->role = 2;
-        $user->firstname = $request->input("firstname");
+        $user->firstname = ucfirst($request->input("firstname"));
         if($request->input("middlename") != null){
             $user->middlename = $request->input("middlename");
         }
-        $user->lastname = $request->input("lastname");
+        $user->lastname = ucfirst($request->input("lastname"));
         $user->password = bcrypt(($request->input("password")));
         $user->email = $request->input("email");
         $user->city = $request->input("city");

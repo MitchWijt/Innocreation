@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Expertises_linktable;
 use App\FavoriteTeamLinktable;
 use App\Team;
 use App\TeamReview;
 use App\User;
 use App\JoinRequestLinktable;
+use App\UserPortfolio;
 use Illuminate\Http\Request;
 use Session;
 
@@ -42,9 +44,20 @@ class PageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function singleUserPageIndex($firstname = null, $middlename = null, $lastname = null)
     {
-        //
+        if($lastname == null){
+            // middlename is lastname here
+            $user  = User::select("*")->where("firstname", ucfirst($firstname))->where("lastname", ucfirst($middlename))->first();
+        } else {
+            // everything is normal
+            $user  = User::select("*")->where("firstname", ucfirst($firstname))->where("middlename", $middlename)->where("lastname", ucfirst($lastname))->first();
+        }
+
+        $loggedIn = User::select("*")->where("id", Session::get("user_id"))->first();
+        $expertise_linktable = Expertises_linktable::select("*")->where("user_id", $user->id)->get();
+        $portfolios = UserPortfolio::select("*")->where("user_id", $user->id)->get();
+        return view("public/pages/singleUserPage", compact("user","expertise_linktable", "loggedIn", "portfolios"));
     }
 
     /**

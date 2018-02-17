@@ -324,4 +324,26 @@ class TeamController extends Controller
 
         return redirect($_SERVER["HTTP_REFERER"]);
     }
+
+    public function muteMemberFromTeamChatAction(Request $request){
+        $user_id = $request->input("user_id");
+        $hours = $request->input("hours");
+        $minutes = $request->input("minutes");
+
+        $mutedTime = date("Y-m-d H:i:s", strtotime("+$hours hours +$minutes minutes"));
+        $user = User::select("*")->where("id", $user_id)->first();
+        $user->muted = $mutedTime;
+        $user->save();
+
+        return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function unmuteMemberFromTeamChatAction(Request $request){
+        $user_id = $request->input("user_id");
+        $user = User::select("*")->where("id", $user_id)->first();
+        $user->muted = date("Y-m-d H:i:s");
+        $user->save();
+
+        return redirect($_SERVER["HTTP_REFERER"]);
+    }
 }

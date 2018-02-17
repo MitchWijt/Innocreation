@@ -58,7 +58,9 @@
                                     <? foreach($team->getMembers() as $member) { ?>
                                         <div class="col-sm-12 m-b-20 d-flex">
                                             <div class="col-sm-4">
-                                                <img class="circleImage circle" src="<?= $member->getProfilePicture()?>" alt="<?=$member->firstname?>">
+                                                <a target="_blank" href="/user/<?=lcfirst($member->firstname)?>-<?= lcfirst($member->lastname)?>">
+                                                    <img class="circleImage circle" src="<?= $member->getProfilePicture()?>" alt="<?=$member->firstname?>">
+                                                </a>
                                             </div>
                                             <div class="col-sm-4">
                                                 <p class="m-t-15"><?= $member->getName()?></p>

@@ -80,6 +80,8 @@ Route::post("/team/searchTeams", "TeamSearchController@searchTeamsAction");
 //==============================SINGLE PAGES==========================
 
 Route::get("/team/{team_name}", "PageController@singleTeamPageIndex");
+
+Route::get("/user/{firstname?}-{middlename?}-{lastname?}", "PageController@singleUserPageIndex");
 //==============================TEAM===================================
 
 Route::get("/my-team", "TeamController@teamPageCredentials");
@@ -109,6 +111,10 @@ Route::post("/my-team/kickMemberFromTeam", "TeamController@kickMemberFromTeamAct
 Route::get("/my-team/team-chat", "TeamController@teamChatAction");
 
 Route::post("/my-team/sendTeamMessage", "TeamController@sendTeamMessageAction");
+
+Route::post("/my-team/muteMemberFromTeamChat", "TeamController@muteMemberFromTeamChatAction");
+
+Route::post("/my-team/unmuteMemberFromTeamChat", "TeamController@unmuteMemberFromTeamChatAction");
 
 
 

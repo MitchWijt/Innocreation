@@ -35,11 +35,22 @@
                             <div class="col-sm-12 d-flex m-b-20 m-t-10">
                                 <? if($team->ceo_user_id == $user->id) { ?>
                                     <? if($member->id != $team->ceo_user_id) { ?>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <button class="btn btn-inno btn-sm col-sm-12">Go to account</button>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <button class="btn btn-inno btn-sm col-sm-12 kickMember" data-user-id="<?=$member->id?>">Kick member</button>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <? if($member->muted == null || $member->muted <= date("Y-m-d H:i:s")) { ?>
+                                                <button class="btn btn-inno btn-sm col-sm-12 muteMember" data-user-id="<?=$member->id?>"><i class="zmdi zmdi-volume-off"></i> Mute from team chat</button>
+                                            <? } else { ?>
+                                                <form action="/my-team/unmuteMemberFromTeamChat" method="post">
+                                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                    <input type="hidden" name="user_id" value="<?=$member->id?>">
+                                                    <button class="btn btn-inno btn-sm col-sm-12"><i class="zmdi zmdi-volume-up"></i> Unmute</button>
+                                                </form>
+                                            <? } ?>
                                         </div>
                                     <? } else { ?>
                                         <div class="col-sm-6">
@@ -80,6 +91,48 @@
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <button class="btn btn-inno pull-right m-t-10">Kick <?= $member->getName()?></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade muteMemberModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-user-id="<?=$member->id?>">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header d-flex js-center">
+                                    <h4 class="modal-title text-center" id="modalLabel">Mute <?= $member->getName()?></h4>
+                                </div>
+                                <div class="modal-body ">
+                                    <form action="/my-team/muteMemberFromTeamChat" method="post">
+                                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                        <input type="hidden" name="user_id" value="<?= $member->id?>">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <p class="pull-left f-18">Duration mute:</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-5 d-flex fd-row">
+                                                <span class="m-r-10">Hours:</span>
+                                                <div class="row">
+                                                    <div class="col-sm-12 d-flex ">
+                                                        <input type="number" name="hours" max="24" min="1" class="input" value="1">
+                                                    </div>
+                                                </div>
+                                                <span class="m-l-10 m-r-10">Minutes:</span>
+                                                <div class="row">
+                                                    <div class="col-sm-12 d-flex ">
+                                                        <input type="number" name="minutes" max="59" min="1" class="input" value="1">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <button class="btn btn-inno pull-right m-t-10">Mute <?= $member->getName()?></button>
                                             </div>
                                         </div>
                                     </form>

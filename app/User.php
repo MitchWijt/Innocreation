@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     public function team(){
-        return $this->hasMany("\App\Team", "id","team_id");
+        return $this->hasOne("\App\Team", "id","team_id");
     }
 
     public function getProfilePicture(){
@@ -15,7 +15,12 @@ class User extends Authenticatable
     }
 
     public function getName(){
-        return $this->firstname . " " . $this->lastname;
+        if($this->middlename != null){
+            return $this->firstname . " " . $this->middlename . " " . $this->lastname;
+        } else {
+            return $this->firstname . " " . $this->lastname;
+        }
+
     }
 
     public function getExpertises(){

@@ -8,3 +8,13 @@ $(".kickMember").on("click",function () {
     });
 });
 
+$(".muteMember").on("click",function () {
+    var user_id = $(this).data("user-id");
+
+    $(".muteMemberModal").each(function () {
+        if($(this).data("user-id") == user_id){
+            $(this).modal().toggle();
+        }
+    });
+});
+
