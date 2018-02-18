@@ -9,6 +9,7 @@ $(".addPortfolioNew").on("click",function () {
     $(".portfolio_image:last").val("");
     $(".portfolio_description:last").val("");
     $(".portfolio_title:last").val("");
+    $(".portfolio_link:last").val("");
     $(".fileName:last").text("");
 });
 $(".addPortfolioEmpty").on("click",function () {
@@ -19,6 +20,7 @@ $(".addPortfolioEmpty").on("click",function () {
     $(".portfolio_image:last").val("");
     $(".portfolio_description:last").val("");
     $(".portfolio_title:last").val("");
+    $(".portfolio_link:last").val("");
     $(".fileName:last").text("");
 });
 

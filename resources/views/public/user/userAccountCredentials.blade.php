@@ -18,9 +18,14 @@
                             <img style="width: 250px;" class="circle m-0" src="<?=$user->getProfilePicture()?>" alt="Profile picture">
                         </div>
                     </div>
-                    <div class="row text-center m-t-20 m-b-20">
+                    <div class="row text-center m-t-20">
                         <div class="col-sm-12">
                             <button type="button" class="btn btn-inno editProfilePicture">Edit profile picture</button>
+                        </div>
+                    </div>
+                    <div class="row text-center m-t-20 m-b-20">
+                        <div class="col-sm-12">
+                            <a href="<?=$user->getUrl()?>" class="btn btn-sm btn-inno">Go to live page</a>
                         </div>
                     </div>
                 </div>

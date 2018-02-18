@@ -22,6 +22,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group m-b-0 d-flex js-center">
+                            <div class="col-sm-9 m-t-10 p-r-0">
+                                <div class="row d-flex js-center">
+                                    <div class="col-sm-9">
+                                        <label class="m-0 col-sm-12 p-0">Optional project link</label>
+                                        <input type="text" name="portfolio_link[]" placeholder="www.github.com" class="input col-sm-12 portfolio_link">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-sm-12 text-center m-t-20 fileUpload">
                                 <input type="file" class="portfolio_image_new hidden" name="portfolio_image[]">
@@ -60,6 +70,16 @@
                                             <label class="m-0 col-sm-10 p-0">Title</label>
                                             <span class="pull-right col-sm-2 c-orange f-20 deleteCrossPortfolio" data-portfolio-id="<?=$userPortfolio->id?>"><i class="zmdi zmdi-close pull-right"></i></span>
                                             <input type="text" name="portfolio_title" class="input col-sm-12" value="<? if(isset($userPortfolio->title)) echo $userPortfolio->title?>">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group m-b-0 d-flex js-center">
+                                <div class="col-sm-9 m-t-10 p-r-0">
+                                    <div class="row d-flex js-center">
+                                        <div class="col-sm-9">
+                                            <label class="m-0 col-sm-12 p-0">Optional project link</label>
+                                            <input type="text" name="portfolio_link" placeholder="www.github.com" class="input col-sm-12 portfolio_link" value="<? if(isset($userPortfolio->link)) echo $userPortfolio->link?>">
                                         </div>
                                     </div>
                                 </div>
@@ -113,6 +133,16 @@
                                 <div class="col-sm-9">
                                     <label class="m-0 col-sm-12 p-0">Title</label>
                                     <input type="text" name="portfolio_title[]" class="input col-sm-12 portfolio_title">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group m-b-0 d-flex js-center">
+                        <div class="col-sm-9 m-t-10 p-r-0">
+                            <div class="row d-flex js-center">
+                                <div class="col-sm-9">
+                                    <label class="m-0 col-sm-12 p-0">Optional project link</label>
+                                    <input type="text" name="portfolio_link[]" placeholder="www.github.com" class="input col-sm-12 portfolio_link">
                                 </div>
                             </div>
                         </div>

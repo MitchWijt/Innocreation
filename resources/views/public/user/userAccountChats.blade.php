@@ -46,7 +46,12 @@
                                             <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userMessage->receiver_user_id?>">
                                                 <img class="circle circleImage m-0" src="<?=$userMessage->users->First()->getProfilePicture()?>" alt="">
                                                 <p class="f-22 m-t-15 m-b-5 p-0"><?=$userMessage->users->First()->firstname?></p>
-                                                <p class="f-20 m-t-15"><?if($userMessage->users->First()->team_id != null) echo $userMessage->users->First()->team->First()->team_name?></p>
+                                                <? if($userMessage->users->First()->team_id != null) { ?>
+                                                    <div class="d-flex fd-column">
+                                                        <p class="f-20 m-t-15 m-b-0"><?= $userMessage->users->First()->team->First()->team_name?></p>
+                                                        <span class="f-13 c-orange"><?if($userMessage->users->First()->team->First()->ceo_user_id == $userMessage->users->First()->id) echo "CEO"?></span>
+                                                    </div>
+                                                <? } ?>
                                             </div>
                                         </div>
                                     </div>
@@ -57,7 +62,6 @@
                                                 <input type="hidden" name="receiver_user_id" value="<?=$userMessage->receiver_user_id?>">
                                                 <input type="hidden" name="sender_user_id" value="<?=$user_id?>">
                                                 <div class="col-sm-12 o-scroll" style="max-height: 200px;">
-<!--                                                    --><?//dd($userMessage->getMessages($userMessage->receiver_user_id, $user_id))?>
                                                 <? foreach($userMessage->getMessages($userMessage->receiver_user_id, $user_id) as $message) { ?>
                                                     <? if($message->message != null) { ?>
                                                         <? if($message->sender_user_id == $user_id) { ?>

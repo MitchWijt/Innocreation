@@ -21,14 +21,16 @@
                 </div>
             </div>
             <? if($loggedIn) { ?>
-            <div class="row">
-                <div class="col-sm-12 text-center m-t-20">
-                    <form action="/selectChatUser" method="post">
-                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                        <button class="btn btn-inno">Send chat message</button>
-                    </form>
+                <div class="row">
+                    <div class="col-sm-12 text-center m-t-20">
+                        <form action="/selectChatUser" method="post">
+                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                            <input type="hidden" name="receiver_user_id" value="<?= $user->id?>">
+                            <input type="hidden" name="sender_user_id" value="<?= $loggedIn->id?>">
+                            <button class="btn btn-inno">Send chat message</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
             <? } ?>
             <div class="row">
                 <div class="col-sm-12">
@@ -98,20 +100,69 @@
                                     </div>
                                 </div>
                                 <? foreach($portfolios as $portfolio) { ?>
-                                    <div class="d-flex fd-column">
-                                        <div class="row d-flex js-center">
-                                            <div class="col-sm-11">
-                                                <div class="d-flex fd-row">
-                                                    <img class="circleImage m-t-10 circle" src="<?= $portfolio->getUrl()?>" alt="<?= $portfolio->title?>">
-                                                    <div class="col-sm-11 p-0">
-                                                        <p class="f-21 m-0"><?= $portfolio->title?></p>
-                                                        <hr>
-                                                        <p><?= mb_strimwidth($portfolio->description, 0, 100, "...");?></p>
+                                    <div class="portfolio">
+                                        <div class="d-flex fd-column">
+                                            <div class="row d-flex js-center">
+                                                <div class="col-sm-11">
+                                                    <div class="d-flex fd-row">
+                                                        <img class="circleImage openPortfolioModal c-pointer m-t-10 circle" src="<?= $portfolio->getUrl()?>" alt="<?= $portfolio->title?>">
+                                                        <div class="col-sm-11 p-0">
+                                                            <p class="f-21 m-0"><?= $portfolio->title?></p>
+                                                            <hr>
+                                                            <p><?= mb_strimwidth($portfolio->description, 0, 160, "... <span class='c-orange openPortfolioModal underline c-pointer'>read more</span>");?></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{--===========MODAL=========--}}
+                                        <div class="modal fade portfolioModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header d-flex js-center">
+                                                        <h4 class="modal-title text-center c-black" id="modalLabel"><?=$portfolio->title?></h4>
+                                                    </div>
+                                                    <div class="modal-body p-t-0">
+                                                        <div class="row modal-header">
+                                                            <div class="col-sm-12 d-flex js-center">
+                                                                <img class=" h-100 radius" style="width: 50%;" src="<?=$portfolio->getUrl()?>" alt="<?= $portfolio->title?>">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row d-flex js-center">
+                                                            <div class="col-sm-9 m-t-20">
+                                                                <p class="c-black"><?= $portfolio->description?></p>
+                                                            </div>
+                                                        </div>
+                                                        <? if($portfolio->link != null) { ?>
+                                                            <div class="row d-flex js-center">
+                                                                <div class="col-sm-9 m-t-20 text-center">
+                                                                    <p class="c-black f-18 m-b-0">Check it out here:</p>
+                                                                    <? if(strpos($portfolio->link, "https://") !== false) { ?>
+                                                                        <a target="_blank" class="regular-link" href="<?=$portfolio->link?>">Demo</a>
+                                                                    <? } else { ?>
+                                                                        <a target="_blank" class="regular-link" href="https://<?=$portfolio->link?>">Demo</a>
+                                                                    <? } ?>
+                                                                </div>
+                                                            </div>
+                                                        <? } ?>
+                                                        <? if($loggedIn) { ?>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 text-center m-t-20">
+                                                                    <form action="/selectChatUser" method="post">
+                                                                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                                        <input type="hidden" name="receiver_user_id" value="<?= $user->id?>">
+                                                                        <input type="hidden" name="sender_user_id" value="<?= $loggedIn->id?>">
+                                                                        <button class="btn btn-sm btn-inno">Send chat message</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        <? } ?>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    {{--==============--}}
                                 <? } ?>
                             </div>
                         </div>
@@ -146,4 +197,7 @@
             <? } ?>
         </div>
     </div>
+@endsection
+@section('pagescript')
+    <script src="/js/singleUserPage.js"></script>
 @endsection

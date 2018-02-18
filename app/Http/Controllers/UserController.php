@@ -211,8 +211,8 @@ class UserController extends Controller
         $user_id = $request->input("user_id");
         $portfolio_titles = $request->input("portfolio_title");
         $portfolio_image = $request->file("portfolio_image");
+        $portfolio_links = $request->file("portfolio_link");
         $portfolio_descriptions = $request->input("description_portfolio");
-
 
 
         if($portfolio_image[0] != null) {
@@ -226,6 +226,9 @@ class UserController extends Controller
                 $userPortfolio->title = $portfolio_titles[$i];
                 $userPortfolio->description = $portfolio_descriptions[$i];
                 $userPortfolio->image = $portfolio_image[$i]->getClientOriginalName();
+                if($portfolio_links != null) {
+                    $userPortfolio->link = $portfolio_links[$i];
+                }
                 $userPortfolio->save();
             }
             return redirect($_SERVER["HTTP_REFERER"]);
@@ -239,6 +242,7 @@ class UserController extends Controller
         $image = $request->file("portfolio_image");
         $title = $request->input("portfolio_title");
         $description = $request->input("description_portfolio");
+        $link = $request->input("portfolio_link");
 
         $userPortfolio = UserPortfolio::select("*")->where("id",$portfolio_id)->first();
         $userPortfolio->title = $title;
@@ -247,6 +251,9 @@ class UserController extends Controller
             $destinationPath = public_path().'/images/portfolioImages';
             $userPortfolio->image = $image->getClientOriginalName();
             $image->move($destinationPath,$image->getClientOriginalName());
+        }
+        if($link != null){
+            $userPortfolio->link = $link;
         }
         $userPortfolio->save();
         return redirect($_SERVER["HTTP_REFERER"]);
