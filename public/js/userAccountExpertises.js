@@ -27,3 +27,32 @@ $(".saveDescriptionBtn").on("click",function () {
     });
 });
 
+$(".deleteCross").on("click",function () {
+    if (confirm('Are you sure you want to delete this expertise?')) {
+        var postData = "";
+        var expertise_id = $(this).data("expertise-id");
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/deleteUserExpertise",
+            data: {'expertise_id': expertise_id},
+            success: function (data) {
+                if(data == 1) {
+                    $(".expertise").each(function () {
+                        if($(this).data("expertise-id") == expertise_id){
+                            $(this).fadeOut();
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+});
+

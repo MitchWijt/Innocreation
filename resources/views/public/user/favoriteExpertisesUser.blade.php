@@ -59,7 +59,7 @@
                 <? } ?>
                     <div class="col-sm-4">
                         <div class="card card-final text-center" data-expertise-id="<?= $favExpertise->expertise_id?>" style="position: relative;">
-                            <form action="/editFavoriteExpertisesUser" method="post" class="editFavExpertises">
+                            <form action="/deleteFavoriteExpertisesUser" method="post" class="editFavExpertises">
                                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                 <input type="hidden" name="expertise_id" value="<?= $favExpertise->expertise_id?>">
                                 <input type="hidden" name="user_id" value="<?= $favExpertise->user_id?>">

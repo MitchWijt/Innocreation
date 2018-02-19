@@ -31,22 +31,34 @@ Route::post("/my-account/saveUserAccount", "UserController@saveUserAccount");
 
 Route::get("/my-account", "UserController@userAccountCredentials");
 
+//User Expertises
+
 Route::get("/my-account/expertises", "UserController@userAccountExpertises");
 
 Route::post("/saveUserExpertiseDescription", "UserController@saveUserExpertiseDescription");
 
+Route::post("/deleteUserExpertise","UserController@deleteUserExpertiseAction");
+
+Route::post("/my-account/addUserExpertise","UserController@addUserExpertiseAction");
+
+// Team info (benefits)
+
 Route::get("/my-account/teamInfo", "UserController@teamBenefits");
+
+// User Favorite Expertises
 
 Route::get("/my-account/favorite-expertises", "UserController@favoriteExpertisesUser");
 
 Route::post("/saveFavoriteExpertisesUser", "UserController@saveFavoriteExperisesUser");
 
-Route::post("/editFavoriteExpertisesUser", "UserController@editFavoriteExpertisesUser");
+Route::post("/deleteFavoriteExpertisesUser", "UserController@deleteFavoriteExpertisesUser");
 
 Route::post("/filterFavExpertises", "UserController@filterFavExpertises");
+// User Profile Picture
 
 Route::post("/my-account/saveUserProfilePicture", "UserController@saveUserProfilePictureAction");
 
+// User Portfolio
 Route::get("/my-account/portfolio", "UserController@userAccountPortfolio");
 
 Route::post("/my-account/saveUserPortfolio", "UserController@saveUseraccountPortfolio");
@@ -54,7 +66,7 @@ Route::post("/my-account/saveUserPortfolio", "UserController@saveUseraccountPort
 Route::post("/my-account/editUserPortfolio", "UserController@editUserPortfolio");
 
 Route::post("/deleteUserPortfolio", "UserController@deleteUserPortfolio");
-
+// User chats
 Route::get("/my-account/chats", "UserController@userAccountChats");
 
 Route::post("/searchChatUsers", "UserController@searchChatUsers");
@@ -63,6 +75,7 @@ Route::post("/selectChatUser", "UserController@selectChatUser");
 
 Route::post("/sendMessageUser", "UserController@sendMessageUserAction");
 
+// Create team for user
 Route::post("/createTeam","UserController@createNewTeam");
 
 Route::post("/favoriteTeam","UserController@favoriteTeamAction");
@@ -72,6 +85,7 @@ Route::post("/applyForTeam","UserController@applyForTeamAction");
 Route::get("/my-account/team-join-requests","UserController@userTeamJoinRequestsAction");
 
 Route::post("/postTeamReview","UserController@postTeamReviewAction");
+
 //==============================SEARCHTEAMSPAGE========================
 
 Route::get("/teams", "TeamSearchController@index");

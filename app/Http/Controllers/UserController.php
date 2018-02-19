@@ -79,7 +79,8 @@ class UserController extends Controller
     {
         $user_id = Session::get("user_id");
         $expertises_linktable = expertises_linktable::select("*")->where("user_id", $user_id)->with("Users")->with("Expertises")->get();
-        return view("/public/user/userAccountExpertises", compact("expertises_linktable"));
+        $expertises = Expertises::select("*")->get();
+        return view("/public/user/userAccountExpertises", compact("expertises_linktable", "user_id", "expertises"));
     }
 
     /**
@@ -97,6 +98,26 @@ class UserController extends Controller
         $expertises = expertises_linktable::select("*")->where("user_id", $user_id)->where("expertise_id", $expertise_id)->first();
         $expertises->description = $description;
         $expertises->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function deleteUserExpertiseAction(Request $request){
+        $expertise_id = $request->input("expertise_id");
+        $expertise_linktable = Expertises_linktable::select("*")->where("id", $expertise_id)->first();
+        $expertise_linktable->delete();
+        return 1;
+    }
+
+    public function addUserExpertiseAction(Request $request){
+        $user_id = $request->input("user_id");
+        $expertise_id = $request->input("expertise");
+        $experience = $request->input("expertise_description");
+
+        $expertise_linktable = new expertises_linktable();
+        $expertise_linktable->user_id = $user_id;
+        $expertise_linktable->expertise_id = $expertise_id;
+        $expertise_linktable->description = $experience;
+        $expertise_linktable->save();
         return redirect($_SERVER["HTTP_REFERER"]);
     }
 
@@ -176,7 +197,7 @@ class UserController extends Controller
         }
     }
 
-    public function editFavoriteExpertisesUser(Request $request){
+    public function deleteFavoriteExpertisesUser(Request $request){
         $user_id = $request->input("user_id");
         $expertise_id = $request->input("expertise_id");
         $favoriteExpertises = Favorite_expertises_linktable::select("*")->where("user_id", $user_id)->where("expertise_id", $expertise_id)->first();
