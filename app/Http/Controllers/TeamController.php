@@ -8,6 +8,7 @@ use App\NeededExpertiseLinktable;
 use App\Team;
 use App\User;
 use App\UserMessage;
+use App\UserRole;
 use Illuminate\Http\Request;
 use Session;
 use App\Http\Requests;
@@ -256,7 +257,8 @@ class TeamController extends Controller
     public function teamMembersPage(){
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
-        return view("/public/team/teamPageMembers", compact("team", "user"));
+        $teamRoles = UserRole::select("*")->where("team_role", 1)->get();
+        return view("/public/team/teamPageMembers", compact("team", "user","teamRoles"));
     }
 
     public function kickMemberFromTeamAction(Request $request){
@@ -344,6 +346,16 @@ class TeamController extends Controller
         $user->muted = date("Y-m-d H:i:s");
         $user->save();
 
+        return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function editMemberPermissionsAction(Request $request){
+        $role = $request->input("teamRole");
+        $user_id = $request->input("user_id");
+
+        $member = User::select("*")->where("id", $user_id)->first();
+        $member->role = $role;
+        $member->save();
         return redirect($_SERVER["HTTP_REFERER"]);
     }
 }

@@ -10,6 +10,10 @@ class User extends Authenticatable
         return $this->hasOne("\App\Team", "id","team_id");
     }
 
+    public function roles(){
+        return $this->hasMany("\App\UserRole", "id","role");
+    }
+
     public function getProfilePicture(){
         return "/images/profilePicturesUsers/" . $this->profile_picture;
     }

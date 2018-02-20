@@ -9,14 +9,17 @@
             <hr>
             <? foreach ($team->getMembers() as $member) { ?>
                 <div class="row d-flex js-center m-t-20 fullMemberCard">
-                    <div class="card text-center member">
+                    <div class="card-lg text-center member">
                         <div class="card-block d-flex">
                             <div class="col-sm-12 m-t-15 d-flex">
-                                <div class="col-sm-4">
+                                <div class="col-sm-2">
                                     <img class="circleImage circle" src="<?= $member->getProfilePicture()?>" alt="<?=$member->firstname?>">
                                 </div>
                                 <div class="col-sm-4">
                                     <p class="m-t-15"><?= $member->getName()?></p>
+                                </div>
+                                <div class="col-sm-2">
+                                    <p class="m-t-15"><?= $member->roles->First()->title;?></p>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="d-flex fd-column">
@@ -31,7 +34,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row m-t-20">
                             <div class="col-sm-12 d-flex m-b-20 m-t-10">
                                 <? if($team->ceo_user_id == $user->id) { ?>
                                     <? if($member->id != $team->ceo_user_id) { ?>
@@ -67,7 +70,81 @@
                                 <? } ?>
                             </div>
                         </div>
+                       <? if($team->ceo_user_id == $user->id) { ?>
+                            <? if($member->id != $team->ceo_user_id) { ?>
+                                <div class="row">
+                                    <div class="col-sm-12 d-flex m-b-20 m-t-10">
+                                        <div class="col-sm-4">
+                                            <button class="btn btn-inno btn-sm col-sm-12 editMemberPermission" data-user-id="<?=$member->id?>">Edit member permissions</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            <? } ?>
+                        <? } ?>
                     </div>
+
+                    <div class="modal fade editMemberPermissionsModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-user-id="<?=$member->id?>">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header d-flex js-center">
+                                    <h4 class="modal-title text-center" id="modalLabel">Edit permissions <?= $member->getName()?></h4>
+                                </div>
+                                <div class="modal-body ">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h5>Team admin:</h5>
+                                            <ul class="instructions-list">
+                                                <li class="instructions-list-item">
+                                                    <p class="instructions-text c-black f-15 m-0 p-b-10">All permission of moderator</p>
+                                                </li>
+                                                <li class="instructions-list-item">
+                                                    <p class="instructions-text c-black f-15 m-0 p-b-10">Permission to add board in workplace</p>
+                                                </li>
+                                                <li class="instructions-list-item">
+                                                    <p class="instructions-text c-black f-15 m-0 p-b-10">Permission to post newsletters</p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h5>Team moderator:</h5>
+                                            <ul class="instructions-list">
+                                                <li class="instructions-list-item">
+                                                    <p class="instructions-text c-black f-15 m-0 p-b-10">Permission to change team credentials</p>
+                                                </li>
+                                                <li class="instructions-list-item">
+                                                    <p class="instructions-text c-black f-15 m-0 p-b-10">Permission to change needed expertises</p>
+                                                </li>
+                                                <li class="instructions-list-item">
+                                                    <p class="instructions-text c-black f-15 m-0 p-b-10">Permission to create form posts</p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 text-center">
+                                            <form action="/my-team/editMemberPermissions" method="post">
+                                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                <input type="hidden" name="user_id" value="<?=$member->id?>">
+                                                <select name="teamRole" class="input">
+                                                    <? foreach($teamRoles as $teamRole) { ?>
+                                                        <option value="<?= $teamRole->id?>"><?= str_replace("_"," ",$teamRole->title)?></option>
+                                                    <? } ?>
+                                                </select>
+                                                <div class="row">
+                                                    <div class="col-sm-12 m-t-20">
+                                                        <button class="btn btn-inno pull-right">Save</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="modal fade kickMemberModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-user-id="<?=$member->id?>">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">

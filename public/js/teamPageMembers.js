@@ -18,3 +18,13 @@ $(".muteMember").on("click",function () {
     });
 });
 
+$(".editMemberPermission").on("click",function () {
+    var user_id = $(this).data("user-id");
+
+    $(".editMemberPermissionsModal").each(function () {
+        if($(this).data("user-id") == user_id){
+            $(this).modal().toggle();
+        }
+    });
+});
+

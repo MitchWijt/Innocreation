@@ -30,21 +30,28 @@ class TeamSearchController extends Controller
      */
     public function searchTeamsAction(Request $request)
     {
-        $topTeams = Team::select("*")->orderBy("support","DESC")->limit(3)->get();
-        $user = User::select("*")->where("id", Session::get("user_id"))->first();
-        $searchedTeam = $request->input("searchTeams");
-        if($searchedTeam != "") { // checks if the search input is empty
-            $teamIdArray = [];
-            $teams = Team::select("*")->get();
-            foreach ($teams as $team) {
-                if (strpos($team, ucfirst($searchedTeam)) !== false) { //gets all the teams which the user searched on
-                    array_push($teamIdArray, $team->id);
+        if($request->input("allTeamsSearch") == null) {
+            $topTeams = Team::select("*")->orderBy("support", "DESC")->limit(3)->get();
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            $searchedTeam = $request->input("searchTeams");
+            if ($searchedTeam != "") { // checks if the search input is empty
+                $teamIdArray = [];
+                $teams = Team::select("*")->get();
+                foreach ($teams as $team) {
+                    if (strpos($team, ucfirst($searchedTeam)) !== false) { //gets all the teams which the user searched on
+                        array_push($teamIdArray, $team->id);
+                    }
                 }
+                $searchedTeams = Team::select("*")->whereIn("id", $teamIdArray)->get(); // all the teams where users searched on
+                return view("/public/home/teamSearch", compact("searchedTeams", "topTeams", "user"));
+            } else {
+                return redirect("/teams");
             }
-            $searchedTeams = Team::select("*")->whereIn("id", $teamIdArray)->get(); // all the teams where users searched on
-            return view("/public/home/teamSearch", compact("searchedTeams", "topTeams", "user"));
         } else {
-            return redirect("/teams");
+            $topTeams = Team::select("*")->orderBy("support", "DESC")->limit(3)->get();
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            $searchedTeams = Team::select("*")->get();
+            return view("/public/home/teamSearch", compact("searchedTeams", "topTeams", "user"));
         }
     }
 

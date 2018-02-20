@@ -22,31 +22,44 @@
                     </a>
                 <? } ?>
             </div>
-            <div class="hr col-sm-12"></div>
-            <div class="row">
-                <div class="col-sm-12 text-center v-center">
-                    <form action="/team/searchTeams" method="POST">
-                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+            <form action="/team/searchTeams" method="POST">
+                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                <div class="hr col-sm-12"></div>
+                <div class="row">
+                    <div class="col-sm-12 text-center v-center">
                         <div class="form-group">
                             <input type="text" class="input-fat col-sm-10" name="searchTeams" placeholder="Search teams...">
                             <button class="btn btn-lg btn-inno searchTeamBtn">Search</button>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 m-l-40">
-                    <? if($user) { ?>
-                        <? if($user->team_id == null) { ?>
-                            <p>Want your own team? <a class="regular-link" href="/my-account/teamInfo">click here</a></p>
-                        <? } else if($user->team_id != null) { ?>
-                            <p>Want your own team? <a class="regular-link" href="/my-team">click here</a></p>
-                        <? } ?>
-                    <? } else { ?>
-                        <p>Want your own team? <a class="regular-link" href="/login">click here</a></p>
-                    <? } ?>
+                <div class="row">
+                    <div class="col-sm-10">
+                        <div class="d-flex js-between">
+                                <div class="m-l-40">
+                                    <? if($user) { ?>
+                                    <? if($user->team_id == null) { ?>
+                                    <p>Want your own team? <a class="regular-link" href="/my-account/teamInfo">click here</a></p>
+                                    <? } else if($user->team_id != null) { ?>
+                                    <p>Want your own team? <a class="regular-link" href="/my-team">click here</a></p>
+                                    <? } ?>
+                                    <? } else { ?>
+                                    <p>Want your own team? <a class="regular-link" href="/login">click here</a></p>
+                                    <? } ?>
+                                </div>
+                            <div class="row m-l-30">
+                                <div class="m-l-40 ">
+                                    <div class="form-group d-flex pull-right">
+                                        <input type="checkbox" name="allTeamsSearch" value="1" class="m-r-10 m-t-5">
+                                        <p>Select all teams</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
+
             <? if(isset($searchedTeams)) { ?>
                 <span class="searched hidden">1</span>
                 <div class="row">

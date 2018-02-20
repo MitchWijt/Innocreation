@@ -130,6 +130,8 @@ Route::post("/my-team/muteMemberFromTeamChat", "TeamController@muteMemberFromTea
 
 Route::post("/my-team/unmuteMemberFromTeamChat", "TeamController@unmuteMemberFromTeamChatAction");
 
+Route::post("/my-team/editMemberPermissions", "TeamController@editMemberPermissionsAction");
+
 
 
 
