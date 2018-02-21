@@ -148,7 +148,7 @@
                         </div>
                         <div class="form-group m-t-20">
                             <input type="file" name="group_profile_picture" class="input hidden">
-                            <button class="btn btn-inno btn-sm">Upload group picture</button>
+                            <button class="btn btn-inno btn-sm" type="button">Upload group picture</button>
                         </div>
                         <h4>Add group members</h4>
                         <div class="form-group">
