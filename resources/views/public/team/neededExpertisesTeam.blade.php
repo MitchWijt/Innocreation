@@ -45,7 +45,7 @@
                         <input type="number" name="amountNewExpertise" max="10" min="1" class="input" value="1">
                     </div>
                 </div>
-                <? if($team->ceo_user_id == $user->id) { ?>
+                <? if($team->ceo_user_id == $user->id || $user->role == 4 || $user->role == 3 || $user->role == 1) { ?>
                     <div class="row">
                         <div class="col-sm-12 d-flex js-center m-t-20">
                             <button type="submit" class="btn btn-inno">Add expertise</button>
@@ -67,7 +67,7 @@
                         <div class="row d-flex js-center m-t-20">
                             <div class="card text-center">
                                 <div class="card-block">
-                                    <? if($team->ceo_user_id == $user->id) { ?>
+                                    <? if($team->ceo_user_id == $user->id || $user->role == 4 || $user->role == 3 || $user->role == 1) { ?>
                                         <i class="zmdi zmdi-close pull-right m-r-10 m-t-5 c-orange deleteCross" data-team-id="<?= $neededExpertise->team_id?>" data-expertise-id="<?= $neededExpertise->expertise_id?>"></i>
                                     <? } ?>
                                     <p class="f-z-rem m-b-5 p-0"><?=$neededExpertise->expertises->First()->title?></p>
@@ -100,7 +100,7 @@
                             <div class="requirement">
 
                             </div>
-                            <? if($team->ceo_user_id == $user->id) { ?>
+                            <? if($team->ceo_user_id == $user->id || $user->role == 4 || $user->role == 3 || $user->role == 1) { ?>
                                 <div class="row">
                                     <div class="col-sm-9 d-flex js-center m-t-10">
                                         <i class="zmdi zmdi-plus c-pointer m-l-20 addEmptyRequirement" style="font-size: 20px;"></i>
@@ -108,7 +108,7 @@
                                 </div>
                             <? } ?>
                         </div>
-                        <? if($team->ceo_user_id == $user->id) { ?>
+                        <? if($team->ceo_user_id == $user->id || $user->role == 4 || $user->role == 3 || $user->role == 1) { ?>
                             <div class="row">
                                 <div class="col-sm-12 d-flex js-center m-b-10">
                                     <button type="submit" class="btn btn-inno">Save</button>

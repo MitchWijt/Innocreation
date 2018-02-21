@@ -19,7 +19,11 @@
                                     <p class="m-t-15"><?= $member->getName()?></p>
                                 </div>
                                 <div class="col-sm-2">
-                                    <p class="m-t-15"><?= $member->roles->First()->title;?></p>
+                                    <? if($member->id == $team->ceo_user_id) { ?>
+                                        <p class="m-t-15">CEO</p>
+                                    <? } else { ?>
+                                        <p class="m-t-15"><?= $member->roles->First()->title;?></p>
+                                    <? } ?>
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="d-flex fd-column">
@@ -36,7 +40,7 @@
                         </div>
                         <div class="row m-t-20">
                             <div class="col-sm-12 d-flex m-b-20 m-t-10">
-                                <? if($team->ceo_user_id == $user->id) { ?>
+                                <? if($team->ceo_user_id == $user->id || $user->role == 1) { ?>
                                     <? if($member->id != $team->ceo_user_id) { ?>
                                         <div class="col-sm-4">
                                             <button class="btn btn-inno btn-sm col-sm-12">Go to account</button>
@@ -56,11 +60,8 @@
                                             <? } ?>
                                         </div>
                                     <? } else { ?>
-                                        <div class="col-sm-6">
-                                            <button class="btn btn-inno btn-sm col-sm-12">Go to account</button>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <button class="btn btn-inno btn-sm col-sm-12">CEO</button>
+                                        <div class="col-sm-12">
+                                            <button class="btn btn-inno btn-sm col-sm-6">Go to account</button>
                                         </div>
                                     <? } ?>
                                 <? } else { ?>
@@ -70,7 +71,7 @@
                                 <? } ?>
                             </div>
                         </div>
-                       <? if($team->ceo_user_id == $user->id) { ?>
+                       <? if($team->ceo_user_id == $user->id || $user->role == 1) { ?>
                             <? if($member->id != $team->ceo_user_id) { ?>
                                 <div class="row">
                                     <div class="col-sm-12 d-flex m-b-20 m-t-10">
