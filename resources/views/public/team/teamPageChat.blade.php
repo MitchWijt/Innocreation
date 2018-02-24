@@ -8,15 +8,17 @@
             </div>
             <hr class="col-ms-12">
             <div class="row d-flex js-center ">
-                <div class="col-sm-11 p-r-0 m-t-15">
-                    <button class="btn btn-inno pull-right" data-toggle="modal" data-target="#myModal">Create group chat</button>
-                </div>
+                <? if($user->id == $team->ceo_user_id || $user->role == 1) { ?>
+                    <div class="col-sm-11 p-r-0 m-t-15">
+                        <button class="btn btn-inno pull-right" data-toggle="modal" data-target="#myModal">Create group chat</button>
+                    </div>
+                <? } ?>
                 <div class="card col-sm-11 m-t-20 m-b-20">
                     <div class="card-block">
                         <div class="row text-center">
                             <div class="col-sm-12 m-t-20 m-b-20 d-flex">
                                 <div class="col-sm-4">
-                                    <img class="circleImage" src="<?= $team->getProfilePicture()?>" alt="<?= $team->team_name?>">
+                                    <img class="circleImage circle" src="<?= $team->getProfilePicture()?>" alt="<?= $team->team_name?>">
                                 </div>
                                 <div class="col-sm-4">
                                     <h3><?= $team->team_name?></h3>
@@ -96,41 +98,93 @@
 
 
             {{--GROUP CHAT PLACE AND CODE--}}
-
-            {{--<div class="d-flex fd-column m-t-20">--}}
-                {{--<div class="row d-flex js-center">--}}
-                    {{--<div class="card-lg text-center col-sm-11" style="height: 90px;">--}}
-                        {{--<div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" data-target="#test" aria-expanded="false">--}}
-                            {{--<p class="f-22 m-t-15 m-b-5 p-0">d></p>--}}
-                            {{--<div class="d-flex fd-column">--}}
-                                {{--<p class="f-20 m-t-15 m-b-0">d</p>--}}
-                                {{--<span class="f-13 c-orange">d</span>--}}
-                            {{--</div>--}}
-
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                {{--<div class="collapse collapseExample" id="test">--}}
-                    {{--<div class="row d-flex js-center">--}}
-                        {{--<div class="card-lg card-block col-sm-11">--}}
-                            {{--<form action="/sendMessageUser" method="post">--}}
-                                {{--<hr>--}}
-                                {{--<div class="row m-t-20">--}}
-                                    {{--<div class="col-sm-12 text-center">--}}
-                                        {{--<textarea name="message" placeholder="Send your message..." class="input col-sm-10" rows="5"></textarea>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="row">--}}
-                                    {{--<div class="col-sm-11 m-b-20 m-t-20">--}}
-                                        {{--<button class="btn btn-inno pull-right">Send message</button>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                            {{--</form>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-
+            <div class="m-b-20">
+                <? foreach($groupChats as $groupChat) { ?>
+                    <div class="d-flex fd-column m-t-20">
+                        <div class="row d-flex js-center">
+                            <div class="card-lg text-center col-sm-11" style="height: 90px;">
+                                <div class="co-sm-12 d-flex">
+                                    <div class="col-sm-4">
+                                        <? if($groupChat->groupChat->First()->profile_picture == null) { ?>
+                                            <form action="/my-team/uploadProfilePictureTeamGroupChat" class="groupChatProfilePicForm" method="post" enctype="multipart/form-data">
+                                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                <input type="hidden" name="group_chat_id" value="<?= $groupChat->team_chat_group_id?>">
+                                                <input type="file" class="hidden profilePictureGroupChat" name="profile_picture_group_chat">
+                                                <button type="button" class="btn btn-inno m-t-20 uploadProfilePic">Upload picture</button>
+                                            </form>
+                                        <? } else { ?>
+                                            <img class="circleImage circle m-t-10" src="<?= $groupChat->groupChat->First()->getProfilePicture()?>" alt="<?= $groupChat->groupChat->First()->title?>">
+                                        <? } ?>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="card-block groupChatCardToggle d-flex js-around m-t-10" data-group-chat-id="<?= $groupChat->team_chat_group_id?>">
+                                            <p class="f-22 m-t-15 m-b-5 p-0"><?= $groupChat->groupChat->First()->title?></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 m-t-20">
+                                    <button class="btn btn-inno">Settings</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse collapseExample groupChatCollapse" id="groupChat" data-group-chat-id="<?= $groupChat->team_chat_group_id?>">
+                            <div class="row d-flex js-center">
+                                <div class="card-lg card-block col-sm-11 m-b-20">
+                                    <form action="/my-team/sendMessageTeamGroupChat" method="post">
+                                        <? if(isset($urlParameter)) { ?>
+                                        <input type="hidden" name="url_content" class="url_content" value="<?= $urlParameter?>">
+                                        <? } ?>
+                                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                        <input type="hidden" name="sender_user_id" value="<?= $user->id?>">
+                                        <input type="hidden" name="chat_group_id" value="<?= $groupChat->team_chat_group_id?>">
+                                        <div class="o-scroll m-t-20" style="height: 300px;">
+                                            <? foreach($groupChat->getGroupChatMessages() as $message) { ?>
+                                                <? if($message->sender_user_id == $user->id) { ?>
+                                                    <div class="row m-t-20">
+                                                        <div class="col-sm-12">
+                                                            <div class="col-sm-5 messageSent pull-right m-b-10">
+                                                                <p><?= $message->message?></p>
+                                                                <span class="f-12 pull-right"><?=$message->time_sent?></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <? } else { ?>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="col-sm-5 pull-left m-b-10 messageReceived">
+                                                                <? if($message->sender->First()->id == $team->ceo_user_id) { ?>
+                                                                <p class="c-orange m-0"><?= $message->sender->First()->getName()?> - CEO:</p>
+                                                                <? } else { ?>
+                                                                <p class="c-orange m-0"><?= $message->sender->First()->getName()?> - <?= $message->sender->First()->getJoinedExpertise()->expertises->First()->title?>:</p>
+                                                                <? } ?>
+                                                                <p><?= $message->message?></p>
+                                                                <span class="f-12 pull-right"><?=$message->time_sent?></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <? } ?>
+                                            <? } ?>
+                                        </div>
+                                        <div class="d-flex js-center">
+                                            <hr class="col-sm-12 m-b-20">
+                                        </div>
+                                        <div class="row m-t-20">
+                                            <div class="col-sm-12 text-center">
+                                                <textarea name="message" placeholder="Send your message..." class="input col-sm-10" rows="5"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-11 m-b-20 m-t-20">
+                                                <button class="btn btn-inno pull-right">Send message</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <? } ?>
+            </div>
         </div>
     </div>
 
@@ -140,23 +194,36 @@
                 <div class="modal-header d-flex js-center">
                     <h4 class="modal-title text-center" id="modalLabel">Create group chat</h4>
                 </div>
-                <form action="">
+                <form action="/my-team/createChatGroup" method="post" class="groupChatForm">
+                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                    <input type="hidden" name="team_id" value="<?= $team->id?>">
                     <div class="modal-body p-t-0">
-                        <div class="form-group p-t-20">
+                        <div class="form-group p-t-20 ">
                             <p class="m-0 p-0">Group title</p>
                             <input type="text" name="group_title" class="input">
                         </div>
-                        <div class="form-group m-t-20">
-                            <input type="file" name="group_profile_picture" class="input hidden">
-                            <button class="btn btn-inno btn-sm" type="button">Upload group picture</button>
+                        <p class="f-19">Add group members</p>
+                        <div class="col-sm-12 d-flex p-l-0">
+                            <div class="form-group col-sm-7 p-l-0">
+                                <select name="groupMembers" class="input col-sm-5 groupMembersSelect">
+                                    <option value="" selected disabled>Choose members</option>
+                                    <? foreach($team->getMembers() as $member) { ?>
+                                        <? if($member->id != $user->id) { ?>
+                                            <option value="<?= $member->id?>"><?= $member->getName()?></option>
+                                        <? } ?>
+                                    <? } ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-5">
+                                <ul class="groupUsers">
+
+                                </ul>
+                            </div>
                         </div>
-                        <h4>Add group members</h4>
-                        <div class="form-group">
-                            <select name="groupMembers" class="input col-sm-4">
-                                <? foreach($team->getMembers() as $member) { ?>
-                                    <option value="<?= $member->id?>"><?= $member->getName()?></option>
-                                <? } ?>
-                            </select>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-inno pull-right">Create group</button>
+                            </div>
                         </div>
                     </div>
                 </form>

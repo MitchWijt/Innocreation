@@ -38,70 +38,72 @@
                     <? $recentChats = [];?>
                     <? if(isset($userMessages)) { ?>
                         <? foreach($userMessages as $userMessage) { ?>
-                            <? if($userMessage->sender_user_id == $user_id && $userMessage->team_id == null) { ?>
-                                <? if(!in_array($userMessage->receiver_user_id, $recentChats)) { ?>
-                                <? array_push($recentChats, $userMessage->receiver_user_id)?>
-                                    <div class="row d-flex js-center">
-                                        <div class="card text-center" style="height: 90px;">
-                                            <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userMessage->receiver_user_id?>">
-                                                <img class="circle circleImage m-0" src="<?=$userMessage->users->First()->getProfilePicture()?>" alt="">
-                                                <p class="f-22 m-t-15 m-b-5 p-0"><?=$userMessage->users->First()->firstname?></p>
-                                                <? if($userMessage->users->First()->team_id != null) { ?>
-                                                    <div class="d-flex fd-column">
-                                                        <p class="f-20 m-t-15 m-b-0"><?= $userMessage->users->First()->team->First()->team_name?></p>
-                                                        <span class="f-13 c-orange"><?if($userMessage->users->First()->team->First()->ceo_user_id == $userMessage->users->First()->id) echo "CEO"?></span>
-                                                    </div>
-                                                <? } ?>
+                            <? if($userMessage->team_chat_group_id == null) { ?>
+                                <? if($userMessage->sender_user_id == $user_id && $userMessage->team_id == null) { ?>
+                                    <? if(!in_array($userMessage->receiver_user_id, $recentChats)) { ?>
+                                    <? array_push($recentChats, $userMessage->receiver_user_id)?>
+                                        <div class="row d-flex js-center">
+                                            <div class="card text-center" style="height: 90px;">
+                                                <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userMessage->receiver_user_id?>">
+                                                    <img class="circle circleImage m-0" src="<?=$userMessage->users->First()->getProfilePicture()?>" alt="">
+                                                    <p class="f-22 m-t-15 m-b-5 p-0"><?=$userMessage->users->First()->firstname?></p>
+                                                    <? if($userMessage->users->First()->team_id != null) { ?>
+                                                        <div class="d-flex fd-column">
+                                                            <p class="f-20 m-t-15 m-b-0"><?= $userMessage->users->First()->team->First()->team_name?></p>
+                                                            <span class="f-13 c-orange"><?if($userMessage->users->First()->team->First()->ceo_user_id == $userMessage->users->First()->id) echo "CEO"?></span>
+                                                        </div>
+                                                    <? } ?>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="collapse collapseExample" data-user-id="<?= $userMessage->receiver_user_id?>">
-                                        <div class="card card-block">
-                                            <form action="/sendMessageUser" method="post">
-                                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                                <input type="hidden" name="receiver_user_id" value="<?=$userMessage->receiver_user_id?>">
-                                                <input type="hidden" name="sender_user_id" value="<?=$user_id?>">
-                                                <div class="col-sm-12 o-scroll" style="max-height: 200px;">
-                                                <? foreach($userMessage->getMessages($userMessage->receiver_user_id, $user_id) as $message) { ?>
-                                                    <? if($message->message != null) { ?>
-                                                        <? if($message->sender_user_id == $user_id) { ?>
-                                                            <div class="row messageSent m-b-10 m-l-200 m-r-30 m-t-15">
-                                                                <div class="col-sm-4">
-                                                                    <span class="f-12"><?=$message->time_sent?></span>
+                                        <div class="collapse collapseExample" data-user-id="<?= $userMessage->receiver_user_id?>">
+                                            <div class="card card-block">
+                                                <form action="/sendMessageUser" method="post">
+                                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                    <input type="hidden" name="receiver_user_id" value="<?=$userMessage->receiver_user_id?>">
+                                                    <input type="hidden" name="sender_user_id" value="<?=$user_id?>">
+                                                    <div class="col-sm-12 o-scroll" style="max-height: 200px;">
+                                                    <? foreach($userMessage->getMessages($userMessage->receiver_user_id, $user_id) as $message) { ?>
+                                                        <? if($message->message != null) { ?>
+                                                            <? if($message->sender_user_id == $user_id) { ?>
+                                                                <div class="row messageSent m-b-10 m-l-200 m-r-30 m-t-15">
+                                                                    <div class="col-sm-4">
+                                                                        <span class="f-12"><?=$message->time_sent?></span>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <p class=""><?=$message->message?></p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-8">
-                                                                    <p class=""><?=$message->message?></p>
+                                                            <? } else { ?>
+                                                                <div class="row messageReceived m-b-10 m-r-200 m-l-30 m-t-15">
+                                                                    <div class="col-sm-8">
+                                                                        <p class=""><?=$message->message?></p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <span class="f-12"><?=$message->time_sent?></span>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        <? } else { ?>
-                                                            <div class="row messageReceived m-b-10 m-r-200 m-l-30 m-t-15">
-                                                                <div class="col-sm-8">
-                                                                    <p class=""><?=$message->message?></p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <span class="f-12"><?=$message->time_sent?></span>
-                                                                </div>
-                                                            </div>
+                                                            <? } ?>
                                                         <? } ?>
                                                     <? } ?>
-                                                <? } ?>
-                                                </div>
-                                                <hr>
-                                                <div class="row m-t-20">
-                                                    <div class="col-sm-12 text-center">
-                                                        <textarea name="message" placeholder="Send your message..." class="input col-sm-10" rows="5"></textarea>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-sm-11 m-b-20 m-t-20">
-                                                        <button class="btn btn-inno pull-right">Send message</button>
+                                                    <hr>
+                                                    <div class="row m-t-20">
+                                                        <div class="col-sm-12 text-center">
+                                                            <textarea name="message" placeholder="Send your message..." class="input col-sm-10" rows="5"></textarea>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </form>
+                                                    <div class="row">
+                                                        <div class="col-sm-11 m-b-20 m-t-20">
+                                                            <button class="btn btn-inno pull-right">Send message</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
-                                    </div>
+                                    <? } ?>
                                 <? } ?>
-                            <? } ?>
+                            <? }?>
                         <? } ?>
                     <? } ?>
                 </div>

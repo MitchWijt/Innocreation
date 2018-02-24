@@ -6,6 +6,8 @@ use App\Expertises;
 use App\JoinRequestLinktable;
 use App\NeededExpertiseLinktable;
 use App\Team;
+use App\TeamChatGroup;
+use App\TeamChatGroupLinktable;
 use App\User;
 use App\UserMessage;
 use App\UserRole;
@@ -305,8 +307,12 @@ class TeamController extends Controller
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
         $messages = UserMessage::select("*")->where("team_id", $team->id)->get();
+        $groupChats = TeamChatGroupLinktable::select("*")->where("user_id", $user->id)->where("team_id", $team->id)->get();
 
-        return view("/public/team/teamPageChat", compact("team", "user","messages"));
+        if(request()->has('group_chat_id')){
+            $urlParameter = request()->group_chat_id;
+        }
+        return view("/public/team/teamPageChat", compact("team", "user","messages","groupChats","urlParameter"));
     }
 
     public function sendTeamMessageAction(Request $request){
@@ -324,6 +330,76 @@ class TeamController extends Controller
         $message->created_at = date("Y-m-d H:i:s");
         $message->save();
 
+        return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function addUsersToChatGroupAction(Request $request){
+        $user_id = $request->input("user_id");
+        $user = User::select("*")->where("id", $user_id)->first();
+
+        $userArray = ['user_id' => $user->id, 'user_name' => $user->getName()];
+
+        return json_encode($userArray);
+    }
+
+    public function createChatGroupAction(Request $request){
+        $groupChat = new TeamChatGroup();
+        $groupChat->title = $request->input("group_title");
+        $groupChat->created_at = date("Y-m-d H:i:s");
+        $groupChat->save();
+
+        $team_id = $request->input("team_id");
+
+        $groupChatLinktableCreator = new TeamChatGroupLinktable();
+        $groupChatLinktableCreator->user_id = Session::get("user_id");
+        $groupChatLinktableCreator->team_id = $team_id;
+        $groupChatLinktableCreator->team_chat_group_id = $groupChat->id;
+        $groupChatLinktableCreator->save();
+
+        foreach($request->input("groupChatUsersInput") as $groupChatUser){
+            $groupChatLinktable = new TeamChatGroupLinktable();
+            $groupChatLinktable->user_id = $groupChatUser;
+            $groupChatLinktableCreator->team_id = $team_id;
+            $groupChatLinktable->team_chat_group_id = $groupChat->id;
+            $groupChatLinktable->save();
+        }
+
+        return redirect($_SERVER["HTTP_REFERER"]);
+
+    }
+
+    public function sendMessageTeamGroupChatAction(Request $request){
+        $sender_user_id = $request->input("sender_user_id");
+        $chat_group_id = $request->input("chat_group_id");
+        $groupChatmessage = $request->input("message");
+
+        $timeNow = date("H:i:s");
+        $time = (date("g:i a", strtotime($timeNow)));
+        $message = new UserMessage();
+        $message->sender_user_id =  $sender_user_id;
+        $message->team_chat_group_id = $chat_group_id;
+        $message->message = $groupChatmessage;
+        $message->time_sent = $time;
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+
+        return redirect("/my-team/team-chat?group_chat_id=$chat_group_id");
+
+    }
+
+    public function uploadProfilePictureTeamGroupChatAction(Request $request){
+
+        $group_chat_id = $request->input("group_chat_id");
+
+
+        $file = $request->file("profile_picture_group_chat");
+        $destinationPath = public_path().'/images/teamGroupChatProfilePictures';
+        $fullname = $file->getClientOriginalName();
+
+        $groupChat = TeamChatGroup::select("*")->where("id", $group_chat_id)->first();
+        $groupChat->profile_picture = $fullname;
+        $groupChat->save();
+        $file->move($destinationPath, $fullname);
         return redirect($_SERVER["HTTP_REFERER"]);
     }
 
