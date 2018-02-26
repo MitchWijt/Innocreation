@@ -106,13 +106,16 @@
                                 <div class="card-lg text-center col-sm-11" style="height: 90px;">
                                     <div class="co-sm-12 d-flex">
                                         <div class="col-sm-4">
+
                                             <? if($groupChat->groupChat->First()->profile_picture == null) { ?>
-                                                <form action="/my-team/uploadProfilePictureTeamGroupChat" class="groupChatProfilePicForm" method="post" enctype="multipart/form-data">
-                                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                                    <input type="hidden" name="group_chat_id" value="<?= $groupChat->team_chat_group_id?>">
-                                                    <input type="file" class="hidden profilePictureGroupChat" name="profile_picture_group_chat">
-                                                    <button type="button" class="btn btn-inno m-t-20 uploadProfilePic">Upload picture</button>
-                                                </form>
+                                                <? if($user->id == $team->ceo_user_id || $user->role == 1) { ?>
+                                                    <form action="/my-team/uploadProfilePictureTeamGroupChat" class="groupChatProfilePicForm" method="post" enctype="multipart/form-data">
+                                                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                        <input type="hidden" name="group_chat_id" value="<?= $groupChat->team_chat_group_id?>">
+                                                        <input type="file" class="hidden profilePictureGroupChat" name="profile_picture_group_chat">
+                                                        <button type="button" class="btn btn-inno m-t-20 uploadProfilePic">Upload picture</button>
+                                                    </form>
+                                                <? } ?>
                                             <? } else { ?>
                                                 <img class="circleImage circle m-t-10" src="<?= $groupChat->groupChat->First()->getProfilePicture()?>" alt="<?= $groupChat->groupChat->First()->title?>">
                                             <? } ?>
@@ -123,7 +126,9 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-4 m-t-20">
-                                        <button class="btn btn-inno settingsGroupChatBtn">Settings</button>
+                                            <? if($user->id == $team->ceo_user_id || $user->role == 1) { ?>
+                                                <button class="btn btn-inno settingsGroupChatBtn">Settings</button>
+                                            <? } ?>
                                         </div>
                                     </div>
                                 </div>

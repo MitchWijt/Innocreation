@@ -356,12 +356,14 @@ class TeamController extends Controller
         $group_chat_id = $request->input("group_chat_id");
         $team_id = $request->input("team_id");
 
-        foreach ($groupChatMembers as $groupChatMember) {
-            $groupChat = new TeamChatGroupLinktable();
-            $groupChat->user_id = $groupChatMember;
-            $groupChat->team_id = $team_id;
-            $groupChat->team_chat_group_id = $group_chat_id;
-            $groupChat->save();
+        if($groupChatMembers != null) {
+            foreach ($groupChatMembers as $groupChatMember) {
+                $groupChat = new TeamChatGroupLinktable();
+                $groupChat->user_id = $groupChatMember;
+                $groupChat->team_id = $team_id;
+                $groupChat->team_chat_group_id = $group_chat_id;
+                $groupChat->save();
+            }
         }
 
         $group = TeamChatGroup::select("*")->where("id", $group_chat_id)->first();
