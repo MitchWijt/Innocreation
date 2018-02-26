@@ -342,6 +342,52 @@ class TeamController extends Controller
         return json_encode($userArray);
     }
 
+    public function removeUserFromGroupChatAction(Request $request){
+        $user_id = $request->input("user_id");
+        $group_chat_id = $request->input("group_chat_id");
+        $groupChat = TeamChatGroupLinktable::select("*")->where("team_chat_group_id", $group_chat_id)->where("user_id", $user_id)->first();
+        $groupChat->delete();
+        return 1;
+    }
+
+    public function saveGroupChatTeamAction(Request $request){
+        $groupChatMembers = $request->input("groupChatUsersInput");
+        $title = $request->input("group_chat_title");
+        $group_chat_id = $request->input("group_chat_id");
+        $team_id = $request->input("team_id");
+
+        foreach ($groupChatMembers as $groupChatMember) {
+            $groupChat = new TeamChatGroupLinktable();
+            $groupChat->user_id = $groupChatMember;
+            $groupChat->team_id = $team_id;
+            $groupChat->team_chat_group_id = $group_chat_id;
+            $groupChat->save();
+        }
+
+        $group = TeamChatGroup::select("*")->where("id", $group_chat_id)->first();
+        $group->title = $title;
+        $group->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function deleteGroupChatTeamAction(Request $request){
+        $group_id = $request->input("group_chat_id");
+
+        $group = TeamChatGroup::select("*")->where("id", $group_id)->first();
+        $group->delete();
+
+        $groupChatLinktables = TeamChatGroupLinktable::select("*")->where("team_chat_group_id", $group_id)->get();
+        foreach ($groupChatLinktables as $groupChatLinktable) {
+            $groupChatLinktable->delete();
+        }
+
+        $messages = UserMessage::select("*")->where("team_chat_group_id", $group_id)->get();
+        foreach($messages as $message){
+            $message->delete();
+        }
+        return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
     public function createChatGroupAction(Request $request){
         $groupChat = new TeamChatGroup();
         $groupChat->title = $request->input("group_title");

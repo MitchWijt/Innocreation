@@ -63,12 +63,19 @@
                                                 </a>
                                             </div>
                                             <div class="col-sm-4">
-                                                <p class="m-t-15"><?= $member->getName()?></p>
+                                                <p class="m-t-15 <? if($team->ceo_user_id == $member->id) echo "m-b-0"; ?>"><?= $member->getName()?></p>
+                                                <? if($team->ceo_user_id == $member->id) { ?>
+                                                    <p class="c-orange text f-12 m-l-25">CEO</p>
+                                                <? } ?>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="d-flex fd-column">
-                                                    <? foreach($member->getExpertises() as $memberExpertise) { ?>
-                                                        <p><?= $memberExpertise->title?></p>
+                                                    <? if($team->ceo_user_id == $member->id) { ?>
+                                                        <? foreach($member->getExpertises() as $memberExpertise) { ?>
+                                                            <p><?= $memberExpertise->title?></p>
+                                                        <? } ?>
+                                                    <? } else { ?>
+                                                       <p class="m-t-15"><?= $member->getJoinedExpertise()->expertises->First()->title?></p>
                                                     <? } ?>
                                                 </div>
                                             </div>
