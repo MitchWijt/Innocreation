@@ -469,6 +469,10 @@ footer{
     width: 65px;
     height: 65px;
 }
+.circleSmall{
+    width: 25px;
+    height: 25px;
+}
 .circleImgLg{
     width: 250px;
     height: 250px;

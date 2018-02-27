@@ -12,8 +12,15 @@
         <a class="regular-link c-gray" href="/my-team/members">Team members</a>
     </div>
     <hr>
-    <div class="sidebar-tab text-center">
+    <div class="sidebar-tab text-center p-relative">
+        <?
+            $team = \App\Team::select("*")->where("team_name", \Illuminate\Support\Facades\Session::get("team_name"))->first();
+            $unseenMessages = \App\UserMessage::select("*")->where("team_id", $team->id)->where("seen_at" ,null)->get();
+        ?>
         <a class="regular-link c-gray" href="/my-team/team-chat">Team chat</a>
+        <? if(count($unseenMessages) > 0) { ?>
+            <p class="circle circleSmall p-absolute c-orange" style="top: -1px; left: 170px;"><?= count($unseenMessages)?></p>
+        <? } ?>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

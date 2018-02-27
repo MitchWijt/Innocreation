@@ -126,7 +126,7 @@ Route::get("/my-team/team-chat", "TeamController@teamChatAction");
 
 Route::post("/my-team/sendTeamMessage", "TeamController@sendTeamMessageAction");
 
-Route::post("/addUsersToChatGroup", "TeamController@addUsersToChatGroupAction");
+Route::post("/addUsersToGroupChat", "TeamController@addUsersToGroupChatAction");
 
 Route::post("/removeUserFromGroupChat", "TeamController@removeUserFromGroupChatAction");
 
@@ -134,7 +134,7 @@ Route::post("/saveGroupChatTeam", "TeamController@saveGroupChatTeamAction");
 
 Route::post("/deleteGroupChatTeam", "TeamController@deleteGroupChatTeamAction");
 
-Route::post("/my-team/createChatGroup", "TeamController@createChatGroupAction");
+Route::post("/my-team/createGroupChat", "TeamController@createGroupChatAction");
 
 Route::post("/my-team/sendMessageTeamGroupChat", "TeamController@sendMessageTeamGroupChatAction");
 

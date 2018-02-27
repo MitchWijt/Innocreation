@@ -111,7 +111,7 @@
                                                 <? if($user->id == $team->ceo_user_id || $user->role == 1) { ?>
                                                     <form action="/my-team/uploadProfilePictureTeamGroupChat" class="groupChatProfilePicForm" method="post" enctype="multipart/form-data">
                                                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                                        <input type="hidden" name="group_chat_id" value="<?= $groupChat->team_chat_group_id?>">
+                                                        <input type="hidden" name="group_chat_id" value="<?= $groupChat->team_group_chat_id?>">
                                                         <input type="file" class="hidden profilePictureGroupChat" name="profile_picture_group_chat">
                                                         <button type="button" class="btn btn-inno m-t-20 uploadProfilePic">Upload picture</button>
                                                     </form>
@@ -121,7 +121,7 @@
                                             <? } ?>
                                         </div>
                                         <div class="col-sm-4">
-                                            <div class="card-block groupChatCardToggle d-flex js-around m-t-10" data-group-chat-id="<?= $groupChat->team_chat_group_id?>">
+                                            <div class="card-block groupChatCardToggle d-flex js-around m-t-10" data-group-chat-id="<?= $groupChat->team_group_chat_id?>">
                                                 <p class="f-22 m-t-15 m-b-5 p-0"><?= $groupChat->groupChat->First()->title?></p>
                                             </div>
                                         </div>
@@ -133,7 +133,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="collapse collapseExample groupChatCollapse" id="groupChat" data-group-chat-id="<?= $groupChat->team_chat_group_id?>">
+                            <div class="collapse collapseExample groupChatCollapse" id="groupChat" data-group-chat-id="<?= $groupChat->team_group_chat_id?>">
                                 <div class="row d-flex js-center">
                                     <div class="card-lg card-block col-sm-11 m-b-20">
                                         <form action="/my-team/sendMessageTeamGroupChat" method="post">
@@ -142,7 +142,7 @@
                                             <? } ?>
                                             <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                             <input type="hidden" name="sender_user_id" value="<?= $user->id?>">
-                                            <input type="hidden" name="chat_group_id" value="<?= $groupChat->team_chat_group_id?>">
+                                            <input type="hidden" name="chat_group_id" value="<?= $groupChat->team_group_chat_id?>">
                                             <div class="o-scroll m-t-20" style="height: 300px;">
                                                 <? foreach($groupChat->getGroupChatMessages() as $message) { ?>
                                                     <? if($message->sender_user_id == $user->id) { ?>
@@ -206,7 +206,7 @@
                                             <div class="col-sm-12">
                                                 <form action="/deleteGroupChatTeam" method="post">
                                                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                                    <input type="hidden" name="group_chat_id" value="<?= $groupChat->team_chat_group_id?>">
+                                                    <input type="hidden" name="group_chat_id" value="<?= $groupChat->team_group_chat_id?>">
                                                     <button class="btn btn-inno btn-sm pull-right">Delete group chat</button>
                                                 </form>
                                             </div>
@@ -216,7 +216,7 @@
                                                 <form action="/saveGroupChatTeam" method="post" class="settingsGroupChatForm">
                                                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                                     <input type="hidden" name="team_id" value="<?= $team->id?>">
-                                                    <input type="hidden" name="group_chat_id" value="<?= $groupChat->team_chat_group_id?>">
+                                                    <input type="hidden" name="group_chat_id" value="<?= $groupChat->team_group_chat_id?>">
                                                     <div class="form-group">
                                                         <div class="d-flex fd-column">
                                                             <span>Title</span>
@@ -243,7 +243,7 @@
                                                                     <span>Members in group: </span>
                                                                     <ul class="groupUsers">
                                                                         <? foreach($groupChat->getGroupChatMembers() as $groupChatMember) { ?>
-                                                                            <li class="memberListItem" data-user-id="<?= $groupChatMember->id?>"><?= $groupChatMember->getName()?> <i data-user-id="<?= $groupChatMember->id?>" data-group-chat-id="<?= $groupChat->team_chat_group_id?>" class="zmdi zmdi-close c-orange removeFromGroupChat"></i></li>
+                                                                            <li class="memberListItem" data-user-id="<?= $groupChatMember->id?>"><?= $groupChatMember->getName()?> <i data-user-id="<?= $groupChatMember->id?>" data-group-chat-id="<?= $groupChat->team_group_chat_id?>" class="zmdi zmdi-close c-orange removeFromGroupChat"></i></li>
                                                                         <? } ?>
                                                                     </ul>
                                                                 </div>
@@ -274,7 +274,7 @@
                 <div class="modal-header d-flex js-center">
                     <h4 class="modal-title text-center" id="modalLabel">Create group chat</h4>
                 </div>
-                <form action="/my-team/createChatGroup" method="post" class="groupChatForm">
+                <form action="/my-team/createGroupChat" method="post" class="groupChatForm">
                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
                     <input type="hidden" name="team_id" value="<?= $team->id?>">
                     <div class="modal-body p-t-0">

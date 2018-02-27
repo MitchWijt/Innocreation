@@ -9,7 +9,7 @@ $(".groupMembersSelect").on("change",function () {
                 return xhr.setRequestHeader('X-CSRF-TOKEN', token);
             }
         },
-        url: "/addUsersToChatGroup",
+        url: "/addUsersToGroupChat",
         dataType: "JSON",
         data: {'user_id': user_id},
         success: function (data) {

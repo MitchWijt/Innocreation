@@ -6,8 +6,8 @@ use App\Expertises;
 use App\JoinRequestLinktable;
 use App\NeededExpertiseLinktable;
 use App\Team;
-use App\TeamChatGroup;
-use App\TeamChatGroupLinktable;
+use App\TeamGroupChat;
+use App\TeamGroupChatLinktable;
 use App\User;
 use App\UserMessage;
 use App\UserRole;
@@ -307,7 +307,12 @@ class TeamController extends Controller
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
         $messages = UserMessage::select("*")->where("team_id", $team->id)->get();
-        $groupChats = TeamChatGroupLinktable::select("*")->where("user_id", $user->id)->where("team_id", $team->id)->get();
+
+        foreach($messages as $message){
+            $message->seen_at = date("Y-m-d H:i:s");
+            $message->save();
+        }
+        $groupChats = TeamGroupChatLinktable::select("*")->where("user_id", $user->id)->where("team_id", $team->id)->get();
 
         if(request()->has('group_chat_id')){
             $urlParameter = request()->group_chat_id;
@@ -333,7 +338,7 @@ class TeamController extends Controller
         return redirect($_SERVER["HTTP_REFERER"]);
     }
 
-    public function addUsersToChatGroupAction(Request $request){
+    public function addUsersToGroupChatAction(Request $request){
         $user_id = $request->input("user_id");
         $user = User::select("*")->where("id", $user_id)->first();
 
@@ -345,7 +350,7 @@ class TeamController extends Controller
     public function removeUserFromGroupChatAction(Request $request){
         $user_id = $request->input("user_id");
         $group_chat_id = $request->input("group_chat_id");
-        $groupChat = TeamChatGroupLinktable::select("*")->where("team_chat_group_id", $group_chat_id)->where("user_id", $user_id)->first();
+        $groupChat = TeamGroupChatLinktable::select("*")->where("team_group_chat_id", $group_chat_id)->where("user_id", $user_id)->first();
         $groupChat->delete();
         return 1;
     }
@@ -358,15 +363,15 @@ class TeamController extends Controller
 
         if($groupChatMembers != null) {
             foreach ($groupChatMembers as $groupChatMember) {
-                $groupChat = new TeamChatGroupLinktable();
+                $groupChat = new TeamGroupChatLinktable();
                 $groupChat->user_id = $groupChatMember;
                 $groupChat->team_id = $team_id;
-                $groupChat->team_chat_group_id = $group_chat_id;
+                $groupChat->team_group_chat_id = $group_chat_id;
                 $groupChat->save();
             }
         }
 
-        $group = TeamChatGroup::select("*")->where("id", $group_chat_id)->first();
+        $group = TeamGroupChat::select("*")->where("id", $group_chat_id)->first();
         $group->title = $title;
         $group->save();
         return redirect($_SERVER["HTTP_REFERER"]);
@@ -375,40 +380,40 @@ class TeamController extends Controller
     public function deleteGroupChatTeamAction(Request $request){
         $group_id = $request->input("group_chat_id");
 
-        $group = TeamChatGroup::select("*")->where("id", $group_id)->first();
+        $group = TeamGroupChat::select("*")->where("id", $group_id)->first();
         $group->delete();
 
-        $groupChatLinktables = TeamChatGroupLinktable::select("*")->where("team_chat_group_id", $group_id)->get();
+        $groupChatLinktables = TeamGroupChatLinktable::select("*")->where("team_group_chat_id", $group_id)->get();
         foreach ($groupChatLinktables as $groupChatLinktable) {
             $groupChatLinktable->delete();
         }
 
-        $messages = UserMessage::select("*")->where("team_chat_group_id", $group_id)->get();
+        $messages = UserMessage::select("*")->where("team_group_chat_id", $group_id)->get();
         foreach($messages as $message){
             $message->delete();
         }
         return redirect($_SERVER["HTTP_REFERER"]);
     }
 
-    public function createChatGroupAction(Request $request){
-        $groupChat = new TeamChatGroup();
+    public function createGroupChatAction(Request $request){
+        $groupChat = new TeamGroupChat();
         $groupChat->title = $request->input("group_title");
         $groupChat->created_at = date("Y-m-d H:i:s");
         $groupChat->save();
 
         $team_id = $request->input("team_id");
 
-        $groupChatLinktableCreator = new TeamChatGroupLinktable();
+        $groupChatLinktableCreator = new TeamGroupChatLinktable();
         $groupChatLinktableCreator->user_id = Session::get("user_id");
         $groupChatLinktableCreator->team_id = $team_id;
-        $groupChatLinktableCreator->team_chat_group_id = $groupChat->id;
+        $groupChatLinktableCreator->team_group_chat_id = $groupChat->id;
         $groupChatLinktableCreator->save();
 
         foreach($request->input("groupChatUsersInput") as $groupChatUser){
-            $groupChatLinktable = new TeamChatGroupLinktable();
+            $groupChatLinktable = new TeamGroupChatLinktable();
             $groupChatLinktable->user_id = $groupChatUser;
             $groupChatLinktableCreator->team_id = $team_id;
-            $groupChatLinktable->team_chat_group_id = $groupChat->id;
+            $groupChatLinktable->team_group_chat_id = $groupChat->id;
             $groupChatLinktable->save();
         }
 
@@ -425,7 +430,7 @@ class TeamController extends Controller
         $time = (date("g:i a", strtotime($timeNow)));
         $message = new UserMessage();
         $message->sender_user_id =  $sender_user_id;
-        $message->team_chat_group_id = $chat_group_id;
+        $message->team_group_chat_id = $chat_group_id;
         $message->message = $groupChatmessage;
         $message->time_sent = $time;
         $message->created_at = date("Y-m-d H:i:s");
@@ -444,7 +449,7 @@ class TeamController extends Controller
         $destinationPath = public_path().'/images/teamGroupChatProfilePictures';
         $fullname = $file->getClientOriginalName();
 
-        $groupChat = TeamChatGroup::select("*")->where("id", $group_chat_id)->first();
+        $groupChat = TeamGroupChat::select("*")->where("id", $group_chat_id)->first();
         $groupChat->profile_picture = $fullname;
         $groupChat->save();
         $file->move($destinationPath, $fullname);
