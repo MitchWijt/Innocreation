@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Expertises_linktable;
 use App\FavoriteTeamLinktable;
+use App\NeededExpertiseLinktable;
 use App\Team;
 use App\TeamReview;
 use App\User;
@@ -57,7 +58,16 @@ class PageController extends Controller
         $loggedIn = User::select("*")->where("id", Session::get("user_id"))->first();
         $expertise_linktable = Expertises_linktable::select("*")->where("user_id", $user->id)->get();
         $portfolios = UserPortfolio::select("*")->where("user_id", $user->id)->get();
-        return view("public/pages/singleUserPage", compact("user","expertise_linktable", "loggedIn", "portfolios"));
+        if($loggedIn) {
+            $team = Team::select("*")->where("ceo_user_id", $loggedIn->id)->first();
+
+            $neededExpertisesArray = [];
+            $neededExpertises = NeededExpertiseLinktable::select("*")->where("team_id",$team->id)->where("amount","!=", 0)->get();
+            foreach($neededExpertises as $neededExpertise){
+                array_push($neededExpertisesArray, $neededExpertise->expertise_id);
+            }
+        }
+        return view("public/pages/singleUserPage", compact("user","expertise_linktable", "loggedIn", "portfolios","team", "neededExpertisesArray"));
     }
 
     /**

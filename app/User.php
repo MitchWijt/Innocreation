@@ -48,6 +48,9 @@ class User extends Authenticatable
 
     public function getJoinedExpertise(){
         $expertise = JoinRequestLinktable::select("*")->where("user_id", $this->id)->where("accepted", 1)->first();
+        if(!$expertise){
+            $expertise = InviteRequestLinktable::select("*")->where("user_id", $this->id)->where("accepted", 1)->first();
+        }
         return $expertise;
     }
 

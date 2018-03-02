@@ -77,7 +77,29 @@
                                     <div class="d-flex fd-column">
                                         <div class="row d-flex js-center">
                                             <div class="col-sm-11">
-                                                <p class="f-21 m-0"><?= $expertise->expertises->First()->title?></p>
+                                                <div class="d-flex js-between">
+                                                    <p class="f-21 m-0"><?= $expertise->expertises->First()->title?></p>
+                                                    <? if($user->team_id == null) { ?>
+                                                        <? if($loggedIn) { ?>
+                                                            <? if($team) { ?>
+                                                                <? if(in_array($expertise->expertise_id, $neededExpertisesArray)) { ?>
+                                                                    <? if($team->checkInvite($expertise->expertise_id, $team->id, $user->id) == false) { ?>
+                                                                        <form action="/my-team/inviteUserForTeam" method="post">
+                                                                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                                            <input type="hidden" name="invite" value="1">
+                                                                            <input type="hidden" name="team_id" value="<?= $team->id?>">
+                                                                            <input type="hidden" name="expertise_id" value="<?= $expertise->expertise_id?>">
+                                                                            <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                                                            <button class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
+                                                                        </form>
+                                                                    <? } else { ?>
+                                                                        <p class="c-orange">User invited</p>
+                                                                    <? } ?>
+                                                                <? } ?>
+                                                            <? } ?>
+                                                        <? } ?>
+                                                    <? } ?>
+                                                </div>
                                                 <hr>
                                                 <p><?= $expertise->description?></p>
                                             </div>

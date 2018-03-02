@@ -80,11 +80,17 @@ Route::post("/createTeam","UserController@createNewTeam");
 
 Route::post("/favoriteTeam","UserController@favoriteTeamAction");
 
+Route::post("/postTeamReview","UserController@postTeamReviewAction");
+
+// invites and join requests
 Route::post("/applyForTeam","UserController@applyForTeamAction");
 
 Route::get("/my-account/team-join-requests","UserController@userTeamJoinRequestsAction");
 
-Route::post("/postTeamReview","UserController@postTeamReviewAction");
+Route::post("/my-account/acceptTeamInvite","UserController@acceptTeamInviteAction");
+
+Route::post("/my-account/rejectTeamInvite","UserController@rejectTeamInviteAction");
+
 
 //==============================SEARCHTEAMSPAGE========================
 
@@ -117,6 +123,8 @@ Route::get("/my-team/user-join-requests", "TeamController@teamUserJoinRequestsAc
 Route::post("/my-team/rejectUserFromTeam", "TeamController@rejectUserFromTeamAction");
 
 Route::post("/my-team/acceptUserInteam", "TeamController@acceptUserInteamAction");
+
+Route::post("/my-team/inviteUserForTeam", "TeamController@inviteUserForTeamAction");
 
 Route::get("/my-team/members", "TeamController@teamMembersPage");
 

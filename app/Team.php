@@ -81,4 +81,14 @@ class Team extends Model
         }
         return $support;
     }
+
+    public function checkInvite($expertise_id, $team_id, $user_id){
+        $bool = false;
+        $invite = InviteRequestLinktable::select("*")->where("expertise_id", $expertise_id)->where("team_id", $team_id)->where("user_id", $user_id)->where("accepted", 0)->get();
+        if(count($invite) > 0){
+            $bool = true;
+        }
+        return $bool;
+    }
+
 }
