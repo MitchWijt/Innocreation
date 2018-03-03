@@ -365,6 +365,7 @@ class UserController extends Controller
     }
 
     public function favoriteTeamAction(Request $request){
+        // adds and deletes team to user favorites
         $team_id = $request->input("team_id");
         $user_id = Session::get("user_id");
         $favoriteExists = FavoriteTeamLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->first();
@@ -381,6 +382,8 @@ class UserController extends Controller
     }
 
     public function applyForTeamAction(Request $request){
+        // sends a join request to the team.
+        // users applies for the team.
         $team_id = $request->input("team_id");
         $user_id = $request->input("user_id");
         $expertise_id = $request->input("expertise_id");
@@ -423,6 +426,7 @@ class UserController extends Controller
     }
 
     public function userTeamJoinRequestsAction(){
+        // gets all the join requests for the user
         $user_id = Session::get("user_id");
         $teamJoinRequests = JoinRequestLinktable::select("*")->where("user_id", $user_id)->get();
         $invites = InviteRequestLinktable::select("*")->where("user_id", $user_id)->get();
@@ -430,6 +434,8 @@ class UserController extends Controller
     }
 
     public function postTeamReviewAction(Request $request){
+        // posts team review for team
+        // calculates the support points the team gets for the review.
         $team_id = $request->input("team_id");
         $user_id = $request->input("user_id");
         $stars_value = $request->input("star_value");
@@ -473,6 +479,9 @@ class UserController extends Controller
     }
 
     public function acceptTeamInviteAction(Request $request){
+        // user accepts the team invite
+        // Sends a message to the team.
+        // Rejects any other invite sent to the user
         $user_id = $request->input("user_id");
         $invite_id = $request->input("invite_id");
         $expertise_id = $request->input("expertise_id");
@@ -513,5 +522,35 @@ class UserController extends Controller
         $message->save();
 
         return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function rejectTeamInviteAction(Request $request){
+        //rejects the team invite sent to the user + sends a message to the CEO of the team.
+        $invite_id = $request->input("invite_id");
+        $invite = InviteRequestLinktable::select("*")->where("id", $invite_id)->first();
+        $invite->accepted = 2;
+        $invite->save();
+
+        $ceo  = User::select("*")->where("id", $invite->team->First()->ceo_user_id)->First();
+        $timeNow = date("H:i:s");
+        $time = (date("g:i a", strtotime($timeNow)));
+
+        $message = new UserMessage();
+        $message->sender_user_id = $invite->users->first()->id;
+        $message->receiver_user_id = $invite->teams->first()->ceo_user_id;
+        $message->message = "Hey $ceo I decided to reject your invite";
+        $message->time_sent = $time;
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+
+        $message = new UserMessage();
+        $message->sender_user_id = $invite->teams->first()->ceo_user_id;
+        $message->receiver_user_id = $invite->users->first()->id;
+        $message->message = null;
+        $message->time_sent = null;
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
+
     }
 }

@@ -211,74 +211,74 @@
                     </div>
                 </div>
             </div>
-            <? if($user) { ?>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="d-flex js-center">
-                            <div class="card card-lg m-t-20 m-b-20">
-                                <div class="card-block m-t-10">
-                                    <div class="row">
-                                        <div class="col-sm-12 m-l-20">
-                                            <h3>Team reviews</h3>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="d-flex js-center">
+                        <div class="card card-lg m-t-20 m-b-20">
+                            <div class="card-block m-t-10">
+                                <div class="row">
+                                    <div class="col-sm-12 m-l-20">
+                                        <h3>Team reviews</h3>
+                                    </div>
+                                </div>
+                                <? foreach($reviews as $review) { ?>
+                                    <div class="row d-flex js-center">
+                                        <div class="col-sm-11 d-flex p-l-0">
+                                            <div class="col-sm-2">
+                                                <div class="c-orange">
+                                                    <? if($review->stars == 5) { ?>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                    <? } else if($review->stars == 4) { ?>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                        <i class="zmdi zmdi-star-outline"></i>
+                                                    <? } else if($review->stars == 3) { ?>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                        <i class="zmdi zmdi-star-outline"></i>
+                                                        <i class="zmdi zmdi-star-outline"></i>
+                                                    <? } else if($review->stars == 2) { ?>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                        <i class="zmdi zmdi-star-outline"></i>
+                                                        <i class="zmdi zmdi-star-outline"></i>
+                                                        <i class="zmdi zmdi-star-outline"></i>
+                                                    <? } else if($review->stars == 1) { ?>
+                                                        <i class="zmdi zmdi-star"></i>
+                                                        <i class="zmdi zmdi-star-outline"></i>
+                                                        <i class="zmdi zmdi-star-outline"></i>
+                                                        <i class="zmdi zmdi-star-outline"></i>
+                                                        <i class="zmdi zmdi-star-outline"></i>
+                                                    <? } ?>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-9 p-l-0">
+                                                <p class="f-17"><?= $review->title?></p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <? foreach($reviews as $review) { ?>
-                                        <div class="row d-flex js-center">
-                                            <div class="col-sm-11 d-flex p-l-0">
-                                                <div class="col-sm-2">
-                                                    <div class="c-orange">
-                                                        <? if($review->stars == 5) { ?>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                        <? } else if($review->stars == 4) { ?>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                            <i class="zmdi zmdi-star-outline"></i>
-                                                        <? } else if($review->stars == 3) { ?>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                            <i class="zmdi zmdi-star-outline"></i>
-                                                            <i class="zmdi zmdi-star-outline"></i>
-                                                        <? } else if($review->stars == 2) { ?>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                            <i class="zmdi zmdi-star-outline"></i>
-                                                            <i class="zmdi zmdi-star-outline"></i>
-                                                            <i class="zmdi zmdi-star-outline"></i>
-                                                        <? } else if($review->stars == 1) { ?>
-                                                            <i class="zmdi zmdi-star"></i>
-                                                            <i class="zmdi zmdi-star-outline"></i>
-                                                            <i class="zmdi zmdi-star-outline"></i>
-                                                            <i class="zmdi zmdi-star-outline"></i>
-                                                            <i class="zmdi zmdi-star-outline"></i>
-                                                        <? } ?>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-9 p-l-0">
-                                                    <p class="f-17"><?= $review->title?></p>
-                                                </div>
+                                    <div class="row d-flex js-center">
+                                        <div class="col-sm-11 p-l-0">
+                                            <div class="col-sm-12 p-l-0">
+                                                <p class="p-l-15 f-18"><?= $review->users->First()->getName()?></p>
+                                                <p class="p-l-15 m-b-0"><?= $review->review?></p>
                                             </div>
                                         </div>
-                                        <div class="row d-flex js-center">
-                                            <div class="col-sm-11 p-l-0">
-                                                <div class="col-sm-12 p-l-0">
-                                                    <p class="p-l-15 f-18"><?= $review->users->First()->getName()?></p>
-                                                    <p class="p-l-15 m-b-0"><?= $review->review?></p>
-                                                </div>
-                                            </div>
+                                    </div>
+                                    <div class="row d-flex js-center m-b-20">
+                                        <div class="col-sm-10">
+                                           <span class="pull-right f-13 c-dark-grey"><?= date("d-m-Y", strtotime($review->created_at))?></span>
                                         </div>
-                                        <div class="row d-flex js-center m-b-20">
-                                            <div class="col-sm-10">
-                                               <span class="pull-right f-13 c-dark-grey"><?= date("d-m-Y", strtotime($review->created_at))?></span>
-                                            </div>
-                                        </div>
-                                    <? } ?>
+                                    </div>
+                                <? } ?>
+                                <? if($user) { ?>
                                     <hr>
                                     <form action="/postTeamReview" method="post">
                                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
@@ -310,12 +310,12 @@
                                             </div>
                                         </div>
                                     </form>
-                                </div>
+                                <? } ?>
                             </div>
                         </div>
                     </div>
                 </div>
-            <? } ?>
+            </div>
         </div>
     </div>
 @endsection

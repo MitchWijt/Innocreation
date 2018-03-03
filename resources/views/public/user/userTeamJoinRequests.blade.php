@@ -60,7 +60,7 @@
                                 <? if($invite->accepted == 0) { ?>
                                 <form action="/my-account/rejectTeamInvite" class="rejectTeamInvite" method="post">
                                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                    <input type="hidden" name="request_id" value="<?= $invite->id?>">
+                                    <input type="hidden" name="invite_id" value="<?= $invite->id?>">
                                     <div class="circle circleImage p-relative pull-right c-pointer rejectInvite">
                                         <span style="left: 23px; top: 10px" class="p-absolute f-25"><i class="zmdi zmdi-close c-orange"></i></span>
                                     </div>
