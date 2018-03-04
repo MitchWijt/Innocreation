@@ -40,7 +40,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">My workplace</a>
+        <a class="regular-link c-gray" href="/my-team/workspace">My workspace</a>
     </div>
     <hr>
 </div>

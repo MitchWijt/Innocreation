@@ -148,7 +148,10 @@
     color: #FF6100 !important;
 }
 .c-red{
-    color: #FF0000 !important
+    color: #FF0000 !important;
+}
+.c-green{
+    color: #19c41f !important;
 }
 
 .c-black{
@@ -234,6 +237,17 @@ hr{
     text-decoration-color: #FF6100;
 }
 
+.border-red{
+    border: 2px solid #FF0000 !important;
+}
+
+.border-green{
+    border: 2px solid #19c41f !important;
+}
+
+.border-default{
+    border: 2px solid #FF6100 !important;
+}
 
 
 /*=============================FONTS======================*/

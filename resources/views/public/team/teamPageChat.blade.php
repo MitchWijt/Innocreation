@@ -64,22 +64,22 @@
                             <hr class="col-sm-12 m-b-20">
                         </div>
                         <? if($user->muted <= date("Y-m-d H:i:s")) { ?>
-                        <form action="/my-team/sendTeamMessage" method="post">
-                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                            <input type="hidden" name="team_id" value="<?=$team->id?>">
-                            <input type="hidden" name="sender_user_id" value="<?=$user->id?>">
+                            <form action="/my-team/sendTeamMessage" method="post">
+                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                <input type="hidden" name="team_id" value="<?=$team->id?>">
+                                <input type="hidden" name="sender_user_id" value="<?=$user->id?>">
 
-                            <div class="row m-t-20">
-                                <div class="col-sm-12 text-center">
-                                    <textarea name="teamMessage" placeholder="Send your message..." class="input col-sm-10" rows="5"></textarea>
+                                <div class="row m-t-20">
+                                    <div class="col-sm-12 text-center">
+                                        <textarea name="teamMessage" placeholder="Send your message..." class="input col-sm-10" rows="5"></textarea>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-11 m-b-20 m-t-20">
-                                    <button class="btn btn-inno pull-right">Send message</button>
+                                <div class="row">
+                                    <div class="col-sm-11 m-b-20 m-t-20">
+                                        <button class="btn btn-inno pull-right">Send message</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
                         <? } else { ?>
                         <?
                         $today = new DateTime(date("Y-m-d H:i:s"));

@@ -49,7 +49,7 @@ class Team extends Model
                 array_push($expertisesNoAcception, $neededExpertise->expertise_id);
             }
         }
-        $NeededExpertisesNoAcception = NeededExpertiseLinktable::select("*")->where("team_id", $this->id)->whereIn("expertise_id", $expertisesNoAcception)->with("Expertises")->with("Teams")->get();
+        $NeededExpertisesNoAcception = NeededExpertiseLinktable::select("*")->where("team_id", $this->id)->where("amount", "!=", 0)->whereIn("expertise_id", $expertisesNoAcception)->with("Expertises")->with("Teams")->get();
         return $NeededExpertisesNoAcception;
     }
 

@@ -155,5 +155,13 @@ Route::post("/my-team/unmuteMemberFromTeamChat", "TeamController@unmuteMemberFro
 Route::post("/my-team/editMemberPermissions", "TeamController@editMemberPermissionsAction");
 
 
+//==============================WORKPLACE TEAM===================================
 
 
+Route::get("/my-team/workspace", "WorkspaceController@index");
+
+Route::get("/my-team/workspace-ideas", "WorkspaceController@workplaceIdeasAction");
+
+Route::post("/workspace/changeIdeaStatus", "WorkspaceController@changeIdeaStatusAction");
+
+Route::post("/workspace/addNewIdea", "WorkspaceController@addNewIdeaAction");
