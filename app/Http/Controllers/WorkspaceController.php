@@ -64,9 +64,18 @@ class WorkspaceController extends Controller
     {
         $team_id = $request->input("team_id");
         $creator_user_id = $request->input("creator_user_id");
-        $title = $request->input("workplace_idea_title");
-        $description = $request->input("workplace_idea_description");
+        $title = $request->input("workspace_idea_title");
+        $description = $request->input("workspace_idea_description");
 
+        $workspaceIdea = new WorkspaceIdeas();
+        $workspaceIdea->team_id = $team_id;
+        $workspaceIdea->creator_user_id = $creator_user_id;
+        $workspaceIdea->title = $title;
+        $workspaceIdea->status = "On hold";
+        $workspaceIdea->description = $description;
+        $workspaceIdea->created_at = date("Y-m-d H:i:s");
+        $workspaceIdea->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
 
     }
 
