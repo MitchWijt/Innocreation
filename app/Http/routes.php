@@ -160,8 +160,16 @@ Route::post("/my-team/editMemberPermissions", "TeamController@editMemberPermissi
 
 Route::get("/my-team/workspace", "WorkspaceController@index");
 
-Route::get("/my-team/workspace-ideas", "WorkspaceController@workplaceIdeasAction");
+Route::get("/my-team/workspace/ideas", "WorkspaceController@workplaceIdeasAction");
 
 Route::post("/workspace/changeIdeaStatus", "WorkspaceController@changeIdeaStatusAction");
 
 Route::post("/workspace/addNewIdea", "WorkspaceController@addNewIdeaAction");
+
+Route::get("/my-team/workspace/bucketlist", "WorkspaceController@workplaceBucketlistAction");
+
+Route::post("/workspace/addNewBucketlistGoal", "WorkspaceController@addNewBucketlistGoalAction");
+
+Route::post("/workspace/addBucketlistBoard", "WorkspaceController@addBucketlistBoardAction");
+
+Route::post("/workspace/completeBucketlistGoal", "WorkspaceController@completeBucketlistGoalAction");

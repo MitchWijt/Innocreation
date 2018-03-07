@@ -289,7 +289,11 @@
                                     <option value="" selected disabled>Choose members</option>
                                     <? foreach($team->getMembers() as $member) { ?>
                                         <? if($member->id != $user->id) { ?>
-                                            <option value="<?= $member->id?>"><?= $member->getName()?></option>
+                                            <? if($member->id == $team->ceo_user_id) { ?>
+                                                <option value="<?= $member->id?>"><?= $member->getName() . " - " . "CEO"?></option>
+                                            <? } else { ?>
+                                                <option value="<?= $member->id?>"><?= $member->getName() . " - " . $member->getJoinedExpertise()->expertises->First()->title?></option>
+                                            <? } ?>
                                         <? } ?>
                                     <? } ?>
                                 </select>

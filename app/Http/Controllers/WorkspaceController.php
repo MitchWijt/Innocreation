@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Team;
 use App\User;
+use App\WorkspaceBucketlist;
+use App\WorkspaceBucketlistType;
 use App\WorkspaceIdeas;
 use Illuminate\Http\Request;
 use Session;
@@ -21,7 +23,7 @@ class WorkspaceController extends Controller
     {
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
-        return view("/public/team/workplace/workplaceIntroduction", compact("team"));
+        return view("/public/team/workspace/workspaceIntroduction", compact("team"));
     }
 
     /**
@@ -34,7 +36,7 @@ class WorkspaceController extends Controller
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
         $workplaceIdeas = WorkspaceIdeas::select("*")->where("team_id", $team->id)->get();
-        return view("/public/team/workplace/workplaceIdeas", compact("team" , "user","workplaceIdeas"));
+        return view("/public/team/workspace/workspaceIdeas", compact("team" , "user","workplaceIdeas"));
     }
 
     /**
@@ -85,9 +87,12 @@ class WorkspaceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function workplaceBucketlistAction()
     {
-        //
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+        $workspaceBucketlistTypes = WorkspaceBucketlistType::select("*")->where("team_id", $team->id)->orWhere("team_id", 0)->get();
+        return view("/public/team/workspace/workspaceBucketlist", compact("team" , "user", "workspaceBucketlistTypes"));
     }
 
     /**
@@ -97,9 +102,22 @@ class WorkspaceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function addNewBucketlistGoalAction(Request $request)
     {
-        //
+        $team_id = $request->input("team_id");
+        $title = $request->input("goal_title");
+        $description = $request->input("goal_description");
+        $bucketlist_type = $request->input("bucketlist_type");
+
+        $workspaceBucketlist = new WorkspaceBucketlist();
+        $workspaceBucketlist->team_id = $team_id;
+        $workspaceBucketlist->title = $title;
+        $workspaceBucketlist->workspace_bucketlist_type = $bucketlist_type;
+        $workspaceBucketlist->description = $description;
+        $workspaceBucketlist->created_at = date("Y-m-d H:i:s");
+        $workspaceBucketlist->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
+
     }
 
     /**
@@ -108,8 +126,37 @@ class WorkspaceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function addBucketlistBoardAction(Request $request)
     {
-        //
+        $team_id = $request->input("team_id");
+        $bucketlistType_name = $request->input("bucketlistType_title");
+
+        $bucketlistType = new WorkspaceBucketlistType();
+        $bucketlistType->team_id = $team_id;
+        $bucketlistType->name = $bucketlistType_name;
+        $bucketlistType->save();
+
+        return $bucketlistType;
+
+    }
+
+    public function completeBucketlistGoalAction(Request $request){
+        $bucketlist_id = $request->input("bucketlist_id");
+
+        $existingWorkspaceBucketlists = WorkspaceBucketlist::select("*")->where("id", $bucketlist_id)->where("completed", 1)->get();
+
+        if(count($existingWorkspaceBucketlists) == 0 ) {
+            $workspaceBucketlist = WorkspaceBucketlist::select("*")->where("id", $bucketlist_id)->first();
+            $workspaceBucketlist->completed = 1;
+            $workspaceBucketlist->save();
+
+            return 1;
+        } else {
+            foreach($existingWorkspaceBucketlists as $existingWorkspaceBucketlist) {
+                $existingWorkspaceBucketlist->completed = 0;
+                $existingWorkspaceBucketlist->save();
+            }
+            return 2;
+        }
     }
 }

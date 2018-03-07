@@ -5,19 +5,19 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-team/workspace-ideas">Idea's</a>
+        <a class="regular-link c-gray" href="/my-team/workspace/ideas">Idea's</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Bucketlist</a>
+        <a class="regular-link c-gray" href="/my-team/workspace/bucketlist">Bucketlist</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Short term board</a>
+        <a class="regular-link c-gray" href="">Short term task planner(collapse DB)</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Long term board(collapse DB)</a>
+        <a class="regular-link c-gray" href="">Custom task planner(collapse DB)</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

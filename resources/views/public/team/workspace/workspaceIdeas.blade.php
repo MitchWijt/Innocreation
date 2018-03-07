@@ -110,5 +110,5 @@
     </div>
 @endsection
 @section('pagescript')
-    <script src="/js/workplaceIdeas.js"></script>
+    <script src="/js/workspaceIdeas.js"></script>
 @endsection
