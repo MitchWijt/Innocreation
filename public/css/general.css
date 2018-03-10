@@ -249,6 +249,13 @@ hr{
     border: 2px solid #FF6100 !important;
 }
 
+.bcg-black{
+    background: #000;
+}
+
+.border-bottom-none{
+    border-bottom: none !important;
+}
 
 /*=============================FONTS======================*/
 .f-12{

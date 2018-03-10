@@ -159,4 +159,19 @@ class WorkspaceController extends Controller
             return 2;
         }
     }
+
+    public function deleteBucketlistBoardAction(Request $request){
+        $bucketlist_type_id = $request->input("bucketlist_type_id");
+        $bucketlistType = WorkspaceBucketlistType::select("*")->where("id", $bucketlist_type_id)->first();
+        $bucketlistType->delete();
+    }
+
+    public function renameBucketlistBoardAction(Request $request){
+        $bucketlist_type_id = $request->input("bucketlist_type_id");
+        $new_title = $request->input("new_title");
+
+        $bucketlistType = WorkspaceBucketlistType::select("*")->where("id", $bucketlist_type_id)->first();
+        $bucketlistType->name = $new_title;
+        $bucketlistType->save();
+    }
 }

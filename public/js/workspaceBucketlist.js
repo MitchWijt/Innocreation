@@ -64,3 +64,82 @@ $(".completeBucketlistGoal").on("click",function () {
         }
     });
 });
+
+$(document).ready(function () {
+    $(".bucketlistBoardMenu").removeClass("hidden");
+    $(".bucketlistBoardMenu").toggle();
+});
+
+$(document).on("click",".openBoardMenu",function () {
+    $(this).parents(".bucketlistBoard").find(".bucketlistBoardMenu").toggle();
+});
+
+$(".deleteBucketlistBoard").on("click",function () {
+    var bucketlist_type_id = $(this).data("bucketlist-type-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/workspace/deleteBucketlistBoard",
+        data: {'bucketlist_type_id': bucketlist_type_id},
+        success: function (data) {
+            $(".bucketlistBoard").each(function () {
+               if($(this).data("bucketlist-type-id") == bucketlist_type_id){
+                    $(this).remove();
+               }
+            });
+        }
+    });
+});
+
+$(".renameBucketlistBoard").on("click",function () {
+    $(this).parents(".bucketlistBoard").find(".rename_bucketlistType_title").removeClass("hidden");
+    $(this).parents(".bucketlistBoard").find(".boardTitle").addClass("hidden");
+    $(this).parents(".bucketlistBoard").find(".bucketlistBoardMenu").toggle();
+});
+
+$(".rename_bucketlistType_title").on("change",function () {
+    var bucketlist_type_id = $(this).data("bucketlist-type-id");
+    var new_bucketlistboard_title = $(this).val();
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/workspace/renameBucketlistBoard",
+        data: {'bucketlist_type_id': bucketlist_type_id, 'new_title' : new_bucketlistboard_title},
+        success: function (data) {
+            $(".rename_bucketlistType_title").each(function () {
+                if($(this).data("bucketlist-type-id") == bucketlist_type_id){
+                   $(this).addClass("hidden");
+                   $(this).parents(".bucketlistBoard").find(".boardTitle").text(new_bucketlistboard_title);
+                   $(this).parents(".bucketlistBoard").find(".boardTitle").removeClass("hidden");
+                   $(this).parents(".bucketlistBoard").find(".boardTitle").append("<i class='m-l-10 zmdi zmdi-chevron-down openBoardMenu'></i>")
+                }
+            });
+        }
+    });
+});
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+}

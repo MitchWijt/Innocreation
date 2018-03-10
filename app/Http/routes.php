@@ -173,3 +173,7 @@ Route::post("/workspace/addNewBucketlistGoal", "WorkspaceController@addNewBucket
 Route::post("/workspace/addBucketlistBoard", "WorkspaceController@addBucketlistBoardAction");
 
 Route::post("/workspace/completeBucketlistGoal", "WorkspaceController@completeBucketlistGoalAction");
+
+Route::post("/workspace/deleteBucketlistBoard", "WorkspaceController@deleteBucketlistBoardAction");
+
+Route::post("/workspace/renameBucketlistBoard", "WorkspaceController@renameBucketlistBoardAction");

@@ -105,7 +105,12 @@ footer{
     color: #000000 !important;
     background: #C9CCCF !important;
     cursor: pointer;
+}
 
+.menu-item:hover{
+    color: #000000 !important;
+    background: #C9CCCF !important;
+    cursor: pointer;
 }
 
 .input{

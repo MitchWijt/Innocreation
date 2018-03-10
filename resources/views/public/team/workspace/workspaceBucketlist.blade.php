@@ -10,11 +10,9 @@
             <div class="row d-flex js-center">
                 <div class="col-sm-12 text-center m-b-20">
                     <? if($user->id == $team->ceo_user_id || $user->role == 1 || $user->role == 4) { ?>
-                        <button class="btn btn-inno btn-sm" data-toggle="modal" data-target="#addNewGoalModal">Add new goal</button>
                         <button class="btn btn-inno btn-sm addNewBucketlistBoard">Add bucketlist board</button>
-                    <? } else { ?>
-                        <button class="btn btn-inno btn-sm" data-toggle="modal" data-target="#requestGoalModal">Request new goal</button>
                     <? } ?>
+                    <button class="btn btn-inno btn-sm" data-toggle="modal" data-target="#addNewGoalModal">Add new goal</button>
                 </div>
             </div>
             <div class="newBoard hidden">
@@ -50,15 +48,20 @@
                     </div>
                 </div>
             </div>
-            <div class="allBucketlistBoards">
+            <div class="allBucketlistBoards m-b-20">
                 <? foreach($workspaceBucketlistTypes as $workspaceBucketlistType) { ?>
-                    <div class="row d-flex js-center m-t-20 bucketlistBoard">
+                    <div class="row d-flex js-center m-t-20 bucketlistBoard" data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>">
                         <div class="card card-lg">
                             <div class="card-block">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <p class="m-l-10 m-t-10 f-18"><?= $workspaceBucketlistType->name?><i class="m-l-10 zmdi zmdi-chevron-down"></i></p>
+                                        <input data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>" type="text" name="bucketlistType_title" class="input rename_bucketlistType_title m-t-10 m-l-10 hidden">
+                                        <p class="m-l-10 m-t-10 f-18 m-b-10 boardTitle"><?= $workspaceBucketlistType->name?><i class="m-l-10 zmdi zmdi-chevron-down openBoardMenu "></i></p>
                                     </div>
+                                </div>
+                                <div class="col-sm-2 text-center bucketlistBoardMenu hidden f-12">
+                                    <p class="bcg-black border-default border-bottom-none m-b-0 deleteBucketlistBoard menu-item" data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>">Delete board</p>
+                                    <p class="bcg-black border-default renameBucketlistBoard menu-item" data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>">Rename board</p>
                                 </div>
                                 <div class="row text-center">
                                     <div class="col-sm-12 d-flex">
@@ -74,25 +77,27 @@
                                     </div>
                                 </div>
                                 <div class="hr-card p-b-20"></div>
-                                <? foreach($workspaceBucketlistType->getWorkspaceBucketlist($team->id) as $workspaceBucketlist) { ?>
-                                    <div class="row text-center">
-                                        <div class="col-sm-12 d-flex">
-                                            <div class="col-sm-4">
-                                                <p><?= $workspaceBucketlist->title?></p>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <p><?= $workspaceBucketlist->description?></p>
-                                            </div>
-                                            <div class="col-sm-4 d-flex js-center">
-                                                <? if($workspaceBucketlist->completed == 0) { ?>
-                                                    <p class="circle circleSmall m-0 completeBucketlistGoal" data-bucketlist-id="<?= $workspaceBucketlist->id?>"><i class="zmdi zmdi-check"></i></p>
-                                                <? } else { ?>
-                                                    <p class="circle circleSmall m-0 completeBucketlistGoal c-black" style="background: #FF6100" data-bucketlist-id="<?= $workspaceBucketlist->id?>"><i class="zmdi zmdi-check"></i></p>
-                                                <? } ?>
+                                <div id="div" ondrop="drop(event)"  ondragover="allowDrop(event)" class="p-b-20">
+                                    <? foreach($workspaceBucketlistType->getWorkspaceBucketlist($team->id) as $workspaceBucketlist) { ?>
+                                        <div class="row text-center" id="drag<?=$workspaceBucketlist->id?>" draggable="true" ondragstart="drag(event)">
+                                            <div class="col-sm-12 d-flex">
+                                                <div class="col-sm-4">
+                                                    <p><?= $workspaceBucketlist->title?></p>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <p><?= $workspaceBucketlist->description?></p>
+                                                </div>
+                                                <div class="col-sm-4 d-flex js-center">
+                                                    <? if($workspaceBucketlist->completed == 0) { ?>
+                                                        <p class="circle circleSmall m-0 completeBucketlistGoal" data-bucketlist-id="<?= $workspaceBucketlist->id?>"><i class="zmdi zmdi-check"></i></p>
+                                                    <? } else { ?>
+                                                        <p class="circle circleSmall m-0 completeBucketlistGoal c-black" style="background: #FF6100" data-bucketlist-id="<?= $workspaceBucketlist->id?>"><i class="zmdi zmdi-check"></i></p>
+                                                    <? } ?>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                <? } ?>
+                                    <? } ?>
+                                </div>
                             </div>
                         </div>
                     </div>
