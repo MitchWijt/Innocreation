@@ -10,6 +10,6 @@ class WorkspaceBucketlistType extends Model
 
     public function getWorkspaceBucketlist($team_id)
     {
-        return WorkspaceBucketlist::select("*")->where("workspace_bucketlist_type", $this->id)->where("team_id", $team_id)->get();
+        return WorkspaceBucketlist::select("*")->where("workspace_bucketlist_type", $this->id)->where("team_id", $team_id)->orderBy("place")->get();
     }
 }

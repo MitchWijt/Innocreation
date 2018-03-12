@@ -56,7 +56,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <input data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>" type="text" name="bucketlistType_title" class="input rename_bucketlistType_title m-t-10 m-l-10 hidden">
-                                        <p class="m-l-10 m-t-10 f-18 m-b-10 boardTitle"><?= $workspaceBucketlistType->name?><i class="m-l-10 zmdi zmdi-chevron-down openBoardMenu "></i></p>
+                                        <p class="m-l-10 m-t-10 f-18 m-b-10 boardTitle"><?= $workspaceBucketlistType->name?><i class="m-l-10 zmdi zmdi-chevron-down openBoardMenu"></i></p>
                                     </div>
                                 </div>
                                 <div class="col-sm-2 text-center bucketlistBoardMenu hidden f-12">
@@ -77,9 +77,10 @@
                                     </div>
                                 </div>
                                 <div class="hr-card p-b-20"></div>
-                                <div id="div" ondrop="drop(event)"  ondragover="allowDrop(event)" class="p-b-20">
+                                <div id="div" ondrop="drop(event, this, $(this).parents('.bucketlistBoard').data('bucketlist-type-id'))"  ondragover="allowDrop(event)" class="p-b-40">
                                     <? foreach($workspaceBucketlistType->getWorkspaceBucketlist($team->id) as $workspaceBucketlist) { ?>
-                                        <div class="row text-center" id="drag<?=$workspaceBucketlist->id?>" draggable="true" ondragstart="drag(event)">
+                                        <div class="row text-center p-relative singleBucketlistGoal" id="drag-<?=$workspaceBucketlist->id?>" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-bucketlist-id="<?= $workspaceBucketlist->id?>">
+                                            <i class="zmdi zmdi-close c-orange p-absolute deleteBucketlistGoal" style="right: 35px; top: 5px; z-index: 1;" data-bucketlist-id="<?= $workspaceBucketlist->id?>"></i>
                                             <div class="col-sm-12 d-flex">
                                                 <div class="col-sm-4">
                                                     <p><?= $workspaceBucketlist->title?></p>

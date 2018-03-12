@@ -22,10 +22,10 @@
                                 <p class="instructions-text f-19 m-0 p-b-10">Create your own team bucketlist or submit new goals</p>
                             </li>
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Plan your entire day for the whole team in the short term planner</p>
+                                <p class="instructions-text f-19 m-0 p-b-10">Plan upfront for the whole team in the short term task planner</p>
                             </li>
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Create your schedule for the upcomming months with the long term planner</p>
+                                <p class="instructions-text f-19 m-0 p-b-10">Create your custom plan boards with the custom task planner</p>
                             </li>
                             <li class="instructions-list-item">
                                 <p class="instructions-text f-19 m-0 p-b-10">Keep track of your progress in the personal dashboard!</p>

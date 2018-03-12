@@ -177,3 +177,9 @@ Route::post("/workspace/completeBucketlistGoal", "WorkspaceController@completeBu
 Route::post("/workspace/deleteBucketlistBoard", "WorkspaceController@deleteBucketlistBoardAction");
 
 Route::post("/workspace/renameBucketlistBoard", "WorkspaceController@renameBucketlistBoardAction");
+
+Route::post("/workspace/changePlaceBucketlistGoal", "WorkspaceController@changePlaceBucketlistGoalAction");
+
+Route::post("/workspace/deleteSingleBucketlistGoal", "WorkspaceController@deleteSingleBucketlistGoalAction");
+
+Route::get("/my-team/workspace/short-term-planner-options", "WorkspaceController@workspaceShortTermPlannerOptionPicker");

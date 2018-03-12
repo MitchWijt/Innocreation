@@ -4,6 +4,9 @@ $(".addNewBucketlistBoard").on("click",function () {
 
 
     $(bucketlistBoard).appendTo(item);
+    $('html, body').animate({
+        scrollTop: $(".allBucketlistBoards").offset().top
+    }, 1000);
 
 
 });
@@ -75,26 +78,28 @@ $(document).on("click",".openBoardMenu",function () {
 });
 
 $(".deleteBucketlistBoard").on("click",function () {
-    var bucketlist_type_id = $(this).data("bucketlist-type-id");
-    $.ajax({
-        method: "POST",
-        beforeSend: function (xhr) {
-            var token = $('meta[name="csrf_token"]').attr('content');
+    if (confirm('Are you sure you want to delete this board and all of his content?')) {
+        var bucketlist_type_id = $(this).data("bucketlist-type-id");
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
 
-            if (token) {
-                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/workspace/deleteBucketlistBoard",
+            data: {'bucketlist_type_id': bucketlist_type_id},
+            success: function (data) {
+                $(".bucketlistBoard").each(function () {
+                    if ($(this).data("bucketlist-type-id") == bucketlist_type_id) {
+                        $(this).remove();
+                    }
+                });
             }
-        },
-        url: "/workspace/deleteBucketlistBoard",
-        data: {'bucketlist_type_id': bucketlist_type_id},
-        success: function (data) {
-            $(".bucketlistBoard").each(function () {
-               if($(this).data("bucketlist-type-id") == bucketlist_type_id){
-                    $(this).remove();
-               }
-            });
-        }
-    });
+        });
+    }
 });
 
 $(".renameBucketlistBoard").on("click",function () {
@@ -135,11 +140,51 @@ function allowDrop(ev) {
 
 function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
-
 }
 
-function drop(ev) {
+function drop(ev, el,type_id) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
+    el.appendChild(document.getElementById(data));
+    var bucketlist_id_text = ev.dataTransfer.getData("text");
+    var bucketlist_id = bucketlist_id_text.split("-");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/workspace/changePlaceBucketlistGoal",
+        data: {'bucketlist_type_id': type_id, 'bucketlist_id' : bucketlist_id[1], 'place' : bucketlist_id[2]},
+        success: function (data) {
+
+        }
+    });
 }
+
+$(".deleteBucketlistGoal").on("click",function () {
+    console.log("dfdf");
+    var bucketlist_id = $(this).data("bucketlist-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/workspace/deleteSingleBucketlistGoal",
+        data: {'bucketlist_id': bucketlist_id},
+        success: function (data) {
+            $(".singleBucketlistGoal").each(function () {
+                if($(this).data("bucketlist-id") == bucketlist_id){
+                    $(this).fadeOut();
+                }
+            });
+        }
+    });
+});

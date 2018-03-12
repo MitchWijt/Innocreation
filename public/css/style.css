@@ -187,6 +187,19 @@ footer{
     color: #000000 !important;
 }
 
+.card-square-sm{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    width: 300px !important;
+    height: 300px !important;
+    border: 1px solid #C9CCCF !important;
+}
+.card-square-sm:hover{
+    background: #C9CCCF !important;
+    border: 3px solid #FF6100 !important;
+    color: #000000 !important;
+}
+
 .card-square{
     background: #000000 !important;
     color: #C9CCCF !important;
@@ -453,6 +466,7 @@ footer{
 .instructions-list > .instructions-list-item{
     color: #FF6100;
 }
+
 /*====================================INSTRUCTIONS-SECOND=================================*/
 .instructions-second{
     background: #C9CCCF;
@@ -489,4 +503,8 @@ footer{
 .messageReceived{
     background: #303030;
     border-radius: 10px;
+}
+
+.hover:hover .instructions-text{
+    color: #000;
 }

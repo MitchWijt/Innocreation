@@ -13,7 +13,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Short term task planner(collapse DB)</a>
+        <a class="regular-link c-gray" href="/my-team/workspace/short-term-planner-options">Short term task planner(collapse DB)</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

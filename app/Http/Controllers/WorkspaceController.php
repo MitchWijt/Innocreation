@@ -163,6 +163,12 @@ class WorkspaceController extends Controller
     public function deleteBucketlistBoardAction(Request $request){
         $bucketlist_type_id = $request->input("bucketlist_type_id");
         $bucketlistType = WorkspaceBucketlistType::select("*")->where("id", $bucketlist_type_id)->first();
+        $workspaceBucketlistItems = WorkspaceBucketlist::select("*")->where("workspace_bucketlist_type", $bucketlist_type_id)->get();
+        if(count($workspaceBucketlistItems) > 0) {
+            foreach ($workspaceBucketlistItems as $workspaceBucketlistItem) {
+                $workspaceBucketlistItem->delete();
+            }
+        }
         $bucketlistType->delete();
     }
 
@@ -173,5 +179,29 @@ class WorkspaceController extends Controller
         $bucketlistType = WorkspaceBucketlistType::select("*")->where("id", $bucketlist_type_id)->first();
         $bucketlistType->name = $new_title;
         $bucketlistType->save();
+    }
+
+    public function changePlaceBucketlistGoalAction(Request $request){
+        $bucketlist_type_id = $request->input("bucketlist_type_id");
+        $bucketlist_id = $request->input("bucketlist_id");
+
+        $workspaceBucketlist = WorkspaceBucketlist::select("*")->where("id", $bucketlist_id)->first();
+        $workspaceBucketlist->workspace_bucketlist_type = $bucketlist_type_id;
+        $workspaceBucketlist->save();
+
+
+    }
+
+    public function deleteSingleBucketlistGoalAction(Request $request){
+        $bucketlist_id = $request->input("bucketlist_id");
+
+        $workspaceBucketlist = WorkspaceBucketlist::select("*")->where("id", $bucketlist_id)->first();
+        $workspaceBucketlist->delete();
+    }
+
+    public function workspaceShortTermPlannerOptionPicker(){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+        return view("/public/team/workspace/workspaceShortTermPlannerOptionPicker", compact("team", "user"));
     }
 }
