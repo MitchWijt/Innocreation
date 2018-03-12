@@ -316,5 +316,5 @@
     </div>
 @endsection
 @section('pagescript')
-    <script src="/js/teamPageChat.js"></script>
+    <script src="/js/team/teamPageChat.js"></script>
 @endsection

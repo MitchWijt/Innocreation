@@ -112,6 +112,11 @@ footer{
     background: #C9CCCF !important;
     cursor: pointer;
 }
+.menu-item-light:hover{
+    color: #C9CCCF !important;
+    background: #000 !important;
+    cursor: pointer;
+}
 
 .input{
     border: 1px solid #000000 !important;
@@ -194,10 +199,12 @@ footer{
     height: 300px !important;
     border: 1px solid #C9CCCF !important;
 }
-.card-square-sm:hover{
-    background: #C9CCCF !important;
-    border: 3px solid #FF6100 !important;
-    color: #000000 !important;
+
+.card-task{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    height: 100px !important;
+    border: 1px solid #FF6100 !important;
 }
 
 .card-square{

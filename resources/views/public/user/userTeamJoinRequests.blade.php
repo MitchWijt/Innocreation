@@ -93,5 +93,5 @@
     </div>
 @endsection
         @section('pagescript')
-            <script src="/js/userTeamJoinRequests.js"></script>
+            <script src="/js/user/userTeamJoinRequests.js"></script>
 @endsection

@@ -64,5 +64,5 @@
     </div>
 @endsection
 @section('pagescript')
-    <script src="/js/teamPageCredentials.js"></script>
+    <script src="/js/team/teamPageCredentials.js"></script>
 @endsection

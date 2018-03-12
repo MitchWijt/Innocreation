@@ -183,5 +183,5 @@
     </div>
 @endsection
 @section('pagescript')
-    <script src="/js/userAccountPortfolio.js"></script>
+    <script src="/js/user/userAccountPortfolio.js"></script>
 @endsection

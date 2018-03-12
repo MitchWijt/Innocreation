@@ -208,6 +208,11 @@
 .o-scroll{
     overflow: scroll;
 }
+.x-scroll{
+    width: 100%;
+    overflow-y: scroll;
+    white-space: nowrap;
+}
 .o-hidden{
     overflow: hidden;
 }

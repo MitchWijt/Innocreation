@@ -125,5 +125,5 @@
 </div>
 @endsection
 @section('pagescript')
-    <script src="/js/userAccountCredentials.js"></script>
+    <script src="/js/user/userAccountCredentials.js"></script>
 @endsection

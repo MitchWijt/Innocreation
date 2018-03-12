@@ -224,5 +224,5 @@
     </div>
 @endsection
 @section('pagescript')
-    <script src="/js/teamPageMembers.js"></script>
+    <script src="/js/team/teamPageMembers.js"></script>
 @endsection

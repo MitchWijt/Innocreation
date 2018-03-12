@@ -138,5 +138,5 @@
 </div>
 @endsection
 @section('pagescript')
-    <script src="/js/favoriteExpertisesUser.js"></script>
+    <script src="/js/user/favoriteExpertisesUser.js"></script>
 @endsection

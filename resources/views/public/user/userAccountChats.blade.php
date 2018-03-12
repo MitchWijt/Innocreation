@@ -112,5 +112,5 @@
     </div>
 @endsection
 @section('pagescript')
-    <script src="/js/userAccountChats.js"></script>
+    <script src="/js/user/userAccountChats.js"></script>
 @endsection

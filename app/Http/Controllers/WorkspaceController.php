@@ -7,6 +7,9 @@ use App\User;
 use App\WorkspaceBucketlist;
 use App\WorkspaceBucketlistType;
 use App\WorkspaceIdeas;
+use App\WorkspaceShortTermPlannerBoard;
+use App\WorkspaceShortTermPlannerTask;
+use App\WorkspaceShortTermPlannerType;
 use Illuminate\Http\Request;
 use Session;
 
@@ -202,6 +205,33 @@ class WorkspaceController extends Controller
     public function workspaceShortTermPlannerOptionPicker(){
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
-        return view("/public/team/workspace/workspaceShortTermPlannerOptionPicker", compact("team", "user"));
+        $workspaceShortTermPlannerTypes = WorkspaceShortTermPlannerType::select("*")->get();
+        return view("/public/team/workspace/workspaceShortTermPlannerOptionPicker", compact("team", "user", "workspaceShortTermPlannerTypes"));
+    }
+
+    public function addNewShortTermPlannerBoardAction(Request $request){
+        $team_id = $request->input("team_id");
+        $short_term_planner_type = $request->input("short_term_planner_type");
+
+        $workspaceShortTermPlannerType = WorkspaceShortTermPlannerType::select("*")->where("id", $short_term_planner_type)->first();
+
+        $shortTermPlannerBoard = new WorkspaceShortTermPlannerBoard();
+        $shortTermPlannerBoard->title = $workspaceShortTermPlannerType->title;
+        $shortTermPlannerBoard->team_id = $team_id;
+        $shortTermPlannerBoard->short_term_planner_type = $short_term_planner_type;
+        $shortTermPlannerBoard->created_at = date("Y-m-d H:i:s");
+        $shortTermPlannerBoard->save();
+
+        return redirect("/my-team/workspace/short-term-planner/$shortTermPlannerBoard->id");
+
+    }
+
+    public function workspaceShortTermPlannerBoard($id){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+        $shortTermPlannerBoard = WorkspaceShortTermPlannerBoard::select("*")->where("id", $id)->first();
+        $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("short_term_planner_board_id", $shortTermPlannerBoard->id)->get();
+        return view("/public/team/workspace/workspaceShortTermPlannerBoard", compact("team", "user", "shortTermPlannerBoard", "shortTermPlannerTasks"));
+
     }
 }
