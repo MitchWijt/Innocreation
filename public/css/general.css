@@ -157,6 +157,10 @@
 .c-black{
  color: #000000;
 }
+
+.c-transparant{
+    color: transparent !important;
+}
 /*=================================PLACEMENT+STYLE===========================*/
 .v-center{
     margin-top: 300px;
@@ -261,6 +265,17 @@ hr{
 .border-bottom-none{
     border-bottom: none !important;
 }
+
+.input-transparant{
+    background: transparent;
+    border: none;
+    color: #C9CCCF;
+}
+
+.input-transparant:focus{
+    outline: none;
+}
+
 
 /*=============================FONTS======================*/
 .f-12{

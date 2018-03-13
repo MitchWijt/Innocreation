@@ -24,23 +24,52 @@
             ?>
             <hr class="m-b-20">
             <? if($shortTermPlannerBoard->short_term_planner_type == 1) { ?>
+                <div class="card card-task col-sm-12 m-b-10 emptyCard hidden">
+                    <div class="card-block">
+                        <input type="text" class="input-transparant m-t-10 shortTermTaskTitleInput" data-creator-user-id="<?= $user->id?>" data-board-id="<?=$shortTermPlannerBoard->id?>">
+                        <input type="hidden" name="category" class="categoryTask" value="">
+                        <p class="m-t-10 f-19 shortTermPlannerTaskTitle"></p>
+                    </div>
+                </div>
                 <div class="d-flex fd-row x-scroll p-b-20">
                     <? foreach($dayTimes as $dayTime) { ?>
                         <div class=" col-sm-3">
                             <p class="f-19 text-center"><?=$dayTime?></p>
                             <div class="text-center">
-                                <i class="zmdi zmdi-plus f-25 "></i>
+                                <i class="zmdi zmdi-plus f-25 addShortTermTask" data-day-time="<?=$dayTime?>"></i>
                             </div>
-                            <? foreach($shortTermPlannerTasks as $shortPlannerTask) { ?>
-                                <? if($shortPlannerTask->category == $dayTime) { ?>
-                                    <div class="card card-task col-sm-12">
-                                        <div class="card-block">
-                                            <p class="m-t-10 f-19"><?= $shortPlannerTask->title?></p>
-                                            <img class="circle circleSmall" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
+                            <div class="shortTermtasksColumn" data-day-time="<?=$dayTime?>">
+                                <? foreach($shortTermPlannerTasks as $shortPlannerTask) { ?>
+                                    <? if($shortPlannerTask->category == $dayTime) { ?>
+                                        <div class="card card-task col-sm-12 m-b-10">
+                                            <div class="card-block">
+                                                <p class="m-t-10 f-19"><?= $shortPlannerTask->title?></p>
+                                                <div class="d-flex js-between">
+                                                    <? if($shortPlannerTask->assigned_to != null) { ?>
+                                                        <img class="circle circleSmall" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
+                                                    <? } else { ?>
+                                                        <div class="circle circleSmall">
+                                                            <div class="text-center">
+                                                                <i class="zmdi zmdi-account"></i>
+                                                            </div>
+                                                        </div>
+                                                    <? } ?>
+                                                    <? if($shortPlannerTask->deadline != null) { ?>
+                                                        <p class="c-orange f-13 m-b-0 m-t-5 deadline"><?= date("d F Y", strtotime($shortPlannerTask->deadline))?></p>
+                                                    <? } ?>
+                                                </div>
+                                                <? if($shortPlannerTask->deadline != null) { ?>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <input type="text" class="datepicker input-transparant pull-right c-transparant col-sm-5">
+                                                    </div>
+                                                </div>
+                                                <? } ?>
+                                            </div>
                                         </div>
-                                    </div>
+                                    <? } ?>
                                 <? } ?>
-                            <? } ?>
+                            </div>
                         </div>
                     <? } ?>
                 </div>

@@ -232,6 +232,20 @@ class WorkspaceController extends Controller
         $shortTermPlannerBoard = WorkspaceShortTermPlannerBoard::select("*")->where("id", $id)->first();
         $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("short_term_planner_board_id", $shortTermPlannerBoard->id)->get();
         return view("/public/team/workspace/workspaceShortTermPlannerBoard", compact("team", "user", "shortTermPlannerBoard", "shortTermPlannerTasks"));
+    }
 
+    public function addShortTermPlannerTaskAction(Request $request){
+        $creator_user_id = $request->input("creator_user_id");
+        $category = $request->input("task_category");
+        $board_id = $request->input("board_id");
+        $title = $request->input("title");
+
+        $shortTermPlannerTask = new WorkspaceShortTermPlannerTask();
+        $shortTermPlannerTask->creator_user_id = $creator_user_id;
+        $shortTermPlannerTask->short_term_planner_board_id = $board_id;
+        $shortTermPlannerTask->title = $title;
+        $shortTermPlannerTask->category = $category;
+        $shortTermPlannerTask->created_at = date("Y-m-d H:i:s");
+        $shortTermPlannerTask->save();
     }
 }
