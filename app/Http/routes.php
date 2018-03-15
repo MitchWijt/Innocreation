@@ -189,3 +189,5 @@ Route::post("/workspace/addNewShortTermPlannerBoard", "WorkspaceController@addNe
 Route::get("/my-team/workspace/short-term-planner/{id}", "WorkspaceController@workspaceShortTermPlannerBoard");
 
 Route::post("/workspace/addShortTermPlannerTask", "WorkspaceController@addShortTermPlannerTaskAction");
+
+Route::post("/workspace/editShortTermPlannerTaskDueDate", "WorkspaceController@editShortTermPlannerTaskDueDateAction");

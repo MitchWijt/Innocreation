@@ -6,6 +6,11 @@
             <h1 class="sub-title-black" id="titleLogin">Login</h1>
         </div>
         <div class="hr"></div>
+        <? if(count($errors) > 0){ ?>
+        <? foreach($errors->all() as $error){ ?>
+        <p class="c-orange"><?=$error?></p>
+        <? } ?>
+        <? } ?>
         <form action="/loginUser" method="POST" class="loginForm">
             <input type="hidden" name="_token" value="<?= csrf_token()?>">
             <div class="form-group d-flex js-center m-b-0 p-b-20">

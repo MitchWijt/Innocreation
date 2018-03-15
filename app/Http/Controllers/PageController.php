@@ -60,11 +60,12 @@ class PageController extends Controller
         $portfolios = UserPortfolio::select("*")->where("user_id", $user->id)->get();
         if($loggedIn) {
             $team = Team::select("*")->where("ceo_user_id", $loggedIn->id)->first();
-
-            $neededExpertisesArray = [];
-            $neededExpertises = NeededExpertiseLinktable::select("*")->where("team_id",$team->id)->where("amount","!=", 0)->get();
-            foreach($neededExpertises as $neededExpertise){
-                array_push($neededExpertisesArray, $neededExpertise->expertise_id);
+            if(count($team) != 0) {
+                $neededExpertisesArray = [];
+                $neededExpertises = NeededExpertiseLinktable::select("*")->where("team_id", $team->id)->where("amount", "!=", 0)->get();
+                foreach ($neededExpertises as $neededExpertise) {
+                    array_push($neededExpertisesArray, $neededExpertise->expertise_id);
+                }
             }
         }
         return view("public/pages/singleUserPage", compact("user","expertise_linktable", "loggedIn", "portfolios","team", "neededExpertisesArray"));

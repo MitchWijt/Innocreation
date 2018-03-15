@@ -35,6 +35,11 @@ class Team extends Model
         return $neededExpertises;
     }
 
+    public function getAmountNeededExpertises() {
+        $neededExpertises  = NeededExpertiseLinktable::select("*")->where("team_id", $this->id)->where("amount", "!=", 0)->with("Expertises")->with("Teams")->get();
+        return count($neededExpertises);
+    }
+
     public function getNeededExpertisesWithoutAcception(){
         // gets the expertise the current team still needs without the accepted members
         $expertisesNoAcception = [];

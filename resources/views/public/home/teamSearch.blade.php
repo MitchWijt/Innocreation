@@ -12,7 +12,7 @@
                                 <img class="circle circleImage m-r-0 m-t-20" src="<?=$topTeam->getProfilePicture()?>" alt="">
                                 <div class="d-flex fd-column">
                                     <p class="f-17 m-b-0 c-orange"><?= $topTeam->team_name?></p>
-                                    <p class="m-b-0">Expertises needed: <?= count($topTeam->getNeededExpertisesWithoutAcception())?></p>
+                                    <p class="m-b-0">Expertises needed: <?= $topTeam->getAmountNeededExpertises()?></p>
                                     <p class="m-b-0">Members: <?=count($topTeam->getMembers())?></p>
                                     <p class="m-b-0">Support: <?=$topTeam->support?></p>
                                     <p class="m-b-0">Age: <?=$topTeam->calculateAge()?></p>
@@ -71,7 +71,7 @@
                                         <div class="col-sm-11 d-flex js-center">
                                             <div class="card  m-t-20 m-b-20">
                                                 <div class="card-block d-flex js-around m-t-10">
-                                                    <img class="circle circleImage m-r-0 m-t-20" src="<?=$searchedTeam->getProfilePicture()?>" alt="">
+                                                    <img class="circle circleImage m-r-0 m-t-20" src="<?= $searchedTeam->getAmountNeededExpertises()?>" alt="">
                                                     <div class="d-flex fd-column">
                                                         <p class="f-17 m-b-0 c-orange"><?= $searchedTeam->team_name?></p>
                                                         <p class="m-b-0">Expertises needed: <?=count($searchedTeam->getNeededExpertises())?></p>

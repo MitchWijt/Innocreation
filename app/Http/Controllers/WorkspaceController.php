@@ -248,4 +248,15 @@ class WorkspaceController extends Controller
         $shortTermPlannerTask->created_at = date("Y-m-d H:i:s");
         $shortTermPlannerTask->save();
     }
+
+    public function editShortTermPlannerTaskDueDateAction(Request $request){
+        $short_term_planner_task_id = $request->input("task_id");
+        $due_date = $request->input("due_date");
+
+        $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
+        $shortTermPlannerTask->due_date = date("Y-m-d", strtotime($due_date));
+        $shortTermPlannerTask->save();
+
+        return date("d F Y", strtotime($shortTermPlannerTask->due_date));
+    }
 }

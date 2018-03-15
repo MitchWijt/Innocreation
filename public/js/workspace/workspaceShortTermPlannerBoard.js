@@ -26,7 +26,6 @@ $(document).on("change", ".shortTermTaskTitleInput",function () {
     var board_id = $(this).data("board-id");
     var task_category = $(this).parents(".emptyCard").find(".categoryTask").val();
     var title = $(this).val();
-    console.log(title);
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -49,8 +48,8 @@ $(document).on("change", ".shortTermTaskTitleInput",function () {
     });
 });
 
-$(".deadline").on("click",function () {
-    $(".datepicker").focus();
+$(".dueDate").on("click",function () {
+    $(this).parents(".card-task").find(".datepicker").focus();
 });
 
 $(document).ready(function () {
@@ -63,7 +62,27 @@ $(document).ready(function () {
 });
 
 $(".datepicker").on("change",function () {
-   console.log($(this).val());
+    var task_id = $(this).data("short-planner-task-id");
+    var due_date = $(this).val();
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/workspace/editShortTermPlannerTaskDueDate",
+        data: {'task_id': task_id,'due_date' : due_date},
+        success: function (data) {
+            $(".dueDate").each(function () {
+                if($(this).data("short-planner-task-id") == task_id){
+                    $(this).text(data);
+                }
+            });
+        }
+    });
 });
 
 

@@ -41,7 +41,7 @@
                             <div class="shortTermtasksColumn" data-day-time="<?=$dayTime?>">
                                 <? foreach($shortTermPlannerTasks as $shortPlannerTask) { ?>
                                     <? if($shortPlannerTask->category == $dayTime) { ?>
-                                        <div class="card card-task col-sm-12 m-b-10">
+                                        <div class="card card-task col-sm-12 m-b-10" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                             <div class="card-block">
                                                 <p class="m-t-10 f-19"><?= $shortPlannerTask->title?></p>
                                                 <div class="d-flex js-between">
@@ -54,17 +54,17 @@
                                                             </div>
                                                         </div>
                                                     <? } ?>
-                                                    <? if($shortPlannerTask->deadline != null) { ?>
-                                                        <p class="c-orange f-13 m-b-0 m-t-5 deadline"><?= date("d F Y", strtotime($shortPlannerTask->deadline))?></p>
+                                                    <? if($shortPlannerTask->due_date != null) { ?>
+                                                        <p class="c-orange f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= date("d F Y", strtotime($shortPlannerTask->due_date))?></p>
+                                                    <? } else { ?>
+                                                        <p class="c-orange f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><i class="zmdi zmdi-plus m-r-5"></i>Set due date</p>
                                                     <? } ?>
                                                 </div>
-                                                <? if($shortPlannerTask->deadline != null) { ?>
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <input type="text" class="datepicker input-transparant pull-right c-transparant col-sm-5">
+                                                        <input type="text" class="datepicker input-transparant pull-right c-transparant col-sm-5" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                     </div>
                                                 </div>
-                                                <? } ?>
                                             </div>
                                         </div>
                                     <? } ?>
