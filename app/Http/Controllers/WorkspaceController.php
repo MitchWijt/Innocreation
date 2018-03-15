@@ -249,7 +249,7 @@ class WorkspaceController extends Controller
         $shortTermPlannerTask->save();
     }
 
-    public function editShortTermPlannerTaskDueDateAction(Request $request){
+    public function setShortTermPlannerTaskDueDateAction(Request $request){
         $short_term_planner_task_id = $request->input("task_id");
         $due_date = $request->input("due_date");
 
@@ -258,5 +258,33 @@ class WorkspaceController extends Controller
         $shortTermPlannerTask->save();
 
         return date("d F Y", strtotime($shortTermPlannerTask->due_date));
+    }
+
+    public function removeShortTermPlannerTaskDueDateAction(Request $request){
+        $short_term_planner_task_id = $request->input("task_id");
+
+        $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
+        $shortTermPlannerTask->due_date = NULL;
+        $shortTermPlannerTask->save();
+    }
+
+    public function assignTaskToMemberShortTermPlannerAction(Request $request){
+        $short_term_planner_task_id = $request->input("task_id");
+        $member_user_id = $request->input("member_user_id");
+
+        $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
+        $shortTermPlannerTask->assigned_to = $member_user_id;
+        $shortTermPlannerTask->save();
+
+        return $shortTermPlannerTask->assignedUser->getProfilePicture();
+    }
+
+    public function changePlaceShortTermPlannerTaskAction(Request $request){
+        $short_term_planner_task_id = $request->input("short_term_planner_task_id");
+        $category = $request->input("category");
+
+        $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
+        $shortTermPlannerTask->category = $category;
+        $shortTermPlannerTask->save();
     }
 }

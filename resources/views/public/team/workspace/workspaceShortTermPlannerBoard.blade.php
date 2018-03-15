@@ -39,36 +39,62 @@
                                 <i class="zmdi zmdi-plus f-25 addShortTermTask" data-day-time="<?=$dayTime?>"></i>
                             </div>
                             <div class="shortTermtasksColumn" data-day-time="<?=$dayTime?>">
-                                <? foreach($shortTermPlannerTasks as $shortPlannerTask) { ?>
-                                    <? if($shortPlannerTask->category == $dayTime) { ?>
-                                        <div class="card card-task col-sm-12 m-b-10" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
-                                            <div class="card-block">
-                                                <p class="m-t-10 f-19"><?= $shortPlannerTask->title?></p>
-                                                <div class="d-flex js-between">
-                                                    <? if($shortPlannerTask->assigned_to != null) { ?>
-                                                        <img class="circle circleSmall" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
-                                                    <? } else { ?>
-                                                        <div class="circle circleSmall">
-                                                            <div class="text-center">
-                                                                <i class="zmdi zmdi-account"></i>
+                                <div id="div" ondrop="drop(event, this, $(this).parents('.shortTermtasksColumn').data('day-time'))"  ondragover="allowDrop(event)" class="p-b-100">
+                                    <? foreach($shortTermPlannerTasks as $shortPlannerTask) { ?>
+                                        <? if($shortPlannerTask->category == $dayTime) { ?>
+                                            <div class="m-b-10 shortTermTask" id="drag-<?=$shortPlannerTask->id?>" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false">
+                                                <div class="card card-task col-sm-12 " data-short-planner-task-id="<?= $shortPlannerTask->id?>">
+                                                    <div class="card-block" style="min-height: 100%">
+                                                        <p class="m-t-10 f-19"><?= $shortPlannerTask->title?></p>
+                                                        <div class="d-flex js-between">
+                                                            <? if($shortPlannerTask->assigned_to != null) { ?>
+                                                                <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
+                                                            <? } else { ?>
+                                                                <div class="assignMember">
+                                                                    <div class="circle circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
+                                                                        <div class="text-center memberAssignPlaceholder">
+                                                                            <i class="zmdi zmdi-account memberAssignIcon"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            <? } ?>
+                                                            <? if($shortPlannerTask->due_date != "1970-01-01 00:00:00") { ?>
+                                                                <div class="d-flex fd-row dueDateHover">
+                                                                    <p class="c-orange f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= date("d F Y", strtotime($shortPlannerTask->due_date))?></p>
+                                                                    <i class="zmdi zmdi-close hidden removeDueDate m-t-6 m-l-10 c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"></i>
+                                                                </div>
+                                                            <? } else { ?>
+                                                                <div class="d-flex fd-row dueDateHover">
+                                                                    <p class="c-orange f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><i class="zmdi zmdi-plus m-r-5"></i>Set due date</p>
+                                                                </div>
+                                                            <? } ?>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <input type="text" class="datepicker input-transparant pull-right c-transparant col-sm-5" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                             </div>
                                                         </div>
-                                                    <? } ?>
-                                                    <? if($shortPlannerTask->due_date != null) { ?>
-                                                        <p class="c-orange f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= date("d F Y", strtotime($shortPlannerTask->due_date))?></p>
-                                                    <? } else { ?>
-                                                        <p class="c-orange f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><i class="zmdi zmdi-plus m-r-5"></i>Set due date</p>
-                                                    <? } ?>
+                                                    </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <input type="text" class="datepicker input-transparant pull-right c-transparant col-sm-5" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
+                                                <div class="collapse collapseExample" >
+                                                    <div class="card card-task col-sm-12 m-b-10 p-0">
+                                                        <div class="card-block">
+                                                            <span class="m-l-10 m-t-10">Assign this task to: <br></span>
+                                                            <hr>
+                                                            <div class="text-center">
+                                                                <select name="assignMembers" class="input col-sm-11 m-t-10 assignTaskToMember">
+                                                                    <? foreach($team->getMembers() as $member) { ?>
+                                                                        <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
+                                                                    <? } ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        <? } ?>
                                     <? } ?>
-                                <? } ?>
+                                </div>
                             </div>
                         </div>
                     <? } ?>

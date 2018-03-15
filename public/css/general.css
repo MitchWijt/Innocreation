@@ -77,6 +77,9 @@
 .m-t-5{
     margin-top: 5px !important;
 }
+.m-t-6{
+    margin-top: 6px !important;
+}
 .m-t-8{
     margin-top: 8px !important;
 }
@@ -107,7 +110,9 @@
 .p-b-40{
     padding-bottom: 40px !important;
 }
-
+.p-b-100{
+    padding-bottom: 100px !important;
+}
 .p-b-20{
     padding-bottom: 20px !important;
 }
@@ -124,6 +129,15 @@
 .p-l-15{
     padding-left: 15px !important;
 }
+.p-l-20{
+    padding-left: 20px !important;
+}
+.p-l-25{
+    padding-left: 25px !important;
+}
+.p-l-30{
+    padding-left: 30px !important;
+}
 .p-t-5{
     padding-top: 5px !important;
 }
@@ -135,6 +149,15 @@
 }
 .p-r-15{
     padding-right: 15px !important;
+}
+.p-r-20{
+    padding-right: 20px !important;
+}
+.p-r-25{
+    padding-right: 25px !important;
+}
+.p-r-30{
+    padding-right: 30px !important;
 }
 /*==================================COLORS=============================*/
 .c-blue{
@@ -277,6 +300,10 @@ hr{
 
 .input-transparant:focus{
     outline: none;
+}
+
+.z-index{
+    z-index: 10 !important;
 }
 
 
