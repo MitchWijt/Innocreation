@@ -191,3 +191,11 @@ function drop(ev, el,category) {
     });
 }
 
+$(".toggleTaskmenu").on("click",function () {
+    $(".taskMenu").toggle();
+});
+
+$(document).ready(function () {
+    $(".taskMenu").removeClass("hidden");
+    $(".taskMenu").toggle();
+});
