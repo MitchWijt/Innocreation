@@ -242,6 +242,7 @@ $(".togglePassedIdeas").on("click",function () {
 
 $(".renameShortTermPlannerBoard").on("click",function () {
     $(".shortTermPlannerBoardTitle").addClass("hidden");
+    $(".toggleBoardRename").addClass("hidden");
     $(".renameShortTermPlannerBoardInput").removeClass("hidden");
     $(".boardMenu").toggle();
 });
