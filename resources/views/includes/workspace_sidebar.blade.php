@@ -13,7 +13,18 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-team/workspace/short-term-planner-options">Short term task planner(collapse DB)</a>
+        <? $shortTermPlannerBoards = \App\WorkspaceShortTermPlannerBoard::select("*")->get();?>
+        <a data-toggle="collapse" data-target="#sidebarShortTermCollapse" aria-expanded="false" aria-controls="sidebarShortTermCollapse" class="regular-link c-gray">Short term task planner <i class="zmdi zmdi-chevron-down m-l-10"></i></a>
+        <div class="collapse" id="sidebarShortTermCollapse">
+            <div class="sidebar-tab text-center">
+                <a class="regular-link c-orange" href="/my-team/workspace/short-term-planner-options">Create new planner</a>
+            </div>
+            <? foreach($shortTermPlannerBoards as $shortTermPlannerBoard) { ?>
+                <div class="sidebar-tab text-center">
+                    <a class="regular-link c-gray" href="<?= $shortTermPlannerBoard->getUrl()?>"><?= $shortTermPlannerBoard->title?></a>
+                </div>
+            <? } ?>
+        </div>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

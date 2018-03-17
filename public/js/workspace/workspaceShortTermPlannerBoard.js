@@ -1,17 +1,17 @@
 $(".toggleBoardRename").on("click",function () {
-   $(".renameShortTermPlannerBoard").toggle();
+   $(".boardMenu").toggle();
 });
 
 $(document).ready(function () {
-   $(".renameShortTermPlannerBoard").removeClass("hidden");
-   $(".renameShortTermPlannerBoard").toggle();
+   $(".boardMenu").removeClass("hidden");
+   $(".boardMenu").toggle();
 });
 
 $(document).on("click", ".addShortTermTask",function () {
-    var category = $(this).data("day-time");
+    var category = $(this).data("short-term-planner-category");
     var task = $('.emptyCard').first().clone();
     $(".shortTermtasksColumn").each(function () {
-       if($(this).data("day-time") == category){
+       if($(this).data("short-term-planner-category") == category){
            var taskColumn = $(this);
            task.removeClass("hidden");
            $(task).prependTo(taskColumn);
@@ -129,7 +129,6 @@ $(document).on("click", ".assignTaskToMemberToggle", function () {
 $(document).on("change",".assignTaskToMember",function () {
     var task_id = $(this).parents(".shortTermTask").find(".assignTaskToMember option:selected").data("short-planner-task-id");
     var member_user_id = $(this).val();
-    console.log(task_id);
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -172,23 +171,54 @@ function drop(ev, el,category) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     el.appendChild(document.getElementById(data));
-    var bucketlist_id_text = ev.dataTransfer.getData("text");
-    var bucketlist_id = bucketlist_id_text.split("-");
-    $.ajax({
-        method: "POST",
-        beforeSend: function (xhr) {
-            var token = $('meta[name="csrf_token"]').attr('content');
+    var task_id_text = ev.dataTransfer.getData("text");
+    var task_id = task_id_text.split("-");
+    if(task_id[2] == "menuTask"){
+        var menu_task_category = task_id[4];
+        var board_id = task_id[3];
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
 
-            if (token) {
-                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/workspace/menuTaskToShortTermPlanner",
+            data: {'category': category, 'menu_task_id': task_id[1], 'board_id' : board_id, 'menu_task_category' : menu_task_category},
+            success: function (data) {
+                $(".menuTask").each(function () {
+                    if($(this).data("menu-task-id") == task_id[1]){
+                        $(this).parents(".shortTermTask").find(".dueDate").removeClass("hidden");
+                        $(this).parents(".shortTermTask").find(".dueDate").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTask").find(".datepicker").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTask").find(".assignTaskToMemberToggle").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTask").find(".assignTaskToMember option").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTask").find(".datepicker").removeClass("hidden");
+                        $(this).parents(".shortTermTask").find(".assignMember").removeClass("hidden");
+                        $(this).parents(".shortTermTask").attr("id", "drag-"+task_id[1]);
+                    }
+                });
             }
-        },
-        url: "/workspace/changePlaceShortTermPlannerTask",
-        data: {'category': category, 'short_term_planner_task_id' : bucketlist_id[1]},
-        success: function (data) {
+        });
+    } else {
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
 
-        }
-    });
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/workspace/changePlaceShortTermPlannerTask",
+            data: {'category': category, 'short_term_planner_task_id': task_id[1]},
+            success: function (data) {
+
+            }
+        });
+    }
 }
 
 $(".toggleTaskmenu").on("click",function () {
@@ -198,4 +228,42 @@ $(".toggleTaskmenu").on("click",function () {
 $(document).ready(function () {
     $(".taskMenu").removeClass("hidden");
     $(".taskMenu").toggle();
+});
+
+$(".toggleBucketlistGoals").on("click",function () {
+   $(".passedIdeas").addClass("hidden");
+   $(".uncompletedBucketlistGoals").removeClass("hidden");
+});
+
+$(".togglePassedIdeas").on("click",function () {
+   $(".uncompletedBucketlistGoals").addClass("hidden");
+   $(".passedIdeas").removeClass("hidden");
+});
+
+$(".renameShortTermPlannerBoard").on("click",function () {
+    $(".shortTermPlannerBoardTitle").addClass("hidden");
+    $(".renameShortTermPlannerBoardInput").removeClass("hidden");
+    $(".boardMenu").toggle();
+});
+
+$(".renameShortTermPlannerBoardInput").on("change",function () {
+    var title = $(this).val();
+    var board_id = $(this).data("short-term-planner-board-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/workspace/changeShortTermPlannerBoardTitle",
+        data: {'board_id': board_id, 'title': title},
+        success: function (data) {
+            $(".shortTermPlannerBoardTitle").text(title);
+            $(".shortTermPlannerBoardTitle").removeClass("hidden");
+            $(".renameShortTermPlannerBoardInput").addClass("hidden");
+        }
+    });
 });

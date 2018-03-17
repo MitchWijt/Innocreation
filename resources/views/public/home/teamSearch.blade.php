@@ -71,7 +71,7 @@
                                         <div class="col-sm-11 d-flex js-center">
                                             <div class="card  m-t-20 m-b-20">
                                                 <div class="card-block d-flex js-around m-t-10">
-                                                    <img class="circle circleImage m-r-0 m-t-20" src="<?= $searchedTeam->getAmountNeededExpertises()?>" alt="">
+                                                    <img class="circle circleImage m-r-0 m-t-20" src="<?= $searchedTeam->getProfilePicture()?>" alt="">
                                                     <div class="d-flex fd-column">
                                                         <p class="f-17 m-b-0 c-orange"><?= $searchedTeam->team_name?></p>
                                                         <p class="m-b-0">Expertises needed: <?=count($searchedTeam->getNeededExpertises())?></p>

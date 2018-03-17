@@ -35,7 +35,12 @@ $(".filterFavExpertises").on("click",function () {
 });
 
 $(".editFavExpertisesBtn").on("click",function () {
+    $(".deleteCross").toggle();
+});
+
+$(document).ready(function () {
     $(".deleteCross").removeClass("hidden");
+    $(".deleteCross").toggle();
 });
 
 $(".deleteCross").on("click",function () {
