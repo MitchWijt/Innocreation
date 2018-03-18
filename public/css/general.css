@@ -26,6 +26,12 @@
 .m-l-40{
     margin-left: 40px !important;
 }
+.m-l-45{
+    margin-left: 45px !important;
+}
+.m-l-50{
+    margin-left: 50px !important;
+}
 .m-l-200{
     margin-left: 200px !important;
 }
@@ -169,6 +175,18 @@
 }
 .p-r-30{
     padding-right: 30px !important;
+}
+.p-r-35{
+    padding-right: 35px !important;
+}
+.p-r-40{
+    padding-right: 40px !important;
+}
+.p-r-45{
+    padding-right: 45px !important;
+}
+.p-r-50{
+    padding-right: 50px !important;
 }
 /*==================================COLORS=============================*/
 .c-blue{

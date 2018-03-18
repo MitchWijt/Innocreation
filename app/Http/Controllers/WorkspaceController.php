@@ -250,6 +250,8 @@ class WorkspaceController extends Controller
         $shortTermPlannerTask->category = $category;
         $shortTermPlannerTask->created_at = date("Y-m-d H:i:s");
         $shortTermPlannerTask->save();
+
+        return $shortTermPlannerTask->id;
     }
 
     public function setShortTermPlannerTaskDueDateAction(Request $request){
