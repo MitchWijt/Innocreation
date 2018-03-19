@@ -248,6 +248,7 @@ class WorkspaceController extends Controller
         $shortTermPlannerTask->short_term_planner_board_id = $board_id;
         $shortTermPlannerTask->title = $title;
         $shortTermPlannerTask->category = $category;
+        $shortTermPlannerTask->due_date = null;
         $shortTermPlannerTask->created_at = date("Y-m-d H:i:s");
         $shortTermPlannerTask->save();
 

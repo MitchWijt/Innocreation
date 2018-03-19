@@ -325,11 +325,11 @@ $(document).on("click", ".card-block", function (e) {
     $(this).parents(".shortTermTask").find("#shortTermTaskModal").modal().toggle();
 });
 
-$('.modal').on('hidden.bs.modal', function () {
+$('.shortTermTaskModal').on('hidden.bs.modal', function () {
     $(".shortTermTask").attr("draggable", true);
 });
 
-$('.modal').on('show.bs.modal', function () {
+$('.shortTermTaskModal').on('show.bs.modal', function () {
     $(".shortTermTask").attr("draggable", false);
 });
 
