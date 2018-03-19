@@ -336,4 +336,15 @@ class WorkspaceController extends Controller
         $shortTermPlannerBoard->title = $title;
         $shortTermPlannerBoard->save();
     }
+
+    public function saveShortTermPlannerTaskDescriptionAction(Request $request){
+        $short_term_planner_task_id = $request->input("task_id");
+        $description = $request->input("description");
+
+        $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
+        $shortTermPlannerTask->description = $description;
+        $shortTermPlannerTask->save();
+
+        return $shortTermPlannerTask->description;
+    }
 }

@@ -200,7 +200,6 @@
                                 <div id="div" ondrop="drop(event, this, $(this).parents('.shortTermtasksColumn').data('short-term-planner-category'))"  ondragover="allowDrop(event)" class="p-b-100">
                                     <? foreach($shortTermPlannerTasks as $shortPlannerTask) { ?>
                                         <? if($shortPlannerTask->category == $shortTermPlannerCategory) { ?>
-                                            <div class="modalDiv">
                                                 <div class="m-b-10 shortTermTask" id="drag-<?=$shortPlannerTask->id?>" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false">
                                                     <div class="card card-task col-sm-12 " data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                         <div class="card-block" style="min-height: 100%" >
@@ -254,7 +253,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
                                                 <div class="shortTermTaskModalContainer">
                                                     <div class="modal fade" id="shortTermTaskModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                                                         <div class="modal-dialog modal-lg" role="document">
@@ -269,20 +267,27 @@
                                                                             <div class="col-sm-9">
                                                                                 <? if($shortPlannerTask->assigned_to != null) { ?>
                                                                                     <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
+                                                                                    <select name="assignMembers" class="input m-t-10 assignTaskToMember">
+                                                                                        <? foreach($team->getMembers() as $member) { ?>
+                                                                                        <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
+                                                                                        <? } ?>
+                                                                                    </select>
                                                                                 <? } else { ?>
-                                                                                    <div class="assignMember m-t-10">
-                                                                                        <div class="circle border-inno-black circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
-                                                                                            <div class="text-center memberAssignPlaceholder">
-                                                                                                <i class="zmdi zmdi-account memberAssignIcon"></i>
+                                                                                    <div class="d-flex fd-row">
+                                                                                        <div class="assignMember m-t-10">
+                                                                                            <div class="circle border-inno-black circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
+                                                                                                <div class="text-center memberAssignPlaceholder">
+                                                                                                    <i class="zmdi zmdi-account memberAssignIcon"></i>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
+                                                                                        <select name="assignMembers" class="input m-t-10 assignTaskToMember">
+                                                                                            <? foreach($team->getMembers() as $member) { ?>
+                                                                                            <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
+                                                                                            <? } ?>
+                                                                                        </select>
                                                                                     </div>
                                                                                 <? } ?>
-                                                                                <select name="assignMembers" class="input col-sm-4 m-t-10 assignTaskToMember">
-                                                                                    <? foreach($team->getMembers() as $member) { ?>
-                                                                                        <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
-                                                                                    <? } ?>
-                                                                                </select>
                                                                             </div>
                                                                             <div class="m-l-50 col-sm-3">
                                                                                 <div class="d-flex fd-column m-t-5">
@@ -303,6 +308,11 @@
                                                                                     <input type="text" class="datepicker input-transparant c-transparant col-sm-1" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                                                 </div>
                                                                             </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12 d-flex js-center m-t-10">
+                                                                            <textarea name="shortTermTaskDescription" class="input shortTermTaskDescription" placeholder="Write task description" cols="80" rows="10" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?if($shortPlannerTask->description != null) echo $shortPlannerTask->description?></textarea>
                                                                         </div>
                                                                     </div>
                                                                 </div>

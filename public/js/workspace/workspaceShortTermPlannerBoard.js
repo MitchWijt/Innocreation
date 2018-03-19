@@ -322,9 +322,37 @@ $(document).on("change", ".card-block .collapse",function (e) {
     e.stopPropagation();
 });
 $(document).on("click", ".card-block", function (e) {
-    $(this).parents(".modalDiv").find("#shortTermTaskModal").modal().toggle();
+    $(this).parents(".shortTermTask").find("#shortTermTaskModal").modal().toggle();
 });
 
+$('.modal').on('hidden.bs.modal', function () {
+    $(".shortTermTask").attr("draggable", true);
+});
 
+$('.modal').on('show.bs.modal', function () {
+    $(".shortTermTask").attr("draggable", false);
+});
+
+$(".shortTermTaskDescription").on("keyup",function () {
+    var description = $(this).val();
+    var task_id = $(this).data("short-planner-task-id");
+    setTimeout(function () {
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/workspace/saveShortTermPlannerTaskDescription",
+            data: {'description': description, 'task_id': task_id},
+            success: function (data) {
+
+            }
+        });
+    },500);
+});
 
 
