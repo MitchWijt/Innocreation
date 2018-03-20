@@ -203,3 +203,5 @@ Route::post("/workspace/menuTaskToShortTermPlanner", "WorkspaceController@menuTa
 Route::post("/workspace/changeShortTermPlannerBoardTitle", "WorkspaceController@changeShortTermPlannerBoardTitleAction");
 
 Route::post("/workspace/saveShortTermPlannerTaskDescription", "WorkspaceController@saveShortTermPlannerTaskDescriptionAction");
+
+Route::post("/workspace/deleteShortTermPlannerTask", "WorkspaceController@deleteShortTermPlannerTaskAction");

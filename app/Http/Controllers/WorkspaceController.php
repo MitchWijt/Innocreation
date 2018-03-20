@@ -348,4 +348,12 @@ class WorkspaceController extends Controller
 
         return $shortTermPlannerTask->description;
     }
+
+    public function deleteShortTermPlannerTaskAction(Request $request){
+        $short_term_planner_task_id = $request->input("task_id");
+
+        $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
+        $shortTermPlannerTask->delete();
+
+    }
 }

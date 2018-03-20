@@ -44,10 +44,13 @@ $(document).on("change", ".shortTermTaskTitleInput",function () {
                   $(this).parents(".shortTermTask").find(".dueDate").removeClass("hidden");
                   $(this).parents(".shortTermTask").find(".dueDate").attr("data-short-planner-task-id", data);
                   $(this).parents(".shortTermTask").find(".date").attr("data-short-planner-task-id", data);
+                  $(this).parents(".shortTermTask").find(".dateModal").attr("data-short-planner-task-id", data);
                   $(this).parents(".shortTermTask").find(".assignTaskToMemberToggle").attr("data-short-planner-task-id", data);
                   $(this).parents(".shortTermTask").find(".assignTaskToMember option").attr("data-short-planner-task-id", data);
                   $(this).parents(".shortTermTask").find(".date").removeClass("hidden");
-                  $(this).parents(".shortTermTask").find(".date").datepicker({
+                  $(this).parents(".shortTermTask").find(".deleteShortTermTask").attr("data-short-planner-task-id", data);
+                  $(this).parents(".shortTermTask").attr("data-short-planner-task-id", data);
+                   $(this).parents(".shortTermTask").find(".date").datepicker({
                        format: "yyyy-mm-dd",
                        weekStart: 1,
                        autoclose: true,
@@ -56,6 +59,17 @@ $(document).on("change", ".shortTermTaskTitleInput",function () {
                   $(this).parents(".shortTermTask").find(".date").addClass("datepicker");
                   $(this).parents(".shortTermTask").find(".assignMember").removeClass("hidden");
                   $(this).parents(".shortTermTask").attr("id", "drag-"+data);
+                  $(this).parents(".shortTermTaskModalContainer").find(".modal-title").text(title);
+                  $(this).parents(".shortTermTask").find(".card-block-new").attr("class", "card-block");
+                  $(this).parents(".shortTermTask").find(".shortTermTaskDescription").attr("data-short-planner-task-id", data);
+                  $(this).parents(".shortTermTask").find(".modal-title").text(title);
+                  $(this).parents(".shortTermTask").find(".modal-title").append("<i class='zmdi zmdi-chevron-down toggleTaskDelete m-l-10'></i>");
+                  $(this).parents(".shortTermTask").find(".dateModal").datepicker({
+                       format: "yyyy-mm-dd",
+                       weekStart: 1,
+                       autoclose: true,
+                       minDate: "<? echo date('Y-m-d') ?>"
+                   });
                   $(this).remove();
                }
             });
@@ -68,6 +82,7 @@ $(document).on("click", ".dueDate",function () {
         $(this).parents(".card-task").find(".datepicker").focus();
     } else {
         $(this).parents(".shortTermTaskModalContainer").find(".datepicker").focus();
+        $(this).parents(".shortTermTaskModalContainer").find(".dateModal").focus();
     }
 });
 $(document).on("mouseover", ".dueDateHover, .removeDueDate",function () {
@@ -96,7 +111,7 @@ $(document).ready(function () {
     });
 });
 
-$(document).on("change", ".datepicker, .date", function () {
+$(document).on("change", ".datepicker, .date, .dateModal", function () {
     var task_id = $(this).data("short-planner-task-id");
     var due_date = $(this).val();
     var modal_check = $(this).parents(".shortTermTaskModalContainer").find(".taskModalCheck").val();
@@ -238,7 +253,17 @@ function drop(ev, el,category) {
                         $(this).parents(".shortTermTask").find(".assignTaskToMember option").attr("data-short-planner-task-id", data);
                         $(this).parents(".shortTermTask").find(".datepicker").removeClass("hidden");
                         $(this).parents(".shortTermTask").find(".assignMember").removeClass("hidden");
+                        $(this).parents(".shortTermTask").find(".deleteShortTermTask").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTask").attr("data-short-planner-task-id", data);
                         $(this).parents(".shortTermTask").attr("id", "drag-"+task_id[1]);
+                        $(this).parents(".shortTermTaskModalContainer").find(".dueDate").removeClass("hidden");
+                        $(this).parents(".shortTermTaskModalContainer").find(".dueDate").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTaskModalContainer").find(".datepicker").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTaskModalContainer").find(".assignTaskToMemberToggle").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTaskModalContainer").find(".assignTaskToMember option").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTaskModalContainer").find(".datepicker").removeClass("hidden");
+                        $(this).parents(".shortTermTaskModalContainer").find(".assignMember").removeClass("hidden");
+                        $(this).parents(".shortTermTask").find(".card-block-new").attr("class", "card-block");
                     }
                 });
             }
@@ -265,10 +290,14 @@ function drop(ev, el,category) {
 $(".toggleTaskmenu").on("click",function () {
     $(".taskMenu").toggle();
 });
-
+$(document).on("click", ".toggleTaskDelete",function () {
+    $(".deleteShortTermTask").toggle();
+});
 $(document).ready(function () {
     $(".taskMenu").removeClass("hidden");
     $(".taskMenu").toggle();
+    $(".deleteShortTermTask").removeClass("hidden");
+    $(".deleteShortTermTask").toggle();
 });
 
 $(".toggleBucketlistGoals").on("click",function () {
@@ -333,7 +362,7 @@ $('.shortTermTaskModal').on('show.bs.modal', function () {
     $(".shortTermTask").attr("draggable", false);
 });
 
-$(".shortTermTaskDescription").on("keyup",function () {
+$(document).on("keyup", ".shortTermTaskDescription",function () {
     var description = $(this).val();
     var task_id = $(this).data("short-planner-task-id");
     setTimeout(function () {
@@ -353,6 +382,31 @@ $(".shortTermTaskDescription").on("keyup",function () {
             }
         });
     },500);
+});
+
+$(document).on("click", ".deleteShortTermTask",function () {
+    var task_id = $(this).data("short-planner-task-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/workspace/deleteShortTermPlannerTask",
+        data: {'task_id': task_id},
+        success: function (data) {
+            $(".shortTermTask").each(function () {
+               if($(this).data("short-planner-task-id") == task_id){
+                   $(this).find("#shortTermTaskModal").toggle();
+                   $(this).find("#shortTermTaskModal").remove();
+                   $(this).fadeOut();
+               }
+            });
+        }
+    });
 });
 
 

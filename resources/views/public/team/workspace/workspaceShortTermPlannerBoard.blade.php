@@ -35,9 +35,9 @@
                         <div class="p-20 o-scroll" style="max-height: 500px;">
                             <div class="uncompletedBucketlistGoals hidden">
                                 <? foreach($uncompletedBucketlistGoals as $uncompletedBucketlistGoal) { ?>
-                                    <div class="m-b-10 shortTermTask" id="drag-<?=$uncompletedBucketlistGoal->id?>-menuTask-<?= $shortTermPlannerBoard->id ?>-bucketlist" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false">
+                                    <div class="m-b-10 shortTermTask" id="drag-<?=$uncompletedBucketlistGoal->id?>-menuTask-<?= $shortTermPlannerBoard->id ?>-bucketlist" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-short-planner-task-id="">
                                         <div class="card card-task col-sm-12 menuTask" data-short-planner-task-id="" data-menu-task-id="<?=$uncompletedBucketlistGoal->id?>">
-                                            <div class="card-block" style="min-height: 100%">
+                                            <div class="card-block-new" style="min-height: 100%">
                                                 <p class="m-t-10 f-19"><?= $uncompletedBucketlistGoal->title?></p>
                                                 <div class="d-flex js-between">
                                                     <div class="assignMember hidden">
@@ -60,7 +60,7 @@
                                         </div>
                                         <div class="collapse collapseExample" >
                                             <div class="card card-task col-sm-12 m-b-10 p-0">
-                                                <div class="card-block">
+                                                <div class="card">
                                                     <span class="m-l-10 m-t-10">Assign this task to: <br></span>
                                                     <hr>
                                                     <div class="text-center">
@@ -73,14 +73,64 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="shortTermTaskModalContainer">
+                                            <div class="modal fade shortTermTaskModal" id="shortTermTaskModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header d-flex js-center">
+                                                            <div class="d-flex fd-column">
+                                                                <h4 class="modal-title " id="modalLabel"><?=$uncompletedBucketlistGoal->title?> <i class="zmdi zmdi-chevron-down toggleTaskDelete"></i></h4>
+                                                                <a class="regular-link td-none"><p class="border-default text-center f-13 btn-inno btn-small m-b-5 hidden deleteShortTermTask m-t-5" data-short-planner-task-id="">Delete</p></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-12 d-flex">
+                                                                    <input type="hidden" class="taskModalCheck" value="1">
+                                                                    <div class="col-sm-9">
+                                                                        <div class="d-flex fd-row">
+                                                                            <div class="assignMember m-t-10">
+                                                                                <div class="circle border-inno-black circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="">
+                                                                                    <div class="text-center memberAssignPlaceholder">
+                                                                                        <i class="zmdi zmdi-account memberAssignIcon"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <select name="assignMembers" class="input m-t-10 assignTaskToMember">
+                                                                                <? foreach($team->getMembers() as $member) { ?>
+                                                                                <option value="<?= $member->id?>" data-short-planner-task-id=""><?= $member->getName()?></option>
+                                                                                <? } ?>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="m-l-50 col-sm-3">
+                                                                        <div class="d-flex fd-column m-t-5">
+                                                                            <div class="d-flex fd-row dueDateHover">
+                                                                                <p class="c-orange f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id=""><i class="zmdi zmdi-plus m-r-5"></i>Set due date</p>
+                                                                            </div>
+                                                                            <input type="text" class="datepicker input-transparant c-transparant col-sm-1" data-short-planner-task-id="">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 d-flex js-center m-t-10">
+                                                                    <textarea name="shortTermTaskDescription" class="input shortTermTaskDescription" placeholder="Write task description" cols="80" rows="10" data-short-planner-task-id=""></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 <? } ?>
                             </div>
                             <div class="passedIdeas hidden">
                                 <? foreach($passedIdeas as $passedIdea) { ?>
-                                    <div class="m-b-10 shortTermTask" id="drag-<?=$passedIdea->id?>-menuTask-<?= $shortTermPlannerBoard->id?>-idea" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false">
+                                    <div class="m-b-10 shortTermTask" id="drag-<?=$passedIdea->id?>-menuTask-<?= $shortTermPlannerBoard->id?>-idea" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-short-planner-task-id="">
                                         <div class="card card-task col-sm-12 menuTask" data-short-planner-task-id="" data-menu-task-id="<?=$passedIdea->id?>">
-                                            <div class="card-block" style="min-height: 100%">
+                                            <div class="card-block-new" style="min-height: 100%">
                                                 <p class="m-t-10 f-19"><?=$passedIdea->title?></p>
                                                 <div class="d-flex js-between">
                                                     <div class="assignMember hidden">
@@ -103,7 +153,7 @@
                                         </div>
                                         <div class="collapse collapseExample" >
                                             <div class="card card-task col-sm-12 m-b-10 p-0">
-                                                <div class="card-block">
+                                                <div class="">
                                                     <span class="m-l-10 m-t-10">Assign this task to: <br></span>
                                                     <hr>
                                                     <div class="text-center">
@@ -112,6 +162,56 @@
                                                                 <option value="<?= $member->id?>" data-short-planner-task-id=""><?= $member->getName()?></option>
                                                             <? } ?>
                                                         </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="shortTermTaskModalContainer">
+                                            <div class="modal fade shortTermTaskModal" id="shortTermTaskModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header d-flex js-center">
+                                                            <div class="d-flex fd-column">
+                                                                <h4 class="modal-title " id="modalLabel"><?=$passedIdea->title?> <i class="zmdi zmdi-chevron-down toggleTaskDelete"></i></h4>
+                                                                <a class="regular-link td-none"><p class="border-default text-center f-13 btn-inno btn-small m-b-5 hidden deleteShortTermTask m-t-5" data-short-planner-task-id="">Delete</p></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-12 d-flex">
+                                                                    <input type="hidden" class="taskModalCheck" value="1">
+                                                                    <div class="col-sm-9">
+                                                                        <div class="d-flex fd-row">
+                                                                            <div class="assignMember m-t-10">
+                                                                                <div class="circle border-inno-black circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="">
+                                                                                    <div class="text-center memberAssignPlaceholder">
+                                                                                        <i class="zmdi zmdi-account memberAssignIcon"></i>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <select name="assignMembers" class="input m-t-10 assignTaskToMember">
+                                                                                <? foreach($team->getMembers() as $member) { ?>
+                                                                                <option value="<?= $member->id?>" data-short-planner-task-id=""><?= $member->getName()?></option>
+                                                                                <? } ?>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="m-l-50 col-sm-3">
+                                                                        <div class="d-flex fd-column m-t-5">
+                                                                            <div class="d-flex fd-row dueDateHover">
+                                                                                <p class="c-orange f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id=""><i class="zmdi zmdi-plus m-r-5"></i>Set due date</p>
+                                                                            </div>
+                                                                            <input type="text" class="datepicker input-transparant c-transparant col-sm-1" data-short-planner-task-id="">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 d-flex js-center m-t-10">
+                                                                    <textarea name="shortTermTaskDescription" class="input shortTermTaskDescription" placeholder="Write task description" cols="80" rows="10" data-short-planner-task-id=""><? if($passedIdea->description != null) echo $passedIdea->description?></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -148,9 +248,9 @@
                         }
                     ?>
                 <? } ?>
-                <div class="m-b-10 shortTermTask emptyCard hidden" id="" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false">
+                <div class="m-b-10 shortTermTask emptyCard hidden" id="" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-short-planner-task-id="">
                     <div class="card card-task col-sm-12" data-short-planner-task-id="" >
-                        <div class="card-block" style="min-height: 100%">
+                        <div class="card-block-new" style="min-height: 100%">
                             <input type="text" class="input-transparant m-t-10 shortTermTaskTitleInput" data-creator-user-id="<?= $user->id?>" data-board-id="<?=$shortTermPlannerBoard->id?>">
                             <input type="hidden" name="category" class="categoryTask" value="">
                             <p class="m-t-10 f-19 shortTermPlannerTaskTitle"></p>
@@ -175,7 +275,7 @@
                     </div>
                     <div class="collapse collapseExample" >
                         <div class="card card-task col-sm-12 m-b-10 p-0">
-                            <div class="card-block">
+                            <div class="">
                                 <span class="m-l-10 m-t-10">Assign this task to: <br></span>
                                 <hr>
                                 <div class="text-center">
@@ -184,6 +284,56 @@
                                         <option value="<?= $member->id?>" data-short-planner-task-id=""><?= $member->getName()?></option>
                                         <? } ?>
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="shortTermTaskModalContainer">
+                        <div class="modal fade shortTermTaskModal" id="shortTermTaskModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header d-flex js-center">
+                                        <div class="d-flex fd-column">
+                                            <h4 class="modal-title " id="modalLabel"></h4>
+                                            <a class="regular-link td-none"><p class="border-default text-center f-13 btn-inno btn-small m-b-5 hidden deleteShortTermTask m-t-5" data-short-planner-task-id="">Delete</p></a>
+                                        </div>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-sm-12 d-flex">
+                                                <input type="hidden" class="taskModalCheck" value="1">
+                                                <div class="col-sm-9">
+                                                    <div class="d-flex fd-row">
+                                                        <div class="assignMember m-t-10">
+                                                            <div class="circle border-inno-black circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="">
+                                                                <div class="text-center memberAssignPlaceholder">
+                                                                    <i class="zmdi zmdi-account memberAssignIcon"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <select name="assignMembers" class="input m-t-10 assignTaskToMember">
+                                                            <? foreach($team->getMembers() as $member) { ?>
+                                                            <option value="<?= $member->id?>" data-short-planner-task-id=""><?= $member->getName()?></option>
+                                                            <? } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="m-l-50 col-sm-3">
+                                                    <div class="d-flex fd-column m-t-5">
+                                                        <div class="d-flex fd-row dueDateHover">
+                                                            <p class="c-orange f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id=""><i class="zmdi zmdi-plus m-r-5"></i>Set due date</p>
+                                                        </div>
+                                                        <input type="text" class="dateModal input-transparant c-transparant col-sm-1" data-short-planner-task-id="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 d-flex js-center m-t-10">
+                                                <textarea name="shortTermTaskDescription" class="input shortTermTaskDescription" placeholder="Write task description" cols="80" rows="10" data-short-planner-task-id=""></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -200,7 +350,7 @@
                                 <div id="div" ondrop="drop(event, this, $(this).parents('.shortTermtasksColumn').data('short-term-planner-category'))"  ondragover="allowDrop(event)" class="p-b-100">
                                     <? foreach($shortTermPlannerTasks as $shortPlannerTask) { ?>
                                         <? if($shortPlannerTask->category == $shortTermPlannerCategory) { ?>
-                                                <div class="m-b-10 shortTermTask" id="drag-<?=$shortPlannerTask->id?>" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false">
+                                                <div class="m-b-10 shortTermTask" id="drag-<?=$shortPlannerTask->id?>" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                     <div class="card card-task col-sm-12 " data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                         <div class="card-block" style="min-height: 100%" >
                                                             <p class="m-t-10 f-19"><?= $shortPlannerTask->title?></p>
@@ -258,16 +408,19 @@
                                                         <div class="modal-dialog modal-lg" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header d-flex js-center">
-                                                                    <h4 class="modal-title " id="modalLabel"><?= $shortPlannerTask->title?></h4>
+                                                                    <div class="d-flex fd-column">
+                                                                        <h4 class="modal-title " id="modalLabel"><?= $shortPlannerTask->title?> <i class="zmdi zmdi-chevron-down toggleTaskDelete" ></i></h4>
+                                                                        <a class="regular-link td-none"><p class="border-default text-center f-13 btn-inno btn-small m-b-5 hidden deleteShortTermTask m-t-5" data-short-planner-task-id="<?= $shortPlannerTask->id?>">Delete</p></a>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="modal-body ">
+                                                                <div class="modal-body">
                                                                     <div class="row">
                                                                         <div class="col-sm-12 d-flex">
                                                                             <input type="hidden" class="taskModalCheck" value="1">
                                                                             <div class="col-sm-9">
                                                                                 <? if($shortPlannerTask->assigned_to != null) { ?>
                                                                                     <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
-                                                                                    <select name="assignMembers" class="input m-t-10 assignTaskToMember">
+                                                                                    <select name="assignMembers" class="input m-t-10 assignTaskToMember col-sm-4">
                                                                                         <? foreach($team->getMembers() as $member) { ?>
                                                                                         <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
                                                                                         <? } ?>
