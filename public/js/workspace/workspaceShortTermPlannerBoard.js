@@ -197,16 +197,25 @@ $(document).on("change",".assignTaskToMember",function () {
         success: function (data) {
             $(".assignTaskToMemberToggle").each(function () {
                 if($(this).data("short-planner-task-id") == task_id){
-                    $(this).parents(".assignMember").find(".memberAssignPlaceholder").addClass("hidden");
-                    $(this).parents(".assignMember").find(".memberAssignIcon").addClass("hidden");
-                    if($(this).hasClass("placeholderMemberAssign")){
-                        var profilepicture = "<img class='circle circleSmall assignTaskToMemberToggle' src="+data+" data-short-planner-id="+task_id+">";
-                        $(this).parents(".assignMember").find("img").remove();
-                        $(this).parents(".assignMember").append(profilepicture);
-                        $(this).addClass("hidden");
-                    }
-                    $(this).attr("src", data);
-                    if(modal_check != 1) {
+                    if(member_user_id != "nobody") {
+                        $(this).parents(".assignMember").find(".memberAssignPlaceholder").addClass("hidden");
+                        $(this).parents(".assignMember").find(".memberAssignIcon").addClass("hidden");
+                        if ($(this).hasClass("placeholderMemberAssign")) {
+                            var profilepicture = "<img class='circle circleSmall assignTaskToMemberToggle' src=" + data + " data-short-planner-id=" + task_id + ">";
+                            $(this).parents(".assignMember").find("img").remove();
+                            $(this).parents(".assignMember").append(profilepicture);
+                            $(this).addClass("hidden");
+                        }
+                        $(this).attr("src", data);
+                        if (modal_check != 1) {
+                            $(this).parents(".shortTermTask").find(".collapse").collapse('toggle');
+                        }
+                    } else {
+                        $(this).parents(".assignMember").find(".memberAssignPlaceholder").removeClass("hidden");
+                        $(this).parents(".assignMember").find(".memberAssignIcon").removeClass("hidden");
+                        $(this).parents(".assignMember").find(".placeholderMemberAssign").removeClass("hidden");
+                        $(this).parents(".assignMember").find(".hasImage").removeClass("hidden");
+                        $(this).parents(".assignMember").find("img").addClass("hidden");
                         $(this).parents(".shortTermTask").find(".collapse").collapse('toggle');
                     }
                 }
@@ -400,8 +409,7 @@ $(document).on("click", ".deleteShortTermTask",function () {
         success: function (data) {
             $(".shortTermTask").each(function () {
                if($(this).data("short-planner-task-id") == task_id){
-                   $(this).find("#shortTermTaskModal").toggle();
-                   $(this).find("#shortTermTaskModal").remove();
+                   $(this).find("#shortTermTaskModal").modal('hide');
                    $(this).fadeOut();
                }
             });

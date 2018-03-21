@@ -28,7 +28,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Custom task planner(collapse DB)</a>
+        <a class="regular-link c-gray" href="">Tasks assigned to me</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

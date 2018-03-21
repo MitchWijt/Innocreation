@@ -29,7 +29,7 @@
                        <div class="d-flex fd-column p-20">
                            <button class="btn btn-inno m-b-5 toggleBucketlistGoals">Bucketlist goals</button>
                            <button class="btn btn-inno m-b-5 togglePassedIdeas">Passed ideas</button>
-                           <button class="btn btn-inno m-b-5">Custom planner tasks <br> (later)</button>
+                           <button class="btn btn-inno m-b-5">Completed tasks <br> (later)</button>
                        </div>
                         <hr>
                         <div class="p-20 o-scroll" style="max-height: 500px;">
@@ -356,7 +356,16 @@
                                                             <p class="m-t-10 f-19"><?= $shortPlannerTask->title?></p>
                                                             <div class="d-flex js-between">
                                                                 <? if($shortPlannerTask->assigned_to != null) { ?>
-                                                                    <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
+                                                                    <div class="assignMember">
+                                                                        <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
+                                                                        <div class="hasImage hidden">
+                                                                            <div class="circle circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
+                                                                                <div class="text-center memberAssignPlaceholder">
+                                                                                    <i class="zmdi zmdi-account memberAssignIcon"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 <? } else { ?>
                                                                     <div class="assignMember">
                                                                         <div class="circle circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
@@ -395,9 +404,11 @@
                                                                 <hr>
                                                                 <div class="text-center">
                                                                     <select name="assignMembers" class="input col-sm-11 m-t-10 assignTaskToMember">
+                                                                        <option value="" selected disabled>Choose member</option>
                                                                         <? foreach($team->getMembers() as $member) { ?>
                                                                             <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
                                                                         <? } ?>
+                                                                        <option value="nobody" data-short-planner-task-id="<?= $shortPlannerTask->id?>">Unassign</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -419,16 +430,28 @@
                                                                             <input type="hidden" class="taskModalCheck" value="1">
                                                                             <div class="col-sm-9">
                                                                                 <? if($shortPlannerTask->assigned_to != null) { ?>
-                                                                                    <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
-                                                                                    <select name="assignMembers" class="input m-t-10 assignTaskToMember col-sm-4">
-                                                                                        <? foreach($team->getMembers() as $member) { ?>
-                                                                                        <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
-                                                                                        <? } ?>
-                                                                                    </select>
+                                                                                    <div class="d-flex fd-row ">
+                                                                                        <div class="assignMember m-t-10">
+                                                                                            <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
+                                                                                            <div class="hasImage hidden">
+                                                                                                <div class="circle circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
+                                                                                                    <div class="text-center memberAssignPlaceholder">
+                                                                                                        <i class="zmdi zmdi-account memberAssignIcon"></i>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <select name="assignMembers" class="input m-t-10 assignTaskToMember col-sm-4">
+                                                                                            <? foreach($team->getMembers() as $member) { ?>
+                                                                                            <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
+                                                                                            <? } ?>
+                                                                                            <option value="nobody" data-short-planner-task-id="<?= $shortPlannerTask->id?>">Unassign</option>
+                                                                                        </select>
+                                                                                    </div>
                                                                                 <? } else { ?>
                                                                                     <div class="d-flex fd-row">
                                                                                         <div class="assignMember m-t-10">
-                                                                                            <div class="circle border-inno-black circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
+                                                                                            <div class="circle circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                                                                 <div class="text-center memberAssignPlaceholder">
                                                                                                     <i class="zmdi zmdi-account memberAssignIcon"></i>
                                                                                                 </div>
@@ -438,6 +461,7 @@
                                                                                             <? foreach($team->getMembers() as $member) { ?>
                                                                                             <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
                                                                                             <? } ?>
+                                                                                            <option value="nobody" data-short-planner-task-id="<?= $shortPlannerTask->id?>">Unassign</option>
                                                                                         </select>
                                                                                     </div>
                                                                                 <? } ?>

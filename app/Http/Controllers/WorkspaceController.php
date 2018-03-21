@@ -278,11 +278,17 @@ class WorkspaceController extends Controller
         $short_term_planner_task_id = $request->input("task_id");
         $member_user_id = $request->input("member_user_id");
 
-        $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
-        $shortTermPlannerTask->assigned_to = $member_user_id;
-        $shortTermPlannerTask->save();
 
-        return $shortTermPlannerTask->assignedUser->getProfilePicture();
+        $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
+        if($member_user_id != "nobody") {
+            $shortTermPlannerTask->assigned_to = $member_user_id;
+        } else {
+            $shortTermPlannerTask->assigned_to = null;
+        }
+        $shortTermPlannerTask->save();
+        if($member_user_id != "nobody") {
+            return $shortTermPlannerTask->assignedUser->getProfilePicture();
+        }
     }
 
     public function changePlaceShortTermPlannerTaskAction(Request $request){
