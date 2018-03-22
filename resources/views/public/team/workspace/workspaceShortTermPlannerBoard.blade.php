@@ -68,6 +68,7 @@
                                                             <? foreach($team->getMembers() as $member) { ?>
                                                                 <option value="<?= $member->id?>" data-short-planner-task-id=""><?= $member->getName()?></option>
                                                             <? } ?>
+                                                            <option value="nobody" class="unassign" data-short-planner-task-id="">Unassign</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -100,6 +101,7 @@
                                                                                 <? foreach($team->getMembers() as $member) { ?>
                                                                                 <option value="<?= $member->id?>" data-short-planner-task-id=""><?= $member->getName()?></option>
                                                                                 <? } ?>
+                                                                                <option value="nobody" class="unassign" data-short-planner-task-id="">Unassign</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -161,6 +163,7 @@
                                                             <? foreach($team->getMembers() as $member) { ?>
                                                                 <option value="<?= $member->id?>" data-short-planner-task-id=""><?= $member->getName()?></option>
                                                             <? } ?>
+                                                            <option value="nobody" class="unassign" data-short-planner-task-id="">Unassign</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -193,6 +196,7 @@
                                                                                 <? foreach($team->getMembers() as $member) { ?>
                                                                                 <option value="<?= $member->id?>" data-short-planner-task-id=""><?= $member->getName()?></option>
                                                                                 <? } ?>
+                                                                                <option value="nobody" class="unassign" data-short-planner-task-id="">Unassign</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -283,6 +287,7 @@
                                         <? foreach($team->getMembers() as $member) { ?>
                                         <option value="<?= $member->id?>" data-short-planner-task-id=""><?= $member->getName()?></option>
                                         <? } ?>
+                                        <option value="nobody" class="unassign" data-short-planner-task-id="">Unassign</option>
                                     </select>
                                 </div>
                             </div>
@@ -313,8 +318,9 @@
                                                         </div>
                                                         <select name="assignMembers" class="input m-t-10 assignTaskToMember">
                                                             <? foreach($team->getMembers() as $member) { ?>
-                                                            <option value="<?= $member->id?>" data-short-planner-task-id=""><?= $member->getName()?></option>
+                                                                <option value="<?= $member->id?>" data-short-planner-task-id=""><?= $member->getName()?></option>
                                                             <? } ?>
+                                                            <option value="nobody" class="unassign" data-short-planner-task-id="">Unassign</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -420,7 +426,7 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header d-flex js-center">
                                                                     <div class="d-flex fd-column">
-                                                                        <h4 class="modal-title " id="modalLabel"><?= $shortPlannerTask->title?> <i class="zmdi zmdi-chevron-down toggleTaskDelete" ></i></h4>
+                                                                        <h4 class="modal-title" id="modalLabel"> <i class="zmdi zmdi-check circle circleSmall border-inno-black f-18 text-center completeShortTermTask"></i><?= $shortPlannerTask->title?> <i class="zmdi zmdi-chevron-down toggleTaskDelete" ></i></h4>
                                                                         <a class="regular-link td-none"><p class="border-default text-center f-13 btn-inno btn-small m-b-5 hidden deleteShortTermTask m-t-5" data-short-planner-task-id="<?= $shortPlannerTask->id?>">Delete</p></a>
                                                                     </div>
                                                                 </div>
@@ -434,7 +440,7 @@
                                                                                         <div class="assignMember m-t-10">
                                                                                             <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
                                                                                             <div class="hasImage hidden">
-                                                                                                <div class="circle circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
+                                                                                                <div class="circle circleSmall placeholderMemberAssign assignTaskToMemberToggle border-inno-black" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                                                                     <div class="text-center memberAssignPlaceholder">
                                                                                                         <i class="zmdi zmdi-account memberAssignIcon"></i>
                                                                                                     </div>
@@ -442,8 +448,9 @@
                                                                                             </div>
                                                                                         </div>
                                                                                         <select name="assignMembers" class="input m-t-10 assignTaskToMember col-sm-4">
+                                                                                            <option value="" selected disabled>Choose member</option>
                                                                                             <? foreach($team->getMembers() as $member) { ?>
-                                                                                            <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
+                                                                                                <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
                                                                                             <? } ?>
                                                                                             <option value="nobody" data-short-planner-task-id="<?= $shortPlannerTask->id?>">Unassign</option>
                                                                                         </select>
@@ -451,15 +458,16 @@
                                                                                 <? } else { ?>
                                                                                     <div class="d-flex fd-row">
                                                                                         <div class="assignMember m-t-10">
-                                                                                            <div class="circle circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
+                                                                                            <div class="circle circleSmall placeholderMemberAssign assignTaskToMemberToggle border-inno-black" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                                                                 <div class="text-center memberAssignPlaceholder">
                                                                                                     <i class="zmdi zmdi-account memberAssignIcon"></i>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                         <select name="assignMembers" class="input m-t-10 assignTaskToMember">
+                                                                                            <option value="" selected disabled>Choose member</option>
                                                                                             <? foreach($team->getMembers() as $member) { ?>
-                                                                                            <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
+                                                                                                <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
                                                                                             <? } ?>
                                                                                             <option value="nobody" data-short-planner-task-id="<?= $shortPlannerTask->id?>">Unassign</option>
                                                                                         </select>

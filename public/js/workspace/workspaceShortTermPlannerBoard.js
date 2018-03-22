@@ -49,6 +49,7 @@ $(document).on("change", ".shortTermTaskTitleInput",function () {
                   $(this).parents(".shortTermTask").find(".assignTaskToMember option").attr("data-short-planner-task-id", data);
                   $(this).parents(".shortTermTask").find(".date").removeClass("hidden");
                   $(this).parents(".shortTermTask").find(".deleteShortTermTask").attr("data-short-planner-task-id", data);
+                  $(this).parents(".shortTermTask").find(".unassign").attr("data-short-planner-task-id", data);
                   $(this).parents(".shortTermTask").attr("data-short-planner-task-id", data);
                    $(this).parents(".shortTermTask").find(".date").datepicker({
                        format: "yyyy-mm-dd",
@@ -177,6 +178,7 @@ $(document).on("click", ".assignTaskToMemberToggle", function () {
 
 $(document).on("change",".assignTaskToMember",function () {
     var member_user_id = $(this).val();
+    console.log(member_user_id);
     var modal_check = $(this).parents(".shortTermTaskModalContainer").find(".taskModalCheck").val();
     if(modal_check != 1) {
         var task_id = $(this).parents(".shortTermTask").find(".assignTaskToMember option:selected").data("short-planner-task-id");
@@ -203,7 +205,7 @@ $(document).on("change",".assignTaskToMember",function () {
                         if ($(this).hasClass("placeholderMemberAssign")) {
                             var profilepicture = "<img class='circle circleSmall assignTaskToMemberToggle' src=" + data + " data-short-planner-id=" + task_id + ">";
                             $(this).parents(".assignMember").find("img").remove();
-                            $(this).parents(".assignMember").append(profilepicture);
+                            $(this).parents(".assignMember").prepend(profilepicture);
                             $(this).addClass("hidden");
                         }
                         $(this).attr("src", data);
@@ -216,7 +218,9 @@ $(document).on("change",".assignTaskToMember",function () {
                         $(this).parents(".assignMember").find(".placeholderMemberAssign").removeClass("hidden");
                         $(this).parents(".assignMember").find(".hasImage").removeClass("hidden");
                         $(this).parents(".assignMember").find("img").addClass("hidden");
-                        $(this).parents(".shortTermTask").find(".collapse").collapse('toggle');
+                        if (modal_check != 1) {
+                            $(this).parents(".shortTermTask").find(".collapse").collapse('toggle');
+                        }
                     }
                 }
             });
@@ -265,6 +269,7 @@ function drop(ev, el,category) {
                         $(this).parents(".shortTermTask").find(".deleteShortTermTask").attr("data-short-planner-task-id", data);
                         $(this).parents(".shortTermTask").attr("data-short-planner-task-id", data);
                         $(this).parents(".shortTermTask").attr("id", "drag-"+task_id[1]);
+                        $(this).parents(".shortTermTask").find(".unassign").attr("data-short-planner-task-id", data);
                         $(this).parents(".shortTermTaskModalContainer").find(".dueDate").removeClass("hidden");
                         $(this).parents(".shortTermTaskModalContainer").find(".dueDate").attr("data-short-planner-task-id", data);
                         $(this).parents(".shortTermTaskModalContainer").find(".datepicker").attr("data-short-planner-task-id", data);
