@@ -49,7 +49,10 @@ $(document).on("change", ".shortTermTaskTitleInput",function () {
                   $(this).parents(".shortTermTask").find(".assignTaskToMember option").attr("data-short-planner-task-id", data);
                   $(this).parents(".shortTermTask").find(".date").removeClass("hidden");
                   $(this).parents(".shortTermTask").find(".deleteShortTermTask").attr("data-short-planner-task-id", data);
+                  $(this).parents(".shortTermTask").find(".completeShortTermTaskCard").attr("data-short-planner-task-id", data);
                   $(this).parents(".shortTermTask").find(".unassign").attr("data-short-planner-task-id", data);
+                  $(this).parents(".shortTermTask").find(".priorityTask").attr("data-short-planner-task-id", data);
+                  $(this).parents(".shortTermTask").find(".short-planner-task-id").val(data);
                   $(this).parents(".shortTermTask").attr("data-short-planner-task-id", data);
                    $(this).parents(".shortTermTask").find(".date").datepicker({
                        format: "yyyy-mm-dd",
@@ -65,6 +68,7 @@ $(document).on("change", ".shortTermTaskTitleInput",function () {
                   $(this).parents(".shortTermTask").find(".shortTermTaskDescription").attr("data-short-planner-task-id", data);
                   $(this).parents(".shortTermTask").find(".modal-title").text(title);
                   $(this).parents(".shortTermTask").find(".modal-title").append("<i class='zmdi zmdi-chevron-down toggleTaskDelete m-l-10'></i>");
+                  $(this).parents(".shortTermTask").find(".modal-title").prepend("<i class='zmdi zmdi-check circle circleSmall border-inno-black f-18 text-center completeShortTermTask' data-short-planner-task-id="+data+"></i>");
                   $(this).parents(".shortTermTask").find(".dateModal").datepicker({
                        format: "yyyy-mm-dd",
                        weekStart: 1,
@@ -267,6 +271,10 @@ function drop(ev, el,category) {
                         $(this).parents(".shortTermTask").find(".datepicker").removeClass("hidden");
                         $(this).parents(".shortTermTask").find(".assignMember").removeClass("hidden");
                         $(this).parents(".shortTermTask").find(".deleteShortTermTask").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTask").find(".completeShortTermTaskCard").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTask").find(".completeShortTermTask").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTask").find(".priorityTask").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTask").find(".short-planner-task-id").val(data);
                         $(this).parents(".shortTermTask").attr("data-short-planner-task-id", data);
                         $(this).parents(".shortTermTask").attr("id", "drag-"+task_id[1]);
                         $(this).parents(".shortTermTask").find(".unassign").attr("data-short-planner-task-id", data);
@@ -422,4 +430,93 @@ $(document).on("click", ".deleteShortTermTask",function () {
     });
 });
 
+$(document).on("click",".completeShortTermTask",function () {
+    var task_id = $(this).data("short-planner-task-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/workspace/completeShortTermPlannerTask",
+        data: {'task_id': task_id},
+        success: function (data) {
+           if(data == 1){
+               $(".completeShortTermTask").each(function () {
+                  if($(this).data("short-planner-task-id") == task_id){
+                      $(this).addClass("bcg-orange");
+                      if($(this).data("card") == 1){
+                          $(this).removeClass("hidden");
+                      }
+                  }
+               });
+               $(".completeShortTermTaskCard").each(function () {
+                   if($(this).data("short-planner-task-id") == task_id){
+                       $(this).removeClass("hidden");
+                   }
+               });
+           } else if(data == 2){
+               $(".completeShortTermTask").each(function () {
+                   if($(this).data("short-planner-task-id") == task_id){
+                       $(this).removeClass("bcg-orange");
+                       if($(this).data("card") == 1){
+                           $(this).addClass("hidden");
+                       }
+                   }
+               });
+               $(".completeShortTermTaskCard").each(function () {
+                   if($(this).data("short-planner-task-id") == task_id){
+                       $(this).addClass("hidden");
+                   }
+               });
+           }
+        }
+    });
+});
+
+$(document).on("change", ".setShortTermTaskPriority", function () {
+    var task_id = $(this).parents(".shortTermTaskModalContainer").find(".short-planner-task-id").val();
+    var priority = $(this).parents(".shortTermTaskModalContainer").find(".setShortTermTaskPriority option:selected").val();
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/workspace/setPriorityShortTermPlannerTask",
+        data: {'task_id': task_id, 'priority' : priority},
+        success: function (data) {
+            $(".priorityTask").each(function () {
+                if($(this).data("short-planner-task-id") == task_id) {
+                    if (data == "High") {
+                        $(this).text(data);
+                        $(this).removeClass("c-black");
+                        $(this).removeClass("c-orange");
+                        $(this).removeClass("c-green");
+                        $(this).removeClass("c-black");
+                        $(this).addClass("c-red");
+                    } else if(data == "Medium"){
+                        $(this).text(data);
+                        $(this).removeClass("c-black");
+                        $(this).removeClass("c-red");
+                        $(this).removeClass("c-green");
+                        $(this).addClass("c-orange");
+                    } else if(data == 'Low'){
+                        $(this).text(data);
+                        $(this).removeClass("c-black");
+                        $(this).removeClass("c-orange");
+                        $(this).removeClass("c-red");
+                        $(this).addClass("c-green");
+                    }
+                }
+            });
+        }
+    });
+});
 

@@ -316,7 +316,9 @@ hr{
 .bcg-black{
     background: #000;
 }
-
+.bcg-orange{
+    background: #FF6100 !important;
+}
 .border-bottom-none{
     border-bottom: none !important;
 }

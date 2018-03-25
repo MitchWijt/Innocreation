@@ -231,7 +231,7 @@ class WorkspaceController extends Controller
         $team = Team::select("*")->where("id", $user->team_id)->first();
         $shortTermPlannerBoard = WorkspaceShortTermPlannerBoard::select("*")->where("id", $id)->first();
         $allShortTermPlannerBoards = WorkspaceShortTermPlannerBoard::select("*")->where("team_id", $team->id)->get();
-        $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("short_term_planner_board_id", $shortTermPlannerBoard->id)->get();
+        $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("short_term_planner_board_id", $shortTermPlannerBoard->id)->orderBy("priority", "DESC")->get();
         $uncompletedBucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team->id)->where("completed", 0)->where("used_on_short_term_planner", 0)->get();
         $passedIdeas = WorkspaceIdeas::select("*")->where("team_id", $team->id)->where("status", "Passed")->where("used_on_short_term_planner", 0)->get();
         return view("/public/team/workspace/workspaceShortTermPlannerBoard", compact("team", "user", "shortTermPlannerBoard", "shortTermPlannerTasks", "uncompletedBucketlistGoals", "passedIdeas","allShortTermPlannerBoards"));
@@ -361,5 +361,62 @@ class WorkspaceController extends Controller
         $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
         $shortTermPlannerTask->delete();
 
+    }
+
+    public function completeShortTermPlannerTaskAction(Request $request){
+        $short_term_planner_task_id = $request->input("task_id");
+
+
+        $alreadyCompleted = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->where("completed", 1)->get();
+        if(count($alreadyCompleted) == 0) {
+            $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
+            $shortTermPlannerTask->completed = 1;
+            $shortTermPlannerTask->save();
+            return 1;
+        } else {
+            $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
+            $shortTermPlannerTask->completed = 0;
+            $shortTermPlannerTask->save();
+            return 2;
+        }
+    }
+
+    public function setPriorityShortTermPlannerTaskAction(Request $request){
+        $short_term_planner_task_id = $request->input("task_id");
+        $priority = $request->input("priority");
+
+        $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
+        $shortTermPlannerTask->priority = $priority;
+        $shortTermPlannerTask->save();
+
+        if($priority == 1){
+            return "High";
+        } else if($priority == 2){
+            return "Medium";
+        } else if($priority == 3){
+            return "Low";
+        }
+    }
+
+    public function workspacePersonalBoard(){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+
+        $today = date("Y-m-d");
+        $missedDueDateTasks = [];
+
+        $toDoTasks = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $user->id)->where("completed", 0)->get();
+        $completedTasks = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $user->id)->where("completed", 1)->get();
+        $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $user->id)->where("due_date", "!=", null)->get();
+
+        foreach($shortTermPlannerTasks as $shortTermPlannerTask){
+            if(strtotime($today) > strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->due_date)))){
+                array_push($missedDueDateTasks, $shortTermPlannerTask);
+            }
+        }
+
+
+
+        return view("/public/team/workspace/workspacePersonalBoard", compact("user", "team", "toDoTasks", "completedTasks", "missedDueDateTasks"));
     }
 }
