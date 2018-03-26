@@ -313,6 +313,10 @@ hr{
     border: 2px solid #FF6100 !important;
 }
 
+.border-bottom{
+    border-bottom: 1px solid #FF6100 !important;;
+}
+
 .bcg-black{
     background: #000;
 }

@@ -414,9 +414,22 @@ class WorkspaceController extends Controller
                 array_push($missedDueDateTasks, $shortTermPlannerTask);
             }
         }
-
-
-
         return view("/public/team/workspace/workspacePersonalBoard", compact("user", "team", "toDoTasks", "completedTasks", "missedDueDateTasks"));
+    }
+
+    public function completeTaskPersonalBoardAction(Request $request){
+        $short_term_planner_task_id = $request->input("task_id");
+
+        $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
+        $shortTermPlannerTask->completed = 1;
+        $shortTermPlannerTask->save();
+    }
+
+    public function uncompleteTaskPersonalBoardAction(Request $request){
+        $short_term_planner_task_id = $request->input("task_id");
+
+        $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
+        $shortTermPlannerTask->completed = 0;
+        $shortTermPlannerTask->save();
     }
 }
