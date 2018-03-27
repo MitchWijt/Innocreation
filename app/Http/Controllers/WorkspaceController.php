@@ -404,14 +404,36 @@ class WorkspaceController extends Controller
 
         $today = date("Y-m-d");
         $missedDueDateTasks = [];
+        $completedTasks = [];
+        $toDoTasks = [];
 
-        $toDoTasks = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $user->id)->where("completed", 0)->get();
-        $completedTasks = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $user->id)->where("completed", 1)->get();
-        $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $user->id)->where("due_date", "!=", null)->get();
+        $shortTermPlannerTasksToDo = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $user->id)->where("completed", 0)->get();
+        $shortTermPlannerTasksComplete = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $user->id)->where("completed", 1)->get();
+        $shortTermPlannerTasksDueDate = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $user->id)->where("due_date", "!=", null)->get();
 
-        foreach($shortTermPlannerTasks as $shortTermPlannerTask){
+        foreach($shortTermPlannerTasksDueDate as $shortTermPlannerTask){
             if(strtotime($today) > strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->due_date)))){
                 array_push($missedDueDateTasks, $shortTermPlannerTask);
+            }
+        }
+
+        foreach($shortTermPlannerTasksToDo as $shortTermPlannerTask){
+            if($shortTermPlannerTask->due_date != null) {
+                if (strtotime($today) < strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->due_date)))) {
+                    array_push($toDoTasks, $shortTermPlannerTask);
+                }
+            } else {
+                array_push($toDoTasks, $shortTermPlannerTask);
+            }
+        }
+
+        foreach($shortTermPlannerTasksComplete as $shortTermPlannerTask){
+            if($shortTermPlannerTask->due_date != null) {
+                if (strtotime($today) < strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->due_date)))) {
+                    array_push($completedTasks, $shortTermPlannerTask);
+                }
+            } else {
+                array_push($completedTasks, $shortTermPlannerTask);
             }
         }
         return view("/public/team/workspace/workspacePersonalBoard", compact("user", "team", "toDoTasks", "completedTasks", "missedDueDateTasks"));

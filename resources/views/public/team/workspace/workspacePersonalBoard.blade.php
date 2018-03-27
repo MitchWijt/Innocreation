@@ -63,27 +63,47 @@
                                             <div class="modal fade personalBoardTaskModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-task-id="<?= $toDoTask->id?>">
                                                 <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
-                                                        <div class="modal-header d-flex js-center fd-column">
+                                                        <div class="modal-header text-center fd-column">
                                                             <h4 class="modal-title text-center c-black" id="modalLabel"><?= $toDoTask->title?></h4>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p class="c-black pull-left">Ask a member for assistance:</p>
                                                             <div class="row">
-                                                                <div class="d-flex col-sm-12 border-bottom p-b-15">
-                                                                    <div class="col-sm-3">
-                                                                        <select name="assistanceMembers" class="input m-b-15">
-                                                                            <option value="" selected disabled>Choose member</option>
-                                                                            <? foreach($team->getMembers() as $member) { ?>
-                                                                                <option value="<?= $member->id?>"><?= $member->getName()?></option>
-                                                                            <? } ?>
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="col-sm-3">
-                                                                        <button class="text-center m-0 btn-sm btn btn-inno">Send request</button>
-                                                                    </div>
+                                                                <div class="col-sm-12">
+                                                                    <small class="c-black m-t-5 assistanceToggleLink pull-left">Trouble with the task? <span class="c-orange regular-link toggleAssistanceForm">Ask a member for assistance!</span></small>
+                                                                    <small class="c-black m-t-5 closeAssistanceForm hidden pull-left"><i class="zmdi zmdi-close c-orange f-20"></i></small>
                                                                 </div>
                                                             </div>
-                                                            <p class="c-black m-t-20" style="text-align: start"><?= $toDoTask->description?></p>
+                                                            <div class="assistanceForm hidden">
+                                                                <p class="c-black f-18 pull-left">Ask a member for assistance:</p>
+                                                                <form action="" method="post">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12">
+                                                                            <input type="text" name="assistance_title" placeholder="Title" class="input col-sm-5 pull-left">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12 m-t-10">
+                                                                            <textarea name="assistance_message" class="input col-sm-12" cols="80" rows="5" placeholder="Your question"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12 border-bottom">
+                                                                            <button class="text-center m-0 btn-sm btn btn-inno pull-right">Send request</button>
+                                                                            <select name="assistanceMembers" class="input m-b-15 m-t-5 pull-right m-r-20">
+                                                                                <option value="" selected disabled>Choose member</option>
+                                                                                <? foreach($team->getMembers() as $member) { ?>
+                                                                                <option value="<?= $member->id?>"><?= $member->getName()?></option>
+                                                                                <? } ?>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <p class="c-black m-t-20" style="text-align: start"><?= $toDoTask->description?></p>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -156,23 +176,39 @@
                                                         <h4 class="modal-title text-center c-black" id="modalLabel"><?= $completedTask->title?></h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p class="c-black">Ask a member for assistance:</p>
+                                                        <small class="c-black m-t-5 assistanceToggleLink">Trouble with the task? <span class="c-orange regular-link toggleAssistanceForm">Ask a member for assistance!</span></small>
+                                                        <small class="c-black m-t-5 closeAssistanceForm hidden"><i class="zmdi zmdi-close c-orange f-20"></i></small>
+                                                        <div class="assistanceForm hidden">
+                                                            <p class="c-black f-18">Ask a member for assistance:</p>
+                                                            <form action="" method="post">
+                                                                <div class="row">
+                                                                    <div class="col-sm-12">
+                                                                        <input type="text" name="assistance_title" placeholder="Title" class="input col-sm-5">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-sm-12 m-t-10">
+                                                                        <textarea name="assistance_message" class="input col-sm-12" cols="80" rows="5" placeholder="Your question"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-sm-12 border-bottom">
+                                                                        <button class="text-center m-0 btn-sm btn btn-inno pull-right">Send request</button>
+                                                                        <select name="assistanceMembers" class="input m-b-15 m-t-5 pull-right m-r-20">
+                                                                            <option value="" selected disabled>Choose member</option>
+                                                                            <? foreach($team->getMembers() as $member) { ?>
+                                                                            <option value="<?= $member->id?>"><?= $member->getName()?></option>
+                                                                            <? } ?>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
                                                         <div class="row">
-                                                            <div class="d-flex col-sm-12 border-bottom p-b-15">
-                                                                <div class="col-sm-3">
-                                                                    <select name="assistanceMembers" class="input m-b-15">
-                                                                        <option value="" selected disabled>Choose member</option>
-                                                                        <? foreach($team->getMembers() as $member) { ?>
-                                                                        <option value="<?= $member->id?>"><?= $member->getName()?></option>
-                                                                        <? } ?>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-sm-3">
-                                                                    <button class="text-center m-0 btn-sm btn btn-inno">Send request</button>
-                                                                </div>
+                                                            <div class="col-sm-12">
+                                                                <p class="c-black m-t-20"><?= $completedTask->description?></p>
                                                             </div>
                                                         </div>
-                                                        <p class="c-black m-t-20"><?= $completedTask->description?></p>
                                                     </div>
                                                 </div>
                                             </div>

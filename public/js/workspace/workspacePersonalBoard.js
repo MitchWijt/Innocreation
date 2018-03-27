@@ -74,3 +74,15 @@ $(document).on("click",".uncompleteTaskPersonalBoard",function () {
     });
 });
 
+$(".toggleAssistanceForm").on("click",function () {
+    $(".assistanceForm").removeClass("hidden");
+    $(".assistanceToggleLink").addClass("hidden");
+    $(".closeAssistanceForm").removeClass("hidden");
+});
+
+$(".closeAssistanceForm").on("click",function () {
+    $(".assistanceForm").addClass("hidden");
+    $(".assistanceToggleLink").removeClass("hidden");
+    $(".closeAssistanceForm").addClass("hidden");
+});
+
