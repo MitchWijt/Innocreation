@@ -15,4 +15,8 @@ class AssistanceTicketMessage extends Model
     public function sender(){
         return $this->hasMany("\App\User", "id","sender_user_id");
     }
+
+    public function assistanceTicket(){
+        return $this->hasMany("\App\AssistanceTicket", "id","assistance_ticket_id");
+    }
 }

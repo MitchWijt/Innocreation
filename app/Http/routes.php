@@ -215,3 +215,5 @@ Route::get("/my-team/workspace/my-tasks", "WorkspaceController@workspacePersonal
 Route::post("/workspace/completeTaskPersonalBoard", "WorkspaceController@completeTaskPersonalBoardAction");
 
 Route::post("/workspace/uncompleteTaskPersonalBoard", "WorkspaceController@uncompleteTaskPersonalBoardAction");
+
+Route::post("/workspace/askForAssistance", "WorkspaceController@askForAssistanceAction");

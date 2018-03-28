@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\AssistanceTicket;
+use App\AssistanceTicketMessage;
 use App\Team;
 use App\User;
 use App\WorkspaceBucketlist;
@@ -453,5 +455,37 @@ class WorkspaceController extends Controller
         $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
         $shortTermPlannerTask->completed = 0;
         $shortTermPlannerTask->save();
+    }
+
+    public function askForAssistanceAction(Request $request){
+        $short_term_planner_task_id = $request->input("task_id");
+        $team_id = $request->input("team_id");
+        $user_id = $request->input("user_id");
+        $receiver_user_id = $request->input("assistanceMembers");
+        $message = $request->input("assistance_message");
+
+
+        $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
+
+        $assistanceTicket = new AssistanceTicket();
+        $assistanceTicket->team_id = $team_id;
+        $assistanceTicket->task_id = $short_term_planner_task_id;
+        $assistanceTicket->creator_user_id = $user_id;
+        $assistanceTicket->receiver_user_id = $receiver_user_id;
+        $assistanceTicket->title = $shortTermPlannerTask->title;
+        $assistanceTicket->created_at = date("Y-m-d H:i:s");
+        $assistanceTicket->save();
+
+        $timeNow = date("H:i:s");
+        $time = (date("g:i a", strtotime($timeNow)));
+        $assistanceTicketMessage = new AssistanceTicketMessage();
+        $assistanceTicketMessage->assistance_ticket_id = $assistanceTicket->id;
+        $assistanceTicketMessage->sender_user_id = $user_id;
+        $assistanceTicketMessage->receiver_user_id = $receiver_user_id;
+        $assistanceTicketMessage->message = $message;
+        $assistanceTicketMessage->time_sent = $time;
+        $assistanceTicketMessage->created_at = date("Y-m-d H:i:s");
+        $assistanceTicketMessage->save();
+        return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Succesfully created assistance request , check your ticket <a href='/my-team/workspace/assistance-requests' class='regular-link'>here</a>");
     }
 }

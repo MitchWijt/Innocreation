@@ -6,6 +6,11 @@
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">Tasks from <?= $user->getName()?></h1>
             </div>
+            @if(session('success'))
+                <div class="alert alert-success m-b-0 p-b-10">
+                    {{session('success')}}
+                </div>
+            @endif
             <hr class="m-b-20">
             <div class="row d-flex js-center m-t-20">
                 <div class="card card-lg">
@@ -69,18 +74,17 @@
                                                         <div class="modal-body">
                                                             <div class="row">
                                                                 <div class="col-sm-12">
-                                                                    <small class="c-black m-t-5 assistanceToggleLink pull-left">Trouble with the task? <span class="c-orange regular-link toggleAssistanceForm">Ask a member for assistance!</span></small>
+                                                                    <? if($toDoTask->checkAssistanceTicketRequest() == false) { ?>
+                                                                        <small class="c-black m-t-5 assistanceToggleLink pull-left">Trouble with the task? <span class="c-orange regular-link toggleAssistanceForm">Ask a member for assistance!</span></small>
+                                                                    <? } else { ?>
+                                                                        <small class="c-black m-t-5 assistanceToggleLink pull-left">You have asked assistance for this task. Check the request <a href="/my-team/workspace/assistance-requests" class="regular-link">here</a></small>
+                                                                    <? } ?>
                                                                     <small class="c-black m-t-5 closeAssistanceForm hidden pull-left"><i class="zmdi zmdi-close c-orange f-20"></i></small>
                                                                 </div>
                                                             </div>
                                                             <div class="assistanceForm hidden">
-                                                                <p class="c-black f-18 pull-left">Ask a member for assistance:</p>
+                                                                <p class="c-black f-18 pull-left m-b-5">Ask a member for assistance:</p>
                                                                 <form action="" method="post">
-                                                                    <div class="row">
-                                                                        <div class="col-sm-12">
-                                                                            <input type="text" name="assistance_title" placeholder="Title" class="input col-sm-5 pull-left">
-                                                                        </div>
-                                                                    </div>
                                                                     <div class="row">
                                                                         <div class="col-sm-12 m-t-10">
                                                                             <textarea name="assistance_message" class="input col-sm-12" cols="80" rows="5" placeholder="Your question"></textarea>
@@ -92,7 +96,7 @@
                                                                             <select name="assistanceMembers" class="input m-b-15 m-t-5 pull-right m-r-20">
                                                                                 <option value="" selected disabled>Choose member</option>
                                                                                 <? foreach($team->getMembers() as $member) { ?>
-                                                                                <option value="<?= $member->id?>"><?= $member->getName()?></option>
+                                                                                    <option value="<?= $member->id?>"><?= $member->getName()?></option>
                                                                                 <? } ?>
                                                                             </select>
                                                                         </div>
@@ -176,16 +180,19 @@
                                                         <h4 class="modal-title text-center c-black" id="modalLabel"><?= $completedTask->title?></h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <small class="c-black m-t-5 assistanceToggleLink">Trouble with the task? <span class="c-orange regular-link toggleAssistanceForm">Ask a member for assistance!</span></small>
+                                                        <? if($completedTask->checkAssistanceTicketRequest() == false) { ?>
+                                                            <small class="c-black m-t-5 assistanceToggleLink pull-left">Trouble with the task? <span class="c-orange regular-link toggleAssistanceForm">Ask a member for assistance!</span></small>
+                                                        <? } else { ?>
+                                                            <small class="c-black m-t-5 assistanceToggleLink pull-left">You have asked assistance for this task. Check the request <a href="/my-team/workspace/assistance-requests" class="regular-link">here</a></small>
+                                                        <? } ?>
                                                         <small class="c-black m-t-5 closeAssistanceForm hidden"><i class="zmdi zmdi-close c-orange f-20"></i></small>
                                                         <div class="assistanceForm hidden">
-                                                            <p class="c-black f-18">Ask a member for assistance:</p>
-                                                            <form action="" method="post">
-                                                                <div class="row">
-                                                                    <div class="col-sm-12">
-                                                                        <input type="text" name="assistance_title" placeholder="Title" class="input col-sm-5">
-                                                                    </div>
-                                                                </div>
+                                                            <p class="c-black f-18 m-b-5">Ask a member for assistance:</p>
+                                                            <form action="/workspace/askForAssistance" method="post">
+                                                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                                <input type="hidden" name="task_id" value="<?= $completedTask->id?>">
+                                                                <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                                                <input type="hidden" name="team_id" value="<?= $team->id?>">
                                                                 <div class="row">
                                                                     <div class="col-sm-12 m-t-10">
                                                                         <textarea name="assistance_message" class="input col-sm-12" cols="80" rows="5" placeholder="Your question"></textarea>
@@ -197,7 +204,7 @@
                                                                         <select name="assistanceMembers" class="input m-b-15 m-t-5 pull-right m-r-20">
                                                                             <option value="" selected disabled>Choose member</option>
                                                                             <? foreach($team->getMembers() as $member) { ?>
-                                                                            <option value="<?= $member->id?>"><?= $member->getName()?></option>
+                                                                                <option value="<?= $member->id?>"><?= $member->getName()?></option>
                                                                             <? } ?>
                                                                         </select>
                                                                     </div>
