@@ -40,7 +40,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Assistance requests</a>
+        <a class="regular-link c-gray" href="/my-team/workspace/assistance-requests">Assistance requests</a>
     </div>
     <hr>
 </div>

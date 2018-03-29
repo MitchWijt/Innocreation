@@ -13,6 +13,7 @@ use App\WorkspaceShortTermPlannerBoard;
 use App\WorkspaceShortTermPlannerTask;
 use App\WorkspaceShortTermPlannerType;
 use Illuminate\Http\Request;
+use function MongoDB\BSON\toJSON;
 use Session;
 
 use App\Http\Requests;
@@ -487,5 +488,39 @@ class WorkspaceController extends Controller
         $assistanceTicketMessage->created_at = date("Y-m-d H:i:s");
         $assistanceTicketMessage->save();
         return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Succesfully created assistance request , check your ticket <a href='/my-team/workspace/assistance-requests' class='regular-link'>here</a>");
+    }
+
+    public function workspaceAssistanceTickets(Request $request){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+
+        $receivedAssistanceTickets = AssistanceTicket::select("*")->where("receiver_user_id", $user->id)->where("closed", 0)->get();
+        $sendedAssistanceTickets = AssistanceTicket::select("*")->where("creator_user_id", $user->id)->where("closed", 0)->get();
+        $completedAssistanceTickets = AssistanceTicket::select("*")->where("creator_user_id", $user->id)->orWhere("receiver_user_id", $user->id)->where("closed", 1)->get();
+
+
+        return view("/public/team/workspace/workspaceAssistanceTickets", compact("user", "team", "receivedAssistanceTickets", "sendedAssistanceTickets", "completedAssistanceTickets"));
+    }
+
+    public function sendAssistanceTicketMessageAction(Request $request){
+        $ticket_id = $request->input("ticket_id");
+        $sender_user_id = $request->input("sender_user_id");
+        $receiver_user_id = $request->input("receiver_user_id");
+        $message = $request->input("message");
+
+        $timeNow = date("H:i:s");
+        $time = (date("g:i a", strtotime($timeNow)));
+        $assistanceTicketMessage = new AssistanceTicketMessage();
+        $assistanceTicketMessage->assistance_ticket_id = $ticket_id;
+        $assistanceTicketMessage->sender_user_id = $sender_user_id;
+        $assistanceTicketMessage->receiver_user_id = $receiver_user_id;
+        $assistanceTicketMessage->message = $message;
+        $assistanceTicketMessage->time_sent = $time;
+        $assistanceTicketMessage->created_at = date("Y-m-d H:i:s");
+        $assistanceTicketMessage->save();
+
+        $messageArray = ["message" => $message, "timeSent" => $time];
+
+        echo json_encode($messageArray);
     }
 }

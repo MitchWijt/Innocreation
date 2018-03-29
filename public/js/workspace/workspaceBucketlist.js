@@ -166,7 +166,6 @@ function drop(ev, el,type_id) {
 }
 
 $(".deleteBucketlistGoal").on("click",function () {
-    console.log("dfdf");
     var bucketlist_id = $(this).data("bucketlist-id");
     $.ajax({
         method: "POST",
