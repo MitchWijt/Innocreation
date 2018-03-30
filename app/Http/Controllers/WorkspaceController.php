@@ -232,12 +232,15 @@ class WorkspaceController extends Controller
     public function workspaceShortTermPlannerBoard($id){
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
+        if(request()->has('task_id')){
+            $urlParameter = request()->task_id;
+        }
         $shortTermPlannerBoard = WorkspaceShortTermPlannerBoard::select("*")->where("id", $id)->first();
         $allShortTermPlannerBoards = WorkspaceShortTermPlannerBoard::select("*")->where("team_id", $team->id)->get();
         $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("short_term_planner_board_id", $shortTermPlannerBoard->id)->orderBy("priority", "DESC")->get();
         $uncompletedBucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team->id)->where("completed", 0)->where("used_on_short_term_planner", 0)->get();
         $passedIdeas = WorkspaceIdeas::select("*")->where("team_id", $team->id)->where("status", "Passed")->where("used_on_short_term_planner", 0)->get();
-        return view("/public/team/workspace/workspaceShortTermPlannerBoard", compact("team", "user", "shortTermPlannerBoard", "shortTermPlannerTasks", "uncompletedBucketlistGoals", "passedIdeas","allShortTermPlannerBoards"));
+        return view("/public/team/workspace/workspaceShortTermPlannerBoard", compact("team", "user", "shortTermPlannerBoard", "shortTermPlannerTasks", "uncompletedBucketlistGoals", "passedIdeas","allShortTermPlannerBoards", "urlParameter"));
     }
 
     public function addShortTermPlannerTaskAction(Request $request){
@@ -494,9 +497,9 @@ class WorkspaceController extends Controller
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
 
-        $receivedAssistanceTickets = AssistanceTicket::select("*")->where("receiver_user_id", $user->id)->where("closed", 0)->get();
-        $sendedAssistanceTickets = AssistanceTicket::select("*")->where("creator_user_id", $user->id)->where("closed", 0)->get();
-        $completedAssistanceTickets = AssistanceTicket::select("*")->where("creator_user_id", $user->id)->orWhere("receiver_user_id", $user->id)->where("closed", 1)->get();
+        $receivedAssistanceTickets = AssistanceTicket::select("*")->where("receiver_user_id", $user->id)->where("completed", 0)->get();
+        $sendedAssistanceTickets = AssistanceTicket::select("*")->where("creator_user_id", $user->id)->where("completed", 0)->get();
+        $completedAssistanceTickets = AssistanceTicket::select("*")->where("creator_user_id", $user->id)->where("completed", 1)->orWhere("receiver_user_id", $user->id)->where("completed", 1)->get();
 
 
         return view("/public/team/workspace/workspaceAssistanceTickets", compact("user", "team", "receivedAssistanceTickets", "sendedAssistanceTickets", "completedAssistanceTickets"));
@@ -523,4 +526,26 @@ class WorkspaceController extends Controller
 
         echo json_encode($messageArray);
     }
+
+    public function completeAssistanceTicketAction(Request $request){
+        $ticket_id = $request->input("ticket_id");
+        $assistanceTicket = AssistanceTicket::select("*")->where("id", $ticket_id)->first();
+        $assistanceTicket->completed = 1;
+        $assistanceTicket->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function deleteAssistanceTicketAction(Request $request){
+        $ticket_id = $request->input("ticket_id");
+        $assistanceTicketMessages = AssistanceTicketMessage::select("*")->where("assistance_ticket_id", $ticket_id)->get();
+        if(count($assistanceTicketMessages) > 0) {
+            foreach ($assistanceTicketMessages as $assistanceTicketMessage) {
+                $assistanceTicketMessage->delete();
+            }
+        }
+        $assistanceTicket = AssistanceTicket::select("*")->where("id", $ticket_id)->first();
+        $assistanceTicket->delete();
+    }
+
+
 }

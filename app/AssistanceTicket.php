@@ -20,7 +20,7 @@ class AssistanceTicket extends Model
     }
 
     public function getMessages(){
-        $assistanceTicketMessages = AssistanceTicketMessage::select("*")->where("sender_user_id", $this->creator_user_id)->where("receiver_user_id", $this->receiver_user_id)->where("assistance_ticket_id", $this->id)->orWhere("sender_user_id", $this->receiver_user_id)->where("receiver_user_id", $this->creator_user_id)->get();
+        $assistanceTicketMessages = AssistanceTicketMessage::select("*")->where("sender_user_id", $this->creator_user_id)->where("receiver_user_id", $this->receiver_user_id)->where("assistance_ticket_id", $this->id)->orWhere("sender_user_id", $this->receiver_user_id)->where("receiver_user_id", $this->creator_user_id)->where("assistance_ticket_id", $this->id)->get();
         return $assistanceTicketMessages;
     }
 }

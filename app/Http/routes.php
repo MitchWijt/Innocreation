@@ -221,3 +221,8 @@ Route::post("/workspace/askForAssistance", "WorkspaceController@askForAssistance
 Route::get("/my-team/workspace/assistance-requests", "WorkspaceController@workspaceAssistanceTickets");
 
 Route::post("/workspace/sendAssistanceTicketMessage", "WorkspaceController@sendAssistanceTicketMessageAction");
+
+Route::post("/workspace/completeAssistanceTicket", "WorkspaceController@completeAssistanceTicketAction");
+
+Route::post("/workspace/deleteAssistanceTicket", "WorkspaceController@deleteAssistanceTicketAction");
+

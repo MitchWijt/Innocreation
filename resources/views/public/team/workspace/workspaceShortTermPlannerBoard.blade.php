@@ -394,6 +394,7 @@
                     </div>
                 </div>
                 <div class="d-flex fd-row x-scroll p-b-20">
+                    <input type="hidden" name="urlParameter" class="urlParameter" value="<? if(isset($urlParameter)) echo $urlParameter?>">
                     <? foreach($shortTermPlannerCategories as $shortTermPlannerCategory) { ?>
                         <div class="col-sm-3">
                             <p class="f-19 text-center"><?=$shortTermPlannerCategory?></p>
@@ -481,7 +482,7 @@
                                                         </div>
                                                     </div>
                                                 <div class="shortTermTaskModalContainer">
-                                                    <div class="modal fade shortTermTaskModal" id="shortTermTaskModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                                    <div class="modal fade shortTermTaskModal" id="shortTermTaskModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                         <div class="modal-dialog modal-lg" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header d-flex js-center">

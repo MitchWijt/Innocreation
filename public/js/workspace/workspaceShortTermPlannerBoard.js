@@ -520,3 +520,13 @@ $(document).on("change", ".setShortTermTaskPriority", function () {
     });
 });
 
+$(document).ready(function () {
+   if($(".urlParameter")){
+        $(".shortTermTaskModal").each(function () {
+            if($(this).data("short-planner-task-id") == $(".urlParameter").val()){
+                $(this).modal().toggle();
+            }
+        });
+   }
+});
+

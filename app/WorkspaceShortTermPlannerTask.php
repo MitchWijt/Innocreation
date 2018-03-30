@@ -18,7 +18,7 @@ class WorkspaceShortTermPlannerTask extends Model
 
     public function checkAssistanceTicketRequest(){
         $bool = false;
-        $assistanceTickets = AssistanceTicket::select("*")->where("task_id", $this->id)->where("creator_user_id", $this->assigned_to);
+        $assistanceTickets = AssistanceTicket::select("*")->where("task_id", $this->id)->where("creator_user_id", $this->assigned_to)->where("completed", 0)->get();
         if(count($assistanceTickets) > 0){
             $bool = true;
         }
