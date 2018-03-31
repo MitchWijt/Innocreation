@@ -1,4 +1,4 @@
-$(".openCompletedTaskModal").on("click",function () {
+$(".openPersonalBoardTaskModal").on("click",function () {
     var task_id = $(this).data("task-id");
     $(".personalBoardTaskModal").each(function () {
         if($(this).data("task-id") == task_id){

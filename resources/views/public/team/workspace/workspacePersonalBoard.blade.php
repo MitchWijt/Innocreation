@@ -43,11 +43,11 @@
                                     <div class="row text-center toDoTask" data-task-id="<?= $toDoTask->id?>">
                                         <div class="col-sm-12 d-flex">
                                             <div class="col-sm-3 toDoTitle">
-                                                <p><?= $toDoTask->title?></p>
+                                                <p class="openPersonalBoardTaskModal c-pointer regular-link c-gray" data-task-id='<?= $toDoTask->id?>'><?= $toDoTask->title?></p>
                                             </div>
                                             <div class="col-sm-3 toDoDescription">
                                                 <? if($toDoTask->description != null) { ?>
-                                                    <p><?= mb_strimwidth($toDoTask->description, 0, 130, "... <span class='c-orange underline c-pointer openCompletedTaskModal' data-task-id='$toDoTask->id'>read more</span>");?></p>
+                                                    <p><?= mb_strimwidth($toDoTask->description, 0, 130, "... <span class='c-orange underline c-pointer openPersonalBoardTaskModal' data-task-id='$toDoTask->id'>read more</span>");?></p>
                                                 <? } else { ?>
                                                     <p> - </p>
                                                 <? } ?>
@@ -64,55 +64,65 @@
                                                 <p class="circle circleSmall m-0 completeTaskPersonalBoard switchStatusTask" data-task-id="<?= $toDoTask->id?>"><i class="zmdi zmdi-check"></i></p>
                                             </div>
                                         </div>
-                                        <? if($toDoTask->description != null) { ?>
-                                            <div class="modal fade personalBoardTaskModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-task-id="<?= $toDoTask->id?>">
-                                                <div class="modal-dialog modal-lg" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header text-center fd-column">
-                                                            <h4 class="modal-title text-center c-black" id="modalLabel"><?= $toDoTask->title?></h4>
-                                                        </div>
-                                                        <div class="modal-body">
+                                        <div class="modal fade personalBoardTaskModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-task-id="<?= $toDoTask->id?>">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header d-flex js-center fd-column">
+                                                        <h4 class="modal-title text-center c-black" id="modalLabel"><?= $toDoTask->title?></h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <? if($toDoTask->checkAssistanceTicketRequest() == false) { ?>
+                                                        <small class="c-black m-t-5 assistanceToggleLink pull-left">Trouble with the task? <span class="c-orange regular-link toggleAssistanceForm">Ask a member for assistance!</span></small>
+                                                        <? } else { ?>
+                                                        <small class="c-black m-t-5 assistanceToggleLink pull-left">You have asked assistance for this task. Check the request <a href="/my-team/workspace/assistance-requests" class="regular-link">here</a></small>
+                                                        <? } ?>
+                                                        <small class="c-black m-t-5 closeAssistanceForm hidden pull-left"><i class="zmdi zmdi-close c-orange f-20"></i></small>
+                                                        <div class="assistanceForm hidden">
                                                             <div class="row">
                                                                 <div class="col-sm-12">
-                                                                    <? if($toDoTask->checkAssistanceTicketRequest() == false) { ?>
-                                                                        <small class="c-black m-t-5 assistanceToggleLink pull-left">Trouble with the task? <span class="c-orange regular-link toggleAssistanceForm">Ask a member for assistance!</span></small>
-                                                                    <? } else { ?>
-                                                                        <small class="c-black m-t-5 assistanceToggleLink pull-left">You have asked assistance for this task. Check the request <a href="/my-team/workspace/assistance-requests" class="regular-link">here</a></small>
-                                                                    <? } ?>
-                                                                    <small class="c-black m-t-5 closeAssistanceForm hidden pull-left"><i class="zmdi zmdi-close c-orange f-20"></i></small>
+                                                                    <p class="c-black f-18 m-b-5 pull-left">Ask a member for assistance:</p>
                                                                 </div>
                                                             </div>
-                                                            <div class="assistanceForm hidden">
-                                                                <p class="c-black f-18 pull-left m-b-5">Ask a member for assistance:</p>
-                                                                <form action="" method="post">
-                                                                    <div class="row">
-                                                                        <div class="col-sm-12 m-t-10">
-                                                                            <textarea name="assistance_message" class="input col-sm-12" cols="80" rows="5" placeholder="Your question"></textarea>
-                                                                        </div>
+                                                            <form action="/workspace/askForAssistance" method="post">
+                                                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                                <input type="hidden" name="task_id" value="<?= $toDoTask->id?>">
+                                                                <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                                                <input type="hidden" name="team_id" value="<?= $team->id?>">
+                                                                <div class="row">
+                                                                    <div class="col-sm-12 m-t-10">
+                                                                        <textarea name="assistance_message" class="input col-sm-12" cols="80" rows="5" placeholder="Your question"></textarea>
                                                                     </div>
-                                                                    <div class="row">
-                                                                        <div class="col-sm-12 border-bottom">
-                                                                            <button class="text-center m-0 btn-sm btn btn-inno pull-right">Send request</button>
-                                                                            <select name="assistanceMembers" class="input m-b-15 m-t-5 pull-right m-r-20">
-                                                                                <option value="" selected disabled>Choose member</option>
-                                                                                <? foreach($team->getMembers() as $member) { ?>
-                                                                                    <option value="<?= $member->id?>"><?= $member->getName()?></option>
-                                                                                <? } ?>
-                                                                            </select>
-                                                                        </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-sm-12 border-bottom">
+                                                                        <button class="text-center m-0 btn-sm btn btn-inno pull-right">Send request</button>
+                                                                        <select name="assistanceMembers" class="input m-b-15 m-t-5 pull-right m-r-20">
+                                                                            <option value="" selected disabled>Choose member</option>
+                                                                            <? foreach($team->getMembers() as $member) { ?>
+                                                                            <option value="<?= $member->id?>"><?= $member->getName()?></option>
+                                                                            <? } ?>
+                                                                        </select>
                                                                     </div>
-                                                                </form>
-                                                            </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <? if($toDoTask->description != null) { ?>
                                                             <div class="row">
                                                                 <div class="col-sm-12">
-                                                                    <p class="c-black m-t-20" style="text-align: start"><?= $toDoTask->description?></p>
+                                                                    <p class="c-black m-t-20"><?= $toDoTask->description?></p>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        <? } else { ?>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 m-t-20">
+                                                                    <i class="c-dark-grey m-t-20">No task description given</i>
+                                                                </div>
+                                                            </div>
+                                                        <? } ?>
                                                     </div>
                                                 </div>
                                             </div>
-                                        <? } ?>
+                                        </div>
                                     </div>
                                 <? } ?>
                             <? } ?>
@@ -151,11 +161,11 @@
                                     <div class="row text-center p-relative">
                                         <div class="col-sm-12 d-flex">
                                             <div class="col-sm-3 completedTaskTitle">
-                                                <p><?= $completedTask->title?></p>
+                                                <p class="openPersonalBoardTaskModal c-pointer regular-link c-gray" data-task-id='<?= $completedTask->id?>'><?= $completedTask->title?></p>
                                             </div>
                                             <div class="col-sm-3 completedTaskDescription">
                                                 <? if($completedTask->description != null) { ?>
-                                                    <p><?= mb_strimwidth($completedTask->description, 0, 130, "... <span class='c-orange underline c-pointer openCompletedTaskModal' data-task-id='$completedTask->id'>read more</span>");?></p>
+                                                    <p><?= mb_strimwidth($completedTask->description, 0, 130, "... <span class='c-orange underline c-pointer openPersonalBoardTaskModal' data-task-id='$completedTask->id'>read more</span>");?></p>
                                                 <? } else { ?>
                                                     <p> - </p>
                                                 <? } ?>
@@ -172,7 +182,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <? if($completedTask->description != null) { ?>
                                         <div class="modal fade personalBoardTaskModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-task-id="<?= $completedTask->id?>">
                                             <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content">
@@ -211,16 +220,23 @@
                                                                 </div>
                                                             </form>
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <p class="c-black m-t-20"><?= $completedTask->description?></p>
+                                                        <? if($completedTask->description != null) { ?>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <p class="c-black m-t-20"><?= $completedTask->description?></p>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        <? } else { ?>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 text-center m-t-20">
+                                                                    <i class="c-dark-grey text-center m-t-20">No task description given</i>
+                                                                </div>
+                                                            </div>
+                                                        <? } ?>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    <? } ?>
                                 </div>
                             <? } ?>
                         </div>
@@ -250,39 +266,84 @@
                         </div>
                         <div class="hr-card p-b-20"></div>
                         <? foreach($missedDueDateTasks as $missedDueDateTask) { ?>
-                        <div class="row text-center p-relative">
-                            <div class="col-sm-12 d-flex">
-                                <div class="col-sm-4">
-                                    <p><?= $missedDueDateTask->title?></p>
+                            <div class="row text-center p-relative">
+                                <div class="col-sm-12 d-flex">
+                                    <div class="col-sm-4">
+                                        <p class="openPersonalBoardTaskModal c-pointer regular-link c-gray" data-task-id='<?= $missedDueDateTask->id?>'><?= $missedDueDateTask->title?></p>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <? if($missedDueDateTask->description != null) { ?>
+                                            <p><?= mb_strimwidth($missedDueDateTask->description, 0, 130, "... <span class='c-orange underline c-pointer openPersonalBoardTaskModal' data-task-id='$missedDueDateTask->id'>read more</span>");?></p>
+                                        <? } else { ?>
+                                            <p> - </p>
+                                        <? } ?>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <? if($missedDueDateTask->due_date != null) { ?>
+                                        <p class="c-red"><?= date("d F Y", strtotime($missedDueDateTask->due_date))?></p>
+                                        <? } ?>
+                                    </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <? if($missedDueDateTask->description != null) { ?>
-                                        <p><?= mb_strimwidth($missedDueDateTask->description, 0, 130, "... <span class='c-orange underline c-pointer' data-task-id='$missedDueDateTask->id'>read more</span>");?></p>
-                                    <? } else { ?>
-                                        <p> - </p>
-                                    <? } ?>
-                                </div>
-                                <div class="col-sm-4">
-                                    <? if($missedDueDateTask->due_date != null) { ?>
-                                    <p class="c-red"><?= date("d F Y", strtotime($missedDueDateTask->due_date))?></p>
-                                    <? } ?>
-                                </div>
-                            </div>
-                            <? if($missedDueDateTask->description != null) { ?>
                                 <div class="modal fade personalBoardTaskModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-task-id="<?= $missedDueDateTask->id?>">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
-                                            <div class="modal-header d-flex js-center">
+                                            <div class="modal-header d-flex js-center fd-column">
                                                 <h4 class="modal-title text-center c-black" id="modalLabel"><?= $missedDueDateTask->title?></h4>
                                             </div>
-                                            <div class="modal-body ">
-                                                <p class="c-black"><?= $missedDueDateTask->description?></p>
+                                            <div class="modal-body">
+                                                <? if($missedDueDateTask->checkAssistanceTicketRequest() == false) { ?>
+                                                <small class="c-black m-t-5 assistanceToggleLink pull-left">Trouble with the task? <span class="c-orange regular-link toggleAssistanceForm">Ask a member for assistance!</span></small>
+                                                <? } else { ?>
+                                                <small class="c-black m-t-5 assistanceToggleLink pull-left">You have asked assistance for this task. Check the request <a href="/my-team/workspace/assistance-requests" class="regular-link">here</a></small>
+                                                <? } ?>
+                                                <small class="c-black m-t-5 closeAssistanceForm hidden pull-left"><i class="zmdi zmdi-close c-orange f-20"></i></small>
+                                                <div class="assistanceForm hidden">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <p class="c-black f-18 m-b-5 pull-left">Ask a member for assistance:</p>
+                                                        </div>
+                                                    </div>
+                                                    <form action="/workspace/askForAssistance" method="post">
+                                                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                        <input type="hidden" name="task_id" value="<?= $missedDueDateTask->id?>">
+                                                        <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                                        <input type="hidden" name="team_id" value="<?= $team->id?>">
+                                                        <div class="row">
+                                                            <div class="col-sm-12 m-t-10">
+                                                                <textarea name="assistance_message" class="input col-sm-12" cols="80" rows="5" placeholder="Your question"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12 border-bottom">
+                                                                <button class="text-center m-0 btn-sm btn btn-inno pull-right">Send request</button>
+                                                                <select name="assistanceMembers" class="input m-b-15 m-t-5 pull-right m-r-20">
+                                                                    <option value="" selected disabled>Choose member</option>
+                                                                    <? foreach($team->getMembers() as $member) { ?>
+                                                                    <option value="<?= $member->id?>"><?= $member->getName()?></option>
+                                                                    <? } ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <? if($missedDueDateTask->description != null) { ?>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <p class="c-black m-t-20" style="text-align: start"><?= $missedDueDateTask->description?></p>
+                                                    </div>
+                                                </div>
+                                                <? } else { ?>
+                                                <div class="row">
+                                                    <div class="col-sm-12 m-t-20">
+                                                        <i class="c-dark-grey m-t-20">No task description given</i>
+                                                    </div>
+                                                </div>
+                                                <? } ?>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            <? } ?>
-                        </div>
+                            </div>
                         <? } ?>
                     </div>
                 </div>
