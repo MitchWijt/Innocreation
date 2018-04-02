@@ -24,6 +24,7 @@
     {{--JS PLUGINS--}}
     <script src="/js/bootstrap-tokenfield.min.js"></script>
     <script src="/js/jquery-ui.min.js"></script>
+    <script defer src="/js/fontawesome-all.js"></script>
     {{------------------------------}}
     <title>Innocreation</title>
 </head>

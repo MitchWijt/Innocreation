@@ -13,7 +13,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <? $shortTermPlannerBoards = \App\WorkspaceShortTermPlannerBoard::select("*")->get();?>
+        <? $shortTermPlannerBoards = \App\WorkspaceShortTermPlannerBoard::select("*")->where("team_id", \Illuminate\Support\Facades\Session::get("team_id"))->get();?>
         <a data-toggle="collapse" data-target="#sidebarShortTermCollapse" aria-expanded="false" aria-controls="sidebarShortTermCollapse" class="regular-link c-gray">Short term task planner <i class="zmdi zmdi-chevron-down m-l-10"></i></a>
         <div class="collapse" id="sidebarShortTermCollapse">
             <div class="sidebar-tab text-center">
@@ -32,7 +32,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Dashboard</a>
+        <a class="regular-link c-gray" href="/my-team/workspace/dashboard">Dashboard</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

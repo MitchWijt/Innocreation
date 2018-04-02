@@ -1,6 +1,12 @@
 function openReceivedAssistanceModal(){
     var _this = $(this);
     _this.find(".receivedAssistanceModal").modal().toggle();
+    setTimeout(function(){
+        var objDiv = $(".receivedAssistanceMessages");
+        if (objDiv.length > 0){
+            objDiv[0].scrollTop = objDiv[0].scrollHeight;
+        }
+    }, 1);
 }
 $('.receivedAssistanceModal').on('hidden.bs.modal', function () {
     $(".receivedAssistanceTicket").on("click", openReceivedAssistanceModal);
@@ -55,6 +61,12 @@ $(".sendMessageReceivedAssistance").on("click",function () {
 function openSendedAssistanceModal(){
     var _this = $(this);
     _this.find(".sendedAssistanceModal").modal().toggle();
+    setTimeout(function(){
+        var objDiv = $(".receivedAssistanceMessages");
+        if (objDiv.length > 0){
+            objDiv[0].scrollTop = objDiv[0].scrollHeight;
+        }
+    }, 1);
 }
 $('.sendedAssistanceModal').on('hidden.bs.modal', function () {
     $(".sendedAssistanceTicket").on("click", openSendedAssistanceModal);
@@ -109,6 +121,12 @@ $(".sendMessageSendedAssistance").on("click",function () {
 function openCompletedAssistanceModal(){
     var _this = $(this);
     _this.find(".completedAssistanceModal").modal().toggle();
+    setTimeout(function(){
+        var objDiv = $(".receivedAssistanceMessages");
+        if (objDiv.length > 0){
+            objDiv[0].scrollTop = objDiv[0].scrollHeight;
+        }
+    }, 1);
 }
 $('.completedAssistanceModal').on('hidden.bs.modal', function () {
     $(".completedAssistanceTicket").on("click", openCompletedAssistanceModal);

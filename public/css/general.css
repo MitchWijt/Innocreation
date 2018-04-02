@@ -341,6 +341,10 @@ hr{
     z-index: 10 !important;
 }
 
+.break-word{
+    word-wrap: break-word;
+}
+
 
 /*=============================FONTS======================*/
 .f-12{

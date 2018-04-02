@@ -6,6 +6,7 @@ use App\AssistanceTicket;
 use App\AssistanceTicketMessage;
 use App\Team;
 use App\User;
+use App\UserMessage;
 use App\WorkspaceBucketlist;
 use App\WorkspaceBucketlistType;
 use App\WorkspaceIdeas;
@@ -545,6 +546,121 @@ class WorkspaceController extends Controller
         }
         $assistanceTicket = AssistanceTicket::select("*")->where("id", $ticket_id)->first();
         $assistanceTicket->delete();
+    }
+
+    public function workspaceDashboard(){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+
+        $totalTeamChatsLast24Hours = [];
+        $totalAssistanceTicketsLast24Hours = [];
+        $totalAssistanceTicketsCompletedLast24Hours = [];
+
+        $last24Hours = date("Y-m-d", strtotime("-1 day"));
+
+        $userMessages = UserMessage::select("*")->where("team_id", $team->id)->get();
+        foreach($userMessages as $userMessage){
+            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($userMessage->created_at)))){
+                array_push($totalTeamChatsLast24Hours, $userMessage);
+            }
+        }
+
+        $assistanceTickets = AssistanceTicket::select("*")->where("team_id", $team->id)->get();
+        foreach($assistanceTickets as $assistanceTicket){
+            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at)))){
+                array_push($totalAssistanceTicketsLast24Hours, $assistanceTicket);
+            }
+        }
+
+        $assistanceTickets = AssistanceTicket::select("*")->where("team_id", $team->id)->where("completed", 1)->get();
+        foreach($assistanceTickets as $assistanceTicket){
+            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at)))){
+                array_push($totalAssistanceTicketsCompletedLast24Hours, $assistanceTicket);
+            }
+        }
+        return view("/public/team/workspace/workspaceDashboard", compact("user", "team","totalTeamChatsLast24Hours", "totalAssistanceTicketsLast24Hours", "totalAssistanceTicketsCompletedLast24Hours"));
+    }
+
+    public function getRealtimeDataDashboardAction(Request $request){
+        $user_id = $request->input("user_id");
+        $team_id = $request->input("team_id");
+
+        $totalTeamChatsToday = [];
+        $totalAssistanceTicketsToday = [];
+        $totalAssistanceTicketsCompletedToday = [];
+
+        $last24Hours = date("Y-m-d", strtotime("-1 day"));
+
+        $userMessages = UserMessage::select("*")->where("team_id", $team_id)->get();
+        foreach($userMessages as $userMessage){
+            if(strtotime(date("Y-m-d", strtotime($userMessage->created_at))) >= strtotime($last24Hours)){
+                array_push($totalTeamChatsToday, $userMessage);
+            }
+        }
+
+        $assistanceTickets = AssistanceTicket::select("*")->where("team_id", $team_id)->get();
+        foreach($assistanceTickets as $assistanceTicket){
+            if(strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at))) >= strtotime($last24Hours)){
+                array_push($totalAssistanceTicketsToday, $assistanceTicket);
+            }
+        }
+
+        $assistanceTickets = AssistanceTicket::select("*")->where("team_id", $team_id)->where("completed", 1)->get();
+        foreach($assistanceTickets as $assistanceTicket){
+            if(strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at))) >= strtotime($last24Hours)){
+                array_push($totalAssistanceTicketsCompletedToday, $assistanceTicket);
+            }
+        }
+
+        $data = [
+            "totalTeamChats" => count($totalTeamChatsToday),
+            "totalAssistanceTickets" => count($totalAssistanceTicketsToday),
+            "totalAssistanceTicketsCompleted" => count($totalAssistanceTicketsCompletedToday)
+        ];
+        return json_encode($data);
+    }
+
+    public function changeMostAssistanceTicketsCategoryAction(Request $request){
+        $user_id = $request->input("user_id");
+        $team_id = $request->input("team_id");
+        $category = $request->input("category");
+
+
+        $memberArray = [];
+        $counter = 0;
+        $lastMonth =  date("Y-m-d", strtotime("-1 month"));
+        $lastWeek = date("Y-m-d", strtotime("-1 week"));
+
+        if($category == "Month") {
+            $timespan = $lastMonth;
+        } else {
+            $timespan = $lastWeek;
+        }
+
+        $assistanceTickets = AssistanceTicket::select("*")->where("team_id", $team_id)->get();
+        foreach ($assistanceTickets as $assistanceTicket) {
+            if (strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at))) > strtotime($timespan)) {
+                array_push($memberArray, $assistanceTicket->creator_user_id);
+            }
+        }
+        $count = array_count_values($memberArray);//Counts the values in the array, returns associatve array
+        arsort($count);//Ssort it from highest to lowest
+        $keys = array_keys($count);//Split the array so we can find the most occuring key
+
+        $member = User::select("*")->where("id", $keys[0])->first();
+        foreach ($assistanceTickets as $assistanceTicket) {
+            if (strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at))) > strtotime($timespan)) {
+                if ($assistanceTicket->creator_user_id == $member->id) {
+                    $counter++;
+                }
+            }
+        }
+        $mostAssistanceTicketsArray = [
+            "member" => $member->getName(),
+            "tickets" => $counter,
+            "category" => $category
+        ];
+        return json_encode($mostAssistanceTicketsArray);
     }
 
 

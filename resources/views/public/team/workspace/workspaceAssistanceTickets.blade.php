@@ -61,7 +61,7 @@
                                                     <div class="row c-gray sendedMessageAjax">
                                                         <div class="col-sm-12">
                                                             <div class="col-sm-5 messageSent pull-right m-b-10">
-                                                                <p class="message"><?= $message->message?></p>
+                                                                <p class="message break-word"><?= $message->message?></p>
                                                                 <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
                                                             </div>
                                                         </div>
@@ -75,7 +75,7 @@
                                                                     <? } else { ?>
                                                                         <p class="c-orange m-0"><?= $message->sender->First()->getName()?></p>
                                                                     <? } ?>
-                                                                    <p><?= $message->message?></p>
+                                                                    <p class="break-word"><?= $message->message?></p>
                                                                     <span class="f-12 pull-right"><?=$message->time_sent?></span>
                                                                 </div>
                                                             </div>
@@ -160,14 +160,14 @@
                                             <div class="o-scroll m-t-20 receivedAssistanceMessages" style="height: 400px;" data-ticket-id="<?= $assistanceTicket->id?>">
                                                 <? foreach($assistanceTicket->getMessages() as $message) { ?>
                                                 <? if($message->sender_user_id == $user->id) { ?>
-                                                <div class="row c-gray sendedMessageAjax">
-                                                    <div class="col-sm-12">
-                                                        <div class="col-sm-5 messageSent pull-right m-b-10">
-                                                            <p class="message"><?= $message->message?></p>
-                                                            <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
+                                                    <div class="row c-gray sendedMessageAjax">
+                                                        <div class="col-sm-12">
+                                                            <div class="col-sm-5 messageSent pull-right m-b-10">
+                                                                <p class="message break-word"><?= $message->message?></p>
+                                                                <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
                                                 <? } else { ?>
                                                 <div class="row c-gray">
                                                     <div class="col-sm-12">
@@ -177,7 +177,7 @@
                                                             <? } else { ?>
                                                             <p class="c-orange m-0"><?= $message->sender->First()->getName()?></p>
                                                             <? } ?>
-                                                            <p><?= $message->message?></p>
+                                                            <p class="break-word"><?= $message->message?></p>
                                                             <span class="f-12 pull-right"><?=$message->time_sent?></span>
                                                         </div>
                                                     </div>
@@ -272,7 +272,7 @@
                                                     <div class="row c-gray sendedMessageAjax">
                                                         <div class="col-sm-12">
                                                             <div class="col-sm-5 messageSent pull-right m-b-10">
-                                                                <p class="message"><?= $message->message?></p>
+                                                                <p class="message break-word"><?= $message->message?></p>
                                                                 <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
                                                             </div>
                                                         </div>
@@ -286,7 +286,7 @@
                                                                 <? } else { ?>
                                                                 <p class="c-orange m-0"><?= $message->sender->First()->getName()?></p>
                                                                 <? } ?>
-                                                                <p><?= $message->message?></p>
+                                                                <p class="break-word"><?= $message->message?></p>
                                                                 <span class="f-12 pull-right"><?=$message->time_sent?></span>
                                                             </div>
                                                         </div>

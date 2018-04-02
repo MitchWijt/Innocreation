@@ -62,6 +62,11 @@ class User extends Authenticatable
         }
         return $bool;
     }
+
+    public function getAssistanceTickets(){
+        $assistanceTickets = AssistanceTicket::select("*")->where("creator_user_id", $this->id)->get();
+        return count($assistanceTickets);
+    }
     /**
      * The attributes that are mass assignable.
      *

@@ -226,3 +226,9 @@ Route::post("/workspace/completeAssistanceTicket", "WorkspaceController@complete
 
 Route::post("/workspace/deleteAssistanceTicket", "WorkspaceController@deleteAssistanceTicketAction");
 
+Route::get("/my-team/workspace/dashboard", "WorkspaceController@workspaceDashboard");
+
+Route::post("/workspace/getRealtimeDataDashboard", "WorkspaceController@getRealtimeDataDashboardAction");
+
+Route::post("/workspace/changeMostAssistanceTicketsCategory", "WorkspaceController@changeMostAssistanceTicketsCategoryAction");
+
