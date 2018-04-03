@@ -663,5 +663,25 @@ class WorkspaceController extends Controller
         return json_encode($mostAssistanceTicketsArray);
     }
 
+    public function getMemberTaskListDataAction(Request $request){
+        $team_id = $request->input("team_id");
+        if($request->input("toDo") == 1){
+
+            $team = Team::select("*")->where("id", $team_id)->first();
+            foreach ($team->getMembers() as $member) {
+                $memberTaskData[$member->id] = $member->getAssignedTasks();
+            }
+            return json_encode($memberTaskData);
+
+        } else {
+            $team = Team::select("*")->where("id", $team_id)->first();
+            foreach ($team->getMembers() as $member) {
+                $memberTaskData[$member->id] = $member->getCompletedTasks();
+            }
+            return json_encode($memberTaskData);
+        }
+    }
+
+
 
 }

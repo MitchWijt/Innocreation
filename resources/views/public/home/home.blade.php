@@ -74,7 +74,7 @@
                 </div>
                 <div class="row instructions-flex p-b-20">
                     <div class="circle-instructions">
-                        <i style="font-size: 50px; padding-left: 1px;" class="fa fa-btc social-icon-instructions"></i>
+                        <img class="circle social-icon-instructions  m-r-0" style="height: 65px !important; width: 65px !important;" src="/images/BTC-alt.svg" alt="Bitcoin">
                     </div>
                     <p class="instructions-second-text m-0">We support bitcoin and other cryptocurrencies</p>
                 </div>

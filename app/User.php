@@ -67,6 +67,16 @@ class User extends Authenticatable
         $assistanceTickets = AssistanceTicket::select("*")->where("creator_user_id", $this->id)->get();
         return count($assistanceTickets);
     }
+
+    public function getAssignedTasks(){
+        $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $this->id)->get();
+        return count($short_term_planner_tasks);
+    }
+
+    public function getCompletedTasks(){
+        $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $this->id)->where("completed", 1)->get();
+        return count($short_term_planner_tasks);
+    }
     /**
      * The attributes that are mass assignable.
      *

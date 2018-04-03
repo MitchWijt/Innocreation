@@ -232,3 +232,5 @@ Route::post("/workspace/getRealtimeDataDashboard", "WorkspaceController@getRealt
 
 Route::post("/workspace/changeMostAssistanceTicketsCategory", "WorkspaceController@changeMostAssistanceTicketsCategoryAction");
 
+Route::post("/workspace/getMemberTaskListData", "WorkspaceController@getMemberTaskListDataAction");
+

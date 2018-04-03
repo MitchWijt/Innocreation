@@ -1,5 +1,6 @@
 var counter = 0;
 $(document).ready(function() {
+    $(".mostTicketsCategory").text("Week");
     function getDashboardData() {
         var team_id = $(".team_id").val();
         var user_id = $(".user_id").val();
@@ -136,7 +137,7 @@ $(document).ready(function() {
                 }
             }
         });
-        var category = "Week";
+        var category = $(".mostTicketsCategory").text();
         $.ajax({
             method: "POST",
             beforeSend: function (xhr) {
@@ -197,3 +198,63 @@ $(".changeCategoryMostTickets").on("click",function () {
     });
 });
 
+
+$(document).ready(function() {
+    var team_id = $(".team_id").val();
+    var user_id = $(".user_id").val();
+    function getDashboardDataMemberTaskListCompleted() {
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/workspace/getMemberTaskListData",
+            dataType: "JSON",
+            data: {'user_id': user_id, 'team_id': team_id},
+            success: function (data) {
+                $.each(data, function(key, value) {
+                    $(".memberTasksCom").each(function () {
+                        if($(this).data("member-id") == key){
+                            $(this).find(".memberTasksCompleted").text(value);
+                        }
+                    });
+                });
+            }
+        });
+    }
+    function getDashboardDataMemberTaskListToDo() {
+        var toDoTasks = 1;
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/workspace/getMemberTaskListData",
+            dataType: "JSON",
+            data: {'user_id': user_id, 'team_id': team_id, 'toDo' : toDoTasks},
+            success: function (data) {
+                $.each(data, function(key, value) {
+                    $(".memberTasksDo").each(function () {
+                        if($(this).data("member-id") == key){
+                            $(this).find(".memberTasksToDo").text(value);
+                        }
+                    });
+                });
+            }
+        });
+    }
+    getDashboardDataMemberTaskListCompleted();
+    getDashboardDataMemberTaskListToDo();
+    setInterval(function () {
+        getDashboardDataMemberTaskListCompleted();
+        getDashboardDataMemberTaskListToDo
+    }, 15000);
+});
