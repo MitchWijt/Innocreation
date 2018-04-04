@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="/css/general.css">
     {{--CSS PLUGINS--}}
     <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
-    <link rel="stylesheet" href="/css/cryptocoins.css">
     <link rel="stylesheet" href="/css/jquery-ui-min.css">
     {{------------------------}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">

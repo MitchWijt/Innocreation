@@ -555,6 +555,7 @@ class WorkspaceController extends Controller
         $totalTeamChatsLast24Hours = [];
         $totalAssistanceTicketsLast24Hours = [];
         $totalAssistanceTicketsCompletedLast24Hours = [];
+        $completedGoalsLast24Hours = [];
 
         $last24Hours = date("Y-m-d", strtotime("-1 day"));
 
@@ -578,7 +579,14 @@ class WorkspaceController extends Controller
                 array_push($totalAssistanceTicketsCompletedLast24Hours, $assistanceTicket);
             }
         }
-        return view("/public/team/workspace/workspaceDashboard", compact("user", "team","totalTeamChatsLast24Hours", "totalAssistanceTicketsLast24Hours", "totalAssistanceTicketsCompletedLast24Hours"));
+
+        $bucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team->id)->where("completed", 1)->get();
+        foreach($bucketlistGoals as $bucketlistGoal){
+            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at)))){
+                array_push($completedGoalsLast24Hours, $bucketlistGoal);
+            }
+        }
+        return view("/public/team/workspace/workspaceDashboard", compact("user", "team","totalTeamChatsLast24Hours", "totalAssistanceTicketsLast24Hours", "totalAssistanceTicketsCompletedLast24Hours", "completedGoalsLast24Hours"));
     }
 
     public function getRealtimeDataDashboardAction(Request $request){
@@ -588,6 +596,7 @@ class WorkspaceController extends Controller
         $totalTeamChatsToday = [];
         $totalAssistanceTicketsToday = [];
         $totalAssistanceTicketsCompletedToday = [];
+        $totalCompletedGoalsToday = [];
 
         $last24Hours = date("Y-m-d", strtotime("-1 day"));
 
@@ -612,10 +621,18 @@ class WorkspaceController extends Controller
             }
         }
 
+        $bucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 1)->get();
+        foreach($bucketlistGoals as $bucketlistGoal){
+            if(strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at))) >= strtotime($last24Hours)){
+                array_push($totalCompletedGoalsToday, $bucketlistGoal);
+            }
+        }
+
         $data = [
             "totalTeamChats" => count($totalTeamChatsToday),
             "totalAssistanceTickets" => count($totalAssistanceTicketsToday),
-            "totalAssistanceTicketsCompleted" => count($totalAssistanceTicketsCompletedToday)
+            "totalAssistanceTicketsCompleted" => count($totalAssistanceTicketsCompletedToday),
+            "totalCompletedGoals" => count($totalCompletedGoalsToday)
         ];
         return json_encode($data);
     }

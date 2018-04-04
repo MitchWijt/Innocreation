@@ -8,7 +8,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-12 text-center">
-                    <small>(realtime data from last 24 hours)</small>
+                    <small>(realtime data compared to the last 24 hours)</small>
                 </div>
             </div>
             <hr class="m-b-20 col-sm-12">
@@ -32,7 +32,7 @@
                                             <i class="fas fa-caret-up f-23 c-green totalTeamChatsValUp hidden"></i>
                                             <i class="fas fa-caret-down f-23 c-red totalTeamChatsValDown hidden"></i>
                                             <i class="zmdi zmdi-window-minimize totalTeamChatsValNeutral f-23 hidden "></i>
-                                            <span class="f-13 totalTeamChatsPercentage"></span>
+                                            <span class="f-13 totalTeamChatsNewValue"></span>
                                         </div>
                                     </div>
                                     <input type="hidden" class="totalTeamChats24Hours" value="<?= count($totalTeamChatsLast24Hours)?>">
@@ -45,7 +45,7 @@
                                             <i class="fas fa-caret-up f-23 c-green totalAssistanceTicketsValUp hidden"></i>
                                             <i class="fas fa-caret-down f-23 c-red totalAssistanceTicketsValDown hidden"></i>
                                             <i class="zmdi zmdi-window-minimize totalAssistanceTicketsValNeutral f-20 hidden "></i>
-                                            <span class="f-13 totalAssistanceTicketsPercentage"></span>
+                                            <span class="f-13 totalAssistanceTicketsNewValue"></span>
                                         </div>
                                     </div>
                                     <input type="hidden" class="totalAssistanceTickets24Hours" value="<?= count($totalAssistanceTicketsLast24Hours)?>">
@@ -53,12 +53,12 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="d-flex fd-row js-center">
-                                        <p class="f-25 totalAssistanceTicketsCompleted">20</p>
+                                        <p class="f-25 totalAssistanceTicketsCompleted"></p>
                                         <div class="d-flex fd-column m-l-10">
                                             <i class="fas fa-caret-up f-23 c-green totalAssistanceTicketsCompletedValUp hidden"></i>
                                             <i class="fas fa-caret-down f-23 c-red totalAssistanceTicketsCompletedValDown hidden"></i>
                                             <i class="zmdi zmdi-window-minimize totalAssistanceTicketsCompletedValNeutral f-20 hidden"></i>
-                                            <span class="f-13 totalAssistanceTicketsCompletedPercentage">5%</span>
+                                            <span class="f-13 totalAssistanceTicketsCompletedNewValue"></span>
                                         </div>
                                     </div>
                                     <input type="hidden" class="totalAssistanceTicketsCompleted24Hours" value="<?= count($totalAssistanceTicketsCompletedLast24Hours)?>">
@@ -120,28 +120,62 @@
                                     <div class="col-sm-4">
                                         <div class="d-flex fd-row js-center memberTasksCom" data-member-id="<?= $member->id?>">
                                             <p class="f-25 memberTasksCompleted"></p>
-                                            <div class="d-flex fd-column m-l-10">
-                                                <i class="fas fa-caret-up f-23 c-green memberTasksCompletedValUp hidden"></i>
-                                                <i class="fas fa-caret-down f-23 c-red memberTasksCompletedValDown hidden"></i>
-                                                <i class="zmdi zmdi-window-minimize memberTasksCompletedValNeutral f-20 hidden "></i>
-                                                <span class="f-13 memberTasksCompletedPercentage"></span>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <div class="d-flex fd-row js-center memberTasksDo" data-member-id="<?= $member->id?>">
                                             <p class="f-25 memberTasksToDo"></p>
-                                            <div class="d-flex fd-column m-l-10">
-                                                <i class="fas fa-caret-up f-23 c-green memberTasksToDoValUp hidden"></i>
-                                                <i class="fas fa-caret-down f-23 c-red memberTasksToDoValDown hidden"></i>
-                                                <i class="zmdi zmdi-window-minimize memberTasksToDoValNeutral f-20 hidden "></i>
-                                                <span class="f-13 memberTasksToDoPercentage"></span>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         <? } ?>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex js-center m-t-20">
+                <div class="card card-lg">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="m-l-10 m-t-10 f-18 m-b-10">Bucketlist goals</p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
+                        <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
+                        <div class="hr p-b-20"></div>
+                        <div class="row text-center" >
+                            <div class="col-sm-12 d-flex">
+                                <div class="col-sm-12 d-flex">
+                                    <div class="col-sm-6">
+                                        <div class="d-flex fd-row js-center">
+                                            <p  class="f-25 totalCompletedGoals"></p>
+                                            <div class="d-flex fd-column m-l-10">
+                                                <i class="fas fa-caret-up f-23 c-green completedGoalsValUp hidden"></i>
+                                                <i class="fas fa-caret-down f-23 c-red completedGoalsValDown hidden"></i>
+                                                <i class="zmdi zmdi-window-minimize completedGoalsValNeutral f-23 hidden "></i>
+                                                <span class="f-13 completedGoalsNewValue"></span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" class="completedGoals24Hours" value="<?= count($completedGoalsLast24Hours)?>">
+                                        <p>Completed goals</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="d-flex fd-row js-center">
+                                            <p class="f-25 totalAssistanceTickets"></p>
+                                            <div class="d-flex fd-column m-l-10">
+                                                <i class="fas fa-caret-up f-23 c-green totalAssistanceTicketsValUp hidden"></i>
+                                                <i class="fas fa-caret-down f-23 c-red totalAssistanceTicketsValDown hidden"></i>
+                                                <i class="zmdi zmdi-window-minimize totalAssistanceTicketsValNeutral f-20 hidden "></i>
+                                                <span class="f-13 totalAssistanceTicketsNewValue"></span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" class="totalAssistanceTickets24Hours" value="<?= count($totalAssistanceTicketsLast24Hours)?>">
+                                        <p>Still to complete</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

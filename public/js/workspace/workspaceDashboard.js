@@ -6,13 +6,16 @@ $(document).ready(function() {
         var user_id = $(".user_id").val();
 
         var totalTeamChatsNow = $(".totalTeamChats24Hours").val();
-        var percentageTotalTeamChats = 0;
+        var newValueTotalTeamChats = 0;
 
         var totalAssistanceTicketsNow = $(".totalAssistanceTickets24Hours").val();
-        var percentageTotalAssistanceTickets = 0;
+        var newValueTotalAssistanceTickets = 0;
 
         var totalAssistanceTicketsCompletedNow = $(".totalAssistanceTicketsCompleted24Hours").val();
-        var percentageTotalAssistanceTicketsCompleted = 0;
+        var newValueTotalAssistanceTicketsCompleted = 0;
+
+        var completedGoalsNow = $(".completedGoals24Hours").val();
+        var newValueCompletedGoals = 0;
         $.ajax({
             method: "POST",
             beforeSend: function (xhr) {
@@ -31,13 +34,13 @@ $(document).ready(function() {
                 if(totalTeamChatsNow != 0) {
                     if (data['totalTeamChats'] > parseInt(totalTeamChatsNow)) {
                         valueTotalTeamChats = parseInt(totalTeamChatsNow);
-                        percentageTotalTeamChats = (data['totalTeamChats'] - valueTotalTeamChats) / valueTotalTeamChats * 100;
+                        newValueTotalTeamChats =  data['totalTeamChats'] - valueTotalTeamChats;
                         $(".totalTeamChatsValUp").removeClass("hidden");
                         $(".totalTeamChatsValNeutral").addClass("hidden");
                         $(".totalTeamChatsValDown").addClass("hidden");
                     } else if (data['totalTeamChats'] < parseInt(totalTeamChatsNow)) {
                         valueTotalTeamChats = parseInt(totalTeamChatsNow);
-                        percentageTotalTeamChats = (data['totalTeamChats'] - valueTotalTeamChats) / valueTotalTeamChats * 100;
+                        newValueTotalTeamChats = (data['totalTeamChats'] - valueTotalTeamChats);
                         $(".totalTeamChatsValUp").addClass("hidden");
                         $(".totalTeamChatsValNeutral").addClass("hidden");
                         $(".totalTeamChatsValDown").removeClass("hidden");
@@ -46,20 +49,24 @@ $(document).ready(function() {
                         $(".totalTeamChatsValDown").addClass("hidden");
                         $(".totalTeamChatsValNeutral").removeClass("hidden");
                         $(".totalTeamChats").text(data["totalTeamChats"]);
-                        $(".totalTeamChatsPercentage").text("- ").append("% ");
+                        $(".totalTeamChatsNewValue").text("- ");
                     }
 
-                    if (percentageTotalTeamChats.toFixed(2) != 0.00) {
+                    if (newValueTotalTeamChats != 0) {
                         $(".totalTeamChats").text(data["totalTeamChats"]);
-                        $(".totalTeamChatsPercentage").text(percentageTotalTeamChats.toFixed(2).replace("-", "")).append("% ");
+                        if(newValueTotalTeamChats > 0){
+                            $(".totalTeamChatsNewValue").text("+ " + newValueTotalTeamChats);
+                        } else {
+                            $(".totalTeamChatsNewValue").text(newValueTotalTeamChats);
+                        }
                     }
                     if (data['totalTeamChats'] == 0 && totalTeamChatsNow == 0) {
                         $(".totalTeamChats").text(0);
-                        $(".totalTeamChatsPercentage").text("- ").append("% ");
+                        $(".totalTeamChatsNewValue").text("- ");
                     }
                 } else {
                     $(".totalTeamChats").text(data["totalTeamChats"]);
-                    $(".totalTeamChatsPercentage").text("- ").append("% ");
+                    $(".totalTeamChatsNewValue").text("- ");
                     $(".totalTeamChatsValNeutral").removeClass("hidden");
                 }
 
@@ -68,13 +75,13 @@ $(document).ready(function() {
                 if(totalAssistanceTicketsNow != 0) {
                     if (data['totalAssistanceTickets'] > parseInt(totalAssistanceTicketsNow)) {
                         valueTotalAssistanceTickets = parseInt(totalAssistanceTicketsNow);
-                        percentageTotalAssistanceTickets = (data['totalAssistanceTickets'] - valueTotalAssistanceTickets) / valueTotalAssistanceTickets * 100;
+                        newValueTotalAssistanceTickets = data['totalAssistanceTickets'] - valueTotalAssistanceTickets;
                         $(".totalAssistanceTicketsValUp").removeClass("hidden");
                         $(".totalAssistanceTicketsValNeutral").addClass("hidden");
                         $(".totalAssistanceTicketsValDown").addClass("hidden");
                     } else if (data['totalAssistanceTickets'] < parseInt(totalAssistanceTicketsNow)) {
                         valueTotalAssistanceTickets = parseInt(totalAssistanceTicketsNow);
-                        percentageTotalAssistanceTickets = (data['totalAssistanceTickets'] - valueTotalAssistanceTickets) / valueTotalAssistanceTickets * 100;
+                        newValueTotalAssistanceTickets = data['totalAssistanceTickets'] - valueTotalAssistanceTickets;
                         $(".totalAssistanceTicketsValUp").addClass("hidden");
                         $(".totalAssistanceTicketsValNeutral").addClass("hidden");
                         $(".totalAssistanceTicketsValDown").removeClass("hidden");
@@ -83,20 +90,24 @@ $(document).ready(function() {
                         $(".totalAssistanceTicketsValDown").addClass("hidden");
                         $(".totalAssistanceTicketsValNeutral").removeClass("hidden");
                         $(".totalAssistanceTickets").text(data["totalAssistanceTickets"]);
-                        $(".totalAssistanceTicketsPercentage").text("- ").append("% ");
+                        $(".totalAssistanceTicketsNewValue").text("- ").append("% ");
                     }
-                    if (percentageTotalAssistanceTickets.toFixed(2) != 0.00) {
+                    if (newValueTotalAssistanceTickets != 0) {
                         $(".totalAssistanceTickets").text(data["totalAssistanceTickets"]);
-                        $(".totalAssistanceTicketsPercentage").text(percentageTotalAssistanceTickets.toFixed(2).replace("-", "")).append("% ");
+                        if(newValueTotalAssistanceTickets > 0){
+                            $(".totalAssistanceTicketsNewValue").text("+ " + newValueTotalAssistanceTickets);
+                        } else {
+                            $(".totalAssistanceTicketsNewValue").text(newValueTotalAssistanceTickets);
+                        }
                     }
                     if (data['totalAssistanceTickets'] == 0 && totalAssistanceTicketsNow == 0) {
                         $(".totalAssistanceTickets").text(0);
-                        $(".totalAssistanceTicketsPercentage").text("- ").append("% ");
+                        $(".totalAssistanceTicketsNewValue").text("- ");
                     }
                 } else {
                     $(".totalAssistanceTicketsValNeutral").removeClass("hidden");
                     $(".totalAssistanceTickets").text(data["totalAssistanceTickets"]);
-                    $(".totalAssistanceTicketsPercentage").text("- ").append("% ");
+                    $(".totalAssistanceTicketsNewValue").text("- ");
                 }
 
                 //Total assistanceTickets completed
@@ -104,13 +115,13 @@ $(document).ready(function() {
                 if(totalAssistanceTicketsCompletedNow != 0) {
                     if (data['totalAssistanceTicketsCompleted'] > parseInt(totalAssistanceTicketsCompletedNow)) {
                         valueTotalAssistanceTicketsCompleted = parseInt(totalAssistanceTicketsCompletedNow);
-                        percentageTotalAssistanceTicketsCompleted = (data['totalAssistanceTicketsCompleted'] - valueTotalAssistanceTicketsCompleted) / valueTotalAssistanceTicketsCompleted * 100;
+                        newValueTotalAssistanceTicketsCompleted = data['totalAssistanceTicketsCompleted'] - valueTotalAssistanceTicketsCompleted;
                         $(".totalAssistanceTicketsCompletedValUp").removeClass("hidden");
                         $(".totalAssistanceTicketsCompletedValNeutral").addClass("hidden");
                         $(".totalAssistanceTicketsCompletedValDown").addClass("hidden");
                     } else if (data['totalAssistanceTicketsCompleted'] < parseInt(totalAssistanceTicketsCompletedNow)) {
                         valueTotalAssistanceTicketsCompleted = parseInt(totalAssistanceTicketsCompletedNow);
-                        percentageTotalAssistanceTicketsCompleted = (data['totalAssistanceTicketsCompleted'] - valueTotalAssistanceTicketsCompleted) / valueTotalAssistanceTicketsCompleted * 100;
+                        newValueTotalAssistanceTicketsCompleted = data['totalAssistanceTicketsCompleted'] - valueTotalAssistanceTicketsCompleted;
                         $(".totalAssistanceTicketsCompletedValUp").addClass("hidden");
                         $(".totalAssistanceTicketsCompletedValNeutral").addClass("hidden");
                         $(".totalAssistanceTicketsCompletedValDown").removeClass("hidden");
@@ -119,21 +130,66 @@ $(document).ready(function() {
                         $(".totalAssistanceTicketsCompletedValDown").addClass("hidden");
                         $(".totalAssistanceTicketsCompletedValNeutral").removeClass("hidden");
                         $(".totalAssistanceTicketsCompleted").text(data["totalAssistanceTicketsCompleted"]);
-                        $(".totalAssistanceTicketsCompletedPercentage").text("- ").append("% ");
+                        $(".totalAssistanceTicketsCompletedNewValue").text("- ");
                     }
 
-                    if (percentageTotalAssistanceTicketsCompleted.toFixed(2) != 0.00) {
+                    if (newValueTotalAssistanceTicketsCompleted != 0) {
                         $(".totalAssistanceTicketsCompleted").text(data["totalAssistanceTicketsCompleted"]);
-                        $(".totalAssistanceTicketsCompletedPercentage").text(percentageTotalAssistanceTicketsCompleted.toFixed(2).replace("-", "")).append("% ");
+                        if(newValueTotalAssistanceTicketsCompleted > 0){
+                            $(".totalAssistanceTicketsCompletedNewValue").text("+ " + newValueTotalAssistanceTicketsCompleted);
+                        } else {
+                            $(".totalAssistanceTicketsCompletedNewValue").text(newValueTotalAssistanceTicketsCompleted);
+                        }
                     }
-                    if (data['totalAssistanceTicketsCompleted'] == 0 && totalAssistanceTicketsCompletedNow == 0) {
+                    if (data['totalAssistanceTicketsCompleted'] == 0 && newValueTotalAssistanceTicketsCompleted == 0) {
                         $(".totalAssistanceTicketsCompleted").text(0);
-                        $(".totalAssistanceTicketsCompletedPercentage").text("- ").append("% ");
+                        $(".totalAssistanceTicketsCompletedNewValue").text("- ");
                     }
                 } else {
                     $(".totalAssistanceTicketsCompleted").text(data["totalAssistanceTicketsCompleted"]);
-                    $(".totalAssistanceTicketsCompletedPercentage").text("- ").append("% ");
+                    $(".totalAssistanceTicketsCompletedNewValue").text("- ");
                     $(".totalAssistanceTicketsCompletedValNeutral").removeClass("hidden");
+                }
+
+                // Total bucketlist goals completed
+                var valueCompletedGoals = 0;
+                if(completedGoalsNow != 0) {
+                    if (data['totalCompletedGoals'] > parseInt(completedGoalsNow)) {
+                        valueCompletedGoals = parseInt(completedGoalsNow);
+                        newValueCompletedGoals =  data['totalCompletedGoals'] - valueCompletedGoals;
+                        $(".completedGoalsValUp").removeClass("hidden");
+                        $(".completedGoalsValNeutral").addClass("hidden");
+                        $(".completedGoalsValDown").addClass("hidden");
+                    } else if (data['totalCompletedGoals'] < parseInt(completedGoalsNow)) {
+                        valueCompletedGoals = parseInt(completedGoalsNow);
+                        newValueCompletedGoals = (data['totalTeamChats'] - valueCompletedGoals);
+                        $(".completedGoalsValUp").addClass("hidden");
+                        $(".completedGoalsValNeutral").addClass("hidden");
+                        $(".completedGoalsValDown").removeClass("hidden");
+                    } else {
+                        $(".completedGoalsValUp").addClass("hidden");
+                        $(".completedGoalsValDown").addClass("hidden");
+                        $(".completedGoalsValNeutral").removeClass("hidden");
+                        $(".totalCompletedGoals").text(data["totalCompletedGoals"]);
+                        $(".completedGoalsNewValue").text("- ");
+                    }
+
+                    if (newValueCompletedGoals != 0) {
+                        $(".totalCompletedGoals").text(data["totalCompletedGoals"]);
+                        if(newValueTotalTeamChats > 0){
+                            $(".completedGoalsNewValue").text("+ " + newValueCompletedGoals);
+                        } else {
+                            $(".completedGoalsNewValue").text(newValueCompletedGoals);
+                        }
+                    }
+                    if (data['totalCompletedGoals'] == 0 && completedGoalsNow == 0) {
+                        $(".totalCompletedGoals").text(0);
+                        $(".completedGoalsNewValue").text("- ");
+                    }
+                } else {
+                    $(".totalCompletedGoals").text(data["totalCompletedGoals"]);
+                    $(".completedGoalsNewValue").text("- ");
+                    $(".completedGoalsValNeutral").removeClass("hidden");
                 }
             }
         });
