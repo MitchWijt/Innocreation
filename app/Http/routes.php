@@ -234,3 +234,5 @@ Route::post("/workspace/changeMostAssistanceTicketsCategory", "WorkspaceControll
 
 Route::post("/workspace/getMemberTaskListData", "WorkspaceController@getMemberTaskListDataAction");
 
+Route::post("/workspace/getDashboardFilteredData", "WorkspaceController@getDashboardFilteredDataAction");
+

@@ -416,7 +416,7 @@ class WorkspaceController extends Controller
 
         $shortTermPlannerTasksToDo = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $user->id)->where("completed", 0)->get();
         $shortTermPlannerTasksComplete = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $user->id)->where("completed", 1)->get();
-        $shortTermPlannerTasksDueDate = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $user->id)->where("due_date", "!=", null)->get();
+        $shortTermPlannerTasksDueDate = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $user->id)->where("due_date", "!=", null)->where("completed", 0)->get();
 
         foreach($shortTermPlannerTasksDueDate as $shortTermPlannerTask){
             if(strtotime($today) > strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->due_date)))){
@@ -435,13 +435,7 @@ class WorkspaceController extends Controller
         }
 
         foreach($shortTermPlannerTasksComplete as $shortTermPlannerTask){
-            if($shortTermPlannerTask->due_date != null) {
-                if (strtotime($today) < strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->due_date)))) {
-                    array_push($completedTasks, $shortTermPlannerTask);
-                }
-            } else {
-                array_push($completedTasks, $shortTermPlannerTask);
-            }
+            array_push($completedTasks, $shortTermPlannerTask);
         }
         return view("/public/team/workspace/workspacePersonalBoard", compact("user", "team", "toDoTasks", "completedTasks", "missedDueDateTasks"));
     }
@@ -556,6 +550,7 @@ class WorkspaceController extends Controller
         $totalAssistanceTicketsLast24Hours = [];
         $totalAssistanceTicketsCompletedLast24Hours = [];
         $completedGoalsLast24Hours = [];
+        $unCompletedGoalsLast24Hours = [];
 
         $last24Hours = date("Y-m-d", strtotime("-1 day"));
 
@@ -586,7 +581,14 @@ class WorkspaceController extends Controller
                 array_push($completedGoalsLast24Hours, $bucketlistGoal);
             }
         }
-        return view("/public/team/workspace/workspaceDashboard", compact("user", "team","totalTeamChatsLast24Hours", "totalAssistanceTicketsLast24Hours", "totalAssistanceTicketsCompletedLast24Hours", "completedGoalsLast24Hours"));
+
+        $bucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team->id)->where("completed", 0)->get();
+        foreach($bucketlistGoals as $bucketlistGoal){
+            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at)))){
+                array_push($unCompletedGoalsLast24Hours, $bucketlistGoal);
+            }
+        }
+        return view("/public/team/workspace/workspaceDashboard", compact("user", "team","totalTeamChatsLast24Hours", "totalAssistanceTicketsLast24Hours", "totalAssistanceTicketsCompletedLast24Hours", "completedGoalsLast24Hours", "unCompletedGoalsLast24Hours"));
     }
 
     public function getRealtimeDataDashboardAction(Request $request){
@@ -597,6 +599,7 @@ class WorkspaceController extends Controller
         $totalAssistanceTicketsToday = [];
         $totalAssistanceTicketsCompletedToday = [];
         $totalCompletedGoalsToday = [];
+        $totalUnCompletedGoalsToday = [];
 
         $last24Hours = date("Y-m-d", strtotime("-1 day"));
 
@@ -628,11 +631,19 @@ class WorkspaceController extends Controller
             }
         }
 
+        $bucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 0)->get();
+        foreach($bucketlistGoals as $bucketlistGoal){
+            if(strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at))) >= strtotime($last24Hours)){
+                array_push($totalUnCompletedGoalsToday, $bucketlistGoal);
+            }
+        }
+
         $data = [
             "totalTeamChats" => count($totalTeamChatsToday),
             "totalAssistanceTickets" => count($totalAssistanceTicketsToday),
             "totalAssistanceTicketsCompleted" => count($totalAssistanceTicketsCompletedToday),
-            "totalCompletedGoals" => count($totalCompletedGoalsToday)
+            "totalCompletedGoals" => count($totalCompletedGoalsToday),
+            "totalUnCompletedGoals" => count($totalUnCompletedGoalsToday)
         ];
         return json_encode($data);
     }
@@ -661,7 +672,7 @@ class WorkspaceController extends Controller
             }
         }
         $count = array_count_values($memberArray);//Counts the values in the array, returns associatve array
-        arsort($count);//Ssort it from highest to lowest
+        arsort($count); //Ssort it from highest to lowest
         $keys = array_keys($count);//Split the array so we can find the most occuring key
 
         $member = User::select("*")->where("id", $keys[0])->first();
@@ -697,6 +708,79 @@ class WorkspaceController extends Controller
             }
             return json_encode($memberTaskData);
         }
+    }
+
+    public function getDashboardFilteredDataAction(Request $request){
+        $team_id = $request->input("team_id");
+        $filter = $request->input("bucketlist_filter");
+
+        if($filter == "Total") {
+            $totalCompletedGoals = [];
+            $totalUnCompletedGoals = [];
+            $bucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 1)->get();
+            foreach ($bucketlistGoals as $bucketlistGoal) {
+                array_push($totalCompletedGoals, $bucketlistGoal);
+
+            }
+
+            $bucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 0)->get();
+            foreach ($bucketlistGoals as $bucketlistGoal) {
+                array_push($totalUnCompletedGoals, $bucketlistGoal);
+            }
+            $data = [
+                "totalCompletedGoals" => count($totalCompletedGoals),
+                "totalUnCompletedGoals" => count($totalUnCompletedGoals)
+            ];
+            return json_encode($data);
+
+        }
+        if($filter == "Default"){
+            return 1;
+        }
+        if($filter == "Month") {
+            $timeSpan = date("Y-m-d", strtotime("-1 month"));
+        } else if($filter == "Week") {
+            $timeSpan = date("Y-m-d", strtotime("-1 week"));
+        }
+            $totalCompletedLastTimespan = 0;
+            $totalUncompletedLastTimespan = 0;
+            $totalCompletedGoalsTimespanFilter = 0;
+            $totalUnCompletedGoalsTimespanFilter = 0;
+
+            $bucketlistGoalsCompletedLastTimespan = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 1)->get();
+            foreach ($bucketlistGoalsCompletedLastTimespan as $bucketlistGoal) {
+                if(strtotime($timeSpan) == strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at)))){
+                    $totalCompletedLastTimespan++;
+                }
+            }
+
+            $bucketlistGoalsUnCompletedLastTimespan = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 0)->get();
+            foreach ($bucketlistGoalsUnCompletedLastTimespan as $bucketlistGoal) {
+                if(strtotime($timeSpan) == strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at)))){
+                    $totalUncompletedLastTimespan++;
+                }
+            }
+
+            $bucketlistGoalsCompletedThisTimespan = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 1)->get();
+            foreach ($bucketlistGoalsCompletedThisTimespan as $bucketlistGoal) {
+                if(strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at))) >= strtotime($timeSpan)){
+                    $totalCompletedGoalsTimespanFilter++;
+                }
+            }
+
+            $bucketlistGoalsUnCompletedThisTimespan = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 0)->get();
+            foreach ($bucketlistGoalsUnCompletedThisTimespan as $bucketlistGoal) {
+                if(strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at))) >= strtotime($timeSpan)){
+                    $totalUnCompletedGoalsTimespanFilter++;
+                }
+            }
+            $data = [
+                "totalCompletedGoalsThisTimespan" => $totalCompletedGoalsTimespanFilter,
+                "totalUnCompletedGoalsThisTimespan" => $totalUnCompletedGoalsTimespanFilter,
+                "completedGoalsAddedValue" => $totalCompletedGoalsTimespanFilter - $totalCompletedLastTimespan,
+                "unCompletedGoalsAddedValue" => $totalUnCompletedGoalsTimespanFilter - $totalUncompletedLastTimespan
+            ];
+            return json_encode($data);
     }
 
 

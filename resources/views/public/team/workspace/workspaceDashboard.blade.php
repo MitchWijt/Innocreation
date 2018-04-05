@@ -91,7 +91,7 @@
                     <div class="card-block">
                         <div class="row">
                             <div class="col-sm-12">
-                                <p class="m-l-10 m-t-10 f-18 m-b-10">Tasks list</p>
+                                <p class="m-l-10 m-t-10 f-18 m-b-10">Tasks list <small class="f-12">(total all boards)</small></p>
                             </div>
                         </div>
                         <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
@@ -138,8 +138,14 @@
                     <div class="card-block">
                         <div class="row">
                             <div class="col-sm-12">
-                                <p class="m-l-10 m-t-10 f-18 m-b-10">Bucketlist goals</p>
+                                <p class="m-l-10 m-t-10 f-18 m-b-10">Bucketlist goals <i class="zmdi zmdi-chevron-down toggleBucketlistMenu"></i> </p>
                             </div>
+                        </div>
+                        <div class="col-sm-2 text-center bucketlistDashBoardMenu hidden  f-12">
+                            <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterBucketlistDashboard" data-filter="Total">Total values</p>
+                            <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterBucketlistDashboard" data-filter="Week">Week values</p>
+                            <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterBucketlistDashboard" data-filter="Month">Month values</p>
+                            <p class="bcg-black border-default menu-item filterBucketlistDashboard" data-filter="Default">Default Values</p>
                         </div>
                         <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
                         <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
@@ -162,15 +168,15 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="d-flex fd-row js-center">
-                                            <p class="f-25 totalAssistanceTickets"></p>
+                                            <p class="f-25 totalUnCompletedGoals"></p>
                                             <div class="d-flex fd-column m-l-10">
-                                                <i class="fas fa-caret-up f-23 c-green totalAssistanceTicketsValUp hidden"></i>
-                                                <i class="fas fa-caret-down f-23 c-red totalAssistanceTicketsValDown hidden"></i>
-                                                <i class="zmdi zmdi-window-minimize totalAssistanceTicketsValNeutral f-20 hidden "></i>
-                                                <span class="f-13 totalAssistanceTicketsNewValue"></span>
+                                                <i class="fas fa-caret-up f-23 c-green unCompletedGoalsValUp hidden"></i>
+                                                <i class="fas fa-caret-down f-23 c-red unCompletedGoalsValDown hidden"></i>
+                                                <i class="zmdi zmdi-window-minimize unCompletedGoalsValNeutral f-20 hidden "></i>
+                                                <span class="f-13 unCompletedGoalsNewValue"></span>
                                             </div>
                                         </div>
-                                        <input type="hidden" class="totalAssistanceTickets24Hours" value="<?= count($totalAssistanceTicketsLast24Hours)?>">
+                                        <input type="hidden" class="unCompletedGoals24Hours" value="<?= count($unCompletedGoalsLast24Hours)?>">
                                         <p>Still to complete</p>
                                     </div>
                                 </div>

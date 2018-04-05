@@ -69,7 +69,7 @@ class User extends Authenticatable
     }
 
     public function getAssignedTasks(){
-        $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $this->id)->get();
+        $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $this->id)->where("completed", 0)->get();
         return count($short_term_planner_tasks);
     }
 
