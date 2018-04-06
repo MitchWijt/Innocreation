@@ -7,9 +7,9 @@
         </div>
         <div class="hr"></div>
         <? if(count($errors) > 0){ ?>
-        <? foreach($errors->all() as $error){ ?>
-        <p class="c-orange"><?=$error?></p>
-        <? } ?>
+            <? foreach($errors->all() as $error){ ?>
+                <p class="c-orange"><?=$error?></p>
+            <? } ?>
         <? } ?>
         <form action="/loginUser" method="POST" class="loginForm">
             <input type="hidden" name="_token" value="<?= csrf_token()?>">

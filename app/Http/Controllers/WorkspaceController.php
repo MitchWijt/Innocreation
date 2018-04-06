@@ -546,104 +546,179 @@ class WorkspaceController extends Controller
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
 
-        $totalTeamChatsLast24Hours = [];
-        $totalAssistanceTicketsLast24Hours = [];
-        $totalAssistanceTicketsCompletedLast24Hours = [];
-        $completedGoalsLast24Hours = [];
-        $unCompletedGoalsLast24Hours = [];
+        $totalTeamChatsLast24Hours = 0;
+        $totalAssistanceTicketsLast24Hours = 0;
+        $totalAssistanceTicketsCompletedLast24Hours = 0;
+
+        $completedGoalsLast24Hours = 0;
+        $unCompletedGoalsLast24Hours = 0;
+
+        $totalIdeasLast24Hours = 0;
+        $totalIdeasOnHoldLast24Hours = 0;
+        $totalIdeasPassedLast24Hours = 0;
+        $totalIdeasRejectedLast24Hours = 0;
+
+
 
         $last24Hours = date("Y-m-d", strtotime("-1 day"));
 
+        // chats and assistance tickets last 24 hours
         $userMessages = UserMessage::select("*")->where("team_id", $team->id)->get();
         foreach($userMessages as $userMessage){
             if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($userMessage->created_at)))){
-                array_push($totalTeamChatsLast24Hours, $userMessage);
+                $totalTeamChatsLast24Hours++;
             }
         }
 
         $assistanceTickets = AssistanceTicket::select("*")->where("team_id", $team->id)->get();
         foreach($assistanceTickets as $assistanceTicket){
             if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at)))){
-                array_push($totalAssistanceTicketsLast24Hours, $assistanceTicket);
+                $totalAssistanceTicketsLast24Hours++;
             }
         }
 
         $assistanceTickets = AssistanceTicket::select("*")->where("team_id", $team->id)->where("completed", 1)->get();
         foreach($assistanceTickets as $assistanceTicket){
             if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at)))){
-                array_push($totalAssistanceTicketsCompletedLast24Hours, $assistanceTicket);
+                $totalAssistanceTicketsCompletedLast24Hours++;
             }
         }
-
+        // bucketlist goals last 24 hours
         $bucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team->id)->where("completed", 1)->get();
         foreach($bucketlistGoals as $bucketlistGoal){
             if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at)))){
-                array_push($completedGoalsLast24Hours, $bucketlistGoal);
+                $completedGoalsLast24Hours++;
             }
         }
 
         $bucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team->id)->where("completed", 0)->get();
         foreach($bucketlistGoals as $bucketlistGoal){
             if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at)))){
-                array_push($unCompletedGoalsLast24Hours, $bucketlistGoal);
+                $unCompletedGoalsLast24Hours++;
             }
         }
-        return view("/public/team/workspace/workspaceDashboard", compact("user", "team","totalTeamChatsLast24Hours", "totalAssistanceTicketsLast24Hours", "totalAssistanceTicketsCompletedLast24Hours", "completedGoalsLast24Hours", "unCompletedGoalsLast24Hours"));
+        // Ideas last 24 hours
+        $ideas = WorkspaceIdeas::select("*")->where("team_id", $team->id)->get();
+        foreach($ideas as $idea){
+            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($idea->created_at)))){
+                $totalIdeasLast24Hours++;
+            }
+        }
+
+        $ideas = WorkspaceIdeas::select("*")->where("team_id", $team->id)->where("status", "On hold")->get();
+        foreach($ideas as $idea){
+            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($idea->created_at)))){
+                $totalIdeasOnHoldLast24Hours++;
+            }
+        }
+
+        $ideas = WorkspaceIdeas::select("*")->where("team_id", $team->id)->where("status", "Passed")->get();
+        foreach($ideas as $idea){
+            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($idea->created_at)))){
+                $totalIdeasPassedLast24Hours++;
+            }
+        }
+
+        $ideas = WorkspaceIdeas::select("*")->where("team_id", $team->id)->where("status", "Rejected")->get();
+        foreach($ideas as $idea){
+            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($idea->created_at)))){
+                $totalIdeasRejectedLast24Hours++;
+            }
+        }
+        return view("/public/team/workspace/workspaceDashboard", compact("user", "team","totalTeamChatsLast24Hours", "totalAssistanceTicketsLast24Hours", "totalAssistanceTicketsCompletedLast24Hours", "completedGoalsLast24Hours", "unCompletedGoalsLast24Hours", "totalIdeasLast24Hours", "totalIdeasOnHoldLast24Hours", "totalIdeasPassedLast24Hours", "totalIdeasRejectedLast24Hours"));
     }
 
     public function getRealtimeDataDashboardAction(Request $request){
         $user_id = $request->input("user_id");
         $team_id = $request->input("team_id");
 
-        $totalTeamChatsToday = [];
-        $totalAssistanceTicketsToday = [];
-        $totalAssistanceTicketsCompletedToday = [];
-        $totalCompletedGoalsToday = [];
-        $totalUnCompletedGoalsToday = [];
+        $totalTeamChatsToday = 0;
+        $totalAssistanceTicketsToday = 0;
+        $totalAssistanceTicketsCompletedToday = 0;
+
+        $totalCompletedGoalsToday = 0;
+        $totalUnCompletedGoalsToday = 0;
+
+        $totalIdeasToday = 0;
+        $totalIdeasOnHoldToday = 0;
+        $totalIdeasPassedToday = 0;
+        $totalIdeasRejectedToday = 0;
 
         $last24Hours = date("Y-m-d", strtotime("-1 day"));
 
         $userMessages = UserMessage::select("*")->where("team_id", $team_id)->get();
         foreach($userMessages as $userMessage){
             if(strtotime(date("Y-m-d", strtotime($userMessage->created_at))) >= strtotime($last24Hours)){
-                array_push($totalTeamChatsToday, $userMessage);
+                $totalTeamChatsToday++;
             }
         }
 
         $assistanceTickets = AssistanceTicket::select("*")->where("team_id", $team_id)->get();
         foreach($assistanceTickets as $assistanceTicket){
             if(strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at))) >= strtotime($last24Hours)){
-                array_push($totalAssistanceTicketsToday, $assistanceTicket);
+                $totalAssistanceTicketsToday++;
             }
         }
 
         $assistanceTickets = AssistanceTicket::select("*")->where("team_id", $team_id)->where("completed", 1)->get();
         foreach($assistanceTickets as $assistanceTicket){
             if(strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at))) >= strtotime($last24Hours)){
-                array_push($totalAssistanceTicketsCompletedToday, $assistanceTicket);
+                $totalAssistanceTicketsCompletedToday++;
             }
         }
 
         $bucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 1)->get();
         foreach($bucketlistGoals as $bucketlistGoal){
             if(strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at))) >= strtotime($last24Hours)){
-                array_push($totalCompletedGoalsToday, $bucketlistGoal);
+                $totalCompletedGoalsToday++;
             }
         }
 
         $bucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 0)->get();
         foreach($bucketlistGoals as $bucketlistGoal){
             if(strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at))) >= strtotime($last24Hours)){
-                array_push($totalUnCompletedGoalsToday, $bucketlistGoal);
+                $totalUnCompletedGoalsToday++;
+            }
+        }
+        // Ideas
+        $ideas = WorkspaceIdeas::select("*")->where("team_id", $team_id)->get();
+        foreach($ideas as $idea){
+            if(strtotime(date("Y-m-d", strtotime($idea->created_at))) >= strtotime($last24Hours)){
+                $totalIdeasToday++;
+            }
+        }
+
+        $ideas = WorkspaceIdeas::select("*")->where("team_id", $team_id)->where("status", "On hold")->get();
+        foreach($ideas as $idea){
+            if(strtotime(date("Y-m-d", strtotime($idea->created_at))) >= strtotime($last24Hours)){
+                $totalIdeasOnHoldToday++;
+            }
+        }
+
+        $ideas = WorkspaceIdeas::select("*")->where("team_id", $team_id)->where("status", "Passed")->get();
+        foreach($ideas as $idea){
+            if(strtotime(date("Y-m-d", strtotime($idea->created_at))) >= strtotime($last24Hours)){
+                $totalIdeasPassedToday++;
+            }
+        }
+
+        $ideas = WorkspaceIdeas::select("*")->where("team_id", $team_id)->where("status", "Rejected")->get();
+        foreach($ideas as $idea){
+            if(strtotime(date("Y-m-d", strtotime($idea->created_at))) >= strtotime($last24Hours)){
+                $totalIdeasRejectedToday++;
             }
         }
 
         $data = [
-            "totalTeamChats" => count($totalTeamChatsToday),
-            "totalAssistanceTickets" => count($totalAssistanceTicketsToday),
-            "totalAssistanceTicketsCompleted" => count($totalAssistanceTicketsCompletedToday),
-            "totalCompletedGoals" => count($totalCompletedGoalsToday),
-            "totalUnCompletedGoals" => count($totalUnCompletedGoalsToday)
+            "totalTeamChats" => $totalTeamChatsToday,
+            "totalAssistanceTickets" => $totalAssistanceTicketsToday,
+            "totalAssistanceTicketsCompleted" => $totalAssistanceTicketsCompletedToday,
+            "totalCompletedGoals" => $totalCompletedGoalsToday,
+            "totalUnCompletedGoals" => $totalUnCompletedGoalsToday,
+            "totalIdeas" => $totalIdeasToday,
+            "totalIdeasOnHold" => $totalIdeasOnHoldToday,
+            "totalIdeasPassed" => $totalIdeasPassedToday,
+            "totalIdeasRejected" => $totalIdeasRejectedToday,
         ];
         return json_encode($data);
     }
@@ -713,35 +788,37 @@ class WorkspaceController extends Controller
     public function getDashboardFilteredDataAction(Request $request){
         $team_id = $request->input("team_id");
         $filter = $request->input("bucketlist_filter");
+        if($request->input("dashboardCategory") == "Bucketlist") {
+            if ($filter == "Total") {
+                $totalCompletedGoals = [];
+                $totalUnCompletedGoals = [];
+                $bucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 1)->get();
+                foreach ($bucketlistGoals as $bucketlistGoal) {
+                    array_push($totalCompletedGoals, $bucketlistGoal);
 
-        if($filter == "Total") {
-            $totalCompletedGoals = [];
-            $totalUnCompletedGoals = [];
-            $bucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 1)->get();
-            foreach ($bucketlistGoals as $bucketlistGoal) {
-                array_push($totalCompletedGoals, $bucketlistGoal);
+                }
+
+                $bucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 0)->get();
+                foreach ($bucketlistGoals as $bucketlistGoal) {
+                    array_push($totalUnCompletedGoals, $bucketlistGoal);
+                }
+                $data = [
+                    "totalCompletedGoals" => count($totalCompletedGoals),
+                    "totalUnCompletedGoals" => count($totalUnCompletedGoals)
+                ];
+                return json_encode($data);
 
             }
-
-            $bucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 0)->get();
-            foreach ($bucketlistGoals as $bucketlistGoal) {
-                array_push($totalUnCompletedGoals, $bucketlistGoal);
+            if ($filter == "Default") {
+                return 1;
             }
-            $data = [
-                "totalCompletedGoals" => count($totalCompletedGoals),
-                "totalUnCompletedGoals" => count($totalUnCompletedGoals)
-            ];
-            return json_encode($data);
-
-        }
-        if($filter == "Default"){
-            return 1;
-        }
-        if($filter == "Month") {
-            $timeSpan = date("Y-m-d", strtotime("-1 month"));
-        } else if($filter == "Week") {
-            $timeSpan = date("Y-m-d", strtotime("-1 week"));
-        }
+            if ($filter == "Month") {
+                $timeSpan = date("Y-m-d", strtotime("-1 month"));
+                $timeSpanLast = date("Y-m-d H:i:s", strtotime($timeSpan . "-1 month"));
+            } else if ($filter == "Week") {
+                $timeSpan = date("Y-m-d", strtotime("-1 week"));
+                $timeSpanLast = date("Y-m-d H:i:s", strtotime($timeSpan . "-1 week"));
+            }
             $totalCompletedLastTimespan = 0;
             $totalUncompletedLastTimespan = 0;
             $totalCompletedGoalsTimespanFilter = 0;
@@ -749,28 +826,28 @@ class WorkspaceController extends Controller
 
             $bucketlistGoalsCompletedLastTimespan = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 1)->get();
             foreach ($bucketlistGoalsCompletedLastTimespan as $bucketlistGoal) {
-                if(strtotime($timeSpan) == strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at)))){
+                if(strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at))) <= strtotime($timeSpan)) {
                     $totalCompletedLastTimespan++;
                 }
             }
 
             $bucketlistGoalsUnCompletedLastTimespan = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 0)->get();
             foreach ($bucketlistGoalsUnCompletedLastTimespan as $bucketlistGoal) {
-                if(strtotime($timeSpan) == strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at)))){
+                if(strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at))) <= strtotime($timeSpan)) {
                     $totalUncompletedLastTimespan++;
                 }
             }
 
             $bucketlistGoalsCompletedThisTimespan = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 1)->get();
             foreach ($bucketlistGoalsCompletedThisTimespan as $bucketlistGoal) {
-                if(strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at))) >= strtotime($timeSpan)){
+                if (strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at))) >= strtotime($timeSpan)) {
                     $totalCompletedGoalsTimespanFilter++;
                 }
             }
 
             $bucketlistGoalsUnCompletedThisTimespan = WorkspaceBucketlist::select("*")->where("team_id", $team_id)->where("completed", 0)->get();
             foreach ($bucketlistGoalsUnCompletedThisTimespan as $bucketlistGoal) {
-                if(strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at))) >= strtotime($timeSpan)){
+                if (strtotime(date("Y-m-d", strtotime($bucketlistGoal->created_at))) >= strtotime($timeSpan)) {
                     $totalUnCompletedGoalsTimespanFilter++;
                 }
             }
@@ -781,6 +858,206 @@ class WorkspaceController extends Controller
                 "unCompletedGoalsAddedValue" => $totalUnCompletedGoalsTimespanFilter - $totalUncompletedLastTimespan
             ];
             return json_encode($data);
+        } else if($request->input("dashboardCategory") == "chatsAssistance") {
+            if ($filter == "Total") {
+                $totalTeamChats = [];
+                $totalAssistanceTickets = [];
+                $totalAssistanceTicketsCompleted = [];
+                $teamChats = UserMessage::select("*")->where("team_id", $team_id)->get();
+                foreach ($teamChats as $message) {
+                    array_push($totalTeamChats, $message);
+                }
+
+                $assistanceTickets = AssistanceTicket::select("*")->where("team_id", $team_id)->get();
+                foreach ($assistanceTickets as $assistanceTicket) {
+                    array_push($totalAssistanceTickets, $assistanceTicket);
+                }
+
+                $assistanceTicketsCompleted = AssistanceTicket::select("*")->where("team_id", $team_id)->where("completed", 1)->get();
+                foreach ($assistanceTicketsCompleted as $assistanceTicket) {
+                    array_push($totalAssistanceTicketsCompleted, $assistanceTicket);
+                }
+                $data = [
+                    "totalTeamChats" => count($totalTeamChats),
+                    "totalAssistanceTickets" => count($totalAssistanceTickets),
+                    "totalAssistanceTicketsCompleted" => count($totalAssistanceTicketsCompleted)
+                ];
+                return json_encode($data);
+
+            }
+            if ($filter == "Default") {
+                return 1;
+            }
+            if ($filter == "Month") {
+                $timeSpan = date("Y-m-d", strtotime("-1 month"));
+                $timeSpanLast = date("Y-m-d H:i:s", strtotime($timeSpan . "-1 month"));
+            } else if ($filter == "Week") {
+                $timeSpan = date("Y-m-d", strtotime("-1 week"));
+                $timeSpanLast = date("Y-m-d H:i:s", strtotime($timeSpan . "-1 week"));
+            }
+            $totalTeamChatsLastTimespan = 0;
+            $totalAssistanceTicketsLastTimespan = 0;
+            $totalAssistanceTicketsCompletedLastTimespan = 0;
+            $totalTeamChatsTimespanFilter = 0;
+            $totalAssistanceTicketsTimespanFilter = 0;
+            $totalAssistanceTicketsCompletedTimespanFilter = 0;
+
+            $teamChatsLastTimespan = UserMessage::select("*")->where("team_id", $team_id)->get();
+            foreach ($teamChatsLastTimespan as $message) {
+                if(strtotime(date("Y-m-d", strtotime($message->created_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($message->created_at))) <= strtotime($timeSpan)) {
+                    $totalTeamChatsLastTimespan++;
+                }
+            }
+
+            $assistanceTicketsLastTimespan = AssistanceTicket::select("*")->where("team_id", $team_id)->get();
+            foreach ($assistanceTicketsLastTimespan as $assistanceTicket) {
+                if(strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at))) <= strtotime($timeSpan)) {
+                    $totalAssistanceTicketsLastTimespan++;
+                }
+            }
+
+            $assistanceTicketsCompletedLastTimespan = AssistanceTicket::select("*")->where("team_id", $team_id)->where("completed", 1)->get();
+            foreach ($assistanceTicketsCompletedLastTimespan as $assistanceTicket) {
+                if(strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at))) <= strtotime($timeSpan)) {
+                    $totalAssistanceTicketsCompletedLastTimespan++;
+                }
+            }
+
+            $teamChatsThisTimespan = UserMessage::select("*")->where("team_id", $team_id)->get();
+            foreach ($teamChatsThisTimespan as $message) {
+                if (strtotime(date("Y-m-d", strtotime($message->created_at))) >= strtotime($timeSpan)) {
+                    $totalTeamChatsTimespanFilter++;
+                }
+            }
+
+            $assistanceTicketsThisTimespan = AssistanceTicket::select("*")->where("team_id", $team_id)->get();
+            foreach ($assistanceTicketsThisTimespan as $assistanceTicket) {
+                if (strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at))) >= strtotime($timeSpan)) {
+                    $totalAssistanceTicketsTimespanFilter++;
+                }
+            }
+
+            $assistanceTicketsCompletedThisTimespan = AssistanceTicket::select("*")->where("team_id", $team_id)->where("completed", 1)->get();
+            foreach ($assistanceTicketsCompletedThisTimespan as $assistanceTicket) {
+                if (strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at))) >= strtotime($timeSpan)) {
+                    $totalAssistanceTicketsCompletedTimespanFilter++;
+                }
+            }
+            $data = [
+                "totalTeamChatsThisTimespan" => $totalTeamChatsTimespanFilter,
+                "totalAssistanceTicketsThisTimespan" => $totalAssistanceTicketsTimespanFilter,
+                "totalAssistanceTicketsCompletedThisTimespan" => $totalAssistanceTicketsCompletedTimespanFilter,
+                "teamChatsAddedValue" => $totalTeamChatsTimespanFilter - $totalTeamChatsLastTimespan,
+                "assistanceTicketsAddedValue" => $totalAssistanceTicketsTimespanFilter - $totalAssistanceTicketsLastTimespan,
+                "assistanceTicketsCompletedAddedValue" => $totalAssistanceTicketsCompletedTimespanFilter - $totalAssistanceTicketsCompletedLastTimespan
+            ];
+            return json_encode($data);
+        } else if($request->input("dashboardCategory") == "Ideas") {
+            if ($filter == "Total") {
+
+                $totalIdeas = WorkspaceIdeas::select("*")->where("team_id", $team_id)->get();
+                $totalIdeasOnHold = WorkspaceIdeas::select("*")->where("team_id", $team_id)->where("status", "On hold")->get();
+                $totalIdeasPassed = WorkspaceIdeas::select("*")->where("team_id", $team_id)->where("status", "Passed")->get();
+                $totalIdeasRejected = WorkspaceIdeas::select("*")->where("team_id", $team_id)->where("status","Rejected")->get();
+
+                $data = [
+                    "totalIdeas" => count($totalIdeas),
+                    "totalIdeasOnHold" => count($totalIdeasOnHold),
+                    "totalIdeasPassed" => count($totalIdeasPassed),
+                    "totalIdeasRejected" => count($totalIdeasRejected)
+                ];
+                return json_encode($data);
+
+            }
+            if ($filter == "Default") {
+                return 1;
+            }
+            if ($filter == "Month") {
+                $timeSpan = date("Y-m-d", strtotime("-1 month"));
+                $timeSpanLast = date("Y-m-d H:i:s", strtotime($timeSpan . "-1 month"));
+            } else if ($filter == "Week") {
+                $timeSpan = date("Y-m-d", strtotime("-1 week"));
+                $timeSpanLast = date("Y-m-d H:i:s", strtotime($timeSpan . "-1 week"));
+            }
+            $totalIdeasLastTimespan = 0;
+            $totalIdeasOnHoldLastTimespan = 0;
+            $totalIdeasPassedLastTimespan = 0;
+            $totalIdeasRejectedLastTimespan = 0;
+
+            $totalIdeasTimespanFilter = 0;
+            $totalIdeasOnHoldTimespanFilter = 0;
+            $totalIdeasPassedTimespanFilter = 0;
+            $totalIdeasRejectedTimespanFilter = 0;
+
+            $ideasLastTimespan = WorkspaceIdeas::select("*")->where("team_id", $team_id)->get();
+            foreach ($ideasLastTimespan as $idea) {
+                if(strtotime(date("Y-m-d", strtotime($idea->created_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($idea->created_at))) <= strtotime($timeSpan)) {
+                    $totalIdeasLastTimespan++;
+                }
+            }
+
+            $ideasOnHoldLastTimespan = WorkspaceIdeas::select("*")->where("team_id", $team_id)->where("status", "On hold")->get();
+            foreach ($ideasOnHoldLastTimespan as $idea) {
+                if(strtotime(date("Y-m-d", strtotime($idea->created_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($idea->created_at))) <= strtotime($timeSpan)) {
+                    $totalIdeasOnHoldLastTimespan++;
+                }
+            }
+
+            $ideasPassedLastTimespan = WorkspaceIdeas::select("*")->where("team_id", $team_id)->where("status", "Passed")->get();
+            foreach ($ideasPassedLastTimespan as $idea) {
+                if(strtotime(date("Y-m-d", strtotime($idea->created_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($idea->created_at))) <= strtotime($timeSpan)) {
+                    $totalIdeasPassedLastTimespan++;
+                }
+            }
+
+            $ideasRejectedLastTimespan = WorkspaceIdeas::select("*")->where("team_id", $team_id)->where("status", "Rejected")->get();
+            foreach ($ideasRejectedLastTimespan as $idea) {
+                if(strtotime(date("Y-m-d", strtotime($idea->created_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($idea->created_at))) <= strtotime($timeSpan)) {
+                    $totalIdeasRejectedLastTimespan++;
+                }
+            }
+
+            // This timespan
+            $ideasThisTimespan = WorkspaceIdeas::select("*")->where("team_id", $team_id)->get();
+            foreach ($ideasThisTimespan as $idea) {
+                if (strtotime(date("Y-m-d", strtotime($idea->created_at))) >= strtotime($timeSpan)) {
+                    $totalIdeasTimespanFilter++;
+                }
+            }
+
+            $ideasOnHoldThisTimespan = WorkspaceIdeas::select("*")->where("team_id", $team_id)->where("status", "On hold")->get();
+            foreach ($ideasOnHoldThisTimespan as $idea) {
+                if (strtotime(date("Y-m-d", strtotime($idea->created_at))) >= strtotime($timeSpan)) {
+                    $totalIdeasOnHoldTimespanFilter++;
+                }
+            }
+
+            $ideasPassedThisTimespan = WorkspaceIdeas::select("*")->where("team_id", $team_id)->where("status", "Passed")->get();
+            foreach ($ideasPassedThisTimespan as $idea) {
+                if (strtotime(date("Y-m-d", strtotime($idea->created_at))) >= strtotime($timeSpan)) {
+                    $totalIdeasPassedTimespanFilter++;
+                }
+            }
+
+            $ideasRejectedThisTimespan = WorkspaceIdeas::select("*")->where("team_id", $team_id)->where("status", "Rejected")->get();
+            foreach ($ideasRejectedThisTimespan as $idea) {
+                if (strtotime(date("Y-m-d", strtotime($idea->created_at))) >= strtotime($timeSpan)) {
+                    $totalIdeasRejectedTimespanFilter++;
+                }
+            }
+            $data = [
+                "totalIdeasThisTimespan" => $totalIdeasTimespanFilter,
+                "totalIdeasOnHoldThisTimespan" => $totalIdeasOnHoldTimespanFilter,
+                "totalIdeasPassedThisTimespan" => $totalIdeasPassedTimespanFilter,
+                "totalIdeasRejectedThisTimespan" => $totalIdeasRejectedTimespanFilter,
+
+                "ideasAddedValue" => $totalIdeasTimespanFilter - $totalIdeasLastTimespan,
+                "ideasOnHoldAddedValue" => $totalIdeasOnHoldTimespanFilter - $totalIdeasOnHoldLastTimespan,
+                "ideasPassedAddedValue" => $totalIdeasPassedTimespanFilter - $totalIdeasPassedLastTimespan,
+                "ideasRejectedAddedValue" => $totalIdeasRejectedTimespanFilter - $totalIdeasRejectedLastTimespan
+            ];
+            return json_encode($data);
+        }
     }
 
 
