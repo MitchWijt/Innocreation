@@ -546,6 +546,13 @@ class WorkspaceController extends Controller
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
 
+        $short_term_planner_boards_array = [];
+
+        $short_term_planner_boards = WorkspaceShortTermPlannerBoard::select("*")->where("team_id", $team->id)->get();
+        foreach($short_term_planner_boards as $short_term_planner_board){
+            array_push($short_term_planner_boards_array, $short_term_planner_board->id);
+        }
+
         $totalTeamChatsLast24Hours = 0;
         $totalAssistanceTicketsLast24Hours = 0;
         $totalAssistanceTicketsCompletedLast24Hours = 0;
@@ -557,6 +564,11 @@ class WorkspaceController extends Controller
         $totalIdeasOnHoldLast24Hours = 0;
         $totalIdeasPassedLast24Hours = 0;
         $totalIdeasRejectedLast24Hours = 0;
+
+        $totalTasksCreatedLast24Hours = 0;
+        $totalTasksCompletedLast24Hours = 0;
+        $totalTasksToDoLast24Hours = 0;
+        $totalTasksExpiredDueDateLast24Hours = 0;
 
 
 
@@ -625,7 +637,40 @@ class WorkspaceController extends Controller
                 $totalIdeasRejectedLast24Hours++;
             }
         }
-        return view("/public/team/workspace/workspaceDashboard", compact("user", "team","totalTeamChatsLast24Hours", "totalAssistanceTicketsLast24Hours", "totalAssistanceTicketsCompletedLast24Hours", "completedGoalsLast24Hours", "unCompletedGoalsLast24Hours", "totalIdeasLast24Hours", "totalIdeasOnHoldLast24Hours", "totalIdeasPassedLast24Hours", "totalIdeasRejectedLast24Hours"));
+
+        // Short term planner tasks dashboard
+        $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
+        foreach($short_term_planner_tasks as $short_term_planner_task){
+            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($short_term_planner_task->created_at)))){
+                $totalTasksCreatedLast24Hours++;
+            }
+        }
+
+        $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("completed", 1)->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
+        foreach($short_term_planner_tasks as $short_term_planner_task){
+            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($short_term_planner_task->created_at)))){
+                $totalTasksCompletedLast24Hours++;
+            }
+        }
+
+        $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("completed", 0)->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
+        foreach($short_term_planner_tasks as $short_term_planner_task){
+            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($short_term_planner_task->created_at)))){
+                $totalTasksToDoLast24Hours++;
+            }
+        }
+
+        $today = date("Y-m-d");
+        $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("due_date", "!=", null)->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
+        foreach($short_term_planner_tasks as $short_term_planner_task){
+            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($short_term_planner_task->created_at)))) {
+                if (strtotime($today) > strtotime(date("Y-m-d", strtotime($short_term_planner_task->due_date)))) {
+                    $totalTasksExpiredDueDateLast24Hours++;
+                }
+            }
+        }
+
+        return view("/public/team/workspace/workspaceDashboard", compact("user", "team","totalTeamChatsLast24Hours", "totalAssistanceTicketsLast24Hours", "totalAssistanceTicketsCompletedLast24Hours", "completedGoalsLast24Hours", "unCompletedGoalsLast24Hours", "totalIdeasLast24Hours", "totalIdeasOnHoldLast24Hours", "totalIdeasPassedLast24Hours", "totalIdeasRejectedLast24Hours", "short_term_planner_boards", "totalTasksCreatedLast24Hours", "totalTasksCompletedLast24Hours", "totalTasksToDoLast24Hours", "totalTasksExpiredDueDateLast24Hours"));
     }
 
     public function getRealtimeDataDashboardAction(Request $request){
@@ -719,6 +764,63 @@ class WorkspaceController extends Controller
             "totalIdeasOnHold" => $totalIdeasOnHoldToday,
             "totalIdeasPassed" => $totalIdeasPassedToday,
             "totalIdeasRejected" => $totalIdeasRejectedToday,
+        ];
+        return json_encode($data);
+    }
+
+    public function getRealtimeDataDashboardShortTermPlannerTasksAction(Request $request){
+        $user_id = $request->input("user_id");
+        $team_id = $request->input("team_id");
+
+        $totalTasksCreatedToday = 0;
+        $totalTasksCompletedToday = 0;
+        $totalTasksToDoToday = 0;
+        $totalTasksExpiredDueDateToday = 0;
+
+        $last24Hours = date("Y-m-d", strtotime("-1 day"));
+
+        $short_term_planner_boards_array = [];
+        $short_term_planner_boards = WorkspaceShortTermPlannerBoard::select("*")->where("team_id", $team_id)->get();
+        foreach($short_term_planner_boards as $short_term_planner_board){
+            array_push($short_term_planner_boards_array, $short_term_planner_board->id);
+        }
+
+        $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
+        foreach($shortTermPlannerTasks as $shortTermPlannerTask){
+            if(strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)){
+                $totalTasksCreatedToday++;
+            }
+        }
+
+        $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("completed", 1)->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
+        foreach($shortTermPlannerTasks as $shortTermPlannerTask){
+            if(strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)){
+                $totalTasksCompletedToday++;
+            }
+        }
+
+        $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("completed", 0)->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
+        foreach($shortTermPlannerTasks as $shortTermPlannerTask){
+            if(strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)){
+                $totalTasksToDoToday++;
+            }
+        }
+
+        $today = date("Y-m-d");
+        $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("due_date", "!=", null)->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
+        foreach($short_term_planner_tasks as $short_term_planner_task){
+            if(strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)) {
+                if (strtotime($today) > strtotime(date("Y-m-d", strtotime($short_term_planner_task->due_date)))) {
+                    $totalTasksExpiredDueDateToday++;
+                }
+            }
+        }
+
+        $data = [
+            "totalTasksCreated" => $totalTasksCreatedToday,
+            "totalTasksCompleted" => $totalTasksCompletedToday,
+            "totalTasksToDo" => $totalTasksToDoToday,
+            "totalTasksExpiredDueDate" => $totalTasksExpiredDueDateToday
         ];
         return json_encode($data);
     }

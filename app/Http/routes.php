@@ -230,6 +230,8 @@ Route::get("/my-team/workspace/dashboard", "WorkspaceController@workspaceDashboa
 
 Route::post("/workspace/getRealtimeDataDashboard", "WorkspaceController@getRealtimeDataDashboardAction");
 
+Route::post("/workspace/getRealtimeDataDashboardShortTermPlannerTasks", "WorkspaceController@getRealtimeDataDashboardShortTermPlannerTasksAction");
+
 Route::post("/workspace/changeMostAssistanceTicketsCategory", "WorkspaceController@changeMostAssistanceTicketsCategoryAction");
 
 Route::post("/workspace/getMemberTaskListData", "WorkspaceController@getMemberTaskListDataAction");

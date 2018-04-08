@@ -1,8 +1,10 @@
 $(document).ready(function() {
     $(".mostTicketsCategory").text("Week");
     getDashboardData();
+    getDashboardDataShortTermPlannerTasks();
     setInterval(function () {
         getDashboardData();
+        getDashboardDataShortTermPlannerTasks();
     }, 15000);
 });
 function getDashboardData() {
@@ -386,6 +388,108 @@ function getDashboardData() {
         }
     });
 }
+
+// ==============================
+
+function getDashboardDataShortTermPlannerTasks() {
+    var team_id = $(".team_id").val();
+    var user_id = $(".user_id").val();
+
+    var totalTasksCreatedNow = $(".totalTasksCreated24Hours").val();
+    var newValueTotalTasksCreated = 0;
+
+    var totalTasksCompletedNow = $(".totalTasksCompleted24Hours").val();
+    var newValueTotalTasksCompleted = 0;
+
+    var totalTasksToDoNow = $(".totalTasksToDo24Hours").val();
+    var newValueTotalTasksToDo = 0;
+
+    var totalTasksExpiredDueDateNow = $(".totalTasksExpiredDueDate24Hours").val();
+    var newValueTotalTasksExpiredDueDate = 0;
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/workspace/getRealtimeDataDashboardShortTermPlannerTasks",
+        dataType: "JSON",
+        data: {'user_id': user_id, 'team_id': team_id},
+        success: function (data) {
+            // short term planner tasks dashboard
+            var valueTasksCreated = 0;
+            if (data['totalTasksCreated'] > parseInt(totalTasksCreatedNow)) {
+                valueTasksCreated = parseInt(totalTasksCreatedNow);
+                newValueTotalTasksCreated =  data['totalTasksCreated'] - valueTasksCreated;
+                $(".totalTasksCreatedValUp").removeClass("hidden");
+                $(".totalTasksCreatedValNeutral").addClass("hidden");
+                $(".totalTasksCreatedValDown").addClass("hidden");
+            } else if (data['totalTasksCreated'] < parseInt(totalTasksCreatedNow)) {
+                valueTasksCreated = parseInt(totalTasksCreatedNow);
+                newValueTotalTasksCreated = (data['totalTasksCreated'] - valueTasksCreated);
+                $(".totalTasksCreatedValUp").addClass("hidden");
+                $(".totalTasksCreatedNeutral").addClass("hidden");
+                $(".totalTasksCreatedValDown").removeClass("hidden");
+            } else {
+                $(".totalTasksCreatedValUp").addClass("hidden");
+                $(".totalTasksCreatedValDown").addClass("hidden");
+                $(".totalTasksCreatedValNeutral").removeClass("hidden");
+                $(".totalTasksCreated").text(data["totalTasksCreated"]);
+                $(".totalTasksCreatedNewValue").text("- ");
+            }
+
+            if (newValueTotalTasksCreated != 0) {
+                $(".totalTasksCreated").text(data["totalTasksCreated"]);
+                if(newValueTotalTasksCreated >= 0){
+                    $(".totalTasksCreatedNewValue").text("+ " + newValueTotalTasksCreated);
+                } else {
+                    $(".totalTasksCreatedNewValue").text(newValueTotalTasksCreated);
+                }
+            }
+            if (data['totalTasksCreated'] == 0 && totalTasksCreatedNow == 0) {
+                $(".totalIdeasRejected").text(0);
+                $(".totalIdeasRejectedNewValue").text("- ");
+            }
+
+            var valueTasksCompleted = 0;
+            if (data['totalTasksCompleted'] > parseInt(totalTasksCompletedNow)) {
+                newValueTotalTasksCompleted = parseInt(totalTasksCompletedNow);
+                newValueTotalTasksCompleted =  data['totalTasksCompleted'] - valueTasksCompleted;
+                $(".totalTasksCompletedValUp").removeClass("hidden");
+                $(".totalTasksCompletedValNeutral").addClass("hidden");
+                $(".totalTasksCompletedValDown").addClass("hidden");
+            } else if (data['totalTasksCompleted'] < parseInt(totalTasksCompletedNow)) {
+                valueTasksCompleted = parseInt(totalTasksCompletedNow);
+                newValueTotalTasksCompleted = (data['totalTasksCompleted'] - valueTasksCompleted);
+                $(".totalTasksCompletedValUp").addClass("hidden");
+                $(".totalTasksCompletedNeutral").addClass("hidden");
+                $(".totalTasksCompletedValDown").removeClass("hidden");
+            } else {
+                $(".totalTasksCompletedValUp").addClass("hidden");
+                $(".totalTasksCompletedValDown").addClass("hidden");
+                $(".totalTasksCompletedValNeutral").removeClass("hidden");
+                $(".totalTasksCompleted").text(data["totalTasksCompleted"]);
+                $(".totalTasksCompletedNewValue").text("- ");
+            }
+
+            if (newValueTotalTasksCompleted != 0) {
+                $(".totalTasksCompleted").text(data["totalTasksCompleted"]);
+                if(newValueTotalTasksCreated >= 0){
+                    $(".totalTasksCompletedNewValue").text("+ " + newValueTotalTasksCompleted);
+                } else {
+                    $(".totalTasksCompletedNewValue").text(newValueTotalTasksCompleted);
+                }
+            }
+            if (data['totalTasksCompleted'] == 0 && totalTasksCompletedNow == 0) {
+                $(".totalTasksCompleted").text(0);
+                $(".totalTasksCompletedNewValue").text("- ");
+            }
+        }
+    });
+}
 $(document).ready(function () {
    $(".chatsDashboardMenu").removeClass("hidden");
    $(".chatsDashboardMenu").toggle();
@@ -488,6 +592,9 @@ $(document).ready(function() {
 
     $(".ideasDashBoardMenu").removeClass("hidden");
     $(".ideasDashBoardMenu").toggle();
+
+    $(".shortTermPlannerDashboardMenu").removeClass("hidden");
+    $(".shortTermPlannerDashboardMenu").toggle();
 });
 
 $(".filterBucketlistDashboard").on("click",function () {
@@ -579,6 +686,10 @@ $(".toggleChatsAssistanceMenu").on("click",function () {
 
 $(".toggleIdeasMenu").on("click",function () {
     $(".ideasDashBoardMenu").toggle();
+});
+
+$(".toggleShortTermPlannerDashboardMenu").on("click",function () {
+    $(".shortTermPlannerDashboardMenu").toggle();
 });
 
 $(".filterChatsAssistanceDashBoard").on("click",function () {

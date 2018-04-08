@@ -97,7 +97,7 @@
                     <div class="card-block">
                         <div class="row">
                             <div class="col-sm-12">
-                                <p class="m-l-10 m-t-10 f-18 m-b-10">Tasks list <small class="f-12">(total all boards)</small></p>
+                                <p class="m-l-10 m-t-10 f-18 m-b-10">Mmeber tasks list <small class="f-12">(total all boards)</small></p>
                             </div>
                         </div>
                         <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
@@ -262,6 +262,98 @@
                                         </div>
                                         <input type="hidden" class="totalIdeasRejected24Hours" value="<?= $totalIdeasRejectedLast24Hours?>">
                                         <p>Ideas rejected</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex js-center m-t-20">
+                <div class="card card-lg">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-sm-12 d-flex">
+                                <p class="m-l-10 m-t-10 f-18 m-b-10 m-r-10">Short term planner taks</p>
+                                <button class="btn btn-inno btn-sm m-t-10 m-b-10 toggleShortTermPlannerDashboardMenu"><i class="zmdi zmdi-settings"></i> Filter</button>
+                            </div>
+                        </div>
+                        <div class="row shortTermPlannerDashboardMenu hidden">
+                            <div class="col-sm-12">
+                                <div class="d-flex fd-column col-sm-12">
+                                    <select name="short_term_tasks_board_filter" class="short_term_tasks_board_filter input col-sm-3 m-b-10">
+                                        <option selected disabled> Choose your board</option>
+                                        <? foreach($short_term_planner_boards as $short_term_planner_board) { ?>
+                                            <option value="<?= $short_term_planner_board->id?>"><?= $short_term_planner_board->title?></option>
+                                        <? } ?>
+                                        <option value=""></option>
+                                    </select>
+                                    <select name="short_term_tasks_range_filter" class="short_term_tasks_range_filter input col-sm-3 m-b-10">
+                                        <option selected disabled>Choose time range</option>
+                                        <option value="Total">Total</option>
+                                        <option value="Week">Week</option>
+                                        <option value="Month">Month</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
+                        <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
+                        <div class="hr p-b-20"></div>
+                        <div class="row text-center" >
+                            <div class="col-sm-12 d-flex">
+                                <div class="col-sm-12 d-flex">
+                                    <div class="col-sm-3">
+                                        <div class="d-flex fd-row js-center">
+                                            <p  class="f-25 totalTasksCreated"></p>
+                                            <div class="d-flex fd-column m-l-10">
+                                                <i class="fas fa-caret-up f-23 c-green totalTasksCreatedValUp hidden"></i>
+                                                <i class="fas fa-caret-down f-23 c-red totalTasksCreatedValDown hidden"></i>
+                                                <i class="zmdi zmdi-window-minimize totalTasksCreatedValNeutral f-23 hidden "></i>
+                                                <span class="f-13 totalTasksCreatedNewValue"></span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" class="totalTasksCreated24Hours" value="<?= $totalTasksCreatedLast24Hours?>">
+                                        <p>Total tasks created</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="d-flex fd-row js-center">
+                                            <p class="f-25 totalTasksCompleted"></p>
+                                            <div class="d-flex fd-column m-l-10">
+                                                <i class="fas fa-caret-up f-23 c-green totalTasksCompletedOnHoldValUp hidden"></i>
+                                                <i class="fas fa-caret-down f-23 c-red totalTasksCompletedValDown hidden"></i>
+                                                <i class="zmdi zmdi-window-minimize totalTasksCompletedValNeutral f-20 hidden "></i>
+                                                <span class="f-13 totalTasksCompletedNewValue"></span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" class="totalTasksCompleted24Hours" value="<?= $totalTasksCompletedLast24Hours?>">
+                                        <p>Total tasks completed</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="d-flex fd-row js-center">
+                                            <p class="f-25 totalTasksToDo"></p>
+                                            <div class="d-flex fd-column m-l-10">
+                                                <i class="fas fa-caret-up f-23 c-green totalTasksToDoPassedValUp hidden"></i>
+                                                <i class="fas fa-caret-down f-23 c-red totalTasksToDoValDown hidden"></i>
+                                                <i class="zmdi zmdi-window-minimize totalTasksToDoValNeutral f-20 hidden "></i>
+                                                <span class="f-13 totalTasksToDoNewValue"></span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" class="totalTasksToDo24Hours" value="<?= $totalTasksToDoLast24Hours?>">
+                                        <p>Total tasks to do</p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="d-flex fd-row js-center">
+                                            <p class="f-25 totalTasksExpiredDueDate"></p>
+                                            <div class="d-flex fd-column m-l-10">
+                                                <i class="fas fa-caret-up f-23 c-green totalTasksExpiredDueDateValUp hidden"></i>
+                                                <i class="fas fa-caret-down f-23 c-red totalTasksExpiredDueDateValDown hidden"></i>
+                                                <i class="zmdi zmdi-window-minimize totalTasksExpiredDueDateValNeutral f-20 hidden "></i>
+                                                <span class="f-13 totalTasksExpiredDueDatedNewValue"></span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" class="totalTasksExpiredDueDate24Hours" value="<?= $totalTasksExpiredDueDateLast24Hours?>">
+                                        <p>Total tasks expired due date</p>
                                     </div>
                                 </div>
                             </div>

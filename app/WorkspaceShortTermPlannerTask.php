@@ -12,6 +12,10 @@ class WorkspaceShortTermPlannerTask extends Model
         return $this->hasOne("\App\User", "id","creator_user_id");
     }
 
+    public function board(){
+        return $this->hasOne("\App\WorkspaceShortTermPlannerBoard", "id","short_term_planner_board_id");
+    }
+
     public function assignedUser(){
         return $this->hasOne("\App\User", "id","assigned_to");
     }
