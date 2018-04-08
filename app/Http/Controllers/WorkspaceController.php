@@ -772,6 +772,7 @@ class WorkspaceController extends Controller
         $user_id = $request->input("user_id");
         $team_id = $request->input("team_id");
 
+
         $totalTasksCreatedToday = 0;
         $totalTasksCompletedToday = 0;
         $totalTasksToDoToday = 0;
@@ -779,39 +780,74 @@ class WorkspaceController extends Controller
 
         $last24Hours = date("Y-m-d", strtotime("-1 day"));
 
-        $short_term_planner_boards_array = [];
-        $short_term_planner_boards = WorkspaceShortTermPlannerBoard::select("*")->where("team_id", $team_id)->get();
-        foreach($short_term_planner_boards as $short_term_planner_board){
-            array_push($short_term_planner_boards_array, $short_term_planner_board->id);
-        }
 
-        $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
-        foreach($shortTermPlannerTasks as $shortTermPlannerTask){
-            if(strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)){
-                $totalTasksCreatedToday++;
+        if($request->input("board_id") != 0) {
+            $board_id = $request->input("board_id");
+            $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("short_term_planner_board_id", $board_id)->get();
+            foreach ($shortTermPlannerTasks as $shortTermPlannerTask) {
+                if (strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)) {
+                    $totalTasksCreatedToday++;
+                }
             }
-        }
 
-        $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("completed", 1)->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
-        foreach($shortTermPlannerTasks as $shortTermPlannerTask){
-            if(strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)){
-                $totalTasksCompletedToday++;
+            $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("completed", 1)->where("short_term_planner_board_id", $board_id)->get();
+            foreach ($shortTermPlannerTasks as $shortTermPlannerTask) {
+                if (strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)) {
+                    $totalTasksCompletedToday++;
+                }
             }
-        }
 
-        $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("completed", 0)->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
-        foreach($shortTermPlannerTasks as $shortTermPlannerTask){
-            if(strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)){
-                $totalTasksToDoToday++;
+            $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("completed", 0)->where("short_term_planner_board_id", $board_id)->get();
+            foreach ($shortTermPlannerTasks as $shortTermPlannerTask) {
+                if (strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)) {
+                    $totalTasksToDoToday++;
+                }
             }
-        }
 
-        $today = date("Y-m-d");
-        $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("due_date", "!=", null)->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
-        foreach($short_term_planner_tasks as $short_term_planner_task){
-            if(strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)) {
-                if (strtotime($today) > strtotime(date("Y-m-d", strtotime($short_term_planner_task->due_date)))) {
-                    $totalTasksExpiredDueDateToday++;
+            $today = date("Y-m-d");
+            $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("due_date", "!=", null)->where("short_term_planner_board_id", $board_id)->get();
+            foreach ($short_term_planner_tasks as $short_term_planner_task) {
+                if (strtotime(date("Y-m-d", strtotime($short_term_planner_task->created_at))) >= strtotime($last24Hours)) {
+                    if (strtotime($today) > strtotime(date("Y-m-d", strtotime($short_term_planner_task->due_date)))) {
+                        $totalTasksExpiredDueDateToday++;
+                    }
+                }
+            }
+        } else {
+            $short_term_planner_boards_array = [];
+            $short_term_planner_boards = WorkspaceShortTermPlannerBoard::select("*")->where("team_id", $team_id)->get();
+            foreach ($short_term_planner_boards as $short_term_planner_board) {
+                array_push($short_term_planner_boards_array, $short_term_planner_board->id);
+            }
+
+            $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
+            foreach ($shortTermPlannerTasks as $shortTermPlannerTask) {
+                if (strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)) {
+                    $totalTasksCreatedToday++;
+                }
+            }
+
+            $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("completed", 1)->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
+            foreach ($shortTermPlannerTasks as $shortTermPlannerTask) {
+                if (strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)) {
+                    $totalTasksCompletedToday++;
+                }
+            }
+
+            $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("completed", 0)->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
+            foreach ($shortTermPlannerTasks as $shortTermPlannerTask) {
+                if (strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)) {
+                    $totalTasksToDoToday++;
+                }
+            }
+
+            $today = date("Y-m-d");
+            $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("due_date", "!=", null)->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
+            foreach ($short_term_planner_tasks as $short_term_planner_task) {
+                if (strtotime(date("Y-m-d", strtotime($short_term_planner_task->created_at))) >= strtotime($last24Hours)) {
+                    if (strtotime($today) > strtotime(date("Y-m-d", strtotime($short_term_planner_task->due_date)))) {
+                        $totalTasksExpiredDueDateToday++;
+                    }
                 }
             }
         }
@@ -823,6 +859,133 @@ class WorkspaceController extends Controller
             "totalTasksExpiredDueDate" => $totalTasksExpiredDueDateToday
         ];
         return json_encode($data);
+    }
+
+    public function filterShortTermPlannerDashboardDataAction(Request $request){
+        $user_id = $request->input("user_id");
+        $team_id = $request->input("team_id");
+        $board_id = $request->input("board_id");
+        $range = $request->input("range");
+        $today = date("Y-m-d");
+
+        $totalTasksExpiredDueDate = 0;
+
+        if($board_id != "0" && $range != "0" || $range != "0"){
+            if($board_id != "0"  && $range != "0") {
+                $totalTasksCreated = WorkspaceShortTermPlannerTask::select("*")->where("short_term_planner_board_id", $board_id)->get();
+                $totalTasksCompleted = WorkspaceShortTermPlannerTask::select("*")->where("short_term_planner_board_id", $board_id)->where("completed", 1)->get();
+                $totalTasksToDo = WorkspaceShortTermPlannerTask::select("*")->where("short_term_planner_board_id", $board_id)->where("completed", 0)->get();
+                $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("due_date", "!=", null)->where("short_term_planner_board_id", $board_id)->get();
+            } else {
+                $short_term_planner_boards_array = [];
+                $short_term_planner_boards = WorkspaceShortTermPlannerBoard::select("*")->where("team_id", $team_id)->get();
+                foreach($short_term_planner_boards as $short_term_planner_board){
+                    array_push($short_term_planner_boards_array, $short_term_planner_board->id);
+                }
+
+                $totalTasksCreated = WorkspaceShortTermPlannerTask::select("*")->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
+                $totalTasksCompleted = WorkspaceShortTermPlannerTask::select("*")->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->where("completed", 1)->get();
+                $totalTasksToDo = WorkspaceShortTermPlannerTask::select("*")->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->where("completed", 0)->get();
+                $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("due_date", "!=", null)->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
+            }
+            $totalTasksExpiredDueDate = [];
+            if($range == "Total"){
+                foreach($short_term_planner_tasks as $short_term_planner_task){
+                    if (strtotime($today) > strtotime(date("Y-m-d", strtotime($short_term_planner_task->due_date)))) {
+                        array_push($totalTasksExpiredDueDate, $short_term_planner_task);
+                    }
+                }
+                $data = [
+                    "totalTasksCreated" => count($totalTasksCreated),
+                    "totalTasksCompleted" => count($totalTasksCompleted),
+                    "totalTasksToDo" => count($totalTasksToDo),
+                    "totalTasksExpiredDueDate" => count($totalTasksExpiredDueDate)
+                ];
+                return json_encode($data);
+            }
+            if($range == "Default"){
+                return 1;
+            }
+            if($range == "Week"){
+                 $timeSpan = date("Y-m-d", strtotime("-1 week"));
+                 $timeSpanLast = date("Y-m-d", strtotime($timeSpan . "-1 week"));
+            }
+            if($range == "Month"){
+                $timeSpan = date("Y-m-d", strtotime("-1 month"));
+                $timeSpanLast(date("Y-m-d", strtotime($timeSpan . " -1 month")));
+            }
+            $totalTasksCreatedLastTimespan = 0;
+            $totalTasksCompletedLastTimespan = 0;
+            $totalTasksToDoLastTimespan = 0;
+            $totalTasksExpiredDueDateLastTimespan = 0;
+
+            $totalTasksCreatedTimespanFilter = 0;
+            $totalTasksCompletedTimespanFilter = 0;
+            $totalTasksToDoTimespanFilter = 0;
+            $totalTasksExpiredDueDateTimespanFilter = 0;
+
+            foreach ($totalTasksCreated as $shortTermPlannerTask) {
+                if(strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) <= strtotime($timeSpan)) {
+                    $totalTasksCreatedLastTimespan++;
+                }
+            }
+
+            foreach ($totalTasksCompleted as $shortTermPlannerTask) {
+                if(strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) <= strtotime($timeSpan)) {
+                    $totalTasksCompletedLastTimespan++;
+                }
+            }
+
+            foreach ($totalTasksToDo as $shortTermPlannerTask) {
+                if(strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) <= strtotime($timeSpan)) {
+                    $totalTasksToDoLastTimespan++;
+                }
+            }
+
+            foreach ($totalTasksExpiredDueDate as $shortTermPlannerTask) {
+                if(strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) <= strtotime($timeSpan)) {
+                    $totalTasksExpiredDueDateLastTimespan++;
+                }
+            }
+            // This timespan
+            foreach ($totalTasksCreated as $shortTermPlannerTask) {
+                if (strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($timeSpan)) {
+                    $totalTasksCreatedTimespanFilter++;
+                }
+            }
+
+            foreach ($totalTasksCompleted as $shortTermPlannerTask) {
+                if (strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($timeSpan)) {
+                    $totalTasksCompletedTimespanFilter++;
+                }
+            }
+
+            foreach ($totalTasksToDo as $shortTermPlannerTask) {
+                if (strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($timeSpan)) {
+                    $totalTasksToDoTimespanFilter++;
+                }
+            }
+
+            foreach ($totalTasksExpiredDueDate as $shortTermPlannerTask) {
+                if (strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($timeSpan)) {
+                    $totalTasksExpiredDueDateTimespanFilter++;
+                }
+            }
+            $data = [
+                "totalTasksCreatedThisTimespan" => $totalTasksCreatedTimespanFilter,
+                "totalTasksCompletedThisTimespan" => $totalTasksCompletedTimespanFilter,
+                "totalTasksToDoThisTimespan" => $totalTasksToDoTimespanFilter,
+                "totalTasksExpiredDueDateThisTimespan" => $totalTasksExpiredDueDateTimespanFilter,
+
+                "tasksCreatedAddedValue" => $totalTasksCreatedTimespanFilter - $totalTasksCreatedLastTimespan,
+                "tasksCompletedAddedValue" => $totalTasksCompletedTimespanFilter - $totalTasksCompletedLastTimespan,
+                "tasksToDoAddedValue" => $totalTasksToDoTimespanFilter - $totalTasksToDoLastTimespan,
+                "tasksExpiredDueDateAddedValue" => $totalTasksExpiredDueDateTimespanFilter - $totalTasksExpiredDueDateLastTimespan
+            ];
+            return json_encode($data);
+        } else if($board_id != "0"){
+            return 1;
+        }
     }
 
     public function changeMostAssistanceTicketsCategoryAction(Request $request){
@@ -916,10 +1079,10 @@ class WorkspaceController extends Controller
             }
             if ($filter == "Month") {
                 $timeSpan = date("Y-m-d", strtotime("-1 month"));
-                $timeSpanLast = date("Y-m-d H:i:s", strtotime($timeSpan . "-1 month"));
+                $timeSpanLast = date("Y-m-d", strtotime($timeSpan . "-1 month"));
             } else if ($filter == "Week") {
                 $timeSpan = date("Y-m-d", strtotime("-1 week"));
-                $timeSpanLast = date("Y-m-d H:i:s", strtotime($timeSpan . "-1 week"));
+                $timeSpanLast = date("Y-m-d", strtotime($timeSpan . "-1 week"));
             }
             $totalCompletedLastTimespan = 0;
             $totalUncompletedLastTimespan = 0;

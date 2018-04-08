@@ -274,22 +274,21 @@
                     <div class="card-block">
                         <div class="row">
                             <div class="col-sm-12 d-flex">
-                                <p class="m-l-10 m-t-10 f-18 m-b-10 m-r-10">Short term planner taks</p>
+                                <p class="m-l-10 m-t-10 f-18 m-b-10 m-r-10">Short term planner tasks</p>
                                 <button class="btn btn-inno btn-sm m-t-10 m-b-10 toggleShortTermPlannerDashboardMenu"><i class="zmdi zmdi-settings"></i> Filter</button>
                             </div>
                         </div>
                         <div class="row shortTermPlannerDashboardMenu hidden">
                             <div class="col-sm-12">
                                 <div class="d-flex fd-column col-sm-12">
-                                    <select name="short_term_tasks_board_filter" class="short_term_tasks_board_filter input col-sm-3 m-b-10">
-                                        <option selected disabled> Choose your board</option>
+                                    <select name="short_term_tasks_board_filter" class="short_term_tasks_board_filter input col-sm-4 m-b-10">
+                                        <option selected disabled value="0"> Choose your board</option>
                                         <? foreach($short_term_planner_boards as $short_term_planner_board) { ?>
                                             <option value="<?= $short_term_planner_board->id?>"><?= $short_term_planner_board->title?></option>
                                         <? } ?>
-                                        <option value=""></option>
                                     </select>
-                                    <select name="short_term_tasks_range_filter" class="short_term_tasks_range_filter input col-sm-3 m-b-10">
-                                        <option selected disabled>Choose time range</option>
+                                    <select name="short_term_tasks_range_filter" class="short_term_tasks_range_filter input col-sm-4 m-b-10">
+                                        <option selected disabled value="0">Choose time range</option>
                                         <option value="Total">Total</option>
                                         <option value="Week">Week</option>
                                         <option value="Month">Month</option>
@@ -320,7 +319,7 @@
                                         <div class="d-flex fd-row js-center">
                                             <p class="f-25 totalTasksCompleted"></p>
                                             <div class="d-flex fd-column m-l-10">
-                                                <i class="fas fa-caret-up f-23 c-green totalTasksCompletedOnHoldValUp hidden"></i>
+                                                <i class="fas fa-caret-up f-23 c-green totalTasksCompletedValUp hidden"></i>
                                                 <i class="fas fa-caret-down f-23 c-red totalTasksCompletedValDown hidden"></i>
                                                 <i class="zmdi zmdi-window-minimize totalTasksCompletedValNeutral f-20 hidden "></i>
                                                 <span class="f-13 totalTasksCompletedNewValue"></span>
@@ -333,7 +332,7 @@
                                         <div class="d-flex fd-row js-center">
                                             <p class="f-25 totalTasksToDo"></p>
                                             <div class="d-flex fd-column m-l-10">
-                                                <i class="fas fa-caret-up f-23 c-green totalTasksToDoPassedValUp hidden"></i>
+                                                <i class="fas fa-caret-up f-23 c-green totalTasksToDoValUp hidden"></i>
                                                 <i class="fas fa-caret-down f-23 c-red totalTasksToDoValDown hidden"></i>
                                                 <i class="zmdi zmdi-window-minimize totalTasksToDoValNeutral f-20 hidden "></i>
                                                 <span class="f-13 totalTasksToDoNewValue"></span>
@@ -349,7 +348,7 @@
                                                 <i class="fas fa-caret-up f-23 c-green totalTasksExpiredDueDateValUp hidden"></i>
                                                 <i class="fas fa-caret-down f-23 c-red totalTasksExpiredDueDateValDown hidden"></i>
                                                 <i class="zmdi zmdi-window-minimize totalTasksExpiredDueDateValNeutral f-20 hidden "></i>
-                                                <span class="f-13 totalTasksExpiredDueDatedNewValue"></span>
+                                                <span class="f-13 totalTasksExpiredDueDateNewValue"></span>
                                             </div>
                                         </div>
                                         <input type="hidden" class="totalTasksExpiredDueDate24Hours" value="<?= $totalTasksExpiredDueDateLast24Hours?>">

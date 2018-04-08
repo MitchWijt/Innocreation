@@ -238,3 +238,5 @@ Route::post("/workspace/getMemberTaskListData", "WorkspaceController@getMemberTa
 
 Route::post("/workspace/getDashboardFilteredData", "WorkspaceController@getDashboardFilteredDataAction");
 
+Route::post("/workspace/filterShortTermPlannerDashboardData", "WorkspaceController@filterShortTermPlannerDashboardDataAction");
+

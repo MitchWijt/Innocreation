@@ -389,11 +389,15 @@ function getDashboardData() {
     });
 }
 
-// ==============================
 
-function getDashboardDataShortTermPlannerTasks() {
+function getDashboardDataShortTermPlannerTasks(board_id) {
     var team_id = $(".team_id").val();
     var user_id = $(".user_id").val();
+    if(board_id){
+        var short_term_board_id = board_id;
+    } else {
+        var short_term_board_id = 0;
+    }
 
     var totalTasksCreatedNow = $(".totalTasksCreated24Hours").val();
     var newValueTotalTasksCreated = 0;
@@ -417,7 +421,7 @@ function getDashboardDataShortTermPlannerTasks() {
         },
         url: "/workspace/getRealtimeDataDashboardShortTermPlannerTasks",
         dataType: "JSON",
-        data: {'user_id': user_id, 'team_id': team_id},
+        data: {'user_id': user_id, 'team_id': team_id, 'board_id' : short_term_board_id},
         success: function (data) {
             // short term planner tasks dashboard
             var valueTasksCreated = 0;
@@ -477,7 +481,7 @@ function getDashboardDataShortTermPlannerTasks() {
 
             if (newValueTotalTasksCompleted != 0) {
                 $(".totalTasksCompleted").text(data["totalTasksCompleted"]);
-                if(newValueTotalTasksCreated >= 0){
+                if(newValueTotalTasksCompleted >= 0){
                     $(".totalTasksCompletedNewValue").text("+ " + newValueTotalTasksCompleted);
                 } else {
                     $(".totalTasksCompletedNewValue").text(newValueTotalTasksCompleted);
@@ -487,9 +491,217 @@ function getDashboardDataShortTermPlannerTasks() {
                 $(".totalTasksCompleted").text(0);
                 $(".totalTasksCompletedNewValue").text("- ");
             }
+
+            var valueTasksToDo = 0;
+            if (data['totalTasksToDo'] > parseInt(totalTasksToDoNow)) {
+                newValueTotalTasksToDo = parseInt(totalTasksToDoNow);
+                newValueTotalTasksToDo =  data['totalTasksToDo'] - valueTasksToDo;
+                $(".totalTasksToDoValUp").removeClass("hidden");
+                $(".totalTasksToDoValNeutral").addClass("hidden");
+                $(".totalTasksToDoValDown").addClass("hidden");
+            } else if (data['totalTasksToDo'] < parseInt(totalTasksToDoNow)) {
+                valueTasksToDo = parseInt(totalTasksToDoNow);
+                newValueTotalTasksToDo = (data['totalTasksToDo'] - valueTasksToDo);
+                $(".totalTasksToDoValUp").addClass("hidden");
+                $(".totalTasksToDoValNeutral").addClass("hidden");
+                $(".totalTasksToDoValDown").removeClass("hidden");
+            } else {
+                $(".totalTasksToDoValUp").addClass("hidden");
+                $(".totalTasksToDoValDown").addClass("hidden");
+                $(".totalTasksToDoValNeutral").removeClass("hidden");
+                $(".totalTasksToDo").text(data["totalTasksToDo"]);
+                $(".totalTasksToDoNewValue").text("- ");
+            }
+
+            if (newValueTotalTasksToDo != 0) {
+                $(".totalTasksToDo").text(data["totalTasksToDo"]);
+                if(newValueTotalTasksToDo >= 0){
+                    $(".totalTasksToDoNewValue").text("+ " + newValueTotalTasksToDo);
+                } else {
+                    $(".totalTasksToDoNewValue").text(newValueTotalTasksToDo);
+                }
+            }
+            if (data['totalTasksToDo'] == 0 && totalTasksToDoNow == 0) {
+                $(".totalTasksToDo").text(0);
+                $(".totalTasksToDoNewValue").text("- ");
+            }
+
+            var valueTasksExpiredDueDate = 0;
+            if (data['totalTasksExpiredDueDate'] > parseInt(totalTasksExpiredDueDateNow)) {
+                newValueTotalTasksExpiredDueDate = parseInt(totalTasksExpiredDueDateNow);
+                newValueTotalTasksExpiredDueDate =  data['totalTasksExpiredDueDate'] - valueTasksExpiredDueDate;
+                $(".totalTasksExpiredDueDateValUp").removeClass("hidden");
+                $(".totalTasksExpiredDueDateValNeutral").addClass("hidden");
+                $(".totalTasksExpiredDueDateValDown").addClass("hidden");
+            } else if (data['totalTasksExpiredDueDate'] < parseInt(totalTasksExpiredDueDateNow)) {
+                valueTasksExpiredDueDate = parseInt(totalTasksToDoNow);
+                newValueTotalTasksExpiredDueDate = (data['totalTasksExpiredDueDate'] - valueTasksExpiredDueDate);
+                $(".totalTasksExpiredDueDateValUp").addClass("hidden");
+                $(".totalTasksExpiredDueDateValNeutral").addClass("hidden");
+                $(".totalTasksExpiredDueDateValDown").removeClass("hidden");
+            } else {
+                $(".totalTasksExpiredDueDateValUp").addClass("hidden");
+                $(".totalTasksExpiredDueDateValDown").addClass("hidden");
+                $(".totalTasksExpiredDueDateValNeutral").removeClass("hidden");
+                $(".totalTasksExpiredDueDate").text(data["totalTasksExpiredDueDate"]);
+                $(".totalTasksExpiredDueDateNewValue").text("- ");
+            }
+
+            if (newValueTotalTasksExpiredDueDate != 0) {
+                $(".totalTasksExpiredDueDate").text(data["totalTasksExpiredDueDate"]);
+                if(newValueTotalTasksExpiredDueDate >= 0){
+                    $(".totalTasksExpiredDueDateNewValue").text("+ " + newValueTotalTasksExpiredDueDate);
+                } else {
+                    $(".totalTasksExpiredDueDateNewValue").text(newValueTotalTasksExpiredDueDate);
+                }
+            }
+            if (data['totalTasksExpiredDueDate'] == 0 && totalTasksExpiredDueDateNow == 0) {
+                $(".totalTasksExpiredDueDate").text(0);
+                $(".totalTasksExpiredDueDateNewValue").text("- ");
+            }
         }
     });
 }
+
+$(".short_term_tasks_board_filter , .short_term_tasks_range_filter").on("change",function () {
+    var team_id = $(".team_id").val();
+    var user_id = $(".user_id").val();
+    var board_id =  $(this).parents(".shortTermPlannerDashboardMenu").find(".short_term_tasks_board_filter option:selected").val();
+    var range = $(this).parents(".shortTermPlannerDashboardMenu").find(".short_term_tasks_range_filter option:selected").val();
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/workspace/filterShortTermPlannerDashboardData",
+        dataType: "JSON",
+        data: {'user_id': user_id, 'team_id': team_id, 'board_id': board_id, 'range': range},
+        success: function (data) {
+            if(board_id != 0 && range != 0 || range != 0) {
+                if (range == "Total") {
+                    $(".totalTasksCreated").text(data['totalTasksCreated']);
+                    $(".totalTasksCompleted").text(data['totalTasksCompleted']);
+                    $(".totalTasksToDo").text(data['totalTasksToDo']);
+                    $(".totalTasksExpiredDueDate").text(data['totalTasksExpiredDueDate']);
+
+                    $(".totalTasksCreatedValUp").addClass("hidden");
+                    $(".totalTasksCreatedValDown").addClass("hidden");
+                    $(".totalTasksCreatedNewValue").text("");
+                    $(".totalTasksCreatedValNeutral").addClass("hidden");
+
+                    $(".totalTasksCompletedValUp").addClass("hidden");
+                    $(".totalTasksCompletedValDown").addClass("hidden");
+                    $(".totalTasksCompletedValNeutral").addClass("hidden");
+                    $(".totalTasksCompletedNewValue").text("");
+
+                    $(".totalTasksToDoValUp").addClass("hidden");
+                    $(".totalTasksToDoValDown").addClass("hidden");
+                    $(".totalTasksToDoValNeutral").addClass("hidden");
+                    $(".totalTasksToDoNewValue").text("");
+
+                    $(".totalTasksExpiredDueDateValUp").addClass("hidden");
+                    $(".totalTasksExpiredDueDateValDown").addClass("hidden");
+                    $(".totalTasksExpiredDueDateValNeutral").addClass("hidden");
+                    $(".totalTasksExpiredDueDateNewValue").text("");
+                }
+                if (range == "Default") {
+                    getDashboardDataShortTermPlannerTasks();
+                }
+                if (range == "Month" || range == "Week") {
+                    $(".totalTasksCreated").text(data["totalTasksCreatedThisTimespan"]);
+                    $(".totalTasksCreatedNewValue").text(data["tasksCreatedAddedValue"]);
+
+                    $(".totalTasksCompleted").text(data["totalTasksCompletedThisTimespan"]);
+                    $(".totalTasksCompletedNewValue").text(data["tasksCompletedAddedValue"]);
+
+                    $(".totalTasksToDo").text(data["totalTasksToDoThisTimespan"]);
+                    $(".totalTasksToDoNewValue").text(data["tasksToDoAddedValue"]);
+
+                    $(".totalTasksExpiredDueDate").text(data["totalTasksExpiredDueDateThisTimespan"]);
+                    $(".totalTasksExpiredDueDateNewValue").text(data["tasksExpiredDueDateAddedValue"]);
+
+                    if (data["tasksCreatedAddedValue"] > 0) {
+                        $(".totalTasksCreatedValUp").removeClass("hidden");
+                        $(".totalTasksCreatedValDown").addClass("hidden");
+                        $(".totalTasksCreatedValNeutral").addClass("hidden");
+                    } else if (data["tasksCreatedAddedValue"] < 0) {
+                        $(".totalTasksCreatedValDown").removeClass("hidden");
+                        $(".totalTasksCreatedValUp").addClass("hidden");
+                        $(".totalTasksCreatedValNeutral").addClass("hidden");
+                    } else {
+                        $(".totalTasksCreatedValNeutral").removeClass("hidden");
+                        $(".totalTasksCreatedValUp").addClass("hidden");
+                        $(".totalTasksCreatedValDown").addClass("hidden");
+                    }
+
+                    if (data["tasksCompletedAddedValue"] > 0) {
+                        $(".totalTasksCompletedValUp").removeClass("hidden");
+                        $(".totalTasksCompletedValDown").addClass("hidden");
+                        $(".totalTasksCompletedValNeutral").addClass("hidden");
+                    } else if (data["tasksCompletedAddedValue"] < 0) {
+                        $(".totalTasksCompletedValDown").removeClass("hidden");
+                        $(".totalTasksCompletedValUp").addClass("hidden");
+                        $(".totalTasksCompletedValNeutral").addClass("hidden");
+                    } else {
+                        $(".totalTasksCompletedValNeutral").removeClass("hidden");
+                        $(".totalTasksCompletedValUp").addClass("hidden");
+                        $(".totalTasksCompletedValDown").addClass("hidden");
+                    }
+
+                    if (data["tasksToDoAddedValue"] > 0) {
+                        $(".totalTasksToDoValUp").removeClass("hidden");
+                        $(".totalTasksToDoValDown").addClass("hidden");
+                        $(".totalTasksToDoValNeutral").addClass("hidden");
+                    } else if (data["tasksToDoAddedValue"] < 0) {
+                        $(".totalTasksToDoValDown").removeClass("hidden");
+                        $(".totalTasksToDoValUp").addClass("hidden");
+                        $(".totalTasksToDoValNeutral").addClass("hidden");
+                    } else {
+                        $(".totalTasksToDoValNeutral").removeClass("hidden");
+                        $(".totalTasksToDoValUp").addClass("hidden");
+                        $(".totalTasksToDoValDown").addClass("hidden");
+                    }
+
+                    if (data["tasksExpiredDueDateAddedValue"] > 0) {
+                        $(".totalTasksExpiredDueDateValUp").removeClass("hidden");
+                        $(".totalTasksExpiredDueDateValDown").addClass("hidden");
+                        $(".totalTasksExpiredDueDateValNeutral").addClass("hidden");
+                    } else if (data["tasksExpiredDueDateAddedValue"] < 0) {
+                        $(".totalTasksExpiredDueDateValDown").removeClass("hidden");
+                        $(".totalTasksExpiredDueDateValUp").addClass("hidden");
+                        $(".totalTasksExpiredDueDateValNeutral").addClass("hidden");
+                    } else {
+                        $(".totalTasksExpiredDueDateValNeutral").removeClass("hidden");
+                        $(".totalTasksExpiredDueDateValUp").addClass("hidden");
+                        $(".totalTasksExpiredDueDateValDown").addClass("hidden");
+                    }
+                }
+            } else if(board_id != 0){
+                $(".totalTasksCreatedValUp").addClass("hidden");
+                $(".totalTasksCreatedValDown").addClass("hidden");
+                $(".totalTasksCreatedValNeutral").addClass("hidden");
+
+                $(".totalTasksCompletedValUp").addClass("hidden");
+                $(".totalTasksCompletedValDown").addClass("hidden");
+                $(".totalTasksCompletedValNeutral").addClass("hidden");
+
+                $(".totalTasksToDoValUp").addClass("hidden");
+                $(".totalTasksToDoValDown").addClass("hidden");
+                $(".totalTasksToDoValNeutral").addClass("hidden");
+
+                $(".totalTasksExpiredDueDateValDown").addClass("hidden");
+                $(".totalTasksExpiredDueDateValUp").addClass("hidden");
+                $(".totalTasksExpiredDueDateValNeutral").addClass("hidden");
+                getDashboardDataShortTermPlannerTasks(board_id);
+            }
+        }
+    });
+});
+
 $(document).ready(function () {
    $(".chatsDashboardMenu").removeClass("hidden");
    $(".chatsDashboardMenu").toggle();
