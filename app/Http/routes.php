@@ -160,11 +160,15 @@ Route::post("/my-team/editMemberPermissions", "TeamController@editMemberPermissi
 
 Route::get("/my-team/workspace", "WorkspaceController@index");
 
+//Ideas
+
 Route::get("/my-team/workspace/ideas", "WorkspaceController@workplaceIdeasAction");
 
 Route::post("/workspace/changeIdeaStatus", "WorkspaceController@changeIdeaStatusAction");
 
 Route::post("/workspace/addNewIdea", "WorkspaceController@addNewIdeaAction");
+
+//Bucketlist
 
 Route::get("/my-team/workspace/bucketlist", "WorkspaceController@workplaceBucketlistAction");
 
@@ -181,6 +185,8 @@ Route::post("/workspace/renameBucketlistBoard", "WorkspaceController@renameBucke
 Route::post("/workspace/changePlaceBucketlistGoal", "WorkspaceController@changePlaceBucketlistGoalAction");
 
 Route::post("/workspace/deleteSingleBucketlistGoal", "WorkspaceController@deleteSingleBucketlistGoalAction");
+
+// Short term planner task planner
 
 Route::get("/my-team/workspace/short-term-planner-options", "WorkspaceController@workspaceShortTermPlannerOptionPicker");
 
@@ -210,11 +216,15 @@ Route::post("/workspace/completeShortTermPlannerTask", "WorkspaceController@comp
 
 Route::post("/workspace/setPriorityShortTermPlannerTask", "WorkspaceController@setPriorityShortTermPlannerTaskAction");
 
+// Personal task board
+
 Route::get("/my-team/workspace/my-tasks", "WorkspaceController@workspacePersonalBoard");
 
 Route::post("/workspace/completeTaskPersonalBoard", "WorkspaceController@completeTaskPersonalBoardAction");
 
 Route::post("/workspace/uncompleteTaskPersonalBoard", "WorkspaceController@uncompleteTaskPersonalBoardAction");
+
+// Assistance tickets
 
 Route::post("/workspace/askForAssistance", "WorkspaceController@askForAssistanceAction");
 
@@ -225,6 +235,8 @@ Route::post("/workspace/sendAssistanceTicketMessage", "WorkspaceController@sendA
 Route::post("/workspace/completeAssistanceTicket", "WorkspaceController@completeAssistanceTicketAction");
 
 Route::post("/workspace/deleteAssistanceTicket", "WorkspaceController@deleteAssistanceTicketAction");
+
+// Dashboard
 
 Route::get("/my-team/workspace/dashboard", "WorkspaceController@workspaceDashboard");
 
@@ -239,4 +251,10 @@ Route::post("/workspace/getMemberTaskListData", "WorkspaceController@getMemberTa
 Route::post("/workspace/getDashboardFilteredData", "WorkspaceController@getDashboardFilteredDataAction");
 
 Route::post("/workspace/filterShortTermPlannerDashboardData", "WorkspaceController@filterShortTermPlannerDashboardDataAction");
+
+// Meetings
+
+Route::get("/my-team/meetings", "WorkspaceController@workspaceMeetings");
+
+
 

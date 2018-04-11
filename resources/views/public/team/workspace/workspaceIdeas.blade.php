@@ -33,7 +33,7 @@
                             <div class="row workplaceIdea">
                                 <div class="col-sm-12 d-flex">
                                     <div class="col-sm-4">
-                                        <p class="c-pointer ideaToggle" data-idea-id="<?= $workplaceIdea->id?>"><?= $workplaceIdea->title?></p>
+                                        <p class="c-pointer ideaToggle regular-link c-gray" data-idea-id="<?= $workplaceIdea->id?>"><?= $workplaceIdea->title?></p>
                                     </div>
                                     <div class="col-sm-4">
                                         <img class="circle circleSmall m-0" src="<?= $workplaceIdea->users->First()->getProfilePicture()?>" alt="<?= $workplaceIdea->users->First()->firstname?>">

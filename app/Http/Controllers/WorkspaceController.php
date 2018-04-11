@@ -1325,6 +1325,13 @@ class WorkspaceController extends Controller
         }
     }
 
+    public function workspaceMeetings(){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+
+        return view("/public/team/workspace/workspaceMeetings", compact("user", "team"));
+    }
+
 
 
 }

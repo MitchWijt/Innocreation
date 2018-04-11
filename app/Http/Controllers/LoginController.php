@@ -131,7 +131,7 @@ class LoginController extends Controller
             }
             return redirect("/account");
         } else {
-            return redirect($_SERVER["HTTP_REFERER"])->withErrors('it seems you logged in with the wrong credentials');
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors('it seems that you have logged in with the wrong credentials. Please try again');
         }
     }
 

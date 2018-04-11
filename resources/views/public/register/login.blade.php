@@ -8,7 +8,7 @@
         <div class="hr"></div>
         <? if(count($errors) > 0){ ?>
             <? foreach($errors->all() as $error){ ?>
-                <p class="c-orange"><?=$error?></p>
+                <p class="c-orange text-center"><?=$error?></p>
             <? } ?>
         <? } ?>
         <form action="/loginUser" method="POST" class="loginForm">
