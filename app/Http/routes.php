@@ -256,5 +256,7 @@ Route::post("/workspace/filterShortTermPlannerDashboardData", "WorkspaceControll
 
 Route::get("/my-team/meetings", "WorkspaceController@workspaceMeetings");
 
+Route::post("/workspace/addNewMeeting", "WorkspaceController@addNewMeetingAction");
+
 
 

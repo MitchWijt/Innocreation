@@ -15,6 +15,7 @@
     {{--CSS PLUGINS--}}
     <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
     <link rel="stylesheet" href="/css/jquery-ui-min.css">
+    <link rel="stylesheet" href="/css/jquery.timepicker.css">
     {{------------------------}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
@@ -25,6 +26,7 @@
     <script src="/js/bootstrap-tokenfield.min.js"></script>
     <script src="/js/jquery-ui.min.js"></script>
     <script defer src="/js/fontawesome-all.js"></script>
+    <script defer src="/js/jquery.timepicker.min.js"></script>
     {{------------------------------}}
     <title>Innocreation</title>
 </head>

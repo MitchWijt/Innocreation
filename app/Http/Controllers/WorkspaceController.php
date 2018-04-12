@@ -10,6 +10,8 @@ use App\UserMessage;
 use App\WorkspaceBucketlist;
 use App\WorkspaceBucketlistType;
 use App\WorkspaceIdeas;
+use App\WorkspaceMeeting;
+use App\WorkspaceMeetingAttendee;
 use App\WorkspaceShortTermPlannerBoard;
 use App\WorkspaceShortTermPlannerTask;
 use App\WorkspaceShortTermPlannerType;
@@ -485,7 +487,7 @@ class WorkspaceController extends Controller
         $assistanceTicketMessage->time_sent = $time;
         $assistanceTicketMessage->created_at = date("Y-m-d H:i:s");
         $assistanceTicketMessage->save();
-        return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Succesfully created assistance request , check your ticket <a href='/my-team/workspace/assistance-requests' class='regular-link'>here</a>");
+        return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Succesfully created assistance request!");
     }
 
     public function workspaceAssistanceTickets(Request $request){
@@ -1329,7 +1331,59 @@ class WorkspaceController extends Controller
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
 
-        return view("/public/team/workspace/workspaceMeetings", compact("user", "team"));
+        $meetings = WorkspaceMeeting::select("*")->where("team_id", $team->id)->get();
+
+        return view("/public/team/workspace/workspaceMeetings", compact("user", "team" , "meetings"));
+    }
+
+    public function addNewMeetingAction(Request $request){
+        $team_id = $request->input("team_id");
+        $attendees = $request->input("attendeesInput");
+        $objective = $request->input("meetingObjective");
+        $description = $request->input("descriptionMeeting");
+        $date = $request->input("dateMeeting");
+        $time = $request->input("timeMeeting");
+        $maxDurationMinutes = $request->input("minutes");
+        $maxDurationHours = $request->input("hours");
+        $attendeeSelect = $request->input("attendees");
+
+        $meeting = new WorkspaceMeeting();
+        $meeting->team_id = $team_id;
+        $meeting->objective = $objective;
+        $meeting->description = $description;
+        $meeting->date_meeting = date("Y-m-d H:i:s", strtotime($date));
+        $meeting->time_meeting = $time;
+        if($maxDurationHours == 0 && $maxDurationMinutes == 0) {
+            $meeting->max_duration_time = null;
+        }  else {
+
+            $timeMaxInput = date("H:i", strtotime(date("H:i", strtotime($time)) . "+$maxDurationHours hours +$maxDurationMinutes minutes"));
+            $maxDurationTime = date("g:i a", strtotime($timeMaxInput));
+
+            $meeting->max_duration_time = $maxDurationTime;
+        }
+        $meeting->created_at = date("Y-m-d H:i:s");
+        $meeting->save();
+
+        if($attendeeSelect == "All_members"){
+            $team = Team::select("*")->where("id", $team_id)->first();
+            foreach($team->getMembers() as $member){
+                $meetingAttendee = new WorkspaceMeetingAttendee();
+                $meetingAttendee->meeting_id = $meeting->id;
+                $meetingAttendee->user_id = $member->id;
+                $meetingAttendee->save();
+            }
+        } else {
+            foreach($attendees as $attendee){
+                $meetingAttendee = new WorkspaceMeetingAttendee();
+                $meetingAttendee->meeting_id = $meeting->id;
+                $meetingAttendee->user_id = $attendee;
+                $meetingAttendee->save();
+            }
+        }
+        return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Succesfully planned new meeting!");
+
+
     }
 
 

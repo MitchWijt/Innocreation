@@ -10,5 +10,11 @@ class WorkspaceMeeting extends Model
 
     public function team(){
         return $this->hasOne("\App\Team", "id","team_id");
+
+    }
+
+    public function getAttendees(){
+        $meeting_attendees = WorkspaceMeetingAttendee::select("*")->where("meeting_id", $this->id)->get();
+        return $meeting_attendees;
     }
 }
