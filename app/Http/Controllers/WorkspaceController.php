@@ -1386,6 +1386,72 @@ class WorkspaceController extends Controller
 
     }
 
+    public function editMeetingAction(Request $request){
+        $meetingId = $request->input("meeting_id");
+        $team_id = $request->input("team_id");
+        $attendees = $request->input("attendeesInput");
+        $objective = $request->input("meetingObjective");
+        $description = $request->input("descriptionMeeting");
+        $date = $request->input("dateMeeting");
+        $time = $request->input("timeMeeting");
+        $maxDurationMinutes = $request->input("minutes");
+        $maxDurationHours = $request->input("hours");
+        $attendeeSelect = $request->input("attendees");
+
+        $meeting = WorkspaceMeeting::select("*")->where("id", $meetingId)->first();
+        $meeting->objective = $objective;
+        $meeting->description = $description;
+        $meeting->date_meeting = date("Y-m-d H:i:s", strtotime($date));
+        $meeting->time_meeting = $time;
+        if($maxDurationHours == 0 && $maxDurationMinutes == 0) {
+            $meeting->max_duration_time = null;
+        }  else {
+            $timeMaxInput = date("H:i", strtotime(date("H:i", strtotime($time)) . "+$maxDurationHours hours +$maxDurationMinutes minutes"));
+            $maxDurationTime = date("g:i a", strtotime($timeMaxInput));
+
+            $meeting->max_duration_time = $maxDurationTime;
+        }
+        $meeting->updated_at = date("Y-m-d H:i:s");
+        $meeting->save();
+
+
+        if($attendees) {
+            $existingAttendees = WorkspaceMeetingAttendee::select("*")->where("meeting_id", $meetingId)->get();
+            foreach ($existingAttendees as $existingAttendee) {
+                $existingAttendee->delete();
+            }
+        }
+
+
+        if($attendeeSelect == "All_members"){
+            $team = Team::select("*")->where("id", $team_id)->first();
+            foreach($team->getMembers() as $member){
+                $meetingAttendee = new WorkspaceMeetingAttendee();
+                $meetingAttendee->meeting_id = $meeting->id;
+                $meetingAttendee->user_id = $member->id;
+                $meetingAttendee->save();
+            }
+        } else {
+            foreach($attendees as $attendee){
+                $meetingAttendee = new WorkspaceMeetingAttendee();
+                $meetingAttendee->meeting_id = $meeting->id;
+                $meetingAttendee->user_id = $attendee;
+                $meetingAttendee->save();
+            }
+        }
+        return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Succesfully saved meeting!");
+    }
+
+    public function deleteMeetingAction(Request $request){
+        $meeting_id = $request->input("meeting_id");
+        $meeting = WorkspaceMeeting::select("*")->where("id", $meeting_id)->first();
+        $meetingAttendees = WorkspaceMeetingAttendee::select("*")->where("meeting_id", $meeting_id)->get();
+        foreach($meetingAttendees as $meetingAttendee){
+            $meetingAttendee->delete();
+        }
+        $meeting->delete();
+    }
+
 
 
 }

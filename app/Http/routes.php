@@ -258,5 +258,9 @@ Route::get("/my-team/meetings", "WorkspaceController@workspaceMeetings");
 
 Route::post("/workspace/addNewMeeting", "WorkspaceController@addNewMeetingAction");
 
+Route::post("/workspace/editMeeting", "WorkspaceController@editMeetingAction");
+
+Route::post("/workspace/deleteMeeting", "WorkspaceController@deleteMeetingAction");
+
 
 
