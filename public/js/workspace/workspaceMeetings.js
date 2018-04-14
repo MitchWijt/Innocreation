@@ -75,8 +75,9 @@ $(".editMeeting").on("click",function (e) {
     var description = $(this).parents(".meeting").find(".description").text();
     var date = $(this).parents(".meeting").find(".date").val();
     var time = $(this).parents(".meeting").find(".time").val();
-    var maxHours = $(this).parents(".meeting").find(".maxHours").val();
-    var maxMinutes = $(this).parents(".meeting").find(".maxMinutes").val();
+    var maxHours = $(this).parents(".meeting").find(".maxHours").text();
+    console.log(maxHours);
+    var maxMinutes = $(this).parents(".meeting").find(".maxMinutes").text();
 
     $("#meeting_id").val(meeting_id);
     $(".modal-title").text("Edit meeting");
