@@ -25,10 +25,10 @@
                                 <p class="instructions-text f-19 m-0 p-b-10">Plan upfront for the whole team in the short term task planner</p>
                             </li>
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Create your custom plan boards with the custom task planner</p>
+                                <p class="instructions-text f-19 m-0 p-b-10">Keep track of your own taks in your personal task board</p>
                             </li>
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Keep track of your progress in the personal dashboard!</p>
+                                <p class="instructions-text f-19 m-0 p-b-10">Keep track of your team progress in the dashboard!</p>
                             </li>
                         </ul>
                     </div>
@@ -36,7 +36,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-12 text-center">
-                    <button class="btn btn-inno btn-lg">Lets go to work!</button>
+                    <a href="/my-team/workspace/short-term-planner-options" class="btn btn-inno btn-lg">Lets go to work!</a>
                 </div>
             </div>
         </div>

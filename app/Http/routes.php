@@ -155,7 +155,7 @@ Route::post("/my-team/unmuteMemberFromTeamChat", "TeamController@unmuteMemberFro
 Route::post("/my-team/editMemberPermissions", "TeamController@editMemberPermissionsAction");
 
 
-//==============================WORKPLACE TEAM===================================
+//==============================WORKSPACE TEAM===================================
 
 
 Route::get("/my-team/workspace", "WorkspaceController@index");
@@ -262,5 +262,10 @@ Route::post("/workspace/editMeeting", "WorkspaceController@editMeetingAction");
 
 Route::post("/workspace/deleteMeeting", "WorkspaceController@deleteMeetingAction");
 
+//==============================FORUM===================================
 
+
+Route::get("/forum", "ForumController@forums");
+
+Route::get("/forum/topic/{id}", "ForumController@forumMainTopicThreads");
 

@@ -619,3 +619,17 @@ footer{
 .hover:hover .instructions-text{
     color: #000;
 }
+/*=============================PAGINATION=======================*/
+
+.pagination li a {
+    color: #C9CCCF;
+}
+
+.pagination li{
+    margin: 0 10px 0 10px;
+    padding: 2px 5px 2px 5px;
+}
+
+.pagination .active{
+    color: #FF6100;
+}
