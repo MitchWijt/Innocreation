@@ -204,6 +204,9 @@
 .c-dark-grey{
     color: #77787a;
 }
+.c-dark-grey:hover{
+    color: #77787a;
+}
 .c-orange{
     color: #FF6100 !important;
 }

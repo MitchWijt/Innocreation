@@ -269,3 +269,11 @@ Route::get("/forum", "ForumController@forums");
 
 Route::get("/forum/topic/{id}", "ForumController@forumMainTopicThreads");
 
+Route::get("/forum/{slug}/{id}", "ForumController@forumThreadAction");
+
+Route::post("/forum/postThreadComment", "ForumController@postThreadCommentAction");
+
+Route::post("/forum/shareThreadWithTeam", "ForumController@shareThreadWithTeamAction");
+
+Route::post("/forum/addNewThread", "ForumController@addNewThreadAction");
+

@@ -15,7 +15,7 @@
                             <div class="card-block m-t-10">
                                 <div class="row">
                                     <div class="col-sm-12 p-0">
-                                        <p class="f-23 m-l-20"><?= $forumMainTopicType->title?></p>
+                                        <p class="f-18 m-l-20"><?= $forumMainTopicType->title?></p>
                                         <hr>
                                     </div>
                                 </div>
@@ -25,12 +25,12 @@
                                     <div class="col-sm-12 d-flex">
                                         <div class="col-sm-9">
                                             <a href="/forum/topic/<?= $forumMainTopic->id?>" class="c-gray">
-                                                <p class="f-25 m-b-5"><?= $forumMainTopic->title?><i class="zmdi zmdi-comment-outline m-l-10 f-17 c-orange"></i></p>
+                                                <p class="f-21 m-b-5"><?= $forumMainTopic->title?><i class="zmdi zmdi-comment-outline m-l-10 f-17 c-orange"></i></p>
                                             </a>
-                                            <p class="col-sm-10 p-0"><?= $forumMainTopic->description?></p>
+                                            <p class="col-sm-10 p-0 f-13"><?= $forumMainTopic->description?></p>
                                         </div>
                                         <div class="col-sm-3">
-                                            <p class="f-25 m-t-10 pull-right">Posts: <?= count($forumMainTopic->getAmountPosts())?></p>
+                                            <p class="f-21 m-t-10 pull-right">Posts: <?= count($forumMainTopic->getAmountPosts())?></p>
                                         </div>
                                     </div>
                                 </div>

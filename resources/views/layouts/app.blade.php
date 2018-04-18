@@ -27,6 +27,8 @@
     <script src="/js/jquery-ui.min.js"></script>
     <script defer src="/js/fontawesome-all.js"></script>
     <script defer src="/js/jquery.timepicker.min.js"></script>
+    <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=i4hrh8gzmh7fted3hqpgatcuwma8kl075x378rgkki09j852"></script>
+
     {{------------------------------}}
     <title>Innocreation</title>
 </head>

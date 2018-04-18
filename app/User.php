@@ -77,6 +77,13 @@ class User extends Authenticatable
         $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $this->id)->where("completed", 1)->get();
         return count($short_term_planner_tasks);
     }
+
+    public function getAmountThreadPosts(){
+
+        $forumThreads = ForumThread::select("*")->where("creator_user_id", $this->id)->get();
+        return $forumThreads;
+
+    }
     /**
      * The attributes that are mass assignable.
      *

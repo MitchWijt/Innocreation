@@ -13,6 +13,6 @@ class ForumThreadComment extends Model
     }
 
     public function creator(){
-        return $this->hasMany("\App\User", "id","creator_user_id");
+        return $this->hasOne("\App\User", "id","creator_user_id");
     }
 }

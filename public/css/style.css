@@ -633,3 +633,8 @@ footer{
 .pagination .active{
     color: #FF6100;
 }
+
+/*==========================TINYMCE================*/
+.mce-container-body{
+    color: black;
+}

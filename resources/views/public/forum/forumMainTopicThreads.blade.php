@@ -15,7 +15,7 @@
                             <button class="btn btn-inno">Follow this topic</button>
                         </div>
                         <div class="col-sm-6 p-0 m-t-5">
-                            <button class="btn btn-inno pull-right"> Create thread</button>
+                            <button class="btn btn-inno pull-right" data-toggle="modal" data-target=".createThreadModal"> Create thread</button>
                         </div>
                     <? } ?>
                 </div>
@@ -33,8 +33,8 @@
                                             <div class="row">
                                                 <div class="col-sm-12 m-l-15 d-flex">
                                                     <div class="col-sm-9">
-                                                    <p class="f-22 m-b-0"><?= $thread->title?></p>
-                                                    <small class="c-dark-grey">Creator: <?= $thread->creator->getName()?>, <?= date("l d F Y")?> at <?= date("g:i:a")?></small>
+                                                    <a href="/forum/<?= $thread->forumMainTopic->First()->slug?>/<?= $thread->id?>" class="c-gray"><p class="f-20 m-b-0"><?= $thread->title?></p></a>
+                                                    <small class="c-dark-grey">Creator: <?= $thread->creator->getName()?>, <?= date("l d F Y", strtotime($thread->created_at))?> at <?= date("g:i:a", strtotime($thread->created_at))?></small>
                                                     <? if($thread->creator->team_id != null) { ?>
                                                         <p><small class="c-dark-grey">Team: <?= $thread->creator->team->team_name?></small></p>
                                                     <? } ?>
@@ -57,6 +57,39 @@
             </div>
         </div>
     </div>
+    <? if($user) { ?>
+        <div class="modal fade createThreadModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" >
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header col-sm-12 d-flex js-center">
+                        <p class="m-t-10 f-18">Create new thread in <?= $forumMainTopic->title?></p>
+                    </div>
+                    <div class="modal-body ">
+                        <form action="/forum/addNewThread" method="post">
+                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                            <input type="hidden" name="user_id" value="<?= $user->id?>">
+                            <input type="hidden" name="forum_main_topic_id" value="<?= $forumMainTopic->id?>">
+                            <div class="row m-t-20">
+                                <div class="col-sm-12">
+                                    <input type="text" name="thread_title" class="input col-sm-5" placeholder="Thread title">
+                                </div>
+                            </div>
+                            <div class="row m-t-20">
+                                <div class="col-sm-12 text-center">
+                                    <textarea name="thread_message" placeholder="Thread message..." class="input col-sm-12 newThreadMessage" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 m-b-20 m-t-20">
+                                    <button type="submit" class="btn btn-inno pull-right sendMessageReceivedAssistance">Create new thread</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <? } ?>
 @endsection
 @section('pagescript')
     <script src="/js/forum/forumMainTopicThreads.js"></script>
