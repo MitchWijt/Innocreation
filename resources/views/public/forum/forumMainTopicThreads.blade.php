@@ -12,7 +12,21 @@
                 <div class="col-sm-12 d-flex">
                     <? if($user) { ?>
                         <div class="col-sm-6 p-0 m-t-5">
-                            <button class="btn btn-inno">Follow this topic</button>
+                            <? if(count($isFollowingTopic) < 1) { ?>
+                                <form action="/forum/followMainTopic" method="post">
+                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                    <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                    <input type="hidden" name="forum_main_topic_id" value="<?= $forumMainTopic->id?>">
+                                    <button class="btn btn-inno">Follow this topic</button>
+                                </form>
+                            <? } else { ?>
+                                <form action="/forum/unfollowMainTopic" method="post">
+                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                    <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                    <input type="hidden" name="forum_main_topic_id" value="<?= $forumMainTopic->id?>">
+                                    <button class="btn btn-inno">Unfollow topic</button>
+                                </form>
+                            <? } ?>
                         </div>
                         <div class="col-sm-6 p-0 m-t-5">
                             <button class="btn btn-inno pull-right" data-toggle="modal" data-target=".createThreadModal"> Create thread</button>

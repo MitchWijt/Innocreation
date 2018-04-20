@@ -8,6 +8,7 @@ use App\ForumThread;
 use App\ForumThreadComment;
 use App\Team;
 use App\User;
+use App\UserFollowingTopicsLinktable;
 use App\UserMessage;
 use Illuminate\Http\Request;
 
@@ -35,14 +36,21 @@ class ForumController extends Controller
     public function forumMainTopicThreads($id)
     {
         $forumMainTopic = ForumMainTopic::select("*")->where("id", $id)->first();
-        $threads = ForumThread::select("*")->where("main_topic_id", $forumMainTopic->id)->orderBy("created_at", "DESC")->paginate(2);
+        $threads = ForumThread::select("*")->where("main_topic_id", $forumMainTopic->id)->orderBy("created_at", "DESC")->paginate(10);
         if(Session::has("user_id")) {
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            $isFollowingTopic = UserFollowingTopicsLinktable::select("*")->where("user_id", $user->id)->where("forum_main_topic_id", $id)->get();
+            $followingTopicUser = UserFollowingTopicsLinktable::select("*")->where("forum_main_topic_id", $id)->where("user_id", $user->id)->first();
+            if($followingTopicUser){
+                $followingTopicUser->seen_at = date("Y-m-d H:i:s");
+                $followingTopicUser->save();
+            }
         } else {
             $user = false;
+            $isFollowingTopic = false;
         }
 
-        return view("/public/forum/forumMainTopicThreads", compact("forumMainTopic", "threads", "user"));
+        return view("/public/forum/forumMainTopicThreads", compact("forumMainTopic", "threads", "user", "isFollowingTopic"));
 
 
     }
@@ -61,7 +69,7 @@ class ForumController extends Controller
 //        $forumThread->views = $forumThread->views + 1;
 //        $forumThread->save();
         $allForumThreadComments = ForumThreadComment::select("*")->where("thread_id", $forumThread->id)->get();
-        $forumThreadComments = ForumThreadComment::select("*")->where("thread_id", $forumThread->id)->orderBy("created_at", "DESC")->paginate(2);
+        $forumThreadComments = ForumThreadComment::select("*")->where("thread_id", $forumThread->id)->orderBy("created_at", "DESC")->paginate(10);
         if($this->isLoggedIn()){
             $loggedIn = true;
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
@@ -146,8 +154,32 @@ class ForumController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+
+    public function followMainTopicAction(Request $request){
+        $userId = $request->input("user_id");
+        $forumMainTopicId = $request->input("forum_main_topic_id");
+
+        $followingTopicUser = new UserFollowingTopicsLinktable();
+        $followingTopicUser->user_id = $userId;
+        $followingTopicUser->forum_main_topic_id = $forumMainTopicId;
+        $followingTopicUser->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function unfollowMainTopicAction(Request $request){
+        $userId = $request->input("user_id");
+        $forumMainTopicId = $request->input("forum_main_topic_id");
+
+        $followingTopicUser = UserFollowingTopicsLinktable::select("*")->where("user_id", $userId)->where("forum_main_topic_id", $forumMainTopicId)->first();
+        $followingTopicUser->delete();
+        return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function followedTopicsUserAction()
     {
-        //
+        $userId = Session::get("user_id");
+        $user = User::select("*")->where("id", $userId)->first();
+        $followingTopicsUser = UserFollowingTopicsLinktable::select("*")->where("user_id", $userId)->get();
+        return view("/public/forum/followingTopicsUser", compact("user", "followingTopicsUser"));
     }
 }

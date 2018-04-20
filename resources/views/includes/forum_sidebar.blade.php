@@ -14,11 +14,7 @@
     <hr>
     <? if(\Illuminate\Support\Facades\Session::has("user_id")) { ?>
         <div class="sidebar-tab text-center">
-            <a class="regular-link c-gray" href="">My favorite topics</a>
-        </div>
-        <hr>
-        <div class="sidebar-tab text-center">
-            <a class="regular-link c-gray" href="">Sub topics I follow</a>
+            <a class="regular-link c-gray" href="/forum/my-following-topics">Topics I follow</a>
         </div>
         <hr>
     <? } ?>

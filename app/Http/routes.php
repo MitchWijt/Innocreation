@@ -277,3 +277,9 @@ Route::post("/forum/shareThreadWithTeam", "ForumController@shareThreadWithTeamAc
 
 Route::post("/forum/addNewThread", "ForumController@addNewThreadAction");
 
+Route::get("/forum/my-following-topics", "ForumController@followedTopicsUserAction");
+
+Route::post("/forum/followMainTopic", "ForumController@followMainTopicAction");
+
+Route::post("/forum/unfollowMainTopic", "ForumController@unfollowMainTopicAction");
+
