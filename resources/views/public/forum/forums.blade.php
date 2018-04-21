@@ -6,6 +6,7 @@
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">Forums</h1>
             </div>
+            @include("public.forum.shared._searchbarForum")
             <hr class="col-ms-12">
             <? foreach($forumMainTopicTypes as $forumMainTopicType) { ?>
             <div class="row">

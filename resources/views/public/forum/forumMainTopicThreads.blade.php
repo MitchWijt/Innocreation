@@ -7,6 +7,7 @@
                 <h1 class="sub-title-black"><?= $forumMainTopic->title?></h1>
             </div>
             <p class="text-center"><?= $forumMainTopic->description?></p>
+            @include("public.forum.shared._searchbarForum")
             <hr class="col-ms-12">
             <div class="row">
                 <div class="col-sm-12 d-flex">

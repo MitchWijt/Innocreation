@@ -5,11 +5,11 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Guidelines</a>
+        <a class="regular-link c-gray" href="/forum/guidelines">Guidelines</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Activity timeline</a>
+        <a class="regular-link c-gray" href="/forum/activity-timeline">Activity timeline</a>
     </div>
     <hr>
     <? if(\Illuminate\Support\Facades\Session::has("user_id")) { ?>

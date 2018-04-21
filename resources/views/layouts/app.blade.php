@@ -12,6 +12,7 @@
     {{--CSS--}}
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/activityTimeline.css">
     {{--CSS PLUGINS--}}
     <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
     <link rel="stylesheet" href="/css/jquery-ui-min.css">

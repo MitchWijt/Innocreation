@@ -283,3 +283,11 @@ Route::post("/forum/followMainTopic", "ForumController@followMainTopicAction");
 
 Route::post("/forum/unfollowMainTopic", "ForumController@unfollowMainTopicAction");
 
+Route::get("/forum/activity-timeline", "ForumController@forumActivityTimeline");
+
+Route::post("/forum/getDataForumActivityTimeline", "ForumController@getDataForumActivityTimelineAction");
+
+Route::post("/forum/searchInForum", "ForumController@searchInForumAction");
+
+Route::get("/forum/guidelines", "ForumController@forumGuidelinesAction");
+

@@ -20,4 +20,9 @@ class ForumThread extends Model
         $forumThreadComments = ForumThreadComment::select("*")->where("thread_id", $this->id)->get();
         return $forumThreadComments;
     }
+
+    public function getUrl(){
+        $forumMainTopicSlug = $this->forumMainTopic->First()->slug;
+        return "/forum/$forumMainTopicSlug/$this->id";
+    }
 }

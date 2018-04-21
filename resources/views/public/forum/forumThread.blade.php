@@ -11,6 +11,7 @@
                     <small class="c-dark-grey">Creator: <a href="<?= $forumThread->creator->getUrl()?>" class="c-dark-grey" target="_blank"><?= $forumThread->creator->getName()?></a>, <?= date("l d F Y", strtotime($forumThread->created_at))?> at <?= date("g:i:a", strtotime($forumThread->created_at))?>. In <?= $forumMainTopic->title?></small>
                 </div>
             </div>
+            @include("public.forum.shared._searchbarForum")
             <hr class="col-ms-12">
             @if(session('success'))
                 <div class="alert alert-success m-b-20 p-b-10">
@@ -60,11 +61,11 @@
                                             <div class="col-sm-12 m-t-10">
                                                 <p class="col-sm-12"><?= $forumThread->message?></p>
                                                 <?
-                                                $today = new DateTime(date("g:i a"));
-                                                $postedTime = new DateTime(date("g:i a",strtotime($forumThread->created_at)));
+                                                $today = new DateTime(date("Y-m-d g:i a"));
+                                                $postedTime = new DateTime(date("Y-m-d g:i a",strtotime($forumThread->created_at)));
                                                 $interval = $today->diff($postedTime);
                                                 ?>
-                                                <small class="m-l-10 c-dark-grey pull-right m-r-20 m-b-10">Posted <?= $interval->format('%h hours');?> ago</small>
+                                                <small class="m-l-10 c-dark-grey pull-right m-r-20 m-b-10">Posted <?= $interval->format("%d days, " . '%h hours, ' . "%i minutes");?> ago</small>
                                             </div>
                                         </div>
                                     </div>

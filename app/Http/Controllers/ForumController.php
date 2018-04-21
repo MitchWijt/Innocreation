@@ -6,6 +6,7 @@ use App\ForumMainTopic;
 use App\ForumMainTopicType;
 use App\ForumThread;
 use App\ForumThreadComment;
+use App\Page;
 use App\Team;
 use App\User;
 use App\UserFollowingTopicsLinktable;
@@ -138,13 +139,20 @@ class ForumController extends Controller
         $title = $request->input("thread_title");
         $message = $request->input("thread_message");
 
-        $forumThread = new ForumThread();
-        $forumThread->main_topic_id = $forumMainTopicId;
-        $forumThread->creator_user_id = $user_id;
-        $forumThread->title = $title;
-        $forumThread->message = $message;
-        $forumThread->created_at = date("Y-m-d H:i:s");
-        $forumThread->save();
+        $page = new Page();
+        $page->page_type_id = 1;
+        $page->title = "Forum guidelines";
+        $page->content = htmlspecialchars($message);
+        $page->created_at = date("Y-m-d H:i:s");
+        $page->save();
+//
+//        $forumThread = new ForumThread();
+//        $forumThread->main_topic_id = $forumMainTopicId;
+//        $forumThread->creator_user_id = $user_id;
+//        $forumThread->title = $title;
+//        $forumThread->message = $message;
+//        $forumThread->created_at = date("Y-m-d H:i:s");
+//        $forumThread->save();
         return redirect($_SERVER["HTTP_REFERER"]);
     }
 
@@ -181,5 +189,54 @@ class ForumController extends Controller
         $user = User::select("*")->where("id", $userId)->first();
         $followingTopicsUser = UserFollowingTopicsLinktable::select("*")->where("user_id", $userId)->get();
         return view("/public/forum/followingTopicsUser", compact("user", "followingTopicsUser"));
+    }
+
+    public function forumActivityTimeline(){
+        return view("/public/forum/forumActivityTimeline");
+    }
+
+    public function getDataForumActivityTimelineAction(){
+        $today = date("Y-m-d H:i:s");
+        $forumThreads = ForumThread::select("*")->where("created_at", ">", $today)->orderBy("created_at", "DESC")->get();
+        $forumThreadComments = ForumThreadComment::select("*")->where("created_at", ">", $today)->orderBy("created_at", "DESC")->get();
+        return view("/public/forum/shared/_timelineItem", compact("forumThreadComments", "forumThreads"));
+    }
+
+    public function searchInForumAction(Request $request){
+        $forumThreadResults = [];
+        $forumMainTopicResults = [];
+        $forumThreadCommentResults = [];
+
+        $input = ucfirst($request->input("searchForumInput"));
+        $forumThreads = ForumThread::select("*")->get();
+        $forumThreadComments = ForumThreadComment::select("*")->get();
+        $forumMainTopics = ForumMainTopic::select("*")->get();
+        if(strlen($input) == 0){
+            return view("/public/forum/forumSearchResults");
+        } else {
+            foreach($forumThreads as $forumThread){
+                if(strpos($forumThread->title, $input) !== false){
+                    array_push($forumThreadResults, $forumThread);
+                }
+            }
+            foreach($forumThreadComments as $forumThreadComment){
+                if(strpos($forumThreadComment->message, $input) !== false){
+                    array_push($forumThreadCommentResults, $forumThreadComment);
+                }
+            }
+            foreach($forumMainTopics as $forumMainTopic) {
+                if(strpos($forumMainTopic->title, $input) !== false){
+                    array_push($forumMainTopicResults, $forumMainTopic);
+                }
+            }
+
+            return view("/public/forum/forumSearchResults", compact("forumThreadResults", "forumThreadCommentResults", "forumMainTopicResults"));
+        }
+    }
+
+    public function forumGuidelinesAction(){
+        $guidelines = Page::select("*")->where("page_type_id", 1)->first();
+        return view("/public/forum/forumGuidelines", compact("guidelines"));
+
     }
 }

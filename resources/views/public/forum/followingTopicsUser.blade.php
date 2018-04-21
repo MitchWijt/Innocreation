@@ -6,6 +6,7 @@
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">Topics i follow</h1>
             </div>
+            @include("public.forum.shared._searchbarForum")
             <hr class="col-ms-12">
             <? foreach($followingTopicsUser as $followingTopicUser) { ?>
                 <div class="row m-t-20">
