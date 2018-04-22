@@ -365,7 +365,7 @@ class TeamController extends Controller
         if(request()->has('group_chat_id')){
             $urlParameter = request()->group_chat_id;
         }
-        return view("/public/team/teamPageChat", compact("team", "user","messages","groupChats","urlParameter"));
+        return view("/public/team/teamPageChat", compact("team", "user","groupChats","urlParameter"));
     }
 
     public function sendTeamMessageAction(Request $request){
@@ -460,7 +460,7 @@ class TeamController extends Controller
         foreach($request->input("groupChatUsersInput") as $groupChatUser){
             $groupChatLinktable = new TeamGroupChatLinktable();
             $groupChatLinktable->user_id = $groupChatUser;
-            $groupChatLinktableCreator->team_id = $team_id;
+            $groupChatLinktable->team_id = $team_id;
             $groupChatLinktable->team_group_chat_id = $groupChat->id;
             $groupChatLinktable->save();
         }

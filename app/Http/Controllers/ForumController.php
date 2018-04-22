@@ -139,20 +139,20 @@ class ForumController extends Controller
         $title = $request->input("thread_title");
         $message = $request->input("thread_message");
 
-        $page = new Page();
-        $page->page_type_id = 1;
-        $page->title = "Forum guidelines";
-        $page->content = htmlspecialchars($message);
-        $page->created_at = date("Y-m-d H:i:s");
-        $page->save();
-//
-//        $forumThread = new ForumThread();
-//        $forumThread->main_topic_id = $forumMainTopicId;
-//        $forumThread->creator_user_id = $user_id;
-//        $forumThread->title = $title;
-//        $forumThread->message = $message;
-//        $forumThread->created_at = date("Y-m-d H:i:s");
-//        $forumThread->save();
+//        $page = new Page();
+//        $page->page_type_id = 1;
+//        $page->title = "Forum guidelines";
+//        $page->content = htmlspecialchars($message);
+//        $page->created_at = date("Y-m-d H:i:s");
+//        $page->save();
+
+        $forumThread = new ForumThread();
+        $forumThread->main_topic_id = $forumMainTopicId;
+        $forumThread->creator_user_id = $user_id;
+        $forumThread->title = $title;
+        $forumThread->message = $message;
+        $forumThread->created_at = date("Y-m-d H:i:s");
+        $forumThread->save();
         return redirect($_SERVER["HTTP_REFERER"]);
     }
 
@@ -197,8 +197,8 @@ class ForumController extends Controller
 
     public function getDataForumActivityTimelineAction(){
         $today = date("Y-m-d H:i:s");
-        $forumThreads = ForumThread::select("*")->where("created_at", ">", $today)->orderBy("created_at", "DESC")->get();
-        $forumThreadComments = ForumThreadComment::select("*")->where("created_at", ">", $today)->orderBy("created_at", "DESC")->get();
+        $forumThreads = ForumThread::select("*")->orderBy("created_at", "DESC")->get();
+        $forumThreadComments = ForumThreadComment::select("*")->orderBy("created_at", "DESC")->get();
         return view("/public/forum/shared/_timelineItem", compact("forumThreadComments", "forumThreads"));
     }
 
@@ -232,11 +232,5 @@ class ForumController extends Controller
 
             return view("/public/forum/forumSearchResults", compact("forumThreadResults", "forumThreadCommentResults", "forumMainTopicResults"));
         }
-    }
-
-    public function forumGuidelinesAction(){
-        $guidelines = Page::select("*")->where("page_type_id", 1)->first();
-        return view("/public/forum/forumGuidelines", compact("guidelines"));
-
     }
 }

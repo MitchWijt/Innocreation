@@ -32,33 +32,8 @@
                         <div class="d-flex js-center">
                             <hr class="col-sm-12 m-b-20">
                         </div>
-                        <div class="o-scroll m-t-20" style="height: 400px;">
-                            <? foreach($messages as $message) { ?>
-                                <? if($message->sender_user_id == $user->id) { ?>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="col-sm-5 messageSent pull-right m-b-10">
-                                            <p><?= $message->message?></p>
-                                            <span class="f-12 pull-right"><?=$message->time_sent?></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <? } else { ?>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="col-sm-5 pull-left m-b-10 messageReceived">
-                                            <? if($message->sender->First()->id == $team->ceo_user_id) { ?>
-                                            <p class="c-orange m-0"><?= $message->sender->First()->getName()?> - CEO:</p>
-                                            <? } else { ?>
-                                            <p class="c-orange m-0"><?= $message->sender->First()->getName()?> - <?= $message->sender->First()->getJoinedExpertise()->expertises->First()->title?>:</p>
-                                            <? } ?>
-                                            <p><?= $message->message?></p>
-                                            <span class="f-12 pull-right"><?=$message->time_sent?></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <? } ?>
-                            <? } ?>
+                        <div class="o-scroll m-t-20 teamChatMessages" style="height: 400px;">
+
                         </div>
                         <div class="d-flex js-center">
                             <hr class="col-sm-12 m-b-20">
@@ -106,7 +81,6 @@
                                 <div class="card-lg text-center col-sm-11" style="height: 90px;">
                                     <div class="co-sm-12 d-flex">
                                         <div class="col-sm-4">
-
                                             <? if($groupChat->groupChat->First()->profile_picture == null) { ?>
                                                 <? if($user->id == $team->ceo_user_id || $user->role == 1) { ?>
                                                     <form action="/my-team/uploadProfilePictureTeamGroupChat" class="groupChatProfilePicForm" method="post" enctype="multipart/form-data">
@@ -143,33 +117,8 @@
                                             <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                             <input type="hidden" name="sender_user_id" value="<?= $user->id?>">
                                             <input type="hidden" name="chat_group_id" value="<?= $groupChat->team_group_chat_id?>">
-                                            <div class="o-scroll m-t-20" style="height: 300px;">
-                                                <? foreach($groupChat->getGroupChatMessages() as $message) { ?>
-                                                    <? if($message->sender_user_id == $user->id) { ?>
-                                                        <div class="row m-t-20">
-                                                            <div class="col-sm-12">
-                                                                <div class="col-sm-5 messageSent pull-right m-b-10">
-                                                                    <p><?= $message->message?></p>
-                                                                    <span class="f-12 pull-right"><?=$message->time_sent?></span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <? } else { ?>
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <div class="col-sm-5 pull-left m-b-10 messageReceived">
-                                                                    <? if($message->sender->First()->id == $team->ceo_user_id) { ?>
-                                                                    <p class="c-orange m-0"><?= $message->sender->First()->getName()?> - CEO:</p>
-                                                                    <? } else { ?>
-                                                                    <p class="c-orange m-0"><?= $message->sender->First()->getName()?> - <?= $message->sender->First()->getJoinedExpertise()->expertises->First()->title?>:</p>
-                                                                    <? } ?>
-                                                                    <p><?= $message->message?></p>
-                                                                    <span class="f-12 pull-right"><?=$message->time_sent?></span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <? } ?>
-                                                <? } ?>
+                                            <div class="o-scroll m-t-20 teamGroupChatMessages" style="height: 300px;">
+
                                             </div>
                                             <div class="d-flex js-center">
                                                 <hr class="col-sm-12 m-b-20">
@@ -212,7 +161,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-12 settingsGroupChatCheck" data-group-chat-id="<?= $groupChat->team_group_chat_id?>">
                                                 <form action="/saveGroupChatTeam" method="post" class="settingsGroupChatForm">
                                                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                                     <input type="hidden" name="team_id" value="<?= $team->id?>">
@@ -228,7 +177,7 @@
                                                             <span>Add members</span>
                                                             <div class="col-sm-12 d-flex p-l-0">
                                                                 <div class="form-group col-sm-7 p-l-0">
-                                                                    <select name="groupMembers" class="input col-sm-5 groupMembersSelect">
+                                                                    <select name="groupMembers" class="input col-sm-5 groupMembersSelectSettings" data-group-chat-id="<?= $groupChat->team_group_chat_id?>">
                                                                         <option value="" selected disabled>Choose members</option>
                                                                         <? foreach($team->getMembers() as $member) { ?>
                                                                             <? if($member->id != $user->id) { ?>

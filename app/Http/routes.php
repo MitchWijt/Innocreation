@@ -289,5 +289,13 @@ Route::post("/forum/getDataForumActivityTimeline", "ForumController@getDataForum
 
 Route::post("/forum/searchInForum", "ForumController@searchInForumAction");
 
-Route::get("/forum/guidelines", "ForumController@forumGuidelinesAction");
+Route::get("/forum/guidelines", "PageController@forumGuidelinesAction");
 
+
+//=============================MESSAGES============================
+
+Route::post("/message/getTeamChatMessages", "MessageController@teamChatMessagesAction");
+
+Route::post("/message/getTeamGroupChatMessages", "MessageController@teamGroupChatMessagesAction");
+
+Route::post("/message/getUserChatMessages", "MessageController@userChatMessagesAction");

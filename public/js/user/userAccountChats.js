@@ -22,8 +22,43 @@ $(".userCircle").on("click",function () {
 
 $(".chat-card").on("click",function () {
     var user_id = $(this).data("user-id");
+    var user_chat_id = $(this).data("chat-id");
+    console.log(user_chat_id);
    $(".collapse").each(function () {
        if($(this).data("user-id") == user_id){
+           function getUserChatMessages() {
+               $.ajax({
+                   method: "POST",
+                   beforeSend: function (xhr) {
+                       var token = $('meta[name="csrf_token"]').attr('content');
+
+                       if (token) {
+                           return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                       }
+                   },
+                   url: "/message/getUserChatMessages",
+                   data: {'user_chat_id': user_chat_id},
+                   success: function (data) {
+                       $(".collapse").each(function () {
+                           if($(this).data("user-id") == user_id){
+                               $(this).find(".userChatMessages").html(data);
+                           }
+                       });
+                   }
+               });
+           }
+           setTimeout(function(){
+               getUserChatMessages();
+           }, 300);
+           setTimeout(function(){
+               var objDiv = $(".userChatMessages");
+               if (objDiv.length > 0){
+                   objDiv[0].scrollTop = objDiv[0].scrollHeight;
+               }
+           }, 500);
+           setInterval(function () {
+               getUserChatMessages();
+           }, 20000);
            $(this).collapse('toggle');
        }
    });
@@ -31,8 +66,42 @@ $(".chat-card").on("click",function () {
 
 $(document).ready(function () {
     var user_id = $(".url_content").val();
+    var user_chat_id = $(".url_content_chat").val();
     $(".collapse").each(function () {
         if($(this).data("user-id") == user_id){
+            function getUserChatMessages() {
+                $.ajax({
+                    method: "POST",
+                    beforeSend: function (xhr) {
+                        var token = $('meta[name="csrf_token"]').attr('content');
+
+                        if (token) {
+                            return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                        }
+                    },
+                    url: "/message/getUserChatMessages",
+                    data: {'user_chat_id': user_chat_id},
+                    success: function (data) {
+                        $(".collapse").each(function () {
+                            if($(this).data("user-id") == user_id){
+                                $(this).find(".userChatMessages").html(data);
+                            }
+                        });
+                    }
+                });
+            }
+            setTimeout(function(){
+                getUserChatMessages();
+            }, 300);
+            setTimeout(function(){
+                var objDiv = $(".userChatMessages");
+                if (objDiv.length > 0){
+                    objDiv[0].scrollTop = objDiv[0].scrollHeight;
+                }
+            }, 500);
+            setInterval(function () {
+                getUserChatMessages();
+            }, 20000);
             $(this).addClass("show");
         }
     });

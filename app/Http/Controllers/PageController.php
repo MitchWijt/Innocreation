@@ -9,6 +9,7 @@ use App\Team;
 use App\TeamReview;
 use App\User;
 use App\JoinRequestLinktable;
+use App\Page;
 use App\UserPortfolio;
 use Illuminate\Http\Request;
 use Session;
@@ -77,9 +78,10 @@ class PageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function forumGuidelinesAction(){
+        $guidelines = Page::select("*")->where("page_type_id", 1)->first();
+        return view("/public/forum/forumGuidelines", compact("guidelines"));
+
     }
 
     /**
