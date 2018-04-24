@@ -310,16 +310,22 @@ class UserController extends Controller
 
         $user_id = Session::get("user_id");
         $searchInput = $request->input("searchChatUsers");
+
         $users = User::select("*")->get();
-        $idArray = [];
-        foreach($users as $user){
-            if(strpos($user->getName(), ucfirst($searchInput)) !== false){
-                array_push($idArray, $user->id);
-            }
-        }
         $userChats = UserChat::select("*")->where("creator_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->get();
-        $searchedUsers = User::select("*")->whereIn("id", $idArray)->get();
-            return view("/public/user/userAccountChats", compact("searchedUsers", "user_id","userChats"));
+        if(strlen($searchInput) > 0) {
+            $idArray = [];
+            foreach ($users as $user) {
+                if (strpos($user->getName(), ucfirst($searchInput)) !== false) {
+                    array_push($idArray, $user->id);
+                }
+            }
+            $searchedUsers = User::select("*")->whereIn("id", $idArray)->get();
+        } else {
+            $searchInput = false;
+        }
+        return view("/public/user/userAccountChats", compact("searchedUsers", "user_id", "userChats"));
+
     }
 
     public function selectChatUser(Request $request){
@@ -333,6 +339,7 @@ class UserController extends Controller
             $userChat = new UserChat();
             $userChat->creator_user_id = $creator_user_id;
             $userChat->receiver_user_id = $receiver_user_id;
+            $userChat->created_at = date("Y-m-d H:i:s");
             $userChat->save();
         }
         return redirect("/my-account/chats");

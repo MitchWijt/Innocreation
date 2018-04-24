@@ -10,7 +10,6 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
 Route::get("/","HomeController@index");
 
 Route::get("/includes/footer","HomeController@footer");
@@ -22,6 +21,11 @@ Route::post("/loginUser", "LoginController@login");
 Route::post("/register", "LoginController@register");
 
 Route::get("/logout", "LoginController@logout");
+
+// CONTACT US
+Route::get("/contact-us", "HomeController@contactAction");
+
+
 
 //========================USERACCOUNT================================
 

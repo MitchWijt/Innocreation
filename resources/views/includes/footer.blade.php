@@ -22,7 +22,7 @@
         <div class="d-flex">
             <div class="d-flex list-links">
                 <p class="regular-link td-none m-0">General info:</p>
-                <a class="regular-link c-gray" href="">Contact</a>
+                <a class="regular-link c-gray" href="/contact-us">Contact</a>
                 <a class="regular-link c-gray" href="">Sitemap</a>
                 <a class="regular-link c-gray" href="">Terms of agreement</a>
             </div>

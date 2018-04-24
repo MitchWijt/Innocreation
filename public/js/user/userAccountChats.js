@@ -23,7 +23,6 @@ $(".userCircle").on("click",function () {
 $(".chat-card").on("click",function () {
     var user_id = $(this).data("user-id");
     var user_chat_id = $(this).data("chat-id");
-    console.log(user_chat_id);
    $(".collapse").each(function () {
        if($(this).data("user-id") == user_id){
            function getUserChatMessages() {

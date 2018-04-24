@@ -90,6 +90,7 @@ abstract class Controller
      */
     public function missingMethod($parameters = [])
     {
+
         throw new NotFoundHttpException('Controller method not found.');
     }
 

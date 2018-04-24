@@ -44,7 +44,7 @@
                                     <? if($team->ceo_user_id == $user->id || $user->role == 1) { ?>
                                         <? if($member->id != $team->ceo_user_id) { ?>
                                             <div class="col-sm-4">
-                                                <button class="btn btn-inno btn-sm col-sm-12">Go to account</button>
+                                                <a href="<?= $member->getUrl()?>" target="_blank" class="btn btn-inno btn-sm col-sm-12">Go to account</a>
                                             </div>
                                             <div class="col-sm-4">
                                                 <button class="btn btn-inno btn-sm col-sm-12 kickMember" data-user-id="<?=$member->id?>">Kick member</button>
@@ -62,12 +62,12 @@
                                             </div>
                                         <? } else { ?>
                                             <div class="col-sm-12">
-                                                <button class="btn btn-inno btn-sm col-sm-6">Go to account</button>
+                                                <a href="<?= $member->getUrl()?>" target="_blank" class="btn btn-inno btn-sm col-sm-6">Go to account</a>
                                             </div>
                                         <? } ?>
                                     <? } else { ?>
                                         <div class="col-sm-12">
-                                            <button class="btn btn-inno btn-sm col-sm-6">Go to account</button>
+                                            <a href="<?= $member->getUrl()?>" target="_blank" class="btn btn-inno btn-sm col-sm-6">Go to account</a>
                                         </div>
                                     <? } ?>
                                 </div>

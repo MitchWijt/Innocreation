@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Session;
 
 class Controller extends BaseController
 {
+
     use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
     public function isLoggedIn(){
         $bool = false;

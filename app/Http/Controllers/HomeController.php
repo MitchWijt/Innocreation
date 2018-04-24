@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Session;
+use App\User;
 use App\Http\Requests;
 
 class HomeController extends Controller
@@ -34,9 +35,14 @@ class HomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function contactAction()
     {
-        //
+        if($this->isLoggedIn()){
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            return view("/public/home/contactUs", compact("user"));
+        } else {
+            return view("/public/home/contactUs");
+        }
     }
 
     /**
