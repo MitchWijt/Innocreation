@@ -209,6 +209,12 @@ footer{
     border: 1px solid #FF6100 !important;
 }
 
+.card-task:hover{
+    -webkit-box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.75);
+}
+
 .card-square{
     background: #000000 !important;
     color: #C9CCCF !important;
@@ -616,6 +622,12 @@ footer{
 .messageReceived{
     background: #303030;
     border-radius: 10px;
+}
+
+.messageReceivedInnocreation{
+    background: #FF6100 !important;
+    color: #000 !important;
+    border-radius: 10px !important;
 }
 
 .hover:hover .instructions-text{

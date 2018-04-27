@@ -51,9 +51,9 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function sendContactFormAction(Request $request)
     {
-        //
+        die("Email todo and live server for email");
     }
 
     /**

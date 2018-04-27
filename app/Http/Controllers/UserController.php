@@ -8,6 +8,8 @@ use App\Favorite_expertises_linktable;
 use App\FavoriteTeamLinktable;
 use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
+use App\SupportTicket;
+use App\SupportTicketMessage;
 use App\Team;
 use App\TeamReview;
 use App\User;
@@ -555,5 +557,33 @@ class UserController extends Controller
         $message->save();
         return redirect($_SERVER["HTTP_REFERER"]);
 
+    }
+
+    public function userSupportTickets(){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $supportTickets = SupportTicket::select("*")->where("user_id", $user->id)->get();
+        return view("/public/user/userSupportTickets", compact("user", "supportTickets"));
+    }
+
+    public function sendSupportTicketMessageAction(Request $request){
+        $ticket_id = $request->input("ticket_id");
+        $sender_user_id = $request->input("sender_user_id");
+        $message = $request->input("message");
+
+
+        if(strlen($message) > 0) {
+            $time = $this->getTimeSent();
+            $supportTicketMessage = new SupportTicketMessage();
+            $supportTicketMessage->support_ticket_id = $ticket_id;
+            $supportTicketMessage->sender_user_id = $sender_user_id;
+            $supportTicketMessage->message = $message;
+            $supportTicketMessage->time_sent = $time;
+            $supportTicketMessage->created_at = date("Y-m-d H:i:s");
+            $supportTicketMessage->save();
+
+            $messageArray = ["message" => $message, "timeSent" => $time];
+
+            echo json_encode($messageArray);
+        }
     }
 }

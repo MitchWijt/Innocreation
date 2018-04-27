@@ -11,7 +11,8 @@
                     {{session('success')}}
                 </div>
             @endif
-            <form action="" enctype="multipart/form-data" class="contactUsForm" >
+            <form action="/home/sendContactForm" enctype="multipart/form-data" class="contactUsForm" method="post">
+                <input type="hidden" name="_token" value="<?= csrf_token()?>">
                 <div class="row d-flex js-center m-t-20">
                     <div class="col-sm-8 d-flex">
                         <div class="col-sm-4 p-0">

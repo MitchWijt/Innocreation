@@ -93,7 +93,7 @@ class LoginController extends Controller
 
         if(Auth::attempt(['email'=>$request->input("email"),'password'=>$request->input("password")])) {
             $user = User::select("*")->where("email", $request->input("email"))->first();
-            Session::set('user_name', $user->firstname);
+            Session::set('user_name', $user->getName());
             Session::set('user_role', $user->role);
             Session::set('user_id', $user->id);
             if($user->team_id != null) {
@@ -122,7 +122,7 @@ class LoginController extends Controller
         $password = $request->get('password');
         if(Auth::attempt(['email'=>$email,'password'=>$password])) {
             $user = User::select("*")->where("email", $email)->with("team")->first();
-            Session::set('user_name', $user->firstname);
+            Session::set('user_name', $user->getName());
             Session::set('user_role', $user->role);
             Session::set('user_id', $user->id);
             if($user->team_id != null) {

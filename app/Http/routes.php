@@ -25,6 +25,8 @@ Route::get("/logout", "LoginController@logout");
 // CONTACT US
 Route::get("/contact-us", "HomeController@contactAction");
 
+Route::post("/home/sendContactForm", "HomeController@sendContactFormAction");
+
 
 
 //========================USERACCOUNT================================
@@ -95,6 +97,10 @@ Route::post("/my-account/acceptTeamInvite","UserController@acceptTeamInviteActio
 
 Route::post("/my-account/rejectTeamInvite","UserController@rejectTeamInviteAction");
 
+//Support tickets
+Route::get("/my-account/support-tickets","UserController@userSupportTickets");
+
+Route::post("/user/sendSupportTicketMessage","UserController@sendSupportTicketMessageAction");
 
 //==============================SEARCHTEAMSPAGE========================
 
@@ -303,3 +309,6 @@ Route::post("/message/getTeamChatMessages", "MessageController@teamChatMessagesA
 Route::post("/message/getTeamGroupChatMessages", "MessageController@teamGroupChatMessagesAction");
 
 Route::post("/message/getUserChatMessages", "MessageController@userChatMessagesAction");
+
+Route::post("/message/getSupportTicketMessages", "MessageController@getSupportTicketMessagesAction");
+

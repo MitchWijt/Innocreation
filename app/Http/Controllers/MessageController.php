@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\SupportTicket;
+use App\SupportTicketMessage;
 use App\User;
 use App\Team;
 use App\UserChat;
@@ -62,9 +64,13 @@ class MessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function getSupportTicketMessagesAction(Request $request)
     {
-        //
+        $ticketId = $request->input("ticket_id");
+        $userId = Session::get("user_id");
+        $user = User::select("*")->where("id", $userId)->first();
+        $supportTicket = SupportTicket::select("*")->where("id", $ticketId)->first();
+        return view("/public/shared/_messagesSupportTickets", compact( "supportTicket", "user"));
     }
 
     /**
