@@ -8,6 +8,7 @@ use App\Favorite_expertises_linktable;
 use App\FavoriteTeamLinktable;
 use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
+use App\Page;
 use App\SupportTicket;
 use App\SupportTicketMessage;
 use App\Team;
@@ -585,5 +586,34 @@ class UserController extends Controller
 
             echo json_encode($messageArray);
         }
+    }
+
+    public function addSupportTicketAction(Request $request){
+        $user_id = $request->input("user_id");
+        $title = $request->input("supportTicketTitle");
+        $question = $request->input("supportTicketQuestion");
+
+//        $page = new Page();
+//        $page->page_type_id = 2;
+//        $page->title = "Our motivation";
+//        $page->content = htmlspecialchars($question);
+//        $page->created_at = date("Y-m-d H:i:s");
+//        $page->save();
+        $supportTicket = new SupportTicket();
+        $supportTicket->user_id = $user_id;
+        $supportTicket->support_ticket_status_id = 2;
+        $supportTicket->title = $title;
+        $supportTicket->created_at = date("Y-m-d H:i:s");
+        $supportTicket->save();
+
+        $supportTicketMessage = new SupportTicketMessage();
+        $supportTicketMessage->support_ticket_id = $supportTicket->id;
+        $supportTicketMessage->sender_user_id = $user_id;
+        $supportTicketMessage->message = $question;
+        $supportTicketMessage->time_sent = $this->getTimeSent();
+        $supportTicketMessage->created_at = date("Y-m-d H:i:s");
+        $supportTicketMessage->save();
+
+        return redirect($_SERVER["HTTP_REFERER"]);
     }
 }

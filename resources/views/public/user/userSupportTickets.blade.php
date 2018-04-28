@@ -7,14 +7,33 @@
                 <h1 class="sub-title-black">Support tickets</h1>
             </div>
             <div class="hr"></div>
+            <? if(count($supportTickets) > 0) { ?>
             <div class="row d-flex js-center">
                 <div class="col-sm-7 m-t-10">
-                    <button class="btn btn-inno btn-sm">I have a question</button>
-                    <button class="btn btn-inno btn-sm pull-right"><i class="zmdi zmdi-settings"></i> Filter</button>
+                    <button class="btn btn-inno btn-sm" data-toggle="modal" data-target=".createSupportTicketModal">I have a question</button>
+                    <button class="btn btn-inno btn-sm pull-right filterSupportTicketsMenuToggle"><i class="zmdi zmdi-settings"></i> Filter</button>
                 </div>
             </div>
+            <div class="row filterSupportTicketsMenu hidden">
+                <div class="col-sm-10 m-l-5">
+                    <div class="pull-right c-gray text-center">
+                        <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterSupportTickets" data-filter="Open">Open tickets</p>
+                        <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterSupportTickets" data-filter="OnHold">Tickets on hold</p>
+                        <p class="bcg-black border-default m-b-0 menu-item filterSupportTickets" data-filter="Closed">Closed tickets</p>
+                        <p class="bcg-black border-default m-b-0 menu-item filterSupportTickets" data-filter="All">All tickets</p>
+                    </div>
+                </div>
+            </div>
+            <? } else { ?>
+                <div class="row d-flex js-center">
+                    <div class="col-sm-12 m-t-10 d-flex js-center">
+                        <button class="btn btn-inno btn-sm" data-toggle="modal" data-target=".createSupportTicketModal">I have a question</button>
+                    </div>
+                </div>
+            <? } ?>
             <? foreach($supportTickets as $supportTicket) { ?>
-                <div class="row m-t-20">
+                <div class="row m-t-20 singleSupportTicket">
+                    <input type="hidden" class="ticketStatus" value="<?= $supportTicket->support_ticket_status_id?>">
                     <div class="col-sm-12 d-flex js-center m-b-20">
                         <div class="supportTicket">
                             <div class="card">
@@ -108,6 +127,46 @@
                     </div>
                 </div>
             <? } ?>
+            <div class="modal fade createSupportTicketModal" id="createSupportTicketModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header col-sm-12 d-flex js-center">
+                            <p class="m-t-10 f-18 m-b-0">Feel free to ask a question</p>
+                        </div>
+                        <div class="modal-body ">
+                            <form action="/user/addSupportTicket" method="post">
+                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                <div class="row m-b-20">
+                                    <div class="col-sm-12">
+                                        <input type="text" name="supportTicketTitle" placeholder="Subject of your question" class="input col-sm-4">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <textarea name="supportTicketQuestion" class="input col-sm-12" placeholder="Describe your question" cols="30" rows="10"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 d-flex">
+                                        <div class="col-sm-9">
+                                            <ul class="instructions-list">
+                                                <li class="instructions-list-item"><span class="c-black">Describe your question as clear as possible </span></li>
+                                                <li class="instructions-list-item"><span class="c-black">You will be helped asap by one of our staff members</span></li>
+                                                <li class="instructions-list-item"><span class="c-black">Before using tickets, please take a look at the FAQ</span></li>
+                                                <li class="instructions-list-item"><span class="c-black">We hope we can help you with all your problems</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button class="btn btn-inno pull-right">Ask my question</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

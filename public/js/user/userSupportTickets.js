@@ -72,3 +72,44 @@ $(".sendSupportTicketMessage").on("click",function () {
         }
     });
 });
+
+$(".filterSupportTicketsMenuToggle").on("click",function () {
+    $(".filterSupportTicketsMenu").toggle();
+});
+
+$(document).ready(function () {
+    $(".filterSupportTicketsMenu").removeClass("hidden");
+    $(".filterSupportTicketsMenu").toggle();
+});
+
+$(".filterSupportTickets").on("click",function () {
+   if($(this).data("filter") == "Open"){
+       $(".singleSupportTicket").each(function () {
+           if($(this).find(".ticketStatus").val() != 1){
+                $(this).hide();
+           } else {
+               $(this).show();
+           }
+       });
+   } else if($(this).data("filter") == "OnHold"){
+       $(".singleSupportTicket").each(function () {
+           if($(this).find(".ticketStatus").val() != 2){
+               $(this).hide();
+           } else {
+               $(this).show();
+           }
+       });
+   } else if($(this).data("filter") == "Closed"){
+       $(".singleSupportTicket").each(function () {
+           if($(this).find(".ticketStatus").val() != 3){
+               $(this).hide();
+           } else {
+               $(this).show();
+           }
+       });
+   } else {
+       $(".singleSupportTicket").each(function () {
+           $(this).show();
+       });
+   }
+});

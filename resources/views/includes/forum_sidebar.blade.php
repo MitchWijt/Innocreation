@@ -5,7 +5,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/forum/guidelines">Guidelines</a>
+        <a class="regular-link c-gray" href="/page/forum-guidelines">Guidelines</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

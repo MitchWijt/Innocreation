@@ -72,17 +72,6 @@ class PageController extends Controller
         return view("public/pages/singleUserPage", compact("user","expertise_linktable", "loggedIn", "portfolios","team", "neededExpertisesArray"));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function forumGuidelinesAction(){
-        $guidelines = Page::select("*")->where("page_type_id", 1)->first();
-        return view("/public/forum/forumGuidelines", compact("guidelines"));
-
-    }
 
     /**
      * Display the specified resource.
@@ -90,9 +79,10 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function pagesIndexAction($slug)
     {
-        //
+        $page = Page::select("*")->where("slug", $slug)->first();
+        return view("/public/pages/pagesIndex", compact("page"));
     }
 
     /**

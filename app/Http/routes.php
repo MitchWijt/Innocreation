@@ -102,6 +102,8 @@ Route::get("/my-account/support-tickets","UserController@userSupportTickets");
 
 Route::post("/user/sendSupportTicketMessage","UserController@sendSupportTicketMessageAction");
 
+Route::post("/user/addSupportTicket","UserController@addSupportTicketAction");
+
 //==============================SEARCHTEAMSPAGE========================
 
 Route::get("/teams", "TeamSearchController@index");
@@ -299,8 +301,6 @@ Route::post("/forum/getDataForumActivityTimeline", "ForumController@getDataForum
 
 Route::post("/forum/searchInForum", "ForumController@searchInForumAction");
 
-Route::get("/forum/guidelines", "PageController@forumGuidelinesAction");
-
 
 //=============================MESSAGES============================
 
@@ -312,3 +312,6 @@ Route::post("/message/getUserChatMessages", "MessageController@userChatMessagesA
 
 Route::post("/message/getSupportTicketMessages", "MessageController@getSupportTicketMessagesAction");
 
+//=============================PAGES=============================
+
+Route::get("/page/{slug}", "PageController@pagesIndexAction");

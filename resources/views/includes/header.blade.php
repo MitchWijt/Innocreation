@@ -47,11 +47,11 @@
             <li><a href="/">Home</a></li>
             <li><a href="/teams">Teams</a></li>
             <li><a href="">Roles</a></li>
-            <li><a href="">About us</a></li>
+            <li><a href="/page/what-is-innocreation">About us</a></li>
             {{--<li><a href="">Shop</a></li>--}}
             <li><a href="">Pricing</a></li>
-            <li><a href="/forum">Forum</a></li>
-            <li><a id="last-child" href="">Crowd funding</a></li>
+            <li><a href="/forum" id="last-child">Forum</a></li>
+            <li><a id="last-child" class="hidden" href="">Crowd funding</a></li>
         </ul>
     </div>
 </header>

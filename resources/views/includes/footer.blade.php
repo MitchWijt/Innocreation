@@ -1,10 +1,4 @@
 @section("footer")
-{{--JS FILES--}}
-
-
-
-{{-------------------------------------------}}
-
 <footer>
     <div class="footer d-flex p-t-20 p-b-20">
         <div class="footer-title text-center">
@@ -29,10 +23,11 @@
         </div>
         <div class="d-flex">
             <div class="d-flex list-links">
-                <p class="regular-link td-none m-0">Our platform:</p>
-                <a class="regular-link c-gray" href="">About us</a>
-                <a class="regular-link c-gray" href="">Who are we?</a>
-                <a class="regular-link c-gray" href="">Our motivation</a>
+                <p class="regular-link td-none m-0">The platform:</p>
+                <a class="regular-link c-gray" href="/page/what-is-innocreation">What is Innocreation?</a>
+                {{--<a class="regular-link c-gray" href="">People behind Innocreation</a>--}}
+                <a class="regular-link c-gray" href="">Pricing</a>
+                <a class="regular-link c-gray" href="/page/our-motivation">Our motivation</a>
             </div>
         </div>
     </div>

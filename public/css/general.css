@@ -4,6 +4,9 @@
 .m-l-0{
     margin-left: 0 !important;
 }
+.m-l-5{
+    margin-left: 5px !important;
+}
 .m-l-10{
     margin-left: 10px !important;
 }
@@ -122,6 +125,7 @@
 .p-t-0{
     padding-top: 0 !important;
 }
+
 .p-t-20{
     padding-top: 20px !important;
 }
@@ -148,6 +152,9 @@
 .p-b-5{
     padding-bottom: 5px !important;
 }
+.p-l-5 {
+    padding-left: 5px !important;
+}
 .p-l-15{
     padding-left: 15px !important;
 }
@@ -168,6 +175,9 @@
 }
 .p-r-0 {
     padding-right: 0 !important;
+}
+.p-r-5 {
+    padding-right:  5px !important;
 }
 .p-r-15{
     padding-right: 15px !important;
