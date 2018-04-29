@@ -599,4 +599,5 @@
 @endsection
 @section('pagescript')
     <script src="/js/workspace/workspaceShortTermPlannerBoard.js"></script>
+    <script src="/js/DragDropTouch.js"></script>
 @endsection

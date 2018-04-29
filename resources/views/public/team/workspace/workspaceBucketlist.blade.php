@@ -151,4 +151,5 @@
 @endsection
 @section('pagescript')
     <script src="/js/workspace/workspaceBucketlist.js"></script>
+    <script src="/js/DragDropTouch.js"></script>
 @endsection

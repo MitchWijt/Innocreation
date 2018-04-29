@@ -40,6 +40,14 @@
                     <a class="regular-link c-gray" href="/login">Login / Register</a>
                 <? } ?>
             </div>
+            <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
+                <? $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();?>
+                <? if($user->role == 1) { ?>
+                    <div class="admin">
+                        <a class="regular-link" href="/logout">Admin panel</a>
+                    </div>
+                <? } ?>
+            <? } ?>
         </div>
     </div>
     <div class="lower-header">
