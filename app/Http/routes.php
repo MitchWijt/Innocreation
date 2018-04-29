@@ -315,3 +315,11 @@ Route::post("/message/getSupportTicketMessages", "MessageController@getSupportTi
 //=============================PAGES=============================
 
 Route::get("/page/{slug}", "PageController@pagesIndexAction");
+
+
+//===========================USER/EXPERTISES PAGE=========================
+
+Route::get("/expertises", "UsersExpertisesListController@expertisesListAction");
+
+Route::get("/{title}/users", "UsersExpertisesListController@usersListAction");
+
