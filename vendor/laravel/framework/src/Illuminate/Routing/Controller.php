@@ -2,6 +2,8 @@
 
 namespace Illuminate\Routing;
 
+use Session;
+use App\User;
 use BadMethodCallException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

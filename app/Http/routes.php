@@ -323,3 +323,13 @@ Route::get("/expertises", "UsersExpertisesListController@expertisesListAction");
 
 Route::get("/{title}/users", "UsersExpertisesListController@usersListAction");
 
+
+
+
+//==
+
+//=======================ADMIN PANEL==========================
+
+Route::get("/admin/statistics", "AdminController@statisticsAction");
+//==
+

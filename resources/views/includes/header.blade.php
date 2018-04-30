@@ -25,6 +25,14 @@
             </div>
         </div>
         <div class="loginRegister">
+            <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
+                <? $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();?>
+                <? if($user->role == 1) { ?>
+                    <div class="admin">
+                        <a class="regular-link c-gray" href="/admin/statistics">Admin panel</a>
+                    </div>
+                <? } ?>
+            <? } ?>
             <div class="accounts">
                 <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
                     <a class="regular-link c-gray m-b-5" href="/account">My account</a>
@@ -40,14 +48,6 @@
                     <a class="regular-link c-gray" href="/login">Login / Register</a>
                 <? } ?>
             </div>
-            <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
-                <? $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();?>
-                <? if($user->role == 1) { ?>
-                    <div class="admin">
-                        <a class="regular-link" href="/logout">Admin panel</a>
-                    </div>
-                <? } ?>
-            <? } ?>
         </div>
     </div>
     <div class="lower-header">
@@ -59,7 +59,7 @@
             {{--<li><a href="">Shop</a></li>--}}
             <li><a href="">Pricing</a></li>
             <li><a href="/forum" id="last-child">Forum</a></li>
-            <li><a id="last-child" class="hidden" href="">Crowd funding</a></li>
+            {{--<li><a id="last-child" class="hidden" href="">Crowd funding</a></li>--}}
         </ul>
     </div>
 </header>

@@ -112,7 +112,7 @@
                                             <div class="col-sm-12 m-b-20 d-flex">
                                                 <? if($user && $user->team_id == null) { ?>
                                                    <div class="col-sm-3">
-                                                       <p><?= $neededExpertise->Expertises->First()->title?></p>
+                                                       <p class="m-t-10"><?= $neededExpertise->Expertises->First()->title?></p>
                                                    </div>
                                                     <div class="col-sm-4 text-center">
                                                         <p class="pull-right m-t-10">Amount needed: <?= $neededExpertise->amount?></p>

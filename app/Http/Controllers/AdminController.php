@@ -3,21 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Session;
-use App\User;
+
 use App\Http\Requests;
 
-class HomeController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-//        Session::flush();
-       return view("public/home/home");
+    public function statisticsAction(){
+        if($this->authorized(true)){
+            return view("/admin/statistics");
+        }
     }
 
     /**
@@ -25,9 +24,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function footer()
+    public function create()
     {
-        return view("includes/footer");
+        //
     }
 
     /**
@@ -36,14 +35,9 @@ class HomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function contactAction()
+    public function store(Request $request)
     {
-        if($this->isLoggedIn()){
-            $user = User::select("*")->where("id", Session::get("user_id"))->first();
-            return view("/public/home/contactUs", compact("user"));
-        } else {
-            return view("/public/home/contactUs");
-        }
+        //
     }
 
     /**
@@ -52,9 +46,9 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function sendContactFormAction(Request $request)
+    public function show($id)
     {
-        die("Email todo and live server for email");
+        //
     }
 
     /**

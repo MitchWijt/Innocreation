@@ -1,6 +1,6 @@
 @extends("layouts.app")
 @section("content")
-    <div class="d-flex grey-background">
+    <div class="d-flex grey-background vh85">
         @include("includes.userAccount_sidebar")
         <div class="container">
             <div class="sub-title-container p-t-20">

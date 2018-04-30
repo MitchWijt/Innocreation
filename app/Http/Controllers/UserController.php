@@ -20,6 +20,7 @@ use App\UserPortfolio;
 use App\NeededExpertiseLinktable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use App\Http\Middleware\RolesMiddleware;
 
 use App\Http\Requests;
 use Session;
@@ -33,12 +34,14 @@ class UserController extends Controller
      */
     public function userAccount()
     {
-        if(Session::has("user_name")) {
-            $id = Session::get("user_id");
-            $user = User::select("*")->where("id", $id)->first();
-            return view("/public/user/userAccount", compact("user"));
-        } else {
-            return view("/public/home/home");
+        if($this->authorized()) {
+            if (Session::has("user_name")) {
+                $id = Session::get("user_id");
+                $user = User::select("*")->where("id", $id)->first();
+                return view("/public/user/userAccount", compact("user"));
+            } else {
+                return view("/public/home/home");
+            }
         }
     }
 
@@ -47,14 +50,15 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function userAccountCredentials()
-    {
-        if(Session::has("user_name")) {
-            $id = Session::get("user_id");
-            $user = User::select("*")->where("id", $id)->first();
-            return view("/public/user/userAccountCredentials", compact("user"));
-        } else {
-            return view("/public/home/home");
+    public function userAccountCredentials(){
+        if($this->authorized()) {
+            if (Session::has("user_name")) {
+                $id = Session::get("user_id");
+                $user = User::select("*")->where("id", $id)->first();
+                return view("/public/user/userAccountCredentials", compact("user"));
+            } else {
+                return view("/public/home/home");
+            }
         }
     }
 
@@ -64,8 +68,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function saveUserAccount(Request $request)
-    {
+    public function saveUserAccount(Request $request){
         $user_id = $request->input("user_id");
         $user = User::select("*")->where("id", $user_id)->first();
         $user->skype = $request->input("skype");
@@ -81,12 +84,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function userAccountExpertises()
-    {
-        $user_id = Session::get("user_id");
-        $expertises_linktable = expertises_linktable::select("*")->where("user_id", $user_id)->with("Users")->with("Expertises")->get();
-        $expertises = Expertises::select("*")->get();
-        return view("/public/user/userAccountExpertises", compact("expertises_linktable", "user_id", "expertises"));
+    public function userAccountExpertises(){
+        if($this->authorized()) {
+            $user_id = Session::get("user_id");
+            $expertises_linktable = expertises_linktable::select("*")->where("user_id", $user_id)->with("Users")->with("Expertises")->get();
+            $expertises = Expertises::select("*")->get();
+            return view("/public/user/userAccountExpertises", compact("expertises_linktable", "user_id", "expertises"));
+        }
     }
 
     /**
@@ -136,10 +140,11 @@ class UserController extends Controller
      */
     public function teamBenefits()
     {
-        $user_id = Session::get("user_id");
-        $user = User::select("*")->where("id", $user_id)->first();
-        return view("/public/user/teamBenefits", compact("user"));
-
+        if($this->authorized()) {
+            $user_id = Session::get("user_id");
+            $user = User::select("*")->where("id", $user_id)->first();
+            return view("/public/user/teamBenefits", compact("user"));
+        }
     }
 
     /**
@@ -176,11 +181,13 @@ class UserController extends Controller
     }
 
     public function favoriteExpertisesUser(){
-        $user_id = Session::get("user_id");
-        $user = User::select("*")->where("id", $user_id)->first();
-        $expertises = Expertises::select("*")->inRandomOrder()->limit("6")->get();
-        $favoriteExpertisesUser = Favorite_expertises_linktable::select("*")->where("user_id", $user_id)->with("Users")->with("Expertises")->get();
-        return view("/public/user/favoriteExpertisesUser", compact("expertises", "user", "favoriteExpertisesUser"));
+        if($this->authorized()) {
+            $user_id = Session::get("user_id");
+            $user = User::select("*")->where("id", $user_id)->first();
+            $expertises = Expertises::select("*")->inRandomOrder()->limit("6")->get();
+            $favoriteExpertisesUser = Favorite_expertises_linktable::select("*")->where("user_id", $user_id)->with("Users")->with("Expertises")->get();
+            return view("/public/user/favoriteExpertisesUser", compact("expertises", "user", "favoriteExpertisesUser"));
+        }
     }
 
     public function saveFavoriteExperisesUser(Request $request){
@@ -225,11 +232,13 @@ class UserController extends Controller
     }
 
     public function userAccountPortfolio(){
-        $user_id = Session::get("user_id");
-        $user = User::select("*")->where("id", $user_id)->first();
-        $userPortfolios = UserPortfolio::select("*")->where("user_id",$user_id)->get();
-        $amountPortfolios = count($userPortfolios);
-        return view("/public/user/userAccountPortfolio",compact("userPortfolios", "amountPortfolios", "user"));
+        if($this->authorized()) {
+            $user_id = Session::get("user_id");
+            $user = User::select("*")->where("id", $user_id)->first();
+            $userPortfolios = UserPortfolio::select("*")->where("user_id", $user_id)->get();
+            $amountPortfolios = count($userPortfolios);
+            return view("/public/user/userAccountPortfolio", compact("userPortfolios", "amountPortfolios", "user"));
+        }
     }
 
     public function saveUseraccountPortfolio(Request $request){
@@ -294,304 +303,325 @@ class UserController extends Controller
     }
 
     public function userAccountChats(Request $request){
-        $user_id = Session::get("user_id");
-        if(request()->has('user_id')){
-            $urlParameter = request()->user_id;
-        }
-        if(request()->has('user_chat_id')){
-            $urlParameterChat = request()->user_chat_id;
-        }
-        $userChats = UserChat::select("*")->where("creator_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->get();
-        if(count($userChats) != 0) {
-            return view("/public/user/userAccountChats", compact( "userChats","user_id", "urlParameter", "urlParameterChat"));
-        }
+        if($this->authorized()) {
+            $user_id = Session::get("user_id");
+            if (request()->has('user_id')) {
+                $urlParameter = request()->user_id;
+            }
+            if (request()->has('user_chat_id')) {
+                $urlParameterChat = request()->user_chat_id;
+            }
+            $userChats = UserChat::select("*")->where("creator_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->get();
+            if (count($userChats) != 0) {
+                return view("/public/user/userAccountChats", compact("userChats", "user_id", "urlParameter", "urlParameterChat"));
+            }
             return view("/public/user/userAccountChats", compact("user_id"));
+        }
     }
 
     public function searchChatUsers(Request $request){
-        // gets all the users where user searched on to chat with
+        if($this->authorized()) {
+            // gets all the users where user searched on to chat with
 
-        $user_id = Session::get("user_id");
-        $searchInput = $request->input("searchChatUsers");
+            $user_id = Session::get("user_id");
+            $searchInput = $request->input("searchChatUsers");
 
-        $users = User::select("*")->get();
-        $userChats = UserChat::select("*")->where("creator_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->get();
-        if(strlen($searchInput) > 0) {
-            $idArray = [];
-            foreach ($users as $user) {
-                if (strpos($user->getName(), ucfirst($searchInput)) !== false) {
-                    array_push($idArray, $user->id);
+            $users = User::select("*")->get();
+            $userChats = UserChat::select("*")->where("creator_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->get();
+            if (strlen($searchInput) > 0) {
+                $idArray = [];
+                foreach ($users as $user) {
+                    if (strpos($user->getName(), ucfirst($searchInput)) !== false) {
+                        array_push($idArray, $user->id);
+                    }
                 }
+                $searchedUsers = User::select("*")->whereIn("id", $idArray)->get();
+            } else {
+                $searchInput = false;
             }
-            $searchedUsers = User::select("*")->whereIn("id", $idArray)->get();
-        } else {
-            $searchInput = false;
+            return view("/public/user/userAccountChats", compact("searchedUsers", "user_id", "userChats"));
         }
-        return view("/public/user/userAccountChats", compact("searchedUsers", "user_id", "userChats"));
-
     }
 
     public function selectChatUser(Request $request){
-        // selects the user. The user wants to chat with and adds it to the database
+        if($this->authorized()) {
+            // selects the user. The user wants to chat with and adds it to the database
 
-        $receiver_user_id = $request->input("receiver_user_id");
-        $creator_user_id = $request->input("creator_user_id");
+            $receiver_user_id = $request->input("receiver_user_id");
+            $creator_user_id = $request->input("creator_user_id");
 
-        $existingUserChat = UserChat::select("*")->where("receiver_user_id", $receiver_user_id)->where("creator_user_id", $creator_user_id)->orWhere("receiver_user_id", $creator_user_id)->where("creator_user_id", $receiver_user_id)->get();
-        if(count($existingUserChat) == 0) {
-            $userChat = new UserChat();
-            $userChat->creator_user_id = $creator_user_id;
-            $userChat->receiver_user_id = $receiver_user_id;
-            $userChat->created_at = date("Y-m-d H:i:s");
-            $userChat->save();
+            $existingUserChat = UserChat::select("*")->where("receiver_user_id", $receiver_user_id)->where("creator_user_id", $creator_user_id)->orWhere("receiver_user_id", $creator_user_id)->where("creator_user_id", $receiver_user_id)->get();
+            if (count($existingUserChat) == 0) {
+                $userChat = new UserChat();
+                $userChat->creator_user_id = $creator_user_id;
+                $userChat->receiver_user_id = $receiver_user_id;
+                $userChat->created_at = date("Y-m-d H:i:s");
+                $userChat->save();
+            }
+            return redirect("/my-account/chats");
         }
-        return redirect("/my-account/chats");
     }
 
     public function sendMessageUserAction(Request $request){
-        // sends a message to the user. The user selected. with the sended time and return to the page with id.
-        // so the collapse stays open from the user you are chatting with
+        if($this->authorized()) {
+            // sends a message to the user. The user selected. with the sended time and return to the page with id.
+            // so the collapse stays open from the user you are chatting with
 
-        $timeNow = date("H:i:s");
-        $time = (date("g:i a", strtotime($timeNow)));
-        $user_chat_id = $request->input("user_chat_id");
-        $sender_user_id = $request->input("sender_user_id");
+            $timeNow = date("H:i:s");
+            $time = (date("g:i a", strtotime($timeNow)));
+            $user_chat_id = $request->input("user_chat_id");
+            $sender_user_id = $request->input("sender_user_id");
 
-        $userChat = UserChat::select("*")->where("id", $user_chat_id)->first();
+            $userChat = UserChat::select("*")->where("id", $user_chat_id)->first();
 
-        $userMessage = new UserMessage();
-        $userMessage->sender_user_id = $sender_user_id;
-        $userMessage->user_chat_id = $user_chat_id;
-        $userMessage->time_sent = $time;
-        $userMessage->message = $request->input("message");
-        $userMessage->created_at = date("Y-m-d H:i:s");
-        $userMessage->save();
-        return redirect("/my-account/chats?user_id=$userChat->receiver_user_id&user_chat_id=$userChat->id");
-
+            $userMessage = new UserMessage();
+            $userMessage->sender_user_id = $sender_user_id;
+            $userMessage->user_chat_id = $user_chat_id;
+            $userMessage->time_sent = $time;
+            $userMessage->message = $request->input("message");
+            $userMessage->created_at = date("Y-m-d H:i:s");
+            $userMessage->save();
+            return redirect("/my-account/chats?user_id=$userChat->receiver_user_id&user_chat_id=$userChat->id");
+        }
     }
 
     public function favoriteTeamAction(Request $request){
-        // adds and deletes team to user favorites
-        $team_id = $request->input("team_id");
-        $user_id = Session::get("user_id");
-        $favoriteExists = FavoriteTeamLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->first();
-        if(count($favoriteExists) == 0) {
-            $favoriteTeam = new FavoriteTeamLinktable();
-            $favoriteTeam->team_id = $team_id;
-            $favoriteTeam->user_id = $user_id;
-            $favoriteTeam->save();
-            return 1;
-        } else {
-            $favoriteExists->delete();
-            return 2;
+        if($this->authorized()) {
+            // adds and deletes team to user favorites
+            $team_id = $request->input("team_id");
+            $user_id = Session::get("user_id");
+            $favoriteExists = FavoriteTeamLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->first();
+            if (count($favoriteExists) == 0) {
+                $favoriteTeam = new FavoriteTeamLinktable();
+                $favoriteTeam->team_id = $team_id;
+                $favoriteTeam->user_id = $user_id;
+                $favoriteTeam->save();
+                return 1;
+            } else {
+                $favoriteExists->delete();
+                return 2;
+            }
         }
     }
 
     public function applyForTeamAction(Request $request){
-        // sends a join request to the team.
-        // users applies for the team.
-        $team_id = $request->input("team_id");
-        $user_id = $request->input("user_id");
-        $expertise_id = $request->input("expertise_id");
+        if($this->authorized()) {
+            // sends a join request to the team.
+            // users applies for the team.
+            $team_id = $request->input("team_id");
+            $user_id = $request->input("user_id");
+            $expertise_id = $request->input("expertise_id");
 
-        $checkJoinRequests = JoinRequestLinktable::select("*")->where("team_id",$team_id)->where("user_id", $user_id)->where("accepted", 0)->get();
-        if(count($checkJoinRequests) == 0) {
+            $checkJoinRequests = JoinRequestLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->where("accepted", 0)->get();
+            if (count($checkJoinRequests) == 0) {
+                $team = Team::select("*")->where("id", $team_id)->first();
+
+                $joinRequest = new JoinRequestLinktable();
+                $joinRequest->team_id = $team_id;
+                $joinRequest->user_id = $user_id;
+                $joinRequest->expertise_id = $expertise_id;
+                $joinRequest->accepted = 0;
+                $joinRequest->created_at = date("Y-m-d");
+                $joinRequest->save();
+
+                $ceoFirstname = $joinRequest->teams->First()->users->First()->firstname;
+                $timeNow = date("H:i:s");
+                $time = (date("g:i a", strtotime($timeNow)));
+
+                $message = new UserMessage();
+                $message->sender_user_id = $user_id;
+                $message->receiver_user_id = $team->ceo_user_id;
+                $message->message = "Hey $ceoFirstname I have done a request to join your team!";
+                $message->time_sent = $time;
+                $message->created_at = date("Y-m-d H:i:s");
+                $message->save();
+
+                $message = new UserMessage();
+                $message->sender_user_id = $team->ceo_user_id;
+                $message->receiver_user_id = $user_id;
+                $message->message = null;
+                $message->time_sent = null;
+                $message->created_at = date("Y-m-d H:i:s");
+                $message->save();
+                return redirect($_SERVER["HTTP_REFERER"]);
+            } else {
+                return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already applied for this team");
+            }
+        }
+    }
+
+    public function userTeamJoinRequestsAction(){
+        if($this->authorized()) {
+            // gets all the join requests for the user
+            $user_id = Session::get("user_id");
+            $teamJoinRequests = JoinRequestLinktable::select("*")->where("user_id", $user_id)->get();
+            $invites = InviteRequestLinktable::select("*")->where("user_id", $user_id)->get();
+            return view("/public/user/userTeamJoinRequests", compact("teamJoinRequests", "invites", "user_id"));
+        }
+    }
+
+    public function postTeamReviewAction(Request $request){
+        if($this->authorized()) {
+            // posts team review for team
+            // calculates the support points the team gets for the review.
+            $team_id = $request->input("team_id");
+            $user_id = $request->input("user_id");
+            $stars_value = $request->input("star_value");
+
+            $reviewMessage = $request->input("review");
+            $title = $request->input("review_title");
+
+            $reviews = TeamReview::select("*")->where("team_id", $team_id)->where("writer_user_id", $user_id)->get();
             $team = Team::select("*")->where("id", $team_id)->first();
+            if (count($reviews) == 0 && $user_id != $team->ceo_user_id) {
 
-            $joinRequest = new JoinRequestLinktable();
-            $joinRequest->team_id = $team_id;
-            $joinRequest->user_id = $user_id;
-            $joinRequest->expertise_id = $expertise_id;
-            $joinRequest->accepted = 0;
-            $joinRequest->created_at = date("Y-m-d");
-            $joinRequest->save();
+                $review = new TeamReview();
+                $review->team_id = $team_id;
+                $review->writer_user_id = $user_id;
+                $review->title = $title;
+                $review->review = $reviewMessage;
+                $review->stars = $stars_value;
+                $review->created_at = date("Y-m-d H:i:s");
+                $review->save();
 
-            $ceoFirstname = $joinRequest->teams->First()->users->First()->firstname;
+
+                $user = User::select("*")->where("id", $user_id)->first();
+                $team->support = $team->calculateSupport($stars_value, $team_id);
+                $team->save();
+
+                $timeNow = date("H:i:s");
+                $time = (date("g:i a", strtotime($timeNow)));
+                $message = new UserMessage();
+                $message->sender_user_id = $team->ceo_user_id;
+                $message->team_id = $team_id;
+                $message->message = "$user->firstname has written a new review for this team! go check it out!";
+                $message->time_sent = $time;
+                $message->created_at = date("Y-m-d H:i:s");
+                $message->save();
+
+                return redirect($_SERVER["HTTP_REFERER"]);
+            } else {
+                return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already wrote a review or you are the CEO of this team");
+            }
+        }
+    }
+
+    public function acceptTeamInviteAction(Request $request){
+        if($this->authorized()) {
+            // user accepts the team invite
+            // Sends a message to the team.
+            // Rejects any other invite sent to the user
+            $user_id = $request->input("user_id");
+            $invite_id = $request->input("invite_id");
+            $expertise_id = $request->input("expertise_id");
+            $team_id = $request->input("team_id");
+            $invite = InviteRequestLinktable::select("*")->where("id", $invite_id)->first();
+            $invite->accepted = 1;
+            $invite->save();
+
+            $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
+            $neededExpertise->amount = $neededExpertise->amount - 1;
+            $neededExpertise->save();
+
+            $otherInvites = InviteRequestLinktable::select("*")->where("user_id", $user_id)->where("accepted", 0)->get();
+            if (count($otherInvites) > 0) {
+                foreach ($otherInvites as $otherInvite) {
+                    $otherInvite->accepted = 2;
+                    $otherInvite->save();
+                }
+            }
+
+            $teamName = $invite->teams->First()->team_name;
+            $timeNow = date("H:i:s");
+            $time = (date("g:i a", strtotime($timeNow)));
+
+            $user = User::select("*")->where("id", $invite->users->First()->id)->first();
+            $user->team_id = $invite->team_id;
+            $user->save();
+            Session::set('team_id', $user->team_id);
+            Session::set('team_name', $user->team->team_name);
+
+
+            $message = new UserMessage();
+            $message->sender_user_id = $user->id;
+            $message->team_id = $team_id;
+            $message->message = "Hey $teamName i am happy to say, that i accepted your invite to join this team.";
+            $message->time_sent = $time;
+            $message->created_at = date("Y-m-d H:i:s");
+            $message->save();
+
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
+    }
+
+    public function rejectTeamInviteAction(Request $request){
+        if($this->authorized()) {
+            //rejects the team invite sent to the user + sends a message to the CEO of the team.
+            $invite_id = $request->input("invite_id");
+            $invite = InviteRequestLinktable::select("*")->where("id", $invite_id)->first();
+            $invite->accepted = 2;
+            $invite->save();
+
+            $ceo = User::select("*")->where("id", $invite->team->First()->ceo_user_id)->First();
             $timeNow = date("H:i:s");
             $time = (date("g:i a", strtotime($timeNow)));
 
             $message = new UserMessage();
-            $message->sender_user_id = $user_id;
-            $message->receiver_user_id = $team->ceo_user_id;
-            $message->message = "Hey $ceoFirstname I have done a request to join your team!";
+            $message->sender_user_id = $invite->users->first()->id;
+            $message->receiver_user_id = $invite->teams->first()->ceo_user_id;
+            $message->message = "Hey $ceo I decided to reject your invite";
             $message->time_sent = $time;
             $message->created_at = date("Y-m-d H:i:s");
             $message->save();
 
             $message = new UserMessage();
-            $message->sender_user_id = $team->ceo_user_id;
-            $message->receiver_user_id = $user_id;
+            $message->sender_user_id = $invite->teams->first()->ceo_user_id;
+            $message->receiver_user_id = $invite->users->first()->id;
             $message->message = null;
             $message->time_sent = null;
             $message->created_at = date("Y-m-d H:i:s");
             $message->save();
             return redirect($_SERVER["HTTP_REFERER"]);
-        } else {
-            return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already applied for this team");
         }
-    }
-
-    public function userTeamJoinRequestsAction(){
-        // gets all the join requests for the user
-        $user_id = Session::get("user_id");
-        $teamJoinRequests = JoinRequestLinktable::select("*")->where("user_id", $user_id)->get();
-        $invites = InviteRequestLinktable::select("*")->where("user_id", $user_id)->get();
-        return view("/public/user/userTeamJoinRequests", compact("teamJoinRequests","invites", "user_id"));
-    }
-
-    public function postTeamReviewAction(Request $request){
-        // posts team review for team
-        // calculates the support points the team gets for the review.
-        $team_id = $request->input("team_id");
-        $user_id = $request->input("user_id");
-        $stars_value = $request->input("star_value");
-
-        $reviewMessage = $request->input("review");
-        $title = $request->input("review_title");
-
-        $reviews = TeamReview::select("*")->where("team_id", $team_id)->where("writer_user_id", $user_id)->get();
-        $team = Team::select("*")->where("id", $team_id)->first();
-        if(count($reviews) == 0 && $user_id != $team->ceo_user_id) {
-
-            $review = new TeamReview();
-            $review->team_id = $team_id;
-            $review->writer_user_id = $user_id;
-            $review->title = $title;
-            $review->review = $reviewMessage;
-            $review->stars = $stars_value;
-            $review->created_at = date("Y-m-d H:i:s");
-            $review->save();
-
-
-
-            $user = User::select("*")->where("id", $user_id)->first();
-            $team->support = $team->calculateSupport($stars_value, $team_id);
-            $team->save();
-
-            $timeNow = date("H:i:s");
-            $time = (date("g:i a", strtotime($timeNow)));
-            $message = new UserMessage();
-            $message->sender_user_id = $team->ceo_user_id;
-            $message->team_id = $team_id;
-            $message->message = "$user->firstname has written a new review for this team! go check it out!";
-            $message->time_sent = $time;
-            $message->created_at = date("Y-m-d H:i:s");
-            $message->save();
-
-            return redirect($_SERVER["HTTP_REFERER"]);
-        } else {
-            return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already wrote a review or you are the CEO of this team");
-        }
-    }
-
-    public function acceptTeamInviteAction(Request $request){
-        // user accepts the team invite
-        // Sends a message to the team.
-        // Rejects any other invite sent to the user
-        $user_id = $request->input("user_id");
-        $invite_id = $request->input("invite_id");
-        $expertise_id = $request->input("expertise_id");
-        $team_id = $request->input("team_id");
-        $invite = InviteRequestLinktable::select("*")->where("id", $invite_id)->first();
-        $invite->accepted = 1;
-        $invite->save();
-
-        $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
-        $neededExpertise->amount = $neededExpertise->amount - 1;
-        $neededExpertise->save();
-
-        $otherInvites = InviteRequestLinktable::select("*")->where("user_id", $user_id)->where("accepted", 0)->get();
-        if (count($otherInvites) > 0) {
-            foreach ($otherInvites as $otherInvite) {
-                $otherInvite->accepted = 2;
-                $otherInvite->save();
-            }
-        }
-
-        $teamName = $invite->teams->First()->team_name;
-        $timeNow = date("H:i:s");
-        $time = (date("g:i a", strtotime($timeNow)));
-
-        $user = User::select("*")->where("id", $invite->users->First()->id)->first();
-        $user->team_id = $invite->team_id;
-        $user->save();
-        Session::set('team_id', $user->team_id);
-        Session::set('team_name', $user->team->team_name);
-
-
-        $message = new UserMessage();
-        $message->sender_user_id = $user->id;
-        $message->team_id = $team_id;
-        $message->message = "Hey $teamName i am happy to say, that i accepted your invite to join this team.";
-        $message->time_sent = $time;
-        $message->created_at = date("Y-m-d H:i:s");
-        $message->save();
-
-        return redirect($_SERVER["HTTP_REFERER"]);
-    }
-
-    public function rejectTeamInviteAction(Request $request){
-        //rejects the team invite sent to the user + sends a message to the CEO of the team.
-        $invite_id = $request->input("invite_id");
-        $invite = InviteRequestLinktable::select("*")->where("id", $invite_id)->first();
-        $invite->accepted = 2;
-        $invite->save();
-
-        $ceo  = User::select("*")->where("id", $invite->team->First()->ceo_user_id)->First();
-        $timeNow = date("H:i:s");
-        $time = (date("g:i a", strtotime($timeNow)));
-
-        $message = new UserMessage();
-        $message->sender_user_id = $invite->users->first()->id;
-        $message->receiver_user_id = $invite->teams->first()->ceo_user_id;
-        $message->message = "Hey $ceo I decided to reject your invite";
-        $message->time_sent = $time;
-        $message->created_at = date("Y-m-d H:i:s");
-        $message->save();
-
-        $message = new UserMessage();
-        $message->sender_user_id = $invite->teams->first()->ceo_user_id;
-        $message->receiver_user_id = $invite->users->first()->id;
-        $message->message = null;
-        $message->time_sent = null;
-        $message->created_at = date("Y-m-d H:i:s");
-        $message->save();
-        return redirect($_SERVER["HTTP_REFERER"]);
-
     }
 
     public function userSupportTickets(){
-        $user = User::select("*")->where("id", Session::get("user_id"))->first();
-        $supportTickets = SupportTicket::select("*")->where("user_id", $user->id)->get();
-        return view("/public/user/userSupportTickets", compact("user", "supportTickets"));
+        if($this->authorized()) {
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            $supportTickets = SupportTicket::select("*")->where("user_id", $user->id)->get();
+            return view("/public/user/userSupportTickets", compact("user", "supportTickets"));
+        }
     }
 
     public function sendSupportTicketMessageAction(Request $request){
-        $ticket_id = $request->input("ticket_id");
-        $sender_user_id = $request->input("sender_user_id");
-        $message = $request->input("message");
+        if($this->authorized()) {
+            $ticket_id = $request->input("ticket_id");
+            $sender_user_id = $request->input("sender_user_id");
+            $message = $request->input("message");
 
 
-        if(strlen($message) > 0) {
-            $time = $this->getTimeSent();
-            $supportTicketMessage = new SupportTicketMessage();
-            $supportTicketMessage->support_ticket_id = $ticket_id;
-            $supportTicketMessage->sender_user_id = $sender_user_id;
-            $supportTicketMessage->message = $message;
-            $supportTicketMessage->time_sent = $time;
-            $supportTicketMessage->created_at = date("Y-m-d H:i:s");
-            $supportTicketMessage->save();
+            if (strlen($message) > 0) {
+                $time = $this->getTimeSent();
+                $supportTicketMessage = new SupportTicketMessage();
+                $supportTicketMessage->support_ticket_id = $ticket_id;
+                $supportTicketMessage->sender_user_id = $sender_user_id;
+                $supportTicketMessage->message = $message;
+                $supportTicketMessage->time_sent = $time;
+                $supportTicketMessage->created_at = date("Y-m-d H:i:s");
+                $supportTicketMessage->save();
 
-            $messageArray = ["message" => $message, "timeSent" => $time];
+                $messageArray = ["message" => $message, "timeSent" => $time];
 
-            echo json_encode($messageArray);
+                echo json_encode($messageArray);
+            }
         }
     }
 
     public function addSupportTicketAction(Request $request){
-        $user_id = $request->input("user_id");
-        $title = $request->input("supportTicketTitle");
-        $question = $request->input("supportTicketQuestion");
+        if($this->authorized()) {
+            $user_id = $request->input("user_id");
+            $title = $request->input("supportTicketTitle");
+            $question = $request->input("supportTicketQuestion");
 
 //        $page = new Page();
 //        $page->page_type_id = 2;
@@ -599,21 +629,22 @@ class UserController extends Controller
 //        $page->content = htmlspecialchars($question);
 //        $page->created_at = date("Y-m-d H:i:s");
 //        $page->save();
-        $supportTicket = new SupportTicket();
-        $supportTicket->user_id = $user_id;
-        $supportTicket->support_ticket_status_id = 2;
-        $supportTicket->title = $title;
-        $supportTicket->created_at = date("Y-m-d H:i:s");
-        $supportTicket->save();
+            $supportTicket = new SupportTicket();
+            $supportTicket->user_id = $user_id;
+            $supportTicket->support_ticket_status_id = 2;
+            $supportTicket->title = $title;
+            $supportTicket->created_at = date("Y-m-d H:i:s");
+            $supportTicket->save();
 
-        $supportTicketMessage = new SupportTicketMessage();
-        $supportTicketMessage->support_ticket_id = $supportTicket->id;
-        $supportTicketMessage->sender_user_id = $user_id;
-        $supportTicketMessage->message = $question;
-        $supportTicketMessage->time_sent = $this->getTimeSent();
-        $supportTicketMessage->created_at = date("Y-m-d H:i:s");
-        $supportTicketMessage->save();
+            $supportTicketMessage = new SupportTicketMessage();
+            $supportTicketMessage->support_ticket_id = $supportTicket->id;
+            $supportTicketMessage->sender_user_id = $user_id;
+            $supportTicketMessage->message = $question;
+            $supportTicketMessage->time_sent = $this->getTimeSent();
+            $supportTicketMessage->created_at = date("Y-m-d H:i:s");
+            $supportTicketMessage->save();
 
-        return redirect($_SERVER["HTTP_REFERER"]);
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
     }
 }
