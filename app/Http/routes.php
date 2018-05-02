@@ -331,5 +331,13 @@ Route::get("/{title}/users", "UsersExpertisesListController@usersListAction");
 //=======================ADMIN PANEL==========================
 
 Route::get("/admin/statistics", "AdminController@statisticsAction");
+
+Route::get("/admin/userAccounts", "AdminController@userAccountsListAction");
+
+Route::get("/admin/user/{id}", "AdminController@userEditorAction");
+
+Route::post("/admin/saveUser", "AdminController@saveUserAction");
+
+Route::post("/admin/saveSingleUserExpertise", "AdminController@saveSingleUserExpertiseAction");
 //==
 

@@ -607,9 +607,14 @@ footer{
     width: 65px;
     height: 65px;
 }
+
 .circleSmall{
     width: 25px;
     height: 25px;
+}
+.circleMedium{
+    width: 150px;
+    height: 150px;
 }
 .circleImgLg{
     width: 250px;

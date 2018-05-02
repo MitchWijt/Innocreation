@@ -12,7 +12,9 @@
     {{--CSS--}}
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/general_admin.css">
     <link rel="stylesheet" href="/css/activityTimeline.css">
+    <link rel="stylesheet" href="/css/dataTables.min.css">
     {{--CSS PLUGINS--}}
     <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
     <link rel="stylesheet" href="/css/jquery-ui-min.css">
@@ -28,6 +30,7 @@
     <script src="/js/jquery-ui.min.js"></script>
     <script defer src="/js/fontawesome-all.js"></script>
     <script defer src="/js/jquery.timepicker.min.js"></script>
+    <script defer src="/js/dataTables.min.js"></script>
     <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=i4hrh8gzmh7fted3hqpgatcuwma8kl075x378rgkki09j852"></script>
 
     {{------------------------------}}

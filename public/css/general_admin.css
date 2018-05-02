@@ -1,0 +1,23 @@
+/*=====================DATATABLES=====================*/
+.dataTables_length, .dataTables_filter{
+    color: #C9CCCF !important;
+}
+#table_previous, #table_next, #table_info{
+    color: #C9CCCF !important;
+}
+
+.dataTables_paginate{
+    margin-bottom: 20px !important;
+    margin-top: 10px !important;
+}
+
+tbody tr{
+    color: #000 !important;
+    background: #C9CCCF !important;
+    cursor: pointer;
+}
+
+tbody tr:hover{
+    background: #2b2b2b !important;
+    color: #FF6100 !important
+}

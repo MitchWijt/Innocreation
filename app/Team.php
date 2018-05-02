@@ -11,6 +11,10 @@ class Team extends Model
         return $this->hasMany("\App\User", "id","ceo_user_id");
     }
 
+    public function getUrl(){
+        return "/team/$this->team_name";
+    }
+
     public function getProfilePicture(){
         return "/images/profilePicturesTeams/" . $this->team_profile_picture;
     }

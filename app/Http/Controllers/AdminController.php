@@ -2,9 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
+use App\Expertises_linktable;
+use App\InviteRequestLinktable;
+use App\JoinRequestLinktable;
+use App\Team;
+use App\User;
+use App\UserMessage;
+use App\WorkspaceShortTermPlannerTask;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
@@ -15,7 +24,14 @@ class AdminController extends Controller
      */
     public function statisticsAction(){
         if($this->authorized(true)){
-            return view("/admin/statistics");
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            $totalUsers = User::select("*")->get();
+            $totalTeams = Team::select("*")->get();
+            $totalTasks = WorkspaceShortTermPlannerTask::select("*")->get();
+            $totalMessages = UserMessage::select("*")->get();
+            $totalInvited = InviteRequestLinktable::select("*")->get();
+            $totalRequests = JoinRequestLinktable::select("*")->get();
+            return view("/admin/statistics", compact("user", "totalUsers", "totalInvited" , "totalMessages", "totalRequests", "totalTasks", "totalTeams"));
         }
     }
 
@@ -24,9 +40,11 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function userAccountsListAction(){
+        if($this->authorized(true)){
+            $users = User::select("*")->where("deleted", 0)->get();
+            return view("/admin/userAccountsList", compact("users"));
+        }
     }
 
     /**
@@ -35,9 +53,13 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function userEditorAction($id){
+        if($this->authorized(true)) {
+            $user = User::select("*")->where("id", $id)->first();
+            $expertiseLinktables = Expertises_linktable::select("*")->where("user_id", $id)->get();
+            $countries = Country::select("*")->get();
+            return view("/admin/userEditor", compact("user", "countries", "expertiseLinktables"));
+        }
     }
 
     /**
@@ -46,9 +68,28 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function saveUserAction(Request $request){
+        if($this->authorized(true)) {
+            $userId = $request->input("user_id");
+            $user = User::select("*")->where("id", $userId)->first();
+
+            $user->firstname = $request->input("firstname");
+            if(strlen($request->input("middlename")) > 0) {
+                $user->middlename = $request->input("middlename");
+            }
+            $user->lastname = $request->input("lastname");
+            $user->email = $request->input("email");
+            $user->city = $request->input("city");
+            $user->postalcode = $request->input("postal_code");
+            $user->state = $request->input("state");
+            $user->phonenumber = $request->input("phonenumber");
+            $user->country = $request->input("country");
+            $user->motivation = $request->input("user_motivation");
+            $user->introduction = $request->input("user_introduction");
+            $user->updated_at = date("Y-m-d H:i:s");
+            $user->save();
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
     }
 
     /**
@@ -57,9 +98,15 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function saveSingleUserExpertiseAction(Request $request){
+        if($this->authorized(true)) {
+            $expertiseLinktableId = $request->input("expertise_linktable_id");
+
+            $expertiseLinktable = Expertises_linktable::select("*")->where("id", $expertiseLinktableId)->first();
+            $expertiseLinktable->description = $request->input("expertise_description");
+            $expertiseLinktable->save();
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
     }
 
     /**

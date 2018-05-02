@@ -4,11 +4,11 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Statistics</a>
+        <a class="regular-link c-gray" href="/admin/statistics">Statistics</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Accounts</a>
+        <a class="regular-link c-gray" href="/admin/userAccounts">Accounts</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center p-relative">
@@ -29,6 +29,18 @@
     <hr>
     <div class="sidebar-tab text-center">
         <a class="regular-link c-gray" href="">Forum</a>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="">Expertises</a>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="">FAQ</a>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="">Prices</a>
     </div>
     <hr>
 </div>
