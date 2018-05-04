@@ -24,7 +24,7 @@ $(".chat-card").on("click",function () {
     var user_id = $(this).data("user-id");
     var user_chat_id = $(this).data("chat-id");
    $(".collapse").each(function () {
-       if($(this).data("user-id") == user_id){
+       if($(this).data("chat-id") == user_chat_id){
            function getUserChatMessages() {
                $.ajax({
                    method: "POST",
@@ -39,7 +39,7 @@ $(".chat-card").on("click",function () {
                    data: {'user_chat_id': user_chat_id},
                    success: function (data) {
                        $(".collapse").each(function () {
-                           if($(this).data("user-id") == user_id){
+                           if($(this).data("chat-id") == user_chat_id){
                                $(this).find(".userChatMessages").html(data);
                            }
                        });

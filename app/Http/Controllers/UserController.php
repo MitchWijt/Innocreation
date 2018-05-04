@@ -428,21 +428,20 @@ class UserController extends Controller
                 $timeNow = date("H:i:s");
                 $time = (date("g:i a", strtotime($timeNow)));
 
+                $userChat = new UserChat();
+                $userChat->creator_user_id = $user_id;
+                $userChat->receiver_user_id = $team->ceo_user_id;
+                $userChat->created_at = date("Y-m-d H:i:s");
+                $userChat->save();
+
                 $message = new UserMessage();
                 $message->sender_user_id = $user_id;
-                $message->receiver_user_id = $team->ceo_user_id;
+                $message->user_chat_id = $userChat->id;
                 $message->message = "Hey $ceoFirstname I have done a request to join your team!";
                 $message->time_sent = $time;
                 $message->created_at = date("Y-m-d H:i:s");
                 $message->save();
 
-                $message = new UserMessage();
-                $message->sender_user_id = $team->ceo_user_id;
-                $message->receiver_user_id = $user_id;
-                $message->message = null;
-                $message->time_sent = null;
-                $message->created_at = date("Y-m-d H:i:s");
-                $message->save();
                 return redirect($_SERVER["HTTP_REFERER"]);
             } else {
                 return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already applied for this team");

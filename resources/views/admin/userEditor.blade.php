@@ -4,13 +4,21 @@
         @include("includes.admin_sidebar")
         <div class="container">
             <div class="row">
+                <div class="col-sm-12 d-flex js-center">
+                   @include("includes.flash")
+                </div>
+            </div>
+            <div class="row">
                 <div class="card card-lg col-sm-12 m-t-20">
                     <div class="card-block">
                         <div class="row">
                             <div class="col-sm-12 d-flex js-between m-b-10">
                                 <h4 class="m-t-5"><?= $user->getName()?></h4>
                                 <div class="buttons m-t-5">
-                                    <button class="btn btn-inno pull-right btn-sm">Delete</button>
+                                    <form action="/admin/deleteUser">
+                                        <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                    </form>
+                                    <button class="btn btn-inno pull-right btn-sm" type="button" data-toggle="modal" data-target="#deleteUserModal">Delete</button>
                                     <button class="btn btn-inno pull-right btn-sm m-r-10 ">Login as <?= $user->firstname?></button>
                                     <a href="<?= $user->getUrl()?>" class="btn btn-inno pull-right btn-sm m-r-10">To live page</a>
                                 </div>
@@ -131,6 +139,36 @@
                                     </div>
                                 </form>
                             <? } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade deleteUserModal" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" >
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header col-sm-12 d-flex js-center">
+                            <h4>Delete <?= $user->getName()?></h4>
+                        </div>
+                        <div class="modal-body ">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p>In order to delete a user, please fill in your admin password for confirmation.</p>
+                                </div>
+                            </div>
+                            <form action="/admin/deleteUser" method="post">
+                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                <div class="row">
+                                    <div class="col-sm-12 d-flex">
+                                        <div class="col-sm-7 m-t-5">
+                                            <input type="password" placeholder="password" name="password" class="input col-sm-12 m-0 p-0">
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button class="btn btn-inno btn-danger btn-sm" type="submit">Delete user</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

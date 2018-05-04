@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Country;
 use App\Expertises_linktable;
+use App\ForumThread;
 use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
+use App\NeededExpertiseLinktable;
 use App\Team;
+use App\TeamGroupChatLinktable;
 use App\User;
+use App\UserChat;
 use App\UserMessage;
 use App\WorkspaceShortTermPlannerTask;
 use Illuminate\Http\Request;
 
+use Auth;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Session;
 
@@ -88,12 +93,12 @@ class AdminController extends Controller
             $user->introduction = $request->input("user_introduction");
             $user->updated_at = date("Y-m-d H:i:s");
             $user->save();
-            return redirect($_SERVER["HTTP_REFERER"]);
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors("test");
         }
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specifiesd resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -116,9 +121,11 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function teamsListAction(){
+        if($this->authorized(true)) {
+            $teams = Team::select("*")->get();
+            return view("/admin/teamsList", compact("teams"));
+        }
     }
 
     /**
@@ -127,8 +134,29 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function deleteUserAction(Request $request){
+        if ($this->authorized(true)) {
+            $admin = User::select("*")->where("id", Session::get("user_id"))->first();
+            $userId = $request->input("user_id");
+            $password = $request->input("password");
+            if (Auth::attempt(['email' => $admin->email, 'password' => $password])) {
+                $user = User::select("*")->where("id", $userId)->first();
+                $userJoinedExpertise = $user->getJoinedExpertise()->expertises->First()->id;
+                if($user->team_id != null){
+                    $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $user->team_id)->where("expertise_id", $userJoinedExpertise)->get();
+                    $neededExpertise->amount = $neededExpertise->amount + 1;
+                }
+                $user->delete();
+
+                $userExpertisesLinktable = Expertises_linktable::select("*")->where("user_id", $userId)->get();
+                foreach($userExpertisesLinktable as $userExpertise){
+                    $userExpertise->delete();
+                }
+
+                return redirect("/admin/userAccounts")->with("success","User deleted");
+            } else {
+                return redirect($_SERVER["HTTP_REFERER"])->withErrors("Authentication failed");
+            }
+        }
     }
 }

@@ -12,11 +12,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center p-relative">
-        <a class="regular-link c-gray" href="">Teams</a>
-    </div>
-    <hr>
-    <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Short term tasks/boards</a>
+        <a class="regular-link c-gray" href="/admin/teamsList">Teams</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

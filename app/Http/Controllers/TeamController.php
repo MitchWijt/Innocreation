@@ -10,6 +10,7 @@ use App\Team;
 use App\TeamGroupChat;
 use App\TeamGroupChatLinktable;
 use App\User;
+use App\UserChat;
 use App\UserMessage;
 use App\UserRole;
 use Illuminate\Http\Request;
@@ -188,19 +189,12 @@ class TeamController extends Controller
         $timeNow = date("H:i:s");
         $time = (date("g:i a", strtotime($timeNow)));
 
+        $userChat = UserChat::select("*")->where("creator_user_id", $request->user_id)->first();
         $message = new UserMessage();
         $message->sender_user_id = $request->teams->first()->ceo_user_id;
-        $message->receiver_user_id = $request->users->first()->id;
+        $message->user_chat_id = $userChat->id;
         $message->message = "Hey $userName unfortunately we decided to reject you from our team";
         $message->time_sent = $time;
-        $message->created_at = date("Y-m-d H:i:s");
-        $message->save();
-
-        $message = new UserMessage();
-        $message->sender_user_id = $request->users->first()->id;
-        $message->receiver_user_id = $request->teams->first()->ceo_user_id;
-        $message->message = null;
-        $message->time_sent = null;
         $message->created_at = date("Y-m-d H:i:s");
         $message->save();
         return redirect($_SERVER["HTTP_REFERER"]);
@@ -240,21 +234,15 @@ class TeamController extends Controller
             $user->team_id = $request->team_id;
             $user->save();
 
+            $userChat = UserChat::select("*")->where("creator_user_id", $user->id)->first();
             $message = new UserMessage();
             $message->sender_user_id = $request->teams->first()->ceo_user_id;
-            $message->receiver_user_id = $request->users->first()->id;
+            $message->user_chat_id = $userChat->id;
             $message->message = "Hey $userName we are happy to say, that we accepted you in our team. Welcome!";
             $message->time_sent = $time;
             $message->created_at = date("Y-m-d H:i:s");
             $message->save();
 
-            $message = new UserMessage();
-            $message->sender_user_id = $request->users->first()->id;
-            $message->receiver_user_id = $request->teams->first()->ceo_user_id;
-            $message->message = null;
-            $message->time_sent = null;
-            $message->created_at = date("Y-m-d H:i:s");
-            $message->save();
             return redirect($_SERVER["HTTP_REFERER"]);
 
     }

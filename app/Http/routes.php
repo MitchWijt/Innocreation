@@ -338,6 +338,12 @@ Route::get("/admin/user/{id}", "AdminController@userEditorAction");
 
 Route::post("/admin/saveUser", "AdminController@saveUserAction");
 
+Route::post("/admin/deleteUser", "AdminController@deleteUserAction");
+
 Route::post("/admin/saveSingleUserExpertise", "AdminController@saveSingleUserExpertiseAction");
+
+Route::get("/admin/teamsList", "AdminController@teamsListAction");
+
+Route::get("/debug/test", "DebugController@test");
 //==
 

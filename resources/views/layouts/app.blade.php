@@ -35,7 +35,7 @@
 </head>
 <body>
 @include('includes.header')
-@include('includes/flash')
+{{--@include('includes/flash')--}}
 @yield('content')
 @yield('pagescript')
 @include('includes/footer')

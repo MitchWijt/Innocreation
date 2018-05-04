@@ -21,7 +21,7 @@
                         <? if($team->ceo_user_id == $user->id || $user->role == 3 || $user->role == 1) { ?>
                             <div class="row text-center m-t-20 m-b-20">
                                 <div class="col-sm-12">
-                                    <button type="button" class="btn btn-inno editProfilePicture">Edit profile picture</button>
+                                    <button type="button" class="btn btn-inno editProfilePicture">Edit team picture</button>
                                 </div>
                             </div>
                         <? } ?>
