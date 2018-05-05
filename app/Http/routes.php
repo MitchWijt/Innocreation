@@ -12,6 +12,8 @@
 */
 Route::get("/","HomeController@index");
 
+Route::get("/debug/test", "DebugController@test");
+
 Route::get("/includes/footer","HomeController@footer");
 
 Route::get("/login", "LoginController@index");
@@ -340,10 +342,14 @@ Route::post("/admin/saveUser", "AdminController@saveUserAction");
 
 Route::post("/admin/deleteUser", "AdminController@deleteUserAction");
 
+Route::post("/admin/switchLogin", "AdminController@switchLoginAction");
+
+Route::post("/admin/deleteUserProfilePicture", "AdminController@deleteUserProfilePictureAction");
+
 Route::post("/admin/saveSingleUserExpertise", "AdminController@saveSingleUserExpertiseAction");
 
-Route::get("/admin/teamsList", "AdminController@teamsListAction");
+Route::get("/admin/teamList", "AdminController@teamListAction");
 
-Route::get("/debug/test", "DebugController@test");
+Route::get("/admin/team/{id}", "AdminController@teamEditorAction");
 //==
 

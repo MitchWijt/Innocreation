@@ -65,7 +65,7 @@
                                             <div class="col-sm-4 text-center">
                                                 <p class="m-t-15 <? if($team->ceo_user_id == $member->id) echo "m-b-0"; ?>"><?= $member->getName()?></p>
                                                 <? if($team->ceo_user_id == $member->id) { ?>
-                                                    <p class="c-orange text f-12">CEO</p>
+                                                    <p class="c-orange text f-12">Team leader</p>
                                                 <? } ?>
                                             </div>
                                             <div class="col-sm-4" style="display: flex; justify-content: flex-end;">

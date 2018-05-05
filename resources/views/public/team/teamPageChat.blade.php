@@ -239,7 +239,7 @@
                                     <? foreach($team->getMembers() as $member) { ?>
                                         <? if($member->id != $user->id) { ?>
                                             <? if($member->id == $team->ceo_user_id) { ?>
-                                                <option value="<?= $member->id?>"><?= $member->getName() . " - " . "CEO"?></option>
+                                                <option value="<?= $member->id?>"><?= $member->getName() . " - " . "Team leader"?></option>
                                             <? } else { ?>
                                                 <option value="<?= $member->id?>"><?= $member->getName() . " - " . $member->getJoinedExpertise()->expertises->First()->title?></option>
                                             <? } ?>

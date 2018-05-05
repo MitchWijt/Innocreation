@@ -423,7 +423,13 @@
                                                             <div class="d-flex js-between m-t-5">
                                                                 <? if($shortPlannerTask->assigned_to != null) { ?>
                                                                     <div class="assignMember">
-                                                                        <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
+                                                                        <? if($shortPlannerTask->assignedUser) { ?>
+                                                                            <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
+                                                                        <? } else { ?>
+                                                                            <div class="text-center">
+                                                                                <div class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><i class="zmdi zmdi-eye-off "></i></div>
+                                                                            </div>
+                                                                        <? } ?>
                                                                         <div class="hasImage hidden">
                                                                             <div class="circle circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                                                 <div class="text-center memberAssignPlaceholder">
@@ -503,7 +509,13 @@
                                                                                 <? if($shortPlannerTask->assigned_to != null) { ?>
                                                                                     <div class="d-flex fd-row ">
                                                                                         <div class="assignMember m-t-10">
-                                                                                            <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
+                                                                                            <? if($shortPlannerTask->assignedUser) { ?>
+                                                                                                <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
+                                                                                            <? } else { ?>
+                                                                                                <div class="text-center">
+                                                                                                    <div class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><i class="zmdi zmdi-eye-off "></i></div>
+                                                                                                </div>
+                                                                                            <? } ?>
                                                                                             <div class="hasImage hidden">
                                                                                                 <div class="circle circleSmall placeholderMemberAssign assignTaskToMemberToggle border-inno-black" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                                                                     <div class="text-center memberAssignPlaceholder">

@@ -24,7 +24,7 @@
                                     </thead>
                                     <tbody>
                                     <? foreach($teams as $team) { ?>
-                                    <tr class="clickable-row" data-href="/admin/user/<? echo $team->id?>">
+                                    <tr class="clickable-row" data-href="/admin/team/<? echo $team->id?>">
                                         <td scope="row" data-visible="false"><?= $team->id?></td>
                                         <td><?= $team->team_name?></td>
                                         <td><?= count($team->getMembers())?></td>

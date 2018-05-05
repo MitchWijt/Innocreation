@@ -15,15 +15,22 @@
                             <div class="col-sm-12 d-flex js-between m-b-10">
                                 <h4 class="m-t-5"><?= $user->getName()?></h4>
                                 <div class="buttons m-t-5">
-                                    <form action="/admin/deleteUser">
-                                        <input type="hidden" name="user_id" value="<?= $user->id?>">
-                                    </form>
                                     <button class="btn btn-inno pull-right btn-sm" type="button" data-toggle="modal" data-target="#deleteUserModal">Delete</button>
-                                    <button class="btn btn-inno pull-right btn-sm m-r-10 ">Login as <?= $user->firstname?></button>
+                                    <? if($adminUser->id != $user->id) { ?>
+                                        <form action="/admin/switchLogin" method="post" class="pull-right">
+                                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                            <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                            <button class="btn btn-inno btn-sm m-r-10">Login as <?= $user->firstname?></button>
+                                        </form>
+                                    <? } ?>
                                     <a href="<?= $user->getUrl()?>" class="btn btn-inno pull-right btn-sm m-r-10">To live page</a>
                                 </div>
                             </div>
                             <div class="hr col-sm-12"></div>
+                            <form action="/admin/deleteUserProfilePicture" method="post" class="deleteUserProfilePictureForum">
+                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                <input type="hidden" name="user_id" value="<? if(isset($user)) echo $user->id ?>">
+                            </form>
                             <form action="/admin/saveUser" method="post">
                                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                 <input type="hidden" name="user_id" value="<? if(isset($user)) echo $user->id ?>">
@@ -31,6 +38,7 @@
                                     <div class="col-sm-12 d-flex">
                                         <div class="col-sm-5">
                                             <div class="col-sm-5 m-t-15 m-b-20">
+                                                <i class="zmdi zmdi-close c-orange pull-right f-20 p-absolute deleteProfilePicture" style="right: 5px;"></i>
                                                 <img src="<?= $user->getProfilePicture()?>" class="circle circleMedium">
                                                 <p class="text-center">Team: <? if($user->team_id != null) { ?><a target="_blank" class="regular-link" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a><? } else { ?> - <? } ?></p>
                                             </div>
@@ -175,4 +183,11 @@
             </div>
         </div>
     </div>
+    <script>
+        $(".deleteProfilePicture").on("click",function () {
+            if(confirm("Are you sure you want to delete this profile picture?")){
+                $(".deleteUserProfilePictureForum").submit();
+            }
+        });
+    </script>
 @endsection

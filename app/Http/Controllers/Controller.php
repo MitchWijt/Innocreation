@@ -29,10 +29,10 @@ class Controller extends BaseController
     public function authorized($admin = false){
         if($admin && $this->isLoggedIn()){
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
-            if($user->role == 1){
+            if(Session::get("user_role") == 1){
                 return true;
             } else {
-                redirect("/login")->withErrors("I'm sorry, you don't have access to this part of the platform")->send();
+                redirect("/login")->withErrors("We're sorry, you don't have access to this part of the platform")->send();
             }
         } else {
             if($this->isLoggedIn()){

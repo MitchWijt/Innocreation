@@ -59,6 +59,7 @@ class LoginController extends Controller
         $user->postalcode = $request->input("postcode");
         $user->state = $request->input("state");
         $user->country = $request->input("country");
+        $user->profile_picture = "defaultProfilePicture.png";
         $user->phonenumber = $request->input("phonenumber");
         $user->created_at = date("Y-m-d H:i:s");
         $user->save();

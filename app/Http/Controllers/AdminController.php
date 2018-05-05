@@ -60,10 +60,11 @@ class AdminController extends Controller
      */
     public function userEditorAction($id){
         if($this->authorized(true)) {
+            $adminUser = User::select("*")->where("id", Session::get("user_id"))->first();
             $user = User::select("*")->where("id", $id)->first();
             $expertiseLinktables = Expertises_linktable::select("*")->where("user_id", $id)->get();
             $countries = Country::select("*")->get();
-            return view("/admin/userEditor", compact("user", "countries", "expertiseLinktables"));
+            return view("/admin/userEditor", compact("user", "countries", "expertiseLinktables", "adminUser"));
         }
     }
 
@@ -121,10 +122,10 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function teamsListAction(){
+    public function teamListAction(){
         if($this->authorized(true)) {
             $teams = Team::select("*")->get();
-            return view("/admin/teamsList", compact("teams"));
+            return view("/admin/teamList", compact("teams"));
         }
     }
 
@@ -141,9 +142,9 @@ class AdminController extends Controller
             $password = $request->input("password");
             if (Auth::attempt(['email' => $admin->email, 'password' => $password])) {
                 $user = User::select("*")->where("id", $userId)->first();
-                $userJoinedExpertise = $user->getJoinedExpertise()->expertises->First()->id;
                 if($user->team_id != null){
-                    $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $user->team_id)->where("expertise_id", $userJoinedExpertise)->get();
+                    $userJoinedExpertise = $user->getJoinedExpertise()->expertises->First()->id;
+                    $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $user->team_id)->where("expertise_id", $userJoinedExpertise)->first();
                     $neededExpertise->amount = $neededExpertise->amount + 1;
                 }
                 $user->delete();
@@ -157,6 +158,38 @@ class AdminController extends Controller
             } else {
                 return redirect($_SERVER["HTTP_REFERER"])->withErrors("Authentication failed");
             }
+        }
+    }
+
+    public function switchLoginAction(Request $request){
+        if ($this->authorized(true)) {
+            $userId = $request->input("user_id");
+            $user = User::select("*")->where("id", $userId)->with("team")->first();
+            Session::set('user_name', $user->getName());
+            Session::set('user_id', $user->id);
+            if($user->team_id != null) {
+                Session::set('team_id', $user->team_id);
+                Session::set("team_name", $user->team->first()->team_name);
+            }
+            return redirect("/account");
+        }
+    }
+
+    public function deleteUserProfilePictureAction(Request $request){
+        if ($this->authorized(true)) {
+            $userId = $request->input("user_id");
+
+            $user = User::select("*")->where("id", $userId)->first();
+            $user->profile_picture = "defaultProfilePicture.png";
+            $user->save();
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
+    }
+
+    public function teamEditorAction($id){
+        if ($this->authorized(true)) {
+            $team = Team::select("*")->where("id", $id)->first();
+            return view("/admin/teamEditor", compact("team"));
         }
     }
 }

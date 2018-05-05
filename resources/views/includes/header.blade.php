@@ -27,7 +27,7 @@
         <div class="loginRegister">
             <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
                 <? $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();?>
-                <? if($user->role == 1) { ?>
+                <? if(\Illuminate\Support\Facades\Session::get("user_role") == 1) { ?>
                     <div class="admin">
                         <a class="regular-link c-gray" href="/admin/statistics">Admin panel</a>
                     </div>

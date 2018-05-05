@@ -23,6 +23,7 @@
                                         <th scope="col" data-column-id="id" data-visible="false" data-type="numeric">ID</th>
                                         <th scope="col" data-column-id="name">Name</th>
                                         <th scope="col">Email</th>
+                                        <th scope="col">Team leader</th>
                                         <th scope="col">Team</th>
                                         <th scope="col">Country</th>
                                         <th scope="col" data-formatter="date">Joined at</th>
@@ -34,6 +35,15 @@
                                             <td scope="row" data-visible="false"><?= $user->id?></td>
                                             <td><?= $user->getName()?></td>
                                             <td><?= $user->email?></td>
+                                            <? if($user->team_id != null) { ?>
+                                                <? if($user->team->ceo_user_id == $user->id) { ?>
+                                                    <td><i class="zmdi zmdi-check f-20 c-orange"></i></td>
+                                                <? } else { ?>
+                                                    <td> - </td>
+                                                <? } ?>
+                                            <? } else { ?>
+                                                <td> - </td>
+                                            <? } ?>
                                             <? if($user->team_id != null) { ?>
                                                 <td><?= $user->team->team_name?></td>
                                             <? } else { ?>

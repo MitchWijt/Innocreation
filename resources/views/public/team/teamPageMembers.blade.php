@@ -21,7 +21,7 @@
                                     </div>
                                     <div class="col-sm-2">
                                         <? if($member->id == $team->ceo_user_id) { ?>
-                                            <p class="m-t-15">CEO</p>
+                                            <p class="m-t-15">Team leader</p>
                                         <? } else { ?>
                                             <p class="m-t-15"><?= $member->roles->First()->title;?></p>
                                         <? } ?>
