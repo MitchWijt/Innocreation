@@ -361,13 +361,11 @@ class TeamController extends Controller
         $sender_user_id = $request->input("sender_user_id");
         $teamMessage = $request->input("teamMessage");
 
-        $timeNow = date("H:i:s");
-        $time = (date("g:i a", strtotime($timeNow)));
         $message = new UserMessage();
         $message->sender_user_id = $sender_user_id;
         $message->team_id = $team_id;
         $message->message = $teamMessage;
-        $message->time_sent = $time;
+        $message->time_sent = $this->getTimeSent();
         $message->created_at = date("Y-m-d H:i:s");
         $message->save();
 

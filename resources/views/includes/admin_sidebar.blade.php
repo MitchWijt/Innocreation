@@ -16,7 +16,15 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Messages *</a>
+        <a data-toggle="collapse" data-target="#sidebarAdminMessages" aria-expanded="false" aria-controls="sidebarAdminMessages" class="regular-link c-gray">Messages <i class="zmdi zmdi-chevron-down m-l-10"></i></a>
+        <div class="collapse" id="sidebarAdminMessages">
+            <div class="sidebar-tab text-center">
+                <a class="regular-link c-gray" href="/admin/support-tickets">Support tickets</a>
+            </div>
+            <div class="sidebar-tab text-center">
+                <a class="regular-link c-gray" href="">User messages</a>
+            </div>
+        </div>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

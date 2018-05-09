@@ -1,5 +1,6 @@
 $(".supportTicketCard").on("click",function () {
     var ticket_id = $(this).data("ticket-id");
+    var admin = 0;
     function getSupportTicketMessages() {
         $.ajax({
             method: "POST",
@@ -11,7 +12,7 @@ $(".supportTicketCard").on("click",function () {
                 }
             },
             url: "/message/getSupportTicketMessages",
-            data: {'ticket_id': ticket_id},
+            data: {'ticket_id': ticket_id, 'admin' : admin},
             success: function (data) {
                 $(".supportTicketModal").each(function () {
                     if($(this).data("ticket-id") == ticket_id){

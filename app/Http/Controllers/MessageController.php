@@ -66,11 +66,16 @@ class MessageController extends Controller
      */
     public function getSupportTicketMessagesAction(Request $request)
     {
+        $admin = $request->input("admin");
+        if($admin == 1) {
+            $userId = Session::get("admin_user_id");
+        } else {
+            $userId = Session::get("user_id");
+        }
         $ticketId = $request->input("ticket_id");
-        $userId = Session::get("user_id");
         $user = User::select("*")->where("id", $userId)->first();
         $supportTicket = SupportTicket::select("*")->where("id", $ticketId)->first();
-        return view("/public/shared/_messagesSupportTickets", compact( "supportTicket", "user"));
+        return view("/public/shared/_messagesSupportTickets", compact( "supportTicket", "user", "admin"));
     }
 
     /**

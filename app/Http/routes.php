@@ -351,5 +351,23 @@ Route::post("/admin/saveSingleUserExpertise", "AdminController@saveSingleUserExp
 Route::get("/admin/teamList", "AdminController@teamListAction");
 
 Route::get("/admin/team/{id}", "AdminController@teamEditorAction");
+
+Route::post("/admin/saveTeam", "AdminController@saveTeamAction");
+
+Route::post("/admin/sendMessageTeamChat", "AdminController@sendMessageTeamChatAction");
+
+Route::post("/admin/saveNeededExpertiseBackend", "AdminController@saveNeededExpertiseBackendAction");
+
+Route::post("/admin/deleteTeamProfilePicture", "AdminController@deleteTeamProfilePictureAction");
+
+Route::get("/admin/support-tickets", "AdminController@supportTicketsIndexAction");
+
+Route::post("/admin/assignHelperToSupportTicket", "AdminController@assignHelperToSupportTicketAction");
+
+Route::post("/admin/changeStatusSupportTicket", "AdminController@changeStatusSupportTicketAction");
+
+
+
+
 //==
 

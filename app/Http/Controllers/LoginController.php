@@ -126,6 +126,9 @@ class LoginController extends Controller
             Session::set('user_name', $user->getName());
             Session::set('user_role', $user->role);
             Session::set('user_id', $user->id);
+            if($user->role == 1) {
+                Session::set('admin_user_id', $user->id);
+            }
             if($user->team_id != null) {
                 Session::set('team_id', $user->team_id);
                 Session::set("team_name", $user->team->first()->team_name);

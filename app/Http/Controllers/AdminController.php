@@ -8,6 +8,8 @@ use App\ForumThread;
 use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
 use App\NeededExpertiseLinktable;
+use App\SupportTicket;
+use App\SupportTicketStatus;
 use App\Team;
 use App\TeamGroupChatLinktable;
 use App\User;
@@ -137,7 +139,7 @@ class AdminController extends Controller
      */
     public function deleteUserAction(Request $request){
         if ($this->authorized(true)) {
-            $admin = User::select("*")->where("id", Session::get("user_id"))->first();
+            $admin = User::select("*")->where("id", Session::get("admin_user_id"))->first();
             $userId = $request->input("user_id");
             $password = $request->input("password");
             if (Auth::attempt(['email' => $admin->email, 'password' => $password])) {
@@ -188,8 +190,99 @@ class AdminController extends Controller
 
     public function teamEditorAction($id){
         if ($this->authorized(true)) {
+            $admin = User::select("*")->where("id", Session::get("admin_user_id"))->where("role", 1)->first();
             $team = Team::select("*")->where("id", $id)->first();
-            return view("/admin/teamEditor", compact("team"));
+            return view("/admin/teamEditor", compact("team", "admin"));
+        }
+    }
+
+    public function saveTeamAction(Request $request){
+        if ($this->authorized(true)) {
+            $teamId = $request->input("team_id");
+            $motivation = $request->input("team_motivation");
+            $introduction = $request->input("team_introduction");
+
+            $team = Team::select("*")->where("id", $teamId)->First();
+            $team->team_motivation = $motivation;
+            $team->team_introduction = $introduction;
+            $team->save();
+            return redirect($_SERVER["HTTP_REFERER"])->with("success", "Saved");
+        }
+    }
+
+    public function sendMessageTeamChatAction(Request $request){
+        if ($this->authorized(true)) {
+            $teamId = $request->input("team_id");
+            $sender_user_id = 1;
+            $teamMessage = $request->input("message_team_chat");
+
+            $message = new UserMessage();
+            $message->sender_user_id = $sender_user_id;
+            $message->team_id = $teamId;
+            $message->message = $teamMessage;
+            $message->time_sent = $this->getTimeSent();
+            $message->created_at = date("Y-m-d H:i:s");
+            $message->save();
+            return redirect($_SERVER["HTTP_REFERER"])->with("success", "Team message sent");
+        }
+    }
+
+    public function saveNeededExpertiseBackendAction(Request $request){
+        if ($this->authorized(true)) {
+            $neededExpertiseId = $request->input("needed_expertise_id");
+            $description = $request->input("description_needed_expertise");
+            $requirements = $request->input("requirements_needed_expertise");
+            $amount = $request->input("amount");
+            $neededExpertise = NeededExpertiseLinktable::select("*")->where("id", $neededExpertiseId)->first();
+            $neededExpertise->description = $description;
+            $neededExpertise->requirements = $requirements;
+            $neededExpertise->amount = $amount;
+            $neededExpertise->save();
+            return redirect($_SERVER["HTTP_REFERER"])->with("success", $neededExpertise->Expertises->First()->title . " updated");
+        }
+    }
+
+    public function deleteTeamProfilePictureAction(Request $request){
+        if ($this->authorized(true)) {
+            $teamId = $request->input("team_id");
+            $team = Team::select("*")->where("id", $teamId)->first();
+            $team->team_profile_picture = "defaultProfilePicture.png";
+            $team->save();
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
+    }
+
+    public function supportTicketsIndexAction(){
+        if ($this->authorized(true)) {
+            $admin = User::select("*")->where("id", Session::get("admin_user_id"))->first();
+            $supportTickets = SupportTicket::select("*")->orderBy("created_at", "DESC")->get();
+            $supportTicketStatusses = SupportTicketStatus::select("*")->get();
+            return view("/admin/supportTickets", compact("supportTickets", "supportTicketStatusses", "admin"));
+        }
+    }
+
+    public function assignHelperToSupportTicketAction(Request $request){
+        if ($this->authorized(true)) {
+            $userId = $request->input("user_id");
+            $ticketId = $request->input("support_ticket_id");
+
+            $supportTicket = SupportTicket::select("*")->where("id", $ticketId)->first();
+            $supportTicket->helper_user_id = $userId;
+            $supportTicket->save();
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
+    }
+
+    public function changeStatusSupportTicketAction(Request $request){
+        if ($this->authorized(true)) {
+            $statusId = $request->input("status_id");
+            $ticketId = $request->input("ticket_id");
+
+            $supportTicket = SupportTicket::select("*")->where("id", $ticketId)->first();
+            $supportTicket->support_ticket_status_id = $statusId;
+            $supportTicket->save();
+
+            return $supportTicket->supportTicketStatus->status;
         }
     }
 }
