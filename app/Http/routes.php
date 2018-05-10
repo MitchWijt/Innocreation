@@ -314,6 +314,10 @@ Route::post("/message/getUserChatMessages", "MessageController@userChatMessagesA
 
 Route::post("/message/getSupportTicketMessages", "MessageController@getSupportTicketMessagesAction");
 
+Route::post("/message/getInnocreationChatMessages", "MessageController@getInnocreationChatMessagesAction");
+
+
+
 //=============================PAGES=============================
 
 Route::get("/page/{slug}", "PageController@pagesIndexAction");
@@ -365,6 +369,8 @@ Route::get("/admin/support-tickets", "AdminController@supportTicketsIndexAction"
 Route::post("/admin/assignHelperToSupportTicket", "AdminController@assignHelperToSupportTicketAction");
 
 Route::post("/admin/changeStatusSupportTicket", "AdminController@changeStatusSupportTicketAction");
+
+Route::get("/admin/messages", "AdminController@messagesIndexAction");
 
 
 

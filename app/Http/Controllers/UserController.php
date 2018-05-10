@@ -311,11 +311,12 @@ class UserController extends Controller
             if (request()->has('user_chat_id')) {
                 $urlParameterChat = request()->user_chat_id;
             }
+            $innocreationChat = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", 1)->first();
             $userChats = UserChat::select("*")->where("creator_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->get();
             if (count($userChats) != 0) {
-                return view("/public/user/userAccountChats", compact("userChats", "user_id", "urlParameter", "urlParameterChat"));
+                return view("/public/user/userAccountChats", compact("userChats", "user_id", "urlParameter", "urlParameterChat", "innocreationChat"));
             }
-            return view("/public/user/userAccountChats", compact("user_id"));
+            return view("/public/user/userAccountChats", compact("user_id", "inn"));
         }
     }
 
@@ -381,7 +382,11 @@ class UserController extends Controller
             $userMessage->message = $request->input("message");
             $userMessage->created_at = date("Y-m-d H:i:s");
             $userMessage->save();
-            return redirect("/my-account/chats?user_id=$userChat->receiver_user_id&user_chat_id=$userChat->id");
+            if($sender_user_id != 1) {
+                return redirect("/my-account/chats?user_id=$userChat->receiver_user_id&user_chat_id=$userChat->id");
+            } else {
+                return redirect("/admin/messages");
+            }
         }
     }
 

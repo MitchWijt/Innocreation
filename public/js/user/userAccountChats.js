@@ -23,6 +23,7 @@ $(".userCircle").on("click",function () {
 $(".chat-card").on("click",function () {
     var user_id = $(this).data("user-id");
     var user_chat_id = $(this).data("chat-id");
+    var admin = 0;
    $(".collapse").each(function () {
        if($(this).data("chat-id") == user_chat_id){
            function getUserChatMessages() {
@@ -36,7 +37,7 @@ $(".chat-card").on("click",function () {
                        }
                    },
                    url: "/message/getUserChatMessages",
-                   data: {'user_chat_id': user_chat_id},
+                   data: {'user_chat_id': user_chat_id, 'admin' : admin},
                    success: function (data) {
                        $(".collapse").each(function () {
                            if($(this).data("chat-id") == user_chat_id){

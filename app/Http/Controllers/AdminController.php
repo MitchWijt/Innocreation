@@ -255,7 +255,7 @@ class AdminController extends Controller
     public function supportTicketsIndexAction(){
         if ($this->authorized(true)) {
             $admin = User::select("*")->where("id", Session::get("admin_user_id"))->first();
-            $supportTickets = SupportTicket::select("*")->orderBy("created_at", "DESC")->get();
+            $supportTickets = SupportTicket::select("*")->orderBy("support_ticket_status_id")->get();
             $supportTicketStatusses = SupportTicketStatus::select("*")->get();
             return view("/admin/supportTickets", compact("supportTickets", "supportTicketStatusses", "admin"));
         }
@@ -283,6 +283,13 @@ class AdminController extends Controller
             $supportTicket->save();
 
             return $supportTicket->supportTicketStatus->status;
+        }
+    }
+
+    public function messagesIndexAction(){
+        if ($this->authorized(true)) {
+            $userChats = UserChat::select("*")->where("creator_user_id", 1)->get();
+            return view("/admin/messages", compact("userChats"));
         }
     }
 }

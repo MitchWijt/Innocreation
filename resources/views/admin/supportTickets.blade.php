@@ -111,7 +111,8 @@
                                                                 <input type="hidden" class="sender_user_id" name="sender_user_id" value="<?=$admin->id?>">
                                                                 <div class="row m-t-20">
                                                                     <div class="col-sm-12 text-center">
-                                                                        <textarea name="supportTicketMessage" placeholder="Send your message..." class="input col-sm-10 supportTicketMessage" rows="5"></textarea>
+                                                                        <textarea name="supportTicketMessage" class="input col-sm-10 supportTicketMessage" rows="5">Hello <?= $supportTicket->users->firstname?>,
+Best regards <?= $admin->getName()?> - Innocreation</textarea>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">

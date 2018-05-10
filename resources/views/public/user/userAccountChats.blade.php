@@ -39,50 +39,62 @@
                     <? if(isset($userChats)) { ?>
                         <? foreach($userChats as $userChat) { ?>
                             <div class="m-b-10">
-                                <? if($userChat->creator) { ?>
+                                <? if($userChat->creator_user_id == 1) { ?>
                                     <div class="row d-flex js-center">
                                         <div class="card text-center" style="height: 90px;">
-                                            <? if($userChat->receiver_user_id == $user_id) { ?>
-                                                <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
-                                                    <img class="circle circleImage m-0" src="<?=$userChat->creator->getProfilePicture()?>" alt="">
-                                                    <p class="f-22 m-t-15 m-b-5 p-0"><?=$userChat->creator->firstname?></p>
-                                                    <? if($userChat->creator->team_id != null) { ?>
-                                                    <div class="d-flex fd-column">
-                                                        <p class="f-20 m-t-15 m-b-0"><?= $userChat->creator->team->First()->team_name?></p>
-                                                        <span class="f-13 c-orange"><?if($userChat->creator->team->First()->ceo_user_id == $userChat->creator->id) echo "Team leader"?></span>
-                                                    </div>
-                                                    <? } ?>
-                                                </div>
-                                            <? } else { ?>
-                                                <? if($userChat->receiver) { ?>
+                                            <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
+                                                <img class="circle circleImage m-0" src="/images/profilePicturesTeams/cartwheel.png" alt="">
+                                                <p class="f-22 m-t-15 m-b-5 p-0">Innocreation</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <? } ?>
+                                <? if($userChat->creator_user_id != 1) { ?>
+                                    <? if($userChat->creator) { ?>
+                                        <div class="row d-flex js-center">
+                                            <div class="card text-center" style="height: 90px;">
+                                                <? if($userChat->receiver_user_id == $user_id) { ?>
                                                     <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
-                                                        <img class="circle circleImage m-0" src="<?=$userChat->receiver->getProfilePicture()?>" alt="">
-                                                        <p class="f-22 m-t-15 m-b-5 p-0"><?=$userChat->receiver->firstname?></p>
-                                                        <? if($userChat->receiver->team_id != null) { ?>
+                                                        <img class="circle circleImage m-0" src="<?=$userChat->creator->getProfilePicture()?>" alt="">
+                                                        <p class="f-22 m-t-15 m-b-5 p-0"><?=$userChat->creator->firstname?></p>
+                                                        <? if($userChat->creator->team_id != null) { ?>
                                                         <div class="d-flex fd-column">
-                                                            <p class="f-20 m-t-15 m-b-0"><?= $userChat->receiver->team->First()->team_name?></p>
-                                                            <span class="f-13 c-orange"><?if($userChat->receiver->team->First()->ceo_user_id == $userChat->receiver->id) echo "Team leader"?></span>
+                                                            <p class="f-20 m-t-15 m-b-0"><?= $userChat->creator->team->First()->team_name?></p>
+                                                            <span class="f-13 c-orange"><?if($userChat->creator->team->First()->ceo_user_id == $userChat->creator->id) echo "Team leader"?></span>
                                                         </div>
                                                         <? } ?>
                                                     </div>
                                                 <? } else { ?>
-                                                    <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
-                                                        <div class="circle circleImage"><i class="zmdi zmdi-eye-off f-25 m-t-15"></i></div>
-                                                        <p class="f-22 m-t-15 m-b-5 p-0">User doesn't exist anymore</p>
-                                                    </div>
+                                                    <? if($userChat->receiver) { ?>
+                                                        <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
+                                                            <img class="circle circleImage m-0" src="<?=$userChat->receiver->getProfilePicture()?>" alt="">
+                                                            <p class="f-22 m-t-15 m-b-5 p-0"><?=$userChat->receiver->firstname?></p>
+                                                            <? if($userChat->receiver->team_id != null) { ?>
+                                                            <div class="d-flex fd-column">
+                                                                <p class="f-20 m-t-15 m-b-0"><?= $userChat->receiver->team->First()->team_name?></p>
+                                                                <span class="f-13 c-orange"><?if($userChat->receiver->team->First()->ceo_user_id == $userChat->receiver->id) echo "Team leader"?></span>
+                                                            </div>
+                                                            <? } ?>
+                                                        </div>
+                                                    <? } else { ?>
+                                                        <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
+                                                            <div class="circle circleImage"><i class="zmdi zmdi-eye-off f-25 m-t-15"></i></div>
+                                                            <p class="f-22 m-t-15 m-b-5 p-0">User doesn't exist anymore</p>
+                                                        </div>
+                                                    <? } ?>
                                                 <? } ?>
-                                            <? } ?>
-                                        </div>
-                                    </div>
-                                <? } else { ?>
-                                    <div class="row d-flex js-center">
-                                        <div class="card text-center" style="height: 90px;">
-                                            <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-chat-id="<?= $userChat->id?>">
-                                                <div class="circle circleImage"><i class="zmdi zmdi-eye-off f-25 m-t-15"></i></div>
-                                                <p class="f-22 m-t-15 m-b-5 p-0">User doesn't exist anymore</p>
                                             </div>
                                         </div>
-                                    </div>
+                                    <? } else { ?>
+                                        <div class="row d-flex js-center">
+                                            <div class="card text-center" style="height: 90px;">
+                                                <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-chat-id="<?= $userChat->id?>">
+                                                    <div class="circle circleImage"><i class="zmdi zmdi-eye-off f-25 m-t-15"></i></div>
+                                                    <p class="f-22 m-t-15 m-b-5 p-0">User doesn't exist anymore</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <? } ?>
                                 <? } ?>
                                 <div class="collapse collapseExample" data-chat-id="<?= $userChat->id?>">
                                     <div class="card card-block">

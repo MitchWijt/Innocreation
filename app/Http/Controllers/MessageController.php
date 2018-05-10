@@ -52,10 +52,11 @@ class MessageController extends Controller
      */
     public function userChatMessagesAction(Request $request)
     {
+        $admin = $request->input("admin");
         $userChatId = $request->input("user_chat_id");
         $user_id = Session::get("user_id");
         $userChat = UserChat::select("*")->where("id", $userChatId)->first();
-        return view("/public/shared/_messagesUserChat", compact("user_id", "userChat"));
+        return view("/public/shared/_messagesUserChat", compact("user_id", "userChat", "admin"));
     }
 
     /**
@@ -84,9 +85,8 @@ class MessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function getInnocreationChatMessagesAction(Request $request){
+
     }
 
     /**

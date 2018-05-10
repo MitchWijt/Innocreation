@@ -22,7 +22,7 @@
                 <a class="regular-link c-gray" href="/admin/support-tickets">Support tickets</a>
             </div>
             <div class="sidebar-tab text-center">
-                <a class="regular-link c-gray" href="">User messages</a>
+                <a class="regular-link c-gray" href="/admin/messages">User messages</a>
             </div>
         </div>
     </div>
