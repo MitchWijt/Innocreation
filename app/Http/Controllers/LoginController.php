@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Expertises;
 use App\expertises_linktable;
+use App\UserChat;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -63,6 +64,11 @@ class LoginController extends Controller
         $user->phonenumber = $request->input("phonenumber");
         $user->created_at = date("Y-m-d H:i:s");
         $user->save();
+
+        $userChat = new UserChat();
+        $userChat->creator_user_id = 1;
+        $userChat->receiver_user_id = $user->id;
+        $userChat->created_at = date("Y-m-d H:i:s");
 
         $expertisesAll = Expertises::select("*")->get();
         $existingArray = [];

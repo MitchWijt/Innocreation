@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Country;
 use App\Expertises_linktable;
+use App\ForumMainTopic;
+use App\ForumMainTopicType;
 use App\ForumThread;
 use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
@@ -290,6 +292,86 @@ class AdminController extends Controller
         if ($this->authorized(true)) {
             $userChats = UserChat::select("*")->where("creator_user_id", 1)->get();
             return view("/admin/messages", compact("userChats"));
+        }
+    }
+
+    public function forumMainTopicListAction(){
+        if ($this->authorized(true)) {
+            $forumMainTopics = ForumMainTopic::select("*")->get();
+            return view("/admin/forumMainTopicList", compact("forumMainTopics"));
+        }
+    }
+
+    public function forumMainTopicEditorAction($id = null){
+        if ($this->authorized(true)) {
+            $forumMainTopicTypes = ForumMainTopicType::select("*")->get();
+            if($id){
+                $forumMainTopic = ForumMainTopic::select("*")->where("id", $id)->first();
+                return view("/admin/forumMainTopicEditor", compact("forumMainTopic", "forumMainTopicTypes"));
+            } else {
+                return view("/admin/forumMainTopicEditor", compact("forumMainTopicTypes"));
+            }
+        }
+    }
+
+    public function saveForumMainTopicAction(Request $request){
+        if ($this->authorized(true)) {
+            $forumMainTopicId = $request->input("forum_main_topic_id");
+            $title = $request->input("title");
+            $description = $request->input("description");
+            $newType = $request->input("newForumMainTopicType");
+
+            if($forumMainTopicId){
+                $forumMainTopic = ForumMainTopic::select("*")->where("id", $request->input("forum_main_topic_id"))->first();
+                $forumMainTopic->published = 1;
+            } else {
+                $forumMainTopic = new ForumMainTopic();
+                $forumMainTopic->published = 0;
+            }
+
+            if($newType){
+                $forumMainTopicType = new ForumMainTopicType();
+                $forumMainTopicType->title = $newType;
+                $forumMainTopicType->save();
+                $forumMainTopicTypeId = $forumMainTopicType->id;
+            } else {
+                $forumMainTopicTypeId = $request->input("forumMainTopicType");
+            }
+
+            $forumMainTopic->main_topic_type_id = $forumMainTopicTypeId;
+            $forumMainTopic->title = $title;
+            $forumMainTopic->description = $description;
+            $forumMainTopic->save();
+            return redirect("/admin/forumMainTopicEditor/$forumMainTopic->id")->with("success", "Saved");
+        }
+    }
+
+    public function publishForumMainTopicAction(Request $request){
+        if ($this->authorized(true)) {
+            $forumMainTopicId = $request->input("forum_main_topic_id");
+            $forumMainTopic = ForumMainTopic::select("*")->where("id", $forumMainTopicId)->first();
+            $forumMainTopic->published = 1;
+            $forumMainTopic->save();
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
+    }
+
+    public function hideForumMainTopicAction(Request $request){
+        if ($this->authorized(true)) {
+            $forumMainTopicId = $request->input("forum_main_topic_id");
+            $forumMainTopic = ForumMainTopic::select("*")->where("id", $forumMainTopicId)->first();
+            $forumMainTopic->published = 0;
+            $forumMainTopic->save();
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
+    }
+
+    public function deleteForumMainTopicAction(Request $request){
+        if ($this->authorized(true)) {
+            $forumMainTopicId = $request->input("forum_main_topic_id");
+            $forumMainTopic = ForumMainTopic::select("*")->where("id", $forumMainTopicId)->first();
+            $forumMainTopic->delete();
+            return redirect("/admin/forumMainTopicList")->with("success", "Topic deleted");
         }
     }
 }

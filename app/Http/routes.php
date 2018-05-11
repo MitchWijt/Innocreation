@@ -372,6 +372,22 @@ Route::post("/admin/changeStatusSupportTicket", "AdminController@changeStatusSup
 
 Route::get("/admin/messages", "AdminController@messagesIndexAction");
 
+Route::get("/admin/forumMainTopicList", "AdminController@forumMainTopicListAction");
+
+Route::get("/admin/forumMainTopicEditor/{id}", "AdminController@forumMainTopicEditorAction");
+
+Route::get("/admin/forumMainTopicEditor", "AdminController@forumMainTopicEditorAction");
+
+Route::post("/admin/saveForumMainTopic", "AdminController@saveForumMainTopicAction");
+
+Route::post("/admin/publishForumMainTopic", "AdminController@publishForumMainTopicAction");
+
+Route::post("/admin/hideForumMainTopic", "AdminController@hideForumMainTopicAction");
+
+Route::post("/admin/deleteForumMainTopic", "AdminController@deleteForumMainTopicAction");
+
+
+
 
 
 

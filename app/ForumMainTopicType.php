@@ -10,7 +10,7 @@ class ForumMainTopicType extends Model
 
 
     public function getMainTopics(){
-        $mainTopics  = ForumMainTopic::select("*")->where("main_topic_type_id", $this->id)->get();
+        $mainTopics  = ForumMainTopic::select("*")->where("main_topic_type_id", $this->id)->where("published", 1)->get();
         return $mainTopics;
     }
 }
