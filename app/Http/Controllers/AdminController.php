@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Country;
+use App\Expertises;
 use App\Expertises_linktable;
 use App\ForumMainTopic;
 use App\ForumMainTopicType;
@@ -40,7 +41,9 @@ class AdminController extends Controller
             $totalMessages = UserMessage::select("*")->get();
             $totalInvited = InviteRequestLinktable::select("*")->get();
             $totalRequests = JoinRequestLinktable::select("*")->get();
-            return view("/admin/statistics", compact("user", "totalUsers", "totalInvited" , "totalMessages", "totalRequests", "totalTasks", "totalTeams"));
+
+            $totalExpertises = Expertises::select("*")->get();
+            return view("/admin/statistics", compact("user", "totalUsers", "totalInvited" , "totalMessages", "totalRequests", "totalTasks", "totalTeams", "totalExpertises"));
         }
     }
 
@@ -372,6 +375,42 @@ class AdminController extends Controller
             $forumMainTopic = ForumMainTopic::select("*")->where("id", $forumMainTopicId)->first();
             $forumMainTopic->delete();
             return redirect("/admin/forumMainTopicList")->with("success", "Topic deleted");
+        }
+    }
+
+    public function forumThreadListAction(){
+        if ($this->authorized(true)) {
+            $forumThreads = ForumThread::select("*")->get();
+            return view("/admin/forumThreadList", compact("forumThreads"));
+        }
+    }
+
+    public function deleteForumThreadAction(Request $request){
+        if ($this->authorized(true)) {
+            $forumThreadId = $request->input("forum_thread_id");
+            $forumThread = ForumThread::select("*")->where("id", $forumThreadId)->first();
+            $forumThread->delete();
+            return redirect($_SERVER["HTTP_REFERER"])->with("success", "Thread deleted");
+        }
+    }
+
+    public function closeForumThreadAction(Request $request){
+        if ($this->authorized(true)) {
+            $forumThreadId = $request->input("forum_thread_id");
+            $forumThread = ForumThread::select("*")->where("id", $forumThreadId)->first();
+            $forumThread->closed = 1;
+            $forumThread->save();
+            return redirect($_SERVER["HTTP_REFERER"])->with("success", "Thread closed");
+        }
+    }
+
+    public function openForumThreadAction(Request $request){
+        if ($this->authorized(true)) {
+            $forumThreadId = $request->input("forum_thread_id");
+            $forumThread = ForumThread::select("*")->where("id", $forumThreadId)->first();
+            $forumThread->closed = 0;
+            $forumThread->save();
+            return redirect($_SERVER["HTTP_REFERER"])->with("success", "Thread opened");
         }
     }
 }

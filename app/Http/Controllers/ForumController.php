@@ -65,7 +65,7 @@ class ForumController extends Controller
     public function forumThreadAction($slug, $id)
     {
         $forumMainTopic = ForumMainTopic::select("*")->where("slug", $slug)->first();
-        $forumThread = ForumThread::select("*")->where("id", $id)->first();
+        $forumThread = ForumThread::select("*")->where("id", $id)->where("closed", 0)->first();
         $loggedIn = false;
 //        $forumThread->views = $forumThread->views + 1;
 //        $forumThread->save();

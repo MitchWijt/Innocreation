@@ -38,7 +38,7 @@
                 <a class="regular-link c-gray" href="/admin/forumMainTopicList">Main topics</a>
             </div>
             <div class="sidebar-tab text-center">
-                <a class="regular-link c-gray" href="">Threads</a>
+                <a class="regular-link c-gray" href="/admin/forumThreadList">Threads</a>
             </div>
         </div>
     </div>

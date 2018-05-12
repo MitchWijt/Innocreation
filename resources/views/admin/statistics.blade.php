@@ -63,6 +63,12 @@
                                 <h4 class="m-t-5">Statistics expertises</h4>
                             </div>
                             <div class="hr col-sm-12"></div>
+                            <div class="col-sm-2 m-t-10">
+                                <div class="text-center">
+                                    <p class="f-20 m-b-0"><?= count($totalExpertises)?></p>
+                                    <p class="f-20">Total expertises</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -386,6 +386,14 @@ Route::post("/admin/hideForumMainTopic", "AdminController@hideForumMainTopicActi
 
 Route::post("/admin/deleteForumMainTopic", "AdminController@deleteForumMainTopicAction");
 
+Route::get("/admin/forumThreadList", "AdminController@forumThreadListAction");
+
+Route::post("/admin/deleteForumThread", "AdminController@deleteForumThreadAction");
+
+Route::post("/admin/closeForumThread", "AdminController@closeForumThreadAction");
+
+Route::post("/admin/openForumThread", "AdminController@openForumThreadAction");
+
 
 
 

@@ -13,7 +13,7 @@
                     <div class="card-block">
                         <div class="row">
                             <div class="col-sm-12 d-flex js-between">
-                                <h4 class="m-t-5">Teams</h4>
+                                <h4 class="m-t-5">Forum main topics</h4>
                                 <a target="_blank" href="/admin/forumMainTopicEditor" class="btn btn-inno m-t-5 m-b-10">Create new topic</a>
                             </div>
                             <div class="hr col-sm-12"></div>
@@ -30,19 +30,19 @@
                                     </thead>
                                     <tbody>
                                     <? foreach($forumMainTopics as $forumMainTopic) { ?>
-                                    <tr class="clickable-row" data-href="/admin/forumMainTopicEditor/<? echo $forumMainTopic->id?>">
-                                        <td scope="row" data-visible="false"><?= $forumMainTopic->id?></td>
-                                        <td><?= $forumMainTopic->title?></td>
-                                        <td><?= $forumMainTopic->type->title?></td>
-                                        <td>
-                                            <? if($forumMainTopic->published == 1) { ?>
-                                                <i class="zmdi zmdi-check c-orange f-20"></i>
-                                            <? } else { ?>
-                                                <i class="zmdi zmdi-close c-orange f-20"></i>
-                                            <? } ?>
-                                        </td>
-                                        <td><?= date("d-m-Y",strtotime($forumMainTopic->created_at))?></td>
-                                    </tr>
+                                        <tr class="clickable-row" data-href="/admin/forumMainTopicEditor/<? echo $forumMainTopic->id?>">
+                                            <td scope="row" data-visible="false"><?= $forumMainTopic->id?></td>
+                                            <td><?= $forumMainTopic->title?></td>
+                                            <td><?= $forumMainTopic->type->title?></td>
+                                            <td>
+                                                <? if($forumMainTopic->published == 1) { ?>
+                                                    <i class="zmdi zmdi-check c-orange f-20"></i>
+                                                <? } else { ?>
+                                                    <i class="zmdi zmdi-close c-orange f-20"></i>
+                                                <? } ?>
+                                            </td>
+                                            <td><?= date("d-m-Y",strtotime($forumMainTopic->created_at))?></td>
+                                        </tr>
                                     <? } ?>
                                     </tbody>
                                 </table>
