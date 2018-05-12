@@ -93,5 +93,5 @@
     </div>
 @endsection
 @section('pagescript')
-    <script src="/js/teamSearch.js"></script>
+    <script src="/js/home/teamSearch.js"></script>
 @endsection

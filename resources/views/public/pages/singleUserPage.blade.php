@@ -221,5 +221,5 @@
     </div>
 @endsection
 @section('pagescript')
-    <script src="/js/singleUserPage.js"></script>
+    <script src="/js/pages/singleUserPage.js"></script>
 @endsection

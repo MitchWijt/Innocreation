@@ -322,5 +322,5 @@
     </div>
 @endsection
 @section('pagescript')
-    <script src="/js/singleTeamPage.js"></script>
+    <script src="/js/pages/singleTeamPage.js"></script>
 @endsection

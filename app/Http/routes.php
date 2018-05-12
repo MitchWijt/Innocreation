@@ -29,6 +29,8 @@ Route::get("/contact-us", "HomeController@contactAction");
 
 Route::post("/home/sendContactForm", "HomeController@sendContactFormAction");
 
+Route::get("/faq", "PageController@faqAction");
+
 
 
 //========================USERACCOUNT================================
@@ -393,6 +395,24 @@ Route::post("/admin/deleteForumThread", "AdminController@deleteForumThreadAction
 Route::post("/admin/closeForumThread", "AdminController@closeForumThreadAction");
 
 Route::post("/admin/openForumThread", "AdminController@openForumThreadAction");
+
+Route::get("/admin/expertiseList", "AdminController@expertiseListAction");
+
+Route::post("/admin/deleteExpertise", "AdminController@deleteExpertiseAction");
+
+Route::get("/admin/faqList", "AdminController@faqListAction");
+
+Route::get("/admin/faqEditor/{id}", "AdminController@faqEditorAction");
+
+Route::get("/admin/faqEditor", "AdminController@faqEditorAction");
+
+Route::post("/admin/saveFaq", "AdminController@saveFaqAction");
+
+Route::post("/admin/publishFaq", "AdminController@publishFaqAction");
+
+Route::post("/admin/hideFaq", "AdminController@hideFaqAction");
+
+Route::post("/admin/deleteFaq", "AdminController@deleteFaqAction");
 
 
 

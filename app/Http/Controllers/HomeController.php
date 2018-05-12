@@ -25,8 +25,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function footer()
-    {
+    public function footer(){
         return view("includes/footer");
     }
 
@@ -36,8 +35,7 @@ class HomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function contactAction()
-    {
+    public function contactAction(){
         if($this->isLoggedIn()){
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
             return view("/public/home/contactUs", compact("user"));
@@ -52,21 +50,10 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function sendContactFormAction(Request $request)
-    {
+    public function sendContactFormAction(Request $request){
         die("Email todo and live server for email");
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

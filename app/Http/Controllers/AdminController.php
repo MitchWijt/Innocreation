@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Country;
 use App\Expertises;
 use App\Expertises_linktable;
+use App\Faq;
+use App\FaqType;
 use App\ForumMainTopic;
 use App\ForumMainTopicType;
 use App\ForumThread;
@@ -411,6 +413,104 @@ class AdminController extends Controller
             $forumThread->closed = 0;
             $forumThread->save();
             return redirect($_SERVER["HTTP_REFERER"])->with("success", "Thread opened");
+        }
+    }
+
+    public function expertiseListAction(){
+        if ($this->authorized(true)) {
+            $expertises = Expertises::select("*")->get();
+            return view("/admin/expertiseList", compact("expertises"));
+        }
+    }
+
+    public function deleteExpertiseAction(Request $request){
+        if ($this->authorized(true)) {
+            $expertiseId = $request->input("expertise_id");
+            $expertise = Expertises::select("*")->where("id", $expertiseId)->first();
+            $expertise->delete();
+            return redirect($_SERVER["HTTP_REFERER"])->with("success", "Expertise deleted");
+        }
+    }
+
+    public function faqListAction(){
+        if ($this->authorized(true)) {
+            $faqs = Faq::select("*")->get();
+            return view("/admin/faqList", compact("faqs"));
+        }
+    }
+
+    public function faqEditorAction($id = null){
+        $faqTypes = FaqType::select("*")->get();
+        if($id){
+            $faq = Faq::select("*")->where("id", $id)->first();
+            return view("/admin/faqEditor", compact("faq", "faqTypes"));
+        } else {
+            return view("/admin/faqEditor", compact("faqTypes"));
+        }
+    }
+
+    public function saveFaqAction(Request $request){
+        if ($this->authorized(true)) {
+            $faqId = $request->input("faq_id");
+            $question = $request->input("question");
+            $answer = $request->input("answer");
+            $newType = $request->input("newFaqType");
+
+            if($faqId){
+                $faq = Faq::select("*")->where("id", $request->input("faq_id"))->first();
+                $faq->published = 1;
+            } else {
+                $faq = new Faq();
+                $faq->published = 0;
+                $faq->created_at = date("Y-m-d H:i:s");
+            }
+
+            if($newType){
+                $faqType = new FaqType();
+                $faqType->title = $newType;
+                $faqType->save();
+                $faqTypeId = $faqType->id;
+            } else {
+                $faqTypeId = $request->input("faqType");
+            }
+
+            $faq->faq_type_id = $faqTypeId;
+            $faq->question = $question;
+            $faq->answer = $answer;
+            $faq->save();
+            return redirect("/admin/faqEditor/$faq->id")->with("success", "Saved");
+        }
+    }
+
+    public function publishFaqAction(Request $request){
+        if ($this->authorized(true)) {
+            $faqId = $request->input("faq_id");
+
+            $faq = Faq::select("*")->where("id", $faqId)->first();
+            $faq->published = 1;
+            $faq->save();
+            return redirect($_SERVER["HTTP_REFERER"])->with("success", "Faq published");
+        }
+    }
+
+    public function hideFaqAction(Request $request){
+        if ($this->authorized(true)) {
+            $faqId = $request->input("faq_id");
+
+            $faq = Faq::select("*")->where("id", $faqId)->first();
+            $faq->published = 0;
+            $faq->save();
+            return redirect($_SERVER["HTTP_REFERER"])->with("success", "Faq hidden");
+        }
+    }
+
+    public function deleteFaqAction(Request $request){
+        if ($this->authorized(true)) {
+            $faqId = $request->input("faq_id");
+
+            $faq = Faq::select("*")->where("id", $faqId)->first();
+            $faq->delete();
+            return redirect("/admin/faqList")->with("success", "Faq deleted");
         }
     }
 }

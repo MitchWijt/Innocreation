@@ -37,7 +37,7 @@ class ForumController extends Controller
     public function forumMainTopicThreads($id)
     {
         $forumMainTopic = ForumMainTopic::select("*")->where("id", $id)->first();
-        $threads = ForumThread::select("*")->where("main_topic_id", $forumMainTopic->id)->orderBy("created_at", "DESC")->paginate(10);
+        $threads = ForumThread::select("*")->where("main_topic_id", $forumMainTopic->id)->where("closed", 0)->orderBy("created_at", "DESC")->paginate(10);
         if(Session::has("user_id")) {
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
             $isFollowingTopic = UserFollowingTopicsLinktable::select("*")->where("user_id", $user->id)->where("forum_main_topic_id", $id)->get();
@@ -65,7 +65,7 @@ class ForumController extends Controller
     public function forumThreadAction($slug, $id)
     {
         $forumMainTopic = ForumMainTopic::select("*")->where("slug", $slug)->first();
-        $forumThread = ForumThread::select("*")->where("id", $id)->where("closed", 0)->first();
+        $forumThread = ForumThread::select("*")->where("id", $id)->first();
         $loggedIn = false;
 //        $forumThread->views = $forumThread->views + 1;
 //        $forumThread->save();

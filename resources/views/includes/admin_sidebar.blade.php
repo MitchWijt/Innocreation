@@ -44,15 +44,15 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Expertises</a>
+        <a class="regular-link c-gray" href="/admin/expertiseList">Expertises</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">FAQ</a>
+        <a class="regular-link c-gray" href="/admin/faqList">FAQ</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Prices</a>
+        <a class="regular-link c-gray" href="">Pricing</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

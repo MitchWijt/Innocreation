@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Expertises_linktable;
+use App\Faq;
+use App\FaqType;
 use App\FavoriteTeamLinktable;
 use App\NeededExpertiseLinktable;
 use App\Team;
@@ -91,9 +93,9 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function faqAction(){
+        $faqTypes = FaqType::select("*")->get();
+        return view("/public/pages/faq", compact("faqTypes"));
     }
 
     /**
