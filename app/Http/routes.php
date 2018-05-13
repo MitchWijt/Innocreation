@@ -414,7 +414,9 @@ Route::post("/admin/hideFaq", "AdminController@hideFaqAction");
 
 Route::post("/admin/deleteFaq", "AdminController@deleteFaqAction");
 
+//========================CHECKOUT/PACKAGES========================
 
+Route::get("/pricing", "CheckoutController@pricingAction");
 
 
 

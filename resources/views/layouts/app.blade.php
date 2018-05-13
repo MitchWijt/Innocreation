@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/general.css">
     <link rel="stylesheet" href="/css/activityTimeline.css">
+    <link rel="stylesheet" href="/css/checkout/pricing.css">
     {{--CSS PLUGINS--}}
     <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
     <link rel="stylesheet" href="/css/jquery-ui-min.css">

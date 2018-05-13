@@ -98,7 +98,7 @@
                         <div class="card-block">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <p class="m-l-10 m-t-10 f-18 m-b-10">Mmeber tasks list <small class="f-12">(total all boards)</small></p>
+                                    <p class="m-l-10 m-t-10 f-18 m-b-10">Member tasks list <small class="f-12">(total all boards)</small></p>
                                 </div>
                             </div>
                             <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">

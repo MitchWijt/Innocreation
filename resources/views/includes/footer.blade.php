@@ -26,7 +26,7 @@
                 <p class="regular-link td-none m-0">The platform:</p>
                 <a class="regular-link c-gray" href="/page/what-is-innocreation">What is Innocreation?</a>
                 {{--<a class="regular-link c-gray" href="">People behind Innocreation</a>--}}
-                <a class="regular-link c-gray" href="">Pricing</a>
+                <a class="regular-link c-gray" href="/pricing">Pricing</a>
                 <a class="regular-link c-gray" href="/page/our-motivation">Our motivation</a>
             </div>
         </div>
