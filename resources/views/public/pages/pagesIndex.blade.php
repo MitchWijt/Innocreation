@@ -14,7 +14,7 @@
             <hr class="m-b-0">
             <div class="card m-t-20 m-b-20 col-sm-12" style="width: 100% !important;">
                 <div class="card-block m-t-10">
-                    <div class="col-sm-12 c-gray">
+                    <div class="col-sm-12 c-gray" style="color: #C9CCCF !important">
                         <?= htmlspecialchars_decode($page->content)?>
                     </div>
                 </div>

@@ -9,13 +9,16 @@ class MembershipPackage extends Model
     public $table = "membership_package";
 
 
-    function getPrice($precision = 2, $separator = '.')
-    {
+    function getPrice($yearly = false, $precision = 2, $separator = '.') {
         $numberParts = explode($separator, $this->price);
         $response = $numberParts[0];
         if(count($numberParts) > 1 ) {
             $response .= $separator;
             $response .= substr($numberParts[1], 0, $precision);
+        }
+
+        if($yearly){
+            $response = ($response + 0.01) * 12 - 25 - 0.01;
         }
         return $response;
     }

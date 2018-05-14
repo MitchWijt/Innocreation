@@ -52,11 +52,11 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Pricing</a>
+        <a class="regular-link c-gray" href="/admin/membershipPackages">Pricing</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Pages * </a>
+        <a class="regular-link c-gray" href="/admin/pageList">Pages</a>
     </div>
     <hr>
 </div>

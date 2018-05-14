@@ -414,6 +414,20 @@ Route::post("/admin/hideFaq", "AdminController@hideFaqAction");
 
 Route::post("/admin/deleteFaq", "AdminController@deleteFaqAction");
 
+Route::get("/admin/membershipPackages", "AdminController@membershipPackagesAction");
+
+Route::post("/admin/saveMembershipPackage", "AdminController@saveMembershipPackageAction");
+
+Route::get("/admin/pageList", "AdminController@pageListAction");
+
+Route::get("/admin/pageEditor/{id}", "AdminController@pageEditorAction");
+
+Route::get("/admin/pageEditor", "AdminController@pageEditorAction");
+
+Route::post("/admin/savePage", "AdminController@savePageAction");
+
+
+
 //========================CHECKOUT/PACKAGES========================
 
 Route::get("/pricing", "CheckoutController@pricingAction");

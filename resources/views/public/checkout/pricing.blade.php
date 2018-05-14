@@ -32,7 +32,11 @@
                                 </div>
                                 <div class="row p-absolute absolute-price">
                                     <div class="col-sm-12">
-                                        <p class="f-20 "><?=  $membershipPackage->getPrice()?>/Month</p>
+                                        <p class="f-20 m-b-0"><?= $membershipPackage->getPrice()?>/Month</p>
+                                        <div class="text-center">
+                                        <small class="f-12">(<?= $membershipPackage->getPrice(true)?>/Year)</small>
+                                        </div>
+                                        <hr class="">
                                     </div>
                                 </div>
                                 <div class="text-center p-absolute absolute-button">

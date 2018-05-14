@@ -12,7 +12,10 @@ use App\ForumMainTopicType;
 use App\ForumThread;
 use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
+use App\MembershipPackage;
 use App\NeededExpertiseLinktable;
+use App\Page;
+use App\PageType;
 use App\SupportTicket;
 use App\SupportTicketStatus;
 use App\Team;
@@ -511,6 +514,72 @@ class AdminController extends Controller
             $faq = Faq::select("*")->where("id", $faqId)->first();
             $faq->delete();
             return redirect("/admin/faqList")->with("success", "Faq deleted");
+        }
+    }
+
+    public function membershipPackagesAction(){
+        if ($this->authorized(true)) {
+            $membershipPackages = MembershipPackage::select("*")->get();
+            return view("/admin/membershipPackages", compact("membershipPackages"));
+        }
+    }
+
+    public function saveMembershipPackageAction(Request $request){
+        if ($this->authorized(true)) {
+            $packageId = $request->input("package_id");
+            $title = $request->input("title");
+            $price = $request->input("price");
+            $description = $request->input("description");
+
+            if($packageId){
+                $membershipPackage = MembershipPackage::select("*")->where("id", $packageId)->first();
+            } else {
+                $membershipPackage = new MembershipPackage();
+            }
+            $membershipPackage->title = $title;
+            $membershipPackage->description = $description;
+            $membershipPackage->price = $price;
+            $membershipPackage->save();
+            return redirect($_SERVER["HTTP_REFERER"])->with("success", "Package $membershipPackage->title saved");
+        }
+    }
+
+    public function pageListAction(){
+        if ($this->authorized(true)) {
+            $pages = Page::select("*")->get();
+            return view("/admin/pageList", compact("pages"));
+        }
+    }
+
+    public function pageEditorAction($id = null){
+        if ($this->authorized(true)) {
+            $pageTypes = PageType::select("*")->get();
+            if($id){
+                $page = Page::select("*")->where("id", $id)->first();
+                return view("/admin/pageEditor", compact("page", "pageTypes"));
+            } else {
+                return view("/admin/pageEditor", compact("pageTypes"));
+            }
+        }
+    }
+
+    public function savePageAction(Request $request){
+        if ($this->authorized(true)) {
+            $pageId = $request->input("page_id");
+            $title = $request->input("title");
+            $content = $request->input("content");
+            $type = $request->input("type");
+            if($pageId){
+                $page = Page::select("*")->where("id", $pageId)->first();
+            } else {
+                $page = new Page();
+                $page->slug = str_replace(" ", "-", strtolower($title));
+            }
+            $page->title = $title;
+            $page->content = $content;
+            $page->page_type_id = $type;
+            $page->save();
+            return redirect("/admin/pageEditor/$page->id")->with("success", "Page saved");
         }
     }
 }
