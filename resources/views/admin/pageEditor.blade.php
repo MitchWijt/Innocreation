@@ -28,6 +28,9 @@
                                         <option <? if(isset($page) && $page->page_type_id == $pageType->id) echo "selected"?> value="<?= $pageType->id?>"><?= $pageType->title?></option>
                                     <? } ?>
                                 </select>
+                                <? if(isset($page)) { ?>
+                                    <a href="<?= $page->getUrl()?>" class="btn btn-inno btn-sm pull-right">Live page</a>
+                                <? } ?>
                                 <div class="m-t-20 m-b-20">
                                     <textarea name="content" class="content col-sm-12 " cols="30" rows="20"><? if(isset($page)) echo $page->content?></textarea>
                                 </div>

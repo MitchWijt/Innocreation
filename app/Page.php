@@ -11,4 +11,8 @@ class Page extends Model
     public function type(){
         return $this->hasOne("\App\PageType", "id","page_type_id");
     }
+
+    public function getUrl(){
+        return "/page/$this->slug";
+    }
 }
