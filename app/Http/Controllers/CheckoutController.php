@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomMembershipPackage;
+use App\CustomMembershipPackageType;
 use App\MembershipPackage;
 use Illuminate\Http\Request;
 
@@ -17,7 +19,8 @@ class CheckoutController extends Controller
     public function pricingAction()
     {
         $membershipPackages = MembershipPackage::select("*")->get();
-        return view("/public/checkout/pricing", compact("membershipPackages"));
+        $customMembershipPackageTypes = CustomMembershipPackageType::select("*")->get();
+        return view("/public/checkout/pricing", compact("membershipPackages", "customMembershipPackageTypes"));
     }
 
     /**

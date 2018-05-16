@@ -92,6 +92,12 @@
 .m-r-30{
     margin-right: 30px !important;
 }
+.m-r-35{
+    margin-right: 35px !important;
+}
+.m-r-40{
+    margin-right: 40px !important;
+}
 
 .m-r-200{
     margin-right: 200px !important;
@@ -118,9 +124,14 @@
 .m-t-25{
     margin-top: 25px !important;
 }
-
 .m-t-30{
     margin-top: 30px !important;
+}
+.m-t-35{
+    margin-top: 35px !important;
+}
+.m-t-40{
+    margin-top: 40px !important;
 }
 .p-t-0{
     padding-top: 0 !important;
