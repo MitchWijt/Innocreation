@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Country;
+use App\CustomMembershipPackage;
+use App\CustomMembershipPackageType;
 use App\Expertises;
 use App\Expertises_linktable;
 use App\Faq;
@@ -520,7 +522,7 @@ class AdminController extends Controller
     public function membershipPackagesAction(){
         if ($this->authorized(true)) {
             $membershipPackages = MembershipPackage::select("*")->get();
-            return view("/admin/membershipPackages", compact("membershipPackages"));
+            return view("/admin/membershipPackagesEditor", compact("membershipPackages"));
         }
     }
 
@@ -541,6 +543,13 @@ class AdminController extends Controller
             $membershipPackage->price = $price;
             $membershipPackage->save();
             return redirect($_SERVER["HTTP_REFERER"])->with("success", "Package $membershipPackage->title saved");
+        }
+    }
+
+    public function customMembershipPackagesAction(){
+        if ($this->authorized(true)) {
+            $customMembershipPackageTypes  = CustomMembershipPackageType::select("*")->get();
+            return view("/admin/customMembershipPackagesEditor", compact("customMembershipPackageTypes"));
         }
     }
 

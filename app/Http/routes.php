@@ -418,6 +418,8 @@ Route::get("/admin/membershipPackages", "AdminController@membershipPackagesActio
 
 Route::post("/admin/saveMembershipPackage", "AdminController@saveMembershipPackageAction");
 
+Route::get("/admin/customMembershipPackages", "AdminController@customMembershipPackagesAction");
+
 Route::get("/admin/pageList", "AdminController@pageListAction");
 
 Route::get("/admin/pageEditor/{id}", "AdminController@pageEditorAction");

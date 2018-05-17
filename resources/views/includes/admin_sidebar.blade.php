@@ -52,7 +52,15 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/admin/membershipPackages">Pricing</a>
+        <a data-toggle="collapse" data-target="#sidebarPricing" aria-expanded="false" aria-controls="sidebarPricing" class="regular-link c-gray">Pricing <i class="zmdi zmdi-chevron-down"></i></a>
+        <div class="collapse" id="sidebarPricing">
+            <div class="sidebar-tab text-center">
+                <a class="regular-link c-gray" href="/admin/membershipPackages">Fixed packages</a>
+            </div>
+            <div class="sidebar-tab text-center">
+                <a class="regular-link c-gray" href="/admin/customMembershipPackages">Custom packages</a>
+            </div>
+        </div>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

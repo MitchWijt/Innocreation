@@ -11,4 +11,8 @@ class CustomMembershipPackage extends Model
     public function type(){
         return $this->hasOne("\App\CustomMembershipPackageType", "id","type");
     }
+
+    public function getOptions(){
+        return CustomMembershipPackage::select("option")->where("type", $this->type)->get();
+    }
 }
