@@ -553,6 +553,58 @@ class AdminController extends Controller
         }
     }
 
+    public function saveCustomMembershipPackageAction(Request $request){
+        if ($this->authorized(true)) {
+            $packageOption = $request->input("option");
+            $packagePrice = $request->input("price");
+            $packageId = $request->input("package_id");
+
+            $customPackage = CustomMembershipPackage::select("*")->where("id", $packageId)->first();
+            if($packageOption) {
+                $customPackage->option = $packageOption;
+            } else if($packagePrice) {
+                $customPackage->price = $packagePrice;
+            }
+            $customPackage->save();
+            return $customPackage->type;
+        }
+    }
+
+    public function addOptionCustomMembershipPackageAction(Request $request){
+        if ($this->authorized(true)) {
+            $typeId = $request->input("type_id");
+            $price = $request->input("price");
+            $option = $request->input("option");
+
+            $customPackage = new CustomMembershipPackage();
+            $customPackage->type = $typeId;
+            $customPackage->option = $option;
+            $customPackage->price = $price;
+            $customPackage->save();
+            return redirect($_SERVER["HTTP_REFERER"])->with("success", "Option added");
+        }
+    }
+
+    public function addCategoryCustomMembershipPackageAction(Request $request){
+        if ($this->authorized(true)) {
+            $category = $request->input("category");
+            $optionsAmount = $request->input("amountOptions");
+
+            $customMembershipPackageType = new CustomMembershipPackageType();
+            $customMembershipPackageType->title = $category;
+            $customMembershipPackageType->save();
+
+            for($i = 0; $i < $optionsAmount; $i++) {
+                $customPackage = new CustomMembershipPackage();
+                $customPackage->type = $customMembershipPackageType->id;
+                $customPackage->option = null;
+                $customPackage->price = null;
+                $customPackage->save();
+            }
+            return redirect($_SERVER["HTTP_REFERER"])->with("success", "Category added");
+        }
+    }
+
     public function pageListAction(){
         if ($this->authorized(true)) {
             $pages = Page::select("*")->get();

@@ -18,7 +18,7 @@
                         <? if($assistanceTicket) { ?>
                             <div class="receivedAssistanceTicket">
                                 <div class="card">
-                                    <div class="card-block">
+                                    <div class="card-block receivedAssistanceTicketCard" data-ticket-id="<?= $assistanceTicket->id?>">
                                         <div class="text-center">
                                             <p class="f-18 m-t-10">Task: <?= $assistanceTicket->title?></p>
                                             <hr class="col-sm-9">
@@ -36,7 +36,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade receivedAssistanceModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" >
+                                <div class="modal fade receivedAssistanceModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-ticket-id="<?= $assistanceTicket->id?>">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header col-sm-12 d-flex">
@@ -57,32 +57,7 @@
                                             </div>
                                             <div class="modal-body ">
                                                 <div class="o-scroll m-t-20 receivedAssistanceMessages" style="height: 400px;" data-ticket-id="<?= $assistanceTicket->id?>">
-                                                    <? foreach($assistanceTicket->getMessages() as $message) { ?>
-                                                        <? if($message->sender_user_id == $user->id) { ?>
-                                                        <div class="row c-gray sendedMessageAjax">
-                                                            <div class="col-sm-12">
-                                                                <div class="col-sm-5 messageSent pull-right m-b-10">
-                                                                    <p class="message break-word"><?= $message->message?></p>
-                                                                    <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <? } else { ?>
-                                                            <div class="row c-gray">
-                                                                <div class="col-sm-12">
-                                                                    <div class="col-sm-5 pull-left m-b-10 messageReceived">
-                                                                        <? if($message->sender->First()->id == $team->ceo_user_id) { ?>
-                                                                            <p class="c-orange m-0"><?= $message->sender->First()->getName()?> - Team leader:</p>
-                                                                        <? } else { ?>
-                                                                            <p class="c-orange m-0"><?= $message->sender->First()->getName()?></p>
-                                                                        <? } ?>
-                                                                        <p class="break-word"><?= $message->message?></p>
-                                                                        <span class="f-12 pull-right"><?=$message->time_sent?></span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        <? } ?>
-                                                    <? } ?>
+
                                                 </div>
                                                 <div class="d-flex js-center">
                                                     <hr class="col-sm-12 m-b-20">
@@ -200,7 +175,7 @@
                         <? if($assistanceTicket) { ?>
                             <div class="sendedAssistanceTicket">
                                 <div class="card ">
-                                    <div class="card-block">
+                                    <div class="card-block sendedAssistanceTicketCard" data-ticket-id="<?= $assistanceTicket->id?>">
                                         <div class="text-center">
                                             <p class="f-18 m-t-10">Task: <?= $assistanceTicket->title?></p>
                                             <hr class="col-sm-9">
@@ -218,7 +193,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal fade sendedAssistanceModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" >
+                                <div class="modal fade sendedAssistanceModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-ticket-id="<?= $assistanceTicket->id?>">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header col-sm-12 d-flex">
@@ -238,33 +213,8 @@
                                                 </div>
                                             </div>
                                             <div class="modal-body ">
-                                                <div class="o-scroll m-t-20 receivedAssistanceMessages" style="height: 400px;" data-ticket-id="<?= $assistanceTicket->id?>">
-                                                    <? foreach($assistanceTicket->getMessages() as $message) { ?>
-                                                    <? if($message->sender_user_id == $user->id) { ?>
-                                                        <div class="row c-gray sendedMessageAjax">
-                                                            <div class="col-sm-12">
-                                                                <div class="col-sm-5 messageSent pull-right m-b-10">
-                                                                    <p class="message break-word"><?= $message->message?></p>
-                                                                    <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <? } else { ?>
-                                                    <div class="row c-gray">
-                                                        <div class="col-sm-12">
-                                                            <div class="col-sm-5 pull-left m-b-10 messageReceived">
-                                                                <? if($message->sender->First()->id == $team->ceo_user_id) { ?>
-                                                                <p class="c-orange m-0"><?= $message->sender->First()->getName()?> - Team leader:</p>
-                                                                <? } else { ?>
-                                                                <p class="c-orange m-0"><?= $message->sender->First()->getName()?></p>
-                                                                <? } ?>
-                                                                <p class="break-word"><?= $message->message?></p>
-                                                                <span class="f-12 pull-right"><?=$message->time_sent?></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <? } ?>
-                                                    <? } ?>
+                                                <div class="o-scroll m-t-20 sendedAssistanceMessages" style="height: 400px;" data-ticket-id="<?= $assistanceTicket->id?>">
+
                                                 </div>
                                                 <div class="d-flex js-center">
                                                     <hr class="col-sm-12 m-b-20">

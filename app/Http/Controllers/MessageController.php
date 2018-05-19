@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AssistanceTicket;
 use App\SupportTicket;
 use App\SupportTicketMessage;
 use App\User;
@@ -85,8 +86,13 @@ class MessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getInnocreationChatMessagesAction(Request $request){
-
+    public function getAssistanceTicketMessagesAction(Request $request){
+        $userId = Session::get("user_id");
+        $ticketId = $request->input("ticket_id");
+        $user = User::select("*")->where("id", $userId)->first();
+        $assistanceTicket = AssistanceTicket::select("*")->where("id", $ticketId)->first();
+        $team = Team::select("*")->where("id", $assistanceTicket->team_id)->first();
+        return view("/public/shared/_messagesAssistanceTickets", compact( "assistanceTicket", "user", "team"));
     }
 
     /**

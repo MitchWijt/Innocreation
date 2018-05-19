@@ -20,6 +20,46 @@ $(document).ready(function () {
     $(".receivedAssistanceTicket").on("click", openReceivedAssistanceModal);
 });
 
+$(".receivedAssistanceTicketCard").on("click",function () {
+    var ticket_id = $(this).data("ticket-id");
+    console.log(ticket_id);
+    var admin = 0;
+    function getAssistanceTicketMessages() {
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/message/getAssistanceTicketMessages",
+            data: {'ticket_id': ticket_id},
+            success: function (data) {
+                $(".receivedAssistanceModal").each(function () {
+                    if($(this).data("ticket-id") == ticket_id){
+                        $(this).find(".receivedAssistanceMessages").html(data);
+                    }
+                });
+            }
+        });
+    }
+    setTimeout(function(){
+        getAssistanceTicketMessages();
+    }, 300);
+    setTimeout(function(){
+        var objDiv = $(".receivedAssistanceMessages");
+        if (objDiv.length > 0){
+            objDiv[0].scrollTop = objDiv[0].scrollHeight;
+        }
+    }, 500);
+    setInterval(function () {
+        getAssistanceTicketMessages();
+    }, 20000);
+    openReceivedAssistanceModal()
+});
+
 $(".sendMessageReceivedAssistance").on("click",function () {
     var ticket_id = $(this).parents(".receivedAssistanceTicket").find(".ticket_id").val();
     var sender_user_id = $(this).parents(".receivedAssistanceTicket").find(".sender_user_id").val();
@@ -62,7 +102,7 @@ function openSendedAssistanceModal(){
     var _this = $(this);
     _this.find(".sendedAssistanceModal").modal().toggle();
     setTimeout(function(){
-        var objDiv = $(".receivedAssistanceMessages");
+        var objDiv = $(".sendedAssistanceMessages");
         if (objDiv.length > 0){
             objDiv[0].scrollTop = objDiv[0].scrollHeight;
         }
@@ -78,6 +118,45 @@ $('.sendedAssistanceModal').on('show.bs.modal', function () {
 
 $(document).ready(function () {
     $(".sendedAssistanceTicket").on("click", openSendedAssistanceModal);
+});
+
+
+$(".sendedAssistanceTicketCard").on("click",function () {
+    var ticket_id = $(this).data("ticket-id");
+    function getAssistanceTicketMessages() {
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/message/getAssistanceTicketMessages",
+            data: {'ticket_id': ticket_id},
+            success: function (data) {
+                $(".sendedAssistanceModal").each(function () {
+                    if($(this).data("ticket-id") == ticket_id){
+                        $(this).find(".sendedAssistanceMessages").html(data);
+                    }
+                });
+            }
+        });
+    }
+    setTimeout(function(){
+        getAssistanceTicketMessages();
+    }, 300);
+    setTimeout(function(){
+        var objDiv = $(".sendedAssistanceMessages");
+        if (objDiv.length > 0){
+            objDiv[0].scrollTop = objDiv[0].scrollHeight;
+        }
+    }, 500);
+    setInterval(function () {
+        getAssistanceTicketMessages();
+    }, 20000);
+    openSendedAssistanceModal()
 });
 
 $(".sendMessageSendedAssistance").on("click",function () {
@@ -99,7 +178,7 @@ $(".sendMessageSendedAssistance").on("click",function () {
         dataType: "JSON",
         success: function (data) {
             var message = $('.sendedMessageAjax').first().clone();
-            $(".receivedAssistanceMessages").each(function () {
+            $(".sendedAssistanceMessages").each(function () {
                 if($(this).data("ticket-id") == ticket_id){
                     var allMessages = $(this);
                     $(message).appendTo(allMessages);
@@ -107,7 +186,7 @@ $(".sendMessageSendedAssistance").on("click",function () {
                     message.find(".timeSent").text(data['timeSent']);
                     $(this).parents(".sendedAssistanceTicket").find(".assistanceTicketMessage").val("");
                     setTimeout(function(){
-                        var objDiv = $(".receivedAssistanceMessages");
+                        var objDiv = $(".sendedAssistanceMessages");
                         if (objDiv.length > 0){
                             objDiv[0].scrollTop = objDiv[0].scrollHeight;
                         }

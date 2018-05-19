@@ -316,13 +316,22 @@ Route::post("/message/getUserChatMessages", "MessageController@userChatMessagesA
 
 Route::post("/message/getSupportTicketMessages", "MessageController@getSupportTicketMessagesAction");
 
-Route::post("/message/getInnocreationChatMessages", "MessageController@getInnocreationChatMessagesAction");
+Route::post("/message/getAssistanceTicketMessages", "MessageController@getAssistanceTicketMessagesAction");
+
+
+
 
 
 
 //=============================PAGES=============================
 
 Route::get("/page/{slug}", "PageController@pagesIndexAction");
+
+Route::get("/platform-idea", "PageController@platformIdeaAction");
+
+Route::post("/page/submitCustomerIdea", "PageController@submitCustomerIdeaAction");
+
+
 
 
 //===========================USER/EXPERTISES PAGE=========================
@@ -419,6 +428,12 @@ Route::get("/admin/membershipPackages", "AdminController@membershipPackagesActio
 Route::post("/admin/saveMembershipPackage", "AdminController@saveMembershipPackageAction");
 
 Route::get("/admin/customMembershipPackages", "AdminController@customMembershipPackagesAction");
+
+Route::post("/admin/saveCustomMembershipPackage", "AdminController@saveCustomMembershipPackageAction");
+
+Route::post("/admin/addOptionCustomMembershipPackage", "AdminController@addOptionCustomMembershipPackageAction");
+
+Route::post("/admin/addCategoryCustomMembershipPackage", "AdminController@addCategoryCustomMembershipPackageAction");
 
 Route::get("/admin/pageList", "AdminController@pageListAction");
 

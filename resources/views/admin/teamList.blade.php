@@ -19,18 +19,20 @@
                                         <th scope="col" data-column-id="name">Team name</th>
                                         <th scope="col">Amount members</th>
                                         <th scope="col">Membership</th>
+                                        <th scope="col">Custom package</th>
                                         <th scope="col" data-formatter="date">Joined at</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <? foreach($teams as $team) { ?>
-                                    <tr class="clickable-row" data-href="/admin/team/<? echo $team->id?>">
-                                        <td scope="row" data-visible="false"><?= $team->id?></td>
-                                        <td><?= $team->team_name?></td>
-                                        <td><?= count($team->getMembers())?></td>
-                                        <td><i class="zmdi zmdi-check c-orange f-20"></i></td>
-                                        <td><?= date("d-m-Y",strtotime($team->created_at))?></td>
-                                    </tr>
+                                        <tr class="clickable-row" data-href="/admin/team/<? echo $team->id?>">
+                                            <td scope="row" data-visible="false"><?= $team->id?></td>
+                                            <td><?= $team->team_name?></td>
+                                            <td><?= count($team->getMembers())?></td>
+                                            <td><i class="zmdi zmdi-check c-orange f-20"></i></td>
+                                            <td><i class="zmdi zmdi-check c-orange f-20"></i></td>
+                                            <td><?= date("d-m-Y",strtotime($team->created_at))?></td>
+                                        </tr>
                                     <? } ?>
                                     </tbody>
                                 </table>

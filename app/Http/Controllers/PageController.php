@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomerIdea;
 use App\Expertises_linktable;
 use App\Faq;
 use App\FaqType;
@@ -105,9 +106,24 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function platformIdeaAction(Request $request){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $customerIdeas = CustomerIdea::select("*")->where("user_id", Session::get("user_id"))->get();
+        return view("/public/pages/customerIdea", compact("customerIdeas", "user"));
+    }
+
+    public function submitCustomerIdeaAction(Request $request){
+        $userId = $request->input("user_id");
+        $title = $request->input("idea_title");
+        $idea = $request->input("idea");
+
+        $customerIdea = new CustomerIdea();
+        $customerIdea->user_id = $userId;
+        $customerIdea->title = $title;
+        $customerIdea->idea = $idea;
+        $customerIdea->status = "On hold";
+        $customerIdea->save();
+        return redirect($_SERVER["HTTP_REFERER"])->with("success", "We thank you for your contribution on Innocreation!");
     }
 
     /**

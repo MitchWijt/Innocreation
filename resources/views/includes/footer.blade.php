@@ -19,6 +19,9 @@
                 <a class="regular-link c-gray" href="/contact-us">Contact</a>
                 <a class="regular-link c-gray" href="/faq">FAQ</a>
                 <a class="regular-link c-gray" href="">Terms of agreement</a>
+                <? if(\Illuminate\Support\Facades\Session::has("user_id")) { ?>
+                    <a class="regular-link c-gray" href="/platform-idea">Idea? Let us know!</a>
+                <? } ?>
             </div>
         </div>
         <div class="d-flex">
