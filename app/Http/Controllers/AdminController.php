@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Country;
+use App\CustomerIdea;
+use App\CustomerIdeaStatus;
 use App\CustomMembershipPackage;
 use App\CustomMembershipPackageType;
 use App\Expertises;
@@ -641,6 +643,52 @@ class AdminController extends Controller
             $page->page_type_id = $type;
             $page->save();
             return redirect("/admin/pageEditor/$page->id")->with("success", "Page saved");
+        }
+    }
+
+    public function customerIdeaListAction(){
+        if ($this->authorized(true)) {
+            $customerIdeas = CustomerIdea::select("*")->get();
+            $customerIdeaStatusses = CustomerIdeaStatus::select("*")->get();
+            return view("/admin/customerIdeaList", compact("customerIdeas", "customerIdeaStatusses"));
+        }
+    }
+
+    public function changeStatusCustomerIdeaAction(Request $request){
+        if ($this->authorized(true)) {
+            $ideaId = $request->input("idea_id");
+            $status = $request->input("status");
+
+            $customerIdea = CustomerIdea::select("*")->where("id", $ideaId)->first();
+            $customerIdea->customer_idea_status_id = $status;
+            $customerIdea->save();
+
+
+            if($status == 2) {
+                $userChat = UserChat::select("*")->where("receiver_user_id", Session::get("user_id"))->where("creator_user_id", 1)->first();
+
+                $userMessage = new UserMessage();
+                $userMessage->sender_user_id = 1;
+                $userMessage->user_chat_id = $userChat->id;
+                $userMessage->time_sent = $this->getTimeSent();
+                $userMessage->message = "We are happy to say that we have accepted your idea for Innocreation! Soon we will implement it and you will see your own idea live on Innocreation! - Innocreation";
+                $userMessage->created_at = date("Y-m-d H:i:s");
+                $userMessage->save();
+            }
+
+            if($status == 3){
+                $userChat = UserChat::select("*")->where("receiver_user_id", Session::get("user_id"))->where("creator_user_id", 1)->first();
+
+                $userMessage = new UserMessage();
+                $userMessage->sender_user_id = 1;
+                $userMessage->user_chat_id = $userChat->id;
+                $userMessage->time_sent = $this->getTimeSent();
+                $userMessage->message = $request->input("message");
+                $userMessage->created_at = date("Y-m-d H:i:s");
+                $userMessage->save();
+
+                return redirect($_SERVER["HTTP_REFERER"])->with("success", "Rejected idea");
+            }
         }
     }
 }

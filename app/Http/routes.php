@@ -443,6 +443,12 @@ Route::get("/admin/pageEditor", "AdminController@pageEditorAction");
 
 Route::post("/admin/savePage", "AdminController@savePageAction");
 
+Route::get("/admin/customerIdeaList", "AdminController@customerIdeaListAction");
+
+Route::post("/admin/changeStatusCustomerIdea", "AdminController@changeStatusCustomerIdeaAction");
+
+
+
 
 
 //========================CHECKOUT/PACKAGES========================

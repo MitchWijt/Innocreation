@@ -11,4 +11,8 @@ class CustomerIdea extends Model
     public function users(){
         return $this->hasOne("\App\User", "id","user_id");
     }
+
+    public function status(){
+        return $this->hasOne("\App\CustomerIdeaStatus", "id","customer_idea_status_id");
+    }
 }

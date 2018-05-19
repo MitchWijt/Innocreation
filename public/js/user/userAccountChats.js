@@ -51,10 +51,12 @@ $(".chat-card").on("click",function () {
                getUserChatMessages();
            }, 300);
            setTimeout(function(){
-               var objDiv = $(".userChatMessages");
-               if (objDiv.length > 0){
-                   objDiv[0].scrollTop = objDiv[0].scrollHeight;
-               }
+               $(".userChatMessages").each(function () {
+                   var objDiv = $(this);
+                   if (objDiv.length > 0){
+                       objDiv[0].scrollTop = objDiv[0].scrollHeight;
+                   }
+               });
            }, 500);
            setInterval(function () {
                getUserChatMessages();

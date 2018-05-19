@@ -94,12 +94,12 @@
                                                 <p><?= $customerIdea->idea?></p>
                                             </div>
                                             <div class="col-sm-4 text-center">
-                                                <? if($customerIdea->status == "On hold") { ?>
-                                                    <p class="c-orange"><?= $customerIdea->status?></p>
-                                                <? } else if($customerIdea->status == "Passed") { ?>
-                                                    <p class="c-green"><?= $customerIdea->status?></p>
+                                                <? if($customerIdea->customer_idea_status_id == 1) { ?>
+                                                    <p class="c-orange"><?= $customerIdea->status->title?></p>
+                                                <? } else if($customerIdea->customer_idea_status_id == 2) { ?>
+                                                    <p class="c-green"><?= $customerIdea->status->title?></p>
                                                 <? } else { ?>
-                                                    <p class="c-red"><?= $customerIdea->status?></p>
+                                                    <p class="c-red"><?= $customerIdea->status->title?></p>
                                                 <? } ?>
                                             </div>
                                         </div>
