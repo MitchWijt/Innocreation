@@ -26,7 +26,8 @@
                                         <div class="d-flex fd-column  m-t-20">
                                             <div class="text-center">
                                                 <img class="circle circleImage m-0 text-center" src="<?= $searchedUser->getProfilePicture()?>" alt="">
-                                                <p class="text-center "><?= $searchedUser->getName()?></p>
+                                                <p class="text-center m-b-0"><?= $searchedUser->getName()?></p>
+                                                <button class="btn btn-inno btn-sm">Start chat</button>
                                             </div>
                                         </div>
                                     </div>
@@ -59,8 +60,8 @@
                                                         <p class="f-22 m-t-15 m-b-5 p-0"><?=$userChat->creator->firstname?></p>
                                                         <? if($userChat->creator->team_id != null) { ?>
                                                         <div class="d-flex fd-column">
-                                                            <p class="f-20 m-t-15 m-b-0"><?= $userChat->creator->team->First()->team_name?></p>
-                                                            <span class="f-13 c-orange"><?if($userChat->creator->team->First()->ceo_user_id == $userChat->creator->id) echo "Team leader"?></span>
+                                                            <p class="f-20 m-t-15 m-b-0"><?= $userChat->creator->team->team_name?></p>
+                                                            <span class="f-13 c-orange"><?if($userChat->creator->team->ceo_user_id == $userChat->creator->id) echo "Team leader"?></span>
                                                         </div>
                                                         <? } ?>
                                                     </div>
@@ -71,8 +72,8 @@
                                                             <p class="f-22 m-t-15 m-b-5 p-0"><?=$userChat->receiver->firstname?></p>
                                                             <? if($userChat->receiver->team_id != null) { ?>
                                                             <div class="d-flex fd-column">
-                                                                <p class="f-20 m-t-15 m-b-0"><?= $userChat->receiver->team->First()->team_name?></p>
-                                                                <span class="f-13 c-orange"><?if($userChat->receiver->team->First()->ceo_user_id == $userChat->receiver->id) echo "Team leader"?></span>
+                                                                <p class="f-20 m-t-15 m-b-0"><?= $userChat->receiver->team->team_name?></p>
+                                                                <span class="f-13 c-orange"><?if($userChat->receiver->team->ceo_user_id == $userChat->receiver->id) echo "Team leader"?></span>
                                                             </div>
                                                             <? } ?>
                                                         </div>

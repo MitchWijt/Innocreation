@@ -6,7 +6,7 @@
                 <?$topTeamArray = [];?>
                 <? foreach($topTeams as $topTeam) { ?>
                     <? array_push($topTeamArray, $topTeam->id)?>
-                    <a class="td-none" href="/team/<?=$topTeam->team_name?>">
+                    <a class="td-none" href="/team/<?=$topTeam->slug?>">
                         <div class="card-sm text-center m-t-20 m-b-20">
                             <div class="card-block d-flex js-around m-t-10">
                                 <img class="circle circleImage m-r-0 m-t-20" src="<?=$topTeam->getProfilePicture()?>" alt="">
@@ -39,12 +39,12 @@
                                 <div class="m-l-40">
                                     <? if($user) { ?>
                                     <? if($user->team_id == null) { ?>
-                                    <p>Want your own team? <a class="regular-link" href="/my-account/teamInfo">click here</a></p>
+                                        <p>Want your own team? <a class="regular-link" href="/my-account/teamInfo">click here</a></p>
                                     <? } else if($user->team_id != null) { ?>
-                                    <p>Want your own team? <a class="regular-link" href="/my-team">click here</a></p>
+                                        <p>Want your own team? <a class="regular-link" href="/my-team">click here</a></p>
                                     <? } ?>
                                     <? } else { ?>
-                                    <p>Want your own team? <a class="regular-link" href="/login">click here</a></p>
+                                        <p>Want your own team? <a class="regular-link" href="/login">click here</a></p>
                                     <? } ?>
                                 </div>
                             <div class="row m-l-30">
@@ -67,7 +67,7 @@
                         <div class="d-flex fd-column">
                             <? foreach($searchedTeams as $searchedTeam) { ?>
                                 <? if(!in_array($searchedTeam->id, $topTeamArray)) { ?>
-                                    <a class="td-none" href="/team/<?=$searchedTeam->team_name?>">
+                                    <a class="td-none" href="/team/<?=$searchedTeam->slug?>">
                                         <div class="col-sm-11 d-flex js-center">
                                             <div class="card  m-t-20 m-b-20">
                                                 <div class="card-block d-flex js-around m-t-10">

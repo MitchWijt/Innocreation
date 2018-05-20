@@ -199,7 +199,7 @@
                                 <div class="card-block m-t-10">
                                     <div class="row">
                                         <div class="col-sm-12 m-l-20">
-                                            <h3>My team - <a href="/team/<?= $user->team->team_name?>" class="regular-link"><?= $user->team->team_name?></a></h3>
+                                            <h3>My team - <a href="/team/<?= $user->team->slug?>" class="regular-link"><?= $user->team->team_name?></a></h3>
                                         </div>
                                     </div>
                                     <div class="d-flex fd-column">

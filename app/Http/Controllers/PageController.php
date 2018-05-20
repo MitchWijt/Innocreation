@@ -36,7 +36,7 @@ class PageController extends Controller
             array_push($acceptedExpertises, $acceptedJoinRequest->expertise_id);
         }
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
-        $team = Team::select("*")->where("team_name", $team_name)->first();
+        $team = Team::select("*")->where("slug", $team_name)->first();
         $reviews = TeamReview::select("*")->where("team_id", $team->id)->get();
         if($user) {
             $favoriteTeam = FavoriteTeamLinktable::select("*")->where("team_id", $team->id)->where("user_id", $user->id)->first();

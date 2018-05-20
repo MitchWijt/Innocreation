@@ -25,7 +25,7 @@
                                     <p class="c-orange"><?= count($team->getMembers())?> members</p>
                                 </div>
                                 <div class="col-sm-4 m-t-10">
-                                    <a href="/team/<?=$team->team_name?>" class="btn btn-inno livePage">Go to live page</a>
+                                    <a href="/team/<?=$team->slug?>" class="btn btn-inno livePage">Go to live page</a>
                                 </div>
                             </div>
                         </div>

@@ -12,7 +12,7 @@ class Team extends Model
     }
 
     public function getUrl(){
-        return "/team/$this->team_name";
+        return "/team/$this->slug";
     }
 
     public function getProfilePicture(){

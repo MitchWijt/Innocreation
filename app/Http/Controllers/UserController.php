@@ -166,6 +166,7 @@ class UserController extends Controller
         } else {
             $team = new Team;
             $team->team_name = ucfirst($team_name);
+            $team->slug = str_replace(" ", "-", strtolower($team_name));
             $team->ceo_user_id = $user_id;
             $team->created_at = date("Y-m-d H:i:s");
             $team->team_profile_picture = "defaultProfilePicture.png";
