@@ -22,7 +22,7 @@
                                                     <span class=""><?= $user->getName()?></span>
                                                 </div>
                                                 <? if($user->team_id != null) { ?>
-                                                    <div class="col-sm-9">
+                                                    <div class="col-sm-12">
                                                         <span class="pull-left">Team: <a target="_blank" class="regular-link" href="/team/<?= $user->team->team_name?>"><?= $user->team->team_name?></a></span>
                                                     </div>
                                                 <? } ?>

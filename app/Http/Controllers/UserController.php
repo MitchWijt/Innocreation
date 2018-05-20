@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Expertises;
-use App\expertises_linktable;
+use App\Expertises_linktable;
 use App\Favorite_expertises_linktable;
 use App\FavoriteTeamLinktable;
 use App\InviteRequestLinktable;
@@ -21,6 +21,7 @@ use App\NeededExpertiseLinktable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Http\Middleware\RolesMiddleware;
+
 
 use App\Http\Requests;
 use Session;
@@ -167,6 +168,7 @@ class UserController extends Controller
             $team->team_name = ucfirst($team_name);
             $team->ceo_user_id = $user_id;
             $team->created_at = date("Y-m-d H:i:s");
+            $team->team_profile_picture = "defaultProfilePicture.png";
             $team->save();
 
             $user->team_id = $team->id;
@@ -627,12 +629,6 @@ class UserController extends Controller
             $title = $request->input("supportTicketTitle");
             $question = $request->input("supportTicketQuestion");
 
-//        $page = new Page();
-//        $page->page_type_id = 2;
-//        $page->title = "Our motivation";
-//        $page->content = htmlspecialchars($question);
-//        $page->created_at = date("Y-m-d H:i:s");
-//        $page->save();
             $supportTicket = new SupportTicket();
             $supportTicket->user_id = $user_id;
             $supportTicket->support_ticket_status_id = 2;

@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use App\Expertises_linktable;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 

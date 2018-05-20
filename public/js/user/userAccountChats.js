@@ -60,7 +60,7 @@ $(".chat-card").on("click",function () {
            }, 500);
            setInterval(function () {
                getUserChatMessages();
-           }, 20000);
+           }, 500);
            $(this).collapse('toggle');
        }
    });

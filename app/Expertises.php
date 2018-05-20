@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Expertises_linktable;
 
 class Expertises extends Model
 {

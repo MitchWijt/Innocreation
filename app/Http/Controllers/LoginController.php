@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Expertises;
-use App\expertises_linktable;
+use App\Expertises_linktable;
 use App\UserChat;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\User;
-use App\country;
+use App\Country;
 use Auth;
 use Session;
 
