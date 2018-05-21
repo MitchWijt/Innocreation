@@ -10,6 +10,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Support\Facades\Session;
+use Mailgun\Mailgun;
 
 class Controller extends BaseController
 {
@@ -47,6 +48,16 @@ class Controller extends BaseController
         $timeNow = date("H:i:s");
         $time = (date("g:i a", strtotime($timeNow)));
         return $time;
+    }
+
+    public function getService($service){
+        if($service == "mailgun") {
+            $mailgun = [
+                $mgClient = new Mailgun('key-8802b754cc5279a431547c306e298ead'),
+                $domain = "mg.innocreation.net"
+            ];
+            return $mailgun;
+        }
     }
 }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\UserChat;
 use Illuminate\Http\Request;
+use Mailgun\Mailgun;
 
 use App\Http\Requests;
 

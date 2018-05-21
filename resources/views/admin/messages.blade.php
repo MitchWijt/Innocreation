@@ -112,7 +112,7 @@
                     }, 500);
                     setInterval(function () {
                         getUserChatMessages();
-                    }, 20000);
+                    }, 1000);
                     $(this).collapse('toggle');
                 }
             });

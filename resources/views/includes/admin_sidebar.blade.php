@@ -71,4 +71,8 @@
         <a class="regular-link c-gray" href="/admin/customerIdeaList">Ideas of customers</a>
     </div>
     <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="/admin/construction">Construction</a>
+    </div>
+    <hr>
 </div>

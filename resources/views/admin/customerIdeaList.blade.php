@@ -87,15 +87,15 @@
         $(".changeIdeaStatus").on("change",function () {
             var idea_id = $(this).parents(".customerIdea").find(".changeIdeaStatus option:selected").data("idea-id");
             var statusId = $(this).parents(".customerIdea").find(".changeIdeaStatus option:selected").val();
-            $(".changeIdeaStatus").removeClass("c-green");
-            $(".changeIdeaStatus").removeClass("c-red");
-            $(".changeIdeaStatus").removeClass("c-orange");
+            $(this).removeClass("c-green");
+            $(this).removeClass("c-red");
+            $(this).removeClass("c-orange");
             if(statusId == 1){
-                $(".changeIdeaStatus").addClass("c-orange");
+                $(this).addClass("c-orange");
             } else if(statusId == 2){
-                $(".changeIdeaStatus").addClass("c-green");
+                $(this).addClass("c-green");
             } else {
-                $(".changeIdeaStatus").addClass("c-red");
+                $(this).addClass("c-red");
             }
             if(statusId == 1 || statusId == 2){
                 $.ajax({

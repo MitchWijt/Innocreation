@@ -24,13 +24,14 @@ Route::post("/register", "LoginController@register");
 
 Route::get("/logout", "LoginController@logout");
 
+Route::get("/header", "HomeController@headerMail");
+
 // CONTACT US
 Route::get("/contact-us", "HomeController@contactAction");
 
 Route::post("/home/sendContactForm", "HomeController@sendContactFormAction");
 
 Route::get("/faq", "PageController@faqAction");
-
 
 
 //========================USERACCOUNT================================
@@ -446,7 +447,6 @@ Route::post("/admin/savePage", "AdminController@savePageAction");
 Route::get("/admin/customerIdeaList", "AdminController@customerIdeaListAction");
 
 Route::post("/admin/changeStatusCustomerIdea", "AdminController@changeStatusCustomerIdeaAction");
-
 
 
 

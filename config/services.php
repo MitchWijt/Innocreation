@@ -15,8 +15,8 @@ return [
     */
 
     'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN'),
-        'secret' => env('MAILGUN_SECRET'),
+        'domain' => env('mg.innocreation.net'),
+        'secret' => env('key-8802b754cc5279a431547c306e298ead'),
     ],
 
     'mandrill' => [
