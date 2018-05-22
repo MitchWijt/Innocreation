@@ -159,11 +159,20 @@ class AdminController extends Controller
             if (Auth::attempt(['email' => $admin->email, 'password' => $password])) {
                 $user = User::select("*")->where("id", $userId)->first();
                 if($user->team_id != null){
-                    $userJoinedExpertise = $user->getJoinedExpertise()->expertises->First()->id;
-                    $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $user->team_id)->where("expertise_id", $userJoinedExpertise)->first();
-                    $neededExpertise->amount = $neededExpertise->amount + 1;
+                    $team = Team::select("*")->where("id", $user->team_id)->first();
+                    if($user->id != $team->ceo_user_id && count($user->getJoinedExpertise()) != 0) {
+                        $userJoinedExpertise = $user->getJoinedExpertise()->expertises->First()->id;
+                        $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $user->team_id)->where("expertise_id", $userJoinedExpertise)->first();
+                        $neededExpertise->amount = $neededExpertise->amount + 1;
+                        $neededExpertise->save();
+                    }
                 }
                 $user->delete();
+                if($user->team_id != null) {
+                    if (count($team->getMember()) < 1) {
+                        $team->delete();
+                    }
+                }
 
                 $userExpertisesLinktable = Expertises_linktable::select("*")->where("user_id", $userId)->get();
                 foreach($userExpertisesLinktable as $userExpertise){

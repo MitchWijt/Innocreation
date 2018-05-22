@@ -47,77 +47,82 @@ class LoginController extends Controller
             'phonenumber' => 'required',
 
         ]);
-        $user = New User;
-        $user->role = 2;
-        $user->firstname = ucfirst($request->input("firstname"));
-        if($request->input("middlename") != null){
-            $user->middlename = $request->input("middlename");
-        }
-        $user->lastname = ucfirst($request->input("lastname"));
-        $user->password = bcrypt(($request->input("password")));
-        $user->email = $request->input("email");
-        $user->city = $request->input("city");
-        $user->postalcode = $request->input("postcode");
-        $user->state = $request->input("state");
-        $user->country = $request->input("country");
-        $user->profile_picture = "defaultProfilePicture.png";
-        $user->phonenumber = $request->input("phonenumber");
-        $user->created_at = date("Y-m-d H:i:s");
-        $user->save();
+        $existingUser = User::select("*")->where("email", $request->input("email"))->first();
+        if(!$existingUser) {
+            $user = New User;
+            $user->role = 2;
+            $user->firstname = ucfirst($request->input("firstname"));
+            if ($request->input("middlename") != null) {
+                $user->middlename = $request->input("middlename");
+            }
+            $user->lastname = ucfirst($request->input("lastname"));
+            $user->password = bcrypt(($request->input("password")));
+            $user->email = $request->input("email");
+            $user->city = $request->input("city");
+            $user->postalcode = $request->input("postcode");
+            $user->state = $request->input("state");
+            $user->country = $request->input("country");
+            $user->profile_picture = "defaultProfilePicture.png";
+            $user->phonenumber = $request->input("phonenumber");
+            $user->created_at = date("Y-m-d H:i:s");
+            $user->save();
 
-        $userChat = new UserChat();
-        $userChat->creator_user_id = 1;
-        $userChat->receiver_user_id = $user->id;
-        $userChat->created_at = date("Y-m-d H:i:s");
+            $userChat = new UserChat();
+            $userChat->creator_user_id = 1;
+            $userChat->receiver_user_id = $user->id;
+            $userChat->created_at = date("Y-m-d H:i:s");
+            $userChat->save();
 
-        $expertisesAll = Expertises::select("*")->get();
-        $existingArray = [];
-        foreach($expertisesAll as $existingExpertise){
-            array_push($existingArray, $existingExpertise->title);
-        }
+            $expertisesAll = Expertises::select("*")->get();
+            $existingArray = [];
+            foreach ($expertisesAll as $existingExpertise) {
+                array_push($existingArray, $existingExpertise->title);
+            }
 
-        $chosenExpertisesString = $request->input("expertises");
-        $chosenExpertises = explode(", ", $chosenExpertisesString);
-        foreach($chosenExpertises as $expertise){
-            if(!in_array(ucfirst($expertise), $existingArray)){
-                $newExpertise = New Expertises;
-                $newExpertise->title = ucfirst($expertise);
-                $newExpertise->save();
+            $chosenExpertisesString = $request->input("expertises");
+            $chosenExpertises = explode(", ", $chosenExpertisesString);
+            foreach ($chosenExpertises as $expertise) {
+                if (!in_array(ucfirst($expertise), $existingArray)) {
+                    $newExpertise = New Expertises;
+                    $newExpertise->title = ucfirst($expertise);
+                    $newExpertise->save();
 
-                $userExpertise = New expertises_linktable;
-                $userExpertise->user_id = $user->id;
-                $userExpertise->expertise_id = $newExpertise->id;
-                $userExpertise->save();
+                    $userExpertise = New expertises_linktable;
+                    $userExpertise->user_id = $user->id;
+                    $userExpertise->expertise_id = $newExpertise->id;
+                    $userExpertise->save();
 
+                } else {
+                    $expertiseNewUser = Expertises::select("*")->where("title", $expertise)->first();
+                    $userExpertise = New expertises_linktable;
+                    $userExpertise->user_id = $user->id;
+                    $userExpertise->expertise_id = $expertiseNewUser->id;
+                    $userExpertise->save();
+                }
+            }
+            if (Auth::attempt(['email' => $request->input("email"), 'password' => $request->input("password")])) {
+                $user = User::select("*")->where("email", $request->input("email"))->first();
+                Session::set('user_name', $user->getName());
+                Session::set('user_role', $user->role);
+                Session::set('user_id', $user->id);
+                if ($user->team_id != null) {
+                    Session::set('team_id', $user->team_id);
+                }
+                $mgClient = $this->getService("mailgun");
+                $mgClient[0]->sendMessage($mgClient[1], array(
+                    'from' => 'mitchel@innocreation.net',
+                    'to' => $user->email,
+                    'subject' => 'Welcome to Innocreation!',
+                    'html' => view("/templates/sendWelcomeMail", compact("user"))
+                ), array(
+                    'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
+                ));
+                return redirect("/account");
             } else {
-                $expertiseNewUser = Expertises::select("*")->where("title", $expertise)->first();
-                $userExpertise = New expertises_linktable;
-                $userExpertise->user_id = $user->id;
-                $userExpertise->expertise_id = $expertiseNewUser->id;
-                $userExpertise->save();
+                return redirect($_SERVER["HTTP_REFERER"])->with('success', 'Account created');
             }
-        }
-
-        if(Auth::attempt(['email'=>$request->input("email"),'password'=>$request->input("password")])) {
-            $user = User::select("*")->where("email", $request->input("email"))->first();
-            Session::set('user_name', $user->getName());
-            Session::set('user_role', $user->role);
-            Session::set('user_id', $user->id);
-            if($user->team_id != null) {
-                Session::set('team_id', $user->team_id);
-            }
-            $mgClient = $this->getService("mailgun");
-            $mgClient[0]->sendMessage($mgClient[1], array(
-                'from'    => 'mitchel@innocreation.net',
-                'to'      => $user->email,
-                'subject' => 'Welcome to Innocreation!',
-                'html'    => view("/templates/sendWelcomeMail", compact("user"))
-            ), array(
-                'inline' => array($_SERVER['DOCUMENT_ROOT'].'/images/cartwheel.png')
-            ));
-            return redirect("/account");
         } else {
-            return redirect($_SERVER["HTTP_REFERER"])->with('success', 'Account created');
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors( 'There has already been an account created with this email address.');
         }
     }
 
@@ -150,7 +155,7 @@ class LoginController extends Controller
             }
             return redirect("/account");
         } else {
-            return redirect($_SERVER["HTTP_REFERER"])->withErrors('it seems that you have logged in with the wrong credentials. Please try again');
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors('It seems that you have logged in with the wrong credentials. Please try again.');
         }
     }
 

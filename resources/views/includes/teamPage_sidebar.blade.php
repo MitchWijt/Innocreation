@@ -1,6 +1,9 @@
 <div class="sidebar">
     <div class="text-center">
-        <p class="c-gray f-20 text-center m-0"><?= \Illuminate\Support\Facades\Session::get("team_name")?></p>
+        <?
+            $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
+        ?>
+        <p class="c-gray f-20 text-center m-0"><?= $user->team->team_name?></p>
         <span class="c-orange  f-12 m-0">(slug)</span>
     </div>
     <hr>
@@ -14,13 +17,11 @@
     <hr>
     <div class="sidebar-tab text-center p-relative">
         <?
-            $team = \App\Team::select("*")->where("team_name", \Illuminate\Support\Facades\Session::get("team_name"))->first();
-            $unseenMessages = \App\UserMessage::select("*")->where("team_id", $team->id)->where("seen_at" ,null)->get();
+//            $team = \App\Team::select("*")->where("team_name", \Illuminate\Support\Facades\Session::get("team_name"))->first();
+//            $unseenMessages = \App\UserMessage::select("*")->where("team_id", $team->id)->where("seen_at" ,null)->get();
         ?>
         <a class="regular-link c-gray" href="/my-team/team-chat">Team chat</a>
-        <? if(count($unseenMessages) > 0) { ?>
-            <p class="circle circleSmall p-absolute c-orange" style="top: -1px; left: 170px;"><?= count($unseenMessages)?></p>
-        <? } ?>
+
     </div>
     <hr>
     <div class="sidebar-tab text-center">

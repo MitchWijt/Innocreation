@@ -19,7 +19,7 @@
                     <div class="pull-right c-gray text-center">
                         <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterSupportTickets" data-filter="Open">Open tickets</p>
                         <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterSupportTickets" data-filter="OnHold">Tickets on hold</p>
-                        <p class="bcg-black border-default m-b-0 menu-item filterSupportTickets" data-filter="Closed">Closed tickets</p>
+                        <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterSupportTickets" data-filter="Closed">Closed tickets</p>
                         <p class="bcg-black border-default m-b-0 menu-item filterSupportTickets" data-filter="All">All tickets</p>
                     </div>
                 </div>

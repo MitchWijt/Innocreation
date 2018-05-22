@@ -104,11 +104,13 @@ class TeamController extends Controller
         // Grabs the team id and expertise the team wants to add and adds it to the database for the team. Also checks for doubles
         $team_id = $request->input("team_id");
         $expertise_id = $request->input("expertises");
+        $amount = $request->input("amountNewExpertise");
         $expertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
         if(count($expertise) == 0) {
             $neededExpertise = new NeededExpertiseLinktable();
             $neededExpertise->team_id = $team_id;
             $neededExpertise->expertise_id = $expertise_id;
+            $neededExpertise->amount = $amount;
             $neededExpertise->save();
             return redirect($_SERVER["HTTP_REFERER"]);
         } else {

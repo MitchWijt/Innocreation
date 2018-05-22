@@ -50,8 +50,8 @@
                             <div class="row m-l-30">
                                 <div class="m-l-40 ">
                                     <div class="form-group d-flex pull-right">
-                                        <input type="checkbox" name="allTeamsSearch" value="1" class="m-r-10 m-t-5">
-                                        <p>Select all teams</p>
+                                        <input type="checkbox" name="allTeamsSearch" value="1" class="m-r-10 m-t-5" id="check">
+                                        <label for="check">Select all teams</label>
                                     </div>
                                 </div>
                             </div>
