@@ -323,6 +323,19 @@ class UserController extends Controller
         }
     }
 
+    public function deleteUserChatAction(Request $request){
+        $userChatId = $request->input("user_chat_id");
+
+        $userMessages = UserMessage::select("*")->where("user_chat_id", $userChatId)->get();
+        if(count($userMessages) > 0) {
+            foreach ($userMessages as $userMessage) {
+                $userMessage->delete();
+            }
+        }
+        $userChat = UserChat::select("*")->where("id", $userChatId)->first();
+        $userChat->delete();
+    }
+
     public function searchChatUsers(Request $request){
         if($this->authorized()) {
             // gets all the users where user searched on to chat with
@@ -371,25 +384,22 @@ class UserController extends Controller
             // sends a message to the user. The user selected. with the sended time and return to the page with id.
             // so the collapse stays open from the user you are chatting with
 
-            $timeNow = date("H:i:s");
-            $time = (date("g:i a", strtotime($timeNow)));
             $user_chat_id = $request->input("user_chat_id");
             $sender_user_id = $request->input("sender_user_id");
+            $message = $request->input("message");
 
             $userChat = UserChat::select("*")->where("id", $user_chat_id)->first();
 
             $userMessage = new UserMessage();
             $userMessage->sender_user_id = $sender_user_id;
             $userMessage->user_chat_id = $user_chat_id;
-            $userMessage->time_sent = $time;
+            $userMessage->time_sent = $this->getTimeSent();
             $userMessage->message = $request->input("message");
             $userMessage->created_at = date("Y-m-d H:i:s");
             $userMessage->save();
-            if($sender_user_id != 1) {
-                return redirect("/my-account/chats?user_id=$userChat->receiver_user_id&user_chat_id=$userChat->id");
-            } else {
-                return redirect("/admin/messages");
-            }
+
+            $messageArray = ["message" => $message, "timeSent" => $this->getTimeSent()];
+            echo json_encode($messageArray);
         }
     }
 

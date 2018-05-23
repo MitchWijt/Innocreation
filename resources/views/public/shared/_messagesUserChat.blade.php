@@ -2,11 +2,11 @@
     <? if($admin == 0) { ?>
         <? if($userChat->creator_user_id == 1) { ?>
             <? if($message->sender_user_id == $user_id) { ?>
-                <div class="row m-t-20">
+                <div class="row m-t-20 sendedMessageAjax">
                     <div class="col-sm-12">
                         <div class="col-sm-5 messageSent pull-right m-b-10">
-                            <p><?= $message->message?></p>
-                            <span class="f-12 pull-right"><?=$message->time_sent?></span>
+                            <p class="message"><?= $message->message?></p>
+                            <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
                         </div>
                     </div>
                 </div>
@@ -22,11 +22,11 @@
             <? } ?>
         <? } else { ?>
             <? if($message->sender_user_id == $user_id) { ?>
-                <div class="row m-t-20">
+                <div class="row m-t-20 sendedMessageAjax">
                     <div class="col-sm-12">
                         <div class="col-sm-5 messageSent pull-right m-b-10">
-                            <p><?= $message->message?></p>
-                            <span class="f-12 pull-right"><?=$message->time_sent?></span>
+                            <p class="message"><?= $message->message?></p>
+                            <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
                         </div>
                     </div>
                 </div>

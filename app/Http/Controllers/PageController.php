@@ -49,16 +49,11 @@ class PageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function singleUserPageIndex($firstname = null, $middlename = null, $lastname = null)
+    public function singleUserPageIndex($slug = null)
     {
-        if($lastname == null){
-            // middlename is lastname here
-            $user  = User::select("*")->where("firstname", ucfirst($firstname))->where("lastname", ucfirst($middlename))->first();
-        } else {
-            // everything is normal
-            $user  = User::select("*")->where("firstname", ucfirst($firstname))->where("middlename", $middlename)->where("lastname", ucfirst($lastname))->first();
+        if($slug){
+            $user  = User::select("*")->where("slug", $slug)->first();
         }
-
         $loggedIn = User::select("*")->where("id", Session::get("user_id"))->first();
         $expertise_linktable = Expertises_linktable::select("*")->where("user_id", $user->id)->get();
         $portfolios = UserPortfolio::select("*")->where("user_id", $user->id)->get();

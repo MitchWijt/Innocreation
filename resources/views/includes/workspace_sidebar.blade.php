@@ -1,7 +1,10 @@
 <div class="sidebar">
     <div class="text-center">
+        <a href="/my-team" class="td-none">
+            <i class="c-dark-grey f-10"><i class="zmdi zmdi-long-arrow-left"> </i>Back to team</i>
+        </a>
         <p class="c-gray f-20 text-center m-0"><?= \Illuminate\Support\Facades\Session::get("team_name")?></p>
-        <span class="c-orange  f-12 m-0">workspace</span>
+        <span class="c-orange f-12 m-0">workspace</span>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

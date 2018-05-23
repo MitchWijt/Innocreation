@@ -3,7 +3,7 @@
 <div class="grey-background" style="min-height: 80vh;">
     <div class="container">
         <div class="sub-title-container p-t-20">
-            <h1 class="sub-title-black" id="titleLogin">Login</h1>
+            <h1 class="sub-title-black" id="titleLogin"><? if(isset($urlParameter)) echo "Register"; else echo "Login"?></h1>
         </div>
         <div class="hr"></div>
         <? if(count($errors) > 0){ ?>
@@ -11,7 +11,7 @@
                 <p class="c-orange text-center"><?=$error?></p>
             <? } ?>
         <? } ?>
-        <form action="/loginUser" method="POST" class="loginForm">
+        <form action="/loginUser" method="POST" class="loginForm <? if(isset($urlParameter)) echo "hidden"?>">
             <input type="hidden" name="_token" value="<?= csrf_token()?>">
             <div class="form-group d-flex js-center m-b-0 p-b-20">
                 <div class="d-flex fd-column col-sm-5 m-t-20">
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </form>
-        <form action="/register" method="POST" class="registerForm hidden">
+        <form action="/register" method="POST" class="registerForm <? if(!isset($urlParameter)) echo "hidden"?>">
             <input type="hidden" name="_token" value="<?= csrf_token()?>">
             <div class="form-group d-flex js-center m-b-0 ">
                 <div class="d-flex fd-column col-sm-9 m-t-20">

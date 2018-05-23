@@ -86,6 +86,8 @@ Route::post("/selectChatUser", "UserController@selectChatUser");
 
 Route::post("/sendMessageUser", "UserController@sendMessageUserAction");
 
+Route::post("/user/deleteUserChat", "UserController@deleteUserChatAction");
+
 // Create team for user
 Route::post("/createTeam","UserController@createNewTeam");
 
@@ -118,7 +120,7 @@ Route::post("/team/searchTeams", "TeamSearchController@searchTeamsAction");
 
 Route::get("/team/{team_name}", "PageController@singleTeamPageIndex");
 
-Route::get("/user/{firstname?}-{middlename?}-{lastname?}", "PageController@singleUserPageIndex");
+Route::get("/user/{slug?}", "PageController@singleUserPageIndex");
 //==============================TEAM===================================
 
 Route::get("/my-team", "TeamController@teamPageCredentials");

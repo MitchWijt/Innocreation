@@ -1,10 +1,12 @@
+<?
+    $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
+?>
 <div class="sidebar">
     <div class="text-center">
-        <?
-            $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
-        ?>
+        <a href="/account" class="td-none">
+            <i class="c-dark-grey f-10"><i class="zmdi zmdi-long-arrow-left"> </i>Back to account</i>
+        </a>
         <p class="c-gray f-20 text-center m-0"><?= $user->team->team_name?></p>
-        <span class="c-orange  f-12 m-0">(slug)</span>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

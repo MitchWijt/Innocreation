@@ -52,12 +52,14 @@ $(".chat-card").on("click",function () {
            }, 300);
            setTimeout(function(){
                $(".userChatMessages").each(function () {
-                   var objDiv = $(this);
-                   if (objDiv.length > 0){
-                       objDiv[0].scrollTop = objDiv[0].scrollHeight;
+                   if($(this).data("chat-id") == user_chat_id) {
+                       var objDiv = $(this);
+                       if (objDiv.length > 0) {
+                           objDiv[0].scrollTop = objDiv[0].scrollHeight;
+                       }
                    }
                });
-           }, 500);
+           }, 1000);
            setInterval(function () {
                getUserChatMessages();
            }, 500);
@@ -66,45 +68,68 @@ $(".chat-card").on("click",function () {
    });
 });
 
-$(document).ready(function () {
-    var user_id = $(".url_content").val();
-    var user_chat_id = $(".url_content_chat").val();
-    $(".collapse").each(function () {
-        if($(this).data("user-id") == user_id){
-            function getUserChatMessages() {
-                $.ajax({
-                    method: "POST",
-                    beforeSend: function (xhr) {
-                        var token = $('meta[name="csrf_token"]').attr('content');
+$(".sendUserMessage").on("click",function () {
+    var user_chat_id = $(this).parents(".userChatTextarea").find(".user_chat_id").val();
+    var sender_user_id = $(this).parents(".userChatTextarea").find(".sender_user_id").val();
+    var message = $(this).parents(".userChatTextarea").find(".messageInput").val();
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
 
-                        if (token) {
-                            return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-                        }
-                    },
-                    url: "/message/getUserChatMessages",
-                    data: {'user_chat_id': user_chat_id},
-                    success: function (data) {
-                        $(".collapse").each(function () {
-                            if($(this).data("user-id") == user_id){
-                                $(this).find(".userChatMessages").html(data);
-                            }
-                        });
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/sendMessageUser",
+        data: {'user_chat_id': user_chat_id, 'sender_user_id' : sender_user_id, 'message' : message},
+        dataType: "JSON",
+        success: function (data) {
+            var message = $('.sendedMessageAjax').first().clone();
+            $(".userChatMessages").each(function () {
+                if($(this).data("chat-id") == user_chat_id){
+                    var allMessages = $(this);
+                    $(message).appendTo(allMessages);
+                    message.find(".message").text(data['message']);
+                    message.find(".timeSent").text(data['timeSent']);
+                    $(this).parents(".userChatTextarea").find(".messageInput").val("");
+                }
+            });
+        }
+    });
+    setTimeout(function(){
+        $(".userChatMessages").each(function () {
+            if($(this).data("chat-id") == user_chat_id) {
+                var objDiv = $(this);
+                if (objDiv.length > 0) {
+                    objDiv[0].scrollTop = objDiv[0].scrollHeight;
+                }
+            }
+        });
+    }, 500);
+});
+
+$(".deleteChat").on("click",function () {
+    if(confirm("Are you sure you want to delete this chat?")) {
+        var user_chat_id = $(this).data("chat-id");
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/user/deleteUserChat",
+            data: {'user_chat_id': user_chat_id},
+            success: function (data) {
+                $(".userChat").each(function () {
+                    if ($(this).data("chat-id") == user_chat_id) {
+                        $(this).remove();
                     }
                 });
             }
-            setTimeout(function(){
-                getUserChatMessages();
-            }, 300);
-            setTimeout(function(){
-                var objDiv = $(".userChatMessages");
-                if (objDiv.length > 0){
-                    objDiv[0].scrollTop = objDiv[0].scrollHeight;
-                }
-            }, 500);
-            setInterval(function () {
-                getUserChatMessages();
-            }, 20000);
-            $(this).addClass("show");
-        }
-    });
+        });
+    }
 });

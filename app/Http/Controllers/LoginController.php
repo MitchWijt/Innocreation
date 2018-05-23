@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Expertises;
 use App\Expertises_linktable;
 use App\UserChat;
+use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -24,7 +25,13 @@ class LoginController extends Controller
     {
         $countries = Country::select("*")->orderBy("country")->get();
         $expertises = Expertises::select("*")->get();
-        return view("public/register/login", compact("countries", "expertises"));
+        if(request()->has('register')){
+            $urlParameter = request()->register;
+            return view("public/register/login", compact("countries", "expertises", "urlParameter"));
+
+        } else {
+            return view("public/register/login", compact("countries", "expertises"));
+        }
     }
 
     /**
@@ -58,6 +65,11 @@ class LoginController extends Controller
             $user->lastname = ucfirst($request->input("lastname"));
             $user->password = bcrypt(($request->input("password")));
             $user->email = $request->input("email");
+            if ($request->input("middlename") != null) {
+                $user->slug = strtolower($request->input("firstname")) . strtolower($user->middlename = $request->input("middlename")) . strtolower($request->input("lastname"));
+            } else {
+                $user->slug = strtolower($request->input("firstname")) . strtolower($request->input("lastname"));
+            }
             $user->city = $request->input("city");
             $user->postalcode = $request->input("postcode");
             $user->state = $request->input("state");

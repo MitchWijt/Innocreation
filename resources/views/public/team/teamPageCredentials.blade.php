@@ -19,12 +19,17 @@
                             </div>
                         </div>
                         <? if($team->ceo_user_id == $user->id || $user->role == 3 || $user->role == 1) { ?>
-                            <div class="row text-center m-t-20 m-b-20">
+                            <div class="row text-center m-t-20">
                                 <div class="col-sm-12">
                                     <button type="button" class="btn btn-inno editProfilePicture">Edit team picture</button>
                                 </div>
                             </div>
                         <? } ?>
+                        <div class="row text-center m-t-20 m-b-20">
+                            <div class="col-sm-12">
+                                <a href="<?=$team->getUrl()?>" class="btn btn-sm btn-inno">Go to live page</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>

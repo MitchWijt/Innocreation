@@ -201,7 +201,7 @@ $(document).ready(function() {
     getTeamChatMessages();
     setInterval(function () {
         getTeamChatMessages();
-    }, 20000);
+    }, 2000);
 });
 
 function getTeamChatMessages(){

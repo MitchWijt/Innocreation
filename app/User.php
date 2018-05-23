@@ -29,12 +29,7 @@ class User extends Authenticatable
     }
 
     public function getUrl(){
-        if($this->middlename != null){
-            return "/user/". $this->firstname . "-" . $this->middlename . "-" . $this->lastname;
-        } else {
-            return "/user/". $this->firstname . "-" . $this->lastname;
-        }
-
+        return "/user/". $this->slug;
     }
 
     public function getExpertises(){
