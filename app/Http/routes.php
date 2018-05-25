@@ -235,6 +235,10 @@ Route::post("/workspace/completeShortTermPlannerTask", "WorkspaceController@comp
 
 Route::post("/workspace/setPriorityShortTermPlannerTask", "WorkspaceController@setPriorityShortTermPlannerTaskAction");
 
+Route::post("/workspace/getDataShortTermTaskModal", "WorkspaceController@getDataShortTermTaskModalAction");
+
+
+
 // Personal task board
 
 Route::get("/my-team/workspace/my-tasks", "WorkspaceController@workspacePersonalBoard");

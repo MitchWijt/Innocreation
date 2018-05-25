@@ -406,8 +406,8 @@
                                     <? foreach($shortTermPlannerTasks as $shortPlannerTask) { ?>
                                         <? if($shortPlannerTask->category == $shortTermPlannerCategory) { ?>
                                                 <div class="m-b-10 shortTermTask" id="drag-<?=$shortPlannerTask->id?>" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
-                                                    <div class="card card-task col-sm-12 " data-short-planner-task-id="<?= $shortPlannerTask->id?>">
-                                                        <div class="card-block" style="min-height: 100%" >
+                                                    <div class="card card-task col-sm-12 " data-short-planner-task-id="<?= $shortPlannerTask->id?>" >
+                                                        <div class="card-block" style="min-height: 100%" data-short-planner-task-id="<?= $shortPlannerTask->id?>" data-team-id="<?= $team->id?>">
                                                             <p class="m-t-10 f-19 m-b-0"><?= $shortPlannerTask->title?></p>
                                                             <? if($shortPlannerTask->priority != null) { ?>
                                                                 <? if($shortPlannerTask->priority == 1) { ?>
