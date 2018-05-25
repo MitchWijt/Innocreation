@@ -165,7 +165,7 @@ footer{
 .card{
     background: #000000 !important;
     color: #C9CCCF !important;
-    width: 640px !important;
+    /*width: 640px !important;*/
     border: 1px solid #FF6100 !important;
 }
 
@@ -448,7 +448,7 @@ footer{
 .loginRegister{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    text-align: right;
 }
 
 .main-navMenu li{

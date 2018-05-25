@@ -41,6 +41,10 @@
     margin: 0 !important;
 }
 
+.m-0-auto{
+    margin: 0 auto;
+}
+
 .p-0{
     padding: 0 !important;
 }
@@ -291,6 +295,10 @@
 
 .js-around{
     justify-content: space-around !important
+}
+
+.jc-end{
+    justify-content: flex-end !important;
 }
 
 .o-scroll{

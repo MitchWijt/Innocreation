@@ -84,7 +84,14 @@
     <div class="footerView"></div>
 </div>
 
-
+<style>
+    footer{
+        display: none !important;
+    }
+    .footerView footer{
+        display: block !important;
+    }
+</style>
 <script>
     $(document).on( 'DOMMouseScroll mousewheel', function ( event ) {
         if( event.originalEvent.detail > 0 || event.originalEvent.wheelDelta < 0 ) {
@@ -92,6 +99,7 @@
             $(".home-background-wrapper").css("height","85vh");
             $(".homepage-mainContent").removeClass("hidden");
             $(".footerView").load("/includes/footer");
+            $(".footerView").attr("style", "display: block !important");
         }
     });
 
@@ -104,6 +112,7 @@
         $(".home-background-wrapper").css("height","85vh");
         $(".homepage-mainContent").removeClass("hidden");
         $(".footerView").load("/includes/footer");
+        $(".footerView").attr("style", "display: block !important");
 
         $('html, body').animate({
             scrollTop: $("#scrollToHome").offset().top - 120

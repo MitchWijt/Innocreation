@@ -7,23 +7,23 @@
                     {{--<div class="d-flex js-between">--}}
                         <?$topTeamArray = [];?>
                         <? foreach($topTeams as $topTeam) { ?>
-                        <div class="col-md-4">
-                            <? array_push($topTeamArray, $topTeam->id)?>
-                            <a class="td-none" href="/team/<?=$topTeam->slug?>">
-                                <div class="card-sm text-center m-t-20 m-b-20">
-                                    <div class="card-block d-flex js-around m-t-10">
-                                        <img class="circle circleImage m-r-0 m-t-20" src="<?=$topTeam->getProfilePicture()?>" alt="">
-                                        <div class="d-flex fd-column">
-                                            <p class="f-17 m-b-0 c-orange"><?= $topTeam->team_name?></p>
-                                            <p class="m-b-0">Expertises needed: <?= $topTeam->getAmountNeededExpertises()?></p>
-                                            <p class="m-b-0">Members: <?=count($topTeam->getMembers())?></p>
-                                            <p class="m-b-0">Support: <?=$topTeam->support?></p>
-                                            <p class="m-b-0">Age: <?=$topTeam->calculateAge()?></p>
+                            <div class="col-md-4 col-xs-12">
+                                <? array_push($topTeamArray, $topTeam->id)?>
+                                <a class="td-none" href="/team/<?=$topTeam->slug?>">
+                                    <div class="card-sm text-center m-t-20 m-b-20">
+                                        <div class="card-block d-flex js-around m-t-10">
+                                            <img class="circle circleImage m-r-0 m-t-20" src="<?=$topTeam->getProfilePicture()?>" alt="">
+                                            <div class="d-flex fd-column">
+                                                <p class="f-17 m-b-0 c-orange"><?= $topTeam->team_name?></p>
+                                                <p class="m-b-0">Expertises needed: <?= $topTeam->getAmountNeededExpertises()?></p>
+                                                <p class="m-b-0">Members: <?=count($topTeam->getMembers())?></p>
+                                                <p class="m-b-0">Support: <?=$topTeam->support?></p>
+                                                <p class="m-b-0">Age: <?=$topTeam->calculateAge()?></p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
-                        </div>
+                                </a>
+                            </div>
                         <? } ?>
                     {{--</div>--}}
                 {{--</div>--}}
@@ -68,30 +68,26 @@
 
             <? if(isset($searchedTeams)) { ?>
                 <span class="searched hidden">1</span>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="d-flex fd-column">
-                            <? foreach($searchedTeams as $searchedTeam) { ?>
-                                <? if(!in_array($searchedTeam->id, $topTeamArray)) { ?>
-                                    <a class="td-none" href="/team/<?=$searchedTeam->slug?>">
-                                        <div class="col-sm-11 d-flex js-center">
-                                            <div class="card  m-t-20 m-b-20">
-                                                <div class="card-block d-flex js-around m-t-10">
-                                                    <img class="circle circleImage m-r-0 m-t-20" src="<?= $searchedTeam->getProfilePicture()?>" alt="">
-                                                    <div class="d-flex fd-column">
-                                                        <p class="f-17 m-b-0 c-orange"><?= $searchedTeam->team_name?></p>
-                                                        <p class="m-b-0">Expertises needed: <?=count($searchedTeam->getNeededExpertises())?></p>
-                                                        <p class="m-b-0">Members: <?=count($searchedTeam->getMembers())?></p>
-                                                        <p class="m-b-0">Support: <?=$searchedTeam->support?></p>
-                                                        <p class="m-b-0">Age: <?=$searchedTeam->calculateAge()?></p>
-                                                    </div>
-                                                </div>
+                <div class="row d-flex js-center">
+                    <div class="col-sm-7">
+                        <? foreach($searchedTeams as $searchedTeam) { ?>
+                            <? if(!in_array($searchedTeam->id, $topTeamArray)) { ?>
+                                <a class="td-none col-sm-8 col-xs-12" href="/team/<?=$searchedTeam->slug?>">
+                                    <div class="card m-t-20 m-b-20">
+                                        <div class="card-block d-flex js-around m-t-10 m-b-10">
+                                            <img class="circle circleImage m-r-0 m-t-20" src="<?= $searchedTeam->getProfilePicture()?>" alt="">
+                                            <div class="d-flex fd-column">
+                                                <p class="f-17 m-b-0 c-orange"><?= $searchedTeam->team_name?></p>
+                                                <p class="m-b-0">Expertises needed: <?=count($searchedTeam->getNeededExpertises())?></p>
+                                                <p class="m-b-0">Members: <?=count($searchedTeam->getMembers())?></p>
+                                                <p class="m-b-0">Support: <?=$searchedTeam->support?></p>
+                                                <p class="m-b-0">Age: <?=$searchedTeam->calculateAge()?></p>
                                             </div>
                                         </div>
-                                    </a>
-                                <? } ?>
+                                    </div>
+                                </a>
                             <? } ?>
-                        </div>
+                        <? } ?>
                     </div>
                 </div>
             <? } ?>
