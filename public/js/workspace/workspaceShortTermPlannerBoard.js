@@ -5,6 +5,9 @@ $(".toggleBoardRename").on("click",function () {
 $(document).ready(function () {
    $(".boardMenu").removeClass("hidden");
    $(".boardMenu").toggle();
+
+    $(".taskMenu").removeClass("hidden");
+    $(".taskMenu").toggle();
 });
 
 $(document).on("click", ".addShortTermTask",function () {
@@ -51,6 +54,7 @@ $(document).on("change", ".shortTermTaskTitleInput",function () {
                   $(this).parents(".shortTermTask").find(".deleteShortTermTask").attr("data-short-planner-task-id", data);
                   $(this).parents(".shortTermTask").find(".completeShortTermTaskCard").attr("data-short-planner-task-id", data);
                   $(this).parents(".shortTermTask").find(".unassign").attr("data-short-planner-task-id", data);
+                  $(this).parents(".shortTermTask").find(".card-block").attr("data-short-planner-task-id", data);
                   $(this).parents(".shortTermTask").find(".priorityTask").attr("data-short-planner-task-id", data);
                   $(this).parents(".shortTermTask").find(".short-planner-task-id").val(data);
                   $(this).parents(".shortTermTask").attr("data-short-planner-task-id", data);
@@ -82,29 +86,23 @@ $(document).on("change", ".shortTermTaskTitleInput",function () {
     });
 });
 $(document).on("click", ".dueDate",function () {
-    var modal_check = $(this).parents(".shortTermTaskModalContainer").find(".taskModalCheck").val();
-    if(modal_check != 1) {
-        $(this).parents(".card-task").find(".datepicker").focus();
-    } else {
-        $(this).parents(".shortTermTaskModalContainer").find(".datepicker").focus();
-        $(this).parents(".shortTermTaskModalContainer").find(".dateModal").focus();
-    }
+    $(".shortTermTaskModalShared").find(".datepicker").datepicker({
+        format: "yyyy-mm-dd",
+        weekStart: 1,
+        autoclose: true,
+        minDate: "<? echo date('Y-m-d') ?>"
+    });
+    $(this).parents(".card-task").find(".datepicker").focus();
+    $(".shortTermTaskModalShared").find(".datepicker").focus();
+    $(".shortTermTaskModalShared").find(".dateModal").focus();
 });
 $(document).on("mouseover", ".dueDateHover, .removeDueDate",function () {
-    var modal_check = $(this).parents(".shortTermTaskModalContainer").find(".taskModalCheck").val();
-    if(modal_check != 1) {
-        $(this).parents(".card-task").find(".removeDueDate").removeClass("hidden");
-    } else {
-        $(this).parents(".shortTermTaskModalContainer").find(".removeDueDate").removeClass("hidden");
-    }
+    $(this).parents(".card-task").find(".removeDueDate").removeClass("hidden");
+    $(".shortTermTaskModalShared").find(".removeDueDate").removeClass("hidden");
 });
 $(document).on("mouseleave", ".dueDateHover, .removeDueDate",function () {
-    var modal_check = $(this).parents(".shortTermTaskModalContainer").find(".taskModalCheck").val();
-    if(modal_check != 1) {
-        $(this).parents(".card-task").find(".removeDueDate").addClass("hidden");
-    } else {
-        $(this).parents(".shortTermTaskModalContainer").find(".removeDueDate").addClass("hidden");
-    }
+    $(this).parents(".card-task").find(".removeDueDate").addClass("hidden");
+    $(".shortTermTaskModalShared").find(".removeDueDate").addClass("hidden");
 });
 
 $(document).ready(function () {
@@ -277,6 +275,7 @@ function drop(ev, el,category) {
                         $(this).parents(".shortTermTask").attr("data-short-planner-task-id", data);
                         $(this).parents(".shortTermTask").attr("id", "drag-"+task_id[1]);
                         $(this).parents(".shortTermTask").find(".unassign").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTask").find(".card-block").attr("data-short-planner-task-id", data);
                         $(this).parents(".shortTermTaskModalContainer").find(".dueDate").removeClass("hidden");
                         $(this).parents(".shortTermTaskModalContainer").find(".dueDate").attr("data-short-planner-task-id", data);
                         $(this).parents(".shortTermTaskModalContainer").find(".datepicker").attr("data-short-planner-task-id", data);
@@ -312,12 +311,6 @@ $(".toggleTaskmenu").on("click",function () {
     $(".taskMenu").toggle();
 });
 $(document).on("click", ".toggleTaskDelete",function () {
-    $(".deleteShortTermTask").toggle();
-});
-$(document).ready(function () {
-    $(".taskMenu").removeClass("hidden");
-    $(".taskMenu").toggle();
-    $(".deleteShortTermTask").removeClass("hidden");
     $(".deleteShortTermTask").toggle();
 });
 
@@ -372,26 +365,27 @@ $(document).on("change", ".card-block .collapse",function (e) {
     e.stopPropagation();
 });
 $(document).on("click", ".card-block", function (e) {
-    // var task_id = $(this).data("short-planner-task-id");
-    // var team_id = $(this).data("team-id");
-    // $.ajax({
-    //     method: "POST",
-    //     beforeSend: function (xhr) {
-    //         var token = $('meta[name="csrf_token"]').attr('content');
-    //
-    //         if (token) {
-    //             return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-    //         }
-    //     },
-    //     url: "/workspace/getDataShortTermTaskModal",
-    //     data: {'task_id': task_id, 'team_id': team_id},
-    //     success: function (data) {
-    //         console.log(data);
-    //         $(".taskModalData").html(data);
-    //         $(".testModal").modal().toggle();
-    //     }
-    // });
-    $(this).parents(".shortTermTask").find("#shortTermTaskModal").modal().toggle();
+    var task_id = $(this).data("short-planner-task-id");
+    var team_id = $(this).data("team-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/workspace/getDataShortTermTaskModal",
+        data: {'task_id': task_id, 'team_id': team_id},
+        success: function (data) {
+            $(".taskModalData").html(data);
+            $(".shortTermTaskModalShared").modal().toggle();
+            $(".deleteShortTermTask").removeClass("hidden");
+            $(".deleteShortTermTask").toggle();
+        }
+    });
+    // $(this).parents(".shortTermTask").find("#shortTermTaskModal").modal().toggle();
 });
 
 $('.shortTermTaskModal').on('hidden.bs.modal', function () {
@@ -440,7 +434,7 @@ $(document).on("click", ".deleteShortTermTask",function () {
         success: function (data) {
             $(".shortTermTask").each(function () {
                if($(this).data("short-planner-task-id") == task_id){
-                   $(this).find("#shortTermTaskModal").modal('hide');
+                   $(".shortTermTaskModalShared").modal('hide');
                    $(this).fadeOut();
                }
             });

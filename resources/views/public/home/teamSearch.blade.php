@@ -2,25 +2,31 @@
 @section("content")
     <div class="d-flex grey-background vh100">
         <div class="container">
-            <div class="d-flex js-between">
-                <?$topTeamArray = [];?>
-                <? foreach($topTeams as $topTeam) { ?>
-                    <? array_push($topTeamArray, $topTeam->id)?>
-                    <a class="td-none" href="/team/<?=$topTeam->slug?>">
-                        <div class="card-sm text-center m-t-20 m-b-20">
-                            <div class="card-block d-flex js-around m-t-10">
-                                <img class="circle circleImage m-r-0 m-t-20" src="<?=$topTeam->getProfilePicture()?>" alt="">
-                                <div class="d-flex fd-column">
-                                    <p class="f-17 m-b-0 c-orange"><?= $topTeam->team_name?></p>
-                                    <p class="m-b-0">Expertises needed: <?= $topTeam->getAmountNeededExpertises()?></p>
-                                    <p class="m-b-0">Members: <?=count($topTeam->getMembers())?></p>
-                                    <p class="m-b-0">Support: <?=$topTeam->support?></p>
-                                    <p class="m-b-0">Age: <?=$topTeam->calculateAge()?></p>
+            <div class="row">
+                {{--<div class="col-sm-12">--}}
+                    {{--<div class="d-flex js-between">--}}
+                        <?$topTeamArray = [];?>
+                        <? foreach($topTeams as $topTeam) { ?>
+                        <div class="col-md-4">
+                            <? array_push($topTeamArray, $topTeam->id)?>
+                            <a class="td-none" href="/team/<?=$topTeam->slug?>">
+                                <div class="card-sm text-center m-t-20 m-b-20">
+                                    <div class="card-block d-flex js-around m-t-10">
+                                        <img class="circle circleImage m-r-0 m-t-20" src="<?=$topTeam->getProfilePicture()?>" alt="">
+                                        <div class="d-flex fd-column">
+                                            <p class="f-17 m-b-0 c-orange"><?= $topTeam->team_name?></p>
+                                            <p class="m-b-0">Expertises needed: <?= $topTeam->getAmountNeededExpertises()?></p>
+                                            <p class="m-b-0">Members: <?=count($topTeam->getMembers())?></p>
+                                            <p class="m-b-0">Support: <?=$topTeam->support?></p>
+                                            <p class="m-b-0">Age: <?=$topTeam->calculateAge()?></p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
-                    </a>
-                <? } ?>
+                        <? } ?>
+                    {{--</div>--}}
+                {{--</div>--}}
             </div>
             <form action="/team/searchTeams" method="POST">
                 <input type="hidden" name="_token" value="<?= csrf_token()?>">

@@ -38,6 +38,11 @@
 {{--@include('includes/flash')--}}
 @yield('content')
 @yield('pagescript')
-@include('includes/footer')
+<?
+    $controllerFullName = request()->route()->getActionName();
+    $explode = explode("@",$controllerFullName);
+    if($explode[1] != "index"){ ?>
+        @include('includes/footer')
+   <? } ?>
 </body>
 </html>

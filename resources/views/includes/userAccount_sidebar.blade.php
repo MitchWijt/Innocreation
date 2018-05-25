@@ -1,3 +1,6 @@
+<?
+    $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
+?>
 <div class="sidebar">
     <div class="text-center">
         <p class="c-gray f-20 text-center m-0"><?= \Illuminate\Support\Facades\Session::get("user_name")?></p>
@@ -13,7 +16,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <? if(\Illuminate\Support\Facades\Session::has("team_id")) { ?>
+        <? if($user->team_id != null) { ?>
             <a class="regular-link c-gray" href="/my-team">Team</a>
         <? } else { ?>
             <a class="regular-link c-gray" href="/my-account/teamInfo">Team</a>

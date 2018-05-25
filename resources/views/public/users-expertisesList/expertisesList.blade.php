@@ -8,18 +8,16 @@
             <hr class="m-b-0">
             <div class="row">
                 <div class="col-sm-12 d-flex js-center">
-                    <div class="card-lg m-t-20 m-b-20">
+                    <div class="card-lg col-sm-10 m-t-20 m-b-20 p-10 col-sm-pull-2">
                         <div class="card-block m-t-10">
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 p-0">
                                 <? foreach($expertises as $expertise) { ?>
                                     <div class="row">
-                                        <div class="col-sm-12 d-flex">
-                                            <div class="col-sm-6">
-                                                <a href="/<?= $expertise->title?>/users" class="c-gray"><p class="m-b-0 m-t-20"><?= $expertise->title?></p></a>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <p class="m-b-0 m-t-20 pull-right">Active users: <?= count($expertise->getActiveUsers())?></p>
-                                            </div>
+                                        <div class="col-sm-6">
+                                            <a href="/<?= $expertise->title?>/users" class="c-gray"><p class="m-b-0 m-t-20"><?= $expertise->title?></p></a>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p class="m-b-0 m-t-20 pull-right">Active users: <?= count($expertise->getActiveUsers())?></p>
                                         </div>
                                     </div>
                                     <hr>

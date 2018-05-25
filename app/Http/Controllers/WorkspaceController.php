@@ -407,14 +407,14 @@ class WorkspaceController extends Controller
         }
     }
 
-//    public function getDataShortTermTaskModalAction(Request $request){
-//        $team_id = $request->input("team_id");
-//        $task_id = $request->input("task_id");
-//
-//        $shortPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $task_id)->first();
-//        $team = Team::select("*")->where("id", $team_id)->first();
-//        return view("/public/team/workspace/shared/_shortTermTaskModal", compact("shortPlannerTask", "team"));
-//    }
+    public function getDataShortTermTaskModalAction(Request $request){
+        $team_id = $request->input("team_id");
+        $task_id = $request->input("task_id");
+
+        $shortPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $task_id)->first();
+        $team = Team::select("*")->where("id", $team_id)->first();
+        return view("/public/team/workspace/shared/_shortTermTaskModal", compact("shortPlannerTask", "team"));
+    }
 
     public function workspacePersonalBoard(){
         $user = User::select("*")->where("id", Session::get("user_id"))->first();

@@ -112,5 +112,5 @@
 </script>
 @endsection
 @section('pagescript')
-    <script src="/js/home.js"></script>
+    <script src="/js/home/home.js"></script>
 @endsection
