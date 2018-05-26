@@ -6,12 +6,12 @@
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">My join requests</h1>
             </div>
-            <div class="hr col-sm-12"></div>
+            <div class="hr col-md-12"></div>
             <? foreach($teamJoinRequests as $teamJoinRequest) { ?>
-                <div class="d-flex js-center">
-                    <div class="card card-lg m-t-20 m-b-20">
-                        <div class="card-block m-t-10">
-                            <div class="col-sm-12 d-flex">
+                <div class="row d-flex js-center">
+                    <div class="col-md-9">
+                        <div class="card card-lg m-t-20 m-b-20">
+                            <div class="row card-block m-t-10">
                                 <div class="col-sm-5 text-center m-t-15">
                                     <h3><?=$teamJoinRequest->teams->First()->team_name?></h3>
                                 </div>
@@ -37,12 +37,12 @@
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">My invites</h1>
             </div>
-            <div class="hr col-sm-12"></div>
+            <div class="hr col-md-12"></div>
             <? foreach($invites as $invite) { ?>
-                <div class="d-flex js-center">
-                    <div class="card card-lg m-t-20 m-b-20">
-                        <div class="card-block m-t-10">
-                            <div class="col-sm-12 d-flex">
+                <div class="row d-flex js-center">
+                    <div class="col-md-9">
+                        <div class="card card-lg m-t-20 m-b-20">
+                            <div class="row card-block m-t-10">
                                 <div class="col-sm-5 text-center m-t-15">
                                     <h3><?=$invite->teams->First()->team_name?></h3>
                                 </div>

@@ -6,17 +6,17 @@
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black"><?= $team->team_name?> bucketlist</h1>
             </div>
-            <hr class="m-b-20">
+            <hr class="m-b-20 col-xs-12">
             <div class="row d-flex js-center">
-                <div class="col-sm-12 text-center m-b-20">
+                <div class="col-md-12 text-center m-b-20">
                     <? if($user->id == $team->ceo_user_id || $user->role == 1 || $user->role == 4) { ?>
                         <button class="btn btn-inno btn-sm addNewBucketlistBoard">Add bucketlist board</button>
                     <? } ?>
                     <button class="btn btn-inno btn-sm" data-toggle="modal" data-target="#addNewGoalModal">Add new goal</button>
                 </div>
             </div>
-            <div class="newBoard hidden">
-                <div class="row d-flex js-center m-t-20 bucketlistBoard ">
+            <div class="d-flex js-center m-t-20 row hidden newBoard bucketlistBoard">
+                <div class="col-md-9 hidden">
                     <div class="card card-lg">
                         <div class="card-block">
                             <div class="row">
@@ -26,23 +26,19 @@
                                 </div>
                             </div>
                             <div class="row text-center">
-                                <div class="col-sm-12 d-flex">
-                                    <div class="col-sm-4">
-                                        <span class="f-13">Title</span>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <span class="f-13">Description</span>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <span class="f-13">Completed</span>
-                                    </div>
+                                <div class="col-sm-4">
+                                    <span class="f-13">Title</span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span class="f-13">Description</span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span class="f-13">Completed</span>
                                 </div>
                             </div>
                             <div class="hr-card p-b-20"></div>
                             <div class="row text-center">
-                                <div class="col-sm-12 d-flex">
 
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -51,20 +47,20 @@
             <div class="allBucketlistBoards m-b-20">
                 <? foreach($workspaceBucketlistTypes as $workspaceBucketlistType) { ?>
                     <div class="row d-flex js-center m-t-20 bucketlistBoard" data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>">
-                        <div class="card card-lg">
-                            <div class="card-block">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <input data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>" type="text" name="bucketlistType_title" class="input rename_bucketlistType_title m-t-10 m-l-10 hidden">
-                                        <p class="m-l-10 m-t-10 f-18 m-b-10 boardTitle"><?= $workspaceBucketlistType->name?><i class="m-l-10 zmdi zmdi-chevron-down openBoardMenu"></i></p>
+                        <div class="col-md-9">
+                            <div class="card card-lg">
+                                <div class="card-block">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <input data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>" type="text" name="bucketlistType_title" class="input rename_bucketlistType_title m-t-10 m-l-10 hidden">
+                                            <p class="m-l-10 m-t-10 f-18 m-b-10 boardTitle"><?= $workspaceBucketlistType->name?><i class="m-l-10 zmdi zmdi-chevron-down openBoardMenu"></i></p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-2 text-center bucketlistBoardMenu hidden f-12">
-                                    <p class="bcg-black border-default border-bottom-none m-b-0 deleteBucketlistBoard menu-item" data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>">Delete board</p>
-                                    <p class="bcg-black border-default renameBucketlistBoard menu-item" data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>">Rename board</p>
-                                </div>
-                                <div class="row text-center">
-                                    <div class="col-sm-12 d-flex">
+                                    <div class="col-sm-2 text-center bucketlistBoardMenu hidden f-12">
+                                        <p class="bcg-black border-default border-bottom-none m-b-0 deleteBucketlistBoard menu-item" data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>">Delete board</p>
+                                        <p class="bcg-black border-default renameBucketlistBoard menu-item" data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>">Rename board</p>
+                                    </div>
+                                    <div class="row text-center">
                                         <div class="col-sm-4">
                                             <span class="f-13">Title</span>
                                         </div>
@@ -75,13 +71,11 @@
                                             <span class="f-13">Completed</span>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="hr-card p-b-20"></div>
-                                <div id="div" ondrop="drop(event, this, $(this).parents('.bucketlistBoard').data('bucketlist-type-id'))"  ondragover="allowDrop(event)" class="p-b-40">
-                                    <? foreach($workspaceBucketlistType->getWorkspaceBucketlist($team->id) as $workspaceBucketlist) { ?>
-                                        <div class="row text-center p-relative singleBucketlistGoal" id="drag-<?=$workspaceBucketlist->id?>" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-bucketlist-id="<?= $workspaceBucketlist->id?>">
-                                            <i class="zmdi zmdi-close c-orange p-absolute deleteBucketlistGoal" style="right: 35px; top: 5px; z-index: 1;" data-bucketlist-id="<?= $workspaceBucketlist->id?>"></i>
-                                            <div class="col-sm-12 d-flex">
+                                    <div class="hr-card p-b-20 col-md-10"></div>
+                                    <div id="div" ondrop="drop(event, this, $(this).parents('.bucketlistBoard').data('bucketlist-type-id'))"  ondragover="allowDrop(event)" class="p-b-40">
+                                        <? foreach($workspaceBucketlistType->getWorkspaceBucketlist($team->id) as $workspaceBucketlist) { ?>
+                                            <div class="row text-center p-relative singleBucketlistGoal" id="drag-<?=$workspaceBucketlist->id?>" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-bucketlist-id="<?= $workspaceBucketlist->id?>">
+                                                <i class="zmdi zmdi-close c-orange p-absolute deleteBucketlistGoal" style="right: 35px; top: 5px; z-index: 1;" data-bucketlist-id="<?= $workspaceBucketlist->id?>"></i>
                                                 <div class="col-sm-4">
                                                     <p><?= $workspaceBucketlist->title?></p>
                                                 </div>
@@ -96,8 +90,8 @@
                                                     <? } ?>
                                                 </div>
                                             </div>
-                                        </div>
-                                    <? } ?>
+                                        <? } ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>

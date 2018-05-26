@@ -4,11 +4,10 @@ $(".addNewBucketlistBoard").on("click",function () {
 
 
     $(bucketlistBoard).appendTo(item);
+    $(bucketlistBoard).find(".col-md-9").removeClass("hidden");
     $('html, body').animate({
         scrollTop: $(".allBucketlistBoards").offset().top
     }, 1000);
-
-
 });
 
 $(document).on("change", ".bucketlistType_title",function () {

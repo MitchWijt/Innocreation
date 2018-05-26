@@ -12,26 +12,26 @@
                         <small>(realtime data compared to the last 24 hours)</small>
                     </div>
                 </div>
-                <hr class="m-b-20 col-sm-12">
+                <hr class="m-b-20 col-xs-12">
                 <div class="row d-flex js-center m-t-20 ">
-                    <div class="card card-lg">
-                        <div class="card-block">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <p class="m-l-10 m-t-10 f-18 m-b-10">Chats/assistance tickets  <i class="zmdi zmdi-chevron-down toggleChatsAssistanceMenu"></i></p>
+                    <div class="col-md-10">
+                        <div class="card card-lg">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="m-l-10 m-t-10 f-18 m-b-10">Chats/assistance tickets  <i class="zmdi zmdi-chevron-down toggleChatsAssistanceMenu"></i></p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-2 text-center chatsAssistanceDashBoardMenu hidden  f-12">
-                                <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterChatsAssistanceDashBoard" data-filter="Total">Total values</p>
-                                <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterChatsAssistanceDashBoard" data-filter="Week">Week values</p>
-                                <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterChatsAssistanceDashBoard" data-filter="Month">Month values</p>
-                                <p class="bcg-black border-default menu-item filterChatsAssistanceDashBoard" data-filter="Default">Default Values</p>
-                            </div>
-                            <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
-                            <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
-                            <div class="hr p-b-20"></div>
-                            <div class="row text-center" >
-                                <div class="col-sm-12 d-flex">
+                                <div class="col-sm-2 text-center chatsAssistanceDashBoardMenu hidden  f-12">
+                                    <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterChatsAssistanceDashBoard" data-filter="Total">Total values</p>
+                                    <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterChatsAssistanceDashBoard" data-filter="Week">Week values</p>
+                                    <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterChatsAssistanceDashBoard" data-filter="Month">Month values</p>
+                                    <p class="bcg-black border-default menu-item filterChatsAssistanceDashBoard" data-filter="Default">Default Values</p>
+                                </div>
+                                <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
+                                <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
+                                <div class="hr p-b-20 col-md-12"></div>
+                                <div class="row text-center" >
                                     <div class="col-sm-3">
                                         <div class="d-flex fd-row js-center">
                                             <p  class="f-25 totalTeamChats"></p>
@@ -94,18 +94,18 @@
                     </div>
                 </div>
                 <div class="row d-flex js-center m-t-20">
-                    <div class="card card-lg">
-                        <div class="card-block">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <p class="m-l-10 m-t-10 f-18 m-b-10">Member tasks list <small class="f-12">(total all boards)</small></p>
+                    <div class="col-md-10">
+                        <div class="card card-lg">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="m-l-10 m-t-10 f-18 m-b-10">Member tasks list <small class="f-12">(total all boards)</small></p>
+                                    </div>
                                 </div>
-                            </div>
-                            <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
-                            <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
-                            <div class="hr p-b-20"></div>
-                            <div class="row text-center">
-                                <div class="col-sm-12 d-flex">
+                                <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
+                                <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
+                                <div class="hr p-b-20 col-md-12"></div>
+                                <div class="row text-center">
                                     <div class="col-sm-4">
                                         <span class="f-13">Member</span>
                                     </div>
@@ -116,11 +116,9 @@
                                         <span class="f-13">Tasks To Do</span>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="hr-card p-b-20"></div>
-                            <? foreach($team->getMembers() as $member) { ?>
-                                <div class="row text-center p-relative">
-                                    <div class="col-sm-12 d-flex">
+                                <div class="hr-card p-b-20 col-md-10"></div>
+                                <? foreach($team->getMembers() as $member) { ?>
+                                    <div class="row text-center">
                                         <div class="col-sm-4">
                                             <p><?= $member->getName()?></p>
                                         </div>
@@ -135,57 +133,55 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            <? } ?>
+                                <? } ?>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row d-flex js-center m-t-20">
-                    <div class="card card-lg">
-                        <div class="card-block">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <p class="m-l-10 m-t-10 f-18 m-b-10">Bucketlist goals <i class="zmdi zmdi-chevron-down toggleBucketlistMenu"></i> </p>
+                    <div class="col-md-10">
+                        <div class="card card-lg">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="m-l-10 m-t-10 f-18 m-b-10">Bucketlist goals <i class="zmdi zmdi-chevron-down toggleBucketlistMenu"></i> </p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-2 text-center bucketlistDashBoardMenu hidden  f-12">
-                                <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterBucketlistDashboard" data-filter="Total">Total values</p>
-                                <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterBucketlistDashboard" data-filter="Week">Week values</p>
-                                <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterBucketlistDashboard" data-filter="Month">Month values</p>
-                                <p class="bcg-black border-default menu-item filterBucketlistDashboard" data-filter="Default">Default Values</p>
-                            </div>
-                            <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
-                            <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
-                            <div class="hr p-b-20"></div>
-                            <div class="row text-center" >
-                                <div class="col-sm-12 d-flex">
-                                    <div class="col-sm-12 d-flex">
-                                        <div class="col-sm-6">
-                                            <div class="d-flex fd-row js-center">
-                                                <p  class="f-25 totalCompletedGoals"></p>
-                                                <div class="d-flex fd-column m-l-10">
-                                                    <i class="fas fa-caret-up f-23 c-green completedGoalsValUp hidden"></i>
-                                                    <i class="fas fa-caret-down f-23 c-red completedGoalsValDown hidden"></i>
-                                                    <i class="zmdi zmdi-window-minimize completedGoalsValNeutral f-23 hidden "></i>
-                                                    <span class="f-13 completedGoalsNewValue"></span>
-                                                </div>
+                                <div class="col-sm-2 text-center bucketlistDashBoardMenu hidden  f-12">
+                                    <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterBucketlistDashboard" data-filter="Total">Total values</p>
+                                    <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterBucketlistDashboard" data-filter="Week">Week values</p>
+                                    <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterBucketlistDashboard" data-filter="Month">Month values</p>
+                                    <p class="bcg-black border-default menu-item filterBucketlistDashboard" data-filter="Default">Default Values</p>
+                                </div>
+                                <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
+                                <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
+                                <div class="hr p-b-20 col-md-12"></div>
+                                <div class="row text-center">
+                                    <div class="col-sm-6">
+                                        <div class="d-flex fd-row js-center">
+                                            <p  class="f-25 totalCompletedGoals"></p>
+                                            <div class="d-flex fd-column m-l-10">
+                                                <i class="fas fa-caret-up f-23 c-green completedGoalsValUp hidden"></i>
+                                                <i class="fas fa-caret-down f-23 c-red completedGoalsValDown hidden"></i>
+                                                <i class="zmdi zmdi-window-minimize completedGoalsValNeutral f-23 hidden "></i>
+                                                <span class="f-13 completedGoalsNewValue"></span>
                                             </div>
-                                            <input type="hidden" class="completedGoals24Hours" value="<?= $completedGoalsLast24Hours?>">
-                                            <p>Completed goals</p>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <div class="d-flex fd-row js-center">
-                                                <p class="f-25 totalUnCompletedGoals"></p>
-                                                <div class="d-flex fd-column m-l-10">
-                                                    <i class="fas fa-caret-up f-23 c-green unCompletedGoalsValUp hidden"></i>
-                                                    <i class="fas fa-caret-down f-23 c-red unCompletedGoalsValDown hidden"></i>
-                                                    <i class="zmdi zmdi-window-minimize unCompletedGoalsValNeutral f-20 hidden "></i>
-                                                    <span class="f-13 unCompletedGoalsNewValue"></span>
-                                                </div>
+                                        <input type="hidden" class="completedGoals24Hours" value="<?= $completedGoalsLast24Hours?>">
+                                        <p>Completed goals</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="d-flex fd-row js-center">
+                                            <p class="f-25 totalUnCompletedGoals"></p>
+                                            <div class="d-flex fd-column m-l-10">
+                                                <i class="fas fa-caret-up f-23 c-green unCompletedGoalsValUp hidden"></i>
+                                                <i class="fas fa-caret-down f-23 c-red unCompletedGoalsValDown hidden"></i>
+                                                <i class="zmdi zmdi-window-minimize unCompletedGoalsValNeutral f-20 hidden "></i>
+                                                <span class="f-13 unCompletedGoalsNewValue"></span>
                                             </div>
-                                            <input type="hidden" class="unCompletedGoals24Hours" value="<?= $unCompletedGoalsLast24Hours?>">
-                                            <p>Still to complete</p>
                                         </div>
+                                        <input type="hidden" class="unCompletedGoals24Hours" value="<?= $unCompletedGoalsLast24Hours?>">
+                                        <p>Still to complete</p>
                                     </div>
                                 </div>
                             </div>
@@ -193,24 +189,24 @@
                     </div>
                 </div>
                 <div class="row d-flex js-center m-t-20">
-                    <div class="card card-lg">
-                        <div class="card-block">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <p class="m-l-10 m-t-10 f-18 m-b-10">Ideas <i class="zmdi zmdi-chevron-down toggleIdeasMenu"></i> </p>
+                    <div class="col-md-10">
+                        <div class="card card-lg">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="m-l-10 m-t-10 f-18 m-b-10">Ideas <i class="zmdi zmdi-chevron-down toggleIdeasMenu"></i> </p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-2 text-center ideasDashBoardMenu hidden  f-12">
-                                <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterIdeasDashboard" data-filter="Total">Total values</p>
-                                <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterIdeasDashboard" data-filter="Week">Week values</p>
-                                <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterIdeasDashboard" data-filter="Month">Month values</p>
-                                <p class="bcg-black border-default menu-item filterIdeasDashboard" data-filter="Default">Default Values</p>
-                            </div>
-                            <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
-                            <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
-                            <div class="hr p-b-20"></div>
-                            <div class="row text-center" >
-                                <div class="col-sm-12 d-flex">
+                                <div class="col-sm-2 text-center ideasDashBoardMenu hidden  f-12">
+                                    <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterIdeasDashboard" data-filter="Total">Total values</p>
+                                    <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterIdeasDashboard" data-filter="Week">Week values</p>
+                                    <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterIdeasDashboard" data-filter="Month">Month values</p>
+                                    <p class="bcg-black border-default menu-item filterIdeasDashboard" data-filter="Default">Default Values</p>
+                                </div>
+                                <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
+                                <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
+                                <div class="hr p-b-20 col-md-12"></div>
+                                <div class="row text-center" >
                                     <div class="col-sm-12 d-flex">
                                         <div class="col-sm-3">
                                             <div class="d-flex fd-row js-center">
@@ -271,37 +267,37 @@
                     </div>
                 </div>
                 <div class="row d-flex js-center m-t-20">
-                    <div class="card card-lg">
-                        <div class="card-block">
-                            <div class="row">
-                                <div class="col-sm-12 d-flex">
-                                    <p class="m-l-10 m-t-10 f-18 m-b-10 m-r-10">Short term planner tasks</p>
-                                    <button class="btn btn-inno btn-sm m-t-10 m-b-10 toggleShortTermPlannerDashboardMenu"><i class="zmdi zmdi-settings"></i> Filter</button>
-                                </div>
-                            </div>
-                            <div class="row shortTermPlannerDashboardMenu hidden">
-                                <div class="col-sm-12">
-                                    <div class="d-flex fd-column col-sm-12">
-                                        <select name="short_term_tasks_board_filter" class="short_term_tasks_board_filter input col-sm-4 m-b-10">
-                                            <option selected disabled value="0"> Choose your board</option>
-                                            <? foreach($short_term_planner_boards as $short_term_planner_board) { ?>
-                                                <option value="<?= $short_term_planner_board->id?>"><?= $short_term_planner_board->title?></option>
-                                            <? } ?>
-                                        </select>
-                                        <select name="short_term_tasks_range_filter" class="short_term_tasks_range_filter input col-sm-4 m-b-10">
-                                            <option selected disabled value="0">Choose time range</option>
-                                            <option value="Total">Total</option>
-                                            <option value="Week">Week</option>
-                                            <option value="Month">Month</option>
-                                        </select>
+                    <div class="col-md-10">
+                        <div class="card card-lg">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-md-12 d-flex">
+                                        <p class="m-l-10 m-t-10 f-18 m-b-10 m-r-10">Short term planner tasks</p>
+                                        <button class="btn btn-inno btn-sm m-t-10 m-b-10 toggleShortTermPlannerDashboardMenu"><i class="zmdi zmdi-settings"></i> Filter</button>
                                     </div>
                                 </div>
-                            </div>
-                            <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
-                            <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
-                            <div class="hr p-b-20"></div>
-                            <div class="row text-center" >
-                                <div class="col-sm-12 d-flex">
+                                <div class="row shortTermPlannerDashboardMenu hidden">
+                                    <div class="col-sm-12">
+                                        <div class="d-flex fd-column col-sm-12">
+                                            <select name="short_term_tasks_board_filter" class="short_term_tasks_board_filter input col-sm-4 m-b-10">
+                                                <option selected disabled value="0"> Choose your board</option>
+                                                <? foreach($short_term_planner_boards as $short_term_planner_board) { ?>
+                                                    <option value="<?= $short_term_planner_board->id?>"><?= $short_term_planner_board->title?></option>
+                                                <? } ?>
+                                            </select>
+                                            <select name="short_term_tasks_range_filter" class="short_term_tasks_range_filter input col-sm-4 m-b-10">
+                                                <option selected disabled value="0">Choose time range</option>
+                                                <option value="Total">Total</option>
+                                                <option value="Week">Week</option>
+                                                <option value="Month">Month</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
+                                <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
+                                <div class="hr p-b-20  col-md-12"></div>
+                                <div class="row text-center" >
                                     <div class="col-sm-12 d-flex">
                                         <div class="col-sm-3">
                                             <div class="d-flex fd-row js-center">

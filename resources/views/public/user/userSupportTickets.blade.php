@@ -6,16 +6,16 @@
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">Support tickets</h1>
             </div>
-            <div class="hr"></div>
+            <div class="hr col-md-10 p-b-20"></div>
             <? if(count($supportTickets) > 0) { ?>
             <div class="row d-flex js-center">
-                <div class="col-sm-7 m-t-10">
+                <div class="col-md-7 m-t-10">
                     <button class="btn btn-inno btn-sm" data-toggle="modal" data-target=".createSupportTicketModal">I have a question</button>
                     <button class="btn btn-inno btn-sm pull-right filterSupportTicketsMenuToggle"><i class="zmdi zmdi-settings"></i> Filter</button>
                 </div>
             </div>
             <div class="row filterSupportTicketsMenu hidden">
-                <div class="col-sm-10 m-l-5">
+                <div class="col-md-10 m-l-5">
                     <div class="pull-right c-gray text-center">
                         <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterSupportTickets" data-filter="Open">Open tickets</p>
                         <p class="bcg-black border-default border-bottom-none m-b-0 menu-item filterSupportTickets" data-filter="OnHold">Tickets on hold</p>
@@ -32,40 +32,33 @@
                 </div>
             <? } ?>
             <? foreach($supportTickets as $supportTicket) { ?>
-                <div class="row m-t-20 singleSupportTicket">
+                <div class="row m-t-20 singleSupportTicket d-flex js-center m-b-20">
                     <input type="hidden" class="ticketStatus" value="<?= $supportTicket->support_ticket_status_id?>">
-                    <div class="col-sm-12 d-flex js-center m-b-20">
-                        <div class="supportTicket">
+                        <div class="supportTicket col-md-7">
                             <div class="card">
                                 <div class="card-block supportTicketCard" data-ticket-id="<?= $supportTicket->id?>">
-                                    <div class="row">
-                                        <div class="col-sm-12 text-center m-t-10">
-                                            <p class="f-18 m-b-0"><?= $supportTicket->title?></p>
-                                            <? if($supportTicket->helper_user_id != null) { ?>
-                                                <? if($supportTicket->support_ticket_status_id == 1 || $supportTicket->support_ticket_status_id == 2) { ?>
-                                                    <p class="c-dark-grey m-b-0 f-12">Currently getting helped by <?= $supportTicket->helper->getName()?></p>
-                                                <? } else { ?>
-                                                    <p class="c-dark-grey m-b-0 f-12">You have been helped by <?= $supportTicket->helper->getName()?></p>
-                                                <? } ?>
-                                            <? } ?>
-                                        </div>
-                                    </div>
-                                    <hr class="col-sm-10">
-                                    <div class="row">
-                                        <div class="col-sm-12 text-center m-t-10">
-                                            <? if($supportTicket->support_ticket_status_id == 1) { ?>
-                                                <p>Status: <span class="c-green"><?= $supportTicket->supportTicketStatus->status?></span></p>
-                                            <? } else if($supportTicket->support_ticket_status_id == 2) { ?>
-                                                <p>Status: <span class="c-orange"><?= $supportTicket->supportTicketStatus->status?></span></p>
+                                    <div class="row text-center d-flex js-center m-t-10">
+                                        <p class="f-18 m-b-0"><?= $supportTicket->title?></p>
+                                        <? if($supportTicket->helper_user_id != null) { ?>
+                                            <? if($supportTicket->support_ticket_status_id == 1 || $supportTicket->support_ticket_status_id == 2) { ?>
+                                                <p class="c-dark-grey m-b-0 f-12">Currently getting helped by <?= $supportTicket->helper->getName()?></p>
                                             <? } else { ?>
-                                                <p>Status: <span class="c-red"><?= $supportTicket->supportTicketStatus->status?></span></p>
+                                                <p class="c-dark-grey m-b-0 f-12">You have been helped by <?= $supportTicket->helper->getName()?></p>
                                             <? } ?>
-                                        </div>
+                                        <? } ?>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-12 text-center m-b-20">
-                                            <button class="btn btn-inno btn-sm" data-ticket-id="<?= $supportTicket->id?>">Open ticket</button>
-                                        </div>
+                                    <hr class="col-xs-10">
+                                    <div class="row text-center m-t-10 d-flex js-center">
+                                        <? if($supportTicket->support_ticket_status_id == 1) { ?>
+                                            <p>Status: <span class="c-green"><?= $supportTicket->supportTicketStatus->status?></span></p>
+                                        <? } else if($supportTicket->support_ticket_status_id == 2) { ?>
+                                            <p>Status: <span class="c-orange"><?= $supportTicket->supportTicketStatus->status?></span></p>
+                                        <? } else { ?>
+                                            <p>Status: <span class="c-red"><?= $supportTicket->supportTicketStatus->status?></span></p>
+                                        <? } ?>
+                                    </div>
+                                    <div class="row text-center d-flex js-center m-b-20">
+                                        <button class="btn btn-inno btn-sm" data-ticket-id="<?= $supportTicket->id?>">Open ticket</button>
                                     </div>
                                 </div>
                             </div>
@@ -124,7 +117,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </div>
             <? } ?>
             <div class="modal fade createSupportTicketModal" id="createSupportTicketModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">

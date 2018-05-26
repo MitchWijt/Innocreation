@@ -203,8 +203,8 @@ footer{
 .card-square-sm{
     background: #000000 !important;
     color: #C9CCCF !important;
-    width: 300px !important;
-    height: 300px !important;
+    /*width: 300px !important;*/
+    /*height: 300px !important;*/
     border: 1px solid #C9CCCF !important;
 }
 

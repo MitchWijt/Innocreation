@@ -1,7 +1,7 @@
 @section("header")
 <header class="headerShow">
-    <div class="m-t-20 m-b-20">
-        <div class="row">
+    <div class="p-t-10 m-b-10">
+        <div class="row col-sm-12">
             <div class="col-md-4 m-t-15">
                 <a class="td-none" href="/">
                     <div class="main-title">
@@ -10,7 +10,7 @@
                     </div>
                 </a>
             </div>
-            <div class="col-md-4 m-t-40">
+            <div class="col-md-4 m-t-50 p-0">
                 <div class="d-flex js-center">
                     <div class="d-flex fd-row">
                         <div class="circle m-l-10 m-r-10" style="width: 40px !important; height: 40px !important">
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 p-0">
                 <div class="d-flex jc-end m-t-20">
                     <div class="text-left col-sm-3">
                     <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
@@ -54,7 +54,7 @@
                         <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
                             <a class="regular-link c-gray" href="/logout">Logout</a>
                         <? } else { ?>
-                            <a class="regular-link c-gray" href="/login">Login / Register</a>
+                            <a class="regular-link c-gray m-t-35" href="/login">Login / Register</a>
                         <? } ?>
                     </div>
                     </div>
@@ -63,15 +63,28 @@
         </div>
     </div>
     <div class="lower-header">
-        <ul class="main-navMenu">
-            <li><a href="/">Home</a></li>
-            <li><a href="/teams">Teams</a></li>
-            <li><a href="/expertises">Users / expertises</a></li>
-            <li><a href="/page/what-is-innocreation">About us</a></li>
-            <li><a href="">Shop</a></li>
-            <li><a href="/pricing">Pricing</a></li>
-            <li><a href="/forum" id="last-child">Forum</a></li>
-            <li><a id="last-child" class="hidden" href="">Crowd funding</a></li>
-        </ul>
+        @mobile
+            <ul class="main-navMenu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/teams">Teams</a></li>
+                <li><a href="/expertises">Users / expertises</a></li>
+                <li><a href="/page/what-is-innocreation">About us</a></li>
+                <li><a href="">Shop</a></li>
+                <li><a href="/pricing">Pricing</a></li>
+                <li><a href="/forum" id="last-child">Forum</a></li>
+                <li><a id="last-child" class="hidden" href="">Crowd funding</a></li>
+            </ul>
+        @elsedesktop
+            <ul class="main-navMenu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/teams">Teams</a></li>
+                <li><a href="/expertises">Users / expertises</a></li>
+                <li><a href="/page/what-is-innocreation">About us</a></li>
+                <li><a href="">Shop</a></li>
+                <li><a href="/pricing">Pricing</a></li>
+                <li><a href="/forum" id="last-child">Forum</a></li>
+                <li><a id="last-child" class="hidden" href="">Crowd funding</a></li>
+            </ul>
+        @endmobile
     </div>
 </header>

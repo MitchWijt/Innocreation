@@ -6,7 +6,7 @@
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">Meetings <?= strtolower($team->team_name)?></h1>
             </div>
-            <hr class="m-b-20">
+            <hr class="m-b-20 col-xs-12">
             @if(session('success'))
                 <div class="alert alert-success m-b-20 p-b-10">
                     {{session('success')}}
@@ -20,43 +20,47 @@
             <? foreach($meetings as $meeting) { ?>
                 <div class="meeting">
                     <div class="row m-t-20">
-                        <div class="card m-l-15">
-                            <div class="card-block meetingCardToggle m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-meeting-id="<?= $meeting->id?>">
-                                <div class="row pull-right">
-                                    <i class="zmdi zmdi-edit f-20 c-orange editMeeting"></i>
-                                    <i class="zmdi zmdi-close c-orange m-r-30 m-l-15 f-20 deleteMeeting"></i>
+                        <div class="col-md-7 p-l-0">
+                            <div class="card m-l-15">
+                                <div class="card-block meetingCardToggle m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-meeting-id="<?= $meeting->id?>">
+                                    <div class="row pull-right">
+                                        <i class="zmdi zmdi-edit f-20 c-orange editMeeting"></i>
+                                        <i class="zmdi zmdi-close c-orange m-r-30 m-l-15 f-20 deleteMeeting"></i>
+                                    </div>
+                                    <input type="hidden" class="date" name="date" value="<?= date("Y-m-d", strtotime($meeting->date_meeting))?>">
+                                    <input type="hidden" class="time" name="date" value="<?= $meeting->time_meeting?>">
+                                    <p class="f-20 m-l-10"><?= date("l d F Y", strtotime($meeting->date_meeting))?> at <?= $meeting->time_meeting?></p>
+                                    <hr>
+                                    <p class="m-l-10 c-orange"><span class="f-16 c-gray objective"><?= $meeting->objective?></span></p>
+                                    <p class="m-l-10 c-orange"><span class="f-15 c-gray m-r-5">Amount of attendees: </span> <?=count($meeting->getAttendees());?></p>
                                 </div>
-                                <input type="hidden" class="date" name="date" value="<?= date("Y-m-d", strtotime($meeting->date_meeting))?>">
-                                <input type="hidden" class="time" name="date" value="<?= $meeting->time_meeting?>">
-                                <p class="f-20 m-l-10"><?= date("l d F Y", strtotime($meeting->date_meeting))?> at <?= $meeting->time_meeting?></p>
-                                <hr>
-                                <p class="m-l-10 c-orange"><span class="f-16 c-gray objective"><?= $meeting->objective?></span></p>
-                                <p class="m-l-10 c-orange"><span class="f-15 c-gray m-r-5">Amount of attendees: </span> <?=count($meeting->getAttendees());?></p>
                             </div>
                         </div>
                     </div>
-                    <div class="collapse collapseExample collapseMeeting" data-meeting-id="<?= $meeting->id?>">
-                        <div class="card card-block">
-                           <p class="f-18 m-t-10 m-l-10 m-b-5">Attendees:</p>
-                            <ul class="instructions-list">
-                                <? foreach($meeting->getAttendees() as $attendee) { ?>
-                                    <input type="hidden" class="singleAttendee" data-user-id="<?= $attendee->user_id?>" value="<?= $attendee->user->getName()?>">
-                                    <li class="instructions-list-item"><span class="c-gray"><?= $attendee->user->getName()?></span></li>
+                    <div class="collapse collapseExample collapseMeeting row" data-meeting-id="<?= $meeting->id?>">
+                        <div class="col-md-7">
+                            <div class="card card-block">
+                               <p class="f-18 m-t-10 m-l-10 m-b-5">Attendees:</p>
+                                <ul class="instructions-list">
+                                    <? foreach($meeting->getAttendees() as $attendee) { ?>
+                                        <input type="hidden" class="singleAttendee" data-user-id="<?= $attendee->user_id?>" value="<?= $attendee->user->getName()?>">
+                                        <li class="instructions-list-item"><span class="c-gray"><?= $attendee->user->getName()?></span></li>
+                                    <? } ?>
+                                </ul>
+                                <p class="f-18 m-t-10 m-l-10 m-b-5">Description:</p>
+                                <p class="m-l-15 break-word description"><?= $meeting->description?></p>
+                                <? if($meeting->max_duration_time != null) { ?>
+                                    <?
+                                        $maxDurations = new DateTime(date("g:i a", strtotime($meeting->max_duration_time)));
+                                        $timeMeeting = new DateTime(date("g:i a",strtotime($meeting->time_meeting)));
+                                        $interval = $timeMeeting->diff($maxDurations);
+                                    ?>
+                                    <p class="m-l-10">Max duration: <span class="c-orange"><?= $interval->format('%h hours, %i minutes');?></span></p>
+                                    <p class="maxHours hidden"><?= $interval->format('%h');?></p>
+                                    <p class="maxMinutes hidden"><?= $interval->format('%i');?></p>
+                                    <p></p>
                                 <? } ?>
-                            </ul>
-                            <p class="f-18 m-t-10 m-l-10 m-b-5">Description:</p>
-                            <p class="m-l-15 break-word description"><?= $meeting->description?></p>
-                            <? if($meeting->max_duration_time != null) { ?>
-                                <?
-                                    $maxDurations = new DateTime(date("g:i a", strtotime($meeting->max_duration_time)));
-                                    $timeMeeting = new DateTime(date("g:i a",strtotime($meeting->time_meeting)));
-                                    $interval = $timeMeeting->diff($maxDurations);
-                                ?>
-                                <p class="m-l-10">Max duration: <span class="c-orange"><?= $interval->format('%h hours, %i minutes');?></span></p>
-                                <p class="maxHours hidden"><?= $interval->format('%h');?></p>
-                                <p class="maxMinutes hidden"><?= $interval->format('%i');?></p>
-                                <p></p>
-                            <? } ?>
+                            </div>
                         </div>
                     </div>
                 </div>

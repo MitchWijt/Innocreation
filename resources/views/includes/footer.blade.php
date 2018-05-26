@@ -1,6 +1,6 @@
 @section("footer")
     <footer>
-        <div class="row">
+        <div class="row col-sm-12">
             <div class="col-md-4 m-t-10">
                 <div class="row">
                     <div class="col-sm-10">

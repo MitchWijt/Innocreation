@@ -58,30 +58,32 @@
                 <?$requiredArray = []?>
                 <? $counter = 0;?>
                 <? $requirementExplode = explode(",",$neededExpertise->requirements)?>
-                <?foreach($requirementExplode as $requirement) { ?>
+                <? foreach($requirementExplode as $requirement) { ?>
                     <? $counter++;?>
                     <? array_push($requiredArray, $requirement)?>
                 <? } ?>
                 <div class="neededExpertise" data-expertise-id="<?= $neededExpertise->expertise_id?>">
                     <form action="/my-team/saveNeededExpertise" method="post">
                         <div class="row d-flex js-center m-t-20">
-                            <div class="card text-center">
-                                <div class="card-block">
-                                    <? if($team->ceo_user_id == $user->id || $user->role == 4 || $user->role == 3 || $user->role == 1) { ?>
-                                        <i class="zmdi zmdi-close pull-right m-r-10 m-t-5 c-orange deleteCross" data-team-id="<?= $neededExpertise->team_id?>" data-expertise-id="<?= $neededExpertise->expertise_id?>"></i>
-                                    <? } ?>
-                                    <p class="f-z-rem m-b-5 p-0"><?=$neededExpertise->expertises->First()->title?></p>
-                                    <p class="c-orange m-t-15 m-b-5">Amount:</p>
-                                    <input type="number" name="amountExpertise" max="10" min="0" class="input m-b-15" value="<?=$neededExpertise->amount?>">
+                            <div class="col-md-7">
+                                <div class="card text-center">
+                                    <div class="card-block">
+                                        <? if($team->ceo_user_id == $user->id || $user->role == 4 || $user->role == 3 || $user->role == 1) { ?>
+                                            <i class="zmdi zmdi-close pull-right m-r-10 m-t-5 c-orange deleteCross" data-team-id="<?= $neededExpertise->team_id?>" data-expertise-id="<?= $neededExpertise->expertise_id?>"></i>
+                                        <? } ?>
+                                        <p class="f-z-rem m-b-5 p-0"><?=$neededExpertise->expertises->First()->title?></p>
+                                        <p class="c-orange m-t-15 m-b-5">Amount:</p>
+                                        <input type="number" name="amountExpertise" max="10" min="0" class="input m-b-15" value="<?=$neededExpertise->amount?>">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                         <input type="hidden" name="team_id" value="<?=$team->id?>">
                         <input type="hidden" name="expertise_id" value="<?=$neededExpertise->expertise_id?>">
-                        <div class="row">
-                            <div class="col-sm-12 d-flex js-center m-t-10">
-                                <textarea name="description_needed_expertise" class="input desc_needed_expertises" cols="65" rows="6"><?= $neededExpertise->description?></textarea>
+                        <div class="row d-flex js-center m-t-10">
+                            <div class="col-md-7">
+                                <textarea name="description_needed_expertise" class="input desc_needed_expertises col-md-12" cols="65" rows="6"><?= $neededExpertise->description?></textarea>
                             </div>
                         </div>
                         <div class="row">

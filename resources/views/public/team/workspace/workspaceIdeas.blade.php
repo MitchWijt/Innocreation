@@ -6,17 +6,17 @@
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black"><?= $team->team_name?> idea's</h1>
             </div>
-            <hr class="m-b-20">
+            <hr class="m-b-20 col-xs-12">
             <div class="row d-flex js-center">
                 <div class="col-sm-12 text-center m-b-20">
                      <button class="btn btn-inno btn-sm" data-toggle="modal" data-target="#addNewIdeaModal">Add new idea</button>
                 </div>
             </div>
             <div class="row d-flex js-center">
-                <div class="card card-lg text-center">
-                    <div class="card-block">
-                        <div class="row">
-                            <div class="col-sm-12 d-flex">
+                <div class="col-md-9">
+                    <div class="card card-lg text-center">
+                        <div class="card-block">
+                            <div class="row">
                                 <div class="col-sm-4">
                                     <span class="f-13">Title</span>
                                 </div>
@@ -27,11 +27,9 @@
                                     <span class="f-13">Status</span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="hr-card p-b-20"></div>
-                        <? foreach($workplaceIdeas as $workplaceIdea) { ?>
-                            <div class="row workplaceIdea">
-                                <div class="col-sm-12 d-flex">
+                            <hr class="col-md-10 p-b-20">
+                            <? foreach($workplaceIdeas as $workplaceIdea) { ?>
+                                <div class="row workplaceIdea">
                                     <div class="col-sm-4">
                                         <p class="c-pointer ideaToggle regular-link c-gray" data-idea-id="<?= $workplaceIdea->id?>"><?= $workplaceIdea->title?></p>
                                     </div>
@@ -55,21 +53,21 @@
                                             <? } ?>
                                         <? } ?>
                                     </div>
-                                </div>
-                                <div class="modal fade ideaDetailsModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-idea-id="<?= $workplaceIdea->id?>">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header d-flex js-center">
-                                                <h4 class="modal-title text-center c-black" id="modalLabel"><?= $workplaceIdea->title?></h4>
-                                            </div>
-                                            <div class="modal-body ">
-                                                <p class="c-black"><?= $workplaceIdea->description?></p>
+                                    <div class="modal fade ideaDetailsModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-idea-id="<?= $workplaceIdea->id?>">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header d-flex js-center">
+                                                    <h4 class="modal-title text-center c-black" id="modalLabel"><?= $workplaceIdea->title?></h4>
+                                                </div>
+                                                <div class="modal-body ">
+                                                    <p class="c-black"><?= $workplaceIdea->description?></p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        <? } ?>
+                            <? } ?>
+                        </div>
                     </div>
                 </div>
             </div>
