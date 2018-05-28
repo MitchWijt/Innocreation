@@ -1,7 +1,7 @@
-    @font-face {
-        font-family: Corbert;
-        src: url(../fonts/Corbert-Regular.otf);
-    }
+@font-face {
+    font-family: Corbert;
+    src: url(../fonts/Corbert-Regular.otf);
+}
 
 header{
     font-family: Corbert;
@@ -36,7 +36,7 @@ footer{
 }
 
 .container{
-    width: 1200px !important;
+    /*width: 1200px !important;*/
     font-family: Corbert;
     margin: 0 auto;
     padding: 0;
@@ -93,6 +93,16 @@ footer{
 }
 
 .cartwheelLogo{
+    width:45px;
+    height:45px;
+}
+
+.cartwheelLogo-tablet{
+    width:35px;
+    height:35px;
+}
+
+.cartwheelLogo-mobile{
     width:45px;
     height:45px;
 }
@@ -478,13 +488,28 @@ footer{
     color: #000000;
 }
 
+.main-navMenu-mobile li a{
+    text-decoration: none;
+    padding: 0 10px 0 0;
+    cursor: pointer;
+    color: #000000;
+}
+.main-navMenu-mobile {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    justify-content: center;
+    margin-bottom: 0;
+    padding-left: 0;
+    text-align: center;
+}
+
 .main-navMenu{
     display: flex;
     flex-direction: row;
     list-style-type: none;
     justify-content: center;
     margin-bottom: 0;
-    border-bottom: 1px solid #000000;
 }
 
 .main-navMenu li{
