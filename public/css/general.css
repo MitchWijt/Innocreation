@@ -301,6 +301,11 @@
     justify-content: center !important;
 }
 
+.allign-center{
+    align-items: center;
+    align-content: center;
+}
+
 .js-between{
     justify-content: space-between !important
 }

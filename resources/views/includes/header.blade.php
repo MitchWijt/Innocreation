@@ -33,30 +33,30 @@
             </div>
             <div class="col-md-4 p-0">
                 <div class="d-flex jc-end m-t-20">
-                    <div class="text-left col-sm-3">
-                    <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
-                        <? $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();?>
-                        <? if(\Illuminate\Support\Facades\Session::get("user_role") == 1) { ?>
-                            <div class="admin">
-                                <a class="regular-link c-gray" href="/admin/statistics">Admin panel</a>
-                            </div>
-                        <? } ?>
-                    <? } ?>
-                    <div class="accounts">
+                    <div class="text-left col-sm-4">
                         <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
-                            <a class="regular-link c-gray m-b-5" href="/account">My account</a>
+                            <? $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();?>
+                            <? if(\Illuminate\Support\Facades\Session::get("user_role") == 1) { ?>
+                                <div class="admin">
+                                    <a class="regular-link c-gray" href="/admin/statistics">Admin panel</a>
+                                </div>
+                            <? } ?>
                         <? } ?>
-                        <? if(\Illuminate\Support\Facades\Session::has("team_id")) { ?>
-                            <a class="regular-link" href="/my-team"><p id="teamLink" class="m-b-0">My team</p></a>
-                        <? } ?>
-                    </div>
-                    <div class="login">
-                        <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
-                            <a class="regular-link c-gray" href="/logout">Logout</a>
-                        <? } else { ?>
-                            <a class="regular-link c-gray m-t-35" href="/login">Login / Register</a>
-                        <? } ?>
-                    </div>
+                        <div class="accounts">
+                            <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
+                                <a class="regular-link c-gray m-b-5" href="/account">My account</a>
+                            <? } ?>
+                            <? if(\Illuminate\Support\Facades\Session::has("team_id")) { ?>
+                                <a class="regular-link" href="/my-team"><p id="teamLink" class="m-b-0">My team</p></a>
+                            <? } ?>
+                        </div>
+                        <div class="login">
+                            <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
+                                <a class="regular-link c-gray" href="/logout">Logout</a>
+                            <? } else { ?>
+                                <a class="regular-link c-gray m-t-35" href="/login">Login / Register</a>
+                            <? } ?>
+                        </div>
                     </div>
                 </div>
             </div>

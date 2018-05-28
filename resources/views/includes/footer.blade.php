@@ -18,7 +18,7 @@
                             <div class="d-flex list-links">
                                 <p class="regular-link td-none m-0">Find us on:</p>
                                 <a class="regular-link c-gray" href="">Facebook</a>
-                                <a class="regular-link c-gray" href="">Instagram</a>
+                                <a class="regular-link c-gray" href="">Instagrxam</a>
                                 <a class="regular-link c-gray" href="">Twitter</a>
                             </div>
                         </div>
