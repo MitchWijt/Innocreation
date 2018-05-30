@@ -3,7 +3,7 @@
         @handheld
             <div class="p-t-10 container">
         @elsedesktop
-            <div class="p-t-5">
+            <div class="p-t-5 container-fluid">
         @endhandheld
         <div class="row">
             <div class="col-md-4 m-t-5 p-0">
@@ -93,7 +93,7 @@
                     @elsedesktop
                         <div class="d-flex jc-end m-t-10">
                     @endtablet
-                        <div class="text-left col-sm-4">
+                        <div class="text-left col-sm-12 p-r-0 text-center ">
                             <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
                             <? $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();?>
                             <? if(\Illuminate\Support\Facades\Session::get("user_role") == 1) { ?>
@@ -102,25 +102,25 @@
                             </div>
                             <? } ?>
                             <? } ?>
-                            <div class="accounts">
+                            <div class="accounts text-center ">
                                 <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
-                                <a class="regular-link c-gray m-b-5" href="/account">My account</a>
+                                    <a class="regular-link c-gray m-b-5" href="/account">My account</a>
                                 <? } ?>
                                 <? if(\Illuminate\Support\Facades\Session::has("team_id")) { ?>
-                                <a class="regular-link" href="/my-team"><p id="teamLink" class="m-b-0">My team</p></a>
+                                    <a class="regular-link" href="/my-team"><p id="teamLink" class="m-b-0">My team</p></a>
                                 <? } ?>
                             </div>
-                            <div class="login">
+                            <div class="login text-center">
                                 <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
-                                <a class="regular-link c-gray" href="/logout">Logout</a>
+                                        <a class="regular-link c-gray" href="/logout">Logout</a>
                                 <? } else { ?>
                                     @tablet
-                                        <div class="">
+                                        <div class="m-t-15">
                                             <a class="regular-link c-gray" href="/login">Login / Register</a>
                                         </div>
                                     @elsedesktop
                                         <div class="m-t-30">
-                                            <a class="regular-link c-gray" href="/login">Login / Register</a>
+                                            <a class="regular-link c-gray " href="/login">Login / Register</a>
                                         </div>
                                     @endtablet
                                 <? } ?>
