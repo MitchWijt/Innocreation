@@ -2,9 +2,16 @@
 @section("content")
     <div class="d-flex grey-background vh85">
         <? if($page->page_type_id == 1) { ?>
-            @include("includes.forum_sidebar")
+            @notmobile
+                @include("includes.forum_sidebar")
+            @endnotmobile
         <? } ?>
         <div class="container">
+            <? if($page->page_type_id == 1) { ?>
+                @mobile
+                    @include("includes.forum_sidebar")
+                @endmobile
+            <? } ?>
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black"><?= $page->title?></h1>
             </div>

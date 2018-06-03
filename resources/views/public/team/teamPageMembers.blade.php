@@ -1,8 +1,13 @@
 @extends("layouts.app")
 @section("content")
     <div class="d-flex grey-background vh85">
-        @include("includes.teamPage_sidebar")
+        @notmobile
+            @include("includes.teamPage_sidebar")
+        @endnotmobile
         <div class="container">
+            @mobile
+                @include("includes.teamPage_sidebar")
+            @endmobile
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">Team members</h1>
             </div>
@@ -38,38 +43,36 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row m-t-20">
-                                    <div class="col-sm-12 d-flex m-b-20 m-t-10">
-                                        <? if($team->ceo_user_id == $user->id || $user->role == 1) { ?>
-                                            <? if($member->id != $team->ceo_user_id) { ?>
-                                                <div class="col-sm-4">
-                                                    <a href="<?= $member->getUrl()?>" target="_blank" class="btn btn-inno btn-sm col-sm-12">Go to account</a>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <button class="btn btn-inno btn-sm col-sm-12 kickMember" data-user-id="<?=$member->id?>">Kick member</button>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <? if($member->muted == null || $member->muted <= date("Y-m-d H:i:s")) { ?>
-                                                        <button class="btn btn-inno btn-sm col-sm-12 muteMember" data-user-id="<?=$member->id?>"><i class="zmdi zmdi-volume-off"></i> Mute from team chat</button>
-                                                    <? } else { ?>
-                                                        <form action="/my-team/unmuteMemberFromTeamChat" method="post">
-                                                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                                            <input type="hidden" name="user_id" value="<?=$member->id?>">
-                                                            <button class="btn btn-inno btn-sm col-sm-12"><i class="zmdi zmdi-volume-up"></i> Unmute</button>
-                                                        </form>
-                                                    <? } ?>
-                                                </div>
-                                            <? } else { ?>
-                                                <div class="col-sm-12">
-                                                    <a href="<?= $member->getUrl()?>" target="_blank" class="btn btn-inno btn-sm col-sm-6">Go to account</a>
-                                                </div>
-                                            <? } ?>
+                                <div class="row m-t-20 d-flex m-b-20 m-t-10 p-15">
+                                    <? if($team->ceo_user_id == $user->id || $user->role == 1) { ?>
+                                        <? if($member->id != $team->ceo_user_id) { ?>
+                                            <div class="col-sm-4">
+                                                <a href="<?= $member->getUrl()?>" target="_blank" class="btn btn-inno btn-sm col-sm-12">Go to account</a>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <button class="btn btn-inno btn-sm col-sm-12 kickMember" data-user-id="<?=$member->id?>">Kick member</button>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <? if($member->muted == null || $member->muted <= date("Y-m-d H:i:s")) { ?>
+                                                    <button class="btn btn-inno btn-sm col-sm-12 muteMember" data-user-id="<?=$member->id?>"><i class="zmdi zmdi-volume-off"></i> Mute from team chat</button>
+                                                <? } else { ?>
+                                                    <form action="/my-team/unmuteMemberFromTeamChat" method="post">
+                                                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                        <input type="hidden" name="user_id" value="<?=$member->id?>">
+                                                        <button class="btn btn-inno btn-sm col-sm-12"><i class="zmdi zmdi-volume-up"></i> Unmute</button>
+                                                    </form>
+                                                <? } ?>
+                                            </div>
                                         <? } else { ?>
                                             <div class="col-sm-12">
                                                 <a href="<?= $member->getUrl()?>" target="_blank" class="btn btn-inno btn-sm col-sm-6">Go to account</a>
                                             </div>
                                         <? } ?>
-                                    </div>
+                                    <? } else { ?>
+                                        <div class="col-sm-12">
+                                            <a href="<?= $member->getUrl()?>" target="_blank" class="btn btn-inno btn-sm col-sm-6">Go to account</a>
+                                        </div>
+                                    <? } ?>
                                 </div>
                                <? if($team->ceo_user_id == $user->id || $user->role == 1) { ?>
                                     <? if($member->id != $team->ceo_user_id) { ?>

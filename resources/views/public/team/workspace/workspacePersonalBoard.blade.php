@@ -1,10 +1,15 @@
 @extends("layouts.app")
 @section("content")
     <div class="d-flex grey-background vh85">
-        @include("includes.workspace_sidebar")
+        @notmobile
+            @include("includes.workspace_sidebar")
+        @endnotmobile
         <div class="container">
+            @mobile
+                @include("includes.workspace_sidebar")
+            @endmobile
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">Tasks from <?= $user->getName()?></h1>
+                <h1 class="sub-title-black @mobile f-25 @endmobile">Tasks from <?= $user->getName()?></h1>
             </div>
             @if(session('success'))
                 <div class="alert alert-success m-b-0 p-b-10">

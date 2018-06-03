@@ -1,8 +1,13 @@
 @extends("layouts.app")
 @section("content")
     <div class="d-flex grey-background vh85">
-        @include("includes.workspace_sidebar")
+        @notmobile
+            @include("includes.workspace_sidebar")
+        @endnotmobile
         <div class="container">
+            @mobile
+                @include("includes.workspace_sidebar")
+            @endmobile
             <div class="sub-title-container p-t-20">
                 <input type="text" class="renameShortTermPlannerBoardInput input f-19 hidden m-b-20" value="<?= $shortTermPlannerBoard->title?>" data-short-term-planner-board-id="<?= $shortTermPlannerBoard->id?>">
                 <h1 class="sub-title-black shortTermPlannerBoardTitle"><?= $shortTermPlannerBoard->title?></h1><i class="zmdi zmdi-chevron-down f-20 m-l-10 m-t-15 toggleBoardRename"></i>

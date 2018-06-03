@@ -1,10 +1,15 @@
 @extends("layouts.app")
 @section("content")
     <div class="d-flex grey-background vh85">
-        @include("includes.workspace_sidebar")
+        @notmobile
+            @include("includes.workspace_sidebar")
+        @endnotmobile
         <div class="container">
+            @mobile
+                @include("includes.workspace_sidebar")
+            @endmobile
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black"><?= $team->team_name?> idea's</h1>
+                <h1 class="sub-title-black @mobile f-25 @endmobile"><?= $team->team_name?> idea's</h1>
             </div>
             <hr class="m-b-20 col-xs-12">
             <div class="row d-flex js-center">
@@ -93,7 +98,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <p class="m-b-0">Description</p>
-                                <textarea name="workspace_idea_description" placeholder="Write your idea description" class="input" cols="50" rows="5"></textarea>
+                                <textarea name="workspace_idea_description" placeholder="Write your idea description" class="input col-sm-12"  rows="5"></textarea>
                             </div>
                         </div>
                         <div class="row">

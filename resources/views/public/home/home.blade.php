@@ -32,7 +32,6 @@
         <div class="homepage-mainContent hidden">
             <div class="instructions">
                 <div class="container">
-                    {{--<div class="row">--}}
                         <div class="row">
                             <div class="col-md-12 text-center m-t-20">
                                 <h1 id="scrollToHome" class="sub-title col-sm-12">How it works</h1>
@@ -40,12 +39,12 @@
                         </div>
                         <div class="hr col-md-8"></div>
                         <div class="row">
-                            <div class="col-md-2 d-flex jc-end">
+                            <div class="col-xs-2 col-md-2 d-flex jc-end">
                                 <div class="circle-instructions">
                                     <i style="font-size: 50px; color: #C9CCCF; padding-left: 1px;" class="zmdi zmdi-accounts-outline social-icon-instructions"></i>
                                 </div>
                             </div>
-                            <div class="col-md-10 m-t-15">
+                            <div class="col-xs-10 col-md-10 m-t-15">
                                 @handheld
                                     @mobile
                                         <p class="instructions-text m-0 allign-center f-17">Create an <a class="regular-link" href="/">account</a> with your expertise(s)</p>
@@ -58,7 +57,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-10 d-flex jc-end">
+                            <div class="col-xs-10 col-md-10 d-flex jc-end">
                                 @handheld
                                     @mobile
                                         <p class="c-gray m-b-0 m-r-20 m-t-15 f-17">Have an idea or product you want to develop</p>
@@ -69,19 +68,19 @@
                                     <p class="c-gray f-25 m-b-0 m-r-20  m-t-15">Have an idea or product you want to develop</p>
                                 @endhandheld
                             </div>
-                            <div class="col-xs-2">
+                            <div class="col-xs-2 col-md-2">
                                 <div class="circle-instructions">
                                     <i style="font-size: 50px; color: #C9CCCF; padding-top: 9px; padding-left: 3px;" class="zmdi zmdi-developer-board social-icon-instructions"></i>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-2 d-flex jc-end">
+                            <div class="col-xs-2 col-md-2 d-flex jc-end">
                                 <div class="circle-instructions">
                                     <i style="font-size: 50px; color: #C9CCCF; padding-left: 1px;" class="zmdi zmdi-pin-drop social-icon-instructions"></i>
                                 </div>
                             </div>
-                            <div class="col-xs-10 m-t-15">
+                            <div class="col-xs-10 col-md-10 m-t-15">
                                 @handheld
                                     @mobile
                                         <p class="instructions-text m-0 f-17">Offer yourself as a service or ask for a service</p>
@@ -94,7 +93,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-10 jc-end d-flex">
+                            <div class="col-xs-10 col-md-10 jc-end d-flex">
                                 @handheld
                                     @mobile
                                         <p class="instructions-text m-b-0 m-r-20 m-t-15 f-17">Create or join a <a class="regular-link" href="/">team</a> and enjoy working together!</p>
@@ -105,13 +104,12 @@
                                     <p class="instructions-text m-b-0 m-r-20 m-t-15">Create or join a <a class="regular-link" href="/">team</a> and enjoy working together!</p>
                                 @endhandheld
                             </div>
-                            <div class="col-xs-2">
+                            <div class="col-xs-2 col-md-2 m-b-20">
                                 <div class="circle-instructions">
                                     <i style="font-size: 50px; color: #C9CCCF; padding-top: 12px; padding-left: 0;" class="zmdi zmdi-badge-check social-icon-instructions"></i>
                                 </div>
                             </div>
                         </div>
-                    {{--</div>--}}
                 </div>
             </div>
             <div class="instructions-second">

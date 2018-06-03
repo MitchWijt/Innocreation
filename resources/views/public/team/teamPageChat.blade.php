@@ -1,8 +1,13 @@
 @extends("layouts.app")
 @section("content")
     <div class="d-flex grey-background vh85">
-        @include("includes.teamPage_sidebar")
+        @notmobile
+            @include("includes.teamPage_sidebar")
+        @endnotmobile
         <div class="container">
+            @mobile
+                @include("includes.teamPage_sidebar")
+            @endmobile
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">Team chat</h1>
             </div>
@@ -15,18 +20,16 @@
                 <? } ?>
                 <div class="card col-sm-11 m-t-20 m-b-20">
                     <div class="card-block">
-                        <div class="row text-center">
-                            <div class="col-sm-12 m-t-20 m-b-20 d-flex">
-                                <div class="col-sm-4">
-                                    <img class="circleImage circle" src="<?= $team->getProfilePicture()?>" alt="<?= $team->team_name?>">
-                                </div>
-                                <div class="col-sm-4">
-                                    <h3><?= $team->team_name?></h3>
-                                    <p class="c-orange"><?= count($team->getMembers())?> members</p>
-                                </div>
-                                <div class="col-sm-4 m-t-10">
-                                    <a href="/team/<?=$team->slug?>" class="btn btn-inno livePage">Go to live page</a>
-                                </div>
+                        <div class="row text-center m-t-20 m-b-20 d-flex">
+                            <div class="col-sm-4">
+                                <img class="circleImage circle m-r-0 @mobile m-b-10 @endmobile" src="<?= $team->getProfilePicture()?>" alt="<?= $team->team_name?>">
+                            </div>
+                            <div class="col-sm-4">
+                                <h3><?= $team->team_name?></h3>
+                                <p class="c-orange"><?= count($team->getMembers())?> members</p>
+                            </div>
+                            <div class="col-sm-4 m-t-10">
+                                <a href="/team/<?=$team->slug?>" class="btn btn-inno livePage">Go to live page</a>
                             </div>
                         </div>
                         <div class="d-flex js-center">

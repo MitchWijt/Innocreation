@@ -149,6 +149,18 @@
 .m-t-50{
     margin-top: 50px !important;
 }
+.m-t-55{
+    margin-top: 55px !important;
+}
+.m-t-60{
+    margin-top: 60px !important;
+}
+.m-t-65{
+    margin-top: 65px !important;
+}
+.m-t-70{
+    margin-top: 70px !important;
+}
 .p-t-0{
     padding-top: 0 !important;
 }
@@ -187,6 +199,9 @@
 }
 .p-l-5 {
     padding-left: 5px !important;
+}
+.p-l-10 {
+    padding-left: 10px !important;
 }
 .p-l-15{
     padding-left: 15px !important;

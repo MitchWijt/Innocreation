@@ -1,8 +1,13 @@
 @extends("layouts.app")
 @section("content")
     <div class="d-flex grey-background vh85">
-        @include("includes.workspace_sidebar")
+        @notmobile
+            @include("includes.workspace_sidebar")
+        @endnotmobile
         <div class="container">
+            @mobile
+                @include("includes.workspace_sidebar")
+            @endmobile
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black"><?= $team->team_name?> bucketlist</h1>
             </div>
@@ -119,7 +124,7 @@
                         <div class="row">
                             <div class="col-sm-12 m-b-10">
                                 <p class="m-b-0">Goal description: </p>
-                                <textarea name="goal_description" placeholder="Write down your goal description" class="input" cols="50" rows="5"></textarea>
+                                <textarea name="goal_description" placeholder="Write down your goal description" class="input col-sm-12" rows="5"></textarea>
                             </div>
                         </div>
                         <div class="row">

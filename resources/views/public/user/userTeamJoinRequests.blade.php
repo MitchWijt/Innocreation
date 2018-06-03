@@ -1,8 +1,13 @@
 @extends("layouts.app")
 @section("content")
-    <div class="d-flex grey-background vh100">
-        @include("includes.userAccount_sidebar")
+    <div class="d-flex grey-background">
+        @notmobile
+            @include("includes.userAccount_sidebar")
+        @endnotmobile
         <div class="container">
+            @mobile
+                @include("includes.userAccount_sidebar")
+            @endmobile
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">My join requests</h1>
             </div>
@@ -58,7 +63,7 @@
                                 <? if($invite->accepted == 0) { ?>
                                 <div class="col-sm-5 text-center p-b-15">
                                     <? } else { ?>
-                                    <div class="col-sm-4 text-center p-b-15">
+                                    <div class="col-sm-4 text-center d-flex js-center p-b-15 p-r-0">
                                     <? } ?>
                                         <? if($invite->accepted == 0) { ?>
                                         <form action="/my-account/rejectTeamInvite" class="rejectTeamInvite" method="post">

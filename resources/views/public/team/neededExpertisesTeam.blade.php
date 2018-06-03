@@ -1,10 +1,15 @@
 @extends("layouts.app")
 @section("content")
-    <div class="d-flex grey-background">
-        @include("includes.teamPage_sidebar")
+    <div class="d-flex grey-background vh85">
+        @notmobile
+            @include("includes.teamPage_sidebar")
+        @endnotmobile
         <div class="container">
+            @mobile
+                @include("includes.teamPage_sidebar")
+            @endmobile
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">My needed expertises</h1>
+                <h1 class="sub-title-black @mobile f-25 @endmobile">My needed expertises</h1>
             </div>
             <div class="row">
                 <div class="col-sm-12 text-center">
@@ -111,10 +116,8 @@
                             <? } ?>
                         </div>
                         <? if($team->ceo_user_id == $user->id || $user->role == 4 || $user->role == 3 || $user->role == 1) { ?>
-                            <div class="row">
-                                <div class="col-sm-12 d-flex js-center m-b-10">
-                                    <button type="submit" class="btn btn-inno">Save</button>
-                                </div>
+                            <div class="row d-flex js-center m-b-10">
+                                <button type="submit" class="btn btn-inno">Save</button>
                             </div>
                         <? } else { ?>
                             <div class="space m-b-20"></div>

@@ -1,10 +1,15 @@
 @extends("layouts.app")
 @section("content")
     <div class="d-flex grey-background vh85">
-        @include("includes.teamPage_sidebar")
+        @notmobile
+            @include("includes.teamPage_sidebar")
+        @endnotmobile
         <div class="container">
+            @mobile
+                @include("includes.teamPage_sidebar")
+            @endmobile
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">Team join requests</h1>
+                <h1 class="sub-title-black @mobile f-25 @endmobile">Team join requests</h1>
             </div>
             <hr>
             <? foreach($userJoinRequests as $userJoinRequest) { ?>
@@ -27,7 +32,7 @@
                             <? if($userJoinRequest->accepted == 0) { ?>
                             <div class="col-sm-5 text-center p-b-15">
                                 <? } else { ?>
-                                    <div class="col-sm-4 text-center p-b-15">
+                                    <div class="col-sm-4 text-center d-flex js-center p-b-15 p-r-0">
                                 <? } ?>
                                     <? if($userJoinRequest->accepted == 0) { ?>
                                         <? if($user_id == $userJoinRequest->teams->First()->ceo_user_id) { ?>
@@ -86,7 +91,7 @@
                                 <div class="col-sm-3 text-center" style="margin-top: 20px;">
                                     <p><?= $invite->expertises->First()->title?></p>
                                 </div>
-                                <div class="col-sm-4 text-center p-b-15">
+                                <div class="col-sm-4 text-center p-b-15 d-flex js-center p-r-0">
                                     <div class="circle circleImage p-relative pull-right">
                                         <? if($invite->accepted == 0) { ?>
                                         <p class="f-13 p-absolute c-orange" style="top: 10px; left: 17px;">On<br>hold</p>

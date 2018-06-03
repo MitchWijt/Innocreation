@@ -1,8 +1,13 @@
 @extends("layouts.app")
 @section("content")
-    <div class="d-flex grey-background vh85">
-        @include("includes.userAccount_sidebar")
+    <div class="d-flex grey-background">
+        @notmobile
+            @include("includes.userAccount_sidebar")
+        @endnotmobile
         <div class="container">
+            @mobile
+                @include("includes.userAccount_sidebar")
+            @endmobile
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">My expertises</h1>
             </div>

@@ -1,15 +1,20 @@
 @extends("layouts.app")
 @section("content")
-    <div class="d-flex grey-background vh100">
-        @include("includes.userAccount_sidebar")
+    <div class="d-flex grey-background vh85">
+        @notmobile
+            @include("includes.userAccount_sidebar")
+        @endnotmobile
         <div class="container">
+            @mobile
+                @include("includes.userAccount_sidebar")
+            @endmobile
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">My chats</h1>
             </div>
             <div class="hr col-md-12"></div>
             <div class="row">
                 <div class="col-md-6">
-                    <form action="/searchChatUsers" class="searchChatUsersForm" method="post">
+                    <form action="/searchChatUsers" class="searchChatUsersForm @mobile text-center @endmobile" method="post">
                         <input type="hidden" class="url_content" name="url_content" value="<? if(isset($urlParameter)) echo $urlParameter?>">
                         <input type="hidden" class="url_content_chat" name="url_content_chat" value="<? if(isset($urlParameterChat)) echo $urlParameterChat?>">
                         <input type="hidden" name="_token" value="<?= csrf_token()?>">

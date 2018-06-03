@@ -1,12 +1,17 @@
 @extends("layouts.app")
 @section("content")
 <div class="d-flex grey-background">
-    @include("includes.userAccount_sidebar")
+    @notmobile
+        @include("includes.userAccount_sidebar")
+    @endnotmobile
     <div class="container">
+        @mobile
+            @include("includes.userAccount_sidebar")
+        @endmobile
         <div class="sub-title-container p-t-20">
             <h1 class="sub-title-black">My profile</h1>
         </div>
-        <hr class="col-md-10">
+        <hr class="col-xs-12">
         <form action="/my-account/saveUserProfilePicture" enctype="multipart/form-data" method="post" class="saveUserProfilePicture">
             <input type="hidden" name="_token" value="<?= csrf_token()?>">
             <input type="hidden" name="user_id" value="<? if(isset($user)) echo $user->id ?>">
@@ -62,7 +67,7 @@
                             <p><? if(isset($user->lastname)) echo $user->lastname?></p>
                         </div>
                     </div>
-                    <hr class="col-md-9">
+                    <hr class="@notmobile col-md-9 @elsemobile col-xs-12 @endnotmobile">
                     <div class="row text-center m-t-20">
                         <div class="col-sm-6">
                             <p class="m-0">Email:</p>
@@ -79,7 +84,7 @@
                             <p><? if(isset($user->postalcode)) echo $user->postalcode .", ". $user->city .", ". $user->country?></p>
                         </div>
                     </div>
-                    <hr class="col-md-9">
+                    <hr class="@notmobile col-md-9 @elsemobile col-xs-12 @endnotmobile">
                     <div class="row text-center m-t-20">
                         <div class="col-sm-6">
                             <p class="m-0">Mobile-number:</p>
@@ -88,7 +93,7 @@
                             <p><? if(isset($user->phonenumber)) echo $user->phonenumber?></p>
                         </div>
                     </div>
-                    <hr class="col-md-9">
+                    <hr class="@notmobile col-md-9 @elsemobile col-xs-12 @endnotmobile">
                     <div class="row text-center m-t-20">
                         <div class="col-sm-6">
                             <p class="m-0">Skype:</p>

@@ -1,10 +1,15 @@
 @extends("layouts.app")
 @section("content")
     <div class="d-flex grey-background vh85">
-        @include("includes.workspace_sidebar")
+        @notmobile
+            @include("includes.workspace_sidebar")
+        @endnotmobile
         <div class="container">
+            @mobile
+                @include("includes.workspace_sidebar")
+            @endmobile
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">Meetings <?= strtolower($team->team_name)?></h1>
+                <h1 class="sub-title-black @mobile f-25 @endmobile">Meetings <?= strtolower($team->team_name)?></h1>
             </div>
             <hr class="m-b-20 col-xs-12">
             @if(session('success'))

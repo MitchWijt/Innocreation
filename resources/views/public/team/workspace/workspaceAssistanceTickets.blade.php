@@ -1,10 +1,15 @@
 @extends("layouts.app")
 @section("content")
     <div class="d-flex grey-background vh85">
-        @include("includes.workspace_sidebar")
+        @notmobile
+            @include("includes.workspace_sidebar")
+        @endnotmobile
         <div class="container">
+            @mobile
+                @include("includes.workspace_sidebar")
+            @endmobile
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">Assistance tickets received</h1>
+                <h1 class="sub-title-black @mobile f-25 @endmobile">Assistance tickets received</h1>
             </div>
             @if(session('success'))
                 <div class="alert alert-success m-b-0 p-b-10">
@@ -160,7 +165,7 @@
                 </div>
             <? } ?>
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">Assistance tickets sended</h1>
+                <h1 class="sub-title-black @mobile f-25 @endmobile">Assistance tickets sended</h1>
             </div>
             <hr class="m-b-20 col-sm-11">
             <? foreach($sendedAssistanceTickets as $assistanceTicket) { ?>
@@ -311,7 +316,7 @@
             </div>
             <? } ?>
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">Assistance tickets completed</h1>
+                <h1 class="sub-title-black @mobile f-23 @endmobile">Assistance tickets completed</h1>
             </div>
             <hr class="m-b-20 col-sm-11">
             <? foreach($completedAssistanceTickets as $assistanceTicket) { ?>
