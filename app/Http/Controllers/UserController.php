@@ -443,8 +443,6 @@ class UserController extends Controller
                 $joinRequest->save();
 
                 $ceoFirstname = $joinRequest->teams->First()->users->First()->firstname;
-                $timeNow = date("H:i:s");
-                $time = (date("g:i a", strtotime($timeNow)));
 
                 $userChat = new UserChat();
                 $userChat->creator_user_id = $user_id;
@@ -456,9 +454,21 @@ class UserController extends Controller
                 $message->sender_user_id = $user_id;
                 $message->user_chat_id = $userChat->id;
                 $message->message = "Hey $ceoFirstname I have done a request to join your team!";
-                $message->time_sent = $time;
+                $message->time_sent = $this->getTimeSent();
                 $message->created_at = date("Y-m-d H:i:s");
                 $message->save();
+
+                $user = User::select("*")->where("id", $user_id)->first();
+
+                $mgClient = $this->getService("mailgun");
+                $mgClient[0]->sendMessage($mgClient[1], array(
+                    'from' => 'Innocreation  <mitchel@innocreation.net>',
+                    'to' => $joinRequest->teams->First()->users->First()->email,
+                    'subject' => "Team join request from $user->firstname!",
+                    'html' => view("/templates/sendJoinRequestToTeam", compact("user", "team"))
+                ), array(
+                    'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
+                ));
 
                 return redirect($_SERVER["HTTP_REFERER"]);
             } else {
@@ -549,8 +559,6 @@ class UserController extends Controller
             }
 
             $teamName = $invite->teams->First()->team_name;
-            $timeNow = date("H:i:s");
-            $time = (date("g:i a", strtotime($timeNow)));
 
             $user = User::select("*")->where("id", $invite->users->First()->id)->first();
             $user->team_id = $invite->team_id;
@@ -563,9 +571,22 @@ class UserController extends Controller
             $message->sender_user_id = $user->id;
             $message->team_id = $team_id;
             $message->message = "Hey $teamName i am happy to say, that i accepted your invite to join this team.";
-            $message->time_sent = $time;
+            $message->time_sent = $this->getTimeSent();
             $message->created_at = date("Y-m-d H:i:s");
             $message->save();
+
+
+            $team = Team::select("*")->where("id", $team_id)->first();
+
+            $mgClient = $this->getService("mailgun");
+            $mgClient[0]->sendMessage($mgClient[1], array(
+                'from' => 'Innocreation  <mitchel@innocreation.net>',
+                'to' => $team->users->First()->email,
+                'subject' => "Accepted invitation!",
+                'html' => view("/templates/sendInviteAcceptionTeam", compact("user", "team"))
+            ), array(
+                'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
+            ));
 
             return redirect($_SERVER["HTTP_REFERER"]);
         }

@@ -13,7 +13,7 @@
                 @endmobile
             <? } ?>
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black"><?= $page->title?></h1>
+                <h1 class="sub-title-black @mobile f-25 @endmobile"><?= $page->title?></h1>
             </div>
             <? if($page->page_type_id == 1) { ?>
                 @include("public.forum.shared._searchbarForum")

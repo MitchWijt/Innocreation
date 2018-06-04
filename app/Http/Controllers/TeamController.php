@@ -273,7 +273,7 @@ class TeamController extends Controller
             $message = new UserMessage();
             $message->sender_user_id = $team->ceo_user_id;
             $message->receiver_user_id = $user_id;
-            $message->message = "Hey $userFirstName I have done an invite to join my team!";
+            $message->message = "Hey $userFirstName I have done an invite to you to join my team!";
             $message->time_sent = $time;
             $message->created_at = date("Y-m-d H:i:s");
             $message->save();
@@ -285,6 +285,19 @@ class TeamController extends Controller
             $message->time_sent = null;
             $message->created_at = date("Y-m-d H:i:s");
             $message->save();
+
+
+            $receiver = User::select("*")->where("id", $user_id)->first();
+
+            $mgClient = $this->getService("mailgun");
+            $mgClient[0]->sendMessage($mgClient[1], array(
+                'from' => 'Innocreation  <mitchel@innocreation.net>',
+                'to' => $receiver->email,
+                'subject' => "Team invite from $team->team_name!",
+                'html' => view("/templates/sendInviteToUserMail", compact("receiver", "team"))
+            ), array(
+                'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
+            ));
             return redirect($_SERVER["HTTP_REFERER"]);
         } else {
             return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already sent an invite to this user");

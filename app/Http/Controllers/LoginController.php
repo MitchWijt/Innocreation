@@ -122,7 +122,7 @@ class LoginController extends Controller
                 }
                 $mgClient = $this->getService("mailgun");
                 $mgClient[0]->sendMessage($mgClient[1], array(
-                    'from' => 'mitchel@innocreation.net',
+                    'from' => 'Innocreation  <mitchel@innocreation.net>',
                     'to' => $user->email,
                     'subject' => 'Welcome to Innocreation!',
                     'html' => view("/templates/sendWelcomeMail", compact("user"))

@@ -9,9 +9,9 @@
                 @include("includes.forum_sidebar")
             @endmobile
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black"><?= $forumMainTopic->title?></h1>
+                <h1 class="sub-title-black @mobile f-20 @endmobile @tablet f-25 @endtablet"><?= $forumMainTopic->title?></h1>
             </div>
-            <p class="text-center"><?= $forumMainTopic->description?></p>
+            <p class="text-center @mobile f-12 @endmobile @tablet f-12 @endtablet"><?= $forumMainTopic->description?></p>
             @include("public.forum.shared._searchbarForum")
             <hr class="col-ms-12">
             <div class="row">
@@ -48,7 +48,9 @@
                                 <div class="row">
                                     <div class="col-sm-12 p-0">
                                         <?= $threads->links()?>
-                                        <hr>
+                                        <? if(count($threads->links()) > 1) { ?>
+                                            <hr>
+                                        <? } ?>
                                         <? foreach($threads as $thread) { ?>
                                             <div class="row">
                                                 <div class="col-sm-12 m-l-15 d-flex">
