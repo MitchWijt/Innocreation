@@ -303,6 +303,9 @@ class AdminController extends Controller
 
             $supportTicket = SupportTicket::select("*")->where("id", $ticketId)->first();
             $supportTicket->support_ticket_status_id = $statusId;
+            if($statusId == 3){
+                $supportTicket->closed_at = date("Y-m-d H:i:s");
+            }
             $supportTicket->save();
 
             return $supportTicket->supportTicketStatus->status;

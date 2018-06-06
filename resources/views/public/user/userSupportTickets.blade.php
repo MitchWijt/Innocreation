@@ -1,6 +1,6 @@
 @extends("layouts.app")
 @section("content")
-    <div class="d-flex grey-background">
+    <div class="d-flex grey-background vh85">
         @notmobile
             @include("includes.userAccount_sidebar")
         @endnotmobile
@@ -42,8 +42,10 @@
                         <div class="supportTicket col-md-7">
                             <div class="card">
                                 <div class="card-block supportTicketCard" data-ticket-id="<?= $supportTicket->id?>">
-                                    <div class="row text-center d-flex js-center m-t-10">
-                                        <p class="f-18 m-b-0"><?= $supportTicket->title?></p>
+                                    <div class="row text-center js-center m-t-10">
+                                        <div class="col-sm-12">
+                                            <p class="f-18 m-b-0"><?= $supportTicket->title?></p>
+                                        </div>
                                         <? if($supportTicket->helper_user_id != null) { ?>
                                             <? if($supportTicket->support_ticket_status_id == 1 || $supportTicket->support_ticket_status_id == 2) { ?>
                                                 <p class="c-dark-grey m-b-0 f-12">Currently getting helped by <?= $supportTicket->helper->getName()?></p>
@@ -63,7 +65,23 @@
                                         <? } ?>
                                     </div>
                                     <div class="row text-center d-flex js-center m-b-20">
-                                        <button class="btn btn-inno btn-sm" data-ticket-id="<?= $supportTicket->id?>">Open ticket</button>
+                                        <?
+                                        if($supportTicket->support_ticket_status_id == 3) {
+                                            $today = date("Y-m-d");
+                                            $closedDate = date("Y-m-d", strtotime($supportTicket->closed_at . "1 day"));
+                                        ?>
+                                            <? if($today >= $closedDate) { ?>
+                                                <? if($user->checkCustomerServiceReview($supportTicket->id) == false) { ?>
+                                                    <button class="btn btn-inno btn-sm" data-ticket-id="<?= $supportTicket->id?>">Rate this ticket!</button>
+                                                <? } else {  ?>
+                                                    <button class="btn btn-inno btn-sm" data-ticket-id="<?= $supportTicket->id?>">Reviewed</button>
+                                                <? } ?>
+                                        <? } else { ?>
+                                            <button class="btn btn-inno btn-sm" data-ticket-id="<?= $supportTicket->id?>">Open ticket</button>
+                                        <? } ?>
+                                        <? } else { ?>
+                                            <button class="btn btn-inno btn-sm" data-ticket-id="<?= $supportTicket->id?>">Open ticket</button>
+                                        <? } ?>
                                     </div>
                                 </div>
                             </div>
@@ -95,27 +113,69 @@
                                                 <hr class="col-sm-12 m-b-20">
                                             </div>
                                             <? if($supportTicket->support_ticket_status_id == 1 || $supportTicket->support_ticket_status_id == 2) { ?>
-                                            <form action="" method="post">
-                                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                                <input type="hidden" class="ticket_id" name="ticket_id" value="<?=$supportTicket->id?>">
-                                                <input type="hidden" class="sender_user_id" name="sender_user_id" value="<?=$user->id?>">
-                                                <div class="row m-t-20">
-                                                    <div class="col-sm-12 text-center">
-                                                        <textarea name="supportTicketMessage" placeholder="Send your message..." class="input col-sm-10 supportTicketMessage" rows="5"></textarea>
+                                                <form action="" method="post">
+                                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                    <input type="hidden" class="ticket_id" name="ticket_id" value="<?=$supportTicket->id?>">
+                                                    <input type="hidden" class="sender_user_id" name="sender_user_id" value="<?=$user->id?>">
+                                                    <div class="row m-t-20">
+                                                        <div class="col-sm-12 text-center">
+                                                            <textarea name="supportTicketMessage" placeholder="Send your message..." class="input col-sm-10 supportTicketMessage" rows="5"></textarea>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-sm-11 m-b-20 m-t-20">
-                                                        <button type="button" class="btn btn-inno pull-right sendSupportTicketMessage">Send message</button>
+                                                    <div class="row">
+                                                        <div class="col-sm-11 m-b-20 m-t-20">
+                                                            <button type="button" class="btn btn-inno pull-right sendSupportTicketMessage">Send message</button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </form>
+                                                </form>
                                             <? } else { ?>
-                                                <div class="row">
-                                                    <div class="col-sm-12 text-center">
-                                                        <p>This ticket has been closed. We hope we have been able to help you well!</p>
+                                                <?
+                                                $today = date("Y-m-d");
+                                                $closedDate = date("Y-m-d", strtotime($supportTicket->closed_at . " 1 day"));
+                                                ?>
+                                                <? if(strtotime($today) >= strtotime($closedDate)) { ?>
+                                                    <? if($user->checkCustomerServiceReview($supportTicket->id) == false) { ?>
+                                                        <form action="/user/rateSupportTicket" method="post">
+                                                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                            <input type="hidden" class="ticket_id" name="ticket_id" value="<?=$supportTicket->id?>">
+                                                            <input type="hidden" class="user_id" name="user_id" value="<?=$user->id?>">
+                                                            <div class="row m-t-20 m-l-50">
+                                                                <div class="col-sm-9">
+                                                                    <p class="m-b-5">Your experience with our customer support:</p>
+                                                                    <select name="review" class="input col-sm-4">
+                                                                        <option value="Great">Great</option>
+                                                                        <option value="Good">Good</option>
+                                                                        <option value="Medium">Medium</option>
+                                                                        <option value="Bad">Bad</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <input type="number" max="10" min="1" name="rating" class="input col-sm-4 m-r-0 p-r-0"><span> / 10</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row m-t-20">
+                                                                <div class="col-sm-12 text-center">
+                                                                    <textarea name="reviewDetails" placeholder="Tell us a little more about your experience" class="input col-sm-10" rows="5"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-11 m-b-20 m-t-20">
+                                                                    <button type="submit" class="btn btn-inno pull-right">Submit rating</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    <? } else { ?>
+                                                        <div class="col-sm-12 text-center">
+                                                            <p>Thank you for reviewing this support ticket! your support is well appreciated</p>
+                                                        </div>
+                                                    <? } ?>
+                                                <? } else { ?>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-center">
+                                                            <p>This ticket has been closed. We hope we have been able to help you well!</p>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                <? } ?>
                                             <? } ?>
                                         </div>
                                     </div>
@@ -128,7 +188,7 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header col-sm-12 d-flex js-center">
-                            <p class="m-t-10 f-18 m-b-0">Feel free to ask a question</p>
+                            <p class="m-t-10 f-18 m-b-0">Feel free to ask us anything</p>
                         </div>
                         <div class="modal-body ">
                             <form action="/user/addSupportTicket" method="post">

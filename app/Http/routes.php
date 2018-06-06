@@ -109,6 +109,8 @@ Route::get("/my-account/support-tickets","UserController@userSupportTickets");
 
 Route::post("/user/sendSupportTicketMessage","UserController@sendSupportTicketMessageAction");
 
+Route::post("/user/rateSupportTicket","UserController@rateSupportTicketAction");
+
 Route::post("/user/addSupportTicket","UserController@addSupportTicketAction");
 
 //==============================SEARCHTEAMSPAGE========================
@@ -337,6 +339,8 @@ Route::get("/page/{slug}", "PageController@pagesIndexAction");
 Route::get("/platform-idea", "PageController@platformIdeaAction");
 
 Route::post("/page/submitCustomerIdea", "PageController@submitCustomerIdeaAction");
+
+Route::get("/service-reviews", "PageController@serviceReviewsAction");
 
 
 

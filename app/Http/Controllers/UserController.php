@@ -9,6 +9,7 @@ use App\FavoriteTeamLinktable;
 use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
 use App\Page;
+use App\ServiceReview;
 use App\SupportTicket;
 use App\SupportTicketMessage;
 use App\Team;
@@ -516,16 +517,25 @@ class UserController extends Controller
                 $team->support = $team->calculateSupport($stars_value, $team_id);
                 $team->save();
 
-                $timeNow = date("H:i:s");
-                $time = (date("g:i a", strtotime($timeNow)));
                 $message = new UserMessage();
                 $message->sender_user_id = $team->ceo_user_id;
                 $message->team_id = $team_id;
                 $message->message = "$user->firstname has written a new review for this team! go check it out!";
-                $message->time_sent = $time;
+                $message->time_sent = $this->getTimeSent();
                 $message->created_at = date("Y-m-d H:i:s");
                 $message->save();
 
+                $mgClient = $this->getService("mailgun");
+                foreach($team->getMembers() as $member) {
+                    $mgClient[0]->sendMessage($mgClient[1], array(
+                        'from' => 'Innocreation  <mitchel@innocreation.net>',
+                        'to' => $member->email,
+                        'subject' => "New review from $user->firstname!",
+                        'html' => view("/templates/sendTeamReviewMail", compact("user", "team", "member"))
+                    ), array(
+                        'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
+                    ));
+                }
                 return redirect($_SERVER["HTTP_REFERER"]);
             } else {
                 return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already wrote a review or you are the CEO of this team");
@@ -652,6 +662,27 @@ class UserController extends Controller
 
                 echo json_encode($messageArray);
             }
+        }
+    }
+
+    public function rateSupportTicketAction(Request $request){
+        if($this->authorized()) {
+            $userId = $request->input("user_id");
+            $ticketId = $request->input("ticket_id");
+            $review = $request->input("review");
+            $reviewDescription = $request->input("reviewDetails");
+            $rating = $request->input("rating");
+
+            $serviceReview = new ServiceReview();
+            $serviceReview->user_id = $userId;
+            $serviceReview->ticket_id = $ticketId;
+            $serviceReview->review = $review;
+            $serviceReview->review_description = $reviewDescription;
+            $serviceReview->rating = $rating;
+            $serviceReview->service_review_type_id = 1;
+            $serviceReview->created_at = date("Y-m-d H:i:s");
+            $serviceReview->save();
+            return redirect($_SERVER["HTTP_REFERER"])->with("success", "Thank your for your rating!");
         }
     }
 

@@ -4,6 +4,7 @@ namespace App;
 use App\Expertises_linktable;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Symfony\Component\EventDispatcher\Tests\Service;
 
 class User extends Authenticatable
 {
@@ -54,6 +55,15 @@ class User extends Authenticatable
         $bool = false;
         $joinRequests = JoinRequestLinktable::select("*")->where("expertise_id", $expertise_id)->where("team_id", $team_id)->where("user_id", $this->id)->where("accepted", 0)->get();
         if(count($joinRequests) > 0){
+            $bool = true;
+        }
+        return $bool;
+    }
+
+    public function checkCustomerServiceReview($ticket_id){
+        $bool = false;
+        $serviceReview = ServiceReview::select("id")->where("ticket_id", $ticket_id)->where("user_id", $this->id)->get();
+        if($serviceReview){
             $bool = true;
         }
         return $bool;

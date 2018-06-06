@@ -8,6 +8,7 @@ use App\Faq;
 use App\FaqType;
 use App\FavoriteTeamLinktable;
 use App\NeededExpertiseLinktable;
+use App\ServiceReview;
 use App\Team;
 use App\TeamReview;
 use App\User;
@@ -101,7 +102,7 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function platformIdeaAction(Request $request){
+    public function platformIdeaAction(){
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $customerIdeas = CustomerIdea::select("*")->where("user_id", Session::get("user_id"))->get();
         return view("/public/pages/customerIdea", compact("customerIdeas", "user"));
@@ -127,8 +128,8 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function serviceReviewsAction() {
+        $serviceReviews = ServiceReview::select("*")->where("service_review_type_id", 1)->get();
+        return view("/public/pages/serviceReviews", compact("serviceReviews"));
     }
 }
