@@ -96,8 +96,17 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12 d-flex js-center m-t-10">
-                <textarea name="shortTermTaskDescription" class="input shortTermTaskDescription" placeholder="Write task description" cols="80" rows="10" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?if($shortPlannerTask->description != null) echo $shortPlannerTask->description?></textarea>
+            <div class="col-sm-12 m-t-10">
+                <div class="customTextarea">
+                    <span class="clicked hidden"></span>
+                    <div data-editable data-name="main-content-<?= $shortPlannerTask->id?>" class="editorPlanner">
+                        <? if($shortPlannerTask->description != null) { ?>
+                            <?= htmlspecialchars_decode($shortPlannerTask->description)?>
+                        <? } else { ?>
+                            <p class="shortTermPlannertextarea" style="word-break: break-all !important" contenteditable></p>
+                        <? } ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

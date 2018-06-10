@@ -392,34 +392,32 @@ $(document).on("click", ".card-block", function (e) {
     // $(this).parents(".shortTermTask").find("#shortTermTaskModal").modal().toggle();
 });
 
+$(document).on("click", ".customTextarea", function () {
+    if($(".clicked").text() != "1") {
+        var editor;
+        editor = ContentTools.EditorApp.get();
+        editor.init('*[data-editable]', 'data-name');
+        $(".ct-ignition__button--edit").trigger("click");
+        $(".ct-inspector").remove();
+        $(".ce-element--type-text").addClass("ce-element--focused");
+        $(".shortTermPlannertextarea").focus();
+
+        setInterval(function () {
+
+        }, 2000);
+    }
+    $(".clicked").text("1");
+});
+
 $('.shortTermTaskModal').on('hidden.bs.modal', function () {
     $(".shortTermTask").attr("draggable", true);
+    $(".ct-widget").hide();
+    $(".clicked").text("");
+    $(".customTextarea").unbind("click");
 });
 
 $('.shortTermTaskModal').on('show.bs.modal', function () {
     $(".shortTermTask").attr("draggable", false);
-});
-
-$(document).on("keyup", ".shortTermTaskDescription",function () {
-    var description = $(this).val();
-    var task_id = $(this).data("short-planner-task-id");
-    setTimeout(function () {
-        $.ajax({
-            method: "POST",
-            beforeSend: function (xhr) {
-                var token = $('meta[name="csrf_token"]').attr('content');
-
-                if (token) {
-                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-                }
-            },
-            url: "/workspace/saveShortTermPlannerTaskDescription",
-            data: {'description': description, 'task_id': task_id},
-            success: function (data) {
-
-            }
-        });
-    },500);
 });
 
 $(document).on("click", ".deleteShortTermTask",function () {

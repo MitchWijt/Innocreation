@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/css/activityTimeline.css">
     <link rel="stylesheet" href="/css/checkout/pricing.css">
     {{--CSS PLUGINS--}}
+    <link rel="stylesheet" href="/assets/build/content-tools.min.css">
     <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
     <link rel="stylesheet" href="/css/jquery-ui-min.css">
     <link rel="stylesheet" href="/css/jquery.timepicker.css">
@@ -25,6 +26,8 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     {{--JS PLUGINS--}}
+    <script src="/assets/build/content-tools.js"></script>
+    <script src="/assets/build/editor.js"></script>
     <script src="/js/bootstrap-tokenfield.min.js"></script>
     <script src="/js/jquery-ui.min.js"></script>
     <script defer src="/js/fontawesome-all.js"></script>

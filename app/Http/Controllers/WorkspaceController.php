@@ -362,7 +362,7 @@ class WorkspaceController extends Controller
         $description = $request->input("description");
 
         $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
-        $shortTermPlannerTask->description = $description;
+        $shortTermPlannerTask->description = htmlspecialchars($description);
         $shortTermPlannerTask->save();
 
         return $shortTermPlannerTask->description;

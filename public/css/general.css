@@ -345,7 +345,7 @@
 .x-scroll{
     width: 100%;
     overflow-y: scroll;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
 }
 .o-hidden{
     overflow: hidden;
