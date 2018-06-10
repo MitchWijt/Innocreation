@@ -206,8 +206,11 @@
                 <div class="d-flex fd-row x-scroll p-b-20">
                     <input type="hidden" name="urlParameter" class="urlParameter" value="<? if(isset($urlParameter)) echo $urlParameter?>">
                     <? foreach($shortTermPlannerCategories as $shortTermPlannerCategory) { ?>
-                        <div class="col-sm-3">
-                            <p class="f-19 text-center"><?=$shortTermPlannerCategory?></p>
+                        <div class="col-sm-3 category">
+                            <p class="f-19 text-center"><?=$shortTermPlannerCategory?> <i class="zmdi zmdi-chevron-down toggleMenu"></i></p>
+                            <div class="menuShortTermPlanner hidden text-center">
+                                <a class="m-r-10 completeAllTasks btn btn-sm btn-inno c-gray" id="completeAllTasks-<?= $shortTermPlannerCategory?>" data-category="<?= $shortTermPlannerCategory?>">Complete all in column</a>
+                            </div>
                             <div class="text-center">
                                 <i class="zmdi zmdi-plus f-25 addShortTermTask" data-short-term-planner-category="<?=$shortTermPlannerCategory?>"></i>
                             </div>
@@ -215,89 +218,87 @@
                                 <div id="div" ondrop="drop(event, this, $(this).parents('.shortTermtasksColumn').data('short-term-planner-category'))"  ondragover="allowDrop(event)" class="p-b-100">
                                     <? foreach($shortTermPlannerTasks as $shortPlannerTask) { ?>
                                         <? if($shortPlannerTask->category == $shortTermPlannerCategory) { ?>
-                                                <div class="m-b-10 shortTermTask" id="drag-<?=$shortPlannerTask->id?>" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
-                                                    <div class="card card-task col-sm-12 " data-short-planner-task-id="<?= $shortPlannerTask->id?>" >
-                                                        <div class="card-block" style="min-height: 100%" data-short-planner-task-id="<?= $shortPlannerTask->id?>" data-team-id="<?= $team->id?>">
-                                                            <p class="m-t-10 f-19 m-b-0"><?= $shortPlannerTask->title?></p>
-                                                            <? if($shortPlannerTask->priority != null) { ?>
-                                                                <? if($shortPlannerTask->priority == 1) { ?>
-                                                                    <small class="c-red priorityTask" data-short-planner-task-id="<?= $shortPlannerTask->id?>">High</small>
-                                                                <? } else if($shortPlannerTask->priority == 2) { ?>
-                                                                    <small class="c-orange priorityTask" data-short-planner-task-id="<?= $shortPlannerTask->id?>">Medium</small>
-                                                                <? } else if($shortPlannerTask->priority == 3) { ?>
-                                                                    <small class="c-green priorityTask" data-short-planner-task-id="<?= $shortPlannerTask->id?>">Low</small>
-                                                                <? } ?>
-                                                            <? } else { ?>
-                                                                <small class="priorityTask m-b-10 c-black" data-short-planner-task-id="<?= $shortPlannerTask->id?>">.</small>
+                                            <div class="m-b-10 shortTermTask" id="drag-<?=$shortPlannerTask->id?>" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
+                                                <div class="card card-task col-sm-12 " data-short-planner-task-id="<?= $shortPlannerTask->id?>" data-category="<?= $shortPlannerTask->category?>" data-completed="<? if($shortPlannerTask->completed == 1) echo 1; else echo 0?>">
+                                                    <div class="card-block" style="min-height: 100%" data-short-planner-task-id="<?= $shortPlannerTask->id?>" data-team-id="<?= $team->id?>">
+                                                        <p class="m-t-10 f-19 m-b-0"><?= $shortPlannerTask->title?></p>
+                                                        <? if($shortPlannerTask->priority != null) { ?>
+                                                            <? if($shortPlannerTask->priority == 1) { ?>
+                                                                <small class="c-red priorityTask" data-short-planner-task-id="<?= $shortPlannerTask->id?>">High</small>
+                                                            <? } else if($shortPlannerTask->priority == 2) { ?>
+                                                                <small class="c-orange priorityTask" data-short-planner-task-id="<?= $shortPlannerTask->id?>">Medium</small>
+                                                            <? } else if($shortPlannerTask->priority == 3) { ?>
+                                                                <small class="c-green priorityTask" data-short-planner-task-id="<?= $shortPlannerTask->id?>">Low</small>
                                                             <? } ?>
-                                                            <div class="d-flex js-between m-t-5">
-                                                                <? if($shortPlannerTask->assigned_to != null) { ?>
-                                                                    <div class="assignMember">
-                                                                        <? if($shortPlannerTask->assignedUser) { ?>
-                                                                            <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
-                                                                        <? } else { ?>
-                                                                            <div class="text-center">
-                                                                                <div class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><i class="zmdi zmdi-eye-off "></i></div>
-                                                                            </div>
-                                                                        <? } ?>
-                                                                        <div class="hasImage hidden">
-                                                                            <div class="circle circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
-                                                                                <div class="text-center memberAssignPlaceholder">
-                                                                                    <i class="zmdi zmdi-account memberAssignIcon"></i>
-                                                                                </div>
-                                                                            </div>
+                                                        <? } else { ?>
+                                                            <small class="priorityTask m-b-10 c-black" data-short-planner-task-id="<?= $shortPlannerTask->id?>">.</small>
+                                                        <? } ?>
+                                                        <div class="d-flex js-between m-t-5">
+                                                            <? if($shortPlannerTask->assigned_to != null) { ?>
+                                                                <div class="assignMember">
+                                                                    <? if($shortPlannerTask->assignedUser) { ?>
+                                                                        <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
+                                                                    <? } else { ?>
+                                                                        <div class="text-center">
+                                                                            <div class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><i class="zmdi zmdi-eye-off "></i></div>
                                                                         </div>
-                                                                    </div>
-                                                                <? } else { ?>
-                                                                    <div class="assignMember">
+                                                                    <? } ?>
+                                                                    <div class="hasImage hidden">
                                                                         <div class="circle circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                                             <div class="text-center memberAssignPlaceholder">
                                                                                 <i class="zmdi zmdi-account memberAssignIcon"></i>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                <? } ?>
-                                                                <i class="zmdi zmdi-check c-orange f-18 text-center completeShortTermTaskCard <? if($shortPlannerTask->completed != 1) echo "hidden"?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"></i>
-                                                                <? if($shortPlannerTask->due_date != null) { ?>
-                                                                    <div class="d-flex fd-row dueDateHover">
-                                                                        <? if(strtotime(date("Y-m-d")) >= strtotime(date("Y-m-d", strtotime($shortPlannerTask->due_date)))) { ?>
-                                                                            <p class="c-red f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= date("d F Y", strtotime($shortPlannerTask->due_date))?></p>
-                                                                        <? } else { ?>
-                                                                            <p class="c-orange f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= date("d F Y", strtotime($shortPlannerTask->due_date))?></p>
-                                                                        <? } ?>
-                                                                        <i class="zmdi zmdi-close hidden removeDueDate m-t-6 m-l-10 c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"></i>
-                                                                    </div>
-                                                                <? } else { ?>
-                                                                    <div class="d-flex fd-row dueDateHover">
-                                                                        <p class="c-orange f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><i class="zmdi zmdi-plus m-r-5"></i>Set due date</p>
-                                                                    </div>
-                                                                <? } ?>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <input type="text" class="datepicker input-transparant pull-right c-transparant col-sm-5" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                                 </div>
+                                                            <? } else { ?>
+                                                                <div class="assignMember">
+                                                                    <div class="circle circleSmall placeholderMemberAssign assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
+                                                                        <div class="text-center memberAssignPlaceholder">
+                                                                            <i class="zmdi zmdi-account memberAssignIcon"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            <? } ?>
+                                                            <i class="zmdi zmdi-check c-orange f-18 text-center completeShortTermTaskCard <? if($shortPlannerTask->completed != 1) echo "hidden"?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"></i>
+                                                            <? if($shortPlannerTask->due_date != null) { ?>
+                                                                <div class="d-flex fd-row dueDateHover">
+                                                                    <? if(strtotime(date("Y-m-d")) >= strtotime(date("Y-m-d", strtotime($shortPlannerTask->due_date)))) { ?>
+                                                                        <p class="c-red f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= date("d F Y", strtotime($shortPlannerTask->due_date))?></p>
+                                                                    <? } else { ?>
+                                                                        <p class="c-orange f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= date("d F Y", strtotime($shortPlannerTask->due_date))?></p>
+                                                                    <? } ?>
+                                                                    <i class="zmdi zmdi-close hidden removeDueDate m-t-6 m-l-10 c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"></i>
+                                                                </div>
+                                                            <? } else { ?>
+                                                                <div class="d-flex fd-row dueDateHover">
+                                                                    <p class="c-orange f-13 m-b-0 m-t-5 dueDate underline c-pointer" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><i class="zmdi zmdi-plus m-r-5"></i>Set due date</p>
+                                                                </div>
+                                                            <? } ?>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <input type="text" class="datepicker input-transparant pull-right c-transparant col-sm-5" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="collapse collapseExample" >
-                                                        <div class="card card-task col-sm-12 m-b-10 p-0">
-                                                            <div class="card-assign">
-                                                                <span class="m-l-10 m-t-10">Assign this task to: <br></span>
-                                                                <hr>
-                                                                <div class="text-center">
-                                                                    <select name="assignMembers" class="input col-sm-11 m-t-10 assignTaskToMember">
-                                                                        <option value="" selected disabled>Choose member</option>
-                                                                        <? foreach($team->getMembers() as $member) { ?>
-                                                                            <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
-                                                                        <? } ?>
-                                                                        <option value="nobody" data-short-planner-task-id="<?= $shortPlannerTask->id?>">Unassign</option>
-                                                                    </select>
-                                                                </div>
+                                                </div>
+                                                <div class="collapse collapseExample" >
+                                                    <div class="card card-task col-sm-12 m-b-10 p-0">
+                                                        <div class="card-assign">
+                                                            <span class="m-l-10 m-t-10">Assign this task to: <br></span>
+                                                            <hr>
+                                                            <div class="text-center">
+                                                                <select name="assignMembers" class="input col-sm-11 m-t-10 assignTaskToMember">
+                                                                    <option value="" selected disabled>Choose member</option>
+                                                                    <? foreach($team->getMembers() as $member) { ?>
+                                                                        <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
+                                                                    <? } ?>
+                                                                    <option value="nobody" data-short-planner-task-id="<?= $shortPlannerTask->id?>">Unassign</option>
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                <div class="shortTermTaskModalContainer">
                                                 </div>
                                             </div>
                                         <? } ?>

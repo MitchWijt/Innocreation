@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Expertises;
 use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
+use App\MailMessage;
 use App\NeededExpertiseLinktable;
 use App\Team;
 use App\TeamGroupChat;
@@ -298,6 +299,13 @@ class TeamController extends Controller
             ), array(
                 'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
             ));
+
+            $mailMessage = new MailMessage();
+            $mailMessage->receiver_user_id = $receiver->id;
+            $mailMessage->subject = "Team invite from $team->team_name";
+            $mailMessage->created_at = date("Y-m-d");
+            $mailMessage->save();
+
             return redirect($_SERVER["HTTP_REFERER"]);
         } else {
             return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already sent an invite to this user");

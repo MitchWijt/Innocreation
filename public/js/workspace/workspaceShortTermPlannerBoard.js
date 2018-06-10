@@ -45,19 +45,19 @@ $(document).on("change", ".shortTermTaskTitleInput",function () {
                if($(this).val() == title){
                   $(this).parents(".emptyCard").find(".shortTermPlannerTaskTitle").text(title);
                   $(this).parents(".shortTermTask").find(".dueDate").removeClass("hidden");
-                  $(this).parents(".shortTermTask").find(".dueDate").attr("data-short-planner-task-id", data);
-                  $(this).parents(".shortTermTask").find(".date").attr("data-short-planner-task-id", data);
-                  $(this).parents(".shortTermTask").find(".dateModal").attr("data-short-planner-task-id", data);
-                  $(this).parents(".shortTermTask").find(".assignTaskToMemberToggle").attr("data-short-planner-task-id", data);
-                  $(this).parents(".shortTermTask").find(".assignTaskToMember option").attr("data-short-planner-task-id", data);
+                  $(this).parents(".shortTermTask").find(".dueDate").attr("data-short-planner-task-id", data["task_id"]);
+                  $(this).parents(".shortTermTask").find(".date").attr("data-short-planner-task-id", data["task_id"]);
+                  $(this).parents(".shortTermTask").find(".dateModal").attr("data-short-planner-task-id", data["task_id"]);
+                  $(this).parents(".shortTermTask").find(".assignTaskToMemberToggle").attr("data-short-planner-task-id", data["task_id"]);
+                  $(this).parents(".shortTermTask").find(".assignTaskToMember option").attr("data-short-planner-task-id", data["task_id"]);
                   $(this).parents(".shortTermTask").find(".date").removeClass("hidden");
-                  $(this).parents(".shortTermTask").find(".deleteShortTermTask").attr("data-short-planner-task-id", data);
-                  $(this).parents(".shortTermTask").find(".completeShortTermTaskCard").attr("data-short-planner-task-id", data);
-                  $(this).parents(".shortTermTask").find(".unassign").attr("data-short-planner-task-id", data);
-                  $(this).parents(".shortTermTask").find(".card-block").attr("data-short-planner-task-id", data);
-                  $(this).parents(".shortTermTask").find(".priorityTask").attr("data-short-planner-task-id", data);
-                  $(this).parents(".shortTermTask").find(".short-planner-task-id").val(data);
-                  $(this).parents(".shortTermTask").attr("data-short-planner-task-id", data);
+                  $(this).parents(".shortTermTask").find(".deleteShortTermTask").attr("data-short-planner-task-id", data["task_id"]);
+                  $(this).parents(".shortTermTask").find(".completeShortTermTaskCard").attr("data-short-planner-task-id", data["task_id"]);
+                  $(this).parents(".shortTermTask").find(".unassign").attr("data-short-planner-task-id", data["task_id"]);
+                  $(this).parents(".shortTermTask").find(".card-block").attr("data-short-planner-task-id", data["task_id"]);
+                  $(this).parents(".shortTermTask").find(".priorityTask").attr("data-short-planner-task-id", data["task_id"]);
+                  $(this).parents(".shortTermTask").find(".short-planner-task-id").val(data["task_id"]);
+                  $(this).parents(".shortTermTask").attr("data-short-planner-task-id", data["task_id"]);
                    $(this).parents(".shortTermTask").find(".date").datepicker({
                        format: "yyyy-mm-dd",
                        weekStart: 1,
@@ -66,13 +66,15 @@ $(document).on("change", ".shortTermTaskTitleInput",function () {
                    });
                   $(this).parents(".shortTermTask").find(".date").addClass("datepicker");
                   $(this).parents(".shortTermTask").find(".assignMember").removeClass("hidden");
-                  $(this).parents(".shortTermTask").attr("id", "drag-"+data);
+                  $(this).parents(".shortTermTask").attr("id", "drag-"+data["task_id"]);
                   $(this).parents(".shortTermTaskModalContainer").find(".modal-title").text(title);
                   $(this).parents(".shortTermTask").find(".card-block-new").attr("class", "card-block");
-                  $(this).parents(".shortTermTask").find(".shortTermTaskDescription").attr("data-short-planner-task-id", data);
+                  $(this).parents(".shortTermTask").find(".card-task").attr("data-category", data["category"]);
+                  $(this).parents(".shortTermTask").find(".card-task").attr("data-short-planner-task-id", data["task_id"]);
+                  $(this).parents(".shortTermTask").find(".shortTermTaskDescription").attr("data-short-planner-task-id", data["task_id"]);
                   $(this).parents(".shortTermTask").find(".modal-title").text(title);
                   $(this).parents(".shortTermTask").find(".modal-title").append("<i class='zmdi zmdi-chevron-down toggleTaskDelete m-l-10'></i>");
-                  $(this).parents(".shortTermTask").find(".modal-title").prepend("<i class='zmdi zmdi-check circle circleSmall border-inno-black f-18 text-center completeShortTermTask' data-short-planner-task-id="+data+"></i>");
+                  $(this).parents(".shortTermTask").find(".modal-title").prepend("<i class='zmdi zmdi-check circle circleSmall border-inno-black f-18 text-center completeShortTermTask' data-short-planner-task-id="+data["task_id"]+"></i>");
                   $(this).parents(".shortTermTask").find(".dateModal").datepicker({
                        format: "yyyy-mm-dd",
                        weekStart: 1,
@@ -261,29 +263,31 @@ function drop(ev, el,category) {
                 $(".menuTask").each(function () {
                     if($(this).data("menu-task-id") == task_id[1]){
                         $(this).parents(".shortTermTask").find(".dueDate").removeClass("hidden");
-                        $(this).parents(".shortTermTask").find(".dueDate").attr("data-short-planner-task-id", data);
-                        $(this).parents(".shortTermTask").find(".datepicker").attr("data-short-planner-task-id", data);
-                        $(this).parents(".shortTermTask").find(".assignTaskToMemberToggle").attr("data-short-planner-task-id", data);
-                        $(this).parents(".shortTermTask").find(".assignTaskToMember option").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTask").find(".dueDate").attr("data-short-planner-task-id", data["task_id"]);
+                        $(this).parents(".shortTermTask").find(".datepicker").attr("data-short-planner-task-id", data["task_id"]);
+                        $(this).parents(".shortTermTask").find(".assignTaskToMemberToggle").attr("data-short-planner-task-id", data["task_id"]);
+                        $(this).parents(".shortTermTask").find(".assignTaskToMember option").attr("data-short-planner-task-id", data["task_id"]);
                         $(this).parents(".shortTermTask").find(".datepicker").removeClass("hidden");
                         $(this).parents(".shortTermTask").find(".assignMember").removeClass("hidden");
-                        $(this).parents(".shortTermTask").find(".deleteShortTermTask").attr("data-short-planner-task-id", data);
-                        $(this).parents(".shortTermTask").find(".completeShortTermTaskCard").attr("data-short-planner-task-id", data);
-                        $(this).parents(".shortTermTask").find(".completeShortTermTask").attr("data-short-planner-task-id", data);
-                        $(this).parents(".shortTermTask").find(".priorityTask").attr("data-short-planner-task-id", data);
-                        $(this).parents(".shortTermTask").find(".short-planner-task-id").val(data);
-                        $(this).parents(".shortTermTask").attr("data-short-planner-task-id", data);
+                        $(this).parents(".shortTermTask").find(".deleteShortTermTask").attr("data-short-planner-task-id", data["task_id"]);
+                        $(this).parents(".shortTermTask").find(".completeShortTermTaskCard").attr("data-short-planner-task-id", data["task_id"]);
+                        $(this).parents(".shortTermTask").find(".completeShortTermTask").attr("data-short-planner-task-id", data["task_id"]);
+                        $(this).parents(".shortTermTask").find(".priorityTask").attr("data-short-planner-task-id", data["task_id"]);
+                        $(this).parents(".shortTermTask").find(".short-planner-task-id").val(data["task_id"]);
+                        $(this).parents(".shortTermTask").attr("data-short-planner-task-id", data["task_id"]);
                         $(this).parents(".shortTermTask").attr("id", "drag-"+task_id[1]);
-                        $(this).parents(".shortTermTask").find(".unassign").attr("data-short-planner-task-id", data);
-                        $(this).parents(".shortTermTask").find(".card-block").attr("data-short-planner-task-id", data);
-                        $(this).parents(".shortTermTaskModalContainer").find(".dueDate").removeClass("hidden");
-                        $(this).parents(".shortTermTaskModalContainer").find(".dueDate").attr("data-short-planner-task-id", data);
-                        $(this).parents(".shortTermTaskModalContainer").find(".datepicker").attr("data-short-planner-task-id", data);
-                        $(this).parents(".shortTermTaskModalContainer").find(".assignTaskToMemberToggle").attr("data-short-planner-task-id", data);
-                        $(this).parents(".shortTermTaskModalContainer").find(".assignTaskToMember option").attr("data-short-planner-task-id", data);
-                        $(this).parents(".shortTermTaskModalContainer").find(".datepicker").removeClass("hidden");
-                        $(this).parents(".shortTermTaskModalContainer").find(".assignMember").removeClass("hidden");
+                        $(this).parents(".shortTermTask").find(".unassign").attr("data-short-planner-task-id", data["task_id"]);
+                        $(this).parents(".shortTermTask").find(".card-block").attr("data-short-planner-task-id", data["task_id"]);
+                        // $(this).parents(".shortTermTaskModalContainer").find(".dueDate").removeClass("hidden");
+                        // $(this).parents(".shortTermTaskModalContainer").find(".dueDate").attr("data-short-planner-task-id", data["task_id"]);
+                        // $(this).parents(".shortTermTaskModalContainer").find(".datepicker").attr("data-short-planner-task-id", data["task_id"]);
+                        // $(this).parents(".shortTermTaskModalContainer").find(".assignTaskToMemberToggle").attr("data-short-planner-task-id", data["task_id"]);
+                        // $(this).parents(".shortTermTaskModalContainer").find(".assignTaskToMember option").attr("data-short-planner-task-id", data["task_id"]);
+                        // $(this).parents(".shortTermTaskModalContainer").find(".datepicker").removeClass("hidden");
+                        // $(this).parents(".shortTermTaskModalContainer").find(".assignMember").removeClass("hidden");
                         $(this).parents(".shortTermTask").find(".card-block-new").attr("class", "card-block");
+                        $(this).parents(".shortTermTask").find(".card-task").attr("data-category", data["category"]);
+                        $(this).parents(".shortTermTask").find(".card-task").attr("data-short-planner-task-id", data["task_id"]);
                     }
                 });
             }
@@ -540,5 +544,50 @@ $(document).ready(function () {
             }
         });
    }
+
+   $(".menuShortTermPlanner").removeClass("hidden");
+   $(".menuShortTermPlanner").toggle();
 });
+
+$(".toggleMenu").on("click",function () {
+    $(this).parents(".category").find(".menuShortTermPlanner").toggle();
+});
+
+$(".completeAllTasks").on("click",function () {
+    var category = $(this).data("category");
+        $(".card-task").each(function () {
+            if ($(this).data("category") == category && $(this).data("completed") != "1") {
+                $(this).attr("data-completed", "1");
+                var task_id = $(this).data("short-planner-task-id");
+                $.ajax({
+                    method: "POST",
+                    beforeSend: function (xhr) {
+                        var token = $('meta[name="csrf_token"]').attr('content');
+
+                        if (token) {
+                            return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                        }
+                    },
+                    url: "/workspace/completeShortTermPlannerTask",
+                    data: {'task_id': task_id},
+                    success: function (data) {
+                        $(".completeShortTermTask").each(function () {
+                            if ($(this).data("short-planner-task-id") == task_id) {
+                                $(this).addClass("bcg-orange");
+                                if ($(this).data("card") == 1) {
+                                    $(this).removeClass("hidden");
+                                }
+                            }
+                        });
+                        $(".completeShortTermTaskCard").each(function () {
+                            if ($(this).data("short-planner-task-id") == task_id) {
+                                $(this).removeClass("hidden");
+                            }
+                        });
+                    }
+                });
+            }
+        });
+});
+
 

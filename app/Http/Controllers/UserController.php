@@ -471,6 +471,12 @@ class UserController extends Controller
                     'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
                 ));
 
+                $mailMessage = new MailMessage();
+                $mailMessage->receiver_user_id = $joinRequest->teams->First()->users->First()->id;
+                $mailMessage->subject = "Team join request from $user->firstname!";
+                $mailMessage->created_at = date("Y-m-d");
+                $mailMessage->save();
+
                 return redirect($_SERVER["HTTP_REFERER"]);
             } else {
                 return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already applied for this team");
@@ -535,6 +541,12 @@ class UserController extends Controller
                     ), array(
                         'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
                     ));
+
+                    $mailMessage = new MailMessage();
+                    $mailMessage->receiver_user_id = $member->id;
+                    $mailMessage->subject = "New review from $user->firstname!";
+                    $mailMessage->created_at = date("Y-m-d");
+                    $mailMessage->save();
                 }
                 return redirect($_SERVER["HTTP_REFERER"]);
             } else {
@@ -597,6 +609,14 @@ class UserController extends Controller
             ), array(
                 'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
             ));
+
+            $mailMessage = new MailMessage();
+            $mailMessage->receiver_user_id = $team->users->First()->id;
+            $mailMessage->subject = "Accepted invitation!";
+            $mailMessage->created_at = date("Y-m-d");
+            $mailMessage->save();
+
+
 
             return redirect($_SERVER["HTTP_REFERER"]);
         }

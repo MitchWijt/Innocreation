@@ -129,6 +129,13 @@ class LoginController extends Controller
                 ), array(
                     'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
                 ));
+
+                $mailMessage = new MailMessage();
+                $mailMessage->receiver_user_id = $user->id;
+                $mailMessage->subject = "Welcome to Innocreation!";
+                $mailMessage->created_at = date("Y-m-d");
+                $mailMessage->save();
+
                 return redirect("/account");
             } else {
                 return redirect($_SERVER["HTTP_REFERER"])->with('success', 'Account created');

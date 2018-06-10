@@ -55,8 +55,14 @@ class HandleExceptions
      */
     public function handleError($level, $message, $file = '', $line = 0, $context = [])
     {
-        if (error_reporting() & $level) {
-            throw new ErrorException($message, 0, $level, $file, $line);
+        $fullDomain = $_SERVER['HTTP_HOST'];
+        $domainExplode = explode(".", $fullDomain);
+        if($domainExplode[0] == "secret") {
+            if (error_reporting() & $level) {
+                throw new ErrorException($message, 0, $level, $file, $line);
+            }
+        } else {
+            return abort(404);
         }
     }
 

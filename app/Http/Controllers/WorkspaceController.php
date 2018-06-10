@@ -239,11 +239,15 @@ class WorkspaceController extends Controller
             $urlParameter = request()->task_id;
         }
         $shortTermPlannerBoard = WorkspaceShortTermPlannerBoard::select("*")->where("id", $id)->first();
-        $allShortTermPlannerBoards = WorkspaceShortTermPlannerBoard::select("*")->where("team_id", $team->id)->get();
-        $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("short_term_planner_board_id", $shortTermPlannerBoard->id)->orderBy("priority", "DESC")->get();
-        $uncompletedBucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team->id)->where("completed", 0)->where("used_on_short_term_planner", 0)->get();
-        $passedIdeas = WorkspaceIdeas::select("*")->where("team_id", $team->id)->where("status", "Passed")->where("used_on_short_term_planner", 0)->get();
-        return view("/public/team/workspace/workspaceShortTermPlannerBoard", compact("team", "user", "shortTermPlannerBoard", "shortTermPlannerTasks", "uncompletedBucketlistGoals", "passedIdeas","allShortTermPlannerBoards", "urlParameter"));
+        if ($shortTermPlannerBoard->team_id == $user->team_id) {
+            $allShortTermPlannerBoards = WorkspaceShortTermPlannerBoard::select("*")->where("team_id", $team->id)->get();
+            $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("short_term_planner_board_id", $shortTermPlannerBoard->id)->orderBy("priority", "DESC")->get();
+            $uncompletedBucketlistGoals = WorkspaceBucketlist::select("*")->where("team_id", $team->id)->where("completed", 0)->where("used_on_short_term_planner", 0)->get();
+            $passedIdeas = WorkspaceIdeas::select("*")->where("team_id", $team->id)->where("status", "Passed")->where("used_on_short_term_planner", 0)->get();
+            return view("/public/team/workspace/workspaceShortTermPlannerBoard", compact("team", "user", "shortTermPlannerBoard", "shortTermPlannerTasks", "uncompletedBucketlistGoals", "passedIdeas", "allShortTermPlannerBoards", "urlParameter"));
+        } else {
+            return abort(404);
+        }
     }
 
     public function addShortTermPlannerTaskAction(Request $request){
@@ -261,7 +265,7 @@ class WorkspaceController extends Controller
         $shortTermPlannerTask->created_at = date("Y-m-d H:i:s");
         $shortTermPlannerTask->save();
 
-        return $shortTermPlannerTask->id;
+        return ["task_id" => $shortTermPlannerTask->id, "category" => $shortTermPlannerTask->category];
     }
 
     public function setShortTermPlannerTaskDueDateAction(Request $request){
@@ -341,7 +345,7 @@ class WorkspaceController extends Controller
         $shortTermPlannerTask->created_at = date("Y-m-d H:i:s");
         $shortTermPlannerTask->save();
 
-        return $shortTermPlannerTask->id;
+        return ["task_id" => $shortTermPlannerTask->id, "category" => $shortTermPlannerTask->category];
     }
 
     public function changeShortTermPlannerBoardTitleAction(Request $request){

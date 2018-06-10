@@ -28,4 +28,5 @@ class WorkspaceShortTermPlannerTask extends Model
         }
         return $bool;
     }
+
 }
