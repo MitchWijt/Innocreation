@@ -99,11 +99,11 @@
             <div class="col-sm-12 m-t-10">
                 <div class="customTextarea">
                     <span class="clicked hidden"></span>
-                    <div data-editable data-name="main-content-<?= $shortPlannerTask->id?>" class="editorPlanner">
+                    <div data-editable data-name="main-content-<?= $shortPlannerTask->id?>" class="editorPlanner" style="padding: 5px">
                         <? if($shortPlannerTask->description != null) { ?>
                             <?= htmlspecialchars_decode($shortPlannerTask->description)?>
                         <? } else { ?>
-                            <p class="shortTermPlannertextarea" style="word-break: break-all !important" contenteditable></p>
+                            <p class="shortTermPlannertextarea" contenteditable><span></span></p>
                         <? } ?>
                     </div>
                 </div>
