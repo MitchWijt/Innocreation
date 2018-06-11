@@ -55,7 +55,6 @@
                                 {{--<a class="regular-link c-gray" href="">People behind Innocreation</a>--}}
                                 <a class="regular-link c-gray" href="/pricing">Pricing</a>
                                 <a class="regular-link c-gray" href="/page/our-motivation">Our motivation</a>
-                                <a class="regular-link c-gray" href="/service-reviews">Reviews</a>
                             </div>
                         </div>
                     </div>

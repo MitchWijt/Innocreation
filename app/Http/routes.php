@@ -340,9 +340,6 @@ Route::get("/platform-idea", "PageController@platformIdeaAction");
 
 Route::post("/page/submitCustomerIdea", "PageController@submitCustomerIdeaAction");
 
-Route::get("/service-reviews", "PageController@serviceReviewsAction");
-
-
 
 
 //===========================USER/EXPERTISES PAGE=========================

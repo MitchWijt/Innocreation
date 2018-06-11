@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Session;
 use App\User;
 use App\Http\Requests;
+use App\ServiceReview;
 
 class HomeController extends Controller
 {
@@ -36,11 +37,12 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function contactAction(){
+        $serviceReviews = ServiceReview::select("*")->where("service_review_type_id", 1)->get();
         if($this->isLoggedIn()){
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
-            return view("/public/home/contactUs", compact("user"));
+            return view("/public/home/contactUs", compact("user", "serviceReviews"));
         } else {
-            return view("/public/home/contactUs");
+            return view("/public/home/contactUs", compact("serviceReviews"));
         }
     }
 

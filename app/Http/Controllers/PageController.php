@@ -128,8 +128,4 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function serviceReviewsAction() {
-        $serviceReviews = ServiceReview::select("*")->where("service_review_type_id", 1)->get();
-        return view("/public/pages/serviceReviews", compact("serviceReviews"));
-    }
 }
