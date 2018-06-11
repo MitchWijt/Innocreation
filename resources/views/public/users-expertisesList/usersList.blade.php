@@ -23,7 +23,7 @@
                                                 </div>
                                                 <? if($user->team_id != null) { ?>
                                                     <div class="col-sm-12 @mobile text-center @endmobile">
-                                                        <span class="@notmobile pull-left @endnotmobile">Team: <a target="_blank" class="regular-link" href="/team/<?= $user->team->team_name?>"><?= $user->team->team_name?></a></span>
+                                                        <span class="@notmobile pull-left @endnotmobile">Team: <a target="_blank" class="regular-link" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
                                                     </div>
                                                 <? } ?>
                                             @endnottablet
@@ -49,11 +49,8 @@
                                 @tablet
                                     <div class="row d-flex fd-column p-l-10">
                                         <span class="col-sm-4"><?= $user->getName()?></span>
-                                        <span class="col-sm-8 m-0">Team: <a target="_blank" class="regular-link" href="/team/<?= $user->team->team_name?>"><?= $user->team->team_name?></a></span>
+                                        <span class="col-sm-8 m-0">Team: <a target="_blank" class="regular-link" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
                                     </div>
-
-
-
                                 @endtablet
                             </div>
                         </div>
