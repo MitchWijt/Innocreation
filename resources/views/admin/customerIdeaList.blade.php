@@ -8,51 +8,49 @@
                     @include("includes.flash")
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="d-flex js-center">
-                        <div class="card card-lg m-t-20 m-b-20">
-                            <div class="card-block m-t-10">
-                                <div class="row">
-                                    <div class="col-sm-12 m-l-20">
-                                        <h3 class="f-20">Submitted ideas</h3>
-                                    </div>
-                                    <div class="hr"></div>
+            <div class="row d-flex js-center">
+                <div class="col-md-10">
+                    <div class="card card-lg m-t-20 m-b-20">
+                        <div class="card-block m-t-10">
+                            <div class="row">
+                                <div class="col-sm-12 m-l-20">
+                                    <h3 class="f-20">Submitted ideas</h3>
                                 </div>
-                                <div class="row m-t-20">
+                                <div class="hr col-md-11"></div>
+                            </div>
+                            <div class="row m-t-20">
+                                <div class="col-sm-12 d-flex">
+                                    <div class="col-sm-4 text-center">
+                                        <span class="f-13">Title</span>
+                                    </div>
+                                    <div class="col-sm-4 text-center">
+                                        <span class="f-13">Idea</span>
+                                    </div>
+                                    <div class="col-sm-4 text-center">
+                                        <span class="f-13">Status</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-card p-b-20"></div>
+                            <? foreach($customerIdeas as $customerIdea) { ?>
+                                <div class="row customerIdea">
                                     <div class="col-sm-12 d-flex">
                                         <div class="col-sm-4 text-center">
-                                            <span class="f-13">Title</span>
+                                            <p><?= $customerIdea->title?></p>
                                         </div>
                                         <div class="col-sm-4 text-center">
-                                            <span class="f-13">Idea</span>
+                                            <p><?= $customerIdea->idea?></p>
                                         </div>
                                         <div class="col-sm-4 text-center">
-                                            <span class="f-13">Status</span>
+                                            <select name="status" class="changeIdeaStatus input <? if($customerIdea->customer_idea_status_id == 1) echo "c-orange"; else if($customerIdea->customer_idea_status_id == 2) echo "c-green"; else echo "c-red"?>">
+                                                <? foreach($customerIdeaStatusses as $customerIdeaStatus) { ?>
+                                                    <option data-idea-id="<?= $customerIdea->id?>" value="<?= $customerIdeaStatus->id?>" <? if($customerIdea->customer_idea_status_id == $customerIdeaStatus->id) echo "selected"?>><?= $customerIdeaStatus->title?></option>
+                                                <? } ?>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="hr-card p-b-20"></div>
-                                <? foreach($customerIdeas as $customerIdea) { ?>
-                                    <div class="row customerIdea">
-                                        <div class="col-sm-12 d-flex">
-                                            <div class="col-sm-4 text-center">
-                                                <p><?= $customerIdea->title?></p>
-                                            </div>
-                                            <div class="col-sm-4 text-center">
-                                                <p><?= $customerIdea->idea?></p>
-                                            </div>
-                                            <div class="col-sm-4 text-center">
-                                                <select name="status" class="changeIdeaStatus input <? if($customerIdea->customer_idea_status_id == 1) echo "c-orange"; else if($customerIdea->customer_idea_status_id == 2) echo "c-green"; else echo "c-red"?>">
-                                                    <? foreach($customerIdeaStatusses as $customerIdeaStatus) { ?>
-                                                        <option data-idea-id="<?= $customerIdea->id?>" value="<?= $customerIdeaStatus->id?>" <? if($customerIdea->customer_idea_status_id == $customerIdeaStatus->id) echo "selected"?>><?= $customerIdeaStatus->title?></option>
-                                                    <? } ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <? } ?>
-                            </div>
+                            <? } ?>
                         </div>
                     </div>
                 </div>

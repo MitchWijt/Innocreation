@@ -99,44 +99,42 @@
                 </div>
             <? } ?>
             <? foreach($forumThreadComments as $threadComment) { ?>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="d-flex js-center">
-                            <div class="card card-lg m-t-10 m-b-20 col-sm-12">
-                                <div class="card-block m-t-10">
-                                    <div class="row">
-                                        <div class="col-sm-12 p-0">
-                                            <div class="row">
-                                                <div class="col-sm-12 d-flex">
-                                                    <div class="col-sm-2 m-r-0 text-center">
-                                                        <img class="circleImage circle m-r-0" src="<?= $threadComment->creator->getProfilePicture()?>" alt="<?= $forumThread->title?>">
-                                                        <a href="<?= $threadComment->creator->getUrl()?>" class="regular-link" target="_blank"><p class="m-b-0 m-t-5"><?= $threadComment->creator->getName()?></p></a>
-                                                        <p class="m-b-5"><?= count($threadComment->creator->getAmountThreadPosts())?> posts</p>
-                                                    </div>
-                                                    <div class="col-sm-8 m-r-0 text-center m-t-25">
-                                                        <? if($threadComment->creator_user_id == $forumThread->creator_user_id) { ?>
-                                                            <p class="m-b-0 m-t-5"><i class="zmdi zmdi-star c-orange"></i> Thread creator</p>
-                                                        <? } ?>
-                                                        <p>Team: <a target="_blank" href="/team/<?= ucfirst($threadComment->creator->team->team_name)?>" class="regular-link"><?= $threadComment->creator->team->team_name?></a></p>
-                                                    </div>
-                                                    <div class="col-sm-2 m-r-0 text-center m-t-25">
-                                                        <? foreach($threadComment->creator->getExpertises() as $expertise) { ?>
-                                                        <p class="m-b-5"><?= $expertise->title?></p>
-                                                        <? } ?>
-                                                    </div>
+                <div class="row d-flex js-center">
+                    <div class="col-md-11">
+                        <div class="card card-lg m-t-10 m-b-20 col-sm-12">
+                            <div class="card-block m-t-10">
+                                <div class="row">
+                                    <div class="col-sm-12 p-0">
+                                        <div class="row">
+                                            <div class="col-sm-12 d-flex">
+                                                <div class="col-sm-2 m-r-0 text-center">
+                                                    <img class="circleImage circle m-r-0" src="<?= $threadComment->creator->getProfilePicture()?>" alt="<?= $forumThread->title?>">
+                                                    <a href="<?= $threadComment->creator->getUrl()?>" class="regular-link" target="_blank"><p class="m-b-0 m-t-5"><?= $threadComment->creator->getName()?></p></a>
+                                                    <p class="m-b-5"><?= count($threadComment->creator->getAmountThreadPosts())?> posts</p>
+                                                </div>
+                                                <div class="col-sm-8 m-r-0 text-center m-t-25">
+                                                    <? if($threadComment->creator_user_id == $forumThread->creator_user_id) { ?>
+                                                        <p class="m-b-0 m-t-5"><i class="zmdi zmdi-star c-orange"></i> Thread creator</p>
+                                                    <? } ?>
+                                                    <p>Team: <a target="_blank" href="/team/<?= ucfirst($threadComment->creator->team->team_name)?>" class="regular-link"><?= $threadComment->creator->team->team_name?></a></p>
+                                                </div>
+                                                <div class="col-sm-2 m-r-0 text-center m-t-25">
+                                                    <? foreach($threadComment->creator->getExpertises() as $expertise) { ?>
+                                                    <p class="m-b-5"><?= $expertise->title?></p>
+                                                    <? } ?>
                                                 </div>
                                             </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-sm-12 m-t-10">
-                                                    <p class="col-sm-12"><?= $threadComment->message?></p>
-                                                    <?
-                                                    $today = new DateTime(date("Y-m-d g:i a"));
-                                                    $postedTime = new DateTime(date("Y-m-d g:i a",strtotime($threadComment->created_at)));
-                                                    $interval = $today->diff($postedTime);
-                                                    ?>
-                                                    <small class="m-l-10 c-dark-grey pull-right m-r-20 m-b-10">Posted <?= $interval->format("%d days, " . '%h hours, ' . "%i minutes");?> ago</small>
-                                                </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-12 m-t-10">
+                                                <p class="col-sm-12"><?= $threadComment->message?></p>
+                                                <?
+                                                $today = new DateTime(date("Y-m-d g:i a"));
+                                                $postedTime = new DateTime(date("Y-m-d g:i a",strtotime($threadComment->created_at)));
+                                                $interval = $today->diff($postedTime);
+                                                ?>
+                                                <small class="m-l-10 c-dark-grey pull-right m-r-20 m-b-10">Posted <?= $interval->format("%d days, " . '%h hours, ' . "%i minutes");?> ago</small>
                                             </div>
                                         </div>
                                     </div>

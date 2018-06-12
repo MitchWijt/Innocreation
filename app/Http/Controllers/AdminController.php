@@ -20,6 +20,7 @@ use App\MembershipPackage;
 use App\NeededExpertiseLinktable;
 use App\Page;
 use App\PageType;
+use App\ServiceReview;
 use App\SupportTicket;
 use App\SupportTicketStatus;
 use App\Team;
@@ -701,6 +702,13 @@ class AdminController extends Controller
 
                 return redirect($_SERVER["HTTP_REFERER"])->with("success", "Rejected idea");
             }
+        }
+    }
+
+    public function serviceReviewListAction(){
+        if ($this->authorized(true)) {
+            $serviceReviews = ServiceReview::select("*")->get();
+            return view("/admin/serviceReviewList", compact("serviceReviews"));
         }
     }
 }

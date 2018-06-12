@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\CustomMembershipPackage;
 use App\CustomMembershipPackageType;
 use App\MembershipPackage;
+use App\ServiceReview;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -20,7 +21,8 @@ class CheckoutController extends Controller
     {
         $membershipPackages = MembershipPackage::select("*")->get();
         $customMembershipPackageTypes = CustomMembershipPackageType::select("*")->get();
-        return view("/public/checkout/pricing", compact("membershipPackages", "customMembershipPackageTypes"));
+        $serviceReviews = ServiceReview::select("*")->where("service_review_type_id", 2)->get();
+        return view("/public/checkout/pricing", compact("membershipPackages", "customMembershipPackageTypes", "serviceReviews"));
     }
 
     /**

@@ -121,6 +121,38 @@
                     </div>
                 </div>
             </div>
+            <div class="sub-title-container p-t-20 m-t-20">
+                <h1 class="sub-title-black @mobile f-25 @endmobile">Reviews</h1>
+            </div>
+            <div class="hr col-md-12 m-b-20"></div>
+            <? foreach($serviceReviews as $serviceReview) { ?>
+            <div class="row d-flex js-center m-b-20">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-block">
+                            <div class="row text-center d-flex js-center m-t-20">
+                                <div class="circle circleImage m-r-0">
+                                    <p class="text-center c-orange f-23 m-t-10"><?= $serviceReview->rating?></p>
+                                </div>
+                            </div>
+                            <div class="row d-flex js-center m-t-10">
+                                <p><?= $serviceReview->users->getName()?> had a <?= strtolower($serviceReview->review)?> experience</p>
+                            </div>
+                            @notmobile
+                                <hr class="col-md-11">
+                            @elsemobile
+                                <hr class="col-xs-12">
+                            @endnotmobile
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p class="col-sm-12"><?= $serviceReview->review_description?></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <? } ?>
         </div>
     </div>
 @endsection

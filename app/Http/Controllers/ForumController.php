@@ -66,17 +66,21 @@ class ForumController extends Controller
     {
         $forumMainTopic = ForumMainTopic::select("*")->where("slug", $slug)->first();
         $forumThread = ForumThread::select("*")->where("id", $id)->first();
-        $loggedIn = false;
+        if($forumThread) {
+            $loggedIn = false;
 //        $forumThread->views = $forumThread->views + 1;
 //        $forumThread->save();
-        $allForumThreadComments = ForumThreadComment::select("*")->where("thread_id", $forumThread->id)->get();
-        $forumThreadComments = ForumThreadComment::select("*")->where("thread_id", $forumThread->id)->orderBy("created_at", "DESC")->paginate(10);
-        if($this->isLoggedIn()){
-            $loggedIn = true;
-            $user = User::select("*")->where("id", Session::get("user_id"))->first();
-            return view("/public/forum/forumThread", compact("forumThread", "forumMainTopic", "forumThreadComments", "loggedIn", "user", "allForumThreadComments"));
+            $allForumThreadComments = ForumThreadComment::select("*")->where("thread_id", $forumThread->id)->get();
+            $forumThreadComments = ForumThreadComment::select("*")->where("thread_id", $forumThread->id)->orderBy("created_at", "DESC")->paginate(10);
+            if ($this->isLoggedIn()) {
+                $loggedIn = true;
+                $user = User::select("*")->where("id", Session::get("user_id"))->first();
+                return view("/public/forum/forumThread", compact("forumThread", "forumMainTopic", "forumThreadComments", "loggedIn", "user", "allForumThreadComments"));
+            } else {
+                return view("/public/forum/forumThread", compact("forumThread", "forumMainTopic", "forumThreadComments", "loggedIn", "allForumThreadComments"));
+            }
         } else {
-            return view("/public/forum/forumThread", compact("forumThread", "forumMainTopic", "forumThreadComments", "loggedIn", "allForumThreadComments"));
+            abort(404);
         }
     }
 

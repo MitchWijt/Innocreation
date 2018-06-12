@@ -17,6 +17,6 @@ class ServiceReview extends Model
     }
 
     public function serviceReviewType(){
-        return $this->hasOne("\App\SupportTicket", "id","service_review_type_id");
+        return $this->hasOne("\App\ServiceReviewType", "id","service_review_type_id");
     }
 }

@@ -389,7 +389,6 @@ $(document).on("click", ".card-block", function (e) {
             $(".deleteShortTermTask").toggle();
         }
     });
-    // $(this).parents(".shortTermTask").find("#shortTermTaskModal").modal().toggle();
 });
 
 $(document).on("click", ".customTextarea", function () {
@@ -536,9 +535,28 @@ $(document).on("change", ".setShortTermTaskPriority", function () {
 
 $(document).ready(function () {
    if($(".urlParameter")){
-        $(".shortTermTaskModal").each(function () {
+        $(".card-block").each(function () {
             if($(this).data("short-planner-task-id") == $(".urlParameter").val()){
-                $(this).modal().toggle();
+                var task_id = $(this).data("short-planner-task-id");
+                var team_id = $(this).data("team-id");
+                $.ajax({
+                    method: "POST",
+                    beforeSend: function (xhr) {
+                        var token = $('meta[name="csrf_token"]').attr('content');
+
+                        if (token) {
+                            return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                        }
+                    },
+                    url: "/workspace/getDataShortTermTaskModal",
+                    data: {'task_id': task_id, 'team_id': team_id},
+                    success: function (data) {
+                        $(".taskModalData").html(data);
+                        $(".shortTermTaskModalShared").modal().toggle();
+                        $(".deleteShortTermTask").removeClass("hidden");
+                        $(".deleteShortTermTask").toggle();
+                    }
+                });
             }
         });
    }

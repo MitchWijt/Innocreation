@@ -455,6 +455,8 @@ Route::get("/admin/customerIdeaList", "AdminController@customerIdeaListAction");
 
 Route::post("/admin/changeStatusCustomerIdea", "AdminController@changeStatusCustomerIdeaAction");
 
+Route::get("/admin/serviceReviewList", "AdminController@serviceReviewListAction");
+
 
 
 

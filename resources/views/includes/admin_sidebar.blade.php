@@ -72,7 +72,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/admin/construction">Construction</a>
+        <a class="regular-link c-gray" href="/admin/serviceReviewList">Service reviews</a>
     </div>
     <hr>
 </div>

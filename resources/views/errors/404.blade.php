@@ -8,6 +8,9 @@
                 <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1140px; height:700px; position: absolute; left: 0px; top: 0px; display: block;">
                 </div>
             </div>
+            <div class="text-center">
+            <p class="f-18"><span class="f-25">Oops!</span> This page doesn't seem to want to collaborate with you and/or your team. To help you  <a href="/" class="btn btn-inno"><i class="zmdi zmdi-home"></i> Return to home!</a></p>
+            </div>
             </body>
         </div>
     </div>

@@ -49,7 +49,7 @@
                                     <div class="col-sm-12 p-0">
                                         <?= $threads->links()?>
                                         <? if(count($threads->links()) > 1) { ?>
-                                            <hr>
+                                             <hr>
                                         <? } ?>
                                         <? foreach($threads as $thread) { ?>
                                             <div class="row">
