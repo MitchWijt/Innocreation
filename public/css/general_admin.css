@@ -11,14 +11,14 @@
     margin-top: 10px !important;
 }
 
-tbody tr{
+#table tbody tr{
     color: #000 !important;
     background: #C9CCCF !important;
     cursor: pointer;
     text-align: center;
 }
 
-tbody tr:hover{
+#table tbody tr:hover{
     background: #2b2b2b !important;
     color: #FF6100 !important
 }

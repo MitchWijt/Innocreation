@@ -303,6 +303,7 @@ class TeamController extends Controller
             $mailMessage = new MailMessage();
             $mailMessage->receiver_user_id = $receiver->id;
             $mailMessage->subject = "Team invite from $team->team_name";
+            $mailMessage->message = view("/templates/sendInviteToUserMail", compact("receiver", "team"));
             $mailMessage->created_at = date("Y-m-d");
             $mailMessage->save();
 

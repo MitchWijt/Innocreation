@@ -457,6 +457,10 @@ Route::post("/admin/changeStatusCustomerIdea", "AdminController@changeStatusCust
 
 Route::get("/admin/serviceReviewList", "AdminController@serviceReviewListAction");
 
+Route::get("/admin/mailMessageList", "AdminController@mailMessageListAction");
+
+Route::post("/admin/getMailMessageModalData", "AdminController@getMailMessageModalDataAction");
+
 
 
 

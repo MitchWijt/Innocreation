@@ -474,6 +474,7 @@ class UserController extends Controller
                 $mailMessage = new MailMessage();
                 $mailMessage->receiver_user_id = $joinRequest->teams->First()->users->First()->id;
                 $mailMessage->subject = "Team join request from $user->firstname!";
+                $mailMessage->message = view("/templates/sendJoinRequestToTeam", compact("user", "team"));
                 $mailMessage->created_at = date("Y-m-d");
                 $mailMessage->save();
 
@@ -545,6 +546,7 @@ class UserController extends Controller
                     $mailMessage = new MailMessage();
                     $mailMessage->receiver_user_id = $member->id;
                     $mailMessage->subject = "New review from $user->firstname!";
+                    $mailMessage->message = view("/templates/sendTeamReviewMail", compact("user", "team", "member"));
                     $mailMessage->created_at = date("Y-m-d");
                     $mailMessage->save();
                 }
@@ -613,6 +615,7 @@ class UserController extends Controller
             $mailMessage = new MailMessage();
             $mailMessage->receiver_user_id = $team->users->First()->id;
             $mailMessage->subject = "Accepted invitation!";
+            $mailMessage->message = view("/templates/sendInviteAcceptionTeam", compact("user", "team"));
             $mailMessage->created_at = date("Y-m-d");
             $mailMessage->save();
 

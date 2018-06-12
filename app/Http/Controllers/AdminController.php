@@ -16,6 +16,7 @@ use App\ForumMainTopicType;
 use App\ForumThread;
 use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
+use App\MailMessage;
 use App\MembershipPackage;
 use App\NeededExpertiseLinktable;
 use App\Page;
@@ -709,6 +710,21 @@ class AdminController extends Controller
         if ($this->authorized(true)) {
             $serviceReviews = ServiceReview::select("*")->get();
             return view("/admin/serviceReviewList", compact("serviceReviews"));
+        }
+    }
+
+    public function mailMessageListAction(){
+        if ($this->authorized(true)) {
+            $mailMessages = MailMessage::select("*")->get();
+            return view("/admin/mailMessageList", compact("mailMessages"));
+        }
+    }
+
+    public function getMailMessageModalDataAction(Request $request){
+        if ($this->authorized(true)) {
+            $mailMessageId = $request->input("mail_message_id");
+            $mailMessage = MailMessage::select("*")->where("id", $mailMessageId)->first();
+            return $mailMessage->message;
         }
     }
 }

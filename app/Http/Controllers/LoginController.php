@@ -133,6 +133,7 @@ class LoginController extends Controller
                 $mailMessage = new MailMessage();
                 $mailMessage->receiver_user_id = $user->id;
                 $mailMessage->subject = "Welcome to Innocreation!";
+                $mailMessage->message = view("/templates/sendWelcomeMail", compact("user"));
                 $mailMessage->created_at = date("Y-m-d");
                 $mailMessage->save();
 

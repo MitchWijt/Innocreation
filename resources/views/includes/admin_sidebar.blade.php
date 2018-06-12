@@ -75,4 +75,8 @@
         <a class="regular-link c-gray" href="/admin/serviceReviewList">Service reviews</a>
     </div>
     <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="/admin/mailMessageList">sent Mails</a>
+    </div>
+    <hr>
 </div>
