@@ -14,7 +14,7 @@
                         @tablet
                             <div class="hr col-md-10"></div>
                         @elsedesktop
-                            <div class="hr col-md-5"></div>
+                            <div class="hr col-md-10"></div>
                         @endtablet
                         <p class="m-t-10 slogan text-center" style="color: #696969">Help each other make DREAMS become a reality</p>
                     </div>
