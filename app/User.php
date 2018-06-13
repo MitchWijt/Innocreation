@@ -69,6 +69,16 @@ class User extends Authenticatable
         return $bool;
     }
 
+    public function checkTeamProduct($team_product_id, $category){
+
+        $bool = false;
+        $teamProductLiketable = TeamProductLinktable::select("*")->where("team_product_id", $team_product_id)->where("user_id", $this->id)->where("$category", 1)->get();
+        if(count($teamProductLiketable) > 0){
+            $bool = true;
+        }
+        return $bool;
+    }
+
     public function getAssistanceTickets(){
         $assistanceTickets = AssistanceTicket::select("*")->where("creator_user_id", $this->id)->get();
         return count($assistanceTickets);

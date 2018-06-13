@@ -462,6 +462,14 @@ Route::get("/admin/mailMessageList", "AdminController@mailMessageListAction");
 Route::post("/admin/getMailMessageModalData", "AdminController@getMailMessageModalDataAction");
 
 
+//=======================FEED=============================
+Route::get("/team-products", "FeedController@TeamProductsAction");
+
+Route::post("/feed/likeTeamProduct", "FeedController@likeTeamProductAction");
+
+Route::post("/feed/favoriteTeamProduct", "FeedController@favoriteTeamProductAction");
+
+Route::post("/feed/getSearchedUsersTeamProduct", "FeedController@getSearchedUsersTeamProductAction");
 
 
 //========================CHECKOUT/PACKAGES========================
