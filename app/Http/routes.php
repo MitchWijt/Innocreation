@@ -471,6 +471,8 @@ Route::post("/feed/favoriteTeamProduct", "FeedController@favoriteTeamProductActi
 
 Route::post("/feed/getSearchedUsersTeamProduct", "FeedController@getSearchedUsersTeamProductAction");
 
+Route::post("/feed/shareTeamProduct", "FeedController@shareTeamProductAction");
+
 
 //========================CHECKOUT/PACKAGES========================
 

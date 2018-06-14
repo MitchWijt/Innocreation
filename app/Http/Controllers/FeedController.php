@@ -6,6 +6,8 @@ use App\Team;
 use App\TeamProduct;
 use App\TeamProductLinktable;
 use App\User;
+use App\UserChat;
+use App\UserMessage;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -52,7 +54,7 @@ class FeedController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function favoriteTeamProductAction(Request $request){
+    public function favoriteTeamProductAction(Request $request) {
         if($this->authorized()){
             $teamProductId = $request->input("team_product_id");
             $userId = Session::get("user_id");
@@ -64,6 +66,7 @@ class FeedController extends Controller
                 $teamProductLinktable->user_id = $userId;
                 $teamProductLinktable->favorite = 1;
                 $teamProductLinktable->save();
+                return 1;
             } else {
                 $existingFavorite->team_product_id = $teamProductId;
                 $existingFavorite->user_id = $userId;
@@ -88,13 +91,13 @@ class FeedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getSearchedUsersTeamProductAction(Request $request){
+    public function getSearchedUsersTeamProductAction(Request $request) {
         $searchInput = $request->input("searchInput");
         $usersArray = [];
         $users = User::select("*")->get();
         if(strlen($searchInput) > 0) {
             foreach ($users as $user) {
-                if (strpos($user->getName(), ucfirst($searchInput)) !== false) {
+                if (strpos($user->getName(), ucfirst($searchInput)) !== false && Session::get("user_id") != $user->id) {
                     array_push($usersArray, $user);
                 }
             }
@@ -110,9 +113,62 @@ class FeedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function shareTeamProductAction(Request $request) {
+        if($this->authorized()){
+            $userIds = $request->input("userIds");
+            $teamProductId = $request->input("team_product_id");
+            $sharedMessage = $request->input("shareProductMessage");
+
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            if($userIds) {
+                foreach ($userIds as $selectedUser) {
+                    $existingUserChat = UserChat::select("*")->where("creator_user_id", $selectedUser)->where("receiver_user_id", $user->id)->orWhere("creator_user_id", $user->id)->where("receiver_user_id", $selectedUser)->first();
+                    if (count($existingUserChat) > 0) {
+                        $message = new UserMessage();
+                        $message->sender_user_id = $user->id;
+                        $message->message = $sharedMessage;
+                        $message->user_chat_id = $existingUserChat->id;
+                        $message->time_sent = $this->getTimeSent();
+                        $message->created_at = date("Y-m-d H:i:s");
+                        $message->save();
+                    } else {
+                        $userChat = new UserChat();
+                        $userChat->creator_user_id = $user->id;
+                        $userChat->receiver_user_id = $selectedUser;
+                        $userChat->created_at = date("Y-m-d H:i:s");
+                        $userChat->save();
+
+                        $message = new UserMessage();
+                        $message->sender_user_id = $user->id;
+                        $message->message = $sharedMessage;
+                        $message->user_chat_id = $userChat->id;
+                        $message->time_sent = $this->getTimeSent();
+                        $message->created_at = date("Y-m-d H:i:s");
+                        $message->save();
+                    }
+                }
+            } else {
+                $message = new UserMessage();
+                $message->sender_user_id = $user->id;
+                $message->message = $sharedMessage;
+                $message->team_id = $user->team_id;
+                $message->time_sent = $this->getTimeSent();
+                $message->created_at = date("Y-m-d H:i:s");
+                $message->save();
+            }
+
+            $teamProductLinktable = TeamProductLinktable::select("*")->where("team_product_id", $teamProductId)->where("user_id", $user->id)->first();
+            if(count($teamProductLinktable) > 0){
+                $teamProductLinktable->shared = 1;
+                $teamProductLinktable->save();
+            } else {
+                $teamProductLinktable = new TeamProductLinktable();
+                $teamProductLinktable->shared = 1;
+                $teamProductLinktable->save();
+            }
+
+            return redirect($_SERVER["HTTP_REFERER"])->with("success", "Shared team product");
+        }
     }
 
     /**

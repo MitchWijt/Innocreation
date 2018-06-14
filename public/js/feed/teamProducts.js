@@ -91,6 +91,15 @@ $(document).on("change",".selectUser",function () {
     }
 });
 
+$(".toggleModal").on("click",function () {
+    var url = $(this).data("url");
+    var id = $(this).data("id");
+    $(".shareTeamProductModal").modal().toggle();
+    $(".message").val(url);
+    $(".team_product_id").val(id);
+
+});
+
 $(".shareWithUsersRadio").on("click",function () {
     $(".shareWithUsers").removeClass("hidden");
     $(".shareProductMessage").removeClass("hidden");

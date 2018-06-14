@@ -17,4 +17,12 @@ class TeamProduct extends Model
         return count($teamProductLinkTable);
     }
 
+    public function getUrl($fullLink = false){
+        if($fullLink){
+            return $_SERVER['HTTP_HOST'] . "/team-product/$this->slug";
+        } else {
+            return "/team-product/$this->slug";
+        }
+    }
+
 }
