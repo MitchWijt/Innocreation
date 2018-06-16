@@ -32,11 +32,13 @@
                                 @elsemobile
                                     <hr class="col-xs-12">
                                 @enddesktop
-                                <div class="row d-flex js-center m-t-15">
-                                    <div class="col-md-7 text-center">
-                                        <img class="col-sm-7 col-xs-12 p-0 radius img-responsive" src="/images/portfolioImages/pexels-photo-tiny-3 kopie.jpg" alt="">
+                                <? if($teamProduct->image != null) { ?>
+                                    <div class="row d-flex js-center m-t-15">
+                                        <div class="col-md-7 text-center">
+                                            <img class="col-sm-7 col-xs-12 p-0 radius img-responsive" src="<?= $teamProduct->getImage()?>" alt="">
+                                        </div>
                                     </div>
-                                </div>
+                                <? } ?>
                                 <div class="row m-t-20">
                                     <div class="col-sm-12">
                                         <p class="col-sm-12"><?= $teamProduct->description?></p>
@@ -53,11 +55,6 @@
                                                     <span><i class="zmdi zmdi-favorite f-20 likedTeamProduct c-orange hidden" data-id="<?= $teamProduct->id?>"></i></span>
                                             <? } ?>
                                                 <span class="m-r-10 amountLikes"><?= $teamProduct->getLikes()?></span>
-                                                <? if($user->checkTeamProduct($teamProduct->id, "favorite")) { ?>
-                                                    <span><i class="zmdi zmdi-star f-20 m-r-10 favoriteTeamProduct c-orange" data-id="<?= $teamProduct->id?>"></i></span>
-                                                <? } else { ?>
-                                                    <span><i class="zmdi zmdi-star f-20 m-r-10 favoriteTeamProduct" data-id="<?= $teamProduct->id?>"></i></span>
-                                                <? } ?>
                                                 <span><i class="zmdi zmdi-share f-20 shareTeamProduct toggleModal" data-id="<?= $teamProduct->id?>" data-url="<?= $teamProduct->getUrl(true)?>"></i></span>
                                             <? } else { ?>
                                                 <p style="display: none" class="m-0 copiedLinkNotification"><i class="f-12 c-dark-grey">Link has been copied!</i></p>

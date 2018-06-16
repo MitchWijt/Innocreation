@@ -175,6 +175,14 @@ Route::post("/my-team/unmuteMemberFromTeamChat", "TeamController@unmuteMemberFro
 
 Route::post("/my-team/editMemberPermissions", "TeamController@editMemberPermissionsAction");
 
+Route::get("/my-team/team-products", "TeamController@teamProductsIndexAction");
+
+Route::post("/my-team/saveTeamProduct", "TeamController@saveTeamProductAction");
+
+Route::post("/my-team/getTeamProductModalData", "TeamController@getTeamProductModalDataAction");
+
+Route::post("/my-team/deleteTeamProduct", "TeamController@deleteTeamProductAction");
+
 
 //==============================WORKSPACE TEAM===================================
 
@@ -468,8 +476,6 @@ Route::post("/admin/getMailMessageModalData", "AdminController@getMailMessageMod
 Route::get("/team-products", "FeedController@TeamProductsAction");
 
 Route::post("/feed/likeTeamProduct", "FeedController@likeTeamProductAction");
-
-Route::post("/feed/favoriteTeamProduct", "FeedController@favoriteTeamProductAction");
 
 Route::post("/feed/getSearchedUsersTeamProduct", "FeedController@getSearchedUsersTeamProductAction");
 

@@ -10,6 +10,7 @@ use App\NeededExpertiseLinktable;
 use App\Team;
 use App\TeamGroupChat;
 use App\TeamGroupChatLinktable;
+use App\TeamProduct;
 use App\User;
 use App\UserChat;
 use App\UserMessage;
@@ -544,5 +545,56 @@ class TeamController extends Controller
         $member->role = $role;
         $member->save();
         return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function teamProductsIndexAction(){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+        $teamProducts = TeamProduct::select("*")->where("team_id", $team->id)->get();
+
+        return view("/public/team/teamPageTeamProducts", compact("teamProducts", "team"));
+
+    }
+
+    public function saveTeamProductAction(Request $request){
+        $teamProductId = $request->input("team_product_id");
+        $teamId = $request->input("team_id");
+        $productName = $request->input("product_name");
+        $productImage = $request->file("product_image");
+        $productDescription = $request->input("product_description");
+
+        if(!$teamProductId) {
+            $teamProduct = new TeamProduct();
+            $teamProduct->team_id = $teamId;
+        } else {
+            $teamProduct = TeamProduct::select("*")->where("id", $teamProductId)->first();
+        }
+        $teamProduct->title = $productName;
+        $teamProduct->description = $productDescription;
+        if($productImage != null) {
+            $teamProduct->image = $productImage->getClientOriginalName();
+            $destinationPath = public_path().'/images/teamProductImages';
+            $productImage->move($destinationPath,$productImage->getClientOriginalName());
+        } else {
+            $teamProduct->image = null;
+        }
+        $teamProduct->slug = str_replace(" ", "-",strtolower($productName));
+        $teamProduct->created_at = date("Y-m-d H:i:s");
+        $teamProduct->save();
+
+        return redirect($_SERVER["HTTP_REFERER"])->with("success", "succesfully saved your product!");
+
+    }
+
+    public function getTeamProductModalDataAction(Request $request){
+        $teamProductId = $request->input("team_product_id");
+        $teamProduct = TeamProduct::select("*")->where("id", $teamProductId)->first();
+        return view("/public/team/shared/_teamProductModalData", compact("teamProduct"));
+    }
+
+    public function deleteTeamProductAction(Request $request){
+        $teamProductId = $request->input("team_product_id");
+        $teamProduct = TeamProduct::select("*")->where("id", $teamProductId)->first();
+        $teamProduct->delete();
     }
 }

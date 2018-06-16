@@ -67,34 +67,7 @@ class FeedController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function favoriteTeamProductAction(Request $request) {
-        if($this->authorized()){
-            $teamProductId = $request->input("team_product_id");
-            $userId = Session::get("user_id");
-
-            $existingFavorite = TeamProductLinktable::select("*")->where("user_id", $userId)->where("team_product_id", $teamProductId)->first();
-            if(!$existingFavorite) {
-                $teamProductLinktable = new TeamProductLinktable();
-                $teamProductLinktable->team_product_id = $teamProductId;
-                $teamProductLinktable->user_id = $userId;
-                $teamProductLinktable->favorite = 1;
-                $teamProductLinktable->save();
-                return 1;
-            } else {
-                $existingFavorite->team_product_id = $teamProductId;
-                $existingFavorite->user_id = $userId;
-                if($existingFavorite->favorite == 1) {
-                    $existingFavorite->favorite = 0;
-                } else {
-                    $existingFavorite->favorite = 1;
-                }
-                $existingFavorite->save();
-                if($existingFavorite->favorite == 1){
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        }
+     //
     }
 
     /**

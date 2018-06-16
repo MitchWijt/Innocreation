@@ -24,33 +24,6 @@ $(".likeTeamProduct").on("click",function () {
     });
 });
 
-$(".favoriteTeamProduct").on("click",function () {
-    var team_product_id = $(this).data("id");
-    $.ajax({
-        method: "POST",
-        beforeSend: function (xhr) {
-            var token = $('meta[name="csrf_token"]').attr('content');
-
-            if (token) {
-                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-            }
-        },
-        url: "/feed/favoriteTeamProduct",
-        data: {'team_product_id': team_product_id},
-        success: function (data) {
-            $(".favoriteTeamProduct").each(function () {
-                if($(this).data("id") == team_product_id){
-                    if(data == 1) {
-                        $(this).addClass("c-orange");
-                    } else {
-                        $(this).removeClass("c-orange");
-                    }
-                }
-            });
-        }
-    });
-});
-
 $(".searchUsers").on("click",function () {
     var searchInput = $(".searchUsersInput").val();
     $.ajax({
