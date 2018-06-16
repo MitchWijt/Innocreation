@@ -12,10 +12,15 @@
             </div>
             <hr class="m-b-20">
             <? foreach($teamProducts as $teamProduct) { ?>
-                <div class="row d-flex js-center m-t-20 m-b-20">
+                <div class="row d-flex js-center m-t-20 m-b-20 teamProduct">
                     <div class="col-md-10">
                         <div class="card card-lg">
-                            <div class="card-block @mobile p-10 @endmobile">
+                            <? if(isset($teamProductSlug)) { ?>
+                                <input type="hidden" class="teamProductSlug" value="<?=$teamProductSlug->slug?>">
+                            <? } else { ?>
+                                <input type="hidden" class="teamProductSlug" value="0">
+                            <? } ?>
+                            <div class="card-block @mobile p-10 @endmobile teamProductCard" data-slug="<?= $teamProduct->slug?>">
                                 <div class="row">
                                     <div class="col-md-12 text-center">
                                         <h2 class="p-t-10 m-b-0 @mobile f-25 @endmobile"><?= $teamProduct->title?></h2>
@@ -38,23 +43,58 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-12 m-l-15 m-b-5 socials">
-                                        <? if(isset($user)) { ?>
-                                            <? if($user->checkTeamProduct($teamProduct->id, "liked")) { ?>
-                                                <span><i class="zmdi zmdi-favorite f-20 likedTeamProduct c-orange" data-id="<?= $teamProduct->id?>"></i></span>
-                                            <? } else { ?>
-                                                <span><i class="zmdi zmdi-favorite-outline f-20 likeTeamProduct" data-id="<?= $teamProduct->id?>"></i></span>
-                                                <span><i class="zmdi zmdi-favorite f-20 likedTeamProduct c-orange hidden" data-id="<?= $teamProduct->id?>"></i></span>
-                                        <? } ?>
-                                            <span class="m-r-10 amountLikes"><?= $teamProduct->getLikes()?></span>
-                                            <? if($user->checkTeamProduct($teamProduct->id, "favorite")) { ?>
-                                                <span><i class="zmdi zmdi-star f-20 m-r-10 favoriteTeamProduct c-orange" data-id="<?= $teamProduct->id?>"></i></span>
-                                            <? } else { ?>
-                                                <span><i class="zmdi zmdi-star f-20 m-r-10 favoriteTeamProduct" data-id="<?= $teamProduct->id?>"></i></span>
+                                    <div class="col-md-12 m-b-5 socials">
+                                        <div class="m-l-15 m-r-15">
+                                            <? if(isset($user)) { ?>
+                                                <? if($user->checkTeamProduct($teamProduct->id, "liked")) { ?>
+                                                    <span><i class="zmdi zmdi-favorite f-20 likedTeamProduct c-orange" data-id="<?= $teamProduct->id?>"></i></span>
+                                                <? } else { ?>
+                                                    <span><i class="zmdi zmdi-favorite-outline f-20 likeTeamProduct" data-id="<?= $teamProduct->id?>"></i></span>
+                                                    <span><i class="zmdi zmdi-favorite f-20 likedTeamProduct c-orange hidden" data-id="<?= $teamProduct->id?>"></i></span>
                                             <? } ?>
-                                            <span><i class="zmdi zmdi-share f-20 shareTeamProduct toggleModal" data-id="<?= $teamProduct->id?>" data-url="<?= $teamProduct->getUrl(true)?>"></i></span>
-                                        <? } else { ?>
-                                            <span><i class="zmdi zmdi-share f-20 shareTeamProduct toggleLink"></i></span>
+                                                <span class="m-r-10 amountLikes"><?= $teamProduct->getLikes()?></span>
+                                                <? if($user->checkTeamProduct($teamProduct->id, "favorite")) { ?>
+                                                    <span><i class="zmdi zmdi-star f-20 m-r-10 favoriteTeamProduct c-orange" data-id="<?= $teamProduct->id?>"></i></span>
+                                                <? } else { ?>
+                                                    <span><i class="zmdi zmdi-star f-20 m-r-10 favoriteTeamProduct" data-id="<?= $teamProduct->id?>"></i></span>
+                                                <? } ?>
+                                                <span><i class="zmdi zmdi-share f-20 shareTeamProduct toggleModal" data-id="<?= $teamProduct->id?>" data-url="<?= $teamProduct->getUrl(true)?>"></i></span>
+                                            <? } else { ?>
+                                                <p style="display: none" class="m-0 copiedLinkNotification"><i class="f-12 c-dark-grey">Link has been copied!</i></p>
+                                                <span><i class="zmdi zmdi-share f-20 shareTeamProduct toggleLink"></i></span>
+                                                <input type="text" class="input m-l-5 linkToCopy shareCopyLink hidden" disabled value="<?= $teamProduct->getUrl(true)?>">
+                                                <i class="zmdi zmdi-copy shareCopyLink hidden copyLinkIcon"></i>
+                                            <? } ?>
+                                            <p class="regular-link pull-right toggleComments" data-id="<?= $teamProduct->id?>"><?= count($teamProduct->getComments())?> <? if(count($teamProduct->getComments()) > 1) echo "comments"; else echo "comment";?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-10 comments hidden" data-id="<?= $teamProduct->id?>">
+                        <div class="card card-lg">
+                            <div class="card-block @mobile p-10 @endmobile">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="o-scroll m-t-20 teamProductComments p-10" style="height: 150px;">
+
+                                        </div>
+                                        <? if(isset($user)) { ?>
+                                            <hr class="col-md-11">
+                                            <form action="/feed/postTeamProductComment" method="post">
+                                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                <input type="hidden" name="sender_user_id" value="<?= $user->id?>">
+                                                <input type="hidden" name="team_product_id" value="<?= $teamProduct->id?>">
+                                                <div class="text-center m-t-10">
+                                                    <textarea name="comment" placeholder="Write your comment..." class="comment input col-sm-11" rows="5"></textarea>
+                                                </div>
+                                                <div class="d-flex js-center">
+                                                    <div class="col-sm-11 p-r-0 m-b-10">
+                                                        <button class="btn btn-inno btn-sm pull-right">Comment</button>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         <? } ?>
                                     </div>
                                 </div>

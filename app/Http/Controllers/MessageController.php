@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\AssistanceTicket;
 use App\SupportTicket;
 use App\SupportTicketMessage;
+use App\TeamProduct;
 use App\User;
 use App\Team;
 use App\UserChat;
@@ -22,8 +23,7 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function teamChatMessagesAction()
-    {
+    public function teamChatMessagesAction() {
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
         $messages = UserMessage::select("*")->where("team_id", $team->id)->get();
@@ -36,8 +36,7 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function teamGroupChatMessagesAction(Request $request)
-    {
+    public function teamGroupChatMessagesAction(Request $request) {
         $groupChatId = $request->input("group_chat_id");
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
@@ -51,8 +50,7 @@ class MessageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function userChatMessagesAction(Request $request)
-    {
+    public function userChatMessagesAction(Request $request) {
         $admin = $request->input("admin");
         $userChatId = $request->input("user_chat_id");
         $user_id = Session::get("user_id");
@@ -66,8 +64,7 @@ class MessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getSupportTicketMessagesAction(Request $request)
-    {
+    public function getSupportTicketMessagesAction(Request $request) {
         $admin = $request->input("admin");
         if($admin == 1) {
             $userId = Session::get("admin_user_id");
@@ -86,7 +83,7 @@ class MessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getAssistanceTicketMessagesAction(Request $request){
+    public function getAssistanceTicketMessagesAction(Request $request) {
         $userId = Session::get("user_id");
         $ticketId = $request->input("ticket_id");
         $user = User::select("*")->where("id", $userId)->first();
@@ -102,9 +99,19 @@ class MessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function getTeamProductCommentsAction(Request $request) {
+        $teamProductId = $request->input("team_product_id");
+        $userId = Session::get("user_id");
+
+        $teamProduct = TeamProduct::select("*")->where("id", $teamProductId)->first();
+        $user = User::select("*")->where("id", $userId)->first();
+
+        if($user){
+            return view("/public/shared/_commentsTeamProduct", compact( "teamProduct", "user"));
+        } else {
+            return view("/public/shared/_commentsTeamProduct", compact( "teamProduct"));
+        }
+
     }
 
     /**

@@ -148,7 +148,7 @@
         <div class="border-black navBorder"></div>
     @elsedesktop
         <div class="lower-header d-flex js-center">
-            <ul class="main-navMenu">
+            <ul class="main-navMenu @tablet f-13 @endtablet">
                 <li><a href="/">Home</a></li>
                 <li><a href="/teams">Teams</a></li>
                 <li><a href="/expertises">Users / expertises</a></li>

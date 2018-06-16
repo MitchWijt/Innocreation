@@ -327,6 +327,8 @@ Route::post("/message/getSupportTicketMessages", "MessageController@getSupportTi
 
 Route::post("/message/getAssistanceTicketMessages", "MessageController@getAssistanceTicketMessagesAction");
 
+Route::post("/message/getTeamProductComments", "MessageController@getTeamProductCommentsAction");
+
 
 
 
@@ -472,6 +474,10 @@ Route::post("/feed/favoriteTeamProduct", "FeedController@favoriteTeamProductActi
 Route::post("/feed/getSearchedUsersTeamProduct", "FeedController@getSearchedUsersTeamProductAction");
 
 Route::post("/feed/shareTeamProduct", "FeedController@shareTeamProductAction");
+
+Route::post("/feed/postTeamProductComment", "FeedController@postTeamProductCommentAction");
+
+Route::get("/team-product/{slug?}", "FeedController@TeamProductsAction");
 
 
 //========================CHECKOUT/PACKAGES========================

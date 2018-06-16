@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Team;
 use App\TeamProduct;
+use App\TeamProductComment;
 use App\TeamProductLinktable;
 use App\User;
 use App\UserChat;
@@ -20,14 +21,25 @@ class FeedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function TeamProductsAction() {
+    public function TeamProductsAction($slug = null) {
+
         $teamProducts = TeamProduct::select("*")->get();
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
-        if($user){
-            return view("/public/feed/teamProducts", compact("teamProducts", "user"));
+        if($slug) {
+            $teamProductSlug = TeamProduct::select("slug")->where("slug", $slug)->first();
+            if($user){
+                return view("/public/feed/teamProducts", compact("teamProducts", "teamProductSlug", "user"));
+            } else {
+                return view("/public/feed/teamProducts", compact("teamProducts", "teamProductSlug"));
+            }
         } else {
-            return view("/public/feed/teamProducts", compact("teamProducts"));
+            if($user){
+                return view("/public/feed/teamProducts", compact("teamProducts", "user"));
+            } else {
+                return view("/public/feed/teamProducts", compact("teamProducts"));
+            }
         }
+
     }
 
     /**
@@ -178,9 +190,19 @@ class FeedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function postTeamProductCommentAction(Request $request) {
+        $senderUserId = $request->input("sender_user_id");
+        $teamProductId = $request->input("team_product_id");
+        $comment = $request->input("comment");
+
+        $teamProductComment = new TeamProductComment();
+        $teamProductComment->team_product_id = $teamProductId;
+        $teamProductComment->sender_user_id = $senderUserId;
+        $teamProductComment->message = $comment;
+        $teamProductComment->time_sent = $this->getTimeSent();
+        $teamProductComment->created_at = date("Y-m-d H:i:s");
+        $teamProductComment->save();
+        return redirect($_SERVER["HTTP_REFERER"]);
     }
 
     /**
@@ -189,8 +211,4 @@ class FeedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
 }

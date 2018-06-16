@@ -25,4 +25,8 @@ class TeamProduct extends Model
         }
     }
 
+    public function getComments(){
+        return TeamProductComment::select("*")->where("team_product_id", $this->id)->get();
+    }
+
 }

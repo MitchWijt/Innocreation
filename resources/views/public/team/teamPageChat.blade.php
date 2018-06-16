@@ -59,16 +59,16 @@
                                 </div>
                             </form>
                         <? } else { ?>
-                        <?
-                        $today = new DateTime(date("Y-m-d H:i:s"));
-                        $date = new DateTime(date("Y-m-d H:i:s",strtotime($user->muted)));
-                        $interval = $date->diff($today);
-                        ?>
-                        <div class="row m-t-20 m-b-10">
-                            <div class="col-sm-12 text-center">
-                                <p>You have been muted for <?= $interval->format('%h hours, %i minutes, %s seconds');?></p>
+                            <?
+                            $today = new DateTime(date("Y-m-d H:i:s"));
+                            $date = new DateTime(date("Y-m-d H:i:s",strtotime($user->muted)));
+                            $interval = $date->diff($today);
+                            ?>
+                            <div class="row m-t-20 m-b-10">
+                                <div class="col-sm-12 text-center">
+                                    <p>You have been muted for <?= $interval->format('%h hours, %i minutes, %s seconds');?></p>
+                                </div>
                             </div>
-                        </div>
                         <? } ?>
                     </div>
                 </div>
