@@ -91,6 +91,7 @@ function copyToClipboard(element) {
     $temp.remove();
 }
 
+//
 $(".toggleLink").on("click",function () {
     var copyElement = $(this).parents(".socials").find(".linkToCopy");
     copyToClipboard(copyElement);

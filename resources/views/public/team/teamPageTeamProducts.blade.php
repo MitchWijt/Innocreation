@@ -9,7 +9,7 @@
                 @include("includes.teamPage_sidebar")
             @endmobile
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">My team products</h1>
+                <h1 class="sub-title-black @mobile f-30 @endmobile">My team products</h1>
             </div>
             <div class="row m-b-20">
                 <div class="col-sm-12 d-flex js-center">
