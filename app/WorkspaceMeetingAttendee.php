@@ -13,6 +13,6 @@ class WorkspaceMeetingAttendee extends Model
     }
 
     public function meeting(){
-        return $this->hasMany("\App\WorkspaceMeeting", "id","meeting_id");
+        return $this->hasOne("\App\WorkspaceMeeting", "id","meeting_id");
     }
 }

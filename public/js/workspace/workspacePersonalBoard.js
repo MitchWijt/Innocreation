@@ -1,8 +1,19 @@
 $(".openPersonalBoardTaskModal").on("click",function () {
     var task_id = $(this).data("task-id");
-    $(".personalBoardTaskModal").each(function () {
-        if($(this).data("task-id") == task_id){
-            $(this).modal().toggle();
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/workspace/getPersonalBoardModal",
+        data: {'task_id': task_id},
+        success: function (data) {
+            $(".personalBoardTaskModalData").html(data);
+            $('.personalBoardTaskModal').modal().toggle();
         }
     });
 });
@@ -74,15 +85,16 @@ $(document).on("click",".uncompleteTaskPersonalBoard",function () {
     });
 });
 
-$(".toggleAssistanceForm").on("click",function () {
+$(document).on("click", ".toggleAssistanceForm", function () {
     $(".assistanceForm").removeClass("hidden");
     $(".assistanceToggleLink").addClass("hidden");
     $(".closeAssistanceForm").removeClass("hidden");
 });
 
-$(".closeAssistanceForm").on("click",function () {
+$(document).on("click", ".closeAssistanceForm", function () {
     $(".assistanceForm").addClass("hidden");
     $(".assistanceToggleLink").removeClass("hidden");
     $(".closeAssistanceForm").addClass("hidden");
 });
+
 

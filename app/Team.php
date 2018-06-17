@@ -8,7 +8,7 @@ use DateTime;
 class Team extends Model
 {
     public function users(){
-        return $this->hasMany("\App\User", "id","ceo_user_id");
+        return $this->hasOne("\App\User", "id","ceo_user_id");
     }
 
     public function getUrl(){

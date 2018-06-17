@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Support\Facades\Session;
 use Mailgun\Mailgun;
+use App\MailMessage;
 
 class Controller extends BaseController
 {
@@ -58,6 +59,25 @@ class Controller extends BaseController
             ];
             return $mailgun;
         }
+    }
+
+    public function saveAndSendEmail($to, $subject, $message, $from = 'Innocreation <mitchel@innocreation.net>'){
+        $mgClient = $this->getService("mailgun");
+        $mgClient[0]->sendMessage($mgClient[1], array(
+            'from' => $from,
+            'to' => $to->email,
+            'subject' => $subject,
+            'html' => $message
+        ), array(
+            'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
+        ));
+
+        $mailMessage = new MailMessage();
+        $mailMessage->receiver_user_id = $to->id;
+        $mailMessage->subject = $subject;
+        $mailMessage->message = $message;
+        $mailMessage->created_at = date("Y-m-d");
+        $mailMessage->save();
     }
 }
 

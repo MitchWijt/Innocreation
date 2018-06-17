@@ -460,23 +460,7 @@ class UserController extends Controller
                 $message->save();
 
                 $user = User::select("*")->where("id", $user_id)->first();
-
-                $mgClient = $this->getService("mailgun");
-                $mgClient[0]->sendMessage($mgClient[1], array(
-                    'from' => 'Innocreation  <mitchel@innocreation.net>',
-                    'to' => $joinRequest->teams->First()->users->First()->email,
-                    'subject' => "Team join request from $user->firstname!",
-                    'html' => view("/templates/sendJoinRequestToTeam", compact("user", "team"))
-                ), array(
-                    'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
-                ));
-
-                $mailMessage = new MailMessage();
-                $mailMessage->receiver_user_id = $joinRequest->teams->First()->users->First()->id;
-                $mailMessage->subject = "Team join request from $user->firstname!";
-                $mailMessage->message = view("/templates/sendJoinRequestToTeam", compact("user", "team"));
-                $mailMessage->created_at = date("Y-m-d");
-                $mailMessage->save();
+                $this->saveAndSendEmail($joinRequest->teams->users, "Team join request from $user->firstname!", view("/templates/sendJoinRequestToTeam", compact("user", "team")));
 
                 return redirect($_SERVER["HTTP_REFERER"]);
             } else {
@@ -532,23 +516,9 @@ class UserController extends Controller
                 $message->created_at = date("Y-m-d H:i:s");
                 $message->save();
 
-                $mgClient = $this->getService("mailgun");
-                foreach($team->getMembers() as $member) {
-                    $mgClient[0]->sendMessage($mgClient[1], array(
-                        'from' => 'Innocreation  <mitchel@innocreation.net>',
-                        'to' => $member->email,
-                        'subject' => "New review from $user->firstname!",
-                        'html' => view("/templates/sendTeamReviewMail", compact("user", "team", "member"))
-                    ), array(
-                        'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
-                    ));
 
-                    $mailMessage = new MailMessage();
-                    $mailMessage->receiver_user_id = $member->id;
-                    $mailMessage->subject = "New review from $user->firstname!";
-                    $mailMessage->message = view("/templates/sendTeamReviewMail", compact("user", "team", "member"));
-                    $mailMessage->created_at = date("Y-m-d");
-                    $mailMessage->save();
+                foreach($team->getMembers() as $member) {
+                    $this->saveAndSendEmail($member, "New review from $user->firstname!", view("/templates/sendTeamReviewMail", compact("user", "team", "member")));
                 }
                 return redirect($_SERVER["HTTP_REFERER"]);
             } else {
@@ -599,27 +569,9 @@ class UserController extends Controller
             $message->created_at = date("Y-m-d H:i:s");
             $message->save();
 
-
             $team = Team::select("*")->where("id", $team_id)->first();
 
-            $mgClient = $this->getService("mailgun");
-            $mgClient[0]->sendMessage($mgClient[1], array(
-                'from' => 'Innocreation  <mitchel@innocreation.net>',
-                'to' => $team->users->First()->email,
-                'subject' => "Accepted invitation!",
-                'html' => view("/templates/sendInviteAcceptionTeam", compact("user", "team"))
-            ), array(
-                'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
-            ));
-
-            $mailMessage = new MailMessage();
-            $mailMessage->receiver_user_id = $team->users->First()->id;
-            $mailMessage->subject = "Accepted invitation!";
-            $mailMessage->message = view("/templates/sendInviteAcceptionTeam", compact("user", "team"));
-            $mailMessage->created_at = date("Y-m-d");
-            $mailMessage->save();
-
-
+            $this->saveAndSendEmail($team->users,  "Accepted invitation!", view("/templates/sendInviteAcceptionTeam", compact("user", "team")));
 
             return redirect($_SERVER["HTTP_REFERER"]);
         }

@@ -257,6 +257,8 @@ Route::post("/workspace/completeTaskPersonalBoard", "WorkspaceController@complet
 
 Route::post("/workspace/uncompleteTaskPersonalBoard", "WorkspaceController@uncompleteTaskPersonalBoardAction");
 
+Route::post("/workspace/getPersonalBoardModal", "WorkspaceController@getPersonalBoardModalAction");
+
 // Assistance tickets
 
 Route::post("/workspace/askForAssistance", "WorkspaceController@askForAssistanceAction");

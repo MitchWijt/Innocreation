@@ -238,10 +238,21 @@ class TeamController extends Controller
             $user->team_id = $request->team_id;
             $user->save();
 
-            $userChat = UserChat::select("*")->where("creator_user_id", $user->id)->first();
+            $existingUserChat = UserChat::select("*")->where("creator_user_id", $user->id)->where("receiver_user_id",  $request->teams->first()->ceo_user_id)->orWhere("creator_user_id",  $request->teams->first()->ceo_user_id)->where("receiver_user_id", $user->id)->get();
+            if(count($existingUserChat) > 0){
+                $userChat = new UserChat();
+                $userChat->creator_user_id = $request->teams->first()->ceo_user_id;
+                $userChat->receiver_user_id = $user->id;
+                $userChat->created_at = date("Y-m-d H:i:s");
+                $userChat->save();
+
+                $userChatId = $userChat->id;
+            } else {
+                $userChatId = $existingUserChat->id;
+            }
             $message = new UserMessage();
             $message->sender_user_id = $request->teams->first()->ceo_user_id;
-            $message->user_chat_id = $userChat->id;
+            $message->user_chat_id = $userChatId;
             $message->message = "Hey $userName we are happy to say, that we accepted you in our team. Welcome!";
             $message->time_sent = $time;
             $message->created_at = date("Y-m-d H:i:s");
@@ -256,7 +267,7 @@ class TeamController extends Controller
         $user_id = $request->input("user_id");
         $expertise_id = $request->input("expertise_id");
 
-        $checkJoinInvites = JoinRequestLinktable::select("*")->where("team_id",$team_id)->where("user_id", $user_id)->where("accepted", 0)->get();
+        $checkJoinInvites = InviteRequestLinktable::select("*")->where("team_id",$team_id)->where("user_id", $user_id)->where("accepted", 0)->get();
         if(count($checkJoinInvites) == 0) {
             $team = Team::select("*")->where("id", $team_id)->first();
 
@@ -272,41 +283,29 @@ class TeamController extends Controller
             $timeNow = date("H:i:s");
             $time = (date("g:i a", strtotime($timeNow)));
 
+            $existingUserChat = UserChat::select("*")->where("creator_user_id", $user_id)->where("receiver_user_id",  $request->teams->first()->ceo_user_id)->orWhere("creator_user_id",  $request->teams->first()->ceo_user_id)->where("receiver_user_id", $user_id)->get();
+            if(count($existingUserChat) > 0){
+                $userChat = new UserChat();
+                $userChat->creator_user_id = $request->teams->first()->ceo_user_id;
+                $userChat->receiver_user_id = $user_id;
+                $userChat->created_at = date("Y-m-d H:i:s");
+                $userChat->save();
+
+                $userChatId = $userChat->id;
+            } else {
+                $userChatId = $existingUserChat->id;
+            }
             $message = new UserMessage();
-            $message->sender_user_id = $team->ceo_user_id;
-            $message->receiver_user_id = $user_id;
+            $message->sender_user_id = $request->teams->first()->ceo_user_id;
+            $message->user_chat_id = $userChatId;
             $message->message = "Hey $userFirstName I have done an invite to you to join my team!";
             $message->time_sent = $time;
             $message->created_at = date("Y-m-d H:i:s");
             $message->save();
 
-            $message = new UserMessage();
-            $message->sender_user_id = $user_id;
-            $message->receiver_user_id = $team->ceo_user_id;
-            $message->message = null;
-            $message->time_sent = null;
-            $message->created_at = date("Y-m-d H:i:s");
-            $message->save();
-
-
             $receiver = User::select("*")->where("id", $user_id)->first();
 
-            $mgClient = $this->getService("mailgun");
-            $mgClient[0]->sendMessage($mgClient[1], array(
-                'from' => 'Innocreation  <mitchel@innocreation.net>',
-                'to' => $receiver->email,
-                'subject' => "Team invite from $team->team_name!",
-                'html' => view("/templates/sendInviteToUserMail", compact("receiver", "team"))
-            ), array(
-                'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
-            ));
-
-            $mailMessage = new MailMessage();
-            $mailMessage->receiver_user_id = $receiver->id;
-            $mailMessage->subject = "Team invite from $team->team_name";
-            $mailMessage->message = view("/templates/sendInviteToUserMail", compact("receiver", "team"));
-            $mailMessage->created_at = date("Y-m-d");
-            $mailMessage->save();
+            $this->saveAndSendEmail($receiver, "Team invite from $team->team_name!", view("/templates/sendInviteToUserMail", compact("receiver", "team")));
 
             return redirect($_SERVER["HTTP_REFERER"]);
         } else {

@@ -1369,7 +1369,6 @@ class WorkspaceController extends Controller
         if($maxDurationHours == 0 && $maxDurationMinutes == 0) {
             $meeting->max_duration_time = null;
         }  else {
-
             $timeMaxInput = date("H:i", strtotime(date("H:i", strtotime($time)) . "+$maxDurationHours hours +$maxDurationMinutes minutes"));
             $maxDurationTime = date("g:i a", strtotime($timeMaxInput));
 
@@ -1385,6 +1384,8 @@ class WorkspaceController extends Controller
                 $meetingAttendee->meeting_id = $meeting->id;
                 $meetingAttendee->user_id = $member->id;
                 $meetingAttendee->save();
+
+                $this->saveAndSendEmail($meetingAttendee->user, "You have been attended to a meeting!", view("/templates/sendAttendedMeeting", compact("meetingAttendee")));
             }
         } else {
             foreach($attendees as $attendee){
@@ -1392,11 +1393,11 @@ class WorkspaceController extends Controller
                 $meetingAttendee->meeting_id = $meeting->id;
                 $meetingAttendee->user_id = $attendee;
                 $meetingAttendee->save();
+
+                $this->saveAndSendEmail($meetingAttendee->user, "You have been attended to a meeting!", view("/templates/sendAttendedMeeting", compact("meetingAttendee")));
             }
         }
         return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Succesfully planned new meeting!");
-
-
     }
 
     public function editMeetingAction(Request $request){
@@ -1463,6 +1464,16 @@ class WorkspaceController extends Controller
             $meetingAttendee->delete();
         }
         $meeting->delete();
+    }
+
+    public function getPersonalBoardModalAction(Request $request){
+        $taskId = $request->input("task_id");
+        $shortTermPlannerTask  = WorkspaceShortTermPlannerTask::select("*")->where("id", $taskId)->first();
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+
+        return view("/public/team/workspace/shared/_workspacePersonalBoardModal", compact("shortTermPlannerTask", "user", "team"));
+
     }
 
 
