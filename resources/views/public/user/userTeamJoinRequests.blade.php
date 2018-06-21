@@ -1,6 +1,6 @@
 @extends("layouts.app")
 @section("content")
-    <div class="d-flex grey-background">
+    <div class="d-flex grey-background vh85">
         @notmobile
             @include("includes.userAccount_sidebar")
         @endnotmobile

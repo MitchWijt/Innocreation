@@ -42,6 +42,7 @@ $(".chat-card").on("click",function () {
                        $(".collapse").each(function () {
                            if($(this).data("chat-id") == user_chat_id){
                                $(this).find(".userChatMessages").html(data);
+                               $(this).parents(".chat").find(".unreadNotification").remove();
                            }
                        });
                    }
@@ -132,4 +133,10 @@ $(".deleteChat").on("click",function () {
             }
         });
     }
+});
+
+$(document).ready(function () {
+    setTimeout(function(){
+        $(".fly-in-text").removeClass("hidden");
+    }, 300);
 });

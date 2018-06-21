@@ -44,16 +44,19 @@
                 <div class="d-flex fd-column m-t-20 col-md-6">
                     <? if(isset($userChats)) { ?>
                         <? foreach($userChats as $userChat) { ?>
-                            <div class="m-b-10">
+                            <div class="m-b-10 chat">
                                 <? if($userChat->creator_user_id == 1) { ?>
                                     <div class="row d-flex js-center">
                                         <div class="col-md-12">
-                                        <div class="card text-center" style="height: 90px;">
-                                            <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
-                                                <img class="circle circleImage m-0" src="/images/profilePicturesTeams/cartwheel.png" alt="">
-                                                <p class="f-22 m-t-15 m-b-5 p-0">Innocreation</p>
+                                            <div class="card text-center p-relative" style="height: 90px;">
+                                                <? if($userChat->getUnreadMessages($user_id) > 0) { ?>
+                                                    <i class="zmdi zmdi-circle f-10 c-orange p-absolute unreadNotification" style="left: 10px; top: 5px;"></i>
+                                                <? } ?>
+                                                <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
+                                                    <img class="circle circleImage m-0" src="/images/profilePicturesTeams/cartwheel.png" alt="">
+                                                    <p class="f-22 m-t-15 m-b-5 p-0">Innocreation</p>
+                                                </div>
                                             </div>
-                                        </div>
                                         </div>
                                     </div>
                                 <? } ?>
@@ -62,6 +65,9 @@
                                         <div class="row d-flex js-center userChat" data-chat-id="<?= $userChat->id?>">
                                             <div class="col-md-12">
                                                 <div class="card text-center p-relative" style="height: 90px;">
+                                                    <? if($userChat->getUnreadMessages($user_id) > 0) { ?>
+                                                        <i class="zmdi zmdi-circle f-10 c-orange p-absolute unreadNotification" style="left: 10px; top: 5px;"></i>
+                                                    <? } ?>
                                                     <i class="zmdi zmdi-close c-orange p-absolute deleteChat" data-chat-id="<?= $userChat->id?>" style="right: 10px; top: 5px;"></i>
                                                     <? if($userChat->receiver_user_id == $user_id) { ?>
                                                         <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
@@ -98,11 +104,13 @@
                                         </div>
                                     <? } else { ?>
                                         <div class="row d-flex js-center userChat" data-chat-id="<?= $userChat->id?>">
-                                            <div class="card text-center p-relative" style="height: 90px;">
-                                                <i class="zmdi zmdi-close c-orange p-absolute deleteChat" data-chat-id="<?= $userChat->id?>" style="right: 10px; top: 5px;"></i>
-                                                <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-chat-id="<?= $userChat->id?>">
-                                                    <div class="circle circleImage"><i class="zmdi zmdi-eye-off f-25 m-t-15"></i></div>
-                                                    <p class="f-22 m-t-15 m-b-5 p-0">User doesn't exist anymore</p>
+                                            <div class="col-md-12">
+                                                <div class="card text-center p-relative" style="height: 90px;">
+                                                    <i class="zmdi zmdi-close c-orange p-absolute deleteChat" data-chat-id="<?= $userChat->id?>" style="right: 10px; top: 5px;"></i>
+                                                    <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-chat-id="<?= $userChat->id?>">
+                                                        <div class="circle circleImage"><i class="zmdi zmdi-eye-off f-25 m-t-15"></i></div>
+                                                        <p class="f-22 m-t-15 m-b-5 p-0">User doesn't exist anymore</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

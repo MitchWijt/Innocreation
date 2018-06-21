@@ -13,10 +13,13 @@
                             <div class="hr col-sm-12"></div>
                             <? if(isset($userChats)) { ?>
                                 <? foreach($userChats as $userChat) { ?>
-                                    <div class="m-b-10">
+                                    <div class="m-b-10 chat">
                                         <div class="row d-flex js-center">
                                             <div class="col-md-7">
-                                                <div class="card text-center" style="height: 90px;">
+                                                <div class="card text-center p-relative" style="height: 90px;">
+                                                    <? if($userChat->getUnreadMessages(1) > 0) { ?>
+                                                        <i class="zmdi zmdi-circle f-10 c-orange p-absolute unreadNotification" style="left: 10px; top: 5px;"></i>
+                                                    <? } ?>
                                                     <? if($userChat->receiver) { ?>
                                                         <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
                                                         <img class="circle circleImage m-0" src="<?=$userChat->receiver->getProfilePicture()?>" alt="">
@@ -96,6 +99,7 @@
                                 $(".collapse").each(function () {
                                     if($(this).data("chat-id") == user_chat_id){
                                         $(this).find(".userChatMessages").html(data);
+                                        $(this).parents(".chat").find(".unreadNotification").remove();
                                     }
                                 });
                             }
@@ -113,7 +117,6 @@
                     setInterval(function () {
                         getUserChatMessages();
                     }, 1000);
-
                     $(this).collapse('toggle');
                 }
             });

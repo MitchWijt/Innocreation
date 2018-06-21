@@ -19,4 +19,8 @@ class UserChat extends Model
     public function getMessages(){
         return UserMessage::select("*")->where("user_chat_id", $this->id)->get();
     }
+
+    public function getUnreadMessages($id){
+        return count(UserMessage::select("*")->where("user_chat_id", $this->id)->where("sender_user_id", "!=", $id)->where("seen_at", null)->get());
+    }
 }

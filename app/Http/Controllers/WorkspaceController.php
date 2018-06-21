@@ -384,11 +384,13 @@ class WorkspaceController extends Controller
         if(count($alreadyCompleted) == 0) {
             $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
             $shortTermPlannerTask->completed = 1;
+            $shortTermPlannerTask->completed_at = date("Y-m-d");
             $shortTermPlannerTask->save();
             return 1;
         } else {
             $shortTermPlannerTask = WorkspaceShortTermPlannerTask::select("*")->where("id", $short_term_planner_task_id)->first();
             $shortTermPlannerTask->completed = 0;
+            $shortTermPlannerTask->completed_at = null;
             $shortTermPlannerTask->save();
             return 2;
         }
@@ -663,7 +665,7 @@ class WorkspaceController extends Controller
 
         $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("completed", 1)->whereIn("short_term_planner_board_id", $short_term_planner_boards_array)->get();
         foreach($short_term_planner_tasks as $short_term_planner_task){
-            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($short_term_planner_task->created_at)))){
+            if(strtotime($last24Hours) == strtotime(date("Y-m-d", strtotime($short_term_planner_task->completed_at)))){
                 $totalTasksCompletedLast24Hours++;
             }
         }
@@ -807,7 +809,7 @@ class WorkspaceController extends Controller
 
             $shortTermPlannerTasks = WorkspaceShortTermPlannerTask::select("*")->where("completed", 1)->where("short_term_planner_board_id", $board_id)->get();
             foreach ($shortTermPlannerTasks as $shortTermPlannerTask) {
-                if (strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($last24Hours)) {
+                if (strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->completed_at))) >= strtotime($last24Hours)) {
                     $totalTasksCompletedToday++;
                 }
             }
@@ -946,7 +948,7 @@ class WorkspaceController extends Controller
             }
 
             foreach ($totalTasksCompleted as $shortTermPlannerTask) {
-                if(strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) <= strtotime($timeSpan)) {
+                if(strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->completed_at))) >= strtotime($timeSpanLast) && strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) <= strtotime($timeSpan)) {
                     $totalTasksCompletedLastTimespan++;
                 }
             }
@@ -970,7 +972,7 @@ class WorkspaceController extends Controller
             }
 
             foreach ($totalTasksCompleted as $shortTermPlannerTask) {
-                if (strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->created_at))) >= strtotime($timeSpan)) {
+                if (strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->completed_at))) >= strtotime($timeSpan)) {
                     $totalTasksCompletedTimespanFilter++;
                 }
             }

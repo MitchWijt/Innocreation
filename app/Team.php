@@ -100,4 +100,24 @@ class Team extends Model
         return $bool;
     }
 
+    public function packageDetails(){
+        $teamPackage = TeamPackage::select("*")->where("team_id",$this->id)->first();
+        if($teamPackage){
+            return $teamPackage;
+        } else {
+            return false;
+        }
+    }
+
+
+    public function hasPaid(){
+        $amount = 0;
+        $payment = Payment::select("*")->where("team_id", $this->id)->orderBy('created_at', 'DESC')->First();
+
+
+
+
+
+    }
+
 }

@@ -17,6 +17,6 @@ class InviteRequestLinktable extends Model
     }
 
     public function teams(){
-        return $this->hasMany("\App\Team", "id","team_id");
+        return $this->hasOne("\App\Team", "id","team_id");
     }
 }

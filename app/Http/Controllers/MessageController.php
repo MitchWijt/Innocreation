@@ -55,6 +55,17 @@ class MessageController extends Controller
         $userChatId = $request->input("user_chat_id");
         $user_id = Session::get("user_id");
         $userChat = UserChat::select("*")->where("id", $userChatId)->first();
+        if($admin == 1){
+            $userMessages = UserMessage::select("*")->where("user_chat_id", $userChat->id)->where("sender_user_id", "!=", 1)->where("seen_at", null)->get();
+        } else {
+            $userMessages = UserMessage::select("*")->where("user_chat_id", $userChat->id)->where("sender_user_id", "!=", $user_id)->where("seen_at", null)->get();
+        }
+        if(count($userMessages) > 0) {
+            foreach ($userMessages as $userMessage) {
+                $userMessage->seen_at = date("Y-m-d H:i:s");
+                $userMessage->save();
+            }
+        }
         return view("/public/shared/_messagesUserChat", compact("user_id", "userChat", "admin"));
     }
 

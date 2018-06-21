@@ -1,5 +1,13 @@
 <?
     $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
+    $userChats = \App\UserChat::select("*")->where("creator_user_id", $user->id)->orWhere("receiver_user_id", $user->id)->get();
+    $counterMessages = 0;
+    if(count($userChats) > 0){
+        foreach($userChats as $userChat) {
+            $unreadMessages = \App\UserMessage::select("*")->where("user_chat_id", $userChat->id)->where("sender_user_id", "!=", $user->id)->where("seen_at" ,null)->get();
+            $counterMessages = $counterMessages + count($unreadMessages);
+        }
+    }
 ?>
 @notmobile
 <div class="sidebar">
@@ -45,7 +53,14 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-account/chats">Chat</a>
+        <div class="d-flex js-center">
+            <a class="regular-link c-gray m-r-10" href="/my-account/chats">Chat </a>
+            <? if(count($userChats) > 0 && $counterMessages > 0) { ?>
+                <div class="circle circleNotification c-orange text-center">
+                    <span><?= $counterMessages?></span>
+                </div>
+            <? } ?>
+        </div>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

@@ -283,20 +283,20 @@ class TeamController extends Controller
             $timeNow = date("H:i:s");
             $time = (date("g:i a", strtotime($timeNow)));
 
-            $existingUserChat = UserChat::select("*")->where("creator_user_id", $user_id)->where("receiver_user_id",  $request->teams->first()->ceo_user_id)->orWhere("creator_user_id",  $request->teams->first()->ceo_user_id)->where("receiver_user_id", $user_id)->get();
-            if(count($existingUserChat) > 0){
+            $existingUserChat = UserChat::select("*")->where("creator_user_id", $user_id)->where("receiver_user_id",  $invite->teams->ceo_user_id)->orWhere("creator_user_id",  $invite->teams->ceo_user_id)->where("receiver_user_id", $user_id)->get();
+            if(count($existingUserChat) < 1){
                 $userChat = new UserChat();
-                $userChat->creator_user_id = $request->teams->first()->ceo_user_id;
+                $userChat->creator_user_id = $invite->teams->ceo_user_id;
                 $userChat->receiver_user_id = $user_id;
                 $userChat->created_at = date("Y-m-d H:i:s");
                 $userChat->save();
 
                 $userChatId = $userChat->id;
             } else {
-                $userChatId = $existingUserChat->id;
+                $userChatId = $existingUserChat->First()->id;
             }
             $message = new UserMessage();
-            $message->sender_user_id = $request->teams->first()->ceo_user_id;
+            $message->sender_user_id = $invite->teams->ceo_user_id;
             $message->user_chat_id = $userChatId;
             $message->message = "Hey $userFirstName I have done an invite to you to join my team!";
             $message->time_sent = $time;
