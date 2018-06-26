@@ -94,8 +94,8 @@ function copyToClipboard(element) {
 //
 $(".toggleLink").on("click",function () {
     var copyElement = $(this).parents(".socials").find(".linkToCopy");
-    copyToClipboard(copyElement);
     $(this).parents(".socials").find(".shareCopyLink").toggle();
+    copyElement.select();
 });
 
 $(document).ready(function () {
@@ -109,11 +109,7 @@ $(document).ready(function () {
 $(".copyLinkIcon").on("click",function () {
     var notificaton = $(this).parents(".socials").find(".copiedLinkNotification");
     var copyElement = $(this).parents(".socials").find(".linkToCopy");
-    copyToClipboard(copyElement);
-    notificaton.fadeIn();
-    setTimeout(function(){
-        notificaton.fadeOut();
-    }, 1000);
+    copyElement.select();
 });
 
 $(".toggleComments").on("click",function () {

@@ -112,10 +112,27 @@ class Team extends Model
 
     public function hasPaid(){
         $amount = 0;
-        $payment = Payment::select("*")->where("team_id", $this->id)->orderBy('created_at', 'DESC')->First();
-
-
-
+        $from = date("Y-m-d", strtotime(" -1 month"));
+        $to = date("Y-m-d");
+        if($this->split_the_bill == 0) {
+            $payment = Payment::select("*")->where("team_id", $this->id)->orderBy('created_at', 'DESC')->First();
+            if ($payment->payment_status == "Settled") {
+                $amount = $payment->amount;
+            }
+        } else {
+            $payments = Payment::select("*")->where("team_id", $this->id)->whereBetween("created_at", array($from, $to))->get();
+            foreach($payments as $payment){
+                if ($payment->payment_status == "Settled") {
+                    $amount = $amount + $payment->amount;
+                }
+            }
+        }
+        $teamPackage = TeamPackage::select("*")->where("team_id", $this->id)->First();
+        if(number_format($amount, 2, ".", ".") >= number_format($teamPackage->price, 2, ".", ".")){
+            return true;
+        } else {
+            return false;
+        }
 
 
     }

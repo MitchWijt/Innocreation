@@ -16,6 +16,8 @@ class DebugController extends Controller
 {
     public function test(){
         if($this->authorized(true)){
+            $team = Team::select("*")->where("id", 4)->first();
+            dd($team->hasPaid());
 //            $user = User::select("*")->where("id", 10)->first();
 //            $team = Team::select("*")->where("id", 4)->first();
 //

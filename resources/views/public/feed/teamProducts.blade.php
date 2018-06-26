@@ -57,9 +57,8 @@
                                                 <span class="m-r-10 amountLikes"><?= $teamProduct->getLikes()?></span>
                                                 <span><i class="zmdi zmdi-share f-20 shareTeamProduct toggleModal" data-id="<?= $teamProduct->id?>" data-url="<?= $teamProduct->getUrl(true)?>"></i></span>
                                             <? } else { ?>
-                                                <p style="display: none" class="m-0 copiedLinkNotification"><i class="f-12 c-dark-grey">Link has been copied!</i></p>
                                                 <span><i class="zmdi zmdi-share f-20 shareTeamProduct toggleLink"></i></span>
-                                                <input type="text" class="input m-l-5 linkToCopy shareCopyLink hidden" disabled value="<?= $teamProduct->getUrl(true)?>">
+                                                <input type="text" class="input m-l-5 linkToCopy shareCopyLink hidden" readonly value="<?= $teamProduct->getUrl(true)?>">
                                                 <i class="zmdi zmdi-copy shareCopyLink hidden copyLinkIcon"></i>
                                             <? } ?>
                                             <p class="regular-link pull-right toggleComments" data-id="<?= $teamProduct->id?>"><?= count($teamProduct->getComments())?> <? if(count($teamProduct->getComments()) > 1) echo "comments"; else echo "comment";?></p>

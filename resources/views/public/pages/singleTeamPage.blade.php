@@ -126,14 +126,14 @@
                                                 <? if($user->team_id == null) { ?>
                                                     <? if($user->checkJoinRequests($neededExpertise->expertise_id, $team->id) == false) { ?>
                                                         <div class="col-sm-5">
-                                                            <? if(!$team->packageDetails()) { ?>
+                                                            <? if(!$team->packageDetails() || !$team->hasPaid()) { ?>
                                                                 <? if(count($team->getMembers()) >= 2) { ?>
                                                                     <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
                                                                 <? } else { ?>
                                                                     <button class="btn btn-inno openApplyModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
                                                                 <? } ?>
                                                             <? } else { ?>
-<!--                                                                --><?// if($team->hasPaid()) { ?>
+                                                               <? if($team->hasPaid()) { ?>
                                                                     <? if($team->packageDetails()->custom_team_package_id == null) { ?>
                                                                        <? if($team->packageDetails()->membershipPackage->id == 1) { ?>
                                                                             <? if(count($team->getMembers()) >= $team->packageDetails()->membershipPackage->members) { ?>
@@ -157,7 +157,7 @@
                                                                             <button class="btn btn-inno openApplyModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
                                                                         <? } ?>
                                                                     <? } ?>
-<!--                                                                --><?// } ?>
+                                                               <? } ?>
                                                            <? } ?>
                                                         </div>
                                                     <? } else { ?>
@@ -180,7 +180,7 @@
                                                                 <p><?= $neededExpertise->description?></p>
                                                             </div>
                                                             <div class="c-black">
-                                                                <h2 class="m-b-20">Requirements:</h2>
+                                                                <h4 class="m-b-10">Requirements:</h4>
                                                                 <ul>
                                                                 <? for($i = 0; $i < $counter; $i++) { ?>
                                                                     <li><?= $requiredArray[$i]?></li>
