@@ -150,7 +150,7 @@
                                                                         <? } ?>
                                                                     <? } ?>
                                                                <? } else { ?>
-                                                                <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                    <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
                                                                 <? } ?>
                                                            <? } ?>
                                                         </div>

@@ -134,9 +134,3 @@ $(".deleteChat").on("click",function () {
         });
     }
 });
-
-$(document).ready(function () {
-    setTimeout(function(){
-        $(".fly-in-text").removeClass("hidden");
-    }, 300);
-});
