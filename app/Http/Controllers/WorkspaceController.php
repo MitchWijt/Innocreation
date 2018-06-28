@@ -211,8 +211,9 @@ class WorkspaceController extends Controller
     public function workspaceShortTermPlannerOptionPicker(){
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
+        $workspaceShortTermPlanners = WorkspaceShortTermPlannerBoard::where("team_id", $team->id)->count();
         $workspaceShortTermPlannerTypes = WorkspaceShortTermPlannerType::select("*")->get();
-        return view("/public/team/workspace/workspaceShortTermPlannerOptionPicker", compact("team", "user", "workspaceShortTermPlannerTypes"));
+        return view("/public/team/workspace/workspaceShortTermPlannerOptionPicker", compact("team", "user", "workspaceShortTermPlannerTypes", "workspaceShortTermPlanners"));
     }
 
     public function addNewShortTermPlannerBoardAction(Request $request){

@@ -135,19 +135,11 @@
                                                             <? } else { ?>
                                                                <? if($team->hasPaid()) { ?>
                                                                     <? if($team->packageDetails()->custom_team_package_id == null) { ?>
-                                                                       <? if($team->packageDetails()->membershipPackage->id == 1) { ?>
-                                                                            <? if(count($team->getMembers()) >= $team->packageDetails()->membershipPackage->members) { ?>
-                                                                                <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
-                                                                            <? } else { ?>
-                                                                                <button class="btn btn-inno openApplyModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
-                                                                            <? } ?>
-                                                                        <? } else if($team->packageDetails()->membershipPackage->id == 2) { ?>
-                                                                            <? if(count($team->getMembers()) >= $team->packageDetails()->membershipPackage->members) { ?>
-                                                                                <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
-                                                                            <? } else { ?>
-                                                                                <button class="btn btn-inno openApplyModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
-                                                                            <? } ?>
-                                                                        <? } else if($team->packageDetails()->membershipPackage->id == 3) { ?>
+                                                                       <? if($team->packageDetails()->membershipPackage->id == 3) { ?>
+                                                                        <button class="btn btn-inno openApplyModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                        <? } else if(count($team->getMembers()) >= $team->packageDetails()->membershipPackage->members) { ?>
+                                                                            <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                        <? } else { ?>
                                                                             <button class="btn btn-inno openApplyModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
                                                                         <? } ?>
                                                                     <? } else { ?>
@@ -157,7 +149,9 @@
                                                                             <button class="btn btn-inno openApplyModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
                                                                         <? } ?>
                                                                     <? } ?>
-                                                               <? } ?>
+                                                               <? } else { ?>
+                                                                <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                <? } ?>
                                                            <? } ?>
                                                         </div>
                                                     <? } else { ?>

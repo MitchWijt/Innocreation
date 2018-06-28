@@ -79,7 +79,7 @@
                                                         <? if(in_array($expertise->expertise_id, $neededExpertisesArray)) { ?>
                                                             <? if($team->checkInvite($expertise->expertise_id, $team->id, $user->id) == false) { ?>
 
-                                                                <? if(!$team->packageDetails()) { ?>
+                                                                <? if(!$team->packageDetails() || !$team->hasPaid()) { ?>
                                                                     <? if(count($team->getMembers()) >= 2) { ?>
                                                                         <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
                                                                     <? } else { ?>
@@ -93,11 +93,9 @@
                                                                         </form>
                                                                     <? } ?>
                                                                     <? } else { ?>
-                                                                    <? if($team->packageDetails()->custom_team_package_id == null) { ?>
-                                                                        <? if($team->packageDetails()->membershipPackage->id == 1) { ?>
-                                                                            <? if(count($team->getMembers()) >= $team->packageDetails()->members) { ?>
-                                                                                <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5 ">Invite user to my team</button>
-                                                                            <? } else { ?>
+                                                                    <? if($team->hasPaid()) { ?>
+                                                                        <? if($team->packageDetails()->custom_team_package_id == null) { ?>
+                                                                            <? if($team->packageDetails()->membershipPackage->id == 3) { ?>
                                                                                 <form action="/my-team/inviteUserForTeam" method="post">
                                                                                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                                                                     <input type="hidden" name="invite" value="1">
@@ -106,9 +104,7 @@
                                                                                     <input type="hidden" name="user_id" value="<?= $user->id?>">
                                                                                     <button class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
                                                                                 </form>
-                                                                            <? } ?>
-                                                                        <? } else if($team->packageDetails()->membershipPackage->id == 2) { ?>
-                                                                            <? if(count($team->getMembers()) >= $team->packageDetails()->membershipPackage->members) { ?>
+                                                                            <? } else if(count($team->getMembers()) >= $team->packageDetails()->membershipPackage->members) { ?>
                                                                                 <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
                                                                             <? } else { ?>
                                                                                 <form action="/my-team/inviteUserForTeam" method="post">
@@ -120,29 +116,22 @@
                                                                                     <button class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
                                                                                 </form>
                                                                             <? } ?>
-                                                                        <? } else if($team->packageDetails()->membershipPackage->id == 3) { ?>
-                                                                            <form action="/my-team/inviteUserForTeam" method="post">
-                                                                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                                                                <input type="hidden" name="invite" value="1">
-                                                                                <input type="hidden" name="team_id" value="<?= $team->id?>">
-                                                                                <input type="hidden" name="expertise_id" value="<?= $expertise->expertise_id?>">
-                                                                                <input type="hidden" name="user_id" value="<?= $user->id?>">
-                                                                                <button class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
-                                                                            </form>
+                                                                        <? } else { ?>
+                                                                            <? if(count($team->getMembers()) >= $team->packageDetails()->customTeamPackage->members && $team->packageDetails()->customTeamPackage->members != "unlimited") { ?>
+                                                                                <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
+                                                                            <? } else { ?>
+                                                                                <form action="/my-team/inviteUserForTeam" method="post">
+                                                                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                                                    <input type="hidden" name="invite" value="1">
+                                                                                    <input type="hidden" name="team_id" value="<?= $team->id?>">
+                                                                                    <input type="hidden" name="expertise_id" value="<?= $expertise->expertise_id?>">
+                                                                                    <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                                                                    <button class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
+                                                                                </form>
+                                                                            <? } ?>
                                                                         <? } ?>
                                                                     <? } else { ?>
-                                                                        <? if(count($team->getMembers()) >= $team->packageDetails()->customTeamPackage->members && $team->packageDetails()->customTeamPackage->members != "unlimited") { ?>
-                                                                            <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
-                                                                        <? } else { ?>
-                                                                            <form action="/my-team/inviteUserForTeam" method="post">
-                                                                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                                                                <input type="hidden" name="invite" value="1">
-                                                                                <input type="hidden" name="team_id" value="<?= $team->id?>">
-                                                                                <input type="hidden" name="expertise_id" value="<?= $expertise->expertise_id?>">
-                                                                                <input type="hidden" name="user_id" value="<?= $user->id?>">
-                                                                                <button class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
-                                                                            </form>
-                                                                        <? } ?>
+                                                                        <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
                                                                     <? } ?>
                                                                 <? } ?>
                                                             <? } else { ?>

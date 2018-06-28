@@ -12,6 +12,71 @@
                 <h1 class="sub-title-black">Choose your option</h1>
             </div>
             <hr class="m-b-20">
+            <? if(!$team->packageDetails() || !$team->hasPaid()) { ?>
+                <? if($workspaceShortTermPlanners >= 1) { ?>
+                    <div class="row d-flex js-center p-b-20">
+                        <div class="col-md-8">
+                            <div class="card card-lg text-center">
+                                <div class="card-block m-t-20">
+                                    <p class="m-b-0">We're sorry to say that your team has reached its max planner capacity in your package.</p>
+                                    <p class="m-b-0">In order to keep creating more innovative products and create your ideas way quiker.</p>
+                                    <p>You can take a look <a class="regular-link" href="/pricing">here</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <? } ?>
+            <? } else { ?>
+                <? if($team->hasPaid()) { ?>
+                    <? if($team->packageDetails()->custom_team_package_id == null) { ?>
+                    <? if($team->packageDetails()->membershipPackage->id == 3) { ?>
+                        {{--//--}}
+                        <? } else if($workspaceShortTermPlanners >= $team->packageDetails()->membershipPackage->planners) { ?>
+                            <div class="row d-flex js-center p-b-20">
+                                <div class="col-md-8">
+                                    <div class="card card-lg text-center">
+                                        <div class="card-block m-t-20">
+                                            <p class="m-b-0">We're sorry to say that your team has reached its max planner capacity in your package.</p>
+                                            <p class="m-b-0">In order to keep creating more innovative products and create your ideas way quiker.</p>
+                                            <p>You can take a look <a class="regular-link" href="/pricing">here</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <? } else { ?>
+                            {{--//--}}
+                        <? } ?>
+                    <? } else { ?>
+                        <? if($workspaceShortTermPlanners >= $team->packageDetails()->customTeamPackage->planners && $team->packageDetails()->customTeamPackage->planners != "unlimited") { ?>
+                            <div class="row d-flex js-center p-b-20">
+                                <div class="col-md-8">
+                                    <div class="card card-lg text-center">
+                                        <div class="card-block m-t-20">
+                                            <p class="m-b-0">We're sorry to say that your team has reached its max planner capacity in your package.</p>
+                                            <p class="m-b-0">In order to keep creating more innovative products and create your ideas way quiker.</p>
+                                            <p>You can take a look <a class="regular-link" href="/pricing">here</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <? } else { ?>
+                            {{--//--}}
+                        <? } ?>
+                    <? } ?>
+                <? } else { ?>
+                    <div class="row d-flex js-center p-b-20">
+                        <div class="col-md-8">
+                            <div class="card card-lg text-center">
+                                <div class="card-block m-t-20">
+                                    <p class="m-b-0">We're sorry to say that your team has reached its max planner capacity in your package.</p>
+                                    <p class="m-b-0">In order to keep creating more innovative products and create your ideas way quiker.</p>
+                                    <p>You can take a look <a class="regular-link" href="/pricing">here</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <? } ?>
+            <? } ?>
             <div class="row d-flex js-center p-b-20">
                 <? foreach($workspaceShortTermPlannerTypes as $workspaceShortTermPlannerType ) { ?>
                 <? $instructions = explode(",",$workspaceShortTermPlannerType->information);
@@ -38,7 +103,33 @@
                                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                     <input type="hidden" name="team_id" value="<?= $team->id?>">
                                     <input type="hidden" name="short_term_planner_type" value="<?= $workspaceShortTermPlannerType->id?>">
-                                    <button class="btn btn-inno">Create <?= $workspaceShortTermPlannerType->title?></button>
+                                    <? if(!$team->packageDetails() || !$team->hasPaid()) { ?>
+                                        <? if($workspaceShortTermPlanners >= 1) { ?>
+                                            <button class="btn btn-inno" disabled>Create <?= $workspaceShortTermPlannerType->title?></button>
+                                        <? } else { ?>
+                                            <button class="btn btn-inno">Create <?= $workspaceShortTermPlannerType->title?></button>
+                                        <? } ?>
+                                    <? } else { ?>
+                                        <? if($team->hasPaid()) { ?>
+                                            <? if($team->packageDetails()->custom_team_package_id == null) { ?>
+                                                <? if($team->packageDetails()->membershipPackage->id == 3) { ?>
+                                                    <button class="btn btn-inno">Create <?= $workspaceShortTermPlannerType->title?></button>
+                                                <? } else if($workspaceShortTermPlanners >= $team->packageDetails()->membershipPackage->planners) { ?>
+                                                    <button class="btn btn-inno" disabled>Create <?= $workspaceShortTermPlannerType->title?></button>
+                                                <? } else { ?>
+                                                    <button class="btn btn-inno">Create <?= $workspaceShortTermPlannerType->title?></button>
+                                                <? } ?>
+                                            <? } else { ?>
+                                                <? if($workspaceShortTermPlanners >= $team->packageDetails()->customTeamPackage->planners && $team->packageDetails()->customTeamPackage->planners != "unlimited") { ?>
+                                                    <button class="btn btn-inno" disabled>Create <?= $workspaceShortTermPlannerType->title?></button>
+                                                <? } else { ?>
+                                                    <button class="btn btn-inno">Create <?= $workspaceShortTermPlannerType->title?></button>
+                                                <? } ?>
+                                            <? } ?>
+                                        <? } else { ?>
+                                            <button class="btn btn-inno" disabled>Create <?= $workspaceShortTermPlannerType->title?></button>
+                                        <? } ?>
+                                    <? } ?>
                                 </form>
                             </div>
                         </div>
