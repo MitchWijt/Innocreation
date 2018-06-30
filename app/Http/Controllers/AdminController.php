@@ -547,6 +547,11 @@ class AdminController extends Controller
             $packageId = $request->input("package_id");
             $title = $request->input("title");
             $price = $request->input("price");
+            $members = $request->input("members");
+            $planners = $request->input("planners");
+            $meetings = $request->input("meetings");
+            $dashboard = $request->input("dashboard");
+            $newsletter = $request->input("newsletter");
             $description = $request->input("description");
 
             if($packageId){
@@ -557,6 +562,11 @@ class AdminController extends Controller
             $membershipPackage->title = $title;
             $membershipPackage->description = $description;
             $membershipPackage->price = $price;
+            $membershipPackage->members = $members;
+            $membershipPackage->planners = $planners;
+            $membershipPackage->meetings = $meetings;
+            $membershipPackage->dashboard = $dashboard;
+            $membershipPackage->newsletter = $newsletter;
             $membershipPackage->save();
             return redirect($_SERVER["HTTP_REFERER"])->with("success", "Package $membershipPackage->title saved");
         }

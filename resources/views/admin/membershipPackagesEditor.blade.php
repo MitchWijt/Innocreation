@@ -34,6 +34,46 @@
                                         <div class="col-sm-12 m-t-10 m-b-20">
                                             <textarea name="description" class="col-sm-12 input" cols="30" rows="10"><?= $membershipPackage->description?></textarea>
                                         </div>
+                                        <div class="row m-l-5">
+                                            <div class="col-sm-2">
+                                                <label for="">Members</label>
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="members" class="input col-sm-2" value="<?= $membershipPackage->members?>">
+                                            </div>
+                                        </div>
+                                        <div class="row m-l-5">
+                                            <div class="col-sm-2">
+                                                <label for="">Planners</label>
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="planners" class="input col-sm-2" value="<?= $membershipPackage->planners?>">
+                                            </div>
+                                        </div>
+                                        <div class="row m-l-5">
+                                            <div class="col-sm-2">
+                                                <label for="">Meetings</label>
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="meetings" class="input col-sm-2" value="<?= $membershipPackage->meetings?>">
+                                            </div>
+                                        </div>
+                                        <div class="row m-l-5">
+                                            <div class="col-sm-2">
+                                                <label for="">dashboard</label>
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="dashboard" class="input col-sm-2" value="<?= $membershipPackage->dashboard?>">
+                                            </div>
+                                        </div>
+                                        <div class="row m-l-5 m-b-20">
+                                            <div class="col-sm-2">
+                                                <label for="">newsletter</label>
+                                            </div>
+                                            <div class="col-sm-10">
+                                                <input type="text" name="newsletter" class="input col-sm-2" value="<?= $membershipPackage->newsletter?>">
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -62,6 +102,46 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <button class="btn btn-inno pull-right">Save</button>
+                                    </div>
+                                </div>
+                                <div class="row m-l-5">
+                                    <div class="col-sm-2">
+                                        <label for="">Members</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="members" class="input col-sm-2" value="">
+                                    </div>
+                                </div>
+                                <div class="row m-l-5">
+                                    <div class="col-sm-2">
+                                        <label for="">Planners</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="planners" class="input col-sm-2" value="">
+                                    </div>
+                                </div>
+                                <div class="row m-l-5">
+                                    <div class="col-sm-2">
+                                        <label for="">Meetings</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="meetings" class="input col-sm-2" value="">
+                                    </div>
+                                </div>
+                                <div class="row m-l-5">
+                                    <div class="col-sm-2">
+                                        <label for="">dashboard</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="dashboard" class="input col-sm-2" value="">
+                                    </div>
+                                </div>
+                                <div class="row m-l-5 m-b-20">
+                                    <div class="col-sm-2">
+                                        <label for="">newsletter</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="newsletter" class="input col-sm-2" value="">
                                     </div>
                                 </div>
                             </form>
