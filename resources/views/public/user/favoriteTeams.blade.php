@@ -15,15 +15,17 @@
             <? foreach($favoriteTeams as $favoriteTeam) { ?>
                 <div class="row d-flex js-center m-b-20">
                     <div class="col-md-9">
-                        <div class="card card-lg text-center">
+                        <div class="card card-lg ">
                             <div class="card-block">
-                                <div class="row m-t-20  ">
-                                        <div class="col-sm-3">
+                                <div class="row m-t-20">
+                                        <div class="col-sm-4 text-center">
                                             <img class="circle circleImage m-0" src="<?= $favoriteTeam->team->getProfilePicture()?>" alt="<?= $favoriteTeam->team->team_name?>">
                                             <p class="m-t-10"><?= $favoriteTeam->team->team_name?></p>
                                         </div>
-                                    <div class="col-sm-9 p-r-30">
-                                        <h4>Team motivation</h4>
+                                    <div class="col-sm-8 p-r-30">
+                                        <div class="text-center">
+                                            <h4>Team motivation</h4>
+                                        </div>
                                         <hr>
                                         <p><?= $favoriteTeam->team->team_motivation?></p>
                                     </div>
