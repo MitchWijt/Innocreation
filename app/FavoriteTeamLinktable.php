@@ -8,11 +8,11 @@ class FavoriteTeamLinktable extends Model
 {
     public $table = "favorite_teams_linktable";
 
-    public function users(){
-        return $this->hasMany("\App\User", "id","user_id");
+    public function user(){
+        return $this->hasOne("\App\User", "id","user_id");
     }
 
-    public function teams(){
-        return $this->hasMany("\App\Team", "id","team_id");
+    public function team(){
+        return $this->hasOne("\App\Team", "id","team_id");
     }
 }

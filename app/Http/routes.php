@@ -113,6 +113,10 @@ Route::post("/user/rateSupportTicket","UserController@rateSupportTicketAction");
 
 Route::post("/user/addSupportTicket","UserController@addSupportTicketAction");
 
+//favorite teams
+Route::get("/user/favorite-teams","UserController@favoriteTeamsAction");
+
+
 //==============================SEARCHTEAMSPAGE========================
 
 Route::get("/teams", "TeamSearchController@index");

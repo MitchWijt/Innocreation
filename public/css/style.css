@@ -269,7 +269,8 @@ footer{
     height: 200px;
     overflow: scroll;
     position: absolute !important;
-    top: 485px !important;
+    top: 60px !important;
+    z-index: 1;
 }
 
 .ui-menu-item-wrapper{
@@ -285,7 +286,7 @@ footer{
 }
 
 .tokenfield{
-    padding-bottom: 0 !important;
+    padding: 10px;
 }
 /*DATEPICKER*/
 

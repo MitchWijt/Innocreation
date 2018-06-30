@@ -685,4 +685,13 @@ class UserController extends Controller
             return redirect($_SERVER["HTTP_REFERER"]);
         }
     }
+
+    public function favoriteTeamsAction(){
+        if($this->authorized()) {
+            $userId = Session::get("user_id");
+            $favoriteTeams = FavoriteTeamLinktable::select("*")->where("user_id", $userId)->get();
+
+            return view("/public/user/favoriteTeams", compact("favoriteTeams"));
+        }
+    }
 }

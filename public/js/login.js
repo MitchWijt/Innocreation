@@ -9,3 +9,11 @@ $(".toLogin").on("click",function () {
     $(".registerForm").addClass("hidden");
     $(".loginForm").removeClass("hidden");
 });
+
+$(document).ready(function () {
+   $(".ui-menu").appendTo(".expertises");
+   $(".token-input").attr("style", "");
+
+   $(".tokenfield").removeClass("form-control");
+   $(".tokenfield").addClass("col-sm-9");
+});
