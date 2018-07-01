@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="col-sm-12 @mobile m-t-10 m-b-20 @endmobile">
                                     <div class="text-center ">
-                                        <button class="btn btn-inno @tablet btn-sm @endtablet">Choose</button>
+                                        <a href="/becoming-a-<?= lcfirst($membershipPackage->title)?>" class="btn btn-inno @tablet btn-sm @endtablet">Choose</a>
                                     </div>
                                 </div>
                             </div>

@@ -13,7 +13,6 @@
 <div class="sidebar">
     <div class="text-center">
         <p class="c-gray f-20 text-center m-0"><?= \Illuminate\Support\Facades\Session::get("user_name")?></p>
-        <span class="c-orange f-12 m-0">(expertises)</span>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
@@ -77,7 +76,6 @@
                 <div class="sidebar">
                     <div class="text-center">
                         <p class="c-gray f-20 text-center m-0"><?= \Illuminate\Support\Facades\Session::get("user_name")?></p>
-                        <span class="c-orange f-12 m-0">(expertises)</span>
                     </div>
                     <hr>
                     <div class="sidebar-tab text-center">

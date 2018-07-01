@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Request;
 use App\User;
 use Redirect;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -78,6 +79,14 @@ class Controller extends BaseController
         $mailMessage->message = $message;
         $mailMessage->created_at = date("Y-m-d");
         $mailMessage->save();
+    }
+
+    public function getControllerName(){
+        $fullRoute = request()->route()->getAction()["controller"];
+        $explode1 = explode("\\", $fullRoute);
+        $explode2 = explode("@", $explode1[3]);
+        $controller = $explode2[0];
+        return $controller;
     }
 }
 

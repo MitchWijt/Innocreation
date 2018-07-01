@@ -25,12 +25,13 @@ class LoginController extends Controller
     {
         $countries = Country::select("*")->orderBy("country")->get();
         $expertises = Expertises::select("*")->get();
+        $pageType = "default";
         if(request()->has('register')){
             $urlParameter = request()->register;
-            return view("public/register/login", compact("countries", "expertises", "urlParameter"));
+            return view("public/register/login", compact("countries", "expertises", "urlParameter", "pageType"));
 
         } else {
-            return view("public/register/login", compact("countries", "expertises"));
+            return view("public/register/login", compact("countries", "expertises", "pageType"));
         }
     }
 
@@ -123,7 +124,11 @@ class LoginController extends Controller
 
                 $this->saveAndSendEmail($user, 'Welcome to Innocreation!', view("/templates/sendWelcomeMail", compact("user")));
 
-                return redirect("/account");
+                if($request->input("pageType") && $request->input("pageType") == "checkout"){
+                    return redirect($request->input("backlink"));
+                } else {
+                    return redirect("/account");
+                }
             } else {
                 return redirect($_SERVER["HTTP_REFERER"])->with('success', 'Account created');
             }
@@ -144,7 +149,6 @@ class LoginController extends Controller
             'email' => 'required',
             'password' => 'required'
         ]);
-
         $email = $request->get('email');
         $password = $request->get('password');
         if(Auth::attempt(['email'=>$email,'password'=>$password])) {
@@ -159,7 +163,11 @@ class LoginController extends Controller
                 Session::set('team_id', $user->team_id);
                 Session::set("team_name", $user->team->first()->team_name);
             }
-            return redirect("/account");
+            if($request->input("pageType") && $request->input("pageType") == "checkout"){
+                return redirect($request->input("backlink"));
+            } else {
+                return redirect("/account");
+            }
         } else {
             return redirect($_SERVER["HTTP_REFERER"])->withErrors('It seems that you have logged in with the wrong credentials. Please try again.');
         }

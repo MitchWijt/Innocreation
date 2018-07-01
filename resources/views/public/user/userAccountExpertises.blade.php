@@ -59,47 +59,46 @@
                     </div>
                 </div>
             <? } ?>
-        </div>
-    </div>
-
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header d-flex js-center">
-                    <h2 class="modal-title text-center" id="modalLabel">Add your expertise</h2>
-                </div>
-                <div class="modal-body ">
-                    <form action="/my-account/addUserExpertise" method="post">
-                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                        <input type="hidden" name="user_id" value="<?= $user_id?>">
-                        <p class="f-19">Expertise: </p>
-                        <div class="row">
-                            <div class="col-sm-12 text-center m-b-15">
-                                <select name="expertise" class="input col-sm-12">
-                                    <? foreach($expertises as $expertise) { ?>
-                                        <? if(!in_array($expertise->id, $chosenExpertisesArray)) { ?>
-                                            <option value="<?= $expertise->id?>"><?= $expertise->title?></option>
-                                        <? } ?>
-                                    <? } ?>
-                                </select>
-                            </div>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header d-flex js-center">
+                            <h2 class="modal-title text-center" id="modalLabel">Add your expertise</h2>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <p class="f-19">Expertise experience: </p>
-                            </div>
+                        <div class="modal-body ">
+                            <form action="/my-account/addUserExpertise" method="post">
+                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                <input type="hidden" name="user_id" value="<?= $user_id?>">
+                                <p class="f-19">Expertise: </p>
+                                <div class="row">
+                                    <div class="col-sm-12 text-center m-b-15">
+                                        <select name="expertise" class="input col-sm-12">
+                                            <? foreach($expertises as $expertise) { ?>
+                                                <? if(!in_array($expertise->id, $chosenExpertisesArray)) { ?>
+                                                    <option value="<?= $expertise->id?>"><?= $expertise->title?></option>
+                                                <? } ?>
+                                            <? } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="f-19">Expertise experience: </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 text-center">
+                                        <textarea name="expertise_description" placeholder="Write down your experience with this expertise" class="input col-sm-12" rows="10"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-inno pull-right m-t-10">Add expertise</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-12 text-center">
-                                <textarea name="expertise_description" placeholder="Write down your experience with this expertise" class="input" cols="76" rows="10"></textarea>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <button class="btn btn-inno pull-right m-t-10">Add expertise</button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

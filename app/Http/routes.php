@@ -496,6 +496,12 @@ Route::get("/team-product/{slug?}", "FeedController@TeamProductsAction");
 
 Route::get("/pricing", "CheckoutController@pricingAction");
 
+Route::get("/becoming-a-{title}", "CheckoutController@selectPackageAction");
+
+Route::post("/checkout/saveUserFromCheckout", "CheckoutController@saveUserFromCheckoutAction");
+
+Route::post("/checkout/packagePricePreference", "CheckoutController@packagePricePreferenceAction");
+
 
 
 

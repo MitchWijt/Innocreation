@@ -6,19 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf_token" content="{{ csrf_token() }}" />
     {{--JS--}}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="/js/jquery.easing.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="/js/jquery.easing.min.js"></script>
     {{--<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>--}}
     {{--CSS--}}
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/general.css">
-    <link rel="stylesheet" href="/css/activityTimeline.css">
-    <link rel="stylesheet" href="/css/checkout/pricing.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/general.css">
+        <link rel="stylesheet" href="/css/activityTimeline.css">
+        <link rel="stylesheet" href="/css/checkout/pricing.css">
+        <link rel="stylesheet" href="/css/checkout/selectPackage.css">
     {{--CSS PLUGINS--}}
-    <link rel="stylesheet" href="/assets/build/content-tools.min.css">
-    <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
-    <link rel="stylesheet" href="/css/jquery-ui-min.css">
-    <link rel="stylesheet" href="/css/jquery.timepicker.css">
+        <link rel="stylesheet" href="/assets/build/content-tools.min.css">
+        <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
+        <link rel="stylesheet" href="/css/jquery-ui-min.css">
+        <link rel="stylesheet" href="/css/jquery.timepicker.css">
     {{------------------------}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
@@ -32,20 +33,27 @@
         <script src="/js/jquery-ui.min.js"></script>
         <script defer src="/js/fontawesome-all.js"></script>
         <script defer src="/js/jquery.timepicker.min.js"></script>
-        {{--ANIMATION--}}
-            <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
-            <script src="/assets/innocreation-animation.js"></script>
-            <script src="/assets/animation.js"></script>
-        {{--==============--}}
+    {{--ANIMATION--}}
+        <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+        <script src="/assets/innocreation-animation.js"></script>
+        <script src="/assets/animation.js"></script>
+    {{--==============--}}
         <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=i4hrh8gzmh7fted3hqpgatcuwma8kl075x378rgkki09j852"></script>
     {{------------------------------}}
     <title>Innocreation</title>
 </head>
 <body>
-@include('includes.header')
+<? if(!isset($pageType) || $pageType != "checkout") { ?>
+    @include('includes.header')
+<? } else { ?>
+    @include('includes.headerCheckout')
+<? } ?>
 {{--@include('includes/flash')--}}
 @yield('content')
 @yield('pagescript')
-@include('includes/footer')
+<? if(!isset($pageType) || $pageType != "checkout") { ?>
+    @include('includes/footer')
+<? } ?>
+
 </body>
 </html>
