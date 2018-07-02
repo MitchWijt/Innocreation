@@ -146,9 +146,18 @@ class CheckoutController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function setSplitTheBillDataAction(Request $request) {
+        Session::forget("splitTheBillData");
+        $teamId = $request->input("teamId");
+        $userIds = $request->input("userIds");
+        $prices = $request->input("prices");
+        for($i = 0; $i < count($userIds); $i++){
+            $splitTheBillArray[$userIds[$i]] = $prices[$i];
+        }
+        Session::set("splitTheBillData", $splitTheBillArray);
+        $team = Team::select("*")->where("id", $teamId)->first();
+        $team->split_the_bill = 1;
+        $team->save();
     }
 
     /**

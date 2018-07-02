@@ -502,6 +502,8 @@ Route::post("/checkout/saveUserFromCheckout", "CheckoutController@saveUserFromCh
 
 Route::post("/checkout/packagePricePreference", "CheckoutController@packagePricePreferenceAction");
 
+Route::post("/checkout/setSplitTheBillData", "CheckoutController@setSplitTheBillDataAction");
+
 
 
 

@@ -18,7 +18,7 @@ class MembershipPackage extends Model
         }
 
         if($yearly){
-            $response = ($response) * 12 - 25;
+            $response = ($response) * 12 - 25 . ".00";
         }
         return $response;
     }

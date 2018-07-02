@@ -142,12 +142,12 @@
                                             </div>
                                         </form>
                                     <? } ?>
-                                <? } else { ?>
+                                <? } else if($step == 2) { ?>
                                     <div class="text-center m-t-10">
                                         <h5>Payment info</h5>
                                         <hr>
                                     </div>
-                                    <form action="">
+                                    <form action="/checkout/savePaymentInfo" method="post" class="savePaymentInfoForm">
                                         <div class="row">
                                             <div class="col-sm-5">
                                                 <label for="">Payment preference:</label>
@@ -173,13 +173,44 @@
                                         <? } ?>
                                         <div class="row">
                                             <div class="col-sm-12 m-t-10 m-b-15">
-                                                <button class="btn btn-inno btn-sm pull-right">Next step</button>
+                                                <button class="btn btn-inno btn-sm pull-right toStep3" type="button">Next step</button>
                                             </div>
                                         </div>
                                     </form>
                                 <? } ?>
                             </div>
                         </div>
+                        <? if(isset($team) && isset($user) && count($team->getMembers()) > 1) { ?>
+                            <div id="splitTheBillCollapse" class="collapse collapseExample card-sm shadow no-hover col-sm-12 m-t-0 splitTheBillCard">
+                                <div class="card-block">
+                                    <div class="text-center m-t-15">
+                                        <h5>Split the bill</h5>
+                                        <hr>
+                                    </div>
+                                    <i class="c-dark-grey">Amount left to split: <i class="packagePrice totalPrice"><?= $membershipPackage->getPrice()?></i></i>
+                                    <button class="btn btn-sm btn-inno pull-right m-b-20 m-t-5 splitEqually">Split equally</button>
+                                    <? foreach($team->getMembers() as $member) { ?>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <p><?= $member->firstname?></p>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-6 p-r-0">
+                                                        <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
+                                                        <input class="input pull-right splittedAmountMember col-sm-12" type="text" data-member-id="<?= $member->id?>" name="splittedAmount" value="">
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <span class="packagePreference">/Monthly</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <? } ?>
+                                    <span class="c-red splitError"></span>
+                                </div>
+                            </div>
+                        <? } ?>
                         <? if(!isset($user) && $step == 1){ ?>
                             <div id="accountCollapse" class="collapse collapseExample card-sm shadow no-hover col-sm-12 m-t-0 accountCard">
                                 <div class="card-block">
