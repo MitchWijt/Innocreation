@@ -62,6 +62,7 @@ $(".splitEqually").on("click",function () {
         $(this).val(splittedAmount);
     });
     $(".splitError").text("");
+    $(".amountExceeded").addClass("hidden");
 
 });
 
@@ -79,11 +80,22 @@ $(".splittedAmountMember").on("keyup",function () {
     var amountLeft = totalPrice - amountSplitted;
     if(amountLeft < 0){
         $(".splitError").text("You exceeded your split limit. please alter the amount");
+        var exceededAmount = amountLeft;
+        $(".exceededAmount").text(exceededAmount.toFixed(2));
+        $(".amountExceeded").removeClass("hidden");
+        $(".toStep3").attr("disabled", true);
         amountLeft = 0;
     } else if(amountLeft > totalPrice){
         $(".splitError").text("You exceeded your split limit. please alter the amount");
+        $(".toStep3").attr("disabled", true);
     } else {
         $(".splitError").text("");
+        $(".amountExceeded").addClass("hidden");
+        $(".toStep3").attr("disabled", false);
+    }
+    if(amountLeft != 0){
+        $(".splitError").text("Please split the whole price");
+        $(".toStep3").attr("disabled", true);
     }
     $(".totalPrice").text(amountLeft.toFixed(2));
 });
@@ -110,7 +122,7 @@ $(".toStep3").on("click",function () {
             url: "/checkout/setSplitTheBillData",
             data: {'userIds': userIds, "prices": prices, "teamId" : teamId},
             success: function (data) {
-                // $(".savePaymentInfoForm").submit();
+                $(".savePaymentInfoForm").submit();
             }
         });
     } else {

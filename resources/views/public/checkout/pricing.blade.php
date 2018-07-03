@@ -18,7 +18,7 @@
                         <div class="card @desktop <? if($membershipPackage->id == 1 || $membershipPackage->id == 3) echo "card-small-price"; else echo "card-populair-price"?> @elsehandheld  @tablet<? if($membershipPackage->id == 1 || $membershipPackage->id == 3) echo "card-small-price-tablet"; else echo "card-populair-price-tablet"?>@elsemobile <?= "m-b-20"?>@endtablet @enddesktop no-hover">
                             <div class="card-block">
                                 <div class="text-center">
-                                    <p class="f-20 m-t-15"><?= $membershipPackage->title?></p>
+                                    <p class="f-20 m-t-15"><?= str_replace("-", " ", $membershipPackage->title) ?></p>
                                 </div>
                                 <hr>
                                 <ul class="instructions-list @tablet <? if($membershipPackage->id == 3) echo "m-b-0"?> @endtablet">
@@ -51,76 +51,81 @@
                     </div>
                 <? } ?>
             </div>
-            <div class="row m-t-20 d-flex">
-                <div class="col-sm-8 @notmobile p-l-0 @endnotmobile ">
-                    <div class="card col-sm-12 m-b-20">
-                        <div class="card-block">
-                            <div class="row">
-                                <div class="col-sm-12 d-flex js-between">
-                                    <p class="f-20 m-b-5 m-t-5">Custom dreamer package</p>
+            <form action="/checkout/setDataCustomPackage" method="post">
+                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                <div class="row m-t-20 d-flex">
+                    <div class="col-sm-8 @notmobile p-l-0 @endnotmobile ">
+                        <div class="card col-sm-12 m-b-20">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-sm-12 d-flex js-between">
+                                        <p class="f-20 m-b-5 m-t-5">Custom dreamer package</p>
+                                    </div>
+                                    <div class="hr"></div>
                                 </div>
-                                <div class="hr"></div>
-                            </div>
-                            <div class="m-t-20">
-                                <? foreach($customMembershipPackageTypes as $customMembershipPackageType) { ?>
-                                    <? if($customMembershipPackageType->title != "Create team newsletters") { ?>
-                                        <div class="col-sm-12 d-flex  customSelect">
-                                            <div class="col-sm-9">
-                                            <select name="amount" class="input amount">
-                                                <option selected disabled="">Choose amount</option>
-                                                <? foreach($customMembershipPackageType->getCustomPackages() as $customPackage) { ?>
-                                                    <option value="<?= $customPackage->option?>" data-price="<?= $customPackage->price?>"><?= $customPackage->option?></option>
-                                                <? } ?>
-                                            </select>
+                                <div class="m-t-20">
+                                    <? foreach($customMembershipPackageTypes as $customMembershipPackageType) { ?>
+                                        <? if($customMembershipPackageType->title != "Create team newsletters") { ?>
+                                            <div class="col-sm-12 d-flex  customSelect">
+                                                <div class="col-sm-9">
+                                                    <input type="hidden" name="types[]" value="<?= $customMembershipPackageType->id?>">
+                                                    <select name="amountValues[]" class="input amount">
+                                                        <option selected disabled="">Choose amount</option>
+                                                        <? foreach($customMembershipPackageType->getCustomPackages() as $customPackage) { ?>
+                                                            <option value="<?= $customPackage->option?>" data-price="<?= $customPackage->price?>"><?= $customPackage->option?></option>
+                                                        <? } ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <p class="titleCustom"><?= $customMembershipPackageType->title?></p>
+                                                </div>
                                             </div>
-                                            <div class="col-sm-3">
-                                                <p class="titleCustom"><?= $customMembershipPackageType->title?></p>
-                                            </div>
-                                        </div>
+                                        <? } ?>
                                     <? } ?>
-                                <? } ?>
-                            </div>
-                            <div class="col-sm-12 d-flex customSelectNewsletter">
-                                <div class="col-sm-9">
-                                    <select name="amount" class="input newsLetter">
-                                        <option selected disabled="">Choose option</option>
-                                        <option value="1" data-price="2">Yes</option>
-                                        <option value="0" data-price="2">No</option>
-                                    </select>
                                 </div>
-                                <div class="col-sm-3">
-                                    <p class="titleCustom">Create team newsletters</p>
+                                <div class="col-sm-12 d-flex customSelectNewsletter">
+                                    <div class="col-sm-9">
+                                        <input type="hidden" name="types[]" value="4">
+                                        <select name="amountValues[]" class="input newsLetter">
+                                            <option selected disabled="">Choose option</option>
+                                            <option value="1" data-price="2">Yes</option>
+                                            <option value="0" data-price="2">No</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p class="titleCustom">Create team newsletters</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-4 @notmobile p-l-0 @endnotmobile m-b-20">
-                    <div class="card col-sm-12 ">
-                        <div class="card-block p-relative">
-                            <div class="recentChosen">
-                                <input type="hidden" class="recentMemberOption" data-recent-price="" value="">
-                                <input type="hidden" class="recentTaskOption" data-recent-price="" value="">
-                                <input type="hidden" class="recentMeetingOption" data-recent-price="" value="">
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <p class="f-20 m-t-15 text-center">Custom</p>
+                    <div class="col-sm-4 @notmobile p-l-0 @endnotmobile m-b-20">
+                        <div class="card col-sm-12 ">
+                            <div class="card-block p-relative">
+                                <div class="recentChosen">
+                                    <input type="hidden" class="recentMemberOption" data-recent-price="" value="">
+                                    <input type="hidden" class="recentTaskOption" data-recent-price="" value="">
+                                    <input type="hidden" class="recentMeetingOption" data-recent-price="" value="">
                                 </div>
-                                <div class="hr"></div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="f-20 m-t-15 text-center">Custom</p>
+                                    </div>
+                                    <div class="hr"></div>
+                                </div>
+                                <div class="m-b-20"></div>
                             </div>
-                            <div class="m-b-20"></div>
-                        </div>
-                        <div class="col-sm-12 m-b-20">
-                            <p class="f-20 m-b-0 text-center price hidden">&euro;<span class="priceCustom"></span>/Month</p>
-                            <hr class="col-xs-12">
-                        </div>
-                        <div class="text-center">
-                            <button class="btn btn-inno m-b-20">Choose</button>
+                            <div class="col-sm-12 m-b-20">
+                                <p class="f-20 m-b-0 text-center price hidden">&euro;<span class="priceCustom"></span>/Month</p>
+                                <hr class="col-xs-12">
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-inno m-b-20">Choose</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
             <div class="sub-title-container p-t-20 m-t-20">
                 <h1 class="sub-title-black @mobile f-25 @endmobile">Reviews</h1>
             </div>

@@ -47,12 +47,12 @@
                             <div class="col-xs-10 col-md-10 m-t-15">
                                 @handheld
                                     @mobile
-                                        <p class="instructions-text m-0 allign-center f-17">Create an <a class="regular-link" href="/">account</a> with your expertise(s)</p>
+                                        <p class="instructions-text m-0 allign-center f-17">Create an <a class="regular-link" href="/login">account</a> with your expertise(s)</p>
                                     @elsetablet
-                                        <p class="instructions-text m-0 allign-center f-20">Create an <a class="regular-link" href="/">account</a> with your expertise(s)</p>
+                                        <p class="instructions-text m-0 allign-center f-20">Create an <a class="regular-link" href="/login">account</a> with your expertise(s)</p>
                                     @endmobile
                                 @elsedesktop
-                                    <p class="instructions-text m-0 allign-center">Create an <a class="regular-link" href="/">account</a> with your expertise(s)</p>
+                                    <p class="instructions-text m-0 allign-center">Create an <a class="regular-link" href="/login">account</a> with your expertise(s)</p>
                                 @endhandheld
                             </div>
                         </div>
@@ -96,12 +96,12 @@
                             <div class="col-xs-10 col-md-10 jc-end d-flex">
                                 @handheld
                                     @mobile
-                                        <p class="instructions-text m-b-0 m-r-20 m-t-15 f-17">Create or join a <a class="regular-link" href="/">team</a> and enjoy working together!</p>
+                                        <p class="instructions-text m-b-0 m-r-20 m-t-15 f-17">Create or join a <a class="regular-link" href="/teams">team</a> and enjoy working together!</p>
                                     @elsetablet
-                                        <p class="instructions-text m-b-0 m-r-20 m-t-15 f-20">Create or join a <a class="regular-link" href="/">team</a> and enjoy working together!</p>
+                                        <p class="instructions-text m-b-0 m-r-20 m-t-15 f-20">Create or join a <a class="regular-link" href="/teams">team</a> and enjoy working together!</p>
                                     @endmobile
                                 @elsedesktop
-                                    <p class="instructions-text m-b-0 m-r-20 m-t-15">Create or join a <a class="regular-link" href="/">team</a> and enjoy working together!</p>
+                                    <p class="instructions-text m-b-0 m-r-20 m-t-15">Create or join a <a class="regular-link" href="/teams">team</a> and enjoy working together!</p>
                                 @endhandheld
                             </div>
                             <div class="col-xs-2 col-md-2 m-b-20">
@@ -125,12 +125,12 @@
                                 <div class="col-sm-10 m-t-15">
                                     @handheld
                                         @mobile
-                                            <p class="instructions-second-text m-0 f-17">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/">forum</a></p>
+                                            <p class="instructions-second-text m-0 f-17">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
                                         @elsetablet
-                                            <p class="instructions-second-text m-0 f-20">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/">forum</a></p>
+                                            <p class="instructions-second-text m-0 f-20">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-0">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/">forum</a></p>
+                                        <p class="instructions-second-text m-0">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
                                     @endhandheld
                                 </div>
                             </div>
@@ -140,12 +140,12 @@
                                 <div class="col-sm-10 d-flex jc-end">
                                     @handheld
                                         @mobile
-                                            <p class="instructions-second-text m-b-0 m-t-15 m-r-20 f-17">Communicate easily with your team through the <a class="regular-link" href="/">chat system</a></p>
+                                            <p class="instructions-second-text m-b-0 m-t-15 m-r-20 f-17">Communicate easily with your team through the <a class="regular-link" href="/login">chat system</a></p>
                                         @elsetablet
-                                            <p class="instructions-second-text m-b-0 m-t-15 m-r-20 f-20">Communicate easily with your team through the <a class="regular-link" href="/">chat system</a></p>
+                                            <p class="instructions-second-text m-b-0 m-t-15 m-r-20 f-20">Communicate easily with your team through the <a class="regular-link" href="/login">chat system</a></p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-b-0 m-t-15 m-r-20">Communicate easily with your team through the <a class="regular-link" href="/">chat system</a></p>
+                                        <p class="instructions-second-text m-b-0 m-t-15 m-r-20">Communicate easily with your team through the <a class="regular-link" href="/login">chat system</a></p>
                                     @endhandheld
                                 </div>
                                 <div class="col-sm-2">
@@ -165,12 +165,12 @@
                                 <div class="col-sm-10 m-t-15">
                                     @handheld
                                         @mobile
-                                            <p class="instructions-second-text m-0 f-17">Pay all your team members with one push on a button</p>
+                                            <p class="instructions-second-text m-0 f-17">Split the monthly/yearly bill with your team members</p>
                                         @elsetablet
-                                            <p class="instructions-second-text m-0 f-20">Pay all your team members with one push on a button</p>
+                                            <p class="instructions-second-text m-0 f-20">Split the monthly/yearly bill with your team members</p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-0">Pay all your team members with one push on a button</p>
+                                        <p class="instructions-second-text m-0">Split the monthly/yearly bill with your team members</p>
                                     @endhandheld
                                 </div>
                             </div>
@@ -185,12 +185,13 @@
                                             <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-20">Sell your own team products in our <a class="regular-link" href="/">shop</a></p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-b-0 m-r-20 m-t-15">Sell your own team products in our <a class="regular-link" href="/">shop</a></p>
+                                        <p class="instructions-second-text m-b-0 m-r-20 m-t-15">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
                                     @endhandheld
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="circle-instructions">
-                                        <i style="font-size: 50px; padding-left: 1px; padding-top: 10px;" class="material-icons social-icon-instructions">shopping_basket</i>
+                                        <i style="font-size: 50px; padding-right: 5px; padding-top: 8px;" class="zmdi zmdi-share social-icon-instructions"></i>
+                                        {{--<i  class="material-icons ">shopping_basket</i>--}}
                                     </div>
                                 </div>
                             </div>
@@ -199,18 +200,18 @@
                             <div class="row ">
                                 <div class="col-sm-2 d-flex jc-end">
                                     <div class="circle-instructions">
-                                        <img class="circle social-icon-instructions  m-r-0" style="height: 65px !important; width: 65px !important;" src="/images/BTC-alt.svg" alt="Bitcoin">
+                                        <i style="font-size: 50px; padding-right: 4px;padding-top: 8px;" class="zmdi zmdi-mood social-icon-instructions"></i>
                                     </div>
                                 </div>
                                 <div class="col-sm-10 m-t-15">
                                     @handheld
                                         @mobile
-                                            <p class="instructions-second-text m-0 f-17">We support bitcoin and other cryptocurrencies</p>
+                                            <p class="instructions-second-text m-0 f-17">Have fun, be creative and innovative</p>
                                         @elsetablet
-                                            <p class="instructions-second-text m-0 f-20">We support bitcoin and other cryptocurrencies</p>
+                                            <p class="instructions-second-text m-0 f-20">Have fun, be creative and innovative</p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-0">We support bitcoin and other cryptocurrencies</p>
+                                        <p class="instructions-second-text m-0">Have fun, be creative and innovative!</p>
                                     @endhandheld
                                 </div>
                             </div>

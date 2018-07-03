@@ -9,6 +9,7 @@ use App\ServiceReview;
 use App\Country;
 use App\Expertises;
 use App\Team;
+use App\TeamPackage;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -24,6 +25,7 @@ class CheckoutController extends Controller
      */
     public function pricingAction()
     {
+        Session::remove("customPackagesArray");
         $membershipPackages = MembershipPackage::select("*")->get();
         $customMembershipPackageTypes = CustomMembershipPackageType::select("*")->get();
         $serviceReviews = ServiceReview::select("*")->where("service_review_type_id", 2)->get();
@@ -35,31 +37,65 @@ class CheckoutController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function selectPackageAction($title) {
+    public function selectPackageAction($title = null) {
         $pageType = "checkout";
 
-        // for register/login
+        if(!Session::has("customPackagesArray")) {
+            // for register/login
             $countries = Country::select("*")->orderBy("country")->get();
             $expertises = Expertises::select("*")->get();
             $backlink = "/becoming-a-" . lcfirst($title);
             $urlParameter = 1;
 //        ==============
-        $user = User::select("*")->where("id", Session::get("user_id"))->first();
-        $membershipPackage = MembershipPackage::select("*")->where("title", ucfirst($title))->first();
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            $membershipPackage = MembershipPackage::select("*")->where("title", ucfirst($title))->first();
 
-        if($user && $user->team_id != null){
-            $team = Team::select("*")->where("id", $user->team_id)->first();
-        }
+            if ($user && $user->team_id != null) {
+                $team = Team::select("*")->where("id", $user->team_id)->first();
+            }
 
-        if(request()->has('step')) {
-            $step = request()->step;
+            if (request()->has('step')) {
+                $step = request()->step;
+            } else {
+                $step = 1;
+            }
+
+            if ($user) {
+                return view("/public/checkout/selectPackage", compact("membershipPackage", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
+            } else {
+                return view("/public/checkout/selectPackage", compact("membershipPackage", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
+            }
         } else {
-            $step = 1;
-        }
-        if($user){
-            return view("/public/checkout/selectPackage", compact("membershipPackage", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
-        } else {
-            return view("/public/checkout/selectPackage", compact("membershipPackage", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
+            $countries = Country::select("*")->orderBy("country")->get();
+            $expertises = Expertises::select("*")->get();
+            $backlink = "/creating-custom-package";
+            $urlParameter = 1;
+
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            if ($user && $user->team_id != null) {
+                $team = Team::select("*")->where("id", $user->team_id)->first();
+            }
+
+            if (request()->has('step')) {
+                $step = request()->step;
+            } else {
+                $step = 1;
+            }
+
+            $values = [];
+            $options = [];
+            foreach(Session::get("customPackagesArray")["options"] as $key => $value){
+                array_push($values, $value);
+                array_push($options, $key);
+            }
+//            echo $options;
+            for($i = 0; $i < count($values); $i++){
+//                $customMembershipType = CustomMembershipPackageType::select("*")->where("id", $options[$i])->first();
+                $optionsArray[$values[$i]] = $options[$i];
+            }
+//            dd($optionsArray);
+            return view("/public/checkout/selectPackage", compact("customPackageData", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
+
         }
     }
 
@@ -167,9 +203,38 @@ class CheckoutController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function savePaymentInfoAction(Request $request) {
+        $splitTheBill = $request->input("splitTheBill");
+        $paymentPreference = $request->input("paymentPreference");
+        $teamId = $request->input("team_id");
+
+        $membershipPackageId = $request->input("membership_package_id");
+        $membershipPackage = MembershipPackage::select("*")->where("id", $membershipPackageId)->first();
+
+        $existingTeamPackage = TeamPackage::select("*")->where("team_id", $teamId)->first();
+        if(count($existingTeamPackage) > 0){
+            $teamPackage = $existingTeamPackage;
+        } else {
+            $teamPackage = new TeamPackage();
+        }
+        $teamPackage->team_id = $teamId;
+        $teamPackage->membership_package_id = $membershipPackageId;
+        $teamPackage->payment_preference = $paymentPreference;
+        $teamPackage->title = $membershipPackage->title;
+        $teamPackage->description = $membershipPackage->description;
+        $teamPackage->price = $membershipPackage->price;
+        $teamPackage->created_at = date("Y-m-d H:i:s");
+        $teamPackage->updated_at = date("Y-m-d H:i:s");
+        $teamPackage->save();
+
+        $team = Team::select("*")->where("id", $teamId)->first();
+        if($splitTheBill == 1) {
+            $team->split_the_bill = 1;
+        } else {
+            $team->split_the_bill = 0;
+        }
+        $team->save();
+        return redirect($request->input("backlink") . "?step=3");
     }
 
     /**
@@ -178,8 +243,22 @@ class CheckoutController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function setDataCustomPackageAction(Request $request) {
+
+        $types = $request->input("types");
+        $options = $request->input("amountValues");
+        for($i = 0; $i < count($options); $i++){
+            $optionsArray[$types[$i]] = $options[$i];
+        }
+
+        $price = 0;
+        foreach ($optionsArray as $key => $value){
+            $customMembershipPackage = CustomMembershipPackage::select("*")->where("type", $key)->where("option", $value)->first();
+            $price = $price + $customMembershipPackage->price;
+        }
+        $customPackagesArray = ["options" => $optionsArray, "price" => $price];
+        Session::set("customPackagesArray", $customPackagesArray);
+        return redirect("/create-custom-package");
+
     }
 }

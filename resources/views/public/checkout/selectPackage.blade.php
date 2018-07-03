@@ -3,7 +3,7 @@
     <div class="d-flex grey-background vh100">
         <div class="container">
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">You're team is almost a <?= lcfirst($membershipPackage->title)?></h1>
+                <h1 class="sub-title-black">You're team is almost a </h1>
             </div>
             <div class="row">
                 <div class="col-sm-12 d-flex js-center">
@@ -12,36 +12,64 @@
             </div>
             <hr class="m-b-20">
             <div class="row">
-                <div class="col-sm-5">
-                    <div class="row">
-                        <? $descriptions = explode(",",$membershipPackage->description);
-                            $counter = 0;
-                        ?>
-                        <? foreach($descriptions as $description) { ?>
-                            <? $counter++?>
-                        <? } ?>
-                        <div class="card m-t-0 p-10 @desktop <? if($membershipPackage->id == 1 || $membershipPackage->id == 3) echo "card-small-price"; else echo "card-populair-price"?> @elsehandheld  @tablet<? if($membershipPackage->id == 1 || $membershipPackage->id == 3) echo "card-small-price-tablet"; else echo "card-populair-price-tablet"?>@elsemobile <?= "m-b-20"?>@endtablet @enddesktop no-hover">
-                            <div class="card-block">
-                                <div class="text-center">
-                                    <p class="f-20 m-t-15"><?= $membershipPackage->title?></p>
+                <? if(!\Illuminate\Support\Facades\Session::has("customPackagesArray")) { ?>
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <? $descriptions = explode(",",$membershipPackage->description);
+                                $counter = 0;
+                            ?>
+                            <? foreach($descriptions as $description) { ?>
+                                <? $counter++?>
+                            <? } ?>
+                            <div class="card m-t-0 p-10 @desktop <? if($membershipPackage->id == 1 || $membershipPackage->id == 3) echo "card-small-price"; else echo "card-populair-price"?> @elsehandheld  @tablet<? if($membershipPackage->id == 1 || $membershipPackage->id == 3) echo "card-small-price-tablet"; else echo "card-populair-price-tablet"?>@elsemobile <?= "m-b-20"?>@endtablet @enddesktop no-hover">
+                                <div class="card-block">
+                                    <div class="text-center">
+                                        <p class="f-20 m-t-15"><?= str_replace("-", " ", $membershipPackage->title)?></p>
+                                    </div>
+                                    <hr>
+                                    <ul class="instructions-list @tablet <? if($membershipPackage->id == 3) echo "m-b-0"?> @endtablet">
+                                        <? for($i = 0; $i < $counter; $i++) { ?>
+                                        <li class="instructions-list-item">
+                                            <p class="instructions-text f-13 m-0 p-b-10"><?= $descriptions[$i]?></p>
+                                        </li>
+                                        <? } ?>
+                                    </ul>
                                 </div>
-                                <hr>
-                                <ul class="instructions-list @tablet <? if($membershipPackage->id == 3) echo "m-b-0"?> @endtablet">
-                                    <? for($i = 0; $i < $counter; $i++) { ?>
-                                    <li class="instructions-list-item">
-                                        <p class="instructions-text f-13 m-0 p-b-10"><?= $descriptions[$i]?></p>
-                                    </li>
-                                    <? } ?>
-                                </ul>
-                            </div>
-                            <div class="row @notmobile @desktop <? if($membershipPackage->id == 1 || $membershipPackage->id == 2) echo "m-t-70"?> @elsetablet  <? if($membershipPackage->id == 1 || $membershipPackage->id == 2) echo "m-t-50"?> @enddesktop @endnotmobile">
-                                <div class="col-sm-12">
-                                    <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= $membershipPackage->getPrice()?></span><span class="packagePreference">/Month</span></p>
+                                <div class="row @notmobile @desktop <? if($membershipPackage->id == 1 || $membershipPackage->id == 2) echo "m-t-70"?> @elsetablet  <? if($membershipPackage->id == 1 || $membershipPackage->id == 2) echo "m-t-50"?> @enddesktop @endnotmobile">
+                                    <div class="col-sm-12">
+                                        <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= $membershipPackage->getPrice()?></span><span class="packagePreference">/Month</span></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                <? } else { ?>
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <div class="card card-small-price-tablet m-t-0 p-10 no-hover">
+                                <div class="card-block">
+                                    <div class="text-center">
+                                        <p class="f-20 m-t-15">Custom package</p>
+                                    </div>
+                                    <hr>
+                                    <ul class="instructions-list">
+                                        <? foreach(Illuminate\Support\Facades\Session::get("customPackagesArray")["options"] as $key => $value) { ?>
+                                            <li class="instructions-list-item">
+                                                <p class="instructions-text f-13 m-0 p-b-10"><?=$value?><?= $key?></p>
+                                            </li>
+                                        <? } ?>
+                                    </ul>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= \Illuminate\Support\Facades\Session::get("customPackagesArray")["price"] ?></span><span class="packagePreference">/Month</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <? } ?>
+                <? if(!\Illuminate\Support\Facades\Session::has("customPackagesArray")) { ?>
                 <div class="col-sm-6">
                     <div class="row">
                         <div class="col-sm-4 m-0 p-0">
@@ -143,20 +171,24 @@
                                         </form>
                                     <? } ?>
                                 <? } else if($step == 2) { ?>
-                                    <div class="text-center m-t-10">
-                                        <h5>Payment info</h5>
-                                        <hr>
-                                    </div>
                                     <form action="/checkout/savePaymentInfo" method="post" class="savePaymentInfoForm">
+                                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                        <input type="hidden" name="team_id" value="<?= $team->id?>">
+                                        <input type="hidden" name="membership_package_id" value="<?= $membershipPackage->id?>">
+                                        <input type="hidden" name="backlink" value="<?= $backlink?>">
+                                        <div class="text-center m-t-10">
+                                            <h5>Payment info</h5>
+                                            <hr>
+                                        </div>
                                         <div class="row">
                                             <div class="col-sm-5">
                                                 <label for="">Payment preference:</label>
                                             </div>
                                             <div class="col-sm-7">
                                                 <div class="pull-right">
-                                                    <input type="radio" class="paymentPreference" data-package-id="<?= $membershipPackage->id?>" data-preference="yearly" name="paymentPreference" id="preferenceYearly">
+                                                    <input type="radio" class="paymentPreference" data-package-id="<?= $membershipPackage->id?>" data-preference="yearly" name="paymentPreference" value="yearly" id="preferenceYearly">
                                                     <label class="m-r-20" for="preferenceYearly">Yearly</label>
-                                                    <input type="radio" class="paymentPreference" data-package-id="<?= $membershipPackage->id?>" data-preference="monthly" checked name="paymentPreference" id="preferenceMonthly">
+                                                    <input type="radio" class="paymentPreference" data-package-id="<?= $membershipPackage->id?>" data-preference="monthly" checked name="paymentPreference" value="monthly" id="preferenceMonthly">
                                                     <label for="preferenceMonthly">Monthly</label>
                                                 </div>
                                             </div>
@@ -165,7 +197,7 @@
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <div class="pull-right">
-                                                        <input type="checkbox" class="splitTheBill" name="splitTheBill" id="splitTheBill">
+                                                        <input type="checkbox" class="splitTheBill" name="splitTheBill" value="1" id="splitTheBill">
                                                         <label class="m-r-10" for="splitTheBill">Split the bill</label><span><i class="zmdi zmdi-info-outline c-dark-grey c-pointer" data-toggle="modal" data-target="#splitTheBillInfoModal"></i></span>
                                                     </div>
                                                 </div>
@@ -177,17 +209,23 @@
                                             </div>
                                         </div>
                                     </form>
+                                <? } else if($step == 3) { ?>
+                                    <div class="text-center m-t-10">
+                                        <h5>Payment method</h5>
+                                        <hr>
+                                    </div>
                                 <? } ?>
                             </div>
                         </div>
-                        <? if(isset($team) && isset($user) && count($team->getMembers()) > 1) { ?>
+                        <? if(isset($team) && isset($user) && count($team->getMembers()) > 1 && $step == 2) { ?>
                             <div id="splitTheBillCollapse" class="collapse collapseExample card-sm shadow no-hover col-sm-12 m-t-0 splitTheBillCard">
                                 <div class="card-block">
                                     <div class="text-center m-t-15">
                                         <h5>Split the bill</h5>
                                         <hr>
                                     </div>
-                                    <i class="c-dark-grey">Amount left to split: <i class="packagePrice totalPrice"><?= $membershipPackage->getPrice()?></i></i>
+                                    <i class="c-dark-grey">Amount left to split: <i class="packagePrice totalPrice"><?= $membershipPackage->getPrice()?></i></i><br>
+                                    <i class="c-orange amountExceeded hidden">Amount exceeded: <i class="exceededAmount"></i></i>
                                     <button class="btn btn-sm btn-inno pull-right m-b-20 m-t-5 splitEqually">Split equally</button>
                                     <? foreach($team->getMembers() as $member) { ?>
                                         <div class="row">
@@ -222,6 +260,7 @@
                         <? } ?>
                     </div>
                 </div>
+                <? } ?>
             </div>
             <div class="modal fade splitTheBillInfoModal" id="splitTheBillInfoModal" tabindex="-1" role="dialog" aria-labelledby="splitTheBillInfoModal" aria-hidden="true">
                 <div class="modal-dialog" role="document">

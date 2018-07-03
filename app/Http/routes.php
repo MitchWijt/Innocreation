@@ -496,13 +496,19 @@ Route::get("/team-product/{slug?}", "FeedController@TeamProductsAction");
 
 Route::get("/pricing", "CheckoutController@pricingAction");
 
-Route::get("/becoming-a-{title}", "CheckoutController@selectPackageAction");
+Route::get("/becoming-a-{title?}", "CheckoutController@selectPackageAction");
+
+Route::get("/create-custom-package", "CheckoutController@selectPackageAction");
 
 Route::post("/checkout/saveUserFromCheckout", "CheckoutController@saveUserFromCheckoutAction");
 
 Route::post("/checkout/packagePricePreference", "CheckoutController@packagePricePreferenceAction");
 
 Route::post("/checkout/setSplitTheBillData", "CheckoutController@setSplitTheBillDataAction");
+
+Route::post("/checkout/savePaymentInfo", "CheckoutController@savePaymentInfoAction");
+
+Route::post("/checkout/setDataCustomPackage", "CheckoutController@setDataCustomPackageAction");
 
 
 
