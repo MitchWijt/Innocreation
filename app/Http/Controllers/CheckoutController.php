@@ -88,12 +88,10 @@ class CheckoutController extends Controller
                 array_push($values, $value);
                 array_push($options, $key);
             }
-//            echo $options;
             for($i = 0; $i < count($values); $i++){
-//                $customMembershipType = CustomMembershipPackageType::select("*")->where("id", $options[$i])->first();
-                $optionsArray[$values[$i]] = $options[$i];
+                $customMembershipType = CustomMembershipPackageType::select("*")->where("id", $options[$i])->first();
+                $customPackageData[$customMembershipType->title] = $values[$i];
             }
-//            dd($optionsArray);
             return view("/public/checkout/selectPackage", compact("customPackageData", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
 
         }

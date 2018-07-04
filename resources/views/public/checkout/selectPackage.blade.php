@@ -53,9 +53,9 @@
                                     </div>
                                     <hr>
                                     <ul class="instructions-list">
-                                        <? foreach(Illuminate\Support\Facades\Session::get("customPackagesArray")["options"] as $key => $value) { ?>
+                                        <? foreach($customPackageData as $key => $value) { ?>
                                             <li class="instructions-list-item">
-                                                <p class="instructions-text f-13 m-0 p-b-10"><?=$value?><?= $key?></p>
+                                                <p class="instructions-text f-13 m-0 p-b-10"><?=$key . " "?><?= $value?></p>
                                             </li>
                                         <? } ?>
                                     </ul>
