@@ -3,7 +3,7 @@
     <div class="d-flex grey-background vh100">
         <div class="container">
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">You're team is almost a </h1>
+                <h1 class="sub-title-black">You're team is almost a <? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo "innovator"; else echo str_replace("-", " ", lcfirst($membershipPackage->title))?></h1>
             </div>
             <div class="row">
                 <div class="col-sm-12 d-flex js-center">
@@ -54,22 +54,33 @@
                                     <hr>
                                     <ul class="instructions-list">
                                         <? foreach($customPackageData as $key => $value) { ?>
+                                            <? if($key == "Create team newsletters" && $value == 1) { ?>
                                             <li class="instructions-list-item">
-                                                <p class="instructions-text f-13 m-0 p-b-10"><?=$key . " "?><?= $value?></p>
+                                                <p class="instructions-text f-13 m-0 p-b-10">Create your own team newsletters</p>
                                             </li>
+                                            <? } else if($value == '0'){ ?>
+
+                                            <? } else if($value == "Unlimited") { ?>
+                                                <li class="instructions-list-item">
+                                                    <p class="instructions-text f-13 m-0 p-b-10"><?= $key . " "?> <?= $value . " "?>  </p>
+                                                </li>
+                                            <? } else { ?>
+                                                <li class="instructions-list-item">
+                                                    <p class="instructions-text f-13 m-0 p-b-10">Max. amount of <?= $value . " "?> <?=$key . " "?> </p>
+                                                </li>
+                                            <? } ?>
                                         <? } ?>
                                     </ul>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= \Illuminate\Support\Facades\Session::get("customPackagesArray")["price"] ?></span><span class="packagePreference">/Month</span></p>
+                                        <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= number_format(\Illuminate\Support\Facades\Session::get("customPackagesArray")["price"], 2, ".", ".") ?></span><span class="packagePreference">/Month</span></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 <? } ?>
-                <? if(!\Illuminate\Support\Facades\Session::has("customPackagesArray")) { ?>
                 <div class="col-sm-6">
                     <div class="row">
                         <div class="col-sm-4 m-0 p-0">
@@ -157,7 +168,7 @@
                                             <? if(isset($user) && $user->team_id == null) { ?>
                                                 <div class="form-group m-b-0 d-flex js-center m-t-15">
                                                     <div class="row d-flex js-center col-sm-9">
-                                                        <p class="m-b-10">Your account isn't connected to a team yet. <br> But luckily you can create one here</p>
+                                                        <p class="m-b-10">You are not part of a team yet. <br> But luckily you can create one here!</p>
                                                         <label class="m-0 col-sm-12 p-0">Team name</label>
                                                         <input type="text" name="team_name" class="team_name input col-sm-12" value="">
                                                     </div>
@@ -174,7 +185,11 @@
                                     <form action="/checkout/savePaymentInfo" method="post" class="savePaymentInfoForm">
                                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                         <input type="hidden" name="team_id" value="<?= $team->id?>">
-                                        <input type="hidden" name="membership_package_id" value="<?= $membershipPackage->id?>">
+                                        <? if(!\Illuminate\Support\Facades\Session::has("customPackagesArray")) { ?>
+                                            <input type="hidden" name="membership_package_id" value="<?= $membershipPackage->id?>">
+                                        <? } else { ?>
+                                            <input type="hidden" name="membership_package_id" value="custom">
+                                        <? } ?>
                                         <input type="hidden" name="backlink" value="<?= $backlink?>">
                                         <div class="text-center m-t-10">
                                             <h5>Payment info</h5>
@@ -186,9 +201,11 @@
                                             </div>
                                             <div class="col-sm-7">
                                                 <div class="pull-right">
-                                                    <input type="radio" class="paymentPreference" data-package-id="<?= $membershipPackage->id?>" data-preference="yearly" name="paymentPreference" value="yearly" id="preferenceYearly">
-                                                    <label class="m-r-20" for="preferenceYearly">Yearly</label>
-                                                    <input type="radio" class="paymentPreference" data-package-id="<?= $membershipPackage->id?>" data-preference="monthly" checked name="paymentPreference" value="monthly" id="preferenceMonthly">
+                                                    <? if(!\Illuminate\Support\Facades\Session::has("customPackagesArray")) { ?>
+                                                        <input type="radio" class="paymentPreference"  data-package-id="<? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo  "custom"; else echo $membershipPackage->id?>" data-preference="yearly" name="paymentPreference" value="yearly" id="preferenceYearly">
+                                                        <label class="m-r-20" for="preferenceYearly">Yearly</label>
+                                                    <? } ?>
+                                                    <input type="radio" class="paymentPreference" data-package-id="<? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo  "custom"; else echo $membershipPackage->id?>" data-preference="monthly" checked name="paymentPreference" value="monthly" id="preferenceMonthly">
                                                     <label for="preferenceMonthly">Monthly</label>
                                                 </div>
                                             </div>
@@ -224,7 +241,7 @@
                                         <h5>Split the bill</h5>
                                         <hr>
                                     </div>
-                                    <i class="c-dark-grey">Amount left to split: <i class="packagePrice totalPrice"><?= $membershipPackage->getPrice()?></i></i><br>
+                                    <i class="c-dark-grey">Amount left to split: <i class="packagePrice totalPrice"><?if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo number_format(\Illuminate\Support\Facades\Session::get("customPackagesArray")["price"], 2,".", "."); else echo $membershipPackage->getPrice()?></i></i><br>
                                     <i class="c-orange amountExceeded hidden">Amount exceeded: <i class="exceededAmount"></i></i>
                                     <button class="btn btn-sm btn-inno pull-right m-b-20 m-t-5 splitEqually">Split equally</button>
                                     <? foreach($team->getMembers() as $member) { ?>
@@ -260,7 +277,6 @@
                         <? } ?>
                     </div>
                 </div>
-                <? } ?>
             </div>
             <div class="modal fade splitTheBillInfoModal" id="splitTheBillInfoModal" tabindex="-1" role="dialog" aria-labelledby="splitTheBillInfoModal" aria-hidden="true">
                 <div class="modal-dialog" role="document">

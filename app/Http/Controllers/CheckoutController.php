@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\CustomMembershipPackage;
 use App\CustomMembershipPackageType;
+use App\CustomTeamPackage;
 use App\MembershipPackage;
 use App\ServiceReview;
 use App\Country;
@@ -68,7 +69,7 @@ class CheckoutController extends Controller
         } else {
             $countries = Country::select("*")->orderBy("country")->get();
             $expertises = Expertises::select("*")->get();
-            $backlink = "/creating-custom-package";
+            $backlink = "/create-custom-package";
             $urlParameter = 1;
 
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
@@ -166,11 +167,12 @@ class CheckoutController extends Controller
         $pereference = $request->input("preference");
 
         $membershipPackage = MembershipPackage::select("*")->where("id", $packageId)->first();
-        if($pereference == "monthly"){
+        if ($pereference == "monthly") {
             $price = $membershipPackage->getPrice();
         } else {
             $price = $membershipPackage->getPrice(true);
         }
+
         return $price;
     }
 
@@ -207,23 +209,61 @@ class CheckoutController extends Controller
         $teamId = $request->input("team_id");
 
         $membershipPackageId = $request->input("membership_package_id");
-        $membershipPackage = MembershipPackage::select("*")->where("id", $membershipPackageId)->first();
 
-        $existingTeamPackage = TeamPackage::select("*")->where("team_id", $teamId)->first();
-        if(count($existingTeamPackage) > 0){
-            $teamPackage = $existingTeamPackage;
+        if(!$membershipPackageId == "custom") {
+            $membershipPackage = MembershipPackage::select("*")->where("id", $membershipPackageId)->first();
+
+            $existingTeamPackage = TeamPackage::select("*")->where("team_id", $teamId)->first();
+            if (count($existingTeamPackage) > 0) {
+                $teamPackage = $existingTeamPackage;
+            } else {
+                $teamPackage = new TeamPackage();
+            }
+            $teamPackage->team_id = $teamId;
+            $teamPackage->membership_package_id = $membershipPackageId;
+            $teamPackage->payment_preference = $paymentPreference;
+            $teamPackage->title = $membershipPackage->title;
+            $teamPackage->description = $membershipPackage->description;
+            $teamPackage->price = $membershipPackage->price;
+            $teamPackage->created_at = date("Y-m-d H:i:s");
+            $teamPackage->updated_at = date("Y-m-d H:i:s");
+            $teamPackage->save();
         } else {
-            $teamPackage = new TeamPackage();
+            $existingCustomTeamPackage = CustomTeamPackage::select("*")->where("team_id", $teamId)->first();
+            if (count($existingCustomTeamPackage) > 0) {
+                $customTeamPackage = $existingCustomTeamPackage;
+            } else {
+                $customTeamPackage = new CustomTeamPackage();
+            }
+            $customTeamPackage->team_id = $teamId;
+            foreach(Session::get("customPackagesArray")["options"] as $key => $value){
+                if($key == 1){
+                    $customTeamPackage->members = $value;
+                } else if($key == 2){
+                    $customTeamPackage->planners = $value;
+                } else if($key == 3){
+                    $customTeamPackage->meetings = $value;
+                } else if($key == 4){
+                    $customTeamPackage->newsletters = $value;
+                }
+//                $customTeamPackage->dashboard = $value[4];
+                $customTeamPackage->created_at = date("Y-m-d H:i:s");
+                $customTeamPackage->save();
+            }
+            $existingTeamPackage = TeamPackage::select("*")->where("team_id", $teamId)->first();
+            if (count($existingTeamPackage) > 0) {
+                $teamPackage = $existingTeamPackage;
+            } else {
+                $teamPackage = new TeamPackage();
+            }
+            $teamPackage->team_id = $teamId;
+            $teamPackage->custom_team_package_id = $customTeamPackage->id;
+            $teamPackage->payment_preference = $paymentPreference;
+            $teamPackage->price = Session::get("customPackagesArray")["price"];
+            $teamPackage->created_at = date("Y-m-d H:i:s");
+            $teamPackage->updated_at = date("Y-m-d H:i:s");
+            $teamPackage->save();
         }
-        $teamPackage->team_id = $teamId;
-        $teamPackage->membership_package_id = $membershipPackageId;
-        $teamPackage->payment_preference = $paymentPreference;
-        $teamPackage->title = $membershipPackage->title;
-        $teamPackage->description = $membershipPackage->description;
-        $teamPackage->price = $membershipPackage->price;
-        $teamPackage->created_at = date("Y-m-d H:i:s");
-        $teamPackage->updated_at = date("Y-m-d H:i:s");
-        $teamPackage->save();
 
         $team = Team::select("*")->where("id", $teamId)->first();
         if($splitTheBill == 1) {
