@@ -88,6 +88,18 @@ class Controller extends BaseController
         $controller = $explode2[0];
         return $controller;
     }
+
+    public function calculateAdyenSignature($pairs, $key, $binaryHmacKey){
+        ksort($pairs, SORT_STRING);
+        foreach ($pairs as $key => $value) {
+            $escapedPairs[$key] = str_replace(':','\\:', str_replace('\\', '\\\\', $value));
+        }
+
+        $signingString = implode(":", array_merge(array_keys($escapedPairs), array_values($escapedPairs)));
+        $binaryHmac = hash_hmac('sha256', $signingString, $binaryHmacKey, true);
+        $signature = base64_encode($binaryHmac);
+        return $signature;
+    }
 }
 
     date_default_timezone_set("Europe/Amsterdam");

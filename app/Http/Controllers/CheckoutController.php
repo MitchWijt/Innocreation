@@ -57,14 +57,45 @@ class CheckoutController extends Controller
 
             if (request()->has('step')) {
                 $step = request()->step;
+                if($step == 3){
+                    $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
+                    $HMAC_KEY = "BA15F61D808D61044A97167A6F00732C0144E7BB020900389CE8560739AF88E0";
+                    $binaryHmacKey = pack("H*" , $HMAC_KEY);
+                    $pairs["countryCode"] = $user->countries->country_code;
+                    $pairs["shopperLocale"] = "en_GB";
+                    $pairs["merchantReference"] = "Package:$teamPackage->id\\$team->id";
+                    $pairs["merchantAccount"] = "InnocreationNET";
+                    $date = date("Y-m-d");
+                    $time = date("H:i:s" , strtotime("+2 hour"));
+                    $pairs["sessionValidity"] = "$date" . "T" . $time . "Z";
+                    $pairs["paymentAmount"] = number_format($teamPackage->price, 0, ".", ".");
+                    $pairs["currencyCode"] = "EUR";
+                    $pairs["skinCode"] = "iXpfcBwG";
+
+                    $signature = $this->calculateAdyenSignature($pairs, $HMAC_KEY, $binaryHmacKey);
+
+                    $pairs["merchantSig"] = $signature;
+                    $queryString = http_build_query($pairs);
+                    $testUrl = "https://test.adyen.com/hpp/directory.shtml" . "?" . $queryString;
+                    $json = file_get_contents($testUrl);
+                    $paymentMethods = json_decode($json);
+                }
             } else {
                 $step = 1;
             }
 
             if ($user) {
-                return view("/public/checkout/selectPackage", compact("membershipPackage", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
+                if($step == 3){
+                    return view("/public/checkout/selectPackage", compact("membershipPackage", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team", "paymentMethods"));
+                } else {
+                    return view("/public/checkout/selectPackage", compact("membershipPackage", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
+                }
             } else {
-                return view("/public/checkout/selectPackage", compact("membershipPackage", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
+                if($step == 3){
+                    return view("/public/checkout/selectPackage", compact("membershipPackage", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team", "paymentMethods"));
+                } else {
+                    return view("/public/checkout/selectPackage", compact("membershipPackage", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
+                }
             }
         } else {
             $countries = Country::select("*")->orderBy("country")->get();
@@ -79,6 +110,29 @@ class CheckoutController extends Controller
 
             if (request()->has('step')) {
                 $step = request()->step;
+                if($step == 3){
+                    $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
+                    $HMAC_KEY = "BA15F61D808D61044A97167A6F00732C0144E7BB020900389CE8560739AF88E0";
+                    $binaryHmacKey = pack("H*" , $HMAC_KEY);
+                    $pairs["countryCode"] = $user->countries->country_code;
+                    $pairs["shopperLocale"] = "en_GB";
+                    $pairs["merchantReference"] = "customPackage:$teamPackage->custom_team_package_id\\$team->id";
+                    $pairs["merchantAccount"] = "InnocreationNET";
+                    $date = date("Y-m-d");
+                    $time = date("H:i:s" , strtotime("+2 hour"));
+                    $pairs["sessionValidity"] = "$date" . "T" . $time . "Z";
+                    $pairs["paymentAmount"] = number_format(Session::get("customPackagesArray")["price"], 0, ".", ".");
+                    $pairs["currencyCode"] = "EUR";
+                    $pairs["skinCode"] = "iXpfcBwG";
+
+                    $signature = $this->calculateAdyenSignature($pairs, $HMAC_KEY, $binaryHmacKey);
+
+                    $pairs["merchantSig"] = $signature;
+                    $queryString = http_build_query($pairs);
+                    $testUrl = "https://test.adyen.com/hpp/directory.shtml" . "?" . $queryString;
+                    $json = file_get_contents($testUrl);
+                    $paymentMethods = json_decode($json);
+                }
             } else {
                 $step = 1;
             }
@@ -93,8 +147,11 @@ class CheckoutController extends Controller
                 $customMembershipType = CustomMembershipPackageType::select("*")->where("id", $options[$i])->first();
                 $customPackageData[$customMembershipType->title] = $values[$i];
             }
-            return view("/public/checkout/selectPackage", compact("customPackageData", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
-
+            if($step == 3){
+                return view("/public/checkout/selectPackage", compact("customPackageData", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team", "paymentMethods"));
+            } else {
+                return view("/public/checkout/selectPackage", compact("customPackageData", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
+            }
         }
     }
 
@@ -210,7 +267,7 @@ class CheckoutController extends Controller
 
         $membershipPackageId = $request->input("membership_package_id");
 
-        if(!$membershipPackageId == "custom") {
+        if($membershipPackageId != "custom") {
             $membershipPackage = MembershipPackage::select("*")->where("id", $membershipPackageId)->first();
 
             $existingTeamPackage = TeamPackage::select("*")->where("team_id", $teamId)->first();
@@ -257,6 +314,7 @@ class CheckoutController extends Controller
                 $teamPackage = new TeamPackage();
             }
             $teamPackage->team_id = $teamId;
+            $teamPackage->membership_package_id = null;
             $teamPackage->custom_team_package_id = $customTeamPackage->id;
             $teamPackage->payment_preference = $paymentPreference;
             $teamPackage->price = Session::get("customPackagesArray")["price"];

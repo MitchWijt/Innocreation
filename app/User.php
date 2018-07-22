@@ -12,6 +12,10 @@ class User extends Authenticatable
         return $this->hasOne("\App\Team", "id","team_id");
     }
 
+    public function countries(){
+        return $this->hasOne("\App\Country", "id","country_id");
+    }
+
     public function roles(){
         return $this->hasMany("\App\UserRole", "id","role");
     }

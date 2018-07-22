@@ -229,6 +229,13 @@
                                 <? } else if($step == 3) { ?>
                                     <div class="text-center m-t-10">
                                         <h5>Payment method</h5>
+                                            <? if(isset($paymentMethods)){ ?>
+                                                <? foreach($paymentMethods as $paymentMethod) { ?>
+                                                    <? foreach($paymentMethod as $item) { ?>
+                                                        <p><?=$item->name?></p>
+                                                    <? } ?>
+                                                <? } ?>
+                                            <? } ?>
                                         <hr>
                                     </div>
                                 <? } ?>
