@@ -17,6 +17,8 @@
                         <small>(realtime data compared to the last 24 hours)</small>
                     </div>
                 </div>
+                <input type="hidden" class="team_id" value="<?= $team->id?>">
+                <input type="hidden" class="user_id" value="<?= $user->id?>">
                 <hr class="m-b-20 col-xs-12">
                 <? if(!$team->packageDetails()) { ?>
 
