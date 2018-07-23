@@ -1,5 +1,6 @@
 @extends("layouts.app")
 @section("content")
+    <script type="text/javascript" src="https://test.adyen.com/hpp/cse/js/8215323598983147.shtml"></script>
     <div class="d-flex grey-background vh100">
         <div class="container">
             <div class="sub-title-container p-t-20">
@@ -229,13 +230,20 @@
                                 <? } else if($step == 3) { ?>
                                     <div class="text-center m-t-10">
                                         <h5>Payment method</h5>
-                                            <? if(isset($paymentMethods)){ ?>
-                                                <? foreach($paymentMethods as $paymentMethod) { ?>
-                                                    <? foreach($paymentMethod as $item) { ?>
-                                                        <p><?=$item->name?></p>
-                                                    <? } ?>
-                                                <? } ?>
-                                            <? } ?>
+                                        <form method="POST" action="/checkout/authorisePaymentRequest" id="adyen-encrypted-form">
+                                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                            <input type="text" placeholder="number" size="20" data-encrypted-name="number"/>
+                                            <input type="text" placeholder="holdername" size="20" data-encrypted-name="holderName"/>
+                                            <input type="text" placeholder="expiryMonth" size="2" data-encrypted-name="expiryMonth"/>
+                                            <input type="text" placeholder="expiryYear" size="4" data-encrypted-name="expiryYear"/>
+                                            <input type="text" placeholder="cvc" size="4" data-encrypted-name="cvc"/>
+                                            <?
+                                                $date = date("Y-m-d");
+                                                $time = date("H:i:s");
+                                            ?>
+                                            <input type="hidden" value="<?=$date?>T<?=$time?>Z" data-encrypted-name="generationtime"/>
+                                            <input type="submit" value="Pay"/>
+                                        </form>
                                         <hr>
                                     </div>
                                 <? } ?>
@@ -313,6 +321,14 @@
             },
             showAutocompleteOnFocus: true
         });
+    </script>
+    <script>
+        // The form element to encrypt.
+        var form = document.getElementById('adyen-encrypted-form');
+        // See https://github.com/Adyen/CSE-JS/blob/master/Options.md for details on the options to use.
+        var options = {};
+        // Bind encryption options to the form.
+        adyen.createEncryptedForm(form, options);
     </script>
 @endsection
 @section('pagescript')

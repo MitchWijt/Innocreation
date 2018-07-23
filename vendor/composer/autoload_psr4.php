@@ -51,5 +51,6 @@ return array(
     'Clue\\StreamFilter\\' => array($vendorDir . '/clue/stream-filter/src'),
     'ClassPreloader\\' => array($vendorDir . '/classpreloader/classpreloader/src'),
     'App\\' => array($baseDir . '/app'),
+    'Adyen\\' => array($vendorDir . '/adyen/php-api-library/src/Adyen'),
     '' => array($vendorDir . '/nesbot/carbon/src'),
 );

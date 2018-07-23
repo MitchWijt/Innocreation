@@ -1029,9 +1029,9 @@ class WorkspaceController extends Controller
                 array_push($memberArray, $assistanceTicket->creator_user_id);
             }
         }
-        $count = array_count_values($memberArray);//Counts the values in the array, returns associatve array
+        $count = array_count_values($memberArray); //Counts the values in the array, returns associatve array
         arsort($count); //Ssort it from highest to lowest
-        $keys = array_keys($count);//Split the array so we can find the most occuring key
+        $keys = array_keys($count); //Split the array so we can find the most occuring key
 
         $member = User::select("*")->where("id", $keys[0])->first();
         foreach ($assistanceTickets as $assistanceTicket) {

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Adyen\AdyenException;
+use Adyen\Service\Payment;
 use App\CustomMembershipPackage;
 use App\CustomMembershipPackageType;
 use App\CustomTeamPackage;
@@ -66,7 +68,7 @@ class CheckoutController extends Controller
                     $pairs["merchantReference"] = "Package:$teamPackage->id\\$team->id";
                     $pairs["merchantAccount"] = "InnocreationNET";
                     $date = date("Y-m-d");
-                    $time = date("H:i:s" , strtotime("+2 hour"));
+                    $time = date("H:i:s");
                     $pairs["sessionValidity"] = "$date" . "T" . $time . "Z";
                     $pairs["paymentAmount"] = number_format($teamPackage->price, 0, ".", ".");
                     $pairs["currencyCode"] = "EUR";
@@ -153,6 +155,123 @@ class CheckoutController extends Controller
                 return view("/public/checkout/selectPackage", compact("customPackageData", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
             }
         }
+    }
+
+    public function authorisePaymentRequestAction(Request $request){
+        $encryptedData = $request->input("adyen-encrypted-data");
+//        $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
+//        $HMAC_KEY = "BA15F61D808D61044A97167A6F00732C0144E7BB020900389CE8560739AF88E0";
+//        $binaryHmacKey = pack("H*" , $HMAC_KEY);
+
+        $data = array("additionalData" => array("card.encrypted.json" => $encryptedData),"amount" => array("value" => 2000, "currency" => "EUR"), "reference" => "testpaymentCard", "merchantAccount" => "InnocreationNET");
+        $data_string = json_encode($data);
+
+//        header('Content-Type: application/json; charset=UTF-8', true);
+        $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Payment/v30/authorise');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Authorization: Basic '. base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
+                'Content-Type: application/json',
+                'Content-Length:' . strlen($data_string))
+        );
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+
+        //execute post
+        $result = curl_exec($ch);
+        $resultAuthorization = json_decode($result);
+        $pspReference = $resultAuthorization->pspReference;
+        //close connection
+        curl_close($ch);
+
+        $data = array("merchantAccount" => "InnocreationNET", "modificationAmount" => array("value" => 20000, "currency" => "EUR"), "originalReference" => $pspReference, "reference" => "testCardPayment", "recurring" => array("contract" => "RECURRING, ONECLICK"));
+        $data_string = json_encode($data);
+
+//        header('Content-Type: application/json; charset=UTF-8', true);
+        $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Payment/v30/capture');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Authorization: Basic '. base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
+                'Content-Type: application/json',
+                'Content-Length:' . strlen($data_string))
+        );
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+
+        //execute post
+        $result = curl_exec($ch);
+        dd($result);
+        //close connection
+        curl_close($ch);
+//
+//        $client = new \Adyen\Client();
+//        $client->setUsername("ws@Company.Innocreation");
+//        $client->setPassword("[puCnJ5TjHjTxjpa++rI1%UD~");
+//        $client->setEnvironment(\Adyen\Environment::TEST);
+//        $client->setApplicationName("My Test Application");
+//        // initialize service
+//
+//        $service = new Payment($client);
+//        /**
+//         * The payment can be submitted by sending a PaymentRequest
+//         * to the authorise action of the web service, the request should
+//         * contain the following variables:
+//         * - merchantAccount            : The merchant account the payment was processed with.
+//         * - amount
+//         * 	    - currency              : the currency of the payment
+//         * 	    - amount                : the amount of the payment
+//         * - reference                  : Your reference
+//         * - shopperIP                  : The IP address of the shopper (optional/recommended)
+//         * - shopperEmail               : The e-mail address of the shopper
+//         * - shopperReference           : The shopper reference, i.e. the shopper ID
+//         * - fraudOffset                : Numeric value that will be added to the fraud score (optional)
+//         * - additionalData
+//         *      - card.encrypted.json   : The encrypted card catched by the POST variables.
+//         */
+//        $amount = array(
+//            "value" => 2000,
+//            "currency"=> "EUR"
+//        );
+//        $additionalData = array(
+//            "card.encrypted.json" => $encryptedData
+//        );
+//        $request = array(
+//            "merchantAccount" => "InnocreationNET",
+//            "amount" => $amount,
+//            "reference" => "testCardPayment",
+//            "additionalData" => $additionalData
+//        );
+//        $result = $service->authorise($request);
+//        /**
+//         * If the payment passes validation a risk analysis will be done and, depending on the
+//         * outcome, an authorisation will be attempted. You receive a
+//         * payment response with the following fields:
+//         * - pspReference              : The reference we assigned to the payment;
+//         * - resultCode                : The result of the payment. One of Authorised, Refused or Error;
+//         * - authCode                  : An authorisation code if the payment was successful, or blank otherwise;
+//         * - refusalReason             : If the payment was refused, the refusal reason.
+//         */
+//        print_r("Payment Result:\n");
+//        print_r("- pspReference: " . $result['pspReference'] . "\n");
+//        print_r("- resultCode: " . $result['resultCode']. "\n");
+//        print_r("- authCode: " . $result['authCode']. "\n");
+//        print_r("- refusalReason: " . $result['refusalReason']. "\n");
+//
+//        die("gfds");
+
+
+//        $pairs["reference"] = "testCardPayment";
+//        $pairs["merchantAccount"] = "InnocreationNET";
+//        $pairs["amount"] = 2000;
+//        $queryString = http_build_query($pairs);
+//        $testUrl = "https://pal-test.adyen.com/pal/servlet/Payment/v30/authorise" . "?" . $queryString;
+//        $json = file_get_contents($testUrl);
+//        dd($json);
+
     }
 
     /**

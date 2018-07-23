@@ -510,6 +510,8 @@ Route::post("/checkout/savePaymentInfo", "CheckoutController@savePaymentInfoActi
 
 Route::post("/checkout/setDataCustomPackage", "CheckoutController@setDataCustomPackageAction");
 
+Route::post("/checkout/authorisePaymentRequest", "CheckoutController@authorisePaymentRequestAction");
+
 
 
 
