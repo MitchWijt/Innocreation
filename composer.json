@@ -11,8 +11,7 @@
         "riverskies/laravel-mobile-detect": "^1.3",
         "mailgun/mailgun-php": "^2.5",
         "php-http/curl-client": "^1.7",
-        "guzzlehttp/psr7": "^1.4",
-        "adyen/php-api-library": "^1.5"
+        "guzzlehttp/psr7": "^1.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

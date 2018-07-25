@@ -237,6 +237,7 @@
                                             <input type="text" placeholder="expiryMonth" size="2" data-encrypted-name="expiryMonth"/>
                                             <input type="text" placeholder="expiryYear" size="4" data-encrypted-name="expiryYear"/>
                                             <input type="text" placeholder="cvc" size="4" data-encrypted-name="cvc"/>
+                                            <input type="hidden" name="team_id" value="<?= $team->id?>">
                                             <?
                                                 $date = date("Y-m-d");
                                                 $time = date("H:i:s");

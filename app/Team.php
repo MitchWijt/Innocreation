@@ -115,12 +115,12 @@ class Team extends Model
         $from = date("Y-m-d", strtotime(" -1 month"));
         $to = date("Y-m-d");
         if($this->split_the_bill == 0) {
-            $payment = Payment::select("*")->where("team_id", $this->id)->orderBy('created_at', 'DESC')->First();
+            $payment = Payments::select("*")->where("team_id", $this->id)->orderBy('created_at', 'DESC')->First();
             if ($payment->payment_status == "Settled") {
                 $amount = $payment->amount;
             }
         } else {
-            $payments = Payment::select("*")->where("team_id", $this->id)->whereBetween("created_at", array($from, $to))->get();
+            $payments = Payments::select("*")->where("team_id", $this->id)->whereBetween("created_at", array($from, $to))->get();
             foreach($payments as $payment){
                 if ($payment->payment_status == "Settled") {
                     $amount = $amount + $payment->amount;

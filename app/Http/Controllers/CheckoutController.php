@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Adyen\AdyenException;
-use Adyen\Service\Payment;
 use App\CustomMembershipPackage;
 use App\CustomMembershipPackageType;
 use App\CustomTeamPackage;
 use App\MembershipPackage;
+use App\Payments;
 use App\ServiceReview;
 use App\Country;
 use App\Expertises;
@@ -159,12 +158,12 @@ class CheckoutController extends Controller
 
     public function authorisePaymentRequestAction(Request $request){
         $encryptedData = $request->input("adyen-encrypted-data");
-//        $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
-//        $HMAC_KEY = "BA15F61D808D61044A97167A6F00732C0144E7BB020900389CE8560739AF88E0";
-//        $binaryHmacKey = pack("H*" , $HMAC_KEY);
+        $team = Team::select("*")->where("id", $request->input("team_id"))->first();
+        $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
+        $price = str_replace(".", "",number_format($teamPackage->price, 2, ".", "."));
 
         //RECURRINGSTORECALL
-        $data = array("additionalData" => array("card.encrypted.json" => $encryptedData),"amount" => array("value" => 2000, "currency" => "EUR"), "reference" => "testpaymentCardRecurring", "merchantAccount" => "InnocreationNET", "shopperReference" => "Mitchel Wijt", "recurring" => array("contract" => "RECURRING,ONECLICK"));
+        $data = array("additionalData" => array("card.encrypted.json" => $encryptedData),"amount" => array("value" => $price, "currency" => "EUR"), "reference" => $teamPackage->id . 5, "merchantAccount" => "InnocreationNET", "shopperReference" => $team->users->getName(), "recurring" => array("contract" => "RECURRING,ONECLICK"));
         $data_string = json_encode($data);
 
 //        header('Content-Type: application/json; charset=UTF-8', true);
@@ -183,12 +182,11 @@ class CheckoutController extends Controller
         //execute post
         $result = curl_exec($ch);
         $resultAuthorization = json_decode($result);
-        $pspReference = $resultAuthorization->pspReference;
         //close connection
         curl_close($ch);
 
         //RECURRINGDETAILS
-        $data = array("merchantAccount" => "InnocreationNET", "shopperReference" => "Mitchel Wijt");
+        $data = array("merchantAccount" => "InnocreationNET", "shopperReference" => $team->users->getName());
         $data_string = json_encode($data);
 
         $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Recurring/v25/listRecurringDetails');
@@ -206,12 +204,15 @@ class CheckoutController extends Controller
         //execute post
         $result = curl_exec($ch);
         $resultAuthorization = json_decode($result);
+
+        $recurringDetailReference = $resultAuthorization->details[0]->RecurringDetail->recurringDetailReference;
+
         //close connection
         curl_close($ch);
 
 
         //PAYMENTAUTH
-        $data = array("amount" => array("value" => 2000, "currency" => "EUR"), "reference" => "testRecurringAuth", "merchantAccount" => "InnocreationNET", "shopperReference" => "Mitchel Wijt", "selectedRecurringDetailReference" => "LATEST", "recurring" => array("contract" => "RECURRING"), "shopperInteraction" => "ContAuth");
+        $data = array("amount" => array("value" => $price, "currency" => "EUR"), "reference" =>  $teamPackage->id . 5, "merchantAccount" => "InnocreationNET", "shopperReference" => $team->users->getName(), "selectedRecurringDetailReference" => $recurringDetailReference, "recurring" => array("contract" => "RECURRING"), "shopperInteraction" => "ContAuth");
         $data_string = json_encode($data);
 
         $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Payment/v30/authorise');
@@ -234,7 +235,7 @@ class CheckoutController extends Controller
         curl_close($ch);
 
         //CAPTURE
-        $data = array("merchantAccount" => "InnocreationNET", "modificationAmount" => array("value" => 20000, "currency" => "EUR"), "originalReference" => $pspReference, "reference" => "testCardPaymentRecurring");
+        $data = array("merchantAccount" => "InnocreationNET", "modificationAmount" => array("value" => $price, "currency" => "EUR"), "originalReference" => $pspReference, "reference" => $teamPackage->id . 5);
         $data_string = json_encode($data);
 
 //        header('Content-Type: application/json; charset=UTF-8', true);
@@ -252,9 +253,19 @@ class CheckoutController extends Controller
 
         //execute post
         $result = curl_exec($ch);
-        dd($result);
         //close connection
         curl_close($ch);
+
+        $payment = new Payments();
+        $payment->user_id = $team->users->id;
+        $payment->team_id = $team->id;
+        $payment->amount = $price;
+        $payment->recurring_detail_reference = $recurringDetailReference;
+        $payment->shopper_reference = $team->users->getName();
+        $payment->payment_status = "SentForSettle";
+        $payment->save();
+
+        dd($result);
 
     }
 
