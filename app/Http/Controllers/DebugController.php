@@ -16,6 +16,19 @@ class DebugController extends Controller
 {
     public function test(){
         if($this->authorized(true)){
+
+
+
+
+
+
+
+
+
+
+
+
+
 //            $data = array("amount" => array("value" => 2000, "currency" => "EUR"), "reference" =>  15, "merchantAccount" => "InnocreationNET", "shopperReference" => "Marcel Wijt", "selectedRecurringDetailReference" => 8315325486768463232323, "recurring" => array("contract" => "RECURRING"), "shopperInteraction" => "ContAuth");
 //            $data_string = json_encode($data);
 //

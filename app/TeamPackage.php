@@ -10,7 +10,7 @@ class TeamPackage extends Model
 
 
     public function team(){
-        return $this->hasOne("\App\Teams", "id","team_id");
+        return $this->hasOne("\App\Team", "id","team_id");
     }
 
     public function membershipPackage(){

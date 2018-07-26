@@ -126,6 +126,6 @@ $(".toStep3").on("click",function () {
             }
         });
     } else {
-
+        $(".savePaymentInfoForm").submit();
     }
 });

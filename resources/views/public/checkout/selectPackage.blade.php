@@ -323,6 +323,7 @@
             showAutocompleteOnFocus: true
         });
     </script>
+    <? if($step == 3) { ?>
     <script>
         // The form element to encrypt.
         var form = document.getElementById('adyen-encrypted-form');
@@ -331,6 +332,7 @@
         // Bind encryption options to the form.
         adyen.createEncryptedForm(form, options);
     </script>
+    <? } ?>
 @endsection
 @section('pagescript')
     <script src="/js/checkout/selectPackage.js"></script>

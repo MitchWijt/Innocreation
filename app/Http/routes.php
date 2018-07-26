@@ -512,6 +512,10 @@ Route::post("/checkout/setDataCustomPackage", "CheckoutController@setDataCustomP
 
 Route::post("/checkout/authorisePaymentRequest", "CheckoutController@authorisePaymentRequestAction");
 
+Route::get("/thank-you", "CheckoutController@donePaymentAction");
+
+Route::get("/almost-there", "CheckoutController@splitTheBillNotification");
+
 
 
 
