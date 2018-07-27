@@ -114,8 +114,12 @@ Route::post("/user/rateSupportTicket","UserController@rateSupportTicketAction");
 Route::post("/user/addSupportTicket","UserController@addSupportTicketAction");
 
 //favorite teams
-Route::get("/user/favorite-teams","UserController@favoriteTeamsAction");
+Route::get("/my-account/favorite-teams","UserController@favoriteTeamsAction");
 
+//payments
+Route::get("/my-account/payment-details", "UserController@paymentDetailsAction");
+
+Route::post("/user/validateSplitTheBill", "UserController@validateSplitTheBillAction");
 
 //==============================SEARCHTEAMSPAGE========================
 
@@ -186,6 +190,9 @@ Route::post("/my-team/saveTeamProduct", "TeamController@saveTeamProductAction");
 Route::post("/my-team/getTeamProductModalData", "TeamController@getTeamProductModalDataAction");
 
 Route::post("/my-team/deleteTeamProduct", "TeamController@deleteTeamProductAction");
+
+//Payment
+Route::get("/my-team/payment-details", "TeamController@teamPaymentDetailsAction");
 
 
 //==============================WORKSPACE TEAM===================================

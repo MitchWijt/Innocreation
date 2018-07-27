@@ -40,7 +40,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Recent transactions</a>
+        <a class="regular-link c-gray" href="/my-account/payment-details">Payment details</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
@@ -63,7 +63,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/user/favorite-teams">Favorite teams</a>
+        <a class="regular-link c-gray" href="/my-account/favorite-teams">Favorite teams</a>
     </div>
     <hr>
 </div>

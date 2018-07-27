@@ -10,6 +10,7 @@ use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
 use App\Page;
 use App\ServiceReview;
+use App\SplitTheBillLinktable;
 use App\SupportTicket;
 use App\SupportTicketMessage;
 use App\Team;
@@ -17,7 +18,9 @@ use App\TeamReview;
 use App\User;
 use App\UserChat;
 use App\UserMessage;
+use App\Payments;
 use App\UserPortfolio;
+use App\TeamPackage;
 use App\NeededExpertiseLinktable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -692,6 +695,152 @@ class UserController extends Controller
             $favoriteTeams = FavoriteTeamLinktable::select("*")->where("user_id", $userId)->get();
 
             return view("/public/user/favoriteTeams", compact("favoriteTeams"));
+        }
+    }
+
+    public function paymentDetailsAction(){
+        if($this->authorized()) {
+            $userId = Session::get("user_id");
+            $user = User::select("*")->where("id", $userId)->first();
+            $splitTheBillDetails = SplitTheBillLinktable::select("*")->where("user_id", $userId)->get();
+            $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
+
+            return view("/public/user/userPaymentDetails", compact("splitTheBillDetails", "teamPackage"));
+        }
+    }
+
+    public function validateSplitTheBillAction(Request $request){
+        if($this->authorized()) {
+            $encryptedData = $request->input("adyen-encrypted-data");
+            $userId = $request->input("user_id");
+            $splitTheBillId = $request->input("split_the_bill_linktable_id");
+            $termsPayment = $request->input("paymentTermsCheck");
+
+            if($termsPayment == 1){
+                $user = User::select("*")->where("id", $userId)->first();
+                $user->encrypted_credit_card = $encryptedData;
+                $user->save();
+
+                $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("id", $splitTheBillId)->first();
+                $splitTheBillLinktable->accepted = 1;
+                $splitTheBillLinktable->save();
+
+                $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->where("accepted", 1)->get();
+                if(count($allSplitTheBillLinktables) >= count($user->team->getMembers())) {
+                    foreach ($allSplitTheBillLinktables as $allSplitTheBillLinktable) {
+                        $payment = Payments::select("*")->orderBy("reference", "DESC")->first();
+                        $reference = $payment->reference + 1;
+                        $price = str_replace(".", "", number_format($allSplitTheBillLinktable->amount, 2, ".", "."));
+
+                        //RECURRINGSTORECALL
+                        $data = array("additionalData" => array("card.encrypted.json" => $allSplitTheBillLinktable->user->encrypted_credit_card), "amount" => array("value" => $price, "currency" => "EUR"), "reference" => $reference, "merchantAccount" => "InnocreationNET", "shopperReference" => $allSplitTheBillLinktable->user->getName() . $allSplitTheBillLinktable->team->id, "recurring" => array("contract" => "RECURRING"));
+                        $data_string = json_encode($data);
+
+                        $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Payment/v30/authorise');
+                        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                                'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
+                                'Content-Type: application/json',
+                                'Content-Length:' . strlen($data_string))
+                        );
+                        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+                        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+
+                        //execute post
+                        $result = curl_exec($ch);
+                        $resultAuthorization = json_decode($result);
+                        $resultCode = $resultAuthorization->resultCode;
+                        $pspReference = $resultAuthorization->pspReference;
+                        //close connection
+                        curl_close($ch);
+                        $paymentEarly = new Payments();
+                        $paymentEarly->user_id = $allSplitTheBillLinktable->user->id;
+                        $paymentEarly->team_id = $allSplitTheBillLinktable->team->id;
+                        $paymentEarly->amount = $price;
+                        $paymentEarly->shopper_reference = $allSplitTheBillLinktable->user->getName() . $allSplitTheBillLinktable->team->id;
+                        $paymentEarly->pspReference = $pspReference;
+                        $paymentEarly->reference = $payment->reference + 1;
+                        $paymentEarly->payment_status = "Authorized";
+                        $paymentEarly->created_at = date("Y-m-d H:i:s");
+                        $paymentEarly->save();
+
+                        //Cancel all payments
+                        if($resultCode == "Refused"){
+                            $recentPayments = Payments::select("*")->where("team_id", $allSplitTheBillLinktable->team_id)->where("payment_status", "Authorized")->orderBy("created_at", "DESC")->limit(count($allSplitTheBillLinktable->team->getMembers()))->get();
+                            foreach($recentPayments as $payment){
+                                if($payment->pspReference != null){
+                                    $data = array("merchantAccount" => "InnocreationNET", "originalReference" => $payment->pspReference);
+                                    $data_string = json_encode($data);
+
+                                    $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Payment/v30/cancel');
+                                    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                                            'Authorization: Basic '. base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
+                                            'Content-Type: application/json',
+                                            'Content-Length:' . strlen($data_string))
+                                    );
+                                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                                    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+                                    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+
+                                    //execute post
+                                    $result = curl_exec($ch);
+                                    $resultAuthorization = json_decode($result);
+                                    //close connection
+                                    curl_close($ch);
+
+                                    $existingPayment = Payments::select("*")->where("id", $payment->id)->first();
+                                    $existingPayment->payment_status = "Canceled";
+                                    $existingPayment->save();
+
+                                    foreach($allSplitTheBillLinktables as $allSplitTheBillLinktable){
+                                        $allSplitTheBillLinktable->accepted = 0;
+                                        $allSplitTheBillLinktable->save();
+                                    }
+                                    return redirect($_SERVER["HTTP_REFERER"])->withErrors("One or more of your members their card details are wrong. Please try again and wait for the rest of your members");
+                                }
+                            }
+                        } else {
+                            //RECURRINGDETAILS
+                            $data = array("merchantAccount" => "InnocreationNET", "shopperReference" => $allSplitTheBillLinktable->user->getName() . $allSplitTheBillLinktable->team->id);
+                            $data_string = json_encode($data);
+
+                            $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Recurring/v25/listRecurringDetails');
+                            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                                    'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
+                                    'Content-Type: application/json',
+                                    'Content-Length:' . strlen($data_string))
+                            );
+                            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+                            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+
+                            //execute post
+                            $result = curl_exec($ch);
+                            $resultAuthorization = json_decode($result);
+
+                            $recurringDetailReference = $resultAuthorization->details[0]->RecurringDetail->recurringDetailReference;
+
+                            //close connection
+                            curl_close($ch);
+
+                            $payment = Payments::select("*")->where("id", $paymentEarly->id)->first();
+                            $payment->recurring_detail_reference = $recurringDetailReference;
+                            $payment->save();
+                        }
+                    }
+                }
+
+
+                return redirect($_SERVER["HTTP_REFERER"]);
+            } else {
+                return redirect($_SERVER["HTTP_REFERER"])->withErrors("Agree with the Term of payment to continue");
+            }
         }
     }
 }

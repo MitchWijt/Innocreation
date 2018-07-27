@@ -32,7 +32,7 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">Payments</a>
+        <a class="regular-link c-gray" href="/my-team/payment-details">Payments</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

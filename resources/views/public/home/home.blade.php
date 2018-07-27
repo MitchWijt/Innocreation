@@ -22,8 +22,8 @@
             </div>
             <div class="row">
                 <div class="col-md-12 d-flex js-center">
-                    <div class="circle" style="width: 65px !important; height: 65px !important;">
-                        <i style="font-size: 50px; color: #FF6100" class="zmdi zmdi-chevron-down social-icon-home scrollHomeBtn"></i>
+                    <div class="circle m-r-0" style="width: 80px !important; height: 80px !important;">
+                        <i style="font-size: 65px; color: #FF6100; margin-left: 7px" class="zmdi zmdi-chevron-down social-icon-home scrollHomeBtn"></i>
                     </div>
                 </div>
             </div>

@@ -7,6 +7,7 @@ use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
 use App\MailMessage;
 use App\NeededExpertiseLinktable;
+use App\SplitTheBillLinktable;
 use App\Team;
 use App\TeamGroupChat;
 use App\TeamGroupChatLinktable;
@@ -595,5 +596,13 @@ class TeamController extends Controller
         $teamProductId = $request->input("team_product_id");
         $teamProduct = TeamProduct::select("*")->where("id", $teamProductId)->first();
         $teamProduct->delete();
+    }
+
+    public function teamPaymentDetailsAction(){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+
+        $splitTheBillDetails = SplitTheBillLinktable::select("*")->where("team_id", $team->id)->get();
+        return view("/public/team/teamPaymentDetails", compact("splitTheBillDetails", "team"));
     }
 }
