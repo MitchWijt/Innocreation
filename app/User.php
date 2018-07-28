@@ -104,6 +104,23 @@ class User extends Authenticatable
         return $forumThreads;
 
     }
+
+    public function isMember(){
+        $bool = false;
+        $payment = Payments::select("*")->where("user_id", $this->id)->get();
+        if(count($payment) > 0){
+            $bool = true;
+        } else {
+            $bool = false;
+        }
+        return $bool;
+    }
+
+    public function getMostRecentPayment(){
+        $payment = Payments::select("*")->where("user_id", $this->id)->where("payment_status", "Settled")->orderBy("created_at", "DESC")->first();
+        return $payment;
+
+    }
     /**
      * The attributes that are mass assignable.
      *
