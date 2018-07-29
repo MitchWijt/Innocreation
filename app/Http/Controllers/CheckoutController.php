@@ -185,7 +185,6 @@ class CheckoutController extends Controller
             curl_close($ch);
 
             if($resultCode == "Refused"){
-
                 $payment = new Payments();
                 $payment->user_id = $team->users->id;
                 $payment->team_id = $team->id;
@@ -253,7 +252,7 @@ class CheckoutController extends Controller
                 $payment->shopper_reference = $team->users->getName() . $team->id;
                 $payment->reference = $reference;
                 $payment->pspReference = $pspReference;
-                $payment->payment_status = "SentForSettle";
+                $payment->payment_status = "Settled";
                 $payment->created_at = date("Y-m-d H:i:s");
                 $payment->save();
                 return redirect("/thank-you");
@@ -505,6 +504,33 @@ class CheckoutController extends Controller
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
         return view("/public/checkout/splitTheBillNotification", compact("user" , "teamPackage"));
+
+    }
+
+    public function webhookAction(){
+        $response = file_get_contents('php://input');
+        $json = json_decode($response);
+        Session::set("json", $json);
+        $data = array("notificationResponse" => "[accepted]");
+        $data_string = json_encode($data);
+
+//
+//        $ch = curl_init('http://notification.services.adyen.com');
+//        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+//                'Content-Type: application/json',
+//                'Content-Length:' . strlen($data_string))
+//        );
+//        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+//        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+//
+//        //execute post
+//        $result = curl_exec($ch);
+//        $resultAuthorization = json_decode($result);
+//        //close connection
+//        curl_close($ch);
 
     }
 }

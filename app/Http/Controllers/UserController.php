@@ -728,10 +728,121 @@ class UserController extends Controller
                 $splitTheBillLinktable->accepted = 1;
                 $splitTheBillLinktable->save();
 
+
+                if($splitTheBillLinktable->payment_refused = 1){
+                    $payment = Payments::select("*")->orderBy("id", "DESC")->first();
+                    $reference = $payment->reference + 1;
+                    $price = str_replace(".", "", number_format($splitTheBillLinktable->amount, 2, ".", "."));
+
+                    //RECURRINGSTORECALL
+                    $data = array("additionalData" => array("card.encrypted.json" => $splitTheBillLinktable->user->encrypted_credit_card), "amount" => array("value" => $price, "currency" => "EUR"), "reference" => $reference, "merchantAccount" => "InnocreationNET", "shopperReference" => $splitTheBillLinktable->user->getName() . $splitTheBillLinktable->team->id, "recurring" => array("contract" => "RECURRING"));
+                    $data_string = json_encode($data);
+
+                    $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Payment/v30/authorise');
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                            'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
+                            'Content-Type: application/json',
+                            'Content-Length:' . strlen($data_string))
+                    );
+                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+                    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+
+                    //execute post
+                    $result = curl_exec($ch);
+                    $resultAuthorization = json_decode($result);
+                    $resultCode = $resultAuthorization->resultCode;
+                    $pspReference = $resultAuthorization->pspReference;
+                    //close connection
+                    curl_close($ch);
+
+                    //Cancel all payments
+                    if($resultCode != "Authorized" || !isset($resultCode)){
+                        $status = "Canceled";
+                        $data = array("merchantAccount" => "InnocreationNET", "originalReference" => $pspReference);
+                        $data_string = json_encode($data);
+
+                        $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Payment/v30/cancel');
+                        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                                'Authorization: Basic '. base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
+                                'Content-Type: application/json',
+                                'Content-Length:' . strlen($data_string))
+                        );
+                        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+                        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+
+                        //execute post
+                        $result = curl_exec($ch);
+                        $resultAuthorization = json_decode($result);
+                        //close connection
+                        curl_close($ch);
+
+
+                        $splitTheBillLinktable->accepted = 0;
+                        $splitTheBillLinktable->save();
+                        return redirect($_SERVER["HTTP_REFERER"])->withErrors("Your credit card credentials seem to be invalid, to continue check your credentials and please try again");
+                    } else {
+                        $status = "Settled";
+                        //RECURRINGDETAILS
+                        $data = array("merchantAccount" => "InnocreationNET", "shopperReference" => $splitTheBillLinktable->user->getName() . $splitTheBillLinktable->team->id);
+                        $data_string = json_encode($data);
+
+                        $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Recurring/v25/listRecurringDetails');
+                        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                                'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
+                                'Content-Type: application/json',
+                                'Content-Length:' . strlen($data_string))
+                        );
+                        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+                        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+
+                        //execute post
+                        $result = curl_exec($ch);
+                        $resultAuthorization = json_decode($result);
+
+                        $recurringDetailReference = $resultAuthorization->details[0]->RecurringDetail->recurringDetailReference;
+
+                        //close connection
+                        curl_close($ch);
+
+
+                        $team = $team = Team::select("*")->where("id", $user->team_id)->first();
+                        $this->saveAndSendEmail($user,  "Payment successfully pursued", view("/templates/sendSplitTheBillSuccess", compact("user", "team")));
+
+                        $userChat = UserChat::select("*")->where("receiver_user_id", $team->ceo_user_id)->where("creator_user_id", 1)->first();
+                        $userMessage = new UserMessage();
+                        $userMessage->sender_user_id = 1;
+                        $userMessage->user_chat_id = $userChat->id;
+                        $userMessage->time_sent = $this->getTimeSent();
+                        $userMessage->message = "The payment for your team has successfully been pursued! Enjoy and make great innovative products!";
+                        $userMessage->created_at = date("Y-m-d H:i:s");
+                        $userMessage->save();
+                    }
+                    $payment = new Payments();
+                    $payment->user_id = $splitTheBillLinktable->user->id;
+                    $payment->team_id = $splitTheBillLinktable->team->id;
+                    $payment->amount = $price;
+                    $payment->shopper_reference = $splitTheBillLinktable->user->getName() . $splitTheBillLinktable->team->id;
+                    $payment->recurring_detail_reference = $recurringDetailReference;
+                    $payment->pspReference = $pspReference;
+                    $payment->reference = $payment->reference + 1;
+                    $payment->payment_status = $status;
+                    $payment->created_at = date("Y-m-d H:i:s");
+                    $payment->save();
+                }
+
                 $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->where("accepted", 1)->get();
                 if(count($allSplitTheBillLinktables) >= count($user->team->getMembers())) {
                     foreach ($allSplitTheBillLinktables as $allSplitTheBillLinktable) {
-                        $payment = Payments::select("*")->orderBy("reference", "DESC")->first();
+                        $payment = Payments::select("*")->orderBy("id", "DESC")->first();
                         $reference = $payment->reference + 1;
                         $price = str_replace(".", "", number_format($allSplitTheBillLinktable->amount, 2, ".", "."));
 
@@ -754,13 +865,15 @@ class UserController extends Controller
                         //execute post
                         $result = curl_exec($ch);
                         $resultAuthorization = json_decode($result);
-                        $resultCode = $resultAuthorization->resultCode;
+                        if(isset( $resultAuthorization->resultCode)) {
+                            $resultCode = $resultAuthorization->resultCode;
+                        }
                         $pspReference = $resultAuthorization->pspReference;
                         //close connection
                         curl_close($ch);
 
                         //Cancel all payments
-                        if($resultCode == "Refused"){
+                        if($resultCode != "Authorized" && !isset($resultAuthorization->resultCode)){
                             $counterRefused++;
                         } else {
                             //RECURRINGDETAILS
@@ -796,7 +909,7 @@ class UserController extends Controller
                             $payment->recurring_detail_reference = $recurringDetailReference;
                             $payment->pspReference = $pspReference;
                             $payment->reference = $payment->reference + 1;
-                            $payment->payment_status = "Authorized";
+                            $payment->payment_status = "Settled";
                             $payment->created_at = date("Y-m-d H:i:s");
                             $payment->save();
                             array_push($refusedPaymentsArray, $payment->id);
@@ -836,7 +949,7 @@ class UserController extends Controller
                         }
                         return redirect($_SERVER["HTTP_REFERER"])->withErrors("One or more of your members their card details are wrong. Please try again and wait for the rest of your members");
                     } else {
-                        $team = $team = Team::select("*")->where("id", $user->team_id)->get();
+                        $team = $team = Team::select("*")->where("id", $user->team_id)->first();
                         $this->saveAndSendEmail($user,  "Payment successfully pursued", view("/templates/sendSplitTheBillSuccess", compact("user", "team")));
 
                         $userChat = UserChat::select("*")->where("receiver_user_id", $team->ceo_user_id)->where("creator_user_id", 1)->first();

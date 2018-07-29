@@ -45,7 +45,7 @@
                             <div class="card card-lg">
                                 <div class="card-block">
                                     <div class="row">
-                                        <div class="col-sm-9">
+                                        <div class="col-sm-8">
                                             <form method="POST" class="m-t-20" action="/user/validateSplitTheBill" id="adyen-encrypted-form">
                                                 <input type="hidden" name="user_id" value="<?= $splitTheBillDetail->user_id?>">
                                                 <input type="hidden" name="split_the_bill_linktable_id" value="<?= $splitTheBillDetail->id?>">
@@ -83,8 +83,12 @@
                                                 </div>
                                             </form>
                                         </div>
-                                        <div class="col-sm-3 m-t-20 text-center">
-                                            <p class="f-20 m-t-0"><? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo "Innovator(custom package)"; else echo str_replace("-", " ", ucfirst($teamPackage->title))?></p>
+                                        <div class="col-sm-4 m-t-20 text-center">
+                                            <? if($teamPackage->custom_team_package_id != null) { ?>
+                                                <p class="f-20 m-t-0">Innovator(custom package)</p>
+                                            <? } else { ?>
+                                                <p class="f-20 m-t-0"><?= str_replace("-", " ", ucfirst($teamPackage->title))?></p>
+                                            <? } ?>
                                             <p style="letter-spacing: 1px;"><?= "&euro;" . number_format($splitTheBillDetail->amount, 2, ".", ".")?><span style="letter-spacing: 0px;">/Month</span></p>
                                         </div>
                                     </div>
