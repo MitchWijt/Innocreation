@@ -120,7 +120,7 @@ class Team extends Model
                 $amount = $payment->amount;
             }
         } else {
-            $payments = Payments::select("*")->where("team_id", $this->id)->whereBetween("created_at", array($from, $to))->get();
+            $payments = Payments::select("*")->where("team_id", $this->id)->orderBy('created_at', 'DESC')->limit(count($this->getMembers()))->get();
             foreach($payments as $payment){
                 if ($payment->payment_status == "Settled") {
                     $amount = $amount + $payment->amount;
@@ -128,13 +128,11 @@ class Team extends Model
             }
         }
         $teamPackage = TeamPackage::select("*")->where("team_id", $this->id)->First();
-        if(number_format($amount, 2, ".", ".") >= number_format($teamPackage->price, 2, ".", ".")){
+        if(str_replace(".", "",number_format($amount, 0,".", ".")) >= str_replace(".", "",number_format($teamPackage->price, 2, ".", "."))){
             return true;
         } else {
             return false;
         }
-
-
     }
 
 }

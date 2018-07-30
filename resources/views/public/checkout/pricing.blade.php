@@ -42,8 +42,18 @@
                                     @endnotmobile
                                 </div>
                                 <div class="col-sm-12 @mobile m-t-10 m-b-20 @endmobile">
-                                    <div class="text-center ">
-                                        <a href="/becoming-a-<?= lcfirst($membershipPackage->title)?>" class="btn btn-inno @tablet btn-sm @endtablet">Choose</a>
+                                    <div class="text-center">
+                                        <? if(isset($user)) { ?>
+                                            <? if($user->isMember() && $user->team->packageDetails()->membership_package_id == $membershipPackage->id &&  $user->team->packageDetails()->custom_team_package_id == null) { ?>
+                                                <button class="btn btn-inno @tablet btn-sm @endtablet" disabled>Your current package!</button>
+                                            <? } else if($user->isMember() && $user->id == $user->team->ceo_user_id) { ?>
+                                                <button class="btn btn-inno @tablet btn-sm @endtablet">Choose</button>
+                                            <? } else { ?>
+                                                <button href="/becoming-a-<?= lcfirst($membershipPackage->title)?>" class="btn btn-inno @tablet btn-sm @endtablet">Choose</button>
+                                            <? } ?>
+                                        <? } else { ?>
+                                            <a href="/becoming-a-<?= lcfirst($membershipPackage->title)?>" class="btn btn-inno @tablet btn-sm @endtablet">Choose</a>
+                                        <? } ?>
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +130,15 @@
                                 <hr class="col-xs-12">
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-inno m-b-20">Choose</button>
+                                <? if(isset($user)) { ?>
+                                    <? if($user->isMember() && $user->team->packageDetails()->custom_team_package_id != null) { ?>
+                                        <button class="btn btn-inno @tablet btn-sm @endtablet" disabled>Your current package!</button>
+                                    <? } else { ?>
+                                        <button type="submit" class="btn btn-inno m-b-20">Choose</button>
+                                    <? } ?>
+                                <? } else { ?>
+                                    <button type="submit" class="btn btn-inno m-b-20">Choose</button>
+                                <? } ?>
                             </div>
                         </div>
                     </div>

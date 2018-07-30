@@ -28,7 +28,7 @@
                                         <p class="m-l-10"><a target="_blank" href="<?= $splitTheBillDetail->team->getUrl()?>" class="regular-link"><?= $splitTheBillDetail->team->team_name?></a> has asked you to accept and validate the "split the bill". Since you are a member of this team. Validate as soon as possible to enjoy the benefits of your package even quiker!</p>
                                     </div>
                                     <div class="col-sm-2 m-t-10">
-                                        <? if($splitTheBillDetail->user->encrypted_credit_card != null && $splitTheBillDetail->accepted == 1) { ?>
+                                        <? if($splitTheBillDetail->user->encrypted_credit_card != null && $splitTheBillDetail->accepted == 1 && $splitTheBillDetail->user->payment_refused == 0) { ?>
                                             <p class="c-green">Validated <i class="zmdi zmdi-check c-green"></i> </p>
                                         <? } else { ?>
                                             <button data-toggle="collapse" href="#collapse-<?= $splitTheBillDetail->id?>" class="btn btn-inno pull">Validate</button>

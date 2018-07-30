@@ -34,7 +34,12 @@ class CheckoutController extends Controller
         $membershipPackages = MembershipPackage::select("*")->get();
         $customMembershipPackageTypes = CustomMembershipPackageType::select("*")->get();
         $serviceReviews = ServiceReview::select("*")->where("service_review_type_id", 2)->get();
-        return view("/public/checkout/pricing", compact("membershipPackages", "customMembershipPackageTypes", "serviceReviews"));
+        if(Session::has("user_id")) {
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            return view("/public/checkout/pricing", compact("membershipPackages", "customMembershipPackageTypes", "serviceReviews", "user"));
+        } else {
+            return view("/public/checkout/pricing", compact("membershipPackages", "customMembershipPackageTypes", "serviceReviews"));
+        }
     }
 
     /**
@@ -400,6 +405,7 @@ class CheckoutController extends Controller
             }
             $teamPackage->team_id = $teamId;
             $teamPackage->membership_package_id = $membershipPackageId;
+            $teamPackage->custom_team_package_id = null;
             $teamPackage->payment_preference = $paymentPreference;
             $teamPackage->title = $membershipPackage->title;
             $teamPackage->description = $membershipPackage->description;

@@ -11,15 +11,16 @@ use App\User;
 use App\ServiceReview;
 use App\MailMessage;
 use App\Payments;
+use App\SiteSetting;
+use App\TeamPackage;
+use App\SplitTheBillLinktable;
 use App\Http\Requests;
 
 class DebugController extends Controller
 {
     public function test(){
         if($this->authorized(true)){
-            $user = User::select("*")->where("id", 10)->first();
-            $payment = $user->getMostRecentPayment();
-            dd( date("Y-m-d H:i:s"));
+            die("test");
 //          SUBSEQUENT PAYMENT
 //            $data = array("amount" => array("value" => 2000, "currency" => "EUR"), "reference" =>  15, "merchantAccount" => "InnocreationNET", "shopperReference" => "Marcel Wijt", "selectedRecurringDetailReference" => 8315325486768463232323, "recurring" => array("contract" => "RECURRING"), "shopperInteraction" => "ContAuth");
 //            $data_string = json_encode($data);
@@ -43,7 +44,6 @@ class DebugController extends Controller
 //            //close connection
 //            curl_close($ch);
 
-            die("test");
         }
     }
 }
