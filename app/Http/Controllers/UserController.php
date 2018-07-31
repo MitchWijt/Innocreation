@@ -975,4 +975,42 @@ class UserController extends Controller
             }
         }
     }
+
+    public function validateChangePackageAction(Request $request){
+        if($this->authorized()) {
+            $userId = $request->input("user_id");
+            $splitTheBillId = $request->input("split_the_bill_linktable_id");
+            $user = User::select("*")->where("id", $userId)->first();
+
+            $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("id", $splitTheBillId)->first();
+            $splitTheBillLinktable->accepted_change_package = 1;
+            $splitTheBillLinktable->save();
+
+            $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->where("accepted_change_package", 1)->get();
+            if (count($allSplitTheBillLinktables) >= count($user->team->getMembers())) {
+                $userChat = UserChat::select("*")->where("receiver_user_id", $user->team->ceo_user_id)->where("creator_user_id", 1)->first();
+                $userMessage = new UserMessage();
+                $userMessage->sender_user_id = 1;
+                $userMessage->user_chat_id = $userChat->id;
+                $userMessage->time_sent = $this->getTimeSent();
+                $userMessage->message = "The verification to change your team package has been succesfuly validated by all your members! You can pursue now. have fun!";
+                $userMessage->created_at = date("Y-m-d H:i:s");
+                $userMessage->save();
+
+                foreach($allSplitTheBillLinktables as $splitTheBillLinktable){
+                    $newPrice = $splitTheBillLinktable->reserved_changed_amount;
+                    $splitTheBillLinktable->accepted_change_package = 0;
+                    $splitTheBillLinktable->membership_package_change_id = null;
+                    $splitTheBillLinktable->amount = $newPrice;
+                    $splitTheBillLinktable->reserved_changed_amount = null;
+                    $splitTheBillLinktable->reserved_membership_package_id = null;
+                    $splitTheBillLinktable->save();
+                }
+                $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
+                $teamPackage->change_package = 0;
+                $teamPackage->save();
+            }
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
+    }
 }

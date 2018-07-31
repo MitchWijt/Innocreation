@@ -57,6 +57,44 @@
                     </div>
                 </div>
             </div>
+            <? if($teamPackage->change_package == 1) { ?>
+                <? if($splitTheBillDetails->First()->reserved_changed_amount != null) { ?>
+                    <div class="row d-flex js-center m-t-20">
+                        <div class="col-md-10">
+                            <div class="card card-lg">
+                                <div class="card-block">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p class="m-l-10 m-t-10 f-18 m-b-10">Change package validation</p>
+                                        </div>
+                                    </div>
+                                    <div class="hr p-b-20 col-md-12"></div>
+                                    <? foreach($splitTheBillDetails as $splitTheBillDetail) { ?>
+                                        <div class="row text-center">
+                                            <div class="col-sm-6">
+                                                <p><?= $splitTheBillDetail->user->getName()?></p>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="d-flex fd-row js-center">
+                                                    <? if($splitTheBillDetail->accepted_change_package == 1) { ?>
+                                                        <p class="c-green">Validated <i class="zmdi zmdi-check c-green"></i> </p>
+                                                    <? } else { ?>
+                                                        <p>Waiting to be validated</p>
+                                                    <? } ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <? } ?>
+                                    <div class="hr p-b-20 col-md-12"></div>
+                                    <div class="col-sm-12">
+                                        <p>You will be able to change the package once all the members have validated</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <? } ?>
+            <? } ?>
         </div>
     </div>
 @endsection

@@ -84,15 +84,24 @@
                 <? } ?>
                 <div class="col-sm-6">
                     <div class="row">
-                        <div class="col-sm-4 m-0 p-0">
-                            <p class="bcg-black <? if($step == 1) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">Credentials (1/3)</p>
-                        </div>
-                        <div class="col-sm-4 m-0 p-0">
-                            <p class="bcg-black <? if($step == 2) echo "c-gray"; else echo "c-dark-grey"?> text-center border-sides m-b-0">Payment info (2/3)</p>
-                        </div>
-                        <div class="col-sm-4 m-0 p-0">
-                            <p class="bcg-black <? if($step == 3) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">Method (3/3)</p>
-                        </div>
+                        <? if(isset($teamPackage) && $team->split_the_bill == 1) { ?>
+                            <div class="col-sm-6 m-0 p-0">
+                                <p class="bcg-black <? if($step == 1) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">Credentials (1/2)</p>
+                            </div>
+                            <div class="col-sm-6 m-0 p-0">
+                                <p class="bcg-black <? if($step == 2) echo "c-gray"; else echo "c-dark-grey"?> text-center border-sides m-b-0">Payment info (2/2)</p>
+                            </div>
+                        <? } else { ?>
+                            <div class="col-sm-4 m-0 p-0">
+                                <p class="bcg-black <? if($step == 1) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">Credentials (1/3)</p>
+                            </div>
+                            <div class="col-sm-4 m-0 p-0">
+                                <p class="bcg-black <? if($step == 2) echo "c-gray"; else echo "c-dark-grey"?> text-center border-sides m-b-0">Payment info (2/3)</p>
+                            </div>
+                            <div class="col-sm-4 m-0 p-0">
+                                <p class="bcg-black <? if($step == 3) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">Method (3/3)</p>
+                            </div>
+                        <? } ?>
                     </div>
                     <div class="row m-t-0">
                         <div class="card shadow no-hover col-sm-12 m-t-0">
@@ -186,6 +195,16 @@
                                     <form action="/checkout/savePaymentInfo" method="post" class="savePaymentInfoForm">
                                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                         <input type="hidden" name="team_id" value="<?= $team->id?>">
+                                        <input type="hidden" name="change_package" value="0">
+                                        <? if(isset($teamPackage)) { ?>
+                                            <input type="hidden" class="changedPackage" name="change_package" value="1">
+                                        <? } ?>
+                                        <? if(isset($teamPackage) && $team->split_the_bill == 1) { ?>
+                                            <input type="hidden" class="split" name="splitTheBill" value="1">
+                                        <? } ?>
+                                        <? if(isset($teamPackage) && $team->split_the_bill == 0) { ?>
+                                            <input type="hidden" class="split" name="splitTheBill" value="0">
+                                        <? } ?>
                                         <? if(!\Illuminate\Support\Facades\Session::has("customPackagesArray")) { ?>
                                             <input type="hidden" name="membership_package_id" value="<?= $membershipPackage->id?>">
                                         <? } else { ?>
@@ -212,14 +231,16 @@
                                             </div>
                                         </div>
                                         <? if(count($team->getMembers()) > 1) { ?>
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="pull-right">
-                                                        <input type="checkbox" class="splitTheBill" name="splitTheBill" value="1" id="splitTheBill">
-                                                        <label class="m-r-10" for="splitTheBill">Split the bill</label><span><i class="zmdi zmdi-info-outline c-dark-grey c-pointer" data-toggle="modal" data-target="#splitTheBillInfoModal"></i></span>
+                                            <? if(!isset($teamPackage)) { ?>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="pull-right">
+                                                            <input type="checkbox" class="splitTheBill" name="splitTheBill" value="1" id="splitTheBill">
+                                                            <label class="m-r-10" for="splitTheBill">Split the bill</label><span><i class="zmdi zmdi-info-outline c-dark-grey c-pointer" data-toggle="modal" data-target="#splitTheBillInfoModal"></i></span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            <? } ?>
                                         <? } ?>
                                         <div class="row">
                                             <div class="col-sm-12 m-t-10 m-b-15">
@@ -268,7 +289,11 @@
                             </div>
                         </div>
                         <? if(isset($team) && isset($user) && count($team->getMembers()) > 1 && $step == 2) { ?>
-                            <div id="splitTheBillCollapse" class="collapse collapseExample card-sm shadow no-hover col-sm-12 m-t-0 splitTheBillCard">
+                            <? if(isset($teamPackage) && $step == 2 && $team->split_the_bill == 1) { ?>
+                                <div id="splitTheBillCollapse" class="collapsed collapseExample card-sm shadow no-hover col-sm-12 m-t-0 splitTheBillCard">
+                            <? } else { ?>
+                                <div id="splitTheBillCollapse" class="collapse collapseExample card-sm shadow no-hover col-sm-12 m-t-0 splitTheBillCard">
+                            <? } ?>
                                 <div class="card-block">
                                     <div class="text-center m-t-15">
                                         <h5>Split the bill</h5>

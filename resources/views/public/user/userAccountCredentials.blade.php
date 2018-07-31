@@ -8,6 +8,11 @@
         @mobile
             @include("includes.userAccount_sidebar")
         @endmobile
+        <div class="row m-b-20">
+            <div class="col-sm-12 d-flex js-center">
+                @include("includes.flash")
+            </div>
+        </div>
         <div class="sub-title-container p-t-20">
             <h1 class="sub-title-black">My profile</h1>
         </div>

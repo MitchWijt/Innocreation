@@ -44,12 +44,14 @@
                                 <div class="col-sm-12 @mobile m-t-10 m-b-20 @endmobile">
                                     <div class="text-center">
                                         <? if(isset($user)) { ?>
-                                            <? if($user->isMember() && $user->team->packageDetails()->membership_package_id == $membershipPackage->id &&  $user->team->packageDetails()->custom_team_package_id == null) { ?>
-                                                <button class="btn btn-inno @tablet btn-sm @endtablet" disabled>Your current package!</button>
-                                            <? } else if($user->isMember() && $user->id == $user->team->ceo_user_id) { ?>
-                                                <button class="btn btn-inno @tablet btn-sm @endtablet">Choose</button>
+                                            <? if($user->team_id != null) { ?>
+                                                <? if($user->isMember() && $user->team->packageDetails()->membership_package_id == $membershipPackage->id &&  $user->team->packageDetails()->custom_team_package_id == null) { ?>
+                                                    <button class="btn btn-inno @tablet btn-sm @endtablet" disabled>Your current package!</button>
+                                                <? } else { ?>
+                                                    <button class="openModalChangePackage btn btn-inno @tablet btn-sm @endtablet" data-user-id="<?= $user->id?>" data-membership-package-id="<?= $membershipPackage->id?>">Choose</button>
+                                                <? } ?>
                                             <? } else { ?>
-                                                <button href="/becoming-a-<?= lcfirst($membershipPackage->title)?>" class="btn btn-inno @tablet btn-sm @endtablet">Choose</button>
+                                                <a href="/becoming-a-<?= lcfirst($membershipPackage->title)?>" class="btn btn-inno @tablet btn-sm @endtablet">Choose</a>
                                             <? } ?>
                                         <? } else { ?>
                                             <a href="/becoming-a-<?= lcfirst($membershipPackage->title)?>" class="btn btn-inno @tablet btn-sm @endtablet">Choose</a>
@@ -61,8 +63,13 @@
                     </div>
                 <? } ?>
             </div>
-            <form action="/checkout/setDataCustomPackage" method="post">
+            <form action="/checkout/setDataCustomPackage" method="post" class="customPackageForm">
                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                <? if(isset($user) && $user->isMember() && $user->team->packageDetails()->custom_team_package_id != null) { ?>
+                    <input type="hidden" name="changePackage" value="1">
+                <? } else { ?>
+                    <input type="hidden" name="changePackage" value="0">
+                <? } ?>
                 <div class="row m-t-20 d-flex">
                     <div class="col-sm-8 @notmobile p-l-0 @endnotmobile ">
                         <div class="card col-sm-12 m-b-20">
@@ -131,8 +138,12 @@
                             </div>
                             <div class="text-center">
                                 <? if(isset($user)) { ?>
-                                    <? if($user->isMember() && $user->team->packageDetails()->custom_team_package_id != null) { ?>
-                                        <button class="btn btn-inno @tablet btn-sm @endtablet" disabled>Your current package!</button>
+                                    <? if($user->team_id != null) { ?>
+                                        <? if($user->isMember() && $user->team->packageDetails()->custom_team_package_id != null) { ?>
+                                            <button class="btn btn-inno @tablet btn-sm @endtablet" disabled>Your current package!</button>
+                                        <? } else {  ?>
+                                            <button type="button" class="btn btn-inno m-b-20 openModalChangePackage" data-user-id="<?= $user->id?>">Choose</button>
+                                        <? } ?>
                                     <? } else { ?>
                                         <button type="submit" class="btn btn-inno m-b-20">Choose</button>
                                     <? } ?>
@@ -176,6 +187,13 @@
                     </div>
                 </div>
             <? } ?>
+            <div class="modal fade changePackageModal" id="changePackageModal" tabindex="-1" role="dialog" aria-labelledby="changePackageModal" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content changePackageModalData">
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

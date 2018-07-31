@@ -50,6 +50,9 @@ class ReccuringPayment extends Command
                     $teamPackage = TeamPackage::select("*")->where("team_id", $payment->team_id)->first();
                     if($team->split_the_bill == 0) {
                         $price = str_replace(".", "", number_format($teamPackage->price, 2, ".", "."));
+                    } else if($teamPackage->change_package == 0){
+                        $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $user->id)->first();
+                        $price = str_replace(".", "", number_format($splitTheBillLinktable->amount, 2, ".", "."));
                     } else {
                         $price = $payment->amount;
                     }

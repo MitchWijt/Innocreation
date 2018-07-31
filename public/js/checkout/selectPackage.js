@@ -102,7 +102,7 @@ $(".splittedAmountMember").on("keyup",function () {
 
 
 $(".toStep3").on("click",function () {
-    if($(".splitTheBill").is(":checked")){
+    if($(".splitTheBill").is(":checked") || ($(".changedPackage").val() == 1 && $(".split").val() == 1)){
         var teamId = $(".team_id").val();
         var userIds = [];
         var prices = [];

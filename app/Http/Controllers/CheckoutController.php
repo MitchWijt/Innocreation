@@ -34,7 +34,7 @@ class CheckoutController extends Controller
         $membershipPackages = MembershipPackage::select("*")->get();
         $customMembershipPackageTypes = CustomMembershipPackageType::select("*")->get();
         $serviceReviews = ServiceReview::select("*")->where("service_review_type_id", 2)->get();
-        if(Session::has("user_id")) {
+        if (Session::has("user_id")) {
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
             return view("/public/checkout/pricing", compact("membershipPackages", "customMembershipPackageTypes", "serviceReviews", "user"));
         } else {
@@ -47,10 +47,11 @@ class CheckoutController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function selectPackageAction($title = null) {
+    public function selectPackageAction($title = null)
+    {
         $pageType = "checkout";
 
-        if(!Session::has("customPackagesArray")) {
+        if (!Session::has("customPackagesArray")) {
             // for register/login
             $countries = Country::select("*")->orderBy("country")->get();
             $expertises = Expertises::select("*")->get();
@@ -62,14 +63,17 @@ class CheckoutController extends Controller
 
             if ($user && $user->team_id != null) {
                 $team = Team::select("*")->where("id", $user->team_id)->first();
+                if($user->id != $user->team->ceo_user_id){
+                    return redirect("/my-account")->withErrors("You are in a team but aren't a team leader. Only team leaders can purchase packages");
+                }
             }
 
             if (request()->has('step')) {
                 $step = request()->step;
-                if($step == 3){
+                if ($step == 3) {
                     $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
                     $HMAC_KEY = "BA15F61D808D61044A97167A6F00732C0144E7BB020900389CE8560739AF88E0";
-                    $binaryHmacKey = pack("H*" , $HMAC_KEY);
+                    $binaryHmacKey = pack("H*", $HMAC_KEY);
                     $pairs["countryCode"] = $user->countries->country_code;
                     $pairs["shopperLocale"] = "en_GB";
                     $pairs["merchantReference"] = "Package:$teamPackage->id\\$team->id";
@@ -89,18 +93,23 @@ class CheckoutController extends Controller
                     $json = file_get_contents($testUrl);
                     $paymentMethods = json_decode($json);
                 }
+                if($step == 2){
+                    if($user->isMember()){
+                        $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
+                    }
+                }
             } else {
                 $step = 1;
             }
 
             if ($user) {
-                if($step == 3){
-                    return view("/public/checkout/selectPackage", compact("membershipPackage", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team", "paymentMethods"));
+                if ($step == 2 && $user->isMember() && count($teamPackage) > 0) {
+                    return view("/public/checkout/selectPackage", compact("membershipPackage", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team", "teamPackage"));
                 } else {
                     return view("/public/checkout/selectPackage", compact("membershipPackage", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
                 }
             } else {
-                if($step == 3){
+                if ($step == 3) {
                     return view("/public/checkout/selectPackage", compact("membershipPackage", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team", "paymentMethods"));
                 } else {
                     return view("/public/checkout/selectPackage", compact("membershipPackage", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
@@ -119,25 +128,36 @@ class CheckoutController extends Controller
 
             if (request()->has('step')) {
                 $step = request()->step;
+
+                if($step == 2){
+                    if($user->isMember()){
+                        $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
+                    }
+                }
             } else {
                 $step = 1;
             }
 
             $values = [];
             $options = [];
-            foreach(Session::get("customPackagesArray")["options"] as $key => $value){
+            foreach (Session::get("customPackagesArray")["options"] as $key => $value) {
                 array_push($values, $value);
                 array_push($options, $key);
             }
-            for($i = 0; $i < count($values); $i++){
+            for ($i = 0; $i < count($values); $i++) {
                 $customMembershipType = CustomMembershipPackageType::select("*")->where("id", $options[$i])->first();
                 $customPackageData[$customMembershipType->title] = $values[$i];
             }
-            return view("/public/checkout/selectPackage", compact("customPackageData", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
+            if ($step == 2 && $user->isMember() && count($teamPackage) > 0) {
+                return view("/public/checkout/selectPackage", compact("customPackageData", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team", "teamPackage"));
+            } else {
+                return view("/public/checkout/selectPackage", compact("customPackageData", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
+            }
         }
     }
 
-    public function authorisePaymentRequestAction(Request $request){
+    public function authorisePaymentRequestAction(Request $request)
+    {
         $encryptedData = $request->input("adyen-encrypted-data");
 
         //Save encrypted credit card info to user
@@ -151,7 +171,7 @@ class CheckoutController extends Controller
 
         //Get team and teampackage + declare price
         $team = Team::select("*")->where("id", $request->input("team_id"))->first();
-        if(!Session::has("customPackagesArray")) {
+        if (!Session::has("customPackagesArray")) {
             $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
             $price = str_replace(".", "", number_format($teamPackage->price, 2, ".", "."));
         } else {
@@ -162,7 +182,7 @@ class CheckoutController extends Controller
         $payment = Payments::select("*")->orderBy("id", "DESC")->first();
         $reference = $payment->reference + 1;
 
-        if($team->split_the_bill == 0) {
+        if ($team->split_the_bill == 0) {
             //RECURRINGSTORECALL
             $data = array("additionalData" => array("card.encrypted.json" => $encryptedData), "amount" => array("value" => $price, "currency" => "EUR"), "reference" => $reference, "merchantAccount" => "InnocreationNET", "shopperReference" => $team->users->getName() . $team->id, "recurring" => array("contract" => "RECURRING"));
             $data_string = json_encode($data);
@@ -189,7 +209,7 @@ class CheckoutController extends Controller
             //close connection
             curl_close($ch);
 
-            if($resultCode == "Refused"){
+            if ($resultCode == "Refused") {
                 $payment = new Payments();
                 $payment->user_id = $team->users->id;
                 $payment->team_id = $team->id;
@@ -207,7 +227,7 @@ class CheckoutController extends Controller
 
                 $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Payment/v30/cancel');
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                        'Authorization: Basic '. base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
+                        'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
                         'Content-Type: application/json',
                         'Content-Length:' . strlen($data_string))
                 );
@@ -264,9 +284,9 @@ class CheckoutController extends Controller
             }
         } else {
             $splitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->get();
-            foreach($splitTheBillLinktables as $splitTheBillLinktable){
+            foreach ($splitTheBillLinktables as $splitTheBillLinktable) {
                 $user = User::select("*")->where("id", $splitTheBillLinktable->user_id)->first();
-                $this->saveAndSendEmail($splitTheBillLinktable->user,  $team->team_name . " wants to split the bil!", view("/templates/sendSplitTheBillNotification", compact("user", "team")));
+                $this->saveAndSendEmail($splitTheBillLinktable->user, $team->team_name . " wants to split the bil!", view("/templates/sendSplitTheBillNotification", compact("user", "team")));
 
                 $userChat = UserChat::select("*")->where("receiver_user_id", $splitTheBillLinktable->user_id)->where("creator_user_id", 1)->first();
                 $userMessage = new UserMessage();
@@ -285,7 +305,7 @@ class CheckoutController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function saveUserFromCheckoutAction(Request $request)
@@ -303,7 +323,7 @@ class CheckoutController extends Controller
         $country = $request->input("country");
         $phonenumber = $request->input("phonenumber");
 
-        if($request->input("team_name")) {
+        if ($request->input("team_name")) {
             $team_name = $request->input("team_name");
             $all_teams = Team::select("*")->where("team_name", $team_name)->get();
             if (count($all_teams) != 0) {
@@ -332,7 +352,7 @@ class CheckoutController extends Controller
         $user->state = $state;
         $user->country = $country;
         $user->phonenumber = $phonenumber;
-        if($request->input("team_name")) {
+        if ($request->input("team_name")) {
             $user->team_id = $team->id;
         }
         $user->save();
@@ -343,10 +363,11 @@ class CheckoutController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function packagePricePreferenceAction(Request $request) {
+    public function packagePricePreferenceAction(Request $request)
+    {
         $packageId = $request->input("package_id");
         $pereference = $request->input("preference");
 
@@ -363,15 +384,16 @@ class CheckoutController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function setSplitTheBillDataAction(Request $request) {
+    public function setSplitTheBillDataAction(Request $request)
+    {
         Session::forget("splitTheBillData");
         $teamId = $request->input("teamId");
         $userIds = $request->input("userIds");
         $prices = $request->input("prices");
-        for($i = 0; $i < count($userIds); $i++){
+        for ($i = 0; $i < count($userIds); $i++) {
             $splitTheBillArray[$userIds[$i]] = $prices[$i];
         }
         Session::set("splitTheBillData", $splitTheBillArray);
@@ -383,22 +405,29 @@ class CheckoutController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function savePaymentInfoAction(Request $request) {
+    public function savePaymentInfoAction(Request $request)
+    {
         $splitTheBill = $request->input("splitTheBill");
         $paymentPreference = $request->input("paymentPreference");
         $teamId = $request->input("team_id");
+        $changePackage = $request->input("change_package");
 
         $membershipPackageId = $request->input("membership_package_id");
 
-        if($membershipPackageId != "custom") {
+        if ($membershipPackageId != "custom") {
             $membershipPackage = MembershipPackage::select("*")->where("id", $membershipPackageId)->first();
 
             $existingTeamPackage = TeamPackage::select("*")->where("team_id", $teamId)->first();
             if (count($existingTeamPackage) > 0) {
+                if($existingTeamPackage->custom_team_package_id == null){
+                    $reservedId = $existingTeamPackage->membership_package_id;
+                } else {
+                    $reservedId = $existingTeamPackage->custom_team_package_id;
+                }
                 $teamPackage = $existingTeamPackage;
             } else {
                 $teamPackage = new TeamPackage();
@@ -421,14 +450,14 @@ class CheckoutController extends Controller
                 $customTeamPackage = new CustomTeamPackage();
             }
             $customTeamPackage->team_id = $teamId;
-            foreach(Session::get("customPackagesArray")["options"] as $key => $value){
-                if($key == 1){
+            foreach (Session::get("customPackagesArray")["options"] as $key => $value) {
+                if ($key == 1) {
                     $customTeamPackage->members = $value;
-                } else if($key == 2){
+                } else if ($key == 2) {
                     $customTeamPackage->planners = $value;
-                } else if($key == 3){
+                } else if ($key == 3) {
                     $customTeamPackage->meetings = $value;
-                } else if($key == 4){
+                } else if ($key == 4) {
                     $customTeamPackage->newsletters = $value;
                 }
 //                $customTeamPackage->dashboard = $value[4];
@@ -452,17 +481,21 @@ class CheckoutController extends Controller
         }
 
         $team = Team::select("*")->where("id", $teamId)->first();
-        if($splitTheBill == 1) {
-            foreach(Session::get("splitTheBillData") as $key => $value){
+        if ($splitTheBill == 1) {
+            foreach (Session::get("splitTheBillData") as $key => $value) {
                 $existingSplitTheBill = SplitTheBillLinktable::select("*")->where("user_id", $key)->where("team_id", $teamId)->first();
-                if(count($existingSplitTheBill) > 0){
+                if (count($existingSplitTheBill) > 0) {
                     $splitTheBillLinktable = $existingSplitTheBill;
                 } else {
                     $splitTheBillLinktable = new SplitTheBillLinktable();
                 }
                 $splitTheBillLinktable->user_id = $key;
                 $splitTheBillLinktable->team_id = $teamId;
-                $splitTheBillLinktable->amount = $value;
+                if($changePackage){
+                    $splitTheBillLinktable->reserved_changed_amount = $value;
+                } else {
+                    $splitTheBillLinktable->amount = $value;
+                }
                 $splitTheBillLinktable->created_at = date("Y-m-d H:i:s");
                 $splitTheBillLinktable->save();
             }
@@ -471,49 +504,81 @@ class CheckoutController extends Controller
             $team->split_the_bill = 0;
         }
         $team->save();
-        return redirect($request->input("backlink") . "?step=3");
+
+        if($changePackage == 1 && $splitTheBill == 1){
+            $splitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $teamId)->get();
+            foreach($splitTheBillLinktables as $splitTheBillLinktable) {
+                $splitTheBillLinktable->accepted_change_package = 0;
+                $splitTheBillLinktable->membership_package_change_id = $membershipPackageId;
+                if(!Session::has("customPackagesArray")) {
+                    $splitTheBillLinktable->reserved_membership_package_id = $reservedId;
+                }
+                $splitTheBillLinktable->save();
+            }
+            return redirect("my-team/payment-details");
+        }
+        if($changePackage == 1 && $splitTheBill == 1){
+            return redirect("my-team/payment-details");
+        } else if($changePackage == 1) {
+            return redirect("/my-team");
+        } else {
+            return redirect($request->input("backlink") . "?step=3");
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function setDataCustomPackageAction(Request $request) {
+    public function setDataCustomPackageAction(Request $request)
+    {
 
+        $changePackage = $request->input("changePackage");
         $types = $request->input("types");
         $options = $request->input("amountValues");
-        for($i = 0; $i < count($options); $i++){
+        for ($i = 0; $i < count($options); $i++) {
             $optionsArray[$types[$i]] = $options[$i];
         }
 
         $price = 0;
-        foreach ($optionsArray as $key => $value){
+        foreach ($optionsArray as $key => $value) {
             $customMembershipPackage = CustomMembershipPackage::select("*")->where("type", $key)->where("option", $value)->first();
             $price = $price + $customMembershipPackage->price;
         }
         $customPackagesArray = ["options" => $optionsArray, "price" => $price];
         Session::set("customPackagesArray", $customPackagesArray);
+
+        if($changePackage == 1){
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            $teamId = $user->team_id;
+            $teamPackage = TeamPackage::select("*")->where("team_id", $teamId)->first();
+            $teamPackage->change_package = 1;
+            $teamPackage->save();
+        }
         return redirect("/create-custom-package");
 
     }
 
-    public function donePaymentAction(){
+    public function donePaymentAction()
+    {
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
 
         return view("/public/checkout/donePayment", compact("user", "teamPackage"));
     }
 
-    public function splitTheBillNotification(){
+    public function splitTheBillNotification()
+    {
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
-        return view("/public/checkout/splitTheBillNotification", compact("user" , "teamPackage"));
+        return view("/public/checkout/splitTheBillNotification", compact("user", "teamPackage"));
 
     }
 
-    public function webhookAction(){
+    public function webhookAction()
+    {
         $response = file_get_contents('php://input');
         $json = json_decode($response);
         Session::set("json", $json);
@@ -539,4 +604,34 @@ class CheckoutController extends Controller
 //        curl_close($ch);
 
     }
+
+    public function getChangePackageModalAction(Request $request){
+        $userId = $request->input("user_id");
+        $membershipPackageId = $request->input("membership_package_id");
+
+        $user = User::select("*")->where("id", $userId)->first();
+        if ($membershipPackageId) {
+            $membershipPackage = MembershipPackage::select("*")->where("id", $membershipPackageId)->first();
+            return view("/public/checkout/shared/changePackageModalData", compact("user", "membershipPackage"));
+        } else {
+            return view("/public/checkout/shared/changePackageModalData", compact("user"));
+        }
+    }
+
+    public function changePackageAction(Request $request){
+        $teamId = $request->input("team_id");
+        $teamPackage = TeamPackage::select("*")->where("team_id", $teamId)->first();
+        $teamPackage->change_package = 1;
+        $teamPackage->save();
+
+        $title = $request->input("title");
+        if($title == "custom"){
+            return redirect("/becoming-a-$title");
+        } else {
+            return redirect("/becoming-a-$title");
+        }
+
+    }
 }
+
+

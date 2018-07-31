@@ -525,6 +525,14 @@ Route::get("/almost-there", "CheckoutController@splitTheBillNotification");
 
 Route::post("/webhook", "CheckoutController@webhookAction");
 
+Route::post("/checkout/getChangePackageModal", "CheckoutController@getChangePackageModalAction");
+
+Route::post("/user/sendChangePackageRequest", "UserController@sendChangePackageRequestAction");
+
+Route::post("/user/validateChangePackage", "UserController@validateChangePackageAction");
+
+Route::post("/checkout/changePackage", "CheckoutController@changePackageAction");
+
 
 
 

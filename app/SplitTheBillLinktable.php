@@ -15,4 +15,12 @@ class SplitTheBillLinktable extends Model
     public function team(){
         return $this->hasOne("\App\Team", "id","team_id");
     }
+
+    public function membershipPackage(){
+        return $this->hasOne("\App\MembershipPackage", "id","membership_package_change_id");
+    }
+
+    public function reservedMembershipPackage(){
+        return $this->hasOne("\App\MembershipPackage", "id","reserved_membership_package_id");
+    }
 }
