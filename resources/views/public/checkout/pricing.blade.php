@@ -81,6 +81,9 @@
                                     <div class="hr"></div>
                                 </div>
                                 <div class="m-t-20">
+                                    <? if(isset($user) && $user->team_id != null) { ?>
+                                        <input type="hidden" class="teamMembers" value="<?= count($user->team->getMembers())?>">
+                                    <? } ?>
                                     <? foreach($customMembershipPackageTypes as $customMembershipPackageType) { ?>
                                         <? if($customMembershipPackageType->title != "Create team newsletters") { ?>
                                             <div class="col-sm-12 d-flex  customSelect">
@@ -142,13 +145,13 @@
                                         <? if($user->isMember() && $user->team->packageDetails()->custom_team_package_id != null) { ?>
                                             <button class="btn btn-inno @tablet btn-sm @endtablet" disabled>Your current package!</button>
                                         <? } else {  ?>
-                                            <button type="button" class="btn btn-inno m-b-20 openModalChangePackage" data-user-id="<?= $user->id?>">Choose</button>
+                                            <button type="button" class="btn btn-inno m-b-20 openModalChangePackage customBtn" data-user-id="<?= $user->id?>">Choose</button>
                                         <? } ?>
                                     <? } else { ?>
-                                        <button type="submit" class="btn btn-inno m-b-20">Choose</button>
+                                        <button type="submit" class="btn btn-inno m-b-20 customBtn">Choose</button>
                                     <? } ?>
                                 <? } else { ?>
-                                    <button type="submit" class="btn btn-inno m-b-20">Choose</button>
+                                    <button type="submit" class="btn btn-inno m-b-20 customBtn">Choose</button>
                                 <? } ?>
                             </div>
                         </div>
@@ -191,6 +194,20 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content changePackageModalData">
 
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade limitMembersCustom" id="limitMembersCustom" tabindex="-1" role="dialog" aria-labelledby="limitMembersCustom" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body ">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <p>You are trying to downgrade to a package with less member capacity than you have at the moment.</p>
+                                    <p>To pursue this downgrade make sure to have the same amount of members or less than the package.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -40,7 +40,11 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-account/payment-details">Payment details</a>
+        <a class="regular-link c-gray" href="/my-account/payment-details">Package details</a>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <a class="regular-link c-gray" href="/my-account/billing">Billing</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
@@ -100,6 +104,14 @@
                     <hr>
                     <div class="sidebar-tab text-center">
                         <a class="regular-link c-gray" href="/my-account/support-tickets">My support tickets</a>
+                    </div>
+                    <hr>
+                    <div class="sidebar-tab text-center">
+                        <a class="regular-link c-gray" href="/my-account/payment-details">Package details</a>
+                    </div>
+                    <hr>
+                    <div class="sidebar-tab text-center">
+                        <a class="regular-link c-gray" href="/my-account/billing">Billing</a>
                     </div>
                     <hr>
                     <div class="sidebar-tab text-center">

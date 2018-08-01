@@ -716,6 +716,9 @@ class UserController extends Controller
             $splitTheBillId = $request->input("split_the_bill_linktable_id");
             $termsPayment = $request->input("paymentTermsCheck");
 
+            $referenceObject = Payments::select("*")->orderBy("id", "DESC")->first();
+            $reference = $referenceObject->reference + 1;
+
             if($termsPayment == 1){
                 $user = User::select("*")->where("id", $userId)->first();
                 $user->encrypted_credit_card = $encryptedData;
@@ -730,8 +733,6 @@ class UserController extends Controller
 
 
                 if($user->payment_refused == 1){
-                    $payment = Payments::select("*")->orderBy("id", "DESC")->first();
-                    $reference = $payment->reference + 1;
                     $price = str_replace(".", "", number_format($splitTheBillLinktable->amount, 2, ".", "."));
 
                     //RECURRINGSTORECALL
@@ -832,14 +833,20 @@ class UserController extends Controller
                         $user->payment_refused = 0;
                         $user->save();
                     }
+                    $details = end($resultAuthorization->details);
+                    $card = $details->RecurringDetail->card;
+                    $paymentMethod = $details->RecurringDetail->paymentMethodVariant;
+
                     $payment = new Payments();
                     $payment->user_id = $splitTheBillLinktable->user->id;
                     $payment->team_id = $splitTheBillLinktable->team->id;
+                    $payment->payment_method = $paymentMethod;
+                    $payment->card_number = $card->number;
                     $payment->amount = $price;
                     $payment->shopper_reference = $splitTheBillLinktable->user->getName() . $splitTheBillLinktable->team->id;
                     $payment->recurring_detail_reference = $recurringDetailReference;
                     $payment->pspReference = $pspReference;
-                    $payment->reference = $payment->reference + 1;
+                    $payment->reference = $reference;
                     $payment->payment_status = $status;
                     $payment->created_at = date("Y-m-d H:i:s");
                     $payment->save();
@@ -873,8 +880,8 @@ class UserController extends Controller
                             $resultAuthorization = json_decode($result);
                             if (isset($resultAuthorization->resultCode)) {
                                 $resultCode = $resultAuthorization->resultCode;
+                                $pspReference = $resultAuthorization->pspReference;
                             }
-                            $pspReference = $resultAuthorization->pspReference;
                             //close connection
                             curl_close($ch);
 
@@ -907,14 +914,20 @@ class UserController extends Controller
                                 //close connection
                                 curl_close($ch);
 
+                                $details = end($resultAuthorization->details);
+                                $card = $details->RecurringDetail->card;
+                                $paymentMethod = $details->RecurringDetail->paymentMethodVariant;
+
                                 $payment = new Payments();
                                 $payment->user_id = $allSplitTheBillLinktable->user->id;
                                 $payment->team_id = $allSplitTheBillLinktable->team->id;
+                                $payment->payment_method = $paymentMethod;
+                                $payment->card_number = $card->number;
                                 $payment->amount = $price;
                                 $payment->shopper_reference = $allSplitTheBillLinktable->user->getName() . $allSplitTheBillLinktable->team->id;
                                 $payment->recurring_detail_reference = $recurringDetailReference;
                                 $payment->pspReference = $pspReference;
-                                $payment->reference = $payment->reference + 1;
+                                $payment->reference = $reference;
                                 $payment->payment_status = "Settled";
                                 $payment->created_at = date("Y-m-d H:i:s");
                                 $payment->save();
@@ -1012,5 +1025,76 @@ class UserController extends Controller
             }
             return redirect($_SERVER["HTTP_REFERER"]);
         }
+    }
+
+    public function billingAction(){
+        if($this->authorized()) {
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            $payments = Payments::select("*")->where("user_id", $user->id)->get();
+            $userName = $user->getName();
+            if(count($payments) > 0){
+                $data = array("merchantAccount" => "InnocreationNET", "shopperReference" => $userName . $user->team_id);
+                $data_string = json_encode($data);
+
+                $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Recurring/v25/listRecurringDetails');
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                        'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
+                        'Content-Type: application/json',
+                        'Content-Length:' . strlen($data_string))
+                );
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+
+                //execute post
+                $result = curl_exec($ch);
+                $resultAuthorization = json_decode($result);
+                $recurringDetailReference = $resultAuthorization->details[0]->RecurringDetail->recurringDetailReference;
+                $details = end($resultAuthorization->details);
+                $card = $details->RecurringDetail->card;
+                $paymentMethod = $details->RecurringDetail->paymentMethodVariant;
+                //close connection
+                curl_close($ch);
+                return view("/public/user/userBilling", compact("user", "payments", "card", "paymentMethod"));
+            } else {
+                return view("/public/user/userBilling", compact("user"));
+            }
+
+        }
+    }
+
+    public function rejectChangePackageAction(Request $request){
+        $userId = $request->input("user_id");
+        $splitTheBillId = $request->input("split_the_bill_linktable_id");
+        $user = User::select("*")->where("id", $userId)->first();
+
+        $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("id", $splitTheBillId)->first();
+        $splitTheBillLinktable->accepted_change_package = 0;
+        $splitTheBillLinktable->save();
+
+        $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->get();
+            $userChat = UserChat::select("*")->where("receiver_user_id", $user->team->ceo_user_id)->where("creator_user_id", 1)->first();
+            $userMessage = new UserMessage();
+            $userMessage->sender_user_id = 1;
+            $userMessage->user_chat_id = $userChat->id;
+            $userMessage->time_sent = $this->getTimeSent();
+            $userMessage->message = $user->getName() . " has rejected the request for the package change. Change has been aborted. still want to change the package? send another request.";
+            $userMessage->created_at = date("Y-m-d H:i:s");
+            $userMessage->save();
+
+            foreach($allSplitTheBillLinktables as $splitTheBillLinktable){
+                $splitTheBillLinktable->accepted_change_package = 0;
+                $splitTheBillLinktable->membership_package_change_id = null;
+                $splitTheBillLinktable->reserved_changed_amount = null;
+                $splitTheBillLinktable->reserved_membership_package_id = null;
+                $splitTheBillLinktable->save();
+            }
+            $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
+            $teamPackage->change_package = 0;
+            $teamPackage->save();
+
+        return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Successfully rejected request");
     }
 }

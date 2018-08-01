@@ -2,6 +2,12 @@ $(".amount").on("change",function () {
     var chosenPrice = $(this).parents(".customSelect").find(".amount option:selected").data("price");
     var option = $(this).parents(".customSelect").find(".amount option:selected").val();
     var title = $(this).parents(".customSelect").find(".titleCustom").text();
+    if(title == "Members" && option < $(".teamMembers").val()){
+        $(".limitMembersCustom").modal().toggle();
+        $('.customBtn').attr("disabled", true);
+    } else if(title == "Members" && option > $(".teamMembers").val()){
+        $('.customBtn').attr("disabled", false);
+    }
     if($(".priceCustom").text().length < 1) {
         $(".priceCustom").text(chosenPrice + ".00");
     } else {

@@ -144,9 +144,14 @@ class ReccuringPayment extends Command
                         $user->save();
                         $this->saveAndSendEmail($payment->user, "Payment refused", view("/templates/sendRecurringRefused", compact("user", "team")));
                     }
+                    $details = end($resultAuthorization->details);
+                    $card = $details->RecurringDetail->card;
+                    $paymentMethod = $details->RecurringDetail->paymentMethodVariant;
                     $newPayment = new Payments();
                     $newPayment->user_id = $user->id;
                     $newPayment->team_id = $user->team_id;
+                    $newPayment->payment_method = $paymentMethod;
+                    $newPayment->card_number = $card->number;
                     $newPayment->amount = $price;
                     $newPayment->recurring_detail_reference = $recurringDetailReference;
                     $newPayment->shopper_reference = $user->getName() . $user->team_id;

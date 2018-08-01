@@ -121,6 +121,10 @@ Route::get("/my-account/payment-details", "UserController@paymentDetailsAction")
 
 Route::post("/user/validateSplitTheBill", "UserController@validateSplitTheBillAction");
 
+Route::get("/my-account/billing", "UserController@billingAction");
+
+Route::post("/user/rejectChangePackage", "UserController@rejectChangePackageAction");
+
 //==============================SEARCHTEAMSPAGE========================
 
 Route::get("/teams", "TeamSearchController@index");

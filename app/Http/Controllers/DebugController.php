@@ -15,11 +15,15 @@ use App\SiteSetting;
 use App\TeamPackage;
 use App\SplitTheBillLinktable;
 use App\Http\Requests;
+use Spipu\Html2Pdf\Html2Pdf;
 
 class DebugController extends Controller
 {
     public function test(){
         if($this->authorized(true)){
+//            $html2pdf = new Html2Pdf();
+//            $html2pdf->writeHTML("<p>test</p>");
+//            $html2pdf->output('pdf_demo.pdf', 'D');
             die("test");
 //          SUBSEQUENT PAYMENT
 //            $data = array("amount" => array("value" => 2000, "currency" => "EUR"), "reference" =>  15, "merchantAccount" => "InnocreationNET", "shopperReference" => "Marcel Wijt", "selectedRecurringDetailReference" => 8315325486768463232323, "recurring" => array("contract" => "RECURRING"), "shopperInteraction" => "ContAuth");
