@@ -162,32 +162,34 @@ class CheckoutController extends Controller
 
         //Save encrypted credit card info to user
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
-        $user->encrypted_credit_card = $encryptedData;
-        $user->save();
-
-        $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("team_id", $request->input("team_id"))->where("user_id", $user->id)->first();
-        $splitTheBillLinktable->accepted = 1;
-        $splitTheBillLinktable->save();
 
         //Get team and teampackage + declare price
         $team = Team::select("*")->where("id", $request->input("team_id"))->first();
-        if (!Session::has("customPackagesArray")) {
-            $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
-            $price = str_replace(".", "", number_format($teamPackage->price, 2, ".", "."));
-        } else {
-            $teamPackage = CustomteamPackage::select("*")->where("team_id", $team->id)->first();
-            $price = str_replace(".", "", number_format(\Illuminate\Support\Facades\Session::get("customPackagesArray")["price"], 2, ".", "."));
-        }
-
-        $payment = Payments::select("*")->orderBy("id", "DESC")->first();
-        $reference = $payment->reference + 1;
 
         if ($team->split_the_bill == 0) {
+            if (!Session::has("customPackagesArray")) {
+                $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
+                $price = str_replace(".", "", number_format($teamPackage->price, 2, ".", "."));
+            } else {
+                $teamPackage = CustomteamPackage::select("*")->where("team_id", $team->id)->first();
+                $price = str_replace(".", "", number_format(\Illuminate\Support\Facades\Session::get("customPackagesArray")["price"], 2, ".", "."));
+            }
+        } else {
+            $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("team_id", $request->input("team_id"))->where("user_id", $user->id)->first();
+            $splitTheBillLinktable->accepted = 1;
+            $splitTheBillLinktable->save();
+
+            $price = str_replace(".", "", number_format($splitTheBillLinktable->amount, 2, ".", "."));
+        }
+
+            $payment = Payments::select("*")->orderBy("id", "DESC")->first();
+            $reference = $payment->reference + 1;
+
+
             //RECURRINGSTORECALL
             $data = array("additionalData" => array("card.encrypted.json" => $encryptedData), "amount" => array("value" => $price, "currency" => "EUR"), "reference" => $reference, "merchantAccount" => "InnocreationNET", "shopperReference" => $team->users->getName() . $team->id, "recurring" => array("contract" => "RECURRING"));
             $data_string = json_encode($data);
 
-//        header('Content-Type: application/json; charset=UTF-8', true);
             $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Payment/v30/authorise');
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                     'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
@@ -208,11 +210,15 @@ class CheckoutController extends Controller
             $pspReference = $resultAuthorization->pspReference;
             //close connection
             curl_close($ch);
-
+            $details = end($resultAuthorization->details);
+            $card = $details->RecurringDetail->card;
+            $paymentMethod = $details->RecurringDetail->paymentMethodVariant;
             if ($resultCode == "Refused") {
                 $payment = new Payments();
                 $payment->user_id = $team->users->id;
                 $payment->team_id = $team->id;
+                $payment->payment_method = $paymentMethod;
+                $payment->card_number = $card->number;
                 $payment->amount = $price;
                 $payment->recurring_detail_reference = null;
                 $payment->shopper_reference = $team->users->getName() . $team->id;
@@ -269,37 +275,49 @@ class CheckoutController extends Controller
                 //close connection
                 curl_close($ch);
 
+                $details = end($resultAuthorization->details);
+                $card = $details->RecurringDetail->card;
+                $paymentMethod = $details->RecurringDetail->paymentMethodVariant;
+
                 $payment = new Payments();
                 $payment->user_id = $team->users->id;
                 $payment->team_id = $team->id;
+                $payment->payment_method = $paymentMethod;
+                $payment->card_number = $card->number;
                 $payment->amount = $price;
                 $payment->recurring_detail_reference = $recurringDetailReference;
                 $payment->shopper_reference = $team->users->getName() . $team->id;
                 $payment->reference = $reference;
                 $payment->pspReference = $pspReference;
-                $payment->payment_status = "Settled";
+                if($team->split_the_bill == 1){
+                    $payment->payment_status = "Authorized";
+                } else {
+                    $payment->payment_status = "Settled";
+                }
                 $payment->created_at = date("Y-m-d H:i:s");
                 $payment->save();
-                return redirect("/thank-you");
-            }
-        } else {
-            $splitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->get();
-            foreach ($splitTheBillLinktables as $splitTheBillLinktable) {
-                $user = User::select("*")->where("id", $splitTheBillLinktable->user_id)->first();
-                $this->saveAndSendEmail($splitTheBillLinktable->user, $team->team_name . " wants to split the bil!", view("/templates/sendSplitTheBillNotification", compact("user", "team")));
 
-                $userChat = UserChat::select("*")->where("receiver_user_id", $splitTheBillLinktable->user_id)->where("creator_user_id", 1)->first();
-                $userMessage = new UserMessage();
-                $userMessage->sender_user_id = 1;
-                $userMessage->user_chat_id = $userChat->id;
-                $userMessage->time_sent = $this->getTimeSent();
-                $userMessage->message = "$team->team_name has chosen to split the bill with you and your members! Verify the request at payment details in your account to benefit from the package even quiker!";
-                $userMessage->created_at = date("Y-m-d H:i:s");
-                $userMessage->save();
-            }
-            return redirect("/almost-there");
-        }
+                if($team->split_the_bill == 1){
+                    $splitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $team->id)->get();
+                    foreach ($splitTheBillLinktables as $splitTheBillLinktable) {
+                        $user = User::select("*")->where("id", $splitTheBillLinktable->user_id)->first();
+                        $this->saveAndSendEmail($splitTheBillLinktable->user, $team->team_name . " wants to split the bil!", view("/templates/sendSplitTheBillNotification", compact("user", "team")));
 
+                        $userChat = UserChat::select("*")->where("receiver_user_id", $splitTheBillLinktable->user_id)->where("creator_user_id", 1)->first();
+                        $userMessage = new UserMessage();
+                        $userMessage->sender_user_id = 1;
+                        $userMessage->user_chat_id = $userChat->id;
+                        $userMessage->time_sent = $this->getTimeSent();
+                        $userMessage->message = "$team->team_name has chosen to split the bill with you and your members! Verify the request at payment details in your account to benefit from the package even quiker!";
+                        $userMessage->created_at = date("Y-m-d H:i:s");
+                        $userMessage->save();
+                    }
+                    return redirect("/almost-there");
+                } else {
+                    return redirect("/thank-you");
+                }
+
+            }
     }
 
     /**

@@ -121,6 +121,12 @@ class User extends Authenticatable
         return $payment;
 
     }
+
+    public function getMostRecentAuthPayment(){
+        $payment = Payments::select("*")->where("user_id", $this->id)->where("payment_status", "Authorized")->orderBy("created_at", "DESC")->first();
+        return $payment;
+
+    }
     /**
      * The attributes that are mass assignable.
      *

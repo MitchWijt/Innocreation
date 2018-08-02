@@ -44,7 +44,7 @@
                                 <div class="col-sm-12 @mobile m-t-10 m-b-20 @endmobile">
                                     <div class="text-center">
                                         <? if(isset($user)) { ?>
-                                            <? if($user->team_id != null) { ?>
+                                            <? if($user->team_id != null && $user->team->packageDetails()) { ?>
                                                 <? if($user->isMember() && $user->team->packageDetails()->membership_package_id == $membershipPackage->id &&  $user->team->packageDetails()->custom_team_package_id == null) { ?>
                                                     <button class="btn btn-inno @tablet btn-sm @endtablet" disabled>Your current package!</button>
                                                 <? } else { ?>
@@ -65,7 +65,7 @@
             </div>
             <form action="/checkout/setDataCustomPackage" method="post" class="customPackageForm">
                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                <? if(isset($user) && $user->isMember() && $user->team->packageDetails()->custom_team_package_id != null) { ?>
+                <? if(isset($user) && $user->team->packageDetails() && $user->isMember() && $user->team->packageDetails()->custom_team_package_id != null) { ?>
                     <input type="hidden" name="changePackage" value="1">
                 <? } else { ?>
                     <input type="hidden" name="changePackage" value="0">
@@ -141,7 +141,7 @@
                             </div>
                             <div class="text-center">
                                 <? if(isset($user)) { ?>
-                                    <? if($user->team_id != null) { ?>
+                                    <? if($user->team_id != null && $user->team->packageDetails()) { ?>
                                         <? if($user->isMember() && $user->team->packageDetails()->custom_team_package_id != null) { ?>
                                             <button class="btn btn-inno @tablet btn-sm @endtablet" disabled>Your current package!</button>
                                         <? } else {  ?>

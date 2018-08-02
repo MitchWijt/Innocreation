@@ -38,7 +38,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="d-flex fd-row js-center">
-                                            <? if($splitTheBillDetail->user->encrypted_credit_card != null && $splitTheBillDetail->accepted == 1) { ?>
+                                            <? if($splitTheBillDetail->accepted == 1) { ?>
                                                 <? $counterValidated++ ?>
                                                 <p class="c-green">Validated <i class="zmdi zmdi-check c-green"></i> </p>
                                             <? } else { ?>

@@ -125,6 +125,8 @@ Route::get("/my-account/billing", "UserController@billingAction");
 
 Route::post("/user/rejectChangePackage", "UserController@rejectChangePackageAction");
 
+Route::post("/user/rejectSplitTheBill", "UserController@rejectSplitTheBillAction");
+
 //==============================SEARCHTEAMSPAGE========================
 
 Route::get("/teams", "TeamSearchController@index");
