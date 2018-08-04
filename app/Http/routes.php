@@ -545,6 +545,9 @@ Route::post("/user/sendChangePackageRequest", "UserController@sendChangePackageR
 
 Route::post("/checkout/changePackage", "CheckoutController@changePackageAction");
 
+//========================INVOICES========================
+
+Route::post("/invoice/{hash}", "InvoiceController@generateMonthlyInvoiceAction");
 
 
 

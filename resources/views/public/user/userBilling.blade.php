@@ -17,6 +17,64 @@
                 <h1 class="sub-title-black">Billing</h1>
             </div>
             <hr class="col-xs-12">
+            <? if(isset($payments)) { ?>
+                <div class="row d-flex js-center p-b-20 m-t-20">
+                    <div class="col-md-10">
+                        <div class="card card-lg">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-md-12 m-b-10">
+                                        <p class="m-l-10 m-t-10 f-18 m-b-0">Billing history</p>
+                                    </div>
+                                </div>
+                                <div class="hr p-b-10 col-md-12"></div>
+                                <div class="row text-center">
+                                    <div class="col-sm-3">
+                                        <span class="f-13">Description</span>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <span class="f-13">Amount</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="f-13">Date</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span class="f-13"></span>
+                                    </div>
+                                </div>
+                                <div class="hr-card p-b-20 col-md-11"></div>
+                                <? foreach($invoices as $invoice) { ?>
+                                    <div class="row text-center">
+                                        <div class="col-sm-3 m-t-5">
+                                            <p><?= $invoice->teamPackage->title?></p>
+                                        </div>
+                                        <div class="col-sm-2 m-t-5">
+                                            <div class="d-flex fd-row js-center memberTasksCom">
+                                                <p><span>€</span><?= number_format($invoice->amount, 2, ".", ".")?></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3 m-t-5">
+                                            <div class="d-flex fd-row js-center memberTasksDo">
+                                                <p><?= date("d-m-Y", strtotime($invoice->created_at))?></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="d-flex fd-row js-center memberTasksDo">
+                                                <form action="/invoice/<?= $invoice->hash?>" method="post">
+                                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                    <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                                    <input type="hidden" name="invoice_id" value="<?= $invoice->id?>">
+                                                    <button type="submit" class="bnt btn-inno btn-sm">Download invoice</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <? } ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <? } ?>
             <? if(isset($payments) && $user->subscription_canceled == 0) { ?>
                 <div class="row d-flex js-center p-b-20 m-t-20">
                     <div class="col-md-10">

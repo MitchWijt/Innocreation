@@ -21,6 +21,7 @@ class DebugController extends Controller
 {
     public function test(){
         if($this->authorized(true)){
+            dd(bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM)));
 //            $html2pdf = new Html2Pdf();
 //            $html2pdf->writeHTML("<p>test</p>");
 //            $html2pdf->output('pdf_demo.pdf', 'D');

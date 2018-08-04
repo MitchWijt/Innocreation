@@ -7,6 +7,7 @@ use App\Expertises_linktable;
 use App\Favorite_expertises_linktable;
 use App\FavoriteTeamLinktable;
 use App\InviteRequestLinktable;
+use App\Invoice;
 use App\JoinRequestLinktable;
 use App\Page;
 use App\ServiceReview;
@@ -1071,7 +1072,9 @@ class UserController extends Controller
                 $paymentMethod = $details->RecurringDetail->paymentMethodVariant;
                 //close connection
                 curl_close($ch);
-                return view("/public/user/userBilling", compact("user", "payments", "card", "paymentMethod"));
+
+                $invoices = Invoice::select("*")->where("user_id", $user->id)->where("hash", $user->hash)->get();
+                return view("/public/user/userBilling", compact("user", "payments", "card", "paymentMethod", "invoices"));
             } else {
                 return view("/public/user/userBilling", compact("user"));
             }
