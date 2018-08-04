@@ -607,4 +607,45 @@ class TeamController extends Controller
         $splitTheBillDetails = SplitTheBillLinktable::select("*")->where("team_id", $team->id)->get();
         return view("/public/team/teamPaymentDetails", compact("splitTheBillDetails", "team", "teamPackage"));
     }
+
+    public function teamPaymentSettingsAction(){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+        $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
+
+        return view("/public/team/teamPaymentSettings", compact("user", "teamPackage", "team"));
+    }
+
+    public function savePaymentSettingsAction(Request $request){
+        $teamId = $request->input("team_id");
+        $splitTheBill = $request->input("splitTheBillOnOff");
+        $team = Team::select("*")->where("id", $teamId)->first();
+        if ($splitTheBill == 1) {
+            foreach (Session::get("splitTheBillData") as $key => $value) {
+                $existingSplitTheBill = SplitTheBillLinktable::select("*")->where("user_id", $key)->where("team_id", $teamId)->first();
+                if (count($existingSplitTheBill) > 0) {
+                    $splitTheBillLinktable = $existingSplitTheBill;
+                    $splitTheBillLinktable->reserved_changed_amount = $value;
+                } else {
+                    $splitTheBillLinktable = new SplitTheBillLinktable();
+                    $splitTheBillLinktable->accepted = 0;
+                    $splitTheBillLinktable->accepted_change = 1;
+                    $splitTheBillLinktable->amount = $value;
+                }
+                $splitTheBillLinktable->user_id = $key;
+                $splitTheBillLinktable->team_id = $teamId;
+                $splitTheBillLinktable->created_at = date("Y-m-d H:i:s");
+                $splitTheBillLinktable->save();
+            }
+            $team->split_the_bill = 1;
+
+            $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
+            $teamPackage->changed_payment_settings = 1;
+            $teamPackage->save();
+        } else {
+            $team->split_the_bill = 0;
+        }
+        $team->save();
+        return redirect($_SERVER["HTTP_REFERER"])->with("success", "succesfully saved your settings!");
+    }
 }

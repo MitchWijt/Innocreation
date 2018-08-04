@@ -127,6 +127,13 @@ class User extends Authenticatable
         return $payment;
 
     }
+
+    public function getSplitTheBill(){
+        $splitTheBill = SplitTheBillLinktable::select("*")->where("user_id", $this->id)->where("team_id", $this->team_id)->first();
+        return $splitTheBill;
+
+    }
+
     /**
      * The attributes that are mass assignable.
      *

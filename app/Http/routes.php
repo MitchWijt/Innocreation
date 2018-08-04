@@ -123,9 +123,13 @@ Route::post("/user/validateSplitTheBill", "UserController@validateSplitTheBillAc
 
 Route::get("/my-account/billing", "UserController@billingAction");
 
-Route::post("/user/rejectChangePackage", "UserController@rejectChangePackageAction");
+Route::post("/user/rejectChange", "UserController@rejectChangeAction");
+
+Route::post("/user/validateChange", "UserController@validateChangeAction");
 
 Route::post("/user/rejectSplitTheBill", "UserController@rejectSplitTheBillAction");
+
+Route::post("user/cancelSubscription", "UserController@cancelSubscriptionAction");
 
 //==============================SEARCHTEAMSPAGE========================
 
@@ -199,6 +203,10 @@ Route::post("/my-team/deleteTeamProduct", "TeamController@deleteTeamProductActio
 
 //Payment
 Route::get("/my-team/payment-details", "TeamController@teamPaymentDetailsAction");
+
+Route::get("/my-team/payment-settings", "TeamController@teamPaymentSettingsAction");
+
+Route::post("/my-team/savePaymentSettings", "TeamController@savePaymentSettingsAction");
 
 
 //==============================WORKSPACE TEAM===================================
@@ -534,8 +542,6 @@ Route::post("/webhook", "CheckoutController@webhookAction");
 Route::post("/checkout/getChangePackageModal", "CheckoutController@getChangePackageModalAction");
 
 Route::post("/user/sendChangePackageRequest", "UserController@sendChangePackageRequestAction");
-
-Route::post("/user/validateChangePackage", "UserController@validateChangePackageAction");
 
 Route::post("/checkout/changePackage", "CheckoutController@changePackageAction");
 

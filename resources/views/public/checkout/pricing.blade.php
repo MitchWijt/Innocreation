@@ -65,7 +65,7 @@
             </div>
             <form action="/checkout/setDataCustomPackage" method="post" class="customPackageForm">
                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                <? if(isset($user) && $user->team->packageDetails() && $user->isMember() && $user->team->packageDetails()->custom_team_package_id != null) { ?>
+                <? if(isset($user) && $user->team_id != null && $user->team->packageDetails() && $user->isMember() && $user->team->packageDetails()->custom_team_package_id != null) { ?>
                     <input type="hidden" name="changePackage" value="1">
                 <? } else { ?>
                     <input type="hidden" name="changePackage" value="0">

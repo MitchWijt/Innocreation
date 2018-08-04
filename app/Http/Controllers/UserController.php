@@ -778,6 +778,10 @@ class UserController extends Controller
                         $splitTheBillLinktable->save();
                         return redirect($_SERVER["HTTP_REFERER"])->withErrors("Your credit card credentials seem to be invalid, to continue check your credentials and please try again");
                     } else {
+                        $user = User::select("*")->where("id", $userId)->first();
+                        $user->subscription_canceled = 0;
+                        $user->save();
+
                         $status = "Settled";
                         //RECURRINGDETAILS
                         $data = array("merchantAccount" => "InnocreationNET", "shopperReference" => $splitTheBillLinktable->user->getName() . $splitTheBillLinktable->team->id);
@@ -993,38 +997,44 @@ class UserController extends Controller
         }
     }
 
-    public function validateChangePackageAction(Request $request){
+    public function validateChangeAction(Request $request){
         if($this->authorized()) {
             $userId = $request->input("user_id");
             $splitTheBillId = $request->input("split_the_bill_linktable_id");
             $user = User::select("*")->where("id", $userId)->first();
 
             $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("id", $splitTheBillId)->first();
-            $splitTheBillLinktable->accepted_change_package = 1;
+            $splitTheBillLinktable->accepted_change = 1;
             $splitTheBillLinktable->save();
 
-            $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->where("accepted_change_package", 1)->get();
+            $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
+
+            $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->where("accepted_change", 1)->get();
             if (count($allSplitTheBillLinktables) >= count($user->team->getMembers())) {
                 $userChat = UserChat::select("*")->where("receiver_user_id", $user->team->ceo_user_id)->where("creator_user_id", 1)->first();
                 $userMessage = new UserMessage();
                 $userMessage->sender_user_id = 1;
                 $userMessage->user_chat_id = $userChat->id;
                 $userMessage->time_sent = $this->getTimeSent();
-                $userMessage->message = "The verification to change your team package has been succesfuly validated by all your members! You can pursue now. have fun!";
+                if($teamPackage->changed_payment_settings == 1){
+                    $userMessage->message = "The verification to change your payment settings has been succesfuly validated by all your members! everything changed automatically you don't have to do anything :)";
+                } else {
+                    $userMessage->message = "The verification to change your team package has been succesfuly validated by all your members! You can pursue now. have fun!";
+                }
                 $userMessage->created_at = date("Y-m-d H:i:s");
                 $userMessage->save();
 
                 foreach($allSplitTheBillLinktables as $splitTheBillLinktable){
                     $newPrice = $splitTheBillLinktable->reserved_changed_amount;
-                    $splitTheBillLinktable->accepted_change_package = 0;
+                    $splitTheBillLinktable->accepted_change = 0;
                     $splitTheBillLinktable->membership_package_change_id = null;
                     $splitTheBillLinktable->amount = $newPrice;
                     $splitTheBillLinktable->reserved_changed_amount = null;
                     $splitTheBillLinktable->reserved_membership_package_id = null;
                     $splitTheBillLinktable->save();
                 }
-                $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
                 $teamPackage->change_package = 0;
+                $teamPackage->changed_payment_settings = 0;
                 $teamPackage->save();
             }
             return redirect($_SERVER["HTTP_REFERER"]);
@@ -1069,84 +1079,153 @@ class UserController extends Controller
         }
     }
 
-    public function rejectChangePackageAction(Request $request){
-        $userId = $request->input("user_id");
-        $splitTheBillId = $request->input("split_the_bill_linktable_id");
-        $user = User::select("*")->where("id", $userId)->first();
+    public function rejectChangeAction(Request $request){
+        if($this->authorized()) {
+            $userId = $request->input("user_id");
+            $splitTheBillId = $request->input("split_the_bill_linktable_id");
+            $user = User::select("*")->where("id", $userId)->first();
 
-        $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("id", $splitTheBillId)->first();
-        $splitTheBillLinktable->accepted_change_package = 0;
-        $splitTheBillLinktable->save();
+            $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("id", $splitTheBillId)->first();
+            $splitTheBillLinktable->accepted_change = 0;
+            $splitTheBillLinktable->save();
 
-        $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->get();
+            $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
+            $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->get();
             $userChat = UserChat::select("*")->where("receiver_user_id", $user->team->ceo_user_id)->where("creator_user_id", 1)->first();
             $userMessage = new UserMessage();
             $userMessage->sender_user_id = 1;
             $userMessage->user_chat_id = $userChat->id;
             $userMessage->time_sent = $this->getTimeSent();
-            $userMessage->message = $user->getName() . " has rejected the request for the package change. Change has been aborted. still want to change the package? send another request.";
+            if ($teamPackage->changed_payment_details == 1) {
+                $userMessage->message = $user->getName() . " has rejected the request to change your payment settings. Change has been aborted. still want to change the payment settings? send another request.";
+            } else {
+                $userMessage->message = $user->getName() . " has rejected the request for the package change. Change has been aborted. still want to change the package? send another request.";
+            }
             $userMessage->created_at = date("Y-m-d H:i:s");
             $userMessage->save();
 
-            foreach($allSplitTheBillLinktables as $splitTheBillLinktable){
-                $splitTheBillLinktable->accepted_change_package = 0;
+            foreach ($allSplitTheBillLinktables as $splitTheBillLinktable) {
+                $splitTheBillLinktable->accepted_change = 0;
                 $splitTheBillLinktable->membership_package_change_id = null;
                 $splitTheBillLinktable->reserved_changed_amount = null;
                 $splitTheBillLinktable->reserved_membership_package_id = null;
                 $splitTheBillLinktable->save();
             }
-            $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
+
             $teamPackage->change_package = 0;
+            $teamPackage->change_payment_settings = 0;
             $teamPackage->save();
 
-        return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Successfully rejected request");
+            return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Successfully rejected request");
+        }
     }
 
     public function rejectSplitTheBillAction(Request $request){
-        $userId = $request->input("user_id");
-        $teamId = $request->input("team_id");
-        $user = User::select("*")->where("id", $userId)->first();
-        $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $teamId)->get();
-        foreach ($allSplitTheBillLinktables as $allSplitTheBillLinktable) {
-            if($allSplitTheBillLinktable->accepted == 1) {
-                $recentPayment = $allSplitTheBillLinktable->user->getMostRecentAuthPayment();
-                $recentPayment->payment_status = "Canceled";
-                $recentPayment->save();
+        if($this->authorized()) {
+            $userId = $request->input("user_id");
+            $teamId = $request->input("team_id");
+            $user = User::select("*")->where("id", $userId)->first();
+            $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $teamId)->get();
+            foreach ($allSplitTheBillLinktables as $allSplitTheBillLinktable) {
+                if ($allSplitTheBillLinktable->accepted == 1) {
+                    $recentPayment = $allSplitTheBillLinktable->user->getMostRecentAuthPayment();
+                    $recentPayment->payment_status = "Canceled";
+                    $recentPayment->save();
 
-                $data = array("merchantAccount" => "InnocreationNET", "originalReference" => $recentPayment->pspReference);
-                $data_string = json_encode($data);
+                    $data = array("merchantAccount" => "InnocreationNET", "originalReference" => $recentPayment->pspReference);
+                    $data_string = json_encode($data);
 
-                $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Payment/v30/cancel');
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                        'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
-                        'Content-Type: application/json',
-                        'Content-Length:' . strlen($data_string))
-                );
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+                    $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Payment/v30/cancel');
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                            'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
+                            'Content-Type: application/json',
+                            'Content-Length:' . strlen($data_string))
+                    );
+                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+                    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
 
-                //execute post
-                $result = curl_exec($ch);
-                $resultAuthorization = json_decode($result);
-                //close connection
-                curl_close($ch);
+                    //execute post
+                    $result = curl_exec($ch);
+                    $resultAuthorization = json_decode($result);
+                    //close connection
+                    curl_close($ch);
+                }
             }
+
+            $team = $team = Team::select("*")->where("id", $user->team_id)->first();
+            $this->saveAndSendEmail($user, "Payment has been rejected", view("/templates/sendSplitTheBillRejected", compact("user", "team")));
+
+            $userChat = UserChat::select("*")->where("receiver_user_id", $team->ceo_user_id)->where("creator_user_id", 1)->first();
+            $userMessage = new UserMessage();
+            $userMessage->sender_user_id = 1;
+            $userMessage->user_chat_id = $userChat->id;
+            $userMessage->time_sent = $this->getTimeSent();
+            $userMessage->message = "The payment for your team has been rejected because one of your team members rejected the validation request.";
+            $userMessage->created_at = date("Y-m-d H:i:s");
+            $userMessage->save();
+            return redirect($_SERVER["HTTP_REFERER"]);
         }
+    }
 
-        $team = $team = Team::select("*")->where("id", $user->team_id)->first();
-        $this->saveAndSendEmail($user, "Payment has been rejected", view("/templates/sendSplitTheBillRejected", compact("user", "team")));
+    public function cancelSubscriptionAction(Request $request){
+        if($this->authorized()) {
+            $userId = $request->input("user_id");
+            $teamId = $request->input("team_id");
 
-        $userChat = UserChat::select("*")->where("receiver_user_id", $team->ceo_user_id)->where("creator_user_id", 1)->first();
-        $userMessage = new UserMessage();
-        $userMessage->sender_user_id = 1;
-        $userMessage->user_chat_id = $userChat->id;
-        $userMessage->time_sent = $this->getTimeSent();
-        $userMessage->message = "The payment for your team has been rejected because one of your team members rejected the validation request.";
-        $userMessage->created_at = date("Y-m-d H:i:s");
-        $userMessage->save();
-        return redirect($_SERVER["HTTP_REFERER"]);
+            $user = User::select("*")->where("id", $userId)->first();
+            $user->subscription_canceled = 1;
+            $user->team_id = null;
+            $user->save();
+
+            $team = Team::select("*")->where("id", $teamId)->first();
+            if($team->split_the_bill == 1){
+                $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $userId)->where("team_id", $teamId)->first();
+                $teamLeaderSplitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $team->ceo_user_id)->where("team_id", $teamId)->first();
+
+                $memberAmount =  $splitTheBillLinktable->amount;
+                $leaderAmount = $teamLeaderSplitTheBillLinktable->amount;
+                $newLeaderPrice = $leaderAmount + $memberAmount;
+
+                $splitTheBillLinktable->delete();
+
+                $teamLeaderSplitTheBillLinktable->amount = $newLeaderPrice;
+                $teamLeaderSplitTheBillLinktable->save();
+
+                $userName = $user->getName();
+                $userChat = UserChat::select("*")->where("receiver_user_id", $team->ceo_user_id)->where("creator_user_id", 1)->first();
+                $userMessage = new UserMessage();
+                $userMessage->sender_user_id = 1;
+                $userMessage->user_chat_id = $userChat->id;
+                $userMessage->time_sent = $this->getTimeSent();
+                $userMessage->message = "We are sorry to say that $userName has decided to stop his/her subscription and to leave your team.";
+                $userMessage->created_at = date("Y-m-d H:i:s");
+                $userMessage->save();
+                $this->saveAndSendEmail($user, "$userName has left your team", view("/templates/sendMemberStopSubLeaveTeam", compact("user", "team")));
+
+            }
+
+            $data = array("merchantAccount" => "InnocreationNET", "shopperReference" => $user->getName() . $teamId, "recurringDetailReference" => $user->getMostRecentPayment()->recurring_detail_reference);
+            $data_string = json_encode($data);
+
+            $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Recurring/v25/disable');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
+                    'Content-Type: application/json',
+                    'Content-Length:' . strlen($data_string))
+            );
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+
+            //execute post
+            $result = curl_exec($ch);
+            //close connection
+            curl_close($ch);
+        }
     }
 }

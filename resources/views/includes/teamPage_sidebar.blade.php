@@ -32,9 +32,15 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-team/payment-details">Payments</a>
+        <a class="regular-link c-gray" href="/my-team/payment-details">Payment details</a>
     </div>
     <hr>
+    <? if($user->id == $team->ceo_user_id) { ?>
+        <div class="sidebar-tab text-center">
+            <a class="regular-link c-gray" href="/my-team/payment-settings">Payment settings</a>
+        </div>
+        <hr>
+    <? } ?>
     <div class="sidebar-tab text-center">
         <a class="regular-link c-gray" href="/my-team/user-join-requests">Team join requests</a>
     </div>

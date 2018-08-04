@@ -413,6 +413,7 @@ class CheckoutController extends Controller
         $prices = $request->input("prices");
         for ($i = 0; $i < count($userIds); $i++) {
             $splitTheBillArray[$userIds[$i]] = $prices[$i];
+
         }
         Session::set("splitTheBillData", $splitTheBillArray);
         $team = Team::select("*")->where("id", $teamId)->first();
@@ -526,7 +527,7 @@ class CheckoutController extends Controller
         if($changePackage == 1 && $splitTheBill == 1){
             $splitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $teamId)->get();
             foreach($splitTheBillLinktables as $splitTheBillLinktable) {
-                $splitTheBillLinktable->accepted_change_package = 0;
+                $splitTheBillLinktable->accepted_change = 0;
                 $splitTheBillLinktable->membership_package_change_id = $membershipPackageId;
                 if(!Session::has("customPackagesArray")) {
                     $splitTheBillLinktable->reserved_membership_package_id = $reservedId;
