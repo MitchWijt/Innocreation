@@ -71,6 +71,7 @@ class LoginController extends Controller
             } else {
                 $user->slug = strtolower($request->input("firstname")) . strtolower($request->input("lastname"));
             }
+            $user->hash = bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM));
             $user->city = $request->input("city");
             $user->postalcode = $request->input("postcode");
             $user->state = $request->input("state");

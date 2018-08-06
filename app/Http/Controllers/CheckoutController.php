@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\CustomMembershipPackage;
 use App\CustomMembershipPackageType;
 use App\CustomTeamPackage;
+use App\Invoice;
 use App\MembershipPackage;
 use App\Payments;
 use App\ServiceReview;
@@ -165,13 +166,11 @@ class CheckoutController extends Controller
 
         //Get team and teampackage + declare price
         $team = Team::select("*")->where("id", $request->input("team_id"))->first();
-
+        $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
         if ($team->split_the_bill == 0) {
             if (!Session::has("customPackagesArray")) {
-                $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
                 $price = str_replace(".", "", number_format($teamPackage->price, 2, ".", "."));
             } else {
-                $teamPackage = CustomteamPackage::select("*")->where("team_id", $team->id)->first();
                 $price = str_replace(".", "", number_format(\Illuminate\Support\Facades\Session::get("customPackagesArray")["price"], 2, ".", "."));
             }
         } else {
@@ -210,15 +209,10 @@ class CheckoutController extends Controller
             $pspReference = $resultAuthorization->pspReference;
             //close connection
             curl_close($ch);
-            $details = end($resultAuthorization->details);
-            $card = $details->RecurringDetail->card;
-            $paymentMethod = $details->RecurringDetail->paymentMethodVariant;
             if ($resultCode == "Refused") {
                 $payment = new Payments();
                 $payment->user_id = $team->users->id;
                 $payment->team_id = $team->id;
-                $payment->payment_method = $paymentMethod;
-                $payment->card_number = $card->number;
                 $payment->amount = $price;
                 $payment->recurring_detail_reference = null;
                 $payment->shopper_reference = $team->users->getName() . $team->id;
@@ -314,6 +308,17 @@ class CheckoutController extends Controller
                     }
                     return redirect("/almost-there");
                 } else {
+                    $invoiceNumber = Invoice::select("*")->orderBy("invoice_number", "DESC")->first()->invoice_number;
+                    $invoice = new Invoice();
+                    $invoice->user_id = $user->id;
+                    $invoice->team_id = $team->id;
+                    $invoice->team_package_id = $teamPackage->id;
+                    $invoice->amount = number_format($teamPackage->price, 2, ".", ".");
+                    $invoice->hash = $user->hash;
+                    $invoice->invoice_number = $invoiceNumber + 1;
+                    $invoice->paid_date = date("Y-m-d", strtotime("+2 days"));
+                    $invoice->created_at = date("Y-m-d H:i:s");
+                    $invoice->save();
                     return redirect("/thank-you");
                 }
 
@@ -568,9 +573,8 @@ class CheckoutController extends Controller
         }
         $customPackagesArray = ["options" => $optionsArray, "price" => $price];
         Session::set("customPackagesArray", $customPackagesArray);
-
-        if($changePackage == 1){
-            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        if($changePackage == 1 && $user->team->split_the_bill == 1){
             $teamId = $user->team_id;
             $teamPackage = TeamPackage::select("*")->where("team_id", $teamId)->first();
             $teamPackage->change_package = 1;
@@ -639,9 +643,12 @@ class CheckoutController extends Controller
 
     public function changePackageAction(Request $request){
         $teamId = $request->input("team_id");
-        $teamPackage = TeamPackage::select("*")->where("team_id", $teamId)->first();
-        $teamPackage->change_package = 1;
-        $teamPackage->save();
+        $team = Team::select("*")->where("id", $teamId)->first();
+        if($team->split_the_bill == 1) {
+            $teamPackage = TeamPackage::select("*")->where("team_id", $teamId)->first();
+            $teamPackage->change_package = 1;
+            $teamPackage->save();
+        }
 
         $title = $request->input("title");
         if($title == "custom"){

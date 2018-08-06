@@ -255,6 +255,7 @@
                                     ?>
                                     <div class="text-center m-t-10">
                                         <h5>Payment method</h5>
+                                        <i class="m-l-10 m-t-10 f-11 c-dark-grey">Card will be charged monthly for packages purchased. All major credit cards accepted.</i>
                                         <form method="POST" action="/checkout/authorisePaymentRequest" id="adyen-encrypted-form">
                                             <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                             <input type="hidden" name="team_id" value="<?= $team->id?>">

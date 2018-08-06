@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Invoice;
+use App\SiteSetting;
 use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
 
@@ -23,9 +24,11 @@ class InvoiceController extends Controller
         $invoiceMonth = date("F Y", strtotime($invoice->created_at));
         $userName = $invoice->user->firstname;
 
-//        return view("/public/invoice/userMonthlyInvoice", compact("invoice"));
+        $vatRate = SiteSetting::select("*")->where("id", 2)->first()->description;
+
+//        return view("/public/invoice/userMonthlyInvoice", compact("invoice", "vatRate"));
         $html2pdf = new Html2Pdf();
-        $html2pdf->writeHTML(view("/public/invoice/userMonthlyInvoice", compact("invoice")));
+        $html2pdf->writeHTML(view("/public/invoice/userMonthlyInvoice", compact("invoice", "vatRate")));
         $html2pdf->output("$userName-$invoiceMonth.pdf", 'D');
     }
 

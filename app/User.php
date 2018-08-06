@@ -107,12 +107,29 @@ class User extends Authenticatable
 
     public function isMember(){
         $bool = false;
-        $payment = Payments::select("*")->where("user_id", $this->id)->get();
-        if(count($payment) > 0){
-            $bool = true;
+        if($this->team_id != null) {
+            if ($this->team->split_the_bill == 1) {
+                $bool = true;
+            } else if ($this->team->split_the_bill == 0 && $this->id == $this->team->ceo_user_id) {
+                $bool = true;
+            } else {
+                $bool = false;
+            }
+            if ($this->subscription_canceled == 0) {
+                $bool = true;
+            } else {
+                $bool = true;
+            }
+            $payment = Payments::select("*")->where("user_id", $this->id)->get();
+            if (count($payment) > 0) {
+                $bool = true;
+            } else {
+                $bool = false;
+            }
         } else {
             $bool = false;
         }
+
         return $bool;
     }
 

@@ -30,7 +30,9 @@
                             <p>You have chosen to split the bill with your team. Because you are going to change the package all your team members need to verify the request again. After everyone has verified the request you will be notified and the package will be changed.</p>
                             <p>Don't want to use split the bill anymore? <br>Change this in your team settings!</p>
                         <? } else { ?>
-                            <p>Want to use the split the bill feature? You can change this in your team settings!</p>
+                            <? if(count($user->team->getMembers()) > 2) { ?>
+                                <p>Want to use the split the bill feature? You can change this in your team settings!</p>
+                            <? } ?>
                         <? } ?>
                     </div>
                 </div>

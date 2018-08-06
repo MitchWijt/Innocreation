@@ -973,6 +973,19 @@ class UserController extends Controller
                             $recentPayment = $allSplitTheBillLinktable->user->getMostRecentAuthPayment();
                             $recentPayment->payment_status = "Settled";
                             $recentPayment->save();
+
+                            $teamPackage = TeamPackage::select("*")->where("team_id", $allSplitTheBillLinktable->team_id)->first();
+                            $invoiceNumber = Invoice::select("*")->orderBy("invoice_number", "DESC")->first()->invoice_number;
+                            $invoice = new Invoice();
+                            $invoice->user_id = $allSplitTheBillLinktable->user_id;
+                            $invoice->team_id = $allSplitTheBillLinktable->team_id;
+                            $invoice->team_package_id = $teamPackage->id;
+                            $invoice->amount = $allSplitTheBillLinktable->amount;
+                            $invoice->hash = $allSplitTheBillLinktable->user->hash;
+                            $invoice->invoice_number = $invoiceNumber + 1;
+                            $invoice->paid_date = date("Y-m-d", strtotime("+2 days"));
+                            $invoice->created_at = date("Y-m-d H:i:s");
+                            $invoice->save();
                         }
 
                         $team = $team = Team::select("*")->where("id", $user->team_id)->first();
