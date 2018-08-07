@@ -30,7 +30,7 @@
                                 <p class="instructions-text f-19 m-0 p-b-10">Plan upfront for the whole team in the short term task planner</p>
                             </li>
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Keep track of your own taks in your personal task board</p>
+                                <p class="instructions-text f-19 m-0 p-b-10">Keep track of your own tasks in your personal task board</p>
                             </li>
                             <li class="instructions-list-item">
                                 <p class="instructions-text f-19 m-0 p-b-10">Keep track of your team progress in the dashboard!</p>

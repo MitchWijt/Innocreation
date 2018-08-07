@@ -162,7 +162,7 @@ class LoginController extends Controller
             }
             if($user->team_id != null) {
                 Session::set('team_id', $user->team_id);
-                Session::set("team_name", $user->team->first()->team_name);
+                Session::set("team_name", $user->team->team_name);
             }
             if($request->input("pageType") && $request->input("pageType") == "checkout"){
                 return redirect($request->input("backlink"));

@@ -289,7 +289,7 @@
                                                             <span class="m-l-10 m-t-10">Assign this task to: <br></span>
                                                             <hr>
                                                             <div class="text-center">
-                                                                <select name="assignMembers" class="input col-sm-11 m-t-10 assignTaskToMember">
+                                                                <select name="assignMembers" class="input col-sm-11 m-t-10 p-b-20 assignTaskToMember">
                                                                     <option value="" selected disabled>Choose member</option>
                                                                     <? foreach($team->getMembers() as $member) { ?>
                                                                         <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
@@ -307,13 +307,15 @@
                             </div>
                         </div>
                     <? } ?>
-                    <div class="modal fade shortTermTaskModal shortTermTaskModalShared" id="shortTermTaskModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content taskModalData">
+                    <? if(isset($shortPlannerTask)) { ?>
+                        <div class="modal fade shortTermTaskModal shortTermTaskModalShared" id="shortTermTaskModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content taskModalData">
 
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <? } ?>
                 </div>
             </div>
         </div>

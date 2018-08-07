@@ -40,7 +40,6 @@
                                 <p class="regular-link td-none m-0">General info:</p>
                                 <a class="regular-link c-gray" href="/contact-us">Contact</a>
                                 <a class="regular-link c-gray" href="/faq">FAQ</a>
-                                <a class="regular-link c-gray" href="">Terms of agreement</a>
                                 <? if(\Illuminate\Support\Facades\Session::has("user_id")) { ?>
                                 <a class="regular-link c-gray" href="/platform-idea">Idea? Let us know!</a>
                                 <? } ?>
@@ -55,6 +54,8 @@
                                 {{--<a class="regular-link c-gray" href="">People behind Innocreation</a>--}}
                                 <a class="regular-link c-gray" href="/pricing">Pricing</a>
                                 <a class="regular-link c-gray" href="/page/our-motivation">Our motivation</a>
+                                <a class="regular-link c-gray" href="/page/term-of-service">Terms of service</a>
+                                <a class="regular-link c-gray" href="/page/privacy-policy">Privacy policy</a>
                             </div>
                         </div>
                     </div>

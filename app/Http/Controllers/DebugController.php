@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Team;
 use App\UserChat;
+use App\WorkspaceShortTermPlannerBoard;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
 use Mailgun\Mailgun;
@@ -22,11 +23,7 @@ class DebugController extends Controller
 {
     public function test(){
         if($this->authorized(true)){
-            $user = User::select("*")->where("id", 10)->first();
-            $invoiceDate = date("F");
-            $this->saveAndSendEmail($user, "$invoiceDate invoice is ready!", view("/templates/sendInvoiceReady", compact("user")));
-
-            die("test");
+                die("test");
         }
     }
 }

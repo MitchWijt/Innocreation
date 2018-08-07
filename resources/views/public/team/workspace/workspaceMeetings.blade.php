@@ -100,7 +100,7 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-body ">
-                            <p>We're sorry but this team has reached its max member capacity. <br> Keep on the lookout maybe there will be a place anytime soon!  But don't worry, you can take a look at the <a class="regular-link" href="/forum">forum</a> or the <a class="regular-link" href="/teams">teams list</a>.</p>
+                            <p>We're sorry but this team has reached its max planned meetings. <br> To plan more meetings at the same time and make your innovative product even better you can take a look <a class="regular-link" href="/pricing">here</a>.</p>
                         </div>
                     </div>
                 </div>

@@ -221,7 +221,7 @@ footer{
 .card-task{
     background: #000000 !important;
     color: #C9CCCF !important;
-    height: 100px !important;
+    /*height: 100px !important;*/
     border: 1px solid #FF6100 !important;
 }
 
