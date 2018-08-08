@@ -216,9 +216,9 @@ class TeamController extends Controller
             $request_id = $request->input("request_id");
             $expertise_id = $request->input("expertise_id");
             $team_id = $request->input("team_id");
-            $request = JoinRequestLinktable::select("*")->where("id", $request_id)->first();
-            $request->accepted = 1;
-            $request->save();
+            $joinRequest = JoinRequestLinktable::select("*")->where("id", $request_id)->first();
+            $joinRequest->accepted = 1;
+            $joinRequest->save();
 
             $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
             $neededExpertise->amount = $neededExpertise->amount - 1;
@@ -232,18 +232,19 @@ class TeamController extends Controller
                 }
             }
 
-            $userName = $request->users->First()->getName();
+            $userName = $joinRequest->user->getName();
             $timeNow = date("H:i:s");
             $time = (date("g:i a", strtotime($timeNow)));
 
-            $user = User::select("*")->where("id", $request->users->First()->id)->first();
-            $user->team_id = $request->team_id;
+            $user = User::select("*")->where("id", $joinRequest->user->id)->first();
+            $user->team_id = $joinRequest->team_id;
+            $user->subscription_canceled = 0;
             $user->save();
 
-            $existingUserChat = UserChat::select("*")->where("creator_user_id", $user->id)->where("receiver_user_id",  $request->teams->first()->ceo_user_id)->orWhere("creator_user_id",  $request->teams->first()->ceo_user_id)->where("receiver_user_id", $user->id)->get();
-            if(count($existingUserChat) > 0){
+            $existingUserChat = UserChat::select("*")->where("creator_user_id", $user->id)->where("receiver_user_id",  $joinRequest->team->ceo_user_id)->orWhere("creator_user_id",  $joinRequest->team->ceo_user_id)->where("receiver_user_id", $user->id)->first();
+            if(count($existingUserChat) < 1){
                 $userChat = new UserChat();
-                $userChat->creator_user_id = $request->teams->first()->ceo_user_id;
+                $userChat->creator_user_id = $joinRequest->team->ceo_user_id;
                 $userChat->receiver_user_id = $user->id;
                 $userChat->created_at = date("Y-m-d H:i:s");
                 $userChat->save();
@@ -253,7 +254,7 @@ class TeamController extends Controller
                 $userChatId = $existingUserChat->id;
             }
             $message = new UserMessage();
-            $message->sender_user_id = $request->teams->first()->ceo_user_id;
+            $message->sender_user_id = $joinRequest->team->ceo_user_id;
             $message->user_chat_id = $userChatId;
             $message->message = "Hey $userName we are happy to say, that we accepted you in our team. Welcome!";
             $message->time_sent = $time;
@@ -331,7 +332,7 @@ class TeamController extends Controller
         $team = Team::select("*")->where("id", $team_id)->first();
 
         $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
-        $neededExpertise->amount = $neededExpertise->amount +1;
+        $neededExpertise->amount = $neededExpertise->amount + 1;
         $neededExpertise->save();
 
         $user = User::select("*")->where("id", $user_id)->first();
@@ -342,25 +343,57 @@ class TeamController extends Controller
         if(!$joinrequest){
             $joinrequest = InviteRequestLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->where("accepted", 1)->first();
         }
-        $joinrequest->delete();
+        if($joinrequest) {
+            $joinrequest->delete();
+        }
 
-        $timeNow = date("H:i:s");
-        $time = (date("g:i a", strtotime($timeNow)));
-        $message = new UserMessage();
-        $message->sender_user_id =  $team->ceo_user_id;
-        $message->receiver_user_id = $user_id;
-        $message->message = "Your kick reason: " . $kickMessage;
-        $message->time_sent = $time;
-        $message->created_at = date("Y-m-d H:i:s");
-        $message->save();
+        if($team->split_the_bill == 1 && $user->getMostRecentPayment()){
+            $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $user->id)->where("team_id", $team->id)->first();
+            if($splitTheBillLinktable) {
+                $teamLeaderSplitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $team->ceo_user_id)->where("team_id", $team->id)->first();
 
-        $message = new UserMessage();
-        $message->sender_user_id = $user_id;
-        $message->receiver_user_id = $team->ceo_user_id;
-        $message->message = null;
-        $message->time_sent = null;
-        $message->created_at = date("Y-m-d H:i:s");
-        $message->save();
+                $memberAmount = $splitTheBillLinktable->amount;
+                $leaderAmount = $teamLeaderSplitTheBillLinktable->amount;
+                $newLeaderPrice = $leaderAmount + $memberAmount;
+
+                $splitTheBillLinktable->delete();
+
+                $teamLeaderSplitTheBillLinktable->amount = $newLeaderPrice;
+                $teamLeaderSplitTheBillLinktable->save();
+            }
+
+            $data = array("merchantAccount" => "InnocreationNET", "shopperReference" => $user->getName() . $team->id, "recurringDetailReference" => $user->getMostRecentPayment()->recurring_detail_reference);
+            $data_string = json_encode($data);
+
+            $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Recurring/v25/disable');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
+                    'Content-Type: application/json',
+                    'Content-Length:' . strlen($data_string))
+            );
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+
+            //execute post
+            $result = curl_exec($ch);
+            //close connection
+            curl_close($ch);
+
+            $user->subscription_canceled = 1;
+            $user->save();
+        }
+
+        $userChat = UserChat::select("*")->where("receiver_user_id", $user->id)->where("creator_user_id", 1)->first();
+        $userMessage = new UserMessage();
+        $userMessage->sender_user_id = 1;
+        $userMessage->user_chat_id = $userChat->id;
+        $userMessage->time_sent = $this->getTimeSent();
+        $userMessage->message = "We are sorry to say that $team->team_name has decided to kick you from their team. their reason is: $kickMessage";
+        $userMessage->created_at = date("Y-m-d H:i:s");
+        $userMessage->save();
 
         return redirect($_SERVER["HTTP_REFERER"]);
     }

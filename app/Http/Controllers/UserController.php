@@ -447,17 +447,23 @@ class UserController extends Controller
                 $joinRequest->created_at = date("Y-m-d");
                 $joinRequest->save();
 
-                $ceoFirstname = $joinRequest->teams->First()->users->First()->firstname;
+                $ceoFirstname = $team->user->firstname;
 
-                $userChat = new UserChat();
-                $userChat->creator_user_id = $user_id;
-                $userChat->receiver_user_id = $team->ceo_user_id;
-                $userChat->created_at = date("Y-m-d H:i:s");
-                $userChat->save();
+                $existingUserChat = UserChat::select("*")->where("creator_user_id", $user_id)->where("receiver_user_id",  $joinRequest->team->ceo_user_id)->orWhere("creator_user_id",  $joinRequest->team->ceo_user_id)->where("receiver_user_id", $user_id)->get();
+                if(count($existingUserChat) < 1){
+                    $userChat = new UserChat();
+                    $userChat->creator_user_id = $user_id;
+                    $userChat->receiver_user_id = $joinRequest->team->ceo_user_id;
+                    $userChat->created_at = date("Y-m-d H:i:s");
+                    $userChat->save();
 
+                    $userChatId = $userChat->id;
+                } else {
+                    $userChatId = $existingUserChat->id;
+                }
                 $message = new UserMessage();
                 $message->sender_user_id = $user_id;
-                $message->user_chat_id = $userChat->id;
+                $message->user_chat_id = $userChatId;
                 $message->message = "Hey $ceoFirstname I have done a request to join your team!";
                 $message->time_sent = $this->getTimeSent();
                 $message->created_at = date("Y-m-d H:i:s");
@@ -727,7 +733,7 @@ class UserController extends Controller
                     $price = str_replace(".", "", number_format($splitTheBillLinktable->amount, 2, ".", "."));
 
                     //RECURRINGSTORECALL
-                    $data = array("additionalData" => array("card.encrypted.json" => $encryptedData), "amount" => array("value" => $price, "currency" => "EUR"), "reference" => $reference, "merchantAccount" => "InnocreationNET", "shopperReference" => $splitTheBillLinktable->user->getName() . $splitTheBillLinktable->team->id, "recurring" => array("contract" => "RECURRING"));
+                    $data = array("additionalData" => array("card.encrypted.json" => $encryptedData), "amount" => array("value" => $price, "currency" => "EUR"), "reference" => $reference, "merchantAccount" => "InnocreationNET", "shopperReference" => $splitTheBillLinktable->user->getName() . $splitTheBillLinktable->team->id, "recurring" => array("contract" => "RECURRING"), "selectedRecurringDetailReference" =>  $splitTheBillLinktable->user->getMostRecentPayment()->recurring_detail_reference, "shopperInteraction" => "ContAuth");
                     $data_string = json_encode($data);
 
                     $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Payment/v30/authorise');
@@ -1078,16 +1084,22 @@ class UserController extends Controller
 
                 //execute post
                 $result = curl_exec($ch);
-                $resultAuthorization = json_decode($result);
-                $recurringDetailReference = $resultAuthorization->details[0]->RecurringDetail->recurringDetailReference;
-                $details = end($resultAuthorization->details);
-                $card = $details->RecurringDetail->card;
-                $paymentMethod = $details->RecurringDetail->paymentMethodVariant;
+                if($result != '{}') {
+                    $resultAuthorization = json_decode($result);
+                    $recurringDetailReference = $resultAuthorization->details[0]->RecurringDetail->recurringDetailReference;
+                    $details = end($resultAuthorization->details);
+                    $card = $details->RecurringDetail->card;
+                    $paymentMethod = $details->RecurringDetail->paymentMethodVariant;
+                }
                 //close connection
                 curl_close($ch);
 
                 $invoices = Invoice::select("*")->where("user_id", $user->id)->where("hash", $user->hash)->get();
-                return view("/public/user/userBilling", compact("user", "payments", "card", "paymentMethod", "invoices"));
+                if($result == '{}'){
+                    return view("/public/user/userBilling", compact("user", "payments", "invoices"));
+                } else {
+                    return view("/public/user/userBilling", compact("user", "payments", "card", "paymentMethod", "invoices"));
+                }
             } else {
                 return view("/public/user/userBilling", compact("user"));
             }

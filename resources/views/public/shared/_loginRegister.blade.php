@@ -43,6 +43,18 @@
             </div>
         </div>
     </div>
+    <? if($pageType != "checkout") { ?>
+        <div class="form-group m-b-0 d-flex js-center m-b-10">
+            <div class="row d-flex js-center col-sm-9">
+                <label class="m-0 col-sm-9 p-0">Gender</label>
+                <select name="gender" class="input col-sm-9">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="private">Private</option>
+                </select>
+            </div>
+        </div>
+    <? } ?>
     <? if(!isset($user)) { ?>
         <div class="form-group m-b-10 d-flex js-center">
             <div class="row d-flex js-center col-sm-9">
@@ -86,7 +98,7 @@
             <label class="m-0 <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?> p-0">Country</label>
             <select name="country" class="input <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?>">
                 <? foreach($countries as $country) { ?>
-                    <option <? if(isset($user->country) && $user->country == $country->country) echo "selected"?> data-country-code="<?= $country->country_code?>" value="<?= $country->country?>"><?= $country->country?></option>
+                    <option <? if(isset($user->country) && $user->country == $country->country) echo "selected"?> data-country-code="<?= $country->country_code?>" value="<?= $country->id?>"><?= $country->country?></option>
                 <? } ?>
             </select>
         </div>

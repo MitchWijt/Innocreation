@@ -18,7 +18,7 @@
                     <div class="card m-t-20 m-b-20">
                         <div class="card-block m-t-10 row">
                             <div class="col-sm-5 text-center m-t-15">
-                                <h3><?=$userJoinRequest->users->First()->getName()?></h3>
+                                <h3><?=$userJoinRequest->user->getName()?></h3>
                             </div>
                             <? if($userJoinRequest->accepted == 0) { ?>
                             <div class="col-sm-2 text-center" style="margin-top: 20px;">
@@ -35,7 +35,7 @@
                                     <div class="col-sm-4 text-center d-flex js-center p-b-15 p-r-0">
                                 <? } ?>
                                     <? if($userJoinRequest->accepted == 0) { ?>
-                                        <? if($user_id == $userJoinRequest->teams->First()->ceo_user_id) { ?>
+                                        <? if($user_id == $userJoinRequest->team->ceo_user_id) { ?>
                                         <form action="/my-team/rejectUserFromTeam" class="rejectUserFromTeam" method="post">
                                             <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                             <input type="hidden" name="request_id" value="<?= $userJoinRequest->id?>">
@@ -46,7 +46,7 @@
                                         <form action="/my-team/acceptUserInteam" class="acceptUserInTeam" method="post">
                                             <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                             <input type="hidden" name="request_id" value="<?= $userJoinRequest->id?>">
-                                            <input type="hidden" name="user_id" value="<?= $userJoinRequest->users->First()->id?>">
+                                            <input type="hidden" name="user_id" value="<?= $userJoinRequest->user->id?>">
                                             <input type="hidden" name="expertise_id" value="<?= $userJoinRequest->expertise_id?>">
                                             <input type="hidden" name="team_id" value="<?= $userJoinRequest->team_id?>">
                                             <div class="circle circleImage p-relative pull-right c-pointer acceptUser">

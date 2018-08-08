@@ -12,7 +12,7 @@ class User extends Authenticatable
         return $this->hasOne("\App\Team", "id","team_id");
     }
 
-    public function countries(){
+    public function country(){
         return $this->hasOne("\App\Country", "id","country_id");
     }
 

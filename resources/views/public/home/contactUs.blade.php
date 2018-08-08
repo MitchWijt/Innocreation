@@ -40,18 +40,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="row d-flex js-center">
-                    <div class="col-sm-8">
-                      <ul class="fileName">
+                {{--<div class="row d-flex js-center">--}}
+                    {{--<div class="col-sm-8">--}}
+                      {{--<ul class="fileName">--}}
 
-                      </ul>
-                    </div>
-                </div>
+                      {{--</ul>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
                 <div class="row d-flex js-center fileUpload">
-                    <div class="col-sm-8 d-flex js-between">
-                        <input type="file" name="files" multiple class="hidden files">
-                        <button class="btn btn-inno addFiles" type="button"><i class="zmdi zmdi-file-plus"></i> Add files</button>
-                        <button class="btn btn-inno submitContactForm" type="button">Send</button>
+                    <div class="col-sm-8">
+                        {{--<input type="file" name="files" multiple class="hidden files">--}}
+                        {{--<button class="btn btn-inno addFiles" type="button"><i class="zmdi zmdi-file-plus"></i> Add files</button>--}}
+                        <button class="btn btn-inno submitContactForm pull-right" type="button">Send</button>
                     </div>
                 </div>
             </form>

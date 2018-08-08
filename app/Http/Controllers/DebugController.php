@@ -23,7 +23,7 @@ class DebugController extends Controller
 {
     public function test(){
         if($this->authorized(true)){
-                die("test");
+            die("test");
         }
     }
 }

@@ -112,17 +112,18 @@ class Team extends Model
 
     public function hasPaid(){
         $amount = 0;
-        $from = date("Y-m-d", strtotime(" -1 month"));
-        $to = date("Y-m-d");
+        $till = date("Y-m-d", strtotime(" +1 month"));
         if($this->split_the_bill == 0) {
             $payment = Payments::select("*")->where("team_id", $this->id)->orderBy('created_at', 'DESC')->First();
             if ($payment->payment_status == "Settled") {
                 $amount = $payment->amount;
             }
         } else {
-            $payments = Payments::select("*")->where("team_id", $this->id)->orderBy('created_at', 'DESC')->limit(count($this->getMembers()))->get();
+            $recentPayment = Payments::select("*")->where("team_id", $this->id)->orderBy("created_at", "DESC")->first();
+            $payments = Payments::select("*")->where("team_id", $this->id)->get();
             foreach($payments as $payment){
-                if ($payment->payment_status == "Settled") {
+                if(date("Y-m", strtotime($payment->created_at)) == date("Y-m", strtotime($recentPayment->created_at)))
+                if($payment->payment_status == "Settled") {
                     $amount = $amount + $payment->amount;
                 }
             }

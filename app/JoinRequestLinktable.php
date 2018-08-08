@@ -12,11 +12,11 @@ class JoinRequestLinktable extends Model
         return $this->hasMany("\App\Expertises", "id","expertise_id");
     }
 
-    public function users(){
+    public function user(){
         return $this->hasOne("\App\User", "id","user_id");
     }
 
-    public function teams(){
+    public function team(){
         return $this->hasOne("\App\Team", "id","team_id");
     }
 }

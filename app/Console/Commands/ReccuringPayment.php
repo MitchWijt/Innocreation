@@ -87,7 +87,7 @@ class ReccuringPayment extends Command
                         $user->payment_refused = 1;
                         $user->save();
 //                        $this->saveAndSendEmail($payment->user, "Payment refused", view("/templates/sendRecurringRefused", compact("user", "team")));
-                    } else if (isset($resultAuthorization->resultcode) && $resultAuthorization->resultcode == "Refused") {
+                    } else if (isset($resultAuthorization->resultCode) && $resultAuthorization->resultCode == "Refused") {
                         $status = "Canceled";
                     } else {
                         $status = "Settled";
@@ -115,9 +115,9 @@ class ReccuringPayment extends Command
 
                     //execute post
                     $result = curl_exec($ch);
-                    $resultAuthorization = json_decode($result);
+                    $resultAuthorizationDetails = json_decode($result);
 
-                    $recurringDetailReference = $resultAuthorization->details[0]->RecurringDetail->recurringDetailReference;
+                    $recurringDetailReference = $resultAuthorizationDetails->details[0]->RecurringDetail->recurringDetailReference;
 
                     //close connection
                     curl_close($ch);
@@ -151,7 +151,7 @@ class ReccuringPayment extends Command
 
                         $user->payment_refused = 1;
                         $user->save();
-                        $this->saveAndSendEmail($payment->user, "Payment refused", view("/templates/sendRecurringRefused", compact("user", "team")));
+//                        $this->saveAndSendEmail($payment->user, "Payment refused", view("/templates/sendRecurringRefused", compact("user", "team")));
                     }
                     if($status == "Settled"){
                         $invoiceNumber = Invoice::select("*")->orderBy("invoice_number", "DESC")->first()->invoice_number;
@@ -172,7 +172,7 @@ class ReccuringPayment extends Command
                         $invoice->save();
 
                     }
-                    $details = end($resultAuthorization->details);
+                    $details = end($resultAuthorizationDetails->details);
                     $card = $details->RecurringDetail->card;
                     $paymentMethod = $details->RecurringDetail->paymentMethodVariant;
                     $newPayment = new Payments();

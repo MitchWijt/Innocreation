@@ -86,7 +86,7 @@
                             <p class="m-0">Address:</p>
                         </div>
                         <div class="col-sm-6">
-                            <p><? if(isset($user->postalcode)) echo $user->postalcode .", ". $user->city .", ". $user->country?></p>
+                            <p><? if(isset($user->postalcode)) echo $user->postalcode .", ". $user->city .", ". $user->country->country?></p>
                         </div>
                     </div>
                     <hr class="@notmobile col-md-9 @elsemobile col-xs-12 @endnotmobile">

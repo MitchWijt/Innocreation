@@ -26,7 +26,11 @@
                                 <div class="card-block">
                                     <div class="row m-t-20 m-b-20">
                                         <div class="col-sm-10">
-                                            <p class="m-l-10"><a target="_blank" href="<?= $splitTheBillDetail->team->getUrl()?>" class="regular-link"><?= $splitTheBillDetail->team->team_name?></a> has asked you to accept and validate the "split the bill". Since you are a member of this team. Validate as soon as possible to enjoy the benefits of your package even quiker!</p>
+                                            <? if($user->payment_refused == 0) { ?>
+                                                <p class="m-l-10"><a target="_blank" href="<?= $splitTheBillDetail->team->getUrl()?>" class="regular-link"><?= $splitTheBillDetail->team->team_name?></a> has asked you to accept and validate the "split the bill". Since you are a member of this team. Validate as soon as possible to enjoy the benefits of your package even quiker!</p>
+                                            <? } else { ?>
+                                                <p class="m-l-10">Your recurring payment for team <?= $user->team->team_name?> has been refused. Please validate your credit card to pursue the payment</p>
+                                            <? } ?>
                                         </div>
                                         <div class="col-sm-2 m-t-10">
                                             <? if($splitTheBillDetail->accepted == 1 && $splitTheBillDetail->user->payment_refused == 0) { ?>
@@ -62,10 +66,10 @@
                                                     </div>
                                                     <div class="row m-t-10 d-flex js-center">
                                                         <div class="col-sm-2">
-                                                            <input type="text" class="input col-sm-12" placeholder="<?= date("m")?>" size="2" data-encrypted-name="expiryMonth"/>
+                                                            <input type="text" class="input col-sm-12" name="expiryM" placeholder="<?= date("m")?>" size="2" data-encrypted-name="expiryMonth"/>
                                                         </div>
                                                         <div class="col-sm-2">
-                                                            <input type="text" class="input col-sm-12" placeholder="<?= date("Y")?>" size="4" data-encrypted-name="expiryYear"/>
+                                                            <input type="text" class="input col-sm-12" name="expiryY" placeholder="<?= date("Y")?>" size="4" data-encrypted-name="expiryYear"/>
                                                         </div>
                                                         <div class="col-sm-2">
                                                             <input type="text" class="input col-sm-12" placeholder="cvc" size="4" data-encrypted-name="cvc"/>

@@ -64,6 +64,7 @@ class LoginController extends Controller
                 $user->middlename = $request->input("middlename");
             }
             $user->lastname = ucfirst($request->input("lastname"));
+            $user->gender = $request->input("gender");
             $user->password = bcrypt(($request->input("password")));
             $user->email = $request->input("email");
             if ($request->input("middlename") != null) {
@@ -75,7 +76,7 @@ class LoginController extends Controller
             $user->city = $request->input("city");
             $user->postalcode = $request->input("postcode");
             $user->state = $request->input("state");
-            $user->country = $request->input("country");
+            $user->country_id = $request->input("country");
             $user->profile_picture = "defaultProfilePicture.png";
             $user->phonenumber = $request->input("phonenumber");
             $user->created_at = date("Y-m-d H:i:s");

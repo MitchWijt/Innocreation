@@ -18,7 +18,7 @@
                         <div class="card card-lg m-t-20 m-b-20">
                             <div class="row card-block m-t-10">
                                 <div class="col-sm-5 text-center m-t-15">
-                                    <h3><?=$teamJoinRequest->teams->First()->team_name?></h3>
+                                    <h3><?=$teamJoinRequest->team->team_name?></h3>
                                 </div>
                                 <div class="col-sm-3 text-center" style="margin-top: 20px;">
                                     <p><?= $teamJoinRequest->expertises->First()->title?></p>

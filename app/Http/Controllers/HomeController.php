@@ -53,7 +53,25 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function sendContactFormAction(Request $request){
-        die("Email todo and live server for email");
+        $firstname  = $request->input("firstname");
+        $lastname = $request->input("lastname");
+        $email = $request->input("email");
+        $message = $request->input("contactMessage");
+
+        $sender = [$firstname, $lastname, $email, $message];
+        $html  = view("/templates/sendMailFromContactForm", compact("sender"));
+
+        $mgClient = $this->getService("mailgun");
+        $mgClient[0]->sendMessage($mgClient[1], array(
+            'from' => $email,
+            'to' => "mitchel@innocreation.net",
+            'subject' => "Contact form submit",
+            'html' => $html
+        ), array(
+            'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
+        ));
+
+        return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Successfully sent contact form");
     }
 
 

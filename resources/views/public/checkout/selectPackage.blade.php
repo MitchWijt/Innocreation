@@ -41,6 +41,11 @@
                                         <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= $membershipPackage->getPrice()?></span><span class="packagePreference">/Month</span></p>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-sm-12 text-center m-t-50">
+                                        <i class="regular-link c-orange f-12" data-toggle="modal" data-target="#companyDetails">Details of Innocreation</i>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -76,6 +81,11 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= number_format(\Illuminate\Support\Facades\Session::get("customPackagesArray")["price"], 2, ".", ".") ?></span><span class="packagePreference">/Month</span></p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 text-center m-t-50">
+                                        <i class="regular-link c-orange f-12" data-toggle="modal" data-target="#companyDetails">Details of Innocreation</i>
                                     </div>
                                 </div>
                             </div>
@@ -164,7 +174,7 @@
                                                     <label class="m-0 col-sm-12 p-0">Country</label>
                                                     <select name="country" class="input col-sm-12">
                                                         <? foreach($countries as $country) { ?>
-                                                            <option <? if(isset($user->country) && $user->country == $country->country) echo "selected"?> data-country-code="<?= $country->country_code?>" value="<?= $country->country?>"><?= $country->country?></option>
+                                                            <option <? if(isset($user->country_id) && $user->country->country == $country->country) echo "selected"?> data-country-code="<?= $country->country_code?>" value="<?= $country->id?>"><?= $country->country?></option>
                                                         <? } ?>
                                                     </select>
                                                 </div>
@@ -343,6 +353,23 @@
                         <div class="modal-body ">
                             <p>Split the bill allows you to split the monthly/yearly recurring bill with your team members if they allow to.</p>
                             <i class="c-dark-grey f-14">You can always change this later in your account.</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade companyDetails" id="companyDetails" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" >
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body ">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="text-center">
+                                    <h2>Innocreation</h2>
+                                    <p class="m-0">Chamber of commerce number: 72024992</p>
+                                    <p class="m-0">Location: Dagpauwoog 81, 4814VG BREDA, Netherlands</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

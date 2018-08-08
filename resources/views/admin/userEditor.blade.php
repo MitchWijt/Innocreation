@@ -81,7 +81,7 @@
                                                     <div class="col-sm-4">
                                                         <select name="country" class="input col-sm-12">
                                                             <? foreach($countries as $country) { ?>
-                                                                <option <? if($user->country == $country->country) echo "selected"?> value="<?= $country->country?>"><?= $country->country?></option>
+                                                                <option <? if($user->country->country == $country->country) echo "selected"?> value="<?= $country->id?>"><?= $country->country?></option>
                                                             <? } ?>
                                                         </select>
                                                     </div>
