@@ -15,6 +15,7 @@ use App\ForumMainTopic;
 use App\ForumMainTopicType;
 use App\ForumThread;
 use App\InviteRequestLinktable;
+use App\Invoice;
 use App\JoinRequestLinktable;
 use App\MailMessage;
 use App\MembershipPackage;
@@ -82,7 +83,8 @@ class AdminController extends Controller
             $user = User::select("*")->where("id", $id)->first();
             $expertiseLinktables = Expertises_linktable::select("*")->where("user_id", $id)->get();
             $countries = Country::select("*")->get();
-            return view("/admin/userEditor", compact("user", "countries", "expertiseLinktables", "adminUser"));
+            $invoices = Invoice::select("*")->where("user_id", $id)->get();
+            return view("/admin/userEditor", compact("user", "countries", "expertiseLinktables", "adminUser", "invoices"));
         }
     }
 

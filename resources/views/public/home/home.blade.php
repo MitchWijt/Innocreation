@@ -180,9 +180,9 @@
                                 <div class="col-sm-10 d-flex jc-end">
                                     @handheld
                                         @mobile
-                                            <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-17">Sell your own team products in our <a class="regular-link" href="/">shop</a></p>
+                                            <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-17">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
                                         @elsetablet
-                                            <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-20">Sell your own team products in our <a class="regular-link" href="/">shop</a></p>
+                                            <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-20">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
                                         @endmobile
                                     @elsedesktop
                                         <p class="instructions-second-text m-b-0 m-r-20 m-t-15">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>

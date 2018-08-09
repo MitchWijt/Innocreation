@@ -373,7 +373,7 @@ class CheckoutController extends Controller
         $user->city = $city;
         $user->postalcode = $postalcode;
         $user->state = $state;
-        $user->country = $country;
+        $user->country_id = $country;
         $user->phonenumber = $phonenumber;
         if ($request->input("team_name")) {
             $user->team_id = $team->id;
@@ -631,8 +631,11 @@ class CheckoutController extends Controller
     public function getChangePackageModalAction(Request $request){
         $userId = $request->input("user_id");
         $membershipPackageId = $request->input("membership_package_id");
-
         $user = User::select("*")->where("id", $userId)->first();
+
+        if($membershipPackageId == "custom"){
+            return view("/public/checkout/shared/changePackageModalData", compact("user"));
+        }
         if ($membershipPackageId) {
             $membershipPackage = MembershipPackage::select("*")->where("id", $membershipPackageId)->first();
             return view("/public/checkout/shared/changePackageModalData", compact("user", "membershipPackage"));

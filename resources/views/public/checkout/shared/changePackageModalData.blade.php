@@ -1,5 +1,5 @@
 <? if($user->isMember() && $user->id == $user->team->ceo_user_id) { ?>
-    <? if($membershipPackage->members < count($user->team->getMembers()) && $membershipPackage->members != "unlimited") { ?>
+    <? if(isset($membershipPackage) && $membershipPackage->members < count($user->team->getMembers()) && $membershipPackage->members != "unlimited") { ?>
         <div class="modal-body ">
             <div class="row">
                 <div class="col-sm-12">

@@ -65,7 +65,7 @@
             </div>
             <form action="/checkout/setDataCustomPackage" method="post" class="customPackageForm">
                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                <? if(isset($user) && $user->team_id != null && $user->team->packageDetails() && $user->isMember() && $user->team->packageDetails()->custom_team_package_id != null) { ?>
+                <? if(isset($user) && $user->team_id != null && $user->team->packageDetails() && $user->isMember()) { ?>
                     <input type="hidden" name="changePackage" value="1">
                 <? } else { ?>
                     <input type="hidden" name="changePackage" value="0">
@@ -92,7 +92,7 @@
                                                     <select name="amountValues[]" class="input amount">
                                                         <option selected disabled="">Choose amount</option>
                                                         <? foreach($customMembershipPackageType->getCustomPackages() as $customPackage) { ?>
-                                                            <option value="<?= $customPackage->option?>" data-price="<?= $customPackage->price?>"><?= $customPackage->option?></option>
+                                                            <option value="<?= $customPackage->option?>" data-price="<?= $customPackage->price?>" ><?= $customPackage->option?></option>
                                                         <? } ?>
                                                     </select>
                                                 </div>
@@ -145,7 +145,7 @@
                                         <? if($user->isMember() && $user->team->packageDetails()->custom_team_package_id != null) { ?>
                                             <button class="btn btn-inno @tablet btn-sm @endtablet" disabled>Your current package!</button>
                                         <? } else {  ?>
-                                            <button type="button" class="btn btn-inno m-b-20 openModalChangePackage customBtn" data-user-id="<?= $user->id?>">Choose</button>
+                                            <button type="button" class="btn btn-inno m-b-20 openModalChangePackage customBtn" data-user-id="<?= $user->id?>" data-membership-package-id="custom">Choose</button>
                                         <? } ?>
                                     <? } else { ?>
                                         <button type="submit" class="btn btn-inno m-b-20 customBtn">Choose</button>

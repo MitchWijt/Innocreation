@@ -6,7 +6,7 @@
         <p style="margin: 0 !important">Netherlands, NL, 4814VG</p>
         <p style="margin: 0 !important">VAT ID: NL234360069B01</p>
         <h1 style="margin-bottom: 5px;"><?= $invoice->user->getName()?></h1>
-        <p style="margin: 0 !important"><?= $invoice->user->country?>, <?= $invoice->user->postalcode?>, <?= $invoice->user->state?></p>
+        <p style="margin: 0 !important"><?= $invoice->user->country->country?>, <?= $invoice->user->postalcode?>, <?= $invoice->user->state?></p>
         <p style="margin: 0 !important"><?= $invoice->user->email?></p>
     </div>
     <div style="margin-left: 450px; margin-bottom: 20px">
@@ -28,7 +28,11 @@
                 <th>EU</th>
             </tr>
             <tr>
-                <td><?= $invoice->teamPackage->title?> for team <?= $invoice->teamPackage->team->team_name?></td>
+                <? if($teamPackage->custom_team_package_id != null) { ?>
+                    <td>Custom package for team <?= $invoice->teamPackage->team->team_name?></td>
+                <? } else { ?>
+                    <td><?= $invoice->teamPackage->title?> for team <?= $invoice->teamPackage->team->team_name?></td>
+                <? } ?>
                 <td><?= number_format($invoice->amount - ($invoice->amount / 100 * $vatRate), 2, ".", ".")?></td>
                 <td><?= number_format($invoice->amount / 100 * $vatRate, 2, ".", ".")?></td>
                 <td><?= date("Y-m-d", strtotime($invoice->created_at))?></td>

@@ -161,7 +161,7 @@
                                                     </div>
                                                     <div class="col-sm-3 @desktop p-l-0 @elsemobile p-0 @enddesktop">
                                                         <label class="m-0">Postcode</label>
-                                                        <input type="text" name="postcode" class="postcode input col-sm-12" value="<? if(isset($user->postcode)) echo $user->postcode?>">
+                                                        <input type="text" name="postcode" class="postcode input col-sm-12" value="<? if(isset($user->postalcode)) echo $user->postalcode?>">
                                                     </div>
                                                     <div class="col-sm-3 @desktop p-r-0 @elsemobile p-0 @enddesktop">
                                                         <label class="m-0">State</label>

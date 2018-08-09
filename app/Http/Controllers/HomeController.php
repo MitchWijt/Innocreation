@@ -64,7 +64,7 @@ class HomeController extends Controller
         $mgClient = $this->getService("mailgun");
         $mgClient[0]->sendMessage($mgClient[1], array(
             'from' => $email,
-            'to' => "mitchel@innocreation.net",
+            'to' => "info@innocreation.net",
             'subject' => "Contact form submit",
             'html' => $html
         ), array(

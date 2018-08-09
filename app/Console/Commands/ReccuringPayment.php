@@ -145,9 +145,11 @@ class ReccuringPayment extends Command
                         //close connection
                         curl_close($ch);
 
-                        $recentPayment = Payments::select("*")->where("id", $payment->id)->first();
-                        $recentPayment->payment_status = "Refused(wrong details)";
-                        $recentPayment->save();
+//                        $recentPayment = Payments::select("*")->where("id", $payment->id)->first();
+//                        $recentPayment->payment_status = "Refused(wrong details)";
+//                        $recentPayment->save();
+
+                        $status = "Refused(wrong details)";
 
                         $user->payment_refused = 1;
                         $user->save();
