@@ -134,13 +134,13 @@ class User extends Authenticatable
     }
 
     public function getMostRecentPayment(){
-        $payment = Payments::select("*")->where("user_id", $this->id)->where("payment_status", "Settled")->orderBy("created_at", "DESC")->first();
+        $payment = Payments::select("*")->where("user_id", $this->id)->where("payment_status", "paid")->orderBy("created_at", "DESC")->first();
         return $payment;
 
     }
 
-    public function getMostRecentAuthPayment(){
-        $payment = Payments::select("*")->where("user_id", $this->id)->where("payment_status", "Authorized")->orderBy("created_at", "DESC")->first();
+    public function getMostRecentOpenPayment(){
+        $payment = Payments::select("*")->where("user_id", $this->id)->where("payment_status", "Open")->orderBy("created_at", "DESC")->first();
         return $payment;
 
     }

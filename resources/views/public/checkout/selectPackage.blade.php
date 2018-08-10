@@ -269,26 +269,6 @@
                                         <form method="POST" action="/checkout/authorisePaymentRequest" id="adyen-encrypted-form">
                                             <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                             <input type="hidden" name="team_id" value="<?= $team->id?>">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <input type="text" class="input col-sm-12" placeholder="Card number" size="20" data-encrypted-name="number"/>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <input type="text" class="input col-sm-12" placeholder="Holdername" size="20" data-encrypted-name="holderName"/>
-                                                </div>
-                                            </div>
-                                            <div class="row m-t-10">
-                                                <div class="col-sm-4">
-                                                    <input type="text" class="input col-sm-12" placeholder="<?= date("m")?>" size="2" data-encrypted-name="expiryMonth"/>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <input type="text" class="input col-sm-12" placeholder="<?= date("Y")?>" size="4" data-encrypted-name="expiryYear"/>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <input type="text" class="input col-sm-12" placeholder="cvc" size="4" data-encrypted-name="cvc"/>
-                                                </div>
-                                            </div>
-                                            <input type="hidden" value="<?=$date?>T<?=$time?>Z" data-encrypted-name="generationtime"/>
                                             <div class="row m-t-20 m-b-20">
                                                 <div class="col-sm-12">
                                                     <input type="submit" class="btn btn-inno btn-sm pull-right" value="Become a <? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo "innovator"; else echo str_replace("-", " ", lcfirst($membershipPackage->title))?>"/>

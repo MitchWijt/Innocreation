@@ -75,7 +75,7 @@
                     </div>
                 </div>
             <? } ?>
-            <? if(isset($payments) && $user->subscription_canceled == 0) { ?>
+            <? if(isset($payments) && $user->subscription_canceled == 0 && isset($paymentMethod)) { ?>
                 <div class="row d-flex js-center p-b-20 m-t-20">
                     <div class="col-md-10">
                         <div class="card card-lg">

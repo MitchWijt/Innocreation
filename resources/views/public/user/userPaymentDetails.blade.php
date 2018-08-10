@@ -25,18 +25,26 @@
                             <div class="card card-lg">
                                 <div class="card-block">
                                     <div class="row m-t-20 m-b-20">
-                                        <div class="col-sm-10">
-                                            <? if($user->payment_refused == 0) { ?>
-                                                <p class="m-l-10"><a target="_blank" href="<?= $splitTheBillDetail->team->getUrl()?>" class="regular-link"><?= $splitTheBillDetail->team->team_name?></a> has asked you to accept and validate the "split the bill". Since you are a member of this team. Validate as soon as possible to enjoy the benefits of your package even quiker!</p>
+                                        <div class="col-sm-9">
+                                            <? if($splitTheBillDetail->allAccepted($user->team_id)) { ?>
+                                                <p class="m-l-10">Everyone in your team <?= $user->team->team_name?> has validated the split the bill. Make your payment for the package to enjoy the package asap!</p>
                                             <? } else { ?>
-                                                <p class="m-l-10">Your recurring payment for team <?= $user->team->team_name?> has been refused. Please validate your credit card to pursue the payment</p>
+                                                <? if($user->payment_refused == 0) { ?>
+                                                    <p class="m-l-10"><a target="_blank" href="<?= $splitTheBillDetail->team->getUrl()?>" class="regular-link"><?= $splitTheBillDetail->team->team_name?></a> has asked you to accept and validate the "split the bill". Since you are a member of this team. Validate as soon as possible to enjoy the benefits of your package even quiker!</p>
+                                                <? } else { ?>
+                                                    <p class="m-l-10">Your recurring payment for team <?= $user->team->team_name?> has been refused. Please validate your credit card to pursue the payment</p>
+                                                <? } ?>
                                             <? } ?>
                                         </div>
-                                        <div class="col-sm-2 m-t-10">
-                                            <? if($splitTheBillDetail->accepted == 1 && $splitTheBillDetail->user->payment_refused == 0) { ?>
-                                                <p class="c-green">Validated <i class="zmdi zmdi-check c-green"></i> </p>
+                                        <div class="col-sm-3 m-t-10">
+                                            <? if($splitTheBillDetail->allAccepted($user->team_id)) { ?>
+                                                <a href="<?= $splitTheBillDetail->getPaymentUrl()?>" class="btn btn-inno">Pay package</a>
                                             <? } else { ?>
-                                                <button data-toggle="collapse" href="#collapse-<?= $splitTheBillDetail->id?>" class="btn btn-inno pull">Validate</button>
+                                                <? if($splitTheBillDetail->accepted == 1 && $splitTheBillDetail->user->payment_refused == 0) { ?>
+                                                    <p class="c-green">Validated <i class="zmdi zmdi-check c-green"></i> </p>
+                                                <? } else { ?>
+                                                    <button data-toggle="collapse" href="#collapse-<?= $splitTheBillDetail->id?>" class="btn btn-inno pull">Validate</button>
+                                                <? } ?>
                                             <? } ?>
                                         </div>
                                     </div>
@@ -50,41 +58,32 @@
                                 <div class="card card-lg">
                                     <div class="card-block">
                                         <div class="row">
-                                            <div class="col-sm-8">
-                                                <form method="POST" class="m-t-20" action="/user/validateSplitTheBill" id="adyen-encrypted-form">
+                                            <div class="col-sm-8 m-t-20 text-center">
+                                                <? if(isset($teamPackage)) { ?>
+                                                <? if($teamPackage->custom_team_package_id != null) { ?>
+                                                    <p class="f-20 m-t-0">Innovator(custom package)</p>
+                                                <? } else { ?>
+                                                    <p class="f-20 m-t-0"><?= str_replace("-", " ", ucfirst($teamPackage->title))?></p>
+                                                <? } ?>
+                                                    <p style="letter-spacing: 1px;"><?= "&euro;" . number_format($splitTheBillDetail->amount, 2, ".", ".")?><span style="letter-spacing: 0px;"><? if($teamPackage->payment_preference == "monthly") echo "/Month"; else echo "/Year";?></span></p>
+                                                <?} ?>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <form method="POST" class="m-t-30" action="/user/validateSplitTheBill" id="adyen-encrypted-form">
                                                     <input type="hidden" name="user_id" value="<?= $splitTheBillDetail->user_id?>">
                                                     <input type="hidden" name="split_the_bill_linktable_id" value="<?= $splitTheBillDetail->id?>">
                                                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                                     <input type="hidden" name="team_id" value="<?= $splitTheBillDetail->team_id?>">
-                                                    <div class="row d-flex js-center">
-                                                        <div class="col-sm-3">
-                                                            <input type="text" class="input col-sm-12" placeholder="Card number" size="20" data-encrypted-name="number"/>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            <input type="text" class="input col-sm-12" placeholder="Holdername" size="20" data-encrypted-name="holderName"/>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row m-t-10 d-flex js-center">
-                                                        <div class="col-sm-2">
-                                                            <input type="text" class="input col-sm-12" name="expiryM" placeholder="<?= date("m")?>" size="2" data-encrypted-name="expiryMonth"/>
-                                                        </div>
-                                                        <div class="col-sm-2">
-                                                            <input type="text" class="input col-sm-12" name="expiryY" placeholder="<?= date("Y")?>" size="4" data-encrypted-name="expiryYear"/>
-                                                        </div>
-                                                        <div class="col-sm-2">
-                                                            <input type="text" class="input col-sm-12" placeholder="cvc" size="4" data-encrypted-name="cvc"/>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row d-flex js-center m-t-10">
-                                                        <div class="col-sm-6 d-flex jc-end">
-                                                            <input type="checkbox" value="1" class="m-t-5" name="paymentTermsCheck" id="paymentTermAgree"><label for="paymentTermAgree" class="m-l-5"> I agree with the terms of payment</label>
-                                                        </div>
-                                                    </div>
-                                                    <input type="hidden" value="<?=$date?>T<?=$time?>Z" data-encrypted-name="generationtime"/>
                                                     <div class="row m-t-10 m-b-20">
-                                                        <div class="col-sm-9">
-                                                            <input type="submit" class="btn btn-inno btn-sm pull-right" value="Validate"/>
-                                                            <input type="button" class="btn btn-inno btn-sm btn-danger pull-right m-r-10 rejectSplitTheBillBtn" value="Reject"/>
+                                                        <div class="col-sm-12 m-b-10">
+                                                            <input type="button" class="btn btn-inno btn-sm btn-danger m-r-10 rejectSplitTheBillBtn" value="Reject"/>
+                                                            <input type="submit" class="btn btn-inno btn-sm" value="Validate"/>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <input type="checkbox" class="input m-r-5" name="paymentTermsCheck" value="1" id="paymentTermsCheck"><label for="paymentTermsCheck">I agree with the terms of service</label>
+                                                        </div>
+                                                        <div class="col-sm-12">
+                                                            <input type="checkbox" class="input m-r-5" name="privacyTermsCheck" value="1" id="privacyTermsCheck"><label for="privacyTermsCheck">I agree with the privacy policy</label>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -94,16 +93,6 @@
                                                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                                     <input type="hidden" name="team_id" value="<?= $splitTheBillDetail->team_id?>">
                                                 </form>
-                                            </div>
-                                            <div class="col-sm-4 m-t-20 text-center">
-                                                <? if(isset($teamPackage)) { ?>
-                                                <? if($teamPackage->custom_team_package_id != null) { ?>
-                                                    <p class="f-20 m-t-0">Innovator(custom package)</p>
-                                                <? } else { ?>
-                                                    <p class="f-20 m-t-0"><?= str_replace("-", " ", ucfirst($teamPackage->title))?></p>
-                                                <? } ?>
-                                                <p style="letter-spacing: 1px;"><?= "&euro;" . number_format($splitTheBillDetail->amount, 2, ".", ".")?><span style="letter-spacing: 0px;"><? if($teamPackage->payment_preference == "monthly") echo "/Month"; else echo "/Year";?></span></p>
-                                                <?} ?>
                                             </div>
                                         </div>
                                     </div>

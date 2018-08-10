@@ -23,6 +23,11 @@ class DebugController extends Controller
 {
     public function test(){
         if($this->authorized(true)){
+            $user = User::select("*")->where("id", 14)->first();
+            $payment = User::select("*")->where("id", 14)->first();
+            $mollie = $this->getService("mollie");
+            $customer = $mollie->customers->get($user->mollie_customer_id);
+            $subscription = $customer->cancelSubscription($user->sub_id);
             die("test");
         }
     }

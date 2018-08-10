@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Request;
 use App\User;
+use Mollie\Api\MollieApiClient;
 use Redirect;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -59,6 +60,10 @@ class Controller extends BaseController
                 $domain = "mg.innocreation.net"
             ];
             return $mailgun;
+        } else if($service == "mollie"){
+            $mollie = new MollieApiClient();
+            $mollie->setApiKey("test_5PW69PFKTaBS6E9A4Sgb3gzWjQ5k4v");
+            return $mollie;
         }
     }
 

@@ -23,4 +23,19 @@ class SplitTheBillLinktable extends Model
     public function reservedMembershipPackage(){
         return $this->hasOne("\App\MembershipPackage", "id","reserved_membership_package_id");
     }
+
+    public function allAccepted($teamId){
+        $splitTheBills = SplitTheBillLinktable::select("*")->where("team_id", $teamId)->where("accepted", 1)->get();
+        $team = Team::select("*")->where("id", $teamId)->first();
+        if(count($splitTheBills) >= count($team->getMembers())){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getPaymentUrl(){
+        $payment = $this->user->getMostRecentOpenPayment()->payment_url;
+        return $payment;
+    }
 }

@@ -73,26 +73,6 @@ class CheckoutController extends Controller
                 $step = request()->step;
                 if ($step == 3) {
                     $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
-                    $HMAC_KEY = "BA15F61D808D61044A97167A6F00732C0144E7BB020900389CE8560739AF88E0";
-                    $binaryHmacKey = pack("H*", $HMAC_KEY);
-                    $pairs["countryCode"] = $user->countries->country_code;
-                    $pairs["shopperLocale"] = "en_GB";
-                    $pairs["merchantReference"] = "Package:$teamPackage->id\\$team->id";
-                    $pairs["merchantAccount"] = "InnocreationNET";
-                    $date = date("Y-m-d");
-                    $time = date("H:i:s");
-                    $pairs["sessionValidity"] = "$date" . "T" . $time . "Z";
-                    $pairs["paymentAmount"] = number_format($teamPackage->price, 0, ".", ".");
-                    $pairs["currencyCode"] = "EUR";
-                    $pairs["skinCode"] = "iXpfcBwG";
-
-                    $signature = $this->calculateAdyenSignature($pairs, $HMAC_KEY, $binaryHmacKey);
-
-                    $pairs["merchantSig"] = $signature;
-                    $queryString = http_build_query($pairs);
-                    $testUrl = "https://test.adyen.com/hpp/directory.shtml" . "?" . $queryString;
-                    $json = file_get_contents($testUrl);
-                    $paymentMethods = json_decode($json);
                 }
                 if($step == 2){
                     if($user->isMember()){
@@ -157,172 +137,131 @@ class CheckoutController extends Controller
         }
     }
 
-    public function authorisePaymentRequestAction(Request $request)
-    {
-        $encryptedData = $request->input("adyen-encrypted-data");
-
-        //Save encrypted credit card info to user
+    public function authorisePaymentRequestAction(Request $request) {
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
 
+        $splitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->get();
+        foreach($splitTheBillLinktables as $splitTheBillLinktable){
+            if($splitTheBillLinktable->user->mollie_customer_id == null){
+                $mollie = $this->getService("mollie");
+                $customer = $mollie->customers->create([
+                    "name" => $splitTheBillLinktable->user->getName(),
+                    "email" => $splitTheBillLinktable->user->email,
+                ]);
+                $userSplitTheBill = User::select("*")->where("id", $splitTheBillLinktable->user_id)->first();
+                $userSplitTheBill->mollie_customer_id = $customer->id;
+                $userSplitTheBill->save();
+            }
+        }
         //Get team and teampackage + declare price
         $team = Team::select("*")->where("id", $request->input("team_id"))->first();
         $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
         if ($team->split_the_bill == 0) {
+            $redirectUrl = "http://secret.innocreation.net/thank-you";
             if (!Session::has("customPackagesArray")) {
-                $price = str_replace(".", "", number_format($teamPackage->price, 2, ".", "."));
+                $description = $teamPackage->title . " for team " . $team->team_name;
+                $price = number_format($teamPackage->price, 2, ".", ".");
             } else {
-                $price = str_replace(".", "", number_format(\Illuminate\Support\Facades\Session::get("customPackagesArray")["price"], 2, ".", "."));
+                $description =  " custom package for team " . $team->team_name;
+                $price = number_format(\Illuminate\Support\Facades\Session::get("customPackagesArray")["price"], 2, ".", ".");
             }
         } else {
+            $redirectUrl = "http://secret.innocreation.net/almost-there";
             $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("team_id", $request->input("team_id"))->where("user_id", $user->id)->first();
             $splitTheBillLinktable->accepted = 1;
             $splitTheBillLinktable->save();
 
-            $price = str_replace(".", "", number_format($splitTheBillLinktable->amount, 2, ".", "."));
+            $price = number_format($splitTheBillLinktable->amount, 2, ".", ".");
+
+            if (!Session::has("customPackagesArray")) {
+                $description = $teamPackage->title . " for team " . $team->team_name . "split the bill";
+            } else {
+                $description =  "custom package for team " . $team->team_name . " split the bill";
+            }
         }
 
-            $payment = Payments::select("*")->orderBy("id", "DESC")->first();
-            $reference = $payment->reference + 1;
+        $payment = Payments::select("*")->orderBy("id", "DESC")->first();
+        $reference = $payment->reference + 1;
 
+        if($team->split_the_bill == 1){
+            $splitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $team->id)->get();
+            foreach ($splitTheBillLinktables as $splitTheBillLinktable) {
+                $user = User::select("*")->where("id", $splitTheBillLinktable->user_id)->first();
+                $this->saveAndSendEmail($splitTheBillLinktable->user, $team->team_name . " wants to split the bil!", view("/templates/sendSplitTheBillNotification", compact("user", "team")));
 
-            //RECURRINGSTORECALL
-            $data = array("additionalData" => array("card.encrypted.json" => $encryptedData), "amount" => array("value" => $price, "currency" => "EUR"), "reference" => $reference, "merchantAccount" => "InnocreationNET", "shopperReference" => $team->users->getName() . $team->id, "recurring" => array("contract" => "RECURRING"));
-            $data_string = json_encode($data);
+                $userChat = UserChat::select("*")->where("receiver_user_id", $splitTheBillLinktable->user_id)->where("creator_user_id", 1)->first();
+                $userMessage = new UserMessage();
+                $userMessage->sender_user_id = 1;
+                $userMessage->user_chat_id = $userChat->id;
+                $userMessage->time_sent = $this->getTimeSent();
+                $userMessage->message = "$team->team_name has chosen to split the bill with you and your members! Verify the request at payment details in your account to benefit from the package even quiker!";
+                $userMessage->created_at = date("Y-m-d H:i:s");
+                $userMessage->save();
 
-            $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Payment/v30/authorise');
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
-                    'Content-Type: application/json',
-                    'Content-Length:' . strlen($data_string))
-            );
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-
-            //execute post
-            $result = curl_exec($ch);
-            $resultAuthorization = json_decode($result);
-
-            $resultCode = $resultAuthorization->resultCode;
-            $pspReference = $resultAuthorization->pspReference;
-            //close connection
-            curl_close($ch);
-            if ($resultCode == "Refused") {
-                $payment = new Payments();
-                $payment->user_id = $team->users->id;
-                $payment->team_id = $team->id;
-                $payment->amount = $price;
-                $payment->recurring_detail_reference = null;
-                $payment->shopper_reference = $team->users->getName() . $team->id;
-                $payment->reference = $reference;
-                $payment->pspReference = $pspReference;
-                $payment->payment_status = "Canceled";
-                $payment->created_at = date("Y-m-d H:i:s");
-                $payment->save();
-
-                $data = array("merchantAccount" => "InnocreationNET", "originalReference" => $pspReference);
-                $data_string = json_encode($data);
-
-                $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Payment/v30/cancel');
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                        'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
-                        'Content-Type: application/json',
-                        'Content-Length:' . strlen($data_string))
-                );
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-
-                //execute post
-                $result = curl_exec($ch);
-                $resultAuthorization = json_decode($result);
-                //close connection
-                curl_close($ch);
-                return redirect($_SERVER["HTTP_REFERER"])->withErrors("Your credit card credentials seem to be invalid, to continue check your credentials and please try again");
-            } else {
-                //RECURRINGDETAILS
-                $data = array("merchantAccount" => "InnocreationNET", "shopperReference" => $team->users->getName() . $team->id);
-                $data_string = json_encode($data);
-
-                $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Recurring/v25/listRecurringDetails');
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                        'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
-                        'Content-Type: application/json',
-                        'Content-Length:' . strlen($data_string))
-                );
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-
-                //execute post
-                $result = curl_exec($ch);
-                $resultAuthorization = json_decode($result);
-
-                $recurringDetailReference = $resultAuthorization->details[0]->RecurringDetail->recurringDetailReference;
-
-                //close connection
-                curl_close($ch);
-
-                $details = end($resultAuthorization->details);
-                $card = $details->RecurringDetail->card;
-                $paymentMethod = $details->RecurringDetail->paymentMethodVariant;
-
-                $payment = new Payments();
-                $payment->user_id = $team->users->id;
-                $payment->team_id = $team->id;
-                $payment->payment_method = $paymentMethod;
-                $payment->card_number = $card->number;
-                $payment->amount = $price;
-                $payment->recurring_detail_reference = $recurringDetailReference;
-                $payment->shopper_reference = $team->users->getName() . $team->id;
-                $payment->reference = $reference;
-                $payment->pspReference = $pspReference;
-                if($team->split_the_bill == 1){
-                    $payment->payment_status = "Authorized";
-                } else {
-                    $payment->payment_status = "Settled";
+                $mollie = $this->getService("mollie");
+                $paymentMollie = $mollie->payments->create([
+                    "amount" => [
+                        "currency" => "EUR",
+                        "value" => $price
+                    ],
+                    "description" => $description,
+                    "redirectUrl" => $redirectUrl,
+                    "webhookUrl" => "http://secret.innocreation.net/webhook/mollieRecurring",
+                    "method" => "creditcard",
+                    "sequenceType" => "first",
+                    "customerId" => $splitTheBillLinktable->user->mollie_customer_id,
+                    "metadata" => [
+                        "referenceAndUserId" => $reference . "-" . $user->id,
+                    ],
+                ]);
+                if($paymentMollie->status == "open") {
+                    $payment = new Payments();
+                    $payment->user_id = $splitTheBillLinktable->user->id;
+                    $payment->team_id = $team->id;
+                    $payment->payment_id = $paymentMollie->id;
+                    $payment->payment_url = $paymentMollie->_links->checkout->href;
+                    $payment->payment_method = $paymentMollie->method;
+                    $payment->amount = $price;
+                    $payment->reference = $reference;
+                    $payment->payment_status = "Open";
+                    $payment->created_at = date("Y-m-d H:i:s");
+                    $payment->save();
                 }
-                $payment->created_at = date("Y-m-d H:i:s");
-                $payment->save();
-
-                if($team->split_the_bill == 1){
-                    $splitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $team->id)->get();
-                    foreach ($splitTheBillLinktables as $splitTheBillLinktable) {
-                        $user = User::select("*")->where("id", $splitTheBillLinktable->user_id)->first();
-                        $this->saveAndSendEmail($splitTheBillLinktable->user, $team->team_name . " wants to split the bil!", view("/templates/sendSplitTheBillNotification", compact("user", "team")));
-
-                        $userChat = UserChat::select("*")->where("receiver_user_id", $splitTheBillLinktable->user_id)->where("creator_user_id", 1)->first();
-                        $userMessage = new UserMessage();
-                        $userMessage->sender_user_id = 1;
-                        $userMessage->user_chat_id = $userChat->id;
-                        $userMessage->time_sent = $this->getTimeSent();
-                        $userMessage->message = "$team->team_name has chosen to split the bill with you and your members! Verify the request at payment details in your account to benefit from the package even quiker!";
-                        $userMessage->created_at = date("Y-m-d H:i:s");
-                        $userMessage->save();
-                    }
-                    return redirect("/almost-there");
-                } else {
-                    $invoiceNumber = Invoice::select("*")->orderBy("invoice_number", "DESC")->first()->invoice_number;
-                    $invoice = new Invoice();
-                    $invoice->user_id = $user->id;
-                    $invoice->team_id = $team->id;
-                    $invoice->team_package_id = $teamPackage->id;
-                    $invoice->amount = number_format($teamPackage->price, 2, ".", ".");
-                    $invoice->hash = $user->hash;
-                    $invoice->invoice_number = $invoiceNumber + 1;
-                    $invoice->paid_date = date("Y-m-d", strtotime("+2 days"));
-                    $invoice->created_at = date("Y-m-d H:i:s");
-                    $invoice->save();
-                    return redirect("/thank-you");
-                }
-
             }
+            return redirect($redirectUrl);
+        } else {
+            $mollie = $this->getService("mollie");
+            $paymentMollie = $mollie->payments->create([
+                "amount" => [
+                    "currency" => "EUR",
+                    "value" => $price
+                ],
+                "description" => $description,
+                "redirectUrl" => $redirectUrl,
+                "webhookUrl" => "http://secret.innocreation.net/webhook/mollieRecurring",
+                "method" => "creditcard",
+                "sequenceType" => "first",
+                "customerId" => "$user->mollie_customer_id",
+                "metadata" => [
+                    "referenceAndUserId" => $reference . "-" . $user->id,
+                ],
+            ]);
+
+            if($paymentMollie->status == "open") {
+                $payment = new Payments();
+                $payment->user_id = $team->users->id;
+                $payment->team_id = $team->id;
+                $payment->payment_id = $paymentMollie->id;
+                $payment->payment_url = $paymentMollie->_links->checkout->href;
+                $payment->payment_method = $paymentMollie->method;
+                $payment->amount = $price;
+                $payment->reference = $reference;
+                $payment->payment_status = "Open";
+                $payment->created_at = date("Y-m-d H:i:s");
+                $payment->save();
+            }
+            return redirect($paymentMollie->_links->checkout->href);
+        }
     }
 
     /**
@@ -596,37 +535,14 @@ class CheckoutController extends Controller
     {
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
+
+        $paymentTable =  $user->getMostRecentPayment();
+
+
         return view("/public/checkout/splitTheBillNotification", compact("user", "teamPackage"));
 
     }
 
-    public function webhookAction()
-    {
-        $response = file_get_contents('php://input');
-        $json = json_decode($response);
-        Session::set("json", $json);
-        $data = array("notificationResponse" => "[accepted]");
-        $data_string = json_encode($data);
-
-
-        $ch = curl_init('http://notification.services.adyen.com');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'Content-Length:' . strlen($data_string))
-        );
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-
-        //execute post
-        $result = curl_exec($ch);
-        $resultAuthorization = json_decode($result);
-        //close connection
-        curl_close($ch);
-
-    }
 
     public function getChangePackageModalAction(Request $request){
         $userId = $request->input("user_id");

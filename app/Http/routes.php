@@ -537,7 +537,9 @@ Route::get("/thank-you", "CheckoutController@donePaymentAction");
 
 Route::get("/almost-there", "CheckoutController@splitTheBillNotification");
 
-Route::post("/webhook", "CheckoutController@webhookAction");
+Route::post("/webhook/mollieRecurring", "ApiController@webhookMollieAction");
+
+Route::post("/webhook/mollieRecurringPayment", "ApiController@webhookMolliePaymentAction");
 
 Route::post("/checkout/getChangePackageModal", "CheckoutController@getChangePackageModalAction");
 
