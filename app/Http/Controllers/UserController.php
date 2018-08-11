@@ -873,20 +873,25 @@ class UserController extends Controller
             $user = User::select("*")->where("id", $userId)->first();
 
             $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("id", $splitTheBillId)->first();
+            $newPrice = $splitTheBillLinktable->reserved_changed_amount;
+            $oldPrice = $splitTheBillLinktable->amount;
             $splitTheBillLinktable->accepted_change = 1;
+            $splitTheBillLinktable->membership_package_change_id = null;
+            $splitTheBillLinktable->amount = $newPrice;
+            $splitTheBillLinktable->reserved_changed_amount = $oldPrice;
+            $splitTheBillLinktable->reserved_membership_package_id = null;
             $splitTheBillLinktable->save();
 
-//            $mollie = $this->getService("mollie");
-//            $user = User::select("*")->where("id", 14)->first();
-//            $sub = $user->getMostRecentPayment();
-//            $customer = $mollie->customers->get($user->mollie_customer_id);
-//            $subscription = $customer->getSubscription($sub->sub_id);
-//            $subscription->amount = (object) [
-//                "currency" => "EUR",
-//                "value" => "10.00",
-//            ];
-//            $subscription->webhookUrl = "http://secret.innocreation.net/webhook/mollieRecurringPayment";
-//            $updatedSubscription = $subscription->update();
+            $mollie = $this->getService("mollie");
+            $sub = $user->getMostRecentPayment();
+            $customer = $mollie->customers->get($user->mollie_customer_id);
+            $subscription = $customer->getSubscription($sub->sub_id);
+            $subscription->amount = (object) [
+                "currency" => "EUR",
+                "value" => number_format($newPrice, 2, ".", "."),
+            ];
+            $subscription->webhookUrl = "http://secret.innocreation.net/webhook/mollieRecurringPayment";
+            $subscription->update();
 
             $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
 
@@ -906,10 +911,8 @@ class UserController extends Controller
                 $userMessage->save();
 
                 foreach($allSplitTheBillLinktables as $splitTheBillLinktable){
-                    $newPrice = $splitTheBillLinktable->reserved_changed_amount;
                     $splitTheBillLinktable->accepted_change = 0;
                     $splitTheBillLinktable->membership_package_change_id = null;
-                    $splitTheBillLinktable->amount = $newPrice;
                     $splitTheBillLinktable->reserved_changed_amount = null;
                     $splitTheBillLinktable->reserved_membership_package_id = null;
                     $splitTheBillLinktable->save();
@@ -963,6 +966,20 @@ class UserController extends Controller
             $userMessage->save();
 
             foreach ($allSplitTheBillLinktables as $splitTheBillLinktable) {
+                if($splitTheBillLinktable->accepted_change == 1){
+                    $newAmount = $splitTheBillLinktable->reserved_changed_amount;
+                    $splitTheBillLinktable->amount = $newAmount;
+                    $mollie = $this->getService("mollie");
+                    $sub = $splitTheBillLinktable->user->getMostRecentPayment();
+                    $customer = $mollie->customers->get($splitTheBillLinktable->user->mollie_customer_id);
+                    $subscription = $customer->getSubscription($sub->sub_id);
+                    $subscription->amount = (object) [
+                        "currency" => "EUR",
+                        "value" => number_format($newAmount, 2, ".", "."),
+                    ];
+                    $subscription->webhookUrl = "http://secret.innocreation.net/webhook/mollieRecurringPayment";
+                    $subscription->update();
+                }
                 $splitTheBillLinktable->accepted_change = 0;
                 $splitTheBillLinktable->membership_package_change_id = null;
                 $splitTheBillLinktable->reserved_changed_amount = null;
@@ -971,7 +988,7 @@ class UserController extends Controller
             }
 
             $teamPackage->change_package = 0;
-            $teamPackage->change_payment_settings = 0;
+            $teamPackage->changed_payment_settings = 0;
             $teamPackage->save();
 
             return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Successfully rejected request");

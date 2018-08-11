@@ -94,21 +94,42 @@ class ApiController extends Controller
             } elseif ($payment->isCanceled()) {
 
                 $paymentTable = Payments::select("*")->where("payment_id", $request->input("id"))->first();
-                $paymentTable->payment_status = "canceled";
-                $paymentTable->save();
-
                 $user = User::select("*")->where("id", $paymentTable->user_id)->first();
                 $mollie = $this->getService("mollie");
                 if($user->team->split_the_bill == 1){
                     $splitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->get();
                     foreach($splitTheBillLinktables as $splitTheBillLinktable){
-                        if($splitTheBillLinktable->user->getMostRecentPayment()->sub_id != null){
-                            $recentPayment = $splitTheBillLinktable->user->getMostRecentPayment();
-                            $recentPayment->payment_status = "canceled";
-                            $customer = $mollie->customers->get($splitTheBillLinktable->user->mollie_customer_id);
-                            $subscription = $customer->cancelSubscription($recentPayment->sub_id);
+                        if($splitTheBillLinktable->user->getMostRecentPayment()){
+                            if($splitTheBillLinktable->user->getMostRecentPayment()->sub_id != null) {
+
+                                $payment = $mollie->payments->get($splitTheBillLinktable->user->getMostRecentPayment()->payment_id);
+                                $payment->refund([
+                                    "amount" => [
+                                        "currency" => "EUR",
+                                        "value" => $splitTheBillLinktable->user->getMostRecentPayment()->amount // You must send the correct number of decimals, thus we enforce the use of strings
+                                    ]
+                                ]);
+
+                                $recentPayment = $splitTheBillLinktable->user->getMostRecentPayment();
+                                $recentPayment->payment_status = "canceled/refunded";
+                                $recentPayment->sub_id = null;
+                                $recentPayment->save();
+
+                                $customer = $mollie->customers->get($splitTheBillLinktable->user->mollie_customer_id);
+                                $subscriptions = $customer->subscriptions();
+                                foreach ($subscriptions as $subscription) {
+                                    if($subscription->status != "canceled") {
+                                         $customer->cancelSubscription($subscription->id);
+                                    }
+                                }
+                            }
                         }
                     }
+
+                } else{
+                    $paymentTable = Payments::select("*")->where("payment_id", $request->input("id"))->first();
+                    $paymentTable->payment_status = "canceled";
+                    $paymentTable->save();
                 }
 
 

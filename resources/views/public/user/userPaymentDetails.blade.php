@@ -37,14 +37,18 @@
                                             <? } ?>
                                         </div>
                                         <div class="col-sm-3 m-t-10">
-                                            <? if($splitTheBillDetail->allAccepted($user->team_id)) { ?>
-                                                <a href="<?= $splitTheBillDetail->getPaymentUrl()?>" class="btn btn-inno">Pay package</a>
-                                            <? } else { ?>
-                                                <? if($splitTheBillDetail->accepted == 1 && $splitTheBillDetail->user->payment_refused == 0) { ?>
-                                                    <p class="c-green">Validated <i class="zmdi zmdi-check c-green"></i> </p>
+                                            <? if($splitTheBillDetail->user->getMostRecentOpenPayment()) { ?>
+                                                <? if($splitTheBillDetail->allAccepted($user->team_id)) { ?>
+                                                    <a href="<?= $splitTheBillDetail->getPaymentUrl()?>" class="btn btn-inno">Pay package</a>
                                                 <? } else { ?>
-                                                    <button data-toggle="collapse" href="#collapse-<?= $splitTheBillDetail->id?>" class="btn btn-inno pull">Validate</button>
+                                                    <? if($splitTheBillDetail->accepted == 1 && $splitTheBillDetail->user->payment_refused == 0) { ?>
+                                                        <p class="c-green">Validated <i class="zmdi zmdi-check c-green"></i> </p>
+                                                    <? } else { ?>
+                                                        <button data-toggle="collapse" href="#collapse-<?= $splitTheBillDetail->id?>" class="btn btn-inno pull">Validate</button>
+                                                    <? } ?>
                                                 <? } ?>
+                                            <? } else { ?>
+                                                <p class="c-green">Validated <i class="zmdi zmdi-check c-green"></i> </p>
                                             <? } ?>
                                         </div>
                                     </div>
@@ -105,7 +109,7 @@
             <? if(isset($teamPackage)) { ?>
                 <? if($teamPackage->change_package == 1) { ?>
                     <? foreach($splitTheBillDetails as $splitTheBillDetail) { ?>
-                        <? if($splitTheBillDetail->reserved_changed_amount != null) { ?>
+                        <? if($splitTheBillDetail->reserved_changed_amount != null && $splitTheBillDetail->reserved_membership_package_id != null) { ?>
                             <div class="row d-flex js-center p-b-20">
                                 <div class="col-md-10">
                                     <div class="card card-lg">
