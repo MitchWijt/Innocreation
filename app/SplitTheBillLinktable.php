@@ -38,4 +38,17 @@ class SplitTheBillLinktable extends Model
         $payment = $this->user->getMostRecentOpenPayment()->payment_url;
         return $payment;
     }
+
+    public function getFullPackagePrice(){
+        $fullPrice = 0;
+        $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $this->team_id)->get();
+        foreach($allSplitTheBillLinktables as $allSplitTheBillLinktable){
+            if($allSplitTheBillLinktable->accepted_change == 1){
+                $fullPrice = $fullPrice + $allSplitTheBillLinktable->reserved_changed_amount;
+            } else {
+                $fullPrice = $fullPrice + $allSplitTheBillLinktable->amount;
+            }
+        }
+        return $fullPrice;
+    }
 }

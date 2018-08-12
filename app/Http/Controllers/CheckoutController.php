@@ -475,6 +475,9 @@ class CheckoutController extends Controller
                 $splitTheBillLinktable->membership_package_change_id = $membershipPackageId;
                 if(!Session::has("customPackagesArray")) {
                     $splitTheBillLinktable->reserved_membership_package_id = $reservedId;
+                } else {
+                    $customTeamPackage = CustomTeamPackage::select("*")->where("team_id", $teamId)->first();
+                    $splitTheBillLinktable->reserved_custom_team_package_id = $customTeamPackage->id;
                 }
                 $splitTheBillLinktable->save();
             }

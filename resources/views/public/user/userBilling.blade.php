@@ -75,7 +75,7 @@
                     </div>
                 </div>
             <? } ?>
-            <? if(isset($payments) && $user->subscription_canceled == 0 && isset($paymentMethod)) { ?>
+            <? if(isset($payments) && $user->subscription_canceled == 0) { ?>
                 <div class="row d-flex js-center p-b-20 m-t-20">
                     <div class="col-md-10">
                         <div class="card card-lg">
@@ -87,13 +87,11 @@
                                     </div>
                                 </div>
                                 <div class="hr p-b-10 col-md-12"></div>
-                                <div class="row">
+                                <div class="row m-t-20">
                                     <div class="col-sm-7 p-l-30">
-                                        <p class="m-0"><?= $user->getName()?> xxx-<?= $card->number?></p>
-                                        <p class="m-0 c-dark-grey">Expires: <?= $card->expiryMonth?>/<?= $card->expiryYear?></p>
-                                        <p><?= $paymentMethod?></p>
+                                        <p class="m-0"><?= $user->getName()?></p>
                                     </div>
-                                    <div class="col-sm-5 p-r-30">
+                                    <div class="col-sm-5 p-r-30 m-b-20">
                                         <? if($user->team->split_the_bill == 1 && count($user->team->getMembers()) > 2 && $user->id == $user->team->ceo_user_id) { ?>
                                             <button type="button" data-toggle="modal" data-target=".splitEmptyTeamModal" class="btn btn-inno btn-danger btn-block">Cancel subscription</button>
                                         <? } else { ?>

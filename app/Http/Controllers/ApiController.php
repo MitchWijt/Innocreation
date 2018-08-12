@@ -50,6 +50,7 @@ class ApiController extends Controller
                 }
 
 
+                // no active subscriptions
                 $mollie = $this->getService("mollie");
                 $customer = $mollie->customers->get($user->mollie_customer_id);
                 $mandates = $customer->mandates();

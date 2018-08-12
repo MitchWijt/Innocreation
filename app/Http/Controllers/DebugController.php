@@ -23,17 +23,8 @@ class DebugController extends Controller
 {
     public function test(){
 //        if($this->authorized(true)){
-        $user = User::select("*")->where("id", 10)->first();
-        $mollie = $this->getService("mollie");
-        $customer = $mollie->customers->get($user->mollie_customer_id);
-        $sub = $user->getMostRecentPayment();
-        $subscription = $customer->getSubscription($sub->sub_id);
-        $subscription->amount = (object) [
-            "currency" => "EUR",
-            "value" => "2.75",
-        ];
-        $subscription->webhookUrl = "http://secret.innocreation.net/webhook/mollieRecurringPayment";
-        $subscription->update();
+
+
         die("test");
 //        }
     }

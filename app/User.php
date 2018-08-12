@@ -118,7 +118,7 @@ class User extends Authenticatable
             if ($this->subscription_canceled == 0) {
                 $bool = true;
             } else {
-                $bool = true;
+                $bool = false;
             }
             $payment = Payments::select("*")->where("user_id", $this->id)->get();
             if (count($payment) > 0) {

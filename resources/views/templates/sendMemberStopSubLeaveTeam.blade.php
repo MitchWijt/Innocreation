@@ -2,7 +2,7 @@
 <table align="center" border="0" bgcolor="#C9CCCF" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
     <tr>
         <td style="display: flex; justify-content: center">
-            <p class="webfont" style="width: 410px; font-size: 18px;">Hello <?= $team->user->firstname?>,</p>
+            <p class="webfont" style="width: 410px; font-size: 18px;">Hello <?= $team->users->firstname?>,</p>
         </td>
     </tr>
     <tr>

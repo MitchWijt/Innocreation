@@ -358,29 +358,24 @@ class TeamController extends Controller
 
                 $splitTheBillLinktable->delete();
 
+                $mollie = $this->getService("mollie");
+                $sub = $teamLeaderSplitTheBillLinktable->user->getMostRecentPayment();
+                $customer = $mollie->customers->get($teamLeaderSplitTheBillLinktable->user->mollie_customer_id);
+                $subscription = $customer->getSubscription($sub->sub_id);
+                $subscription->amount = (object) [
+                    "currency" => "EUR",
+                    "value" => number_format($newLeaderPrice, 2, ".", "."),
+                ];
+                $subscription->webhookUrl = "http://secret.innocreation.net/webhook/mollieRecurringPayment";
+                $subscription->update();
+
                 $teamLeaderSplitTheBillLinktable->amount = $newLeaderPrice;
                 $teamLeaderSplitTheBillLinktable->save();
             }
 
-            $data = array("merchantAccount" => "InnocreationNET", "shopperReference" => $user->getName() . $team->id, "recurringDetailReference" => $user->getMostRecentPayment()->recurring_detail_reference);
-            $data_string = json_encode($data);
-
-            $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Recurring/v25/disable');
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
-                    'Content-Type: application/json',
-                    'Content-Length:' . strlen($data_string))
-            );
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-
-            //execute post
-            $result = curl_exec($ch);
-            //close connection
-            curl_close($ch);
+            $mollie = $this->getService("mollie");
+            $customer = $mollie->customers->get($user->mollie_customer_id);
+            $customer->cancelSubscription($user->getMostRecentPayment()->sub_id);
 
             $user->subscription_canceled = 1;
             $user->save();

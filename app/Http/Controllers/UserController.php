@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomTeamPackage;
 use App\Expertises;
 use App\Expertises_linktable;
 use App\Favorite_expertises_linktable;
@@ -9,6 +10,7 @@ use App\FavoriteTeamLinktable;
 use App\InviteRequestLinktable;
 use App\Invoice;
 use App\JoinRequestLinktable;
+use App\MembershipPackage;
 use App\Page;
 use App\ServiceReview;
 use App\SplitTheBillLinktable;
@@ -875,6 +877,7 @@ class UserController extends Controller
             $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("id", $splitTheBillId)->first();
             $newPrice = $splitTheBillLinktable->reserved_changed_amount;
             $oldPrice = $splitTheBillLinktable->amount;
+
             $splitTheBillLinktable->accepted_change = 1;
             $splitTheBillLinktable->membership_package_change_id = null;
             $splitTheBillLinktable->amount = $newPrice;
@@ -891,6 +894,7 @@ class UserController extends Controller
                 "value" => number_format($newPrice, 2, ".", "."),
             ];
             $subscription->webhookUrl = "http://secret.innocreation.net/webhook/mollieRecurringPayment";
+            $subscription->startDate = date("Y-m-d");
             $subscription->update();
 
             $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
@@ -930,6 +934,7 @@ class UserController extends Controller
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
             $payments = Payments::select("*")->where("user_id", $user->id)->get();
             $userName = $user->getName();
+
             if(count($payments) > 0){
                 $invoices = Invoice::select("*")->where("user_id", $user->id)->where("hash", $user->hash)->get();
                 return view("/public/user/userBilling", compact("user", "payments", "invoices"));
@@ -950,14 +955,33 @@ class UserController extends Controller
             $splitTheBillLinktable->accepted_change = 0;
             $splitTheBillLinktable->save();
 
+
             $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
+            if ($teamPackage->changed_payment_settings != 1) {
+                if ($splitTheBillLinktable->reserved_custom_team_package_id == null) {
+                    $package = MembershipPackage::select("*")->where("id", $splitTheBillLinktable->reserved_membership_package_id)->first();
+                    $teamPackage->title = $package->title;
+                    $teamPackage->description = $package->description;
+                    $teamPackage->membership_package_id = $package->id;
+                    $teamPackage->custom_team_package_id = null;
+                } else {
+                    $package = CustomTeamPackage::select("*")->where("id", $splitTheBillLinktable->reserved_custom_team_package_id)->first();
+                    $teamPackage->custom_team_package_id = $package->id;
+                    $teamPackage->membership_package_id = null;
+                }
+                $teamPackage->price = $splitTheBillLinktable->getFullPackagePrice();
+            }
+            $teamPackage->change_package = 0;
+            $teamPackage->changed_payment_settings = 0;
+            $teamPackage->save();
+
             $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->get();
             $userChat = UserChat::select("*")->where("receiver_user_id", $user->team->ceo_user_id)->where("creator_user_id", 1)->first();
             $userMessage = new UserMessage();
             $userMessage->sender_user_id = 1;
             $userMessage->user_chat_id = $userChat->id;
             $userMessage->time_sent = $this->getTimeSent();
-            if ($teamPackage->changed_payment_details == 1) {
+            if ($teamPackage->changed_payment_settings == 1) {
                 $userMessage->message = $user->getName() . " has rejected the request to change your payment settings. Change has been aborted. still want to change the payment settings? send another request.";
             } else {
                 $userMessage->message = $user->getName() . " has rejected the request for the package change. Change has been aborted. still want to change the package? send another request.";
@@ -987,9 +1011,6 @@ class UserController extends Controller
                 $splitTheBillLinktable->save();
             }
 
-            $teamPackage->change_package = 0;
-            $teamPackage->changed_payment_settings = 0;
-            $teamPackage->save();
 
             return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Successfully rejected request");
         }
@@ -1036,12 +1057,16 @@ class UserController extends Controller
             $userId = $request->input("user_id");
             $teamId = $request->input("team_id");
 
+            $team = Team::select("*")->where("id", $teamId)->first();
             $user = User::select("*")->where("id", $userId)->first();
+            if($team->split_the_bill == 1) {
+                $userName = $user->getName();
+                $this->saveAndSendEmail($user, "$userName has left your team", view("/templates/sendMemberStopSubLeaveTeam", compact("user", "team")));
+            }
             $user->subscription_canceled = 1;
             $user->team_id = null;
             $user->save();
 
-            $team = Team::select("*")->where("id", $teamId)->first();
             if($team->split_the_bill == 1){
                 $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $userId)->where("team_id", $teamId)->first();
                 $teamLeaderSplitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $team->ceo_user_id)->where("team_id", $teamId)->first();
@@ -1051,6 +1076,17 @@ class UserController extends Controller
                 $newLeaderPrice = $leaderAmount + $memberAmount;
 
                 $splitTheBillLinktable->delete();
+
+                $mollie = $this->getService("mollie");
+                $sub = $teamLeaderSplitTheBillLinktable->user->getMostRecentPayment();
+                $customer = $mollie->customers->get($teamLeaderSplitTheBillLinktable->user->mollie_customer_id);
+                $subscription = $customer->getSubscription($sub->sub_id);
+                $subscription->amount = (object) [
+                    "currency" => "EUR",
+                    "value" => number_format($newLeaderPrice, 2, ".", "."),
+                ];
+                $subscription->webhookUrl = "http://secret.innocreation.net/webhook/mollieRecurringPayment";
+                $subscription->update();
 
                 $teamLeaderSplitTheBillLinktable->amount = $newLeaderPrice;
                 $teamLeaderSplitTheBillLinktable->save();
@@ -1064,29 +1100,12 @@ class UserController extends Controller
                 $userMessage->message = "We are sorry to say that $userName has decided to stop his/her subscription and to leave your team.";
                 $userMessage->created_at = date("Y-m-d H:i:s");
                 $userMessage->save();
-                $this->saveAndSendEmail($user, "$userName has left your team", view("/templates/sendMemberStopSubLeaveTeam", compact("user", "team")));
-
             }
+            $mollie = $this->getService("mollie");
+            $customer = $mollie->customers->get($user->mollie_customer_id);
+            $customer->cancelSubscription($user->getMostRecentPayment()->sub_id);
 
-            $data = array("merchantAccount" => "InnocreationNET", "shopperReference" => $user->getName() . $teamId, "recurringDetailReference" => $user->getMostRecentPayment()->recurring_detail_reference);
-            $data_string = json_encode($data);
-
-            $ch = curl_init('https://pal-test.adyen.com/pal/servlet/Recurring/v25/disable');
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    'Authorization: Basic ' . base64_encode("ws@Company.Innocreation:[puCnJ5TjHjTxjpa++rI1%UD~"),
-                    'Content-Type: application/json',
-                    'Content-Length:' . strlen($data_string))
-            );
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-
-            //execute post
-            $result = curl_exec($ch);
-            //close connection
-            curl_close($ch);
+            return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Successfully canceled subscription and left team");
         }
     }
 }
