@@ -49,19 +49,24 @@ class ApiController extends Controller
                     $description =  " custom package for team " . $teamPackage->team->team_name;
                 }
 
+                if($teamPackage->payment_preference == "monthly"){
+                    $range = "1 months";
+                } else {
+                    $range = "12 months";
+                }
 
                 // no active subscriptions
                 $mollie = $this->getService("mollie");
                 $customer = $mollie->customers->get($user->mollie_customer_id);
                 $mandates = $customer->mandates();
-                if($mandates[0]->status == "valid" && $paymentTable->sub_id == null) {
+                if($mandates[0]->status == "valid" && $paymentTable->sub_id == null || !$user->hasValidSubscription()) {
                     $customer = $mollie->customers->get($user->mollie_customer_id);
                     $customer->createSubscription([
                         "amount" => [
                             "currency" => "EUR",
                             "value" => $paymentTable->amount,
                         ],
-                        "interval" => "1 months",
+                        "interval" => "$range",
                         "description" => $description . "recurring",
                         "webhookUrl" => "http://secret.innocreation.net/webhook/mollieRecurringPayment",
                     ]);
@@ -150,15 +155,6 @@ class ApiController extends Controller
             }
         } catch (\Mollie\Api\Exceptions\ApiException $e) {
             echo "API call failed: " . htmlspecialchars($e->getMessage());
-        }
-        /*
-         * NOTE: This example uses a text file as a database. Please use a real database like MySQL in production code.
-         */
-        function database_write($orderId, $status)
-        {
-            $orderId = intval($orderId);
-            $database = dirname(__FILE__) . "/orders/order-{$orderId}.txt";
-            file_put_contents($database, $status);
         }
         return response('OK', 200);
 //        $response = file_get_contents('php://input');

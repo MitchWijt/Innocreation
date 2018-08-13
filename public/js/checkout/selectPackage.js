@@ -59,7 +59,7 @@ $(".splitEqually").on("click",function () {
     });
     var splittedAmount = totalAmount / counter;
     $(".splittedAmountMember").each(function () {
-        $(this).val(splittedAmount);
+        $(this).val(splittedAmount.toFixed(2));
     });
     $(".splitError").text("");
     $(".amountExceeded").addClass("hidden");

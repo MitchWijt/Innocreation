@@ -4,6 +4,7 @@ namespace App;
 use App\Expertises_linktable;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Mollie\Api\MollieApiClient;
 use Symfony\Component\EventDispatcher\Tests\Service;
 
 class User extends Authenticatable
@@ -141,7 +142,12 @@ class User extends Authenticatable
 
     public function getMostRecentOpenPayment(){
         $payment = Payments::select("*")->where("user_id", $this->id)->where("payment_status", "Open")->orderBy("created_at", "DESC")->first();
-        return $payment;
+        if($payment){
+            return $payment;
+        } else {
+            return false;
+        }
+
 
     }
 
@@ -149,6 +155,23 @@ class User extends Authenticatable
         $splitTheBill = SplitTheBillLinktable::select("*")->where("user_id", $this->id)->where("team_id", $this->team_id)->first();
         return $splitTheBill;
 
+    }
+
+    public function hasValidSubscription(){
+        if($this->getMostRecentPayment()){
+            if($this->getMostRecentPayment()->sub_id != null){
+                $mollie = new MollieApiClient();
+                $mollie->setApiKey("test_5PW69PFKTaBS6E9A4Sgb3gzWjQ5k4v");
+
+                $customer = $mollie->customers->get($this->mollie_customer_id);
+                $subscription = $customer->getSubscription($this->getMostRecentPayment()->sub_id);
+                if($subscription->status == "active"){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
     }
 
     /**

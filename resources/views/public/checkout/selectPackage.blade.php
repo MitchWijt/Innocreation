@@ -38,7 +38,15 @@
                                 </div>
                                 <div class="row @notmobile @desktop <? if($membershipPackage->id == 1 || $membershipPackage->id == 2) echo "m-t-70"?> @elsetablet  <? if($membershipPackage->id == 1 || $membershipPackage->id == 2) echo "m-t-50"?> @enddesktop @endnotmobile">
                                     <div class="col-sm-12">
-                                        <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= $membershipPackage->getPrice()?></span><span class="packagePreference">/Month</span></p>
+                                        <? if(isset($teamPackage)) { ?>
+                                            <? if($teamPackage->payment_preference == "monthly") { ?>
+                                                <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= $membershipPackage->getPrice()?></span><span class="packagePreference">/Month</span></p>
+                                            <? } else { ?>
+                                                <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= $membershipPackage->getPrice(true)?></span><span class="packagePreference">/Year</span></p>
+                                            <? } ?>
+                                        <? } else { ?>
+                                            <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= $membershipPackage->getPrice()?></span><span class="packagePreference">/Month</span></p>
+                                        <? } ?>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -231,12 +239,14 @@
                                             </div>
                                             <div class="col-sm-7">
                                                 <div class="pull-right">
-                                                    <? if(!\Illuminate\Support\Facades\Session::has("customPackagesArray")) { ?>
-                                                        <input type="radio" class="paymentPreference"  data-package-id="<? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo  "custom"; else echo $membershipPackage->id?>" data-preference="yearly" name="paymentPreference" value="yearly" id="preferenceYearly">
-                                                        <label class="m-r-20" for="preferenceYearly">Yearly</label>
+                                                    <? if(!isset($teamPackage)) { ?>
+                                                        <? if(!\Illuminate\Support\Facades\Session::has("customPackagesArray")) { ?>
+                                                            <input type="radio" class="paymentPreference"  data-package-id="<? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo  "custom"; else echo $membershipPackage->id?>" data-preference="yearly" name="paymentPreference" value="yearly" id="preferenceYearly">
+                                                            <label class="m-r-20" for="preferenceYearly">Yearly</label>
+                                                        <? } ?>
+                                                        <input type="radio" class="paymentPreference" data-package-id="<? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo  "custom"; else echo $membershipPackage->id?>" data-preference="monthly" checked name="paymentPreference" value="monthly" id="preferenceMonthly">
+                                                        <label for="preferenceMonthly">Monthly</label>
                                                     <? } ?>
-                                                    <input type="radio" class="paymentPreference" data-package-id="<? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo  "custom"; else echo $membershipPackage->id?>" data-preference="monthly" checked name="paymentPreference" value="monthly" id="preferenceMonthly">
-                                                    <label for="preferenceMonthly">Monthly</label>
                                                 </div>
                                             </div>
                                         </div>

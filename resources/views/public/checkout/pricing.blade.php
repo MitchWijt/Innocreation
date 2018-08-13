@@ -50,9 +50,9 @@
                                                 <? } else { ?>
                                                     <button class="openModalChangePackage btn btn-inno @tablet btn-sm @endtablet" data-user-id="<?= $user->id?>" data-membership-package-id="<?= $membershipPackage->id?>">Choose</button>
                                                 <? } ?>
-                                            <? } else { ?>
-                                                <a href="/becoming-a-<?= lcfirst($membershipPackage->title)?>" class="btn btn-inno @tablet btn-sm @endtablet">Choose</a>
-                                            <? } ?>
+                                                <? } else { ?>
+                                                    <a href="/becoming-a-<?= lcfirst($membershipPackage->title)?>" class="btn btn-inno @tablet btn-sm @endtablet">Choose</a>
+                                                <? } ?>
                                         <? } else { ?>
                                             <a href="/becoming-a-<?= lcfirst($membershipPackage->title)?>" class="btn btn-inno @tablet btn-sm @endtablet">Choose</a>
                                         <? } ?>

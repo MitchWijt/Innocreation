@@ -112,10 +112,9 @@ class Team extends Model
 
     public function hasPaid(){
         $amount = 0;
-        $till = date("Y-m-d", strtotime(" +1 month"));
         if($this->split_the_bill == 0) {
             $payment = Payments::select("*")->where("team_id", $this->id)->orderBy('created_at', 'DESC')->First();
-            if ($payment->payment_status == "Settled") {
+            if ($payment->payment_status == "paid") {
                 $amount = $payment->amount;
             }
         } else {
@@ -123,16 +122,29 @@ class Team extends Model
             $payments = Payments::select("*")->where("team_id", $this->id)->get();
             foreach($payments as $payment){
                 if(date("Y-m", strtotime($payment->created_at)) == date("Y-m", strtotime($recentPayment->created_at)))
-                if($payment->payment_status == "Settled") {
+                if($payment->payment_status == "paid") {
                     $amount = $amount + $payment->amount;
                 }
             }
         }
         $teamPackage = TeamPackage::select("*")->where("team_id", $this->id)->First();
-        if(str_replace(".", "",number_format($amount, 0,".", ".")) >= str_replace(".", "",number_format($teamPackage->price, 2, ".", "."))){
+        if(number_format($amount, 0,".", ".") >= number_format($teamPackage->price, 2, ".", ".")){
             return true;
         } else {
             return false;
+        }
+    }
+
+    public function allowedChange(){
+        $teamPackage = TeamPackage::select("*")->where("team_id", $this->id)->first();
+        if($teamPackage->change_package == 1 || $teamPackage->changed_payment_settings == 1){
+            return false;
+        } else {
+            if($this->hasPaid()){
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

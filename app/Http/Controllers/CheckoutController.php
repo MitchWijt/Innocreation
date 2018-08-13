@@ -392,8 +392,15 @@ class CheckoutController extends Controller
                     $reservedId = $existingTeamPackage->custom_team_package_id;
                 }
                 $teamPackage = $existingTeamPackage;
+                $paymentPreference = $existingTeamPackage->payment_preference;
             } else {
                 $teamPackage = new TeamPackage();
+            }
+
+            if($paymentPreference == "monthly"){
+                $price = $membershipPackage->price;
+            } else {
+                $price = ($membershipPackage->price) * 12 - 25 . ".00";
             }
             $teamPackage->team_id = $teamId;
             $teamPackage->membership_package_id = $membershipPackageId;
@@ -401,7 +408,7 @@ class CheckoutController extends Controller
             $teamPackage->payment_preference = $paymentPreference;
             $teamPackage->title = $membershipPackage->title;
             $teamPackage->description = $membershipPackage->description;
-            $teamPackage->price = $membershipPackage->price;
+            $teamPackage->price = $price;
             $teamPackage->created_at = date("Y-m-d H:i:s");
             $teamPackage->updated_at = date("Y-m-d H:i:s");
             $teamPackage->save();
@@ -444,6 +451,11 @@ class CheckoutController extends Controller
         }
 
         $team = Team::select("*")->where("id", $teamId)->first();
+        $user = User::select("*")->where("id", $team->ceo_user_id)->first();
+        if($user->subscription_canceled == 1){
+            $user->subscription_canceled = 0;
+            $user->save();
+        }
         if ($splitTheBill == 1) {
             foreach (Session::get("splitTheBillData") as $key => $value) {
                 $existingSplitTheBill = SplitTheBillLinktable::select("*")->where("user_id", $key)->where("team_id", $teamId)->first();
@@ -473,7 +485,7 @@ class CheckoutController extends Controller
             foreach($splitTheBillLinktables as $splitTheBillLinktable) {
                 $splitTheBillLinktable->accepted_change = 0;
                 $splitTheBillLinktable->membership_package_change_id = $membershipPackageId;
-                if(!Session::has("customPackagesArray")) {
+                if($teamPackage->custom_team_package_id == null) {
                     $splitTheBillLinktable->reserved_membership_package_id = $reservedId;
                 } else {
                     $customTeamPackage = CustomTeamPackage::select("*")->where("team_id", $teamId)->first();
@@ -482,6 +494,21 @@ class CheckoutController extends Controller
                 $splitTheBillLinktable->save();
             }
             return redirect("my-team/payment-details");
+        } else if($changePackage == 1 && $splitTheBill == 0){
+            $teamPackage = TeamPackage::select("*")->where("team_id", $teamId)->first();
+            $price = $teamPackage->price;
+
+            $user = User::select("*")->where("id", $team->ceo_user_id)->first();
+            $mollie = $this->getService("mollie");
+            $sub = $user->getMostRecentPayment();
+            $customer = $mollie->customers->get($user->mollie_customer_id);
+            $subscription = $customer->getSubscription($sub->sub_id);
+            $subscription->amount = (object) [
+                "currency" => "EUR",
+                "value" => number_format($price, 2, ".", "."),
+            ];
+            $subscription->webhookUrl = "http://secret.innocreation.net/webhook/mollieRecurringPayment";
+            $subscription->update();
         }
         if($changePackage == 1 && $splitTheBill == 1){
             return redirect("my-team/payment-details");

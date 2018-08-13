@@ -37,8 +37,8 @@
                                             <? } ?>
                                         </div>
                                         <div class="col-sm-3 m-t-10">
-                                            <? if($splitTheBillDetail->user->getMostRecentOpenPayment()) { ?>
-                                                <? if($splitTheBillDetail->allAccepted($user->team_id)) { ?>
+                                            <? if($splitTheBillDetail->user->getMostRecentOpenPayment() && !$user->hasValidSubscription()) { ?>
+                                                <? if($splitTheBillDetail->allAccepted($user->team_id) && !$user->hasValidSubscription()) { ?>
                                                     <a href="<?= $splitTheBillDetail->getPaymentUrl()?>" class="btn btn-inno">Pay package</a>
                                                 <? } else { ?>
                                                     <? if($splitTheBillDetail->accepted == 1 && $splitTheBillDetail->user->payment_refused == 0) { ?>
@@ -109,7 +109,7 @@
             <? if(isset($teamPackage)) { ?>
                 <? if($teamPackage->change_package == 1) { ?>
                     <? foreach($splitTheBillDetails as $splitTheBillDetail) { ?>
-                        <? if($splitTheBillDetail->reserved_changed_amount != null && $splitTheBillDetail->reserved_membership_package_id != null) { ?>
+                        <? if($splitTheBillDetail->reserved_changed_amount != null && ($splitTheBillDetail->reserved_membership_package_id != null || $splitTheBillDetail->reserved_custom_team_package_id != null)) { ?>
                             <div class="row d-flex js-center p-b-20">
                                 <div class="col-md-10">
                                     <div class="card card-lg">
@@ -139,7 +139,7 @@
                                                     <div class="col-sm-12 m-t-20 text-center">
                                                         <div class="row">
                                                             <div class="col-sm-5">
-                                                                <? if($teamPackage->custom_team_package_id != null) { ?>
+                                                                <? if($splitTheBillDetail->reserved_membership_package_id == null) { ?>
                                                                     <p class="f-20 m-t-0">Innovator (custom package)</p>
                                                                 <? } else { ?>
                                                                     <p class="f-20 m-t-0"><?= str_replace("-", " ", ucfirst($splitTheBillDetail->reservedMembershipPackage->title))?></p>

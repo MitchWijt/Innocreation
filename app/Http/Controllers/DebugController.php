@@ -21,11 +21,20 @@ use App\Invoice;
 
 class DebugController extends Controller
 {
+    /**
+     *
+     */
     public function test(){
 //        if($this->authorized(true)){
 
+        $user = User::select("*")->where("id", 10)->first();
+       $mollie = $this->getService("mollie");
 
-        die("test");
-//        }
+        $customer = $mollie->customers->get($user->mollie_customer_id);
+        $subscriptions = $customer->subscriptions();
+
+        foreach($subscriptions as $subscription){
+            $customer->cancelSubscription($subscription->id);
+        }
     }
 }
