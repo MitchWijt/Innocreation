@@ -9,7 +9,7 @@
         <td style="display: flex; justify-content: center;">
             <div>
                 <p class="webfont" style="width: 410px; font-size: 16px; margin-bottom: 0; margin-top: 0;">Since you are member of <?= $team->team_name?> and this team has chosen to split the bill. You have got a verify request in your account.</p>
-                <p class="webfont" style="width: 410px; font-size: 16px; margin-top: 0; margin-bottom: 0">Log in to your account and verify the request as soon as possible to benefit from the package even quiker!</p>
+                <p class="webfont" style="width: 410px; font-size: 16px; margin-top: 0; margin-bottom: 0">Log in to your account and verify the request as soon as possible to benefit from the package even quicker!</p>
             </div>
         </td>
     </tr>

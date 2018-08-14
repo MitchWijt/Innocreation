@@ -18,6 +18,7 @@ use App\SplitTheBillLinktable;
 use App\Http\Requests;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Invoice;
+use Session;
 
 class DebugController extends Controller
 {
@@ -27,14 +28,16 @@ class DebugController extends Controller
     public function test(){
 //        if($this->authorized(true)){
 
-        $user = User::select("*")->where("id", 10)->first();
-       $mollie = $this->getService("mollie");
 
-        $customer = $mollie->customers->get($user->mollie_customer_id);
-        $subscriptions = $customer->subscriptions();
 
-        foreach($subscriptions as $subscription){
-            $customer->cancelSubscription($subscription->id);
-        }
+//        $user = User::select("*")->where("id", 10)->first();
+//       $mollie = $this->getService("mollie");
+//
+//        $customer = $mollie->customers->get($user->mollie_customer_id);
+//        $subscriptions = $customer->subscriptions();
+//
+//        foreach($subscriptions as $subscription){
+//            $customer->cancelSubscription($subscription->id);
+//        }
     }
 }

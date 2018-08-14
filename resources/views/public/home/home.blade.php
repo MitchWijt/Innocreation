@@ -157,20 +157,20 @@
                         </div>
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="col-sm-2 d-flex jc-end">
+                                <div class="col-xs-2 col-md-2 d-flex jc-end">
                                     <div class="circle-instructions">
-                                        <i style="font-size: 50px; padding-left: 1px;" class="material-icons social-icon-instructions">attach_money</i>
+                                        <i style="font-size: 50px; color: #000; padding-left: 1px;" class="zmdi zmdi-globe social-icon-instructions"></i>
                                     </div>
                                 </div>
                                 <div class="col-sm-10 m-t-15">
                                     @handheld
                                         @mobile
-                                            <p class="instructions-second-text m-0 f-17">Split the monthly/yearly bill with your team members</p>
+                                            <p class="instructions-second-text m-0 f-17">Get your idea/product known to the open world!</p>
                                         @elsetablet
-                                            <p class="instructions-second-text m-0 f-20">Split the monthly/yearly bill with your team members</p>
+                                            <p class="instructions-second-text m-0 f-20">Get your idea/product known to the open world!</p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-0">Split the monthly/yearly bill with your team members</p>
+                                        <p class="instructions-second-text m-0">Get your idea/product known to the open world!</p>
                                     @endhandheld
                                 </div>
                             </div>

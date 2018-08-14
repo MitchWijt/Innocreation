@@ -90,13 +90,25 @@ class User extends Authenticatable
     }
 
     public function getAssignedTasks(){
+        $counter = 0;
         $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $this->id)->where("completed", 0)->get();
-        return count($short_term_planner_tasks);
+        foreach($short_term_planner_tasks as $short_term_planner_task){
+            if($short_term_planner_task->board->team_id == $this->team_id) {
+                $counter++;
+            }
+        }
+        return $counter;
     }
 
     public function getCompletedTasks(){
+        $counter = 0;
         $short_term_planner_tasks = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $this->id)->where("completed", 1)->get();
-        return count($short_term_planner_tasks);
+        foreach($short_term_planner_tasks as $short_term_planner_task){
+            if($short_term_planner_task->board->team_id == $this->team_id) {
+                $counter++;
+            }
+        }
+        return $counter;
     }
 
     public function getAmountThreadPosts(){

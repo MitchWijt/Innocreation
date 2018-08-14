@@ -841,6 +841,7 @@ class UserController extends Controller
                     $splitTheBillLinktable->reserved_changed_amount = null;
                     $splitTheBillLinktable->reserved_membership_package_id = null;
                     $splitTheBillLinktable->reserved_custom_team_package_id = null;
+                    $splitTheBillLinktable->custom_package_change_id = null;
                     $splitTheBillLinktable->save();
                 }
                 $teamPackage->change_package = 0;

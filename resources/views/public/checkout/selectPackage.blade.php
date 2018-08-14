@@ -246,6 +246,8 @@
                                                         <? } ?>
                                                         <input type="radio" class="paymentPreference" data-package-id="<? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo  "custom"; else echo $membershipPackage->id?>" data-preference="monthly" checked name="paymentPreference" value="monthly" id="preferenceMonthly">
                                                         <label for="preferenceMonthly">Monthly</label>
+                                                    <? } else { ?>
+                                                        <p>You have chosen to pay <?= $teamPackage->payment_preference?> for your teams package. This cannot be changed anymore.</p>
                                                     <? } ?>
                                                 </div>
                                             </div>

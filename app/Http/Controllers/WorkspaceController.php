@@ -437,23 +437,29 @@ class WorkspaceController extends Controller
         $shortTermPlannerTasksDueDate = WorkspaceShortTermPlannerTask::select("*")->where("assigned_to", $user->id)->where("due_date", "!=", null)->where("completed", 0)->get();
 
         foreach($shortTermPlannerTasksDueDate as $shortTermPlannerTask){
-            if(strtotime($today) > strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->due_date)))){
-                array_push($missedDueDateTasks, $shortTermPlannerTask);
+            if($shortTermPlannerTask->board->team_id == $user->team_id) {
+                if (strtotime($today) > strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->due_date)))) {
+                    array_push($missedDueDateTasks, $shortTermPlannerTask);
+                }
             }
         }
 
         foreach($shortTermPlannerTasksToDo as $shortTermPlannerTask){
-            if($shortTermPlannerTask->due_date != null) {
-                if (strtotime($today) < strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->due_date)))) {
+            if($shortTermPlannerTask->board->team_id == $user->team_id) {
+                if ($shortTermPlannerTask->due_date != null) {
+                    if (strtotime($today) < strtotime(date("Y-m-d", strtotime($shortTermPlannerTask->due_date)))) {
+                        array_push($toDoTasks, $shortTermPlannerTask);
+                    }
+                } else {
                     array_push($toDoTasks, $shortTermPlannerTask);
                 }
-            } else {
-                array_push($toDoTasks, $shortTermPlannerTask);
             }
         }
 
         foreach($shortTermPlannerTasksComplete as $shortTermPlannerTask){
-            array_push($completedTasks, $shortTermPlannerTask);
+            if($shortTermPlannerTask->board->team_id == $user->team_id) {
+                array_push($completedTasks, $shortTermPlannerTask);
+            }
         }
         return view("/public/team/workspace/workspacePersonalBoard", compact("user", "team", "toDoTasks", "completedTasks", "missedDueDateTasks"));
     }
@@ -1033,20 +1039,29 @@ class WorkspaceController extends Controller
         arsort($count); //Ssort it from highest to lowest
         $keys = array_keys($count); //Split the array so we can find the most occuring key
 
-        $member = User::select("*")->where("id", $keys[0])->first();
-        foreach ($assistanceTickets as $assistanceTicket) {
-            if (strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at))) > strtotime($timespan)) {
-                if ($assistanceTicket->creator_user_id == $member->id) {
-                    $counter++;
+
+        if($keys) {
+            $member = User::select("*")->where("id", $keys[0])->first();
+            foreach ($assistanceTickets as $assistanceTicket) {
+                if (strtotime(date("Y-m-d", strtotime($assistanceTicket->created_at))) > strtotime($timespan)) {
+                    if ($assistanceTicket->creator_user_id == $member->id) {
+                        $counter++;
+                    }
                 }
             }
+            $mostAssistanceTicketsArray = [
+                "member" => $member->getName(),
+                "tickets" => $counter,
+                "category" => $category
+            ];
+            return json_encode($mostAssistanceTicketsArray);
+        } else {
+            return $mostAssistanceTicketsArray = [
+                "member" => "not yet defined",
+                "tickets" => 0,
+                "category" => "Month"
+            ];
         }
-        $mostAssistanceTicketsArray = [
-            "member" => $member->getName(),
-            "tickets" => $counter,
-            "category" => $category
-        ];
-        return json_encode($mostAssistanceTicketsArray);
     }
 
     public function getMemberTaskListDataAction(Request $request){
