@@ -366,7 +366,7 @@ class TeamController extends Controller
                     "currency" => "EUR",
                     "value" => number_format($newLeaderPrice, 2, ".", "."),
                 ];
-                $subscription->webhookUrl = "http://secret.innocreation.net/webhook/mollieRecurringPayment";
+                $subscription->webhookUrl = "https://secret.innocreation.net/webhook/mollieRecurringPayment";
                 $subscription->update();
 
                 $teamLeaderSplitTheBillLinktable->amount = $newLeaderPrice;

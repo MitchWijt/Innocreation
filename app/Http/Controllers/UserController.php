@@ -761,7 +761,7 @@ class UserController extends Controller
                             ],
                             "interval" => "$range",
                             "description" => $description . "recurring",
-                            "webhookUrl" => "http://secret.innocreation.net/webhook/mollieRecurringPayment",
+                            "webhookUrl" => "https://secret.innocreation.net/webhook/mollieRecurringPayment",
                         ]);
 
                     }
@@ -814,7 +814,7 @@ class UserController extends Controller
                 "currency" => "EUR",
                 "value" => number_format($newPrice, 2, ".", "."),
             ];
-            $subscription->webhookUrl = "http://secret.innocreation.net/webhook/mollieRecurringPayment";
+            $subscription->webhookUrl = "https://secret.innocreation.net/webhook/mollieRecurringPayment";
             $subscription->startDate = date("Y-m-d", strtotime("+1 month"));
             $subscription->update();
 
@@ -924,7 +924,7 @@ class UserController extends Controller
                         "currency" => "EUR",
                         "value" => number_format($newAmount, 2, ".", "."),
                     ];
-                    $subscription->webhookUrl = "http://secret.innocreation.net/webhook/mollieRecurringPayment";
+                    $subscription->webhookUrl = "https://secret.innocreation.net/webhook/mollieRecurringPayment";
                     $subscription->update();
                 }
                 $splitTheBillLinktable->accepted_change = 0;
@@ -1009,7 +1009,7 @@ class UserController extends Controller
                     "currency" => "EUR",
                     "value" => number_format($newLeaderPrice, 2, ".", "."),
                 ];
-                $subscription->webhookUrl = "http://secret.innocreation.net/webhook/mollieRecurringPayment";
+                $subscription->webhookUrl = "https://secret.innocreation.net/webhook/mollieRecurringPayment";
                 $subscription->update();
 
                 $teamLeaderSplitTheBillLinktable->amount = $newLeaderPrice;

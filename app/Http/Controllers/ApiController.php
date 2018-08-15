@@ -68,7 +68,7 @@ class ApiController extends Controller
                         ],
                         "interval" => "$range",
                         "description" => $description . "recurring",
-                        "webhookUrl" => "http://secret.innocreation.net/webhook/mollieRecurringPayment",
+                        "webhookUrl" => "https://secret.innocreation.net/webhook/mollieRecurringPayment",
                     ]);
 
                 }

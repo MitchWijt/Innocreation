@@ -167,7 +167,7 @@ class CheckoutController extends Controller
                 $price = number_format(\Illuminate\Support\Facades\Session::get("customPackagesArray")["price"], 2, ".", ".");
             }
         } else {
-            $redirectUrl = "http://secret.innocreation.net/almost-there";
+            $redirectUrl = "https://secret.innocreation.net/almost-there";
             $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("team_id", $request->input("team_id"))->where("user_id", $user->id)->first();
             $splitTheBillLinktable->accepted = 1;
             $splitTheBillLinktable->save();
@@ -207,7 +207,7 @@ class CheckoutController extends Controller
                     ],
                     "description" => $description,
                     "redirectUrl" => $redirectUrl,
-                    "webhookUrl" => "http://secret.innocreation.net/webhook/mollieRecurring",
+                    "webhookUrl" => "https://secret.innocreation.net/webhook/mollieRecurring",
                     "method" => "creditcard",
                     "sequenceType" => "first",
                     "customerId" => $splitTheBillLinktable->user->mollie_customer_id,
@@ -239,7 +239,7 @@ class CheckoutController extends Controller
                 ],
                 "description" => $description,
                 "redirectUrl" => $redirectUrl,
-                "webhookUrl" => "http://secret.innocreation.net/webhook/mollieRecurring",
+                "webhookUrl" => "https://secret.innocreation.net/webhook/mollieRecurring",
                 "method" => "creditcard",
                 "sequenceType" => "first",
                 "customerId" => "$user->mollie_customer_id",
@@ -528,7 +528,7 @@ class CheckoutController extends Controller
                 "currency" => "EUR",
                 "value" => number_format($price, 2, ".", "."),
             ];
-            $subscription->webhookUrl = "http://secret.innocreation.net/webhook/mollieRecurringPayment";
+            $subscription->webhookUrl = "https://secret.innocreation.net/webhook/mollieRecurringPayment";
             $subscription->startDate = date("Y-m-d", strtotime("+1 month"));
             $subscription->update();
         }

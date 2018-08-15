@@ -31,6 +31,8 @@ class DebugController extends Controller
 
 
 //        $user = User::select("*")->where("id", 10)->first();
+//        $this->saveAndSendEmail($user, 'Welcome to Innocreation!', view("/templates/sendWelcomeMail", compact("user")));
+
 //       $mollie = $this->getService("mollie");
 //
 //        $customer = $mollie->customers->get($user->mollie_customer_id);

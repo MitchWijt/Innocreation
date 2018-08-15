@@ -4,7 +4,7 @@
     <div class="d-flex grey-background vh100">
         <div class="container">
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">You're team is almost a <? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo "innovator"; else echo str_replace("-", " ", lcfirst($membershipPackage->title))?></h1>
+                <h1 class="sub-title-black @handheld f-25 @endhandheld">@notmobile You're team is almost a <? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo "innovator"; else echo str_replace("-", " ", lcfirst($membershipPackage->title))?> @elsemobile almost a <? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo "innovator"; else echo str_replace("-", " ", lcfirst($membershipPackage->title))?> @endnotmobile</h1>
             </div>
             <div class="row">
                 <div class="col-sm-12 d-flex js-center">
@@ -14,8 +14,8 @@
             <hr class="m-b-20">
             <div class="row">
                 <? if(!\Illuminate\Support\Facades\Session::has("customPackagesArray")) { ?>
-                    <div class="col-sm-5">
-                        <div class="row">
+                    <div class="col-sm-5 @tablet m-15 @endtablet">
+                        <div class="row @nontablet d-flex js-center @endnontablet">
                             <? $descriptions = explode(",",$membershipPackage->description);
                                 $counter = 0;
                             ?>
@@ -100,24 +100,24 @@
                         </div>
                     </div>
                 <? } ?>
-                <div class="col-sm-6">
+                <div class="col-sm-6 @mobile p-30 @endmobile">
                     <div class="row">
                         <? if(isset($teamPackage) && $team->split_the_bill == 1) { ?>
                             <div class="col-sm-6 m-0 p-0">
-                                <p class="bcg-black <? if($step == 1) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">Credentials (1/2)</p>
+                                <p class="bcg-black <? if($step == 1) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">@tablet 1/2 @endtablet @nottablet Credentials (1/2) @endnottablet</p>
                             </div>
                             <div class="col-sm-6 m-0 p-0">
-                                <p class="bcg-black <? if($step == 2) echo "c-gray"; else echo "c-dark-grey"?> text-center border-sides m-b-0">Payment info (2/2)</p>
+                                <p class="bcg-black <? if($step == 2) echo "c-gray"; else echo "c-dark-grey"?> text-center border-sides m-b-0">@tablet 2/2 @endtablet @nottablet Payment info (2/2) @endnottablet</p>
                             </div>
                         <? } else { ?>
                             <div class="col-sm-4 m-0 p-0">
-                                <p class="bcg-black <? if($step == 1) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">Credentials (1/3)</p>
+                                <p class="bcg-black <? if($step == 1) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">@tablet 1/3 @endtablet  @nottablet Credentials (1/3) @endnottablet</p>
                             </div>
                             <div class="col-sm-4 m-0 p-0">
-                                <p class="bcg-black <? if($step == 2) echo "c-gray"; else echo "c-dark-grey"?> text-center border-sides m-b-0">Payment info (2/3)</p>
+                                <p class="bcg-black <? if($step == 2) echo "c-gray"; else echo "c-dark-grey"?> text-center border-sides m-b-0">@tablet 2/3 @endtablet @nottablet Payment info (2/3) @endnottablet</p>
                             </div>
                             <div class="col-sm-4 m-0 p-0">
-                                <p class="bcg-black <? if($step == 3) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">Method (3/3)</p>
+                                <p class="bcg-black <? if($step == 3) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">@tablet 3/3 @endtablet @nottablet Method (3/3) @endnottablet</p>
                             </div>
                         <? } ?>
                     </div>
