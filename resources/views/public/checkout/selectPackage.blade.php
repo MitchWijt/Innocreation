@@ -308,15 +308,15 @@
                                     <? foreach($team->getMembers() as $member) { ?>
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <p><?= $member->firstname?></p>
+                                                <p class="@mobile m-0 @endmobile"><?= $member->firstname?></p>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-6 @mobile m-b-10 @endmobile">
                                                 <div class="row">
-                                                    <div class="col-sm-6 p-r-0">
+                                                    <div class="@mobile col-xs-6 m-l-15 @elsedesktop col-sm-6 @enddesktop p-r-0">
                                                         <input type="hidden" name="team_id" class="team_id" value="<?= $team->id?>">
                                                         <input class="input pull-right splittedAmountMember col-sm-12" type="text" data-member-id="<?= $member->id?>" name="splittedAmount" value="">
                                                     </div>
-                                                    <div class="col-sm-6">
+                                                    <div class="@mobile col-xs-6 @elsedesktop col-sm-6 @enddesktop">
                                                         <span class="packagePreference">/Monthly</span>
                                                     </div>
                                                 </div>

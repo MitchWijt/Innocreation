@@ -52,7 +52,7 @@
                                 <div class="hr p-b-20 col-md-12"></div>
                                 <div class="col-sm-12">
                                     <p>Payment will automatically pursue when all members have verified their payment details.</p>
-                                    <p>Payment status: <? if ($counterValidated >= 4) echo "<span class='c-green'> Payment pursued</span>"; else echo " <span class='c-orange'> On hold</span>";?></p>
+                                    <p>Payment status: <? if ($counterValidated >= count($team->getMembers())) echo "<span class='c-green'> Payment pursued</span>"; else echo " <span class='c-orange'> On hold</span>";?></p>
                                 </div>
                             </div>
                         </div>

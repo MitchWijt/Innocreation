@@ -42,13 +42,13 @@
                                                     <a href="<?= $splitTheBillDetail->getPaymentUrl()?>" class="btn btn-inno">Pay package</a>
                                                 <? } else { ?>
                                                     <? if($splitTheBillDetail->accepted == 1 && $splitTheBillDetail->user->payment_refused == 0) { ?>
-                                                        <p class="c-green">Validated <i class="zmdi zmdi-check c-green"></i> </p>
+                                                        <p class="c-green @mobile pull-right m-r-20 @endmobile">Validated <i class="zmdi zmdi-check c-green @mobile pull-right m-r-20 @endmobile"></i> </p>
                                                     <? } else { ?>
                                                         <button data-toggle="collapse" href="#collapse-<?= $splitTheBillDetail->id?>" class="btn btn-inno pull">Validate</button>
                                                     <? } ?>
                                                 <? } ?>
                                             <? } else { ?>
-                                                <p class="c-green">Validated <i class="zmdi zmdi-check c-green"></i> </p>
+                                                <p class="c-green @mobile pull-right m-r-20 @endmobile">Validated <i class="zmdi zmdi-check c-green @mobile pull-right m-r-20 @endmobile"></i> </p>
                                             <? } ?>
                                         </div>
                                     </div>
@@ -115,14 +115,14 @@
                                     <div class="card card-lg">
                                         <div class="card-block">
                                             <div class="row m-t-20 m-b-20">
-                                                <div class="col-sm-10">
+                                                <div class="col-sm-9">
                                                     <p class="m-l-10"><a target="_blank" href="<?= $splitTheBillDetail->team->getUrl()?>" class="regular-link"><?= $splitTheBillDetail->team->team_name?></a> has asked you to accept and validate the change of your team package. Since you are a member of this team. Validate as soon as possible to enjoy the benefits of your new package even quiker!</p>
                                                 </div>
-                                                <div class="col-sm-2 m-t-10">
+                                                <div class="col-sm-3 m-t-10">
                                                     <? if($splitTheBillDetail->accepted_change== 1) { ?>
-                                                        <p class="c-green">Validated <i class="zmdi zmdi-check c-green"></i> </p>
+                                                        <p class="c-green @mobile pull-right m-r-20 @endmobile">Validated <i class="zmdi zmdi-check c-green @mobile pull-right m-r-20 @endmobile"></i> </p>
                                                     <? } else { ?>
-                                                        <button data-toggle="collapse" href="#collapse-<?= $splitTheBillDetail->id?><?= $splitTheBillDetail->user_id?>" class="btn btn-inno pull">Validate</button>
+                                                        <button data-toggle="collapse" href="#collapse-<?= $splitTheBillDetail->id?><?= $splitTheBillDetail->user_id?>" class="btn btn-inno @mobile pull-right m-r-20 @endmobile">Validate</button>
                                                     <? } ?>
                                                 </div>
                                             </div>
@@ -148,7 +148,11 @@
                                                                     <p style="letter-spacing: 1px;"><?= "&euro;" . number_format($splitTheBillDetail->amount, 2, ".", ".")?><span style="letter-spacing: 0px;"><? if($teamPackage->payment_preference == "monthly") echo "/Month"; else echo "/Year";?></span></p>
                                                                 </div>
                                                                 <div class="col-sm-2">
-                                                                    <i class="zmdi zmdi-long-arrow-right m-t-15" style="font-size: 50px;"></i>
+                                                                    @mobile
+                                                                        <i class="zmdi zmdi-long-arrow-down" style="font-size: 50px;"></i>
+                                                                    @elsedesktop
+                                                                        <i class="zmdi zmdi-long-arrow-right m-t-15" style="font-size: 50px;"></i>
+                                                                    @endmobile
                                                                 </div>
                                                                 <div class="col-sm-5">
                                                                     <? if($splitTheBillDetail->custom_package_change_id != null) { ?>

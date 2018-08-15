@@ -6,6 +6,7 @@ use App\Payments;
 use App\SplitTheBillLinktable;
 use App\TeamPackage;
 use App\User;
+use Faker\Provider\el_CY\Payment;
 use Illuminate\Http\Request;
 use App\Invoice;
 
@@ -163,6 +164,37 @@ class ApiController extends Controller
     }
 
     public function webhookMolliePaymentAction(Request $request){
+        $subscriptionId = $request->input("subscriptionId");
+        $paymentId = $request->input("id");
+        $payment = Payments::select("*")->where("sub_id", $subscriptionId)->first();
+        $payments = Payments::select("*")->orderBy("id", "DESC")->first();
+        $reference = $payments->reference + 1;
 
+        $newPayment = new Payments();
+        $newPayment->user_id = $payment->user_id;
+        $newPayment->payment_id = $paymentId;
+        $newPayment->team_id = $payment->team_id;
+        $newPayment->sub_id = $subscriptionId;
+        $newPayment->payment_method = "creditcard";
+        $newPayment->amount = $payment->amount;
+        $newPayment->reference = $reference;
+        $newPayment->payment_status = "paid";
+        $newPayment->created_at = date("Y-m-d H:i:s");
+
+        $teamPackage = TeamPackage::select("*")->where("team_id", $payment->team_id)->first();
+
+        $invoiceNumber = Invoice::select("*")->orderBy("invoice_number", "DESC")->first()->invoice_number;
+        $invoice = new Invoice();
+        $invoice->user_id = $payment->user_id;
+        $invoice->team_id = $payment->team_id;
+        $invoice->team_package_id = $teamPackage->id;
+        $invoice->amount = number_format($payment->amount, 2, ".", ".");
+        $invoice->hash = $payment->user->hash;
+        $invoice->invoice_number = $invoiceNumber + 1;
+        $invoice->paid_date = date("Y-m-d");
+        $invoice->created_at = date("Y-m-d H:i:s");
+        $invoice->save();
+
+        return response('OK', 200);
     }
 }
