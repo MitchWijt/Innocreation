@@ -69,6 +69,7 @@ class ApiController extends Controller
                         ],
                         "interval" => "$range",
                         "description" => $description . "recurring",
+                        "startDate" => date("Y-m-d" , strtotime("+1 month")),
                         "webhookUrl" => "https://secret.innocreation.net/webhook/mollieRecurringPayment",
                     ]);
 
@@ -76,6 +77,16 @@ class ApiController extends Controller
                 $subscriptions = $customer->subscriptions();
                 $paymentTable->sub_id = $subscriptions[0]->id;
                 $paymentTable->save();
+
+                $mgClient = $this->getService("mailgun");
+                $mgClient[0]->sendMessage($mgClient[1], array(
+                    'from' => "mitchel@innocreation.net",
+                    'to' => "info@innocreation.net",
+                    'subject' => "new payment!",
+                    'html' => view("/templates/sendPaymentConfirmationInno", compact("user", "description"))
+                ), array(
+                    'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
+                ));
 
 
 
@@ -180,6 +191,7 @@ class ApiController extends Controller
         $newPayment->reference = $reference;
         $newPayment->payment_status = "paid";
         $newPayment->created_at = date("Y-m-d H:i:s");
+        $newPayment->save();
 
         $teamPackage = TeamPackage::select("*")->where("team_id", $payment->team_id)->first();
 
@@ -194,6 +206,16 @@ class ApiController extends Controller
         $invoice->paid_date = date("Y-m-d");
         $invoice->created_at = date("Y-m-d H:i:s");
         $invoice->save();
+
+        $mgClient = $this->getService("mailgun");
+        $mgClient[0]->sendMessage($mgClient[1], array(
+            'from' => "mitchel@innocreation.net",
+            'to' => "info@innocreation.net",
+            'subject' => "new payment!",
+            'html' => view("/templates/sendRecurringNotificationInno", compact("user"))
+        ), array(
+            'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
+        ));
 
         return response('OK', 200);
     }

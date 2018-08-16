@@ -29,7 +29,7 @@
                                     <? } ?>
                                 </ul>
                             </div>
-                            <div class="row @notmobile @desktop <? if($membershipPackage->id == 1 || $membershipPackage->id == 2) echo "m-t-70"?> @elsetablet  <? if($membershipPackage->id == 1 || $membershipPackage->id == 2) echo "m-t-50"?> @enddesktop @endnotmobile">
+                            <div class="row @notmobile @desktop <? if($membershipPackage->id == 1 || $membershipPackage->id == 2) echo "m-t-50"?> @elsetablet  <? if($membershipPackage->id == 1 || $membershipPackage->id == 2) echo "m-t-50"?> @enddesktop @endnotmobile">
                                 <div class="col-sm-12">
                                         <p class="f-20 m-b-0 text-center"><?="&euro;".  $membershipPackage->getPrice()?>/Month</p>
                                     <div class="text-center">

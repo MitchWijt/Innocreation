@@ -141,17 +141,32 @@ class CheckoutController extends Controller
     public function authorisePaymentRequestAction(Request $request) {
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
 
-        $splitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->get();
-        foreach($splitTheBillLinktables as $splitTheBillLinktable){
-            if($splitTheBillLinktable->user->mollie_customer_id == null){
+        if($user->team->split_the_bill == 1) {
+            $splitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->get();
+            foreach ($splitTheBillLinktables as $splitTheBillLinktable) {
+                if ($splitTheBillLinktable->user->mollie_customer_id == null) {
+                    $mollie = $this->getService("mollie");
+                    $customer = $mollie->customers->create([
+                        "name" => $splitTheBillLinktable->user->getName(),
+                        "email" => $splitTheBillLinktable->user->email,
+                    ]);
+                    $userSplitTheBill = User::select("*")->where("id", $splitTheBillLinktable->user_id)->first();
+                    $userSplitTheBill->mollie_customer_id = $customer->id;
+                    $userSplitTheBill->save();
+                }
+            }
+        } else {
+            if ($user->mollie_customer_id == null) {
                 $mollie = $this->getService("mollie");
                 $customer = $mollie->customers->create([
-                    "name" => $splitTheBillLinktable->user->getName(),
-                    "email" => $splitTheBillLinktable->user->email,
+                    "name" => $user->getName(),
+                    "email" => $user->email,
                 ]);
-                $userSplitTheBill = User::select("*")->where("id", $splitTheBillLinktable->user_id)->first();
-                $userSplitTheBill->mollie_customer_id = $customer->id;
-                $userSplitTheBill->save();
+                $newCustomer = User::select("*")->where("id", $user->id)->first();
+                $newCustomer->mollie_customer_id = $customer->id;
+                $newCustomer->save();
+
+                sleep(4);
             }
         }
         //Get team and teampackage + declare price

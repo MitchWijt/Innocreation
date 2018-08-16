@@ -112,26 +112,31 @@ class Team extends Model
 
     public function hasPaid(){
         $amount = 0;
-        if($this->split_the_bill == 0) {
-            $payment = Payments::select("*")->where("team_id", $this->id)->orderBy('created_at', 'DESC')->First();
-            if ($payment->payment_status == "paid") {
-                $amount = $payment->amount;
-            }
+        $paymentsAll = Payments::select("*")->where("team_id", $this->id)->get();
+        if(count($paymentsAll) < 1){
+            return false;
         } else {
-            $recentPayment = Payments::select("*")->where("team_id", $this->id)->orderBy("created_at", "DESC")->first();
-            $payments = Payments::select("*")->where("team_id", $this->id)->get();
-            foreach($payments as $payment){
-                if(date("Y-m", strtotime($payment->created_at)) == date("Y-m", strtotime($recentPayment->created_at)))
-                if($payment->payment_status == "paid") {
-                    $amount = $amount + $payment->amount;
+            if ($this->split_the_bill == 0) {
+                $payment = Payments::select("*")->where("team_id", $this->id)->orderBy('created_at', 'DESC')->First();
+                if ($payment->payment_status == "paid") {
+                    $amount = $payment->amount;
+                }
+            } else {
+                $recentPayment = Payments::select("*")->where("team_id", $this->id)->orderBy("created_at", "DESC")->first();
+                $payments = Payments::select("*")->where("team_id", $this->id)->get();
+                foreach ($payments as $payment) {
+                    if (date("Y-m", strtotime($payment->created_at)) == date("Y-m", strtotime($recentPayment->created_at)))
+                        if ($payment->payment_status == "paid") {
+                            $amount = $amount + $payment->amount;
+                        }
                 }
             }
-        }
-        $teamPackage = TeamPackage::select("*")->where("team_id", $this->id)->First();
-        if(number_format($amount, 0,".", ".") >= number_format($teamPackage->price, 2, ".", ".")){
-            return true;
-        } else {
-            return false;
+            $teamPackage = TeamPackage::select("*")->where("team_id", $this->id)->First();
+            if (number_format($amount, 0, ".", ".") >= number_format($teamPackage->price, 2, ".", ".")) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

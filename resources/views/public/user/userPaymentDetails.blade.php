@@ -37,7 +37,7 @@
                                             <? } ?>
                                         </div>
                                         <div class="col-sm-3 m-t-10">
-                                            <? if($splitTheBillDetail->user->getMostRecentOpenPayment() && !$user->hasValidSubscription()) { ?>
+                                            <? if(!$user->hasValidSubscription() || $splitTheBillDetail->accepted == 0) { ?>
                                                 <? if($splitTheBillDetail->allAccepted($user->team_id) && !$user->hasValidSubscription()) { ?>
                                                     <a href="<?= $splitTheBillDetail->getPaymentUrl()?>" class="btn btn-inno">Pay package</a>
                                                 <? } else { ?>

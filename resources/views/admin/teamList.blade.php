@@ -29,8 +29,16 @@
                                             <td scope="row" data-visible="false"><?= $team->id?></td>
                                             <td><?= $team->team_name?></td>
                                             <td><?= count($team->getMembers())?></td>
-                                            <td><i class="zmdi zmdi-check c-orange f-20"></i></td>
-                                            <td><i class="zmdi zmdi-check c-orange f-20"></i></td>
+                                            <? if($team->hasPaid() && $team->packageDetails() && $team->packageDetails()->custom_team_package_id == null) { ?>
+                                                <td><i class="zmdi zmdi-check c-orange f-20"></i></td>
+                                            <? } else { ?>
+                                                <td> - </td>
+                                            <? } ?>
+                                            <? if($team->hasPaid() && $team->packageDetails() && $team->packageDetails()->custom_team_package_id != null) { ?>
+                                                <td><i class="zmdi zmdi-check c-orange f-20"></i></td>
+                                            <? } else { ?>
+                                                <td> - </td>
+                                            <? } ?>
                                             <td><?= date("d-m-Y",strtotime($team->created_at))?></td>
                                         </tr>
                                     <? } ?>

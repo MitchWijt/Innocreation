@@ -472,7 +472,7 @@ class UserController extends Controller
                 $message->save();
 
                 $user = User::select("*")->where("id", $user_id)->first();
-                $this->saveAndSendEmail($joinRequest->teams->users, "Team join request from $user->firstname!", view("/templates/sendJoinRequestToTeam", compact("user", "team")));
+                $this->saveAndSendEmail($joinRequest->team->users, "Team join request from $user->firstname!", view("/templates/sendJoinRequestToTeam", compact("user", "team")));
 
                 return redirect($_SERVER["HTTP_REFERER"]);
             } else {
@@ -778,8 +778,69 @@ class UserController extends Controller
                     $paymentTable->sub_id = $subscriptions[0]->id;
                     $paymentTable->created_at = date("Y-m-d H:i:s");
                     $paymentTable->save();
-                }
+                } else {
+                    $user = User::select("*")->where("id", $userId)->first();
+                    $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $user->id)->where("team_id", $user->team_id)->first();
+                    $splitTheBillLinktable->accepted = 1;
+                    $splitTheBillLinktable->save();
 
+                    if ($user->mollie_customer_id == null) {
+                        $mollie = $this->getService("mollie");
+                        $customer = $mollie->customers->create([
+                            "name" => $user->getName(),
+                            "email" => $user->email,
+                        ]);
+                        $newCustomer = User::select("*")->where("id", $user->id)->first();
+                        $newCustomer->mollie_customer_id = $customer->id;
+                        $newCustomer->save();
+                    }
+
+                    sleep(4);
+
+                    $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
+                    $redirectUrl = "http://secret.innocreation.net/my-account/payment-details";
+                    if ($teamPackage->custom_team_package_id == null) {
+                        $description = $teamPackage->title . " for team " . $user->team->team_name;
+                    } else {
+                        $description =  " custom package for team " . $user->team->team_name;
+                    }
+
+                    $price = number_format($splitTheBillLinktable->amount, 2, ".", ".");
+                    $payment = Payments::select("*")->orderBy("id", "DESC")->first();
+                    $reference = $payment->reference + 1;
+
+                    $mollie = $this->getService("mollie");
+                    $paymentMollie = $mollie->payments->create([
+                        "amount" => [
+                            "currency" => "EUR",
+                            "value" => $price
+                        ],
+                        "description" => $description,
+                        "redirectUrl" => $redirectUrl,
+                        "webhookUrl" => "https://secret.innocreation.net/webhook/mollieRecurring",
+                        "method" => "creditcard",
+                        "sequenceType" => "first",
+                        "customerId" => "$user->mollie_customer_id",
+                        "metadata" => [
+                            "referenceAndUserId" => $reference . "-" . $user->id,
+                        ],
+                    ]);
+
+                    if($paymentMollie->status == "open") {
+                        $payment = new Payments();
+                        $payment->user_id = $user->id;
+                        $payment->team_id = $user->team_id;
+                        $payment->payment_id = $paymentMollie->id;
+                        $payment->payment_url = $paymentMollie->_links->checkout->href;
+                        $payment->payment_method = $paymentMollie->method;
+                        $payment->amount = $price;
+                        $payment->reference = $reference;
+                        $payment->payment_status = "Open";
+                        $payment->created_at = date("Y-m-d H:i:s");
+                        $payment->save();
+                    }
+                    return redirect($payment->payment_url);
+                }
                 return redirect($_SERVER["HTTP_REFERER"]);
 
             } else {

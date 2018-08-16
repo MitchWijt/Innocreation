@@ -72,6 +72,7 @@
                                             <th scope="col" data-column-id="id" data-visible="false" data-type="numeric">ID</th>
                                             <th scope="col" data-column-id="name">Name</th>
                                             <th scope="col">team role</th>
+                                            <th scope="col">Paid split the bill</th>
                                             <th scope="col">Expertise</th>
                                         </tr>
                                     </thead>
@@ -81,6 +82,15 @@
                                                 <td scope="row" data-visible="false"><?= $member->id?></td>
                                                 <td><?= $member->getName()?></td>
                                                 <td><?= $member->roles->First()->title?></td>
+                                                <? if($team->split_the_bill == 1) { ?>
+                                                    <? if($member->paidSplitTheBill()) { ?>
+                                                        <td><i class="zmdi zmdi-check c-orange f-20"></i></td>
+                                                    <? } else { ?>
+                                                        <td><i class="zmdi zmdi-close c-orange f-20"></i></td>
+                                                    <? } ?>
+                                                <? } else { ?>
+                                                    <td> - </td>
+                                                <? } ?>
                                                 <? if($team->ceo_user_id == $member->id) { ?>
                                                     <td>Team leader</td>
                                                 <? } else { ?>

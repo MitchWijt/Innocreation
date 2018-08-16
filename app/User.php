@@ -3,6 +3,7 @@
 namespace App;
 use App\Expertises_linktable;
 
+use Faker\Provider\Payment;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Mollie\Api\MollieApiClient;
 use Symfony\Component\EventDispatcher\Tests\Service;
@@ -178,6 +179,20 @@ class User extends Authenticatable
                 $customer = $mollie->customers->get($this->mollie_customer_id);
                 $subscription = $customer->getSubscription($this->getMostRecentPayment()->sub_id);
                 if($subscription->status == "active"){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+
+    public function paidSplitTheBill(){
+        if($this->team_id != null){
+            if($this->team->split_the_bill == 1){
+                $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $this->id)->where("team_id", $this->team_id)->first();
+                $payment = Payments::select("*")->where("team_id", $this->team_id)->where("user_id", $this->id)->orderBy("created_at", "DESC")->first();
+                if(date("Y-m", strtotime($payment->created_at)) == date("Y-m") && $payment->payment_status == "paid" && $splitTheBillLinktable->team_id == $this->team_id){
                     return true;
                 } else {
                     return false;
