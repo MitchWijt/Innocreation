@@ -82,6 +82,15 @@ class LoginController extends Controller
             $user->created_at = date("Y-m-d H:i:s");
             $user->save();
 
+            $mollie = $this->getService("mollie");
+            $customer = $mollie->customers->create([
+                "name" => $user->getName(),
+                "email" => $user->email,
+            ]);
+            $newCustomer = User::select("*")->where("id", $user->id)->first();
+            $newCustomer->mollie_customer_id = $customer->id;
+            $newCustomer->save();
+
             $userChat = new UserChat();
             $userChat->creator_user_id = 1;
             $userChat->receiver_user_id = $user->id;

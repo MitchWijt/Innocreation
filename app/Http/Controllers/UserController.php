@@ -784,18 +784,6 @@ class UserController extends Controller
                     $splitTheBillLinktable->accepted = 1;
                     $splitTheBillLinktable->save();
 
-                    if ($user->mollie_customer_id == null) {
-                        $mollie = $this->getService("mollie");
-                        $customer = $mollie->customers->create([
-                            "name" => $user->getName(),
-                            "email" => $user->email,
-                        ]);
-                        $newCustomer = User::select("*")->where("id", $user->id)->first();
-                        $newCustomer->mollie_customer_id = $customer->id;
-                        $newCustomer->save();
-                    }
-
-                    sleep(4);
 
                     $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
                     $redirectUrl = "http://secret.innocreation.net/my-account/payment-details";
