@@ -1,0 +1,787 @@
+@font-face {
+    font-family: Corbert;
+    src: url(../fonts/Corbert-Regular.otf);
+}
+
+header{
+    font-family: Corbert;
+    background: #000000;
+    min-height: 100px;
+}
+
+footer{
+    font-family: Corbert;
+    background: #000000;
+    min-height: 100px;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 30px 0 30px;
+}
+
+.footer{
+    justify-content: space-between;
+    margin: 0 30px 0 30px;
+}
+
+.lower-header{
+    /*display: flex;*/
+    /*justify-content: center;*/
+    background: #C9CCCF;
+    -webkit-box-shadow: 0px 7px 24px 1px rgba(201,204,207,1);
+    -moz-box-shadow: 0px 7px 24px 1px rgba(201,204,207,1);
+    box-shadow: 0px 7px 24px 1px rgba(201,204,207,1);
+}
+
+.container{
+    /*width: 1200px !important;*/
+    font-family: Corbert;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.hidden{
+    display: none !important;
+}
+
+.hr{
+    border-top: 1px solid #FF6100;
+    margin: 0 auto;
+    text-align: center;
+    width: 800px;
+}
+.hr-card{
+    border-top: 1px solid #FF6100;
+    margin: 0 auto;
+    text-align: center;
+    width: 680px;
+}
+
+.sub-title{
+    font-weight: lighter;
+    font-size: 40px;
+    color: #C9CCCF;
+}
+
+.sub-title-black{
+    font-weight: lighter;
+    font-size: 40px;
+    color: #000000;
+}
+
+.sub-title-container{
+    display: flex;
+    justify-content: center;
+}
+
+.regular-link{
+    text-decoration: none;
+    cursor: pointer;
+    color: #FF6100;
+    padding: 0;
+}
+
+.regular-link:hover{
+    text-decoration: underline;
+    color: #FF6100;
+}
+
+.grey-background{
+    background: #C9CCCF !important;
+}
+
+.cartwheelLogo{
+    width:45px;
+    height:45px;
+}
+
+.cartwheelLogo-tablet{
+    width:35px;
+    height:35px;
+}
+
+.cartwheelLogo-mobile{
+    width:45px;
+    height:45px;
+}
+
+.btn-inno{
+    background: #000000;
+    border: 2px solid #FF6100 !important;
+    color: #C9CCCF;
+}
+
+.btn-inno:hover{
+    color: #000000 !important;
+    background: #C9CCCF !important;
+    cursor: pointer;
+}
+
+.menu-item:hover{
+    color: #000000 !important;
+    background: #C9CCCF !important;
+    cursor: pointer;
+}
+.menu-item-light:hover{
+    color: #C9CCCF !important;
+    background: #000 !important;
+    cursor: pointer;
+}
+
+.input{
+    border: 1px solid #000000 !important;
+    border-radius: 10px !important;
+    background: #C9CCCF !important;
+}
+.input-fat{
+    border: 1px solid #000000 !important;
+    border-radius: 10px !important;
+    background: #C9CCCF !important;
+    height: 50px;
+}
+
+.tokenfield{
+    border: 1px solid #000000 !important;
+    border-radius: 10px !important;
+    background: #C9CCCF !important;
+}
+
+.sidebar{
+    min-width: 210px;
+    max-width: 20px;
+    background: #000000;
+}
+.border-inno{
+    border: 3px solid #FF6100 !important;
+}
+.border-inno-black{
+    border: 3px solid #000000 !important;
+}
+.radius{
+    border-radius: 10px;
+}
+/*=========================================CARD/PANEL===================================*/
+.card-sm{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    /*width: 360px !important;*/
+    border: 1px solid #FF6100 !important;
+    -webkit-box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
+}
+.card{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    /*width: 640px !important;*/
+    border: 1px solid #FF6100 !important;
+}
+
+.card-lg{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    /*width: 800px !important;*/
+    border: 1px solid #FF6100 !important;
+    -webkit-box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
+}
+.card-chosen{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    width: 375px !important;
+    height: 375px !important;
+    border: 2px solid #FF6100 !important;
+}
+
+.card-final{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    width: 375px !important;
+    height: 375px !important;
+    border: 1px solid #C9CCCF !important;
+}
+
+.card-final:hover{
+    background: #C9CCCF !important;
+    border: 3px solid #FF6100 !important;
+    color: #000000 !important;
+}
+
+.card-square-sm{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    /*width: 300px !important;*/
+    /*height: 300px !important;*/
+    border: 1px solid #C9CCCF !important;
+}
+
+.card-task{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    /*height: 100px !important;*/
+    border: 1px solid #FF6100 !important;
+}
+
+.card-task:hover{
+    -webkit-box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 19px 1px rgba(0,0,0,0.75);
+}
+
+.card-square{
+    background: #000000 !important;
+    color: #C9CCCF !important;
+    width: 375px !important;
+    height: 375px !important;
+    border: 1px solid #C9CCCF !important;
+}
+
+.card-square:hover{
+    background: #C9CCCF !important;
+    border: 3px solid #FF6100 !important;
+    color: #000000 !important;
+}
+/*=========================================MODAL STYLE===============================*/
+.modal-header{
+    background: #C9CCCF !important;
+    border-bottom: 1px solid #FF6100 !important;
+}
+
+.modal-footer{
+    background: #C9CCCF !important;
+    border-top: 1px solid #FF6100 !important;
+}
+
+.modal-body{
+    background: #C9CCCF !important;
+}
+/*=======================================JQUERY UI===========================*/
+.ui-menu{
+    background: #000000;
+    list-style-type: none;
+    padding-left: 5px;
+    width: 65vh;
+    border: 2px solid #FF6100;
+    border-radius: 10px;
+    height: 200px;
+    overflow: scroll;
+    position: absolute !important;
+    top: 60px !important;
+    z-index: 1;
+}
+
+.ui-menu-item-wrapper{
+    list-style-type: none;
+    color: #C9CCCF;
+}
+.ui-helper-hidden-accessible {
+    display:none;
+}
+
+.token-input{
+    margin-bottom: 0 !important;
+}
+
+.tokenfield{
+    padding: 10px;
+}
+/*DATEPICKER*/
+
+.ui-datepicker{
+    background: #000;
+    color: #C9CCCF;
+    width: 216px;
+    height: auto;
+    margin: 5px auto 0;
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+}
+.ui-datepicker a {
+    text-decoration: none;
+}
+.ui-datepicker table {
+    width: 100%;
+}
+.ui-datepicker-header {
+    background: #000;
+    color: #C9CCCF;
+    font-weight: bold;
+    -webkit-box-shadow: inset 0px 1px 1px 0px rgba(250, 250, 250, 2);
+    -moz-box-shadow: inset 0px 1px 1px 0px rgba(250, 250, 250, .2);
+    box-shadow: inset 0px 1px 1px 0px rgba(250, 250, 250, .2);
+    text-shadow: 1px -1px 0px #000;
+    filter: dropshadow(color=#000, offx=1, offy=-1);
+    line-height: 30px;
+    border-width: 1px 0 0 0;
+    border-style: solid;
+    border-color: #111;
+}
+.ui-datepicker-title {
+    text-align: center;
+}
+.ui-datepicker-prev, .ui-datepicker-next {
+    width: 35px;
+    height: 35px;
+    color: #C9CCCF;
+    font-size: 12px;
+    text-align: center;
+    cursor: pointer;
+    line-height: 250%;
+
+}
+.ui-datepicker-prev {
+    float: left;
+    background-position: center -30px;
+}
+.ui-datepicker-next {
+    float: right;
+    background-position: center 0px;
+}
+.ui-datepicker thead {
+    border-bottom: 2px solid #FF6100;
+}
+
+
+.ui-datepicker tbody td {
+    padding: 0;
+    border-right: 1px solid #bbb;
+}
+.ui-datepicker tbody td:last-child {
+    border-right: 0px;
+}
+.ui-datepicker tbody tr {
+    border-bottom: 1px solid #bbb;
+}
+.ui-datepicker tbody tr:last-child {
+    border-bottom: 0px;
+}
+.ui-datepicker td span, .ui-datepicker td a {
+    display: inline-block;
+    font-weight: bold;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: #666666;
+    text-shadow: 1px 1px 0px #fff;
+    filter: dropshadow(color=#fff, offx=1, offy=1);
+}
+.ui-datepicker-calendar .ui-state-default {
+    background: #C9CCCF;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ededed', endColorstr='#dedede',GradientType=0 );
+    -webkit-box-shadow: inset 1px 1px 0px 0px rgba(250, 250, 250, .5);
+    -moz-box-shadow: inset 1px 1px 0px 0px rgba(250, 250, 250, .5);
+    box-shadow: inset 1px 1px 0px 0px rgba(250, 250, 250, .5);
+}
+.ui-datepicker-unselectable{
+    background: #aaaaaa !important;
+}
+.ui-state-disabled .ui-state-default{
+    text-decoration: line-through !important;
+    background: #aaaaaa;
+}
+.ui-datepicker-calendar .ui-state-hover {
+    background: #f7f7f7;
+}
+.ui-datepicker-calendar .ui-state-active {
+    background: #FF6100;
+    color: #000;
+    position: relative;
+}
+/*=======================================================HEADER===============================================*/
+.main-title{
+    text-align: center;
+}
+.title{
+    font-weight: bold;
+    font-size: 60px;
+    color: #00C5DE;
+}
+.title-black{
+    font-weight: bold;
+    font-size: 60px;
+}
+
+.slogan{
+    color: #C9CCCF;
+}
+
+.social-media-header{
+    display: flex;
+    flex-direction: row;
+    color: #00C5DE;
+    align-items: center;
+    margin-right: 150px;
+}
+
+.social-icon{
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    padding-top: 7px;
+}
+.circle{
+    border: 2px solid #C9CCCF;
+    border-radius: 100%;
+    margin-right: 20px;
+}
+
+
+.circle-instructions{
+    border: 2px solid #FF6100;
+    border-radius: 100%;
+    margin-right: 20px;
+    height: 70px !important;
+    width: 70px !important;
+}
+
+.circle-instructions-mobile{
+    border: 2px solid #FF6100;
+    border-radius: 100%;
+    margin-right: 20px;
+    height: 40px !important;
+    width: 40px !important;
+}
+
+.circle-instructions-second{
+    border: 2px solid #00C5DE;
+    border-radius: 100%;
+    margin-right: 20px;
+    height: 70px !important;
+    width: 70px !important;
+}
+
+.circle a{
+    text-decoration: none;
+    color: #00C5DE;
+}
+
+.accounts P{
+    margin-bottom: 5px;
+    color: #C9CCCF;
+}
+
+#teamLink{
+    color: #FF6100;
+}
+
+.loginRegister{
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.main-navMenu li{
+    text-transform: uppercase;
+}
+.main-navMenu li a:hover{
+    text-decoration: underline;
+}
+
+.main-navMenu li a{
+    text-decoration: none;
+    padding: 0 10px 0 0;
+    cursor: pointer;
+    border-right: 1px solid #000000;
+    color: #000000;
+}
+
+.main-navMenu-mobile li a{
+    text-decoration: none;
+    padding: 0 10px 0 0;
+    cursor: pointer;
+    color: #000000;
+}
+.main-navMenu-mobile {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    justify-content: center;
+    margin-bottom: 0;
+    padding-left: 0;
+    text-align: center;
+}
+
+.main-navMenu{
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+.main-navMenu li{
+    padding: 0 10px 0 0;
+}
+
+#last-child{
+    border: none;
+}
+
+#dreams{
+    text-transform: uppercase;
+    color: #FF6100;
+    text-decoration: underline;
+}
+/*========================================FOOTER==========================================*/
+.create-account{
+    border: 2px solid #C9CCCF;
+    border-radius: 15px;
+}
+
+.create-account:hover{
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.list-links{
+    flex-direction: column;
+    justify-content: center;
+}
+
+/*===========================================HOMEPAGE=============================================*/
+.home-background-wrapper{
+    background: url("/images/homepage.png");
+}
+
+.home-background-wrapper {
+    /* Set rules to fill background */
+    /*min-height: 40vh;*/
+    /*min-width: 1000px;*/
+
+    /* Set up proportionate scaling */
+    width: 100%;
+    height: 100vh;
+    /*max-height: 85vh;*/
+    /*min-height: 40vh;*/
+    /*overflow: hidden;*/
+    /*clear: both;*/
+
+    /* Set up positioning */
+    position: absolute;
+
+}
+
+.home-background-wrapper{
+    background-size: cover;
+    /*background-size:100% auto;*/
+}
+
+.main-content{
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    /*align-items: center;*/
+    font-family: Corbert;
+    /*perspective: 800px;*/
+
+}
+
+.social-icon-home{
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.scrollHomeBtn:hover{
+    cursor: pointer;
+}
+/*========================================INSTRUCTIONS===============================*/
+.social-icon-instructions{
+    width: 70px ;
+    height: 70px ;
+    text-align: center;
+    padding-top: 7px;
+}
+
+.instructions{
+    background: #000000;
+}
+
+.instructions-text{
+    font-size: 25px;
+    color: #C9CCCF;
+}
+
+.instructions-flex{
+    display: flex;
+    align-items: center;
+}
+
+.instructions-flex-right{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.instructions-flex-center{
+    display: flex;
+    align-items: center;
+    margin-left: 130px !important;
+}
+
+.instructions-list > .instructions-list-item{
+    color: #FF6100;
+}
+
+/*====================================INSTRUCTIONS-SECOND=================================*/
+.instructions-second{
+    background: #C9CCCF;
+}
+
+.instructions-second-text{
+    font-size: 25px;
+    color: #000000;
+}
+
+/*====================================CHAT===========================*/
+
+.userChatSearchBar{
+    min-height: 70vh !important;
+    max-height: 70vh !important;
+}
+
+.circleImage{
+    width: 65px;
+    height: 65px;
+}
+
+.circleSmall{
+    width: 25px;
+    height: 25px;
+}
+.circleNotification{
+    width: 30px;
+    height: 30px;
+}
+.circleMedium{
+    width: 150px;
+    height: 150px;
+}
+.circleImgLg{
+    width: 250px;
+    height: 250px;
+}
+.messageSent{
+    background: #003366;
+    border-radius: 10px;
+}
+.messageReceived{
+    background: #303030;
+    border-radius: 10px;
+}
+
+.messageReceivedInnocreation{
+    background: #FF6100 !important;
+    color: #000 !important;
+    border-radius: 10px !important;
+}
+
+.hover:hover .instructions-text{
+    color: #000;
+}
+/*=============================PAGINATION=======================*/
+
+.pagination li a {
+    color: #C9CCCF;
+}
+
+.pagination li{
+    margin: 0 10px 0 10px;
+    padding: 2px 5px 2px 5px;
+}
+
+.pagination .active{
+    color: #FF6100;
+}
+
+/*==========================TINYMCE================*/
+.mce-notification{
+    display: none;
+}
+
+/*=======================RICH TEXT EDITOR*/
+
+.customTextarea{
+    border: 1px solid #000;
+    border-radius: 10px;
+    min-height: 200px;
+}
+
+.customTextarea p *{
+    max-width: 760px !important;
+    margin-bottom: 0 !important;
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    -ms-word-break: break-all;
+    /* This is the dangerous one in WebKit, as it breaks things wherever */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+
+}
+
+.editorPlanner p{
+    margin-bottom: 0 !important;
+}
+/* Alignment styles for images, videos and iframes in editable regions */
+
+/* Center (default) */
+[data-editable] iframe,
+[data-editable] image,
+[data-editable] [data-ce-tag=img],
+[data-editable] img,
+[data-editable] video {
+    clear: both;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+}
+
+/* Left align */
+[data-editable] .align-left {
+    clear: initial;
+    float: left;
+    margin-right: 0.5em;
+}
+
+/* Right align */
+[data-editable].align-right {
+    clear: initial;
+    float: right;
+    margin-left: 0.5em;
+}
+
+/* Alignment styles for text in editable regions */
+[data-editable] .text-center {
+    text-align: center;
+}
+
+[data-editable] .text-left {
+    text-align: left;
+}
+
+[data-editable] .text-right {
+    text-align: right;
+}
+
+.ce-element{
+    margin-bottom: 0 !important;
+}
+.ce-element--empty:after{
+    content: "" !important;
+}
+
+.ct-ignition{
+    display: none;
+}
+

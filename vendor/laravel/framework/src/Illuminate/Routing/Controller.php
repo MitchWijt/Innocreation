@@ -2,6 +2,8 @@
 
 namespace Illuminate\Routing;
 
+use Session;
+use App\User;
 use BadMethodCallException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -90,6 +92,7 @@ abstract class Controller
      */
     public function missingMethod($parameters = [])
     {
+
         throw new NotFoundHttpException('Controller method not found.');
     }
 
