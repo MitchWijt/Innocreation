@@ -258,8 +258,8 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         ),
         'Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/php-http/message/src',
-            1 => __DIR__ . '/..' . '/php-http/message-factory/src',
+            0 => __DIR__ . '/..' . '/php-http/message-factory/src',
+            1 => __DIR__ . '/..' . '/php-http/message/src',
         ),
         'Http\\Discovery\\' => 
         array (
@@ -395,6 +395,7 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'App\\ForumThread' => __DIR__ . '/../..' . '/app/ForumThread.php',
         'App\\ForumThreadComment' => __DIR__ . '/../..' . '/app/ForumThreadComment.php',
         'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
+        'App\\Http\\Controllers\\ApiController' => __DIR__ . '/../..' . '/app/Http/Controllers/ApiController.php',
         'App\\Http\\Controllers\\Auth\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AuthController.php',
         'App\\Http\\Controllers\\Auth\\PasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/PasswordController.php',
         'App\\Http\\Controllers\\CheckoutController' => __DIR__ . '/../..' . '/app/Http/Controllers/CheckoutController.php',
@@ -1874,6 +1875,12 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'Mailgun\\Hydrator\\NoopHydrator' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Hydrator/NoopHydrator.php',
         'Mailgun\\Lists\\OptInHandler' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Lists/OptInHandler.php',
         'Mailgun\\Mailgun' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Mailgun.php',
+        'Mailgun\\Message\\BatchMessage' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Message/BatchMessage.php',
+        'Mailgun\\Message\\Exceptions\\LimitExceeded' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Message/Exceptions/LimitExceeded.php',
+        'Mailgun\\Message\\Exceptions\\MissingRequiredParameter' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Message/Exceptions/MissingRequiredParameter.php',
+        'Mailgun\\Message\\Exceptions\\RuntimeException' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Message/Exceptions/RuntimeException.php',
+        'Mailgun\\Message\\Exceptions\\TooManyRecipients' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Message/Exceptions/TooManyRecipients.php',
+        'Mailgun\\Message\\MessageBuilder' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Message/MessageBuilder.php',
         'Mailgun\\Messages\\BatchMessage' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Messages/BatchMessage.php',
         'Mailgun\\Messages\\Exceptions\\InvalidParameter' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Messages/Exceptions/InvalidParameter.php',
         'Mailgun\\Messages\\Exceptions\\InvalidParameterType' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Messages/Exceptions/InvalidParameterType.php',
@@ -2783,6 +2790,7 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'Prophecy\\Doubler\\ClassPatch\\ProphecySubjectPatch' => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy/Doubler/ClassPatch/ProphecySubjectPatch.php',
         'Prophecy\\Doubler\\ClassPatch\\ReflectionClassNewInstancePatch' => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy/Doubler/ClassPatch/ReflectionClassNewInstancePatch.php',
         'Prophecy\\Doubler\\ClassPatch\\SplFileInfoPatch' => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy/Doubler/ClassPatch/SplFileInfoPatch.php',
+        'Prophecy\\Doubler\\ClassPatch\\ThrowablePatch' => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy/Doubler/ClassPatch/ThrowablePatch.php',
         'Prophecy\\Doubler\\ClassPatch\\TraversablePatch' => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy/Doubler/ClassPatch/TraversablePatch.php',
         'Prophecy\\Doubler\\DoubleInterface' => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy/Doubler/DoubleInterface.php',
         'Prophecy\\Doubler\\Doubler' => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy/Doubler/Doubler.php',
