@@ -17,7 +17,7 @@
             <hr class="m-b-20">
             <div class="row">
                 <div class="col-sm-12 text-center">
-                    <img class="circle circleImgLg m-r-0" src="<?=$team->getProfilePicture()?>" alt="<?=$team->team_name?>">
+                    <img class="circle circleImgLg m-r-0 img-responsive" src="<?=$team->getProfilePicture()?>" alt="<?=$team->team_name?>">
                 </div>
             </div>
             <? if($user) { ?>
