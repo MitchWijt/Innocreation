@@ -14,5 +14,5 @@ pipelines:
     deployment-to-prod: # Another display name
       - step:
           script:
-            - echo "Manual triggers for deployments are awesome!"
+            - echo "Manual triggers for deployments are awesomes!"
           
