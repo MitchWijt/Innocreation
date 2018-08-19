@@ -5,6 +5,11 @@
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">Contact us</h1>
             </div>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <small>Best reachable times are between 17:00 and 22:00 (UTC +2)</small>
+                </div>
+            </div>
             <div class="hr col-sm-12"></div>
             @if(session('success'))
                 <div class="alert alert-success m-b-20 p-b-10">
@@ -49,9 +54,37 @@
                 {{--</div>--}}
                 <div class="row d-flex js-center fileUpload">
                     <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <i class="zmdi zmdi-whatsapp f-25 c-green"></i> <span class="f-25">/</span> <i class="zmdi zmdi-phone f-20"></i>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="m-t-5">+31633373476</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-inno submitContactForm pull-right" type="button">Send</button>
+                            </div>
+                        </div>
                         {{--<input type="file" name="files" multiple class="hidden files">--}}
                         {{--<button class="btn btn-inno addFiles" type="button"><i class="zmdi zmdi-file-plus"></i> Add files</button>--}}
-                        <button class="btn btn-inno submitContactForm pull-right" type="button">Send</button>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <i class="zmdi zmdi-mail-send f-25"></i>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="">info@innocreation.net</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>

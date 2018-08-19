@@ -15,10 +15,11 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
+        $title = "Make your dreams become a reality!";
+        $og_description = "Create a team with like-minded people, help each other make dreams become a reality!";
 //        Session::flush();
-       return view("public/home/home");
+       return view("public/home/home", compact("title", "og_description"));
     }
 
     /**
@@ -37,12 +38,14 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function contactAction(){
+        $title = "Ask your questions!";
+        $og_description = "Ask all of your questions about Innocreation right here!";
         $serviceReviews = ServiceReview::select("*")->where("service_review_type_id", 1)->get();
         if($this->isLoggedIn()){
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
-            return view("/public/home/contactUs", compact("user", "serviceReviews"));
+            return view("/public/home/contactUs", compact("user", "serviceReviews", "title", "og_description"));
         } else {
-            return view("/public/home/contactUs", compact("serviceReviews"));
+            return view("/public/home/contactUs", compact("serviceReviews", "title", "og_description"));
         }
     }
 

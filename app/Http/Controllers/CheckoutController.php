@@ -70,6 +70,10 @@ class CheckoutController extends Controller
                 }
             }
 
+            if($user && $user->hasValidSubscription()){
+                return redirect("/my-account")->withErrors("It seems your team already has a package!");
+            }
+
             if (request()->has('step')) {
                 $step = request()->step;
                 if ($step == 3) {
