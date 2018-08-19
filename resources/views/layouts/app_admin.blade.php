@@ -32,7 +32,7 @@
     <script defer src="/js/jquery.timepicker.min.js"></script>
     <script defer src="/js/dataTables.min.js"></script>
     <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=i4hrh8gzmh7fted3hqpgatcuwma8kl075x378rgkki09j852"></script>
-
+    <meta name="robots" content="noindex, nofollow" />
     {{------------------------------}}
     <title>Innocreation | Admin panel</title>
 </head>
