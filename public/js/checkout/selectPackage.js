@@ -129,3 +129,21 @@ $(".toStep3").on("click",function () {
         $(".savePaymentInfoForm").submit();
     }
 });
+
+$(".submitRegister").on("click",function () {
+    if($(".agreePrivacy").is(":checked") && $(".agreeTermOfService").is(":checked")){
+        $(".registerForm").submit();
+    } else {
+        if(!$(".agreePrivacy").is(":checked")){
+            $(".agreePrivacyLabel").css("color", "red");
+        } else {
+            $(".agreePrivacyLabel").css("color", "black");
+        }
+
+        if(!$(".agreeTermOfService").is(":checked")){
+            $(".agreeTermsLabel").css("color", "red");
+        } else {
+            $(".agreeTermsLabel").css("color", "black");
+        }
+    }
+});
