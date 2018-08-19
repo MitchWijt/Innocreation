@@ -138,7 +138,7 @@
                 <li><a href="/teams">Teams</a></li>
                 <li><a href="/expertises">Users / expertises</a></li>
                 <li><a href="/page/what-is-innocreation">About us</a></li>
-                <li><a href="">Shop</a></li>
+                {{--<li><a href="">Shop</a></li>--}}
                 <li><a href="/pricing">Pricing</a></li>
                 <li><a href="/team-products">Team products</a></li>
                 <li><a href="/forum" id="last-child">Forum</a></li>
@@ -153,7 +153,7 @@
                 <li><a href="/teams">Teams</a></li>
                 <li><a href="/expertises">Users / expertises</a></li>
                 <li><a href="/page/what-is-innocreation">About us</a></li>
-                <li><a href="">Shop</a></li>
+                {{--<li><a href="">Shop</a></li>--}}
                 <li><a href="/pricing">Pricing</a></li>
                 <li><a href="/team-products">Team products</a></li>
                 <li><a href="/forum" id="last-child">Forum</a></li>

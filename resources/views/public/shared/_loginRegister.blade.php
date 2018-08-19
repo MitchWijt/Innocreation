@@ -103,15 +103,39 @@
             </select>
         </div>
     </div>
-    <div class="form-group m-b-0 d-flex js-center">
+    <div class="form-group m-b-0 d-flex js-center m-b-20">
         <div class="row d-flex js-center col-sm-9">
             <label class="m-0 <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?> p-0">Phonenumber</label>
             <input type="text" name="phonenumber" class="phonenumber input <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?>" value="<? if(isset($user->phonenumber)) echo $user->phonenumber?>">
         </div>
     </div>
+    <div class="form-group m-b-0 d-flex js-center">
+        <div class="col-md-7">
+            <div class="row m-l-5">
+                <div class="col-xs-1 m-r-10">
+                    <input type="checkbox" name="agreeTermOfService" class="agreeTermOfService" id="agreeTermOfService">
+                </div>
+                <div class="col-xs-11">
+                    <label class="m-0 p-0 agreeTermsLabel" for="agreeTermOfService">I agree with the <a target="_blank" href="/page/terms-of-service" class="regular-link">Terms of service</a></label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group m-b-0 d-flex js-center">
+        <div class="col-md-7">
+            <div class="row m-l-5">
+                <div class="col-xs-1  m-r-10">
+                    <input type="checkbox" name="agreePrivacy" class="agreePrivacy" id="agreePrivacy">
+                </div>
+                <div class="col-xs-11">
+                    <label class="m-0 p-0 agreePrivacyLabel" for="agreePrivacy">I agree with the <a target="_blank" href="/page/privacy-policy" class="regular-link">Privacy policy</a></label>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row m-t-20 d-flex js-center">
         <div class="col-sm-7">
-            <button class="btn btn-inno pull-right">Register</button>
+            <button type="button" class="btn btn-inno pull-right submitRegister">Register</button>
             <? if($pageType == "default") { ?>
                 <p class="m-t-10">Already have an account? <a class="regular-link toLogin" href="#">Sign in here!</a></p>
             <? } ?>

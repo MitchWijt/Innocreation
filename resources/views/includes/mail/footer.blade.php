@@ -25,7 +25,7 @@
         <td class="webfont" width="260" valign="top">
             <p style="color: #FF6100; margin-left: 40px; margin-bottom: 0; font-size: 15px; margin-top: 10px;">Contact:</p>
             <p style="color: #C9CCCF; margin-bottom: 0; margin-left: 45px; font-size: 14px; margin-top: 5px">info@innocreation.net</p>
-            <p style="color: #C9CCCF; margin-bottom: 15px; margin-left: 45px; font-size: 14px; margin-top: 5px">0637480813</p>
+            <p style="color: #C9CCCF; margin-bottom: 15px; margin-left: 45px; font-size: 14px; margin-top: 5px">+31633373476</p>
         </td>
     </tr>
 </table>
