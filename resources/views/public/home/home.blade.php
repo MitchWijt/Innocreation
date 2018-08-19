@@ -196,7 +196,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 p-b-20">
+                        <div class="col-md-12">
                             <div class="row ">
                                 <div class="col-sm-2 d-flex jc-end">
                                     <div class="circle-instructions">
@@ -215,6 +215,11 @@
                                     @endhandheld
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center m-t-0 m-b-20">
+                            <a href="/login?register=1" class="btn btn-lg btn-inno">Join for free!</a>
                         </div>
                     </div>
                 </div>

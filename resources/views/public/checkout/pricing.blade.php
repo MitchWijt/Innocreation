@@ -6,6 +6,49 @@
                 <h1 class="sub-title-black @mobile f-25 @endmobile">Innocreation pricing</h1>
             </div>
             <hr class="m-b-20">
+            <div class="row m-b-25">
+                <div class="col-sm-12">
+                    <div class="card no-hover">
+                        <div class="card-block">
+                            <div class="text-center">
+                                <p class="f-20 m-t-15">Free dreamer</p>
+                            </div>
+                            <hr>
+                            <div class="d-flex js-center">
+                                <ul class="instructions-list m-t-10 m-b-10">
+                                    <li class="instructions-list-item">
+                                        <p class="instructions-text f-13 m-0 p-b-10">Max. amount of 2 members in your team</p>
+                                    </li>
+                                    <li class="instructions-list-item">
+                                        <p class="instructions-text f-13 m-0 p-b-10">Create up up to 1 task planner</p>
+                                    </li>
+                                    <li class="instructions-list-item">
+                                        <p class="instructions-text f-13 m-0 p-b-10">Create up up to 2 meeting at the same time</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                @notmobile
+                                    <hr class="col-sm-4">
+                                @elsemobile
+                                    <hr class="col-xs-4">
+                                @endnotmobile
+                            </div>
+                            <div class="col-sm-12 m-b-20">
+                                <div class="text-center">
+                                    <? if(isset($user)) { ?>
+                                        <a href="/account" class="btn btn-inno @tablet btn-sm @endtablet m-t-10">Join for free!</a>
+                                    <? } else { ?>
+                                        <a href="/login?register=1" class="btn btn-inno @tablet btn-sm @endtablet m-t-10">Join for free!</a>
+                                    <? } ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <? foreach($membershipPackages as $membershipPackage) { ?>
                     <? $descriptions = explode(",",$membershipPackage->description);
