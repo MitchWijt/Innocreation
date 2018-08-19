@@ -6,6 +6,15 @@
 image: php:7.1.1
 
 pipelines:
+ custom: # Pipelines that are triggered manually
+    sonar: # The name that is displayed in the list in the Bitbucket Cloud GUI
+      - step:
+          script:
+            - echo "Manual triggers for Sonar are awesome!"
+    deployment-to-prod: # Another display name
+      - step:
+          script:
+            - echo "Manual triggers for deployments are awesome!"
   default:
     - step:
         script:
