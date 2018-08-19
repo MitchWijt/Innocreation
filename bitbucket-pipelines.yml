@@ -15,9 +15,4 @@ pipelines:
       - step:
           script:
             - echo "Manual triggers for deployments are awesome!"
-  default:
-    - step:
-        script:
-            - echo "I made a pipeline!"
-
           
