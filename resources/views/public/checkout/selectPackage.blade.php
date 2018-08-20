@@ -1,6 +1,5 @@
 @extends("layouts.app")
 @section("content")
-    <script type="text/javascript" src="https://test.adyen.com/hpp/cse/js/8215323598983147.shtml"></script>
     <div class="d-flex grey-background vh100">
         <div class="container">
             <div class="sub-title-container p-t-20">
@@ -278,7 +277,7 @@
                                     <div class="text-center m-t-10">
                                         <h5>Payment method</h5>
                                         <i class="m-l-10 m-t-10 f-11 c-dark-grey">Card will be charged monthly for packages purchased. All major credit cards accepted.</i>
-                                        <form method="POST" action="/checkout/authorisePaymentRequest" id="adyen-encrypted-form">
+                                        <form method="POST" action="/checkout/authorisePaymentRequest">
                                             <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                             <input type="hidden" name="team_id" value="<?= $team->id?>">
                                             <div class="row m-t-20 m-b-20">
@@ -382,19 +381,10 @@
                 ],
                 delay: 100
             },
-            showAutocompleteOnFocus: true
+            showAutocompleteOnFocus: true,
+            createTokensOnBlur: true
         });
     </script>
-    <? if($step == 3) { ?>
-    <script>
-        // The form element to encrypt.
-        var form = document.getElementById('adyen-encrypted-form');
-        // See https://github.com/Adyen/CSE-JS/blob/master/Options.md for details on the options to use.
-        var options = {};
-        // Bind encryption options to the form.
-        adyen.createEncryptedForm(form, options);
-    </script>
-    <? } ?>
 @endsection
 @section('pagescript')
     <script src="/js/checkout/selectPackage.js"></script>
