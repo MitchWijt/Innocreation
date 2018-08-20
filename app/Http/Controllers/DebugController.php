@@ -26,12 +26,11 @@ class DebugController extends Controller
      *
      */
     public function test(){
-
-        $user = User::select("*")->where("id", 10)->first();
-        $this->saveAndSendEmail($user, 'Welcome to Innocreation!', view("/templates/sendWelcomeMail", compact("user")));
+        if($this->authorized(true)) {
+            $user = User::select("*")->where("id", 10)->first();
+            $this->saveAndSendEmail($user, 'Welcome to Innocreation!', view("/templates/sendWelcomeMail", compact("user")));
 
 //        if($this->authorized(true)){
-
 
 
 //        $user = User::select("*")->where("id", 10)->first();
@@ -45,5 +44,6 @@ class DebugController extends Controller
 //        foreach($subscriptions as $subscription){
 //            $customer->cancelSubscription($subscription->id);
 //        }
+        }
     }
 }

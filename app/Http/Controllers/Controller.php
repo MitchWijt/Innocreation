@@ -61,10 +61,37 @@ class Controller extends BaseController
             ];
             return $mailgun;
         } else if($service == "mollie"){
+            $fullDomain = $_SERVER['HTTP_HOST'];
+            $domainExplode = explode(".", $fullDomain);
+            if($domainExplode[0] == "secret") {
+                $apiKey = "test_5PW69PFKTaBS6E9A4Sgb3gzWjQ5k4v";
+            } else {
+                $apiKey = "live_BdmQNxeQ3zaQrqbmPepVSS33D3QVKe";
+            }
             $mollie = new MollieApiClient();
-            $mollie->setApiKey("test_5PW69PFKTaBS6E9A4Sgb3gzWjQ5k4v");
+            $mollie->setApiKey($apiKey);
             return $mollie;
         }
+    }
+
+    public function getWebhookUrl($sub = false){
+        $fullDomain = $_SERVER['HTTP_HOST'];
+        $domainExplode = explode(".", $fullDomain);
+        if($sub == false) {
+            if ($domainExplode[0] == "secret") {
+                $url = "https://secret.innocreation.net/webhook/mollieRecurring";
+            } else {
+                $url = "https://innocreation.net/webhook/mollieRecurring";
+            }
+        } else {
+            if ($domainExplode[0] == "secret") {
+                $url = "https://secret.innocreation.net/webhook/mollieRecurringPayment";
+            } else {
+                $url = "https://innocreation.net/webhook/mollieRecurringPayment";
+            }
+        }
+
+        return $url;
     }
 
     public function saveAndSendEmail($to, $subject, $message, $from = 'Innocreation <mitchel@innocreation.net>'){

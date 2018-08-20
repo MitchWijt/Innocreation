@@ -148,8 +148,15 @@ class CheckoutController extends Controller
         //Get team and teampackage + declare price
         $team = Team::select("*")->where("id", $request->input("team_id"))->first();
         $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
+        $fullDomain = $_SERVER['HTTP_HOST'];
+        $domainExplode = explode(".", $fullDomain);
         if ($team->split_the_bill == 0) {
-            $redirectUrl = "http://secret.innocreation.net/thank-you";
+            if($domainExplode[0] == "secret") {
+                $redirectUrl = "http://secret.innocreation.net/thank-you";
+            } else {
+                $redirectUrl = "http://innocreation.net/thank-you";
+            }
+
             if (!Session::has("customPackagesArray")) {
                 $description = $teamPackage->title . " for team " . $team->team_name;
                 $price = number_format($teamPackage->price, 2, ".", ".");
@@ -158,7 +165,11 @@ class CheckoutController extends Controller
                 $price = number_format(\Illuminate\Support\Facades\Session::get("customPackagesArray")["price"], 2, ".", ".");
             }
         } else {
-            $redirectUrl = "https://secret.innocreation.net/almost-there";
+            if($domainExplode[0] == "secret") {
+                $redirectUrl = "https://secret.innocreation.net/almost-there";
+            } else {
+                $redirectUrl = "https://innocreation.net/almost-there";
+            }
             $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("team_id", $request->input("team_id"))->where("user_id", $user->id)->first();
             $splitTheBillLinktable->accepted = 1;
             $splitTheBillLinktable->save();
@@ -198,7 +209,7 @@ class CheckoutController extends Controller
                     ],
                     "description" => $description,
                     "redirectUrl" => $redirectUrl,
-                    "webhookUrl" => "https://secret.innocreation.net/webhook/mollieRecurring",
+                    "webhookUrl" => $this->getWebhookUrl(),
                     "method" => "creditcard",
                     "sequenceType" => "first",
                     "customerId" => $splitTheBillLinktable->user->mollie_customer_id,
@@ -230,7 +241,7 @@ class CheckoutController extends Controller
                 ],
                 "description" => $description,
                 "redirectUrl" => $redirectUrl,
-                "webhookUrl" => "https://secret.innocreation.net/webhook/mollieRecurring",
+                "webhookUrl" => $this->getWebhookUrl(),
                 "method" => "creditcard",
                 "sequenceType" => "first",
                 "customerId" => "$user->mollie_customer_id",
@@ -519,7 +530,7 @@ class CheckoutController extends Controller
                 "currency" => "EUR",
                 "value" => number_format($price, 2, ".", "."),
             ];
-            $subscription->webhookUrl = "https://secret.innocreation.net/webhook/mollieRecurringPayment";
+            $subscription->webhookUrl = $this->getWebhookUrl(true);
             $subscription->startDate = date("Y-m-d", strtotime("+1 month"));
             $subscription->update();
         }
