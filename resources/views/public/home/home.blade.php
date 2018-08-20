@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-md-12 d-flex js-center">
                     <div class="circle m-r-0" style="width: 80px !important; height: 80px !important;">
-                        <i style="font-size: 65px; color: #FF6100; margin-left: 7px" class="zmdi zmdi-chevron-down social-icon-home scrollHomeBtn"></i>
+                        <i style="font-size: 65px; color: #FF6100; margin-left: 8px" class="zmdi zmdi-chevron-down social-icon-home scrollHomeBtn arrow"></i>
                     </div>
                 </div>
             </div>
@@ -237,15 +237,32 @@
     }
 </style>
 <script>
-    var position = $(window).scrollTop();
-    $(document).scroll(function(event) {
-        var scroll = $(window).scrollTop();
-        if(scroll > position) {
+
+    $('body').bind('touchmove', function(e) {
+        $(".headerShow").fadeIn();
+        $(".home-background-wrapper").css("height","85vh");
+        $(".homepage-mainContent").removeClass("hidden");
+        $(".footerView").load("/includes/footer");
+        $(".footerView").attr("style", "display: block !important");
+    });
+
+    $(window).bind('mousewheel DOMMouseScroll', function(event){
+        if (event.originalEvent.wheelDelta > 0 || event.originalEvent.detail < 0) {
+            // scroll up
+        }
+        else {
             $(".headerShow").fadeIn();
             $(".home-background-wrapper").css("height","85vh");
             $(".homepage-mainContent").removeClass("hidden");
             $(".footerView").load("/includes/footer");
             $(".footerView").attr("style", "display: block !important");
+        }
+    });
+    var position = $(window).scrollTop();
+    $(document).scroll(function(event) {
+        var scroll = $(window).scrollTop();
+        if(scroll > position) {
+
         }
         position = scroll;
 //        if( event.originalEvent.detail > 0 || event.originalEvent.wheelDelta < 0 ) {

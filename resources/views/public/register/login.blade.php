@@ -35,7 +35,8 @@
             ],
             delay: 100
         },
-        showAutocompleteOnFocus: true
+        showAutocompleteOnFocus: true,
+        createTokensOnBlur: true
     });
 </script>
 @endsection
