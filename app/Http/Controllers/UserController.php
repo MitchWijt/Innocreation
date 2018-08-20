@@ -761,7 +761,7 @@ class UserController extends Controller
                             ],
                             "interval" => "$range",
                             "description" => $description . "recurring",
-                            "webhookUrl" => "https://secret.innocreation.net/webhook/mollieRecurringPayment",
+                            "webhookUrl" => $this->getWebhookUrl(true),
                         ]);
 
                     }
@@ -786,7 +786,13 @@ class UserController extends Controller
 
 
                     $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
-                    $redirectUrl = "http://secret.innocreation.net/my-account/payment-details";
+                    $fullDomain = $_SERVER['HTTP_HOST'];
+                    $domainExplode = explode(".", $fullDomain);
+                    if($domainExplode[0] == "secret") {
+                        $redirectUrl = "http://secret.innocreation.net/my-account/payment-details";
+                    } else {
+                        $redirectUrl = "http://innocreation.net/my-account/payment-details";
+                    }
                     if ($teamPackage->custom_team_package_id == null) {
                         $description = $teamPackage->title . " for team " . $user->team->team_name;
                     } else {
@@ -805,7 +811,7 @@ class UserController extends Controller
                         ],
                         "description" => $description,
                         "redirectUrl" => $redirectUrl,
-                        "webhookUrl" => "https://secret.innocreation.net/webhook/mollieRecurring",
+                        "webhookUrl" => $this->getWebhookUrl(),
                         "method" => "creditcard",
                         "sequenceType" => "first",
                         "customerId" => "$user->mollie_customer_id",
@@ -863,7 +869,7 @@ class UserController extends Controller
                 "currency" => "EUR",
                 "value" => number_format($newPrice, 2, ".", "."),
             ];
-            $subscription->webhookUrl = "https://secret.innocreation.net/webhook/mollieRecurringPayment";
+            $subscription->webhookUrl = $this->getWebhookUrl(true);
             $subscription->startDate = date("Y-m-d", strtotime("+1 month"));
             $subscription->update();
 
@@ -973,7 +979,7 @@ class UserController extends Controller
                         "currency" => "EUR",
                         "value" => number_format($newAmount, 2, ".", "."),
                     ];
-                    $subscription->webhookUrl = "https://secret.innocreation.net/webhook/mollieRecurringPayment";
+                    $subscription->webhookUrl = $this->getWebhookUrl(true);
                     $subscription->update();
                 }
                 $splitTheBillLinktable->accepted_change = 0;
@@ -1058,7 +1064,7 @@ class UserController extends Controller
                     "currency" => "EUR",
                     "value" => number_format($newLeaderPrice, 2, ".", "."),
                 ];
-                $subscription->webhookUrl = "https://secret.innocreation.net/webhook/mollieRecurringPayment";
+                $subscription->webhookUrl = $this->getWebhookUrl(true);
                 $subscription->update();
 
                 $teamLeaderSplitTheBillLinktable->amount = $newLeaderPrice;
