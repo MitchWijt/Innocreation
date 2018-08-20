@@ -50,7 +50,6 @@ class LoginController extends Controller
             'expertises' => 'required',
             'city' => 'required',
             'postcode' => 'required',
-            'state' => 'required',
             'country' => 'required',
             'phonenumber' => 'required',
 
