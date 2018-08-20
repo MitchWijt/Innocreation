@@ -70,12 +70,18 @@
         </div>
     </div>
     <? if(!isset($user)) { ?>
-        <div class="form-group m-b-10 d-flex js-center p-relative expertises">
+        <div class="form-group m-b-0 d-flex js-center p-relative expertises">
             <div class="row d-flex js-center col-sm-9">
                 <label class="m-0 <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?> p-0">Expertises</label>
                 <input type="text" class="input p-b-10 <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?>" name="expertises" id="tokenfield" value=""/>
             </div>
         </div>
+    <div class="row d-flex js-center">
+        <div class="col-sm-7 m-t-0 m-l-30">
+           <i class="f-11 m-0 c-dark-grey">Type and press enter to add a new expertise</i>
+        </div>
+    </div>
+
     <? } ?>
     <div class="form-group d-flex js-center m-b-10 ">
         <div class="row d-flex js-center <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?>">

@@ -70,7 +70,7 @@ class ApiController extends Controller
                         "interval" => "$range",
                         "description" => $description . "recurring",
                         "startDate" => date("Y-m-d" , strtotime("+1 month")),
-                        "webhookUrl" => "https://secret.innocreation.net/webhook/mollieRecurringPayment",
+                        "webhookUrl" => $this->getWebhookUrl(true),
                     ]);
 
                 }

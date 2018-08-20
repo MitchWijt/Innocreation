@@ -1,5 +1,11 @@
 <?php
-
+$fullDomain = $_SERVER['HTTP_HOST'];
+$domainExplode = explode(".", $fullDomain);
+if($domainExplode[0] == "secret") {
+    $databaseName = "secret-innocreation";
+} else {
+    $databaseName = "Innocreation";
+}
 return [
 
     /*
@@ -56,7 +62,7 @@ return [
             'driver' => 'mysql',
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'secret-innocreation'),
+            'database' => env('DB_DATABASE', $databaseName),
             'username' => env('DB_USERNAME', 'mitchel'),
             'password' => env('DB_PASSWORD', 'sjdbvjhasdbvhabfd456kbvjkbfhsv@sdfkhbsdjd'),
 //            'unix_socket' => env('DB_SOCKET', '/Applications/MAMP/tmp/mysql/mysql.sock'),
