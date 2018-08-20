@@ -785,3 +785,15 @@ footer{
     display: none;
 }
 
+.arrow {
+    position: relative;
+    -webkit-animation:arrow 1s infinite;
+}
+
+@-webkit-keyframes arrow {
+    0%       { bottom: 2px; }
+    25%, 75% { bottom:-5px; }
+    50%      { bottom:-10px; }
+    100%     { bottom: 2px;}
+}
+
