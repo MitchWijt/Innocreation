@@ -16,7 +16,7 @@
             </div>
             <hr class="m-b-20">
             <div class="row">
-                <div class="col-sm-12 text-center">
+                <div class="col-sm-12 text-center cropper">
                     <img class="circle circleImgLg m-r-0" src="<?=$user->getProfilePicture()?>" alt="<?=$user->getName()?>">
                 </div>
             </div>
