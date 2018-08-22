@@ -6,6 +6,9 @@
             <h1 class="sub-title-black" id="titleLogin"><? if(isset($urlParameter)) echo "Register"; else echo "Login"?></h1>
         </div>
         <div class="hr col-md-8"></div>
+        <? if(isset($error)) { ?>
+            <p class="c-orange text-center"><?=$error?></p>
+        <? } ?>
         <? if(count($errors) > 0){ ?>
             <? foreach($errors->all() as $error){ ?>
                 <p class="c-orange text-center"><?=$error?></p>

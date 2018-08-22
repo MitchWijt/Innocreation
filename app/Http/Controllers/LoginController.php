@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Expertises;
 use App\Expertises_linktable;
+use App\Team;
 use App\UserChat;
+use Faker\Provider\Payment;
 use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
 
@@ -13,6 +15,7 @@ use App\User;
 use App\Country;
 use Auth;
 use Session;
+use App\InviteRequestLinktable;
 
 class LoginController extends Controller
 {
@@ -21,11 +24,24 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($hash = null, $teamName = null)
     {
         $countries = Country::select("*")->orderBy("country")->get();
         $expertises = Expertises::select("*")->get();
         $pageType = "default";
+        if($hash != null && $teamName != null){
+            $team = Team::select("*")->where("hash", $hash)->where("team_name", $teamName)->first();
+            $today2 = date("Y-m-d H:i:s", strtotime("+1 hour"));
+            if(date("Y-m-d H:i:s", strtotime($team->timestamp)) <= $today2){
+                Session::set("hash", $hash);
+                Session::set("teamName", $teamName);
+                $urlParameter = 1;
+                return view("public/register/login", compact("countries", "expertises", "urlParameter", "pageType"));
+            } else {
+                $error = "This link has been expired. Ask the team for a new one to continue the invite";
+                return view("public/register/login", compact("countries", "expertises", "pageType", "error"));
+            }
+        }
         if(request()->has('register')){
             $urlParameter = request()->register;
             return view("public/register/login", compact("countries", "expertises", "urlParameter", "pageType"));
@@ -40,8 +56,7 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function register(Request $request)
-    {
+    public function register(Request $request){
         $this->validate($request, [
             'firstname' => 'required',
             'lastname' => 'required',
@@ -80,6 +95,7 @@ class LoginController extends Controller
             $user->phonenumber = $request->input("phonenumber");
             $user->created_at = date("Y-m-d H:i:s");
             $user->save();
+
 
             $mollie = $this->getService("mollie");
             $customer = $mollie->customers->create([
@@ -123,6 +139,20 @@ class LoginController extends Controller
                     $userExpertise->save();
                 }
             }
+
+            if(Session::has("hash") && Session::has("teamName")){
+                $team = Team::select("*")->where("hash", Session::get("hash"))->where("team_name", Session::get("teamName"))->first();
+                $user->team_id = $team->id;
+                $user->save();
+
+                $invite = new InviteRequestLinktable();
+                $invite->team_id = $team->id;
+                $invite->user_id = $user->id;
+                $invite->expertise_id = $user->getExpertises()->first()->id;
+                $invite->accepted = 1;
+                $invite->created_at = date("Y-m-d");
+                $invite->save();
+            }
             if (Auth::attempt(['email' => $request->input("email"), 'password' => $request->input("password")])) {
                 $user = User::select("*")->where("email", $request->input("email"))->first();
                 Session::set('user_name', $user->getName());
@@ -130,7 +160,10 @@ class LoginController extends Controller
                 Session::set('user_id', $user->id);
                 if ($user->team_id != null) {
                     Session::set('team_id', $user->team_id);
+                    Session::set('team_name', $user->team->team_name);
                 }
+                Session::remove("hash");
+                Session::remove("teamName");
 
                 $this->saveAndSendEmail($user, 'Welcome to Innocreation!', view("/templates/sendWelcomeMail", compact("user")));
 

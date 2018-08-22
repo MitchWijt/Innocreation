@@ -676,4 +676,17 @@ class TeamController extends Controller
         $team->save();
         return redirect($_SERVER["HTTP_REFERER"])->with("success", "succesfully saved your settings!");
     }
+
+    public function generateInviteLinkAction(Request $request){
+        $teamId = $request->input("team_id");
+        $team = Team::select("*")->where("id", $teamId)->first();
+
+        $team->hash = bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM));
+        $team->timestamp = date("Y-m-d H:i:s");
+        $team->save();
+
+        $link = $_SERVER["HTTP_HOST"] . "/invite/$team->hash/" . $team->team_name;
+
+        return $link;
+    }
 }
