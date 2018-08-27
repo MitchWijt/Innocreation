@@ -9,7 +9,8 @@
         <td style="display: flex; justify-content: center;">
             <div>
                 <p class="webfont" style="width: 410px; font-size: 16px; margin-bottom: 0; margin-top: 0;">We thank you for joining Innocreation!</p>
-                <p class="webfont" style="width: 410px; font-size: 16px; margin-top: 0; margin-bottom: 0">Take a look around and discover all the possibilities within Innocreation. If for some reason you can't figure it out we have an introduction video for you.</p>
+                <p class="webfont" style="width: 410px; font-size: 16px; margin-top: 0; margin-bottom: 0">Take a look around and discover all the possibilities within Innocreation. If you need help understanding Innocreation, Follow "Inno" the helper right!.</p>
+                <p class="webfont" style="width: 410px; font-size: 16px; margin-top: 0; margin-bottom: 0">We wish you good luck with finding/creating a team!</p>
             </div>
         </td>
     </tr>
