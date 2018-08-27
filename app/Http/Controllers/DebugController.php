@@ -28,7 +28,8 @@ class DebugController extends Controller
     public function test(){
         if($this->authorized(true)) {
             $user = User::select("*")->where("id", 10)->first();
-            dd($user->getExpertises()->first()->id);
+            $this->saveAndSendEmail($user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+
 //        if($this->authorized(true)){
 
 
