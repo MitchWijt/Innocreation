@@ -39,7 +39,7 @@
                                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                 <input type="hidden" name="user_id" value="<?= $userExpertises->users->first()->id?>">
                                 <input type="hidden" name="expertise_id" value="<?= $userExpertises->expertises->first()->id?>">
-                                <textarea name="userExpertiseDescription" class="input col-md-12" rows="8"><? if(isset($userExpertises->description)) echo $userExpertises->description?></textarea>
+                                <textarea name="userExpertiseDescription" class="input col-md-12 inputExpertise" rows="8"><? if(isset($userExpertises->description)) echo $userExpertises->description?></textarea>
                             </form>
                         </div>
                     </div>

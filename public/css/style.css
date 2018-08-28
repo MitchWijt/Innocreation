@@ -78,14 +78,14 @@ footer{
 
 .regular-link{
     text-decoration: none;
-    cursor: pointer;
-    color: #FF6100;
-    padding: 0;
+    cursor: pointer !important;
+    color: #FF6100 !important;
+    padding: 0 !important;
 }
 
 .regular-link:hover{
-    text-decoration: underline;
-    color: #FF6100;
+    text-decoration: underline ;
+    color: #FF6100 ;
 }
 
 .grey-background{

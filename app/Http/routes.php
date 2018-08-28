@@ -116,6 +116,9 @@ Route::post("/user/addSupportTicket","UserController@addSupportTicketAction");
 //favorite teams
 Route::get("/my-account/favorite-teams","UserController@favoriteTeamsAction");
 
+Route::post("/user/joinTeamFromHelper","UserController@joinTeamFromHelperAction");
+
+
 //payments
 Route::get("/my-account/payment-details", "UserController@paymentDetailsAction");
 

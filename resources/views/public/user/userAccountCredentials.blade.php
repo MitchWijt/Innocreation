@@ -33,7 +33,7 @@
                             <button type="button" class="btn btn-inno editProfilePicture">Edit profile picture</button>
                         </div>
                     </div>
-                    <div class="row text-center m-t-20 m-b-20 d-flex js-center">
+                    <div class="row text-center m-t-20 m-b-20 d-flex js-center toLivePage">
                         <div class="col-md-6">
                             <a href="<?=$user->getUrl()?>" class="btn btn-sm btn-inno">Go to live page</a>
                         </div>
@@ -120,7 +120,7 @@
                             <p class="m-t-30">My introduction:</p>
                         </div>
                         <div class="col-sm-6">
-                            <textarea class="input" name="introduction_user" cols="30" rows="5"><? if(isset($user->introduction)) echo $user->introduction ?></textarea>
+                            <textarea class="input introductionUser" name="introduction_user" cols="30" rows="5"><? if(isset($user->introduction)) echo $user->introduction ?></textarea>
                         </div>
                     </div>
                     <div class="row m-t-20 p-b-20">

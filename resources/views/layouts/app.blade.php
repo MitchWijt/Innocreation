@@ -8,6 +8,7 @@
     {{--JS--}}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="/js/jquery.easing.min.js"></script>
+        <script src="/js/home/accountHelper.js"></script>
     {{--<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>--}}
     {{--CSS--}}
         <link rel="stylesheet" href="/css/style.css">
@@ -50,6 +51,14 @@
     @include('includes.headerCheckout')
 <? } ?>
 {{--@include('includes/flash')--}}
+<? if(\Illuminate\Support\Facades\Session::has("user_id")) {
+   $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
+} ?>
+<? if(\Illuminate\Support\Facades\Session::has("user_id") && $user->finished_helper == 0) { ?>
+    <div style="position: fixed; z-index: 99 !important">
+        @include('includes.accountHelper')
+    </div>
+<? } ?>
 @yield('content')
 @yield('pagescript')
 <? if(!isset($pageType) || $pageType != "checkout") { ?>
