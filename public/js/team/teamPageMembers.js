@@ -28,3 +28,21 @@ $(".editMemberPermission").on("click",function () {
     });
 });
 
+$(".generateInviteLink").on("click",function () {
+    var team_id = $(this).data("team-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/my-team/generateInviteLink",
+        data: {'team_id': team_id},
+        success: function (data) {
+           $(".inviteLink").val(data);
+        }
+    });
+});

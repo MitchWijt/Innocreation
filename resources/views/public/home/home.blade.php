@@ -219,7 +219,12 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 text-center m-t-0 m-b-20">
-                            <a href="/login?register=1" class="btn btn-lg btn-inno">Join for free!</a>
+                            <a href="/login?register=1" class="btn btn-lg btn-inno @mobile btn-sm @endmobile">Join for free!</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center m-t-0 m-b-20">
+                            <i>(Want a one on one demo of Innocreation? contact us at info@innocreation.net!)</i>
                         </div>
                     </div>
                 </div>
