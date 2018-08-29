@@ -171,10 +171,17 @@ class User extends Authenticatable
     }
 
     public function hasValidSubscription(){
+        $fullDomain = $_SERVER['HTTP_HOST'];
+        $domainExplode = explode(".", $fullDomain);
+        if($domainExplode[0] == "secret") {
+            $apiKey = "test_5PW69PFKTaBS6E9A4Sgb3gzWjQ5k4v";
+        } else {
+            $apiKey = "live_BdmQNxeQ3zaQrqbmPepVSS33D3QVKe";
+        }
         if($this->getMostRecentPayment()){
             if($this->getMostRecentPayment()->sub_id != null){
                 $mollie = new MollieApiClient();
-                $mollie->setApiKey("test_5PW69PFKTaBS6E9A4Sgb3gzWjQ5k4v");
+                $mollie->setApiKey($apiKey);
 
                 $customer = $mollie->customers->get($this->mollie_customer_id);
                 $subscription = $customer->getSubscription($this->getMostRecentPayment()->sub_id);

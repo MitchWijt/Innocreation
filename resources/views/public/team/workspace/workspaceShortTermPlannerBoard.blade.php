@@ -203,7 +203,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex fd-row x-scroll p-b-20">
+                <div class="d-flex fd-row x-scroll p-b-20 board">
                     <input type="hidden" name="urlParameter" class="urlParameter" value="<? if(isset($urlParameter)) echo $urlParameter?>">
                     <? foreach($shortTermPlannerCategories as $shortTermPlannerCategory) { ?>
                         <div class="col-sm-3 category">
@@ -215,10 +215,10 @@
                                 <i class="zmdi zmdi-plus f-25 addShortTermTask" data-short-term-planner-category="<?=$shortTermPlannerCategory?>"></i>
                             </div>
                             <div class="shortTermtasksColumn" data-short-term-planner-category="<?=$shortTermPlannerCategory?>">
-                                <div id="div" ondrop="drop(event, this, $(this).parents('.shortTermtasksColumn').data('short-term-planner-category'))"  ondragover="allowDrop(event)" class="p-b-100">
+                                <div id="div" ondrop="drop(event, this, $(this).parents('.shortTermtasksColumn').data('short-term-planner-category'))"  ondragover="allowDrop(event)" style="padding-bottom: 400px!important">
                                     <? foreach($shortTermPlannerTasks as $shortPlannerTask) { ?>
                                         <? if($shortPlannerTask->category == $shortTermPlannerCategory) { ?>
-                                            <div class="m-b-10 shortTermTask" id="drag-<?=$shortPlannerTask->id?>" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
+                                            <div class="m-b-10 shortTermTask" id="drag-<?=$shortPlannerTask->id?>" draggable="true" ondrag="dragging(event)" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                 <div class="card card-task col-sm-12 " data-short-planner-task-id="<?= $shortPlannerTask->id?>" data-category="<?= $shortPlannerTask->category?>" data-completed="<? if($shortPlannerTask->completed == 1) echo 1; else echo 0?>">
                                                     <div class="card-block" style="min-height: 100%" data-short-planner-task-id="<?= $shortPlannerTask->id?>" data-team-id="<?= $team->id?>">
                                                         <p class="m-t-10 f-19 m-b-0"><?= $shortPlannerTask->title?></p>
