@@ -14,15 +14,15 @@
             <hr>
             <div class="m-b-20">
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 @mobile p-20 @endmobile">
                         <div class="row m-t-20">
                             <div class="card-lg col-md-12">
-                                <div class="card-block ">
+                                <div class="card-block">
                                     <p class="m-l-10 m-b-5 m-t-5">Invite friends!</p>
                                     <hr class="col-md-11 m-0">
                                     <p class="f-14">Invite members instantly through this link. They will create an account and instantly join your team! Keep in mind the link is only usable for 1 hour per link.</p>
                                     <div class="row m-b-10">
-                                        <div class="col-sm-4">
+                                        <div class="@handheld col-xs-4 m-b-10 m-l-10 @elsedesktop col-sm-4 @endhandheld">
                                             <? if($team->hasPaid()) { ?>
                                                 <? if($team->packageDetails()->custom_team_package_id == null) { ?>
                                                     <? if($team->packageDetails()->membershipPackage->id == 3) { ?>
@@ -43,7 +43,7 @@
                                                 <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Create link</button>
                                             <? } ?>
                                         </div>
-                                        <div class="col-sm-8">
+                                        <div class="@handheld col-xs-8 m-l-10 @elsedesktop col-sm-8 @endhandheld">
                                             <input type="text" class="input inviteLink">
                                         </div>
                                     </div>
