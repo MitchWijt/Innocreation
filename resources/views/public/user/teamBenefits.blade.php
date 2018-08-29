@@ -13,7 +13,7 @@
             </div>
             <div class="hr p-b-20"></div>
             <div class="d-flex js-around p-b-20">
-                <a class="btn btn-inno c-gray" href="/teams">Join a team</a>
+                <button type="button" class="btn btn-inno c-gray joinTeamBtn">Join a team</button>
                 <a class="btn btn-inno c-gray" data-toggle="modal" data-target="#myModal">Create a team</a>
             </div>
             <div class="row d-flex js-center p-b-20">
