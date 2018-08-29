@@ -25,7 +25,20 @@
             @endhandheld
         <? } ?>
             <div class="card-block">
-               <p class="m-l-5">Innocreation helper</p>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <p class="m-l-5">Innocreation helper</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <form action="/user/finishHelper" method="post">
+                            <? if(isset($user)) { ?>
+                                <input type="hidden" name="user_id" value="<?= $user->id?>">
+                            <? } ?>
+                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                            <button class="btn btn-sm btn-inno m-t-5">I understand</button>
+                        </form>
+                    </div>
+                </div>
                 <hr>
                 <div class="row m-l-5 m-b-20">
                     @notmobile
