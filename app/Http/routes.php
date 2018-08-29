@@ -18,6 +18,8 @@ Route::get("/includes/footer","HomeController@footer");
 
 Route::get("/login", "LoginController@index");
 
+Route::get("/invite/{hash?}/{teamName?}", "LoginController@index");
+
 Route::post("/loginUser", "LoginController@login");
 
 Route::post("/register", "LoginController@register");
@@ -116,6 +118,11 @@ Route::post("/user/addSupportTicket","UserController@addSupportTicketAction");
 //favorite teams
 Route::get("/my-account/favorite-teams","UserController@favoriteTeamsAction");
 
+Route::post("/user/joinTeamFromHelper","UserController@joinTeamFromHelperAction");
+
+Route::post("/user/finishHelper","UserController@finishHelperAction");
+
+
 //payments
 Route::get("/my-account/payment-details", "UserController@paymentDetailsAction");
 
@@ -200,6 +207,8 @@ Route::post("/my-team/saveTeamProduct", "TeamController@saveTeamProductAction");
 Route::post("/my-team/getTeamProductModalData", "TeamController@getTeamProductModalDataAction");
 
 Route::post("/my-team/deleteTeamProduct", "TeamController@deleteTeamProductAction");
+
+Route::post("/my-team/generateInviteLink", "TeamController@generateInviteLinkAction");
 
 //Payment
 Route::get("/my-team/payment-details", "TeamController@teamPaymentDetailsAction");

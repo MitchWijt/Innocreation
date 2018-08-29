@@ -405,6 +405,11 @@ class UserController extends Controller
             $userMessage->created_at = date("Y-m-d H:i:s");
             $userMessage->save();
 
+            $user = User::select("*")->where("id", $userChat->receiver_user_id)->first();
+
+            $this->saveAndSendEmail($user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+
+
             $messageArray = ["message" => $message, "timeSent" => $this->getTimeSent()];
             echo json_encode($messageArray);
         }
@@ -1085,6 +1090,28 @@ class UserController extends Controller
             $customer->cancelSubscription($user->getMostRecentPayment()->sub_id);
 
             return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Successfully canceled subscription and left team");
+        }
+    }
+
+    public function joinTeamFromHelperAction(Request $request){
+        if($this->authorized()) {
+            $userId = $request->input("user_id");
+            $user = User::select("*")->where("id", $userId)->first();
+            $user->finished_helper = 1;
+            $user->save();
+
+            return redirect("/teams");
+        }
+    }
+
+    public function finishHelperAction(Request $request){
+        if($this->authorized()) {
+            $userId = $request->input("user_id");
+            $user = User::select("*")->where("id", $userId)->first();
+            $user->finished_helper = 1;
+            $user->save();
+
+            return redirect($_SERVER["HTTP_REFERER"]);
         }
     }
 }

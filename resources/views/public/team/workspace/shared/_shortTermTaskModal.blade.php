@@ -1,3 +1,4 @@
+
 <div class="shortTermTaskModalContainer">
     <div class="modal-header d-flex js-center">
         <div class="d-flex fd-column">

@@ -355,8 +355,16 @@
     overflow: scroll;
 }
 .x-scroll{
+    /*position: absolute;*/
+    /*top: 20px;*/
+    /*left: 20px;*/
+    /*width: 500px;*/
+    /*height: 250px;*/
+    /*background-color: Yellow;*/
+    /*border: 2px solid Blue;*/
+    overflow:auto;
     width: 100%;
-    overflow-y: scroll;
+    /*overflow: auto;*/
     /*white-space: nowrap;*/
 }
 .o-hidden{

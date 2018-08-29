@@ -1,4 +1,4 @@
-@notmobile
+@desktop
 <div class="sidebar">
     <div class="text-center">
         <a href="/my-team" class="td-none">
@@ -48,8 +48,8 @@
     </div>
     <hr>
 </div>
-@elsemobile
-<i class="zmdi zmdi-view-toc f-25 m-t-10 toggleSidebar" data-toggle="modal" data-target=".sidebarModal"></i>
+@elsehandheld
+<i class="zmdi zmdi-view-toc f-25 m-t-10 @tablet m-l-20 @endtablet toggleSidebar" data-toggle="modal" data-target=".sidebarModal"></i>
 <div class="modal fade sidebarModal" id="sidebarModal" tabindex="-1" role="dialog" aria-labelledby="sidebarModal" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -107,4 +107,4 @@
         </div>
     </div>
 </div>
-@endnotmobile
+@enddesktop
