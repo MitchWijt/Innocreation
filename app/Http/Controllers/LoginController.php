@@ -30,7 +30,7 @@ class LoginController extends Controller
         $expertises = Expertises::select("*")->get();
         $pageType = "default";
         if($hash != null && $teamName != null){
-            $team = Team::select("*")->where("hash", $hash)->where("team_name", $teamName)->first();
+            $team = Team::select("*")->where("hash", $hash)->where("slug", $teamName)->first();
             $today2 = date("Y-m-d H:i:s", strtotime("+1 hour"));
             if(date("Y-m-d H:i:s", strtotime($team->timestamp)) <= $today2){
                 Session::set("hash", $hash);

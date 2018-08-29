@@ -18,7 +18,7 @@
     <table align="center" border="1" cellpadding="0" cellspacing="0" width="600" bgcolor="#000" style="border-collapse: collapse;">
         <tr>
             <td class="webfont">
-                <h1 style="font-weight:lighter; margin-top: 10px; ;text-align: center; color: #C9CCCF; margin-bottom: 0px; font-size: 70px;">Inn<img style="width: 40px; height: 40px; padding-top: 30px !important;" src="cid:cartwheel.png" alt="">creation</h1>
+                <h1 style="font-weight:lighter; margin-top: 10px; ;text-align: center; color: #C9CCCF; margin-bottom: 0px; font-size: 70px;">Inn<img style="padding-top: 30px !important;" src="cid:cartwheel.png" alt="">creation</h1>
                 <p style="text-align: center; color: #C9CCCF; margin-bottom: 20px; margin-left: 5px; font-size: 18px; margin-top: 0px;">Help each other make <span style="text-transform: uppercase; color: #FF6100; text-decoration: underline;">Dreams</span> become a reality</p>
             </td>
         </tr>

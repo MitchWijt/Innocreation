@@ -52,7 +52,7 @@
                                         <p class="instructions-text m-0 allign-center f-20">Create an <a class="regular-link" href="/login">account</a> with your expertise(s)</p>
                                     @endmobile
                                 @elsedesktop
-                                    <p class="instructions-text m-0 allign-center">Create an <a class="regular-link" href="/login">account</a> with your expertise(s)</p>
+                                    <p class="instructions-text m-0 allign-center f-22">Create an <a class="regular-link" href="/login">account</a> with your expertise(s)</p>
                                 @endhandheld
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                                         <p class="c-gray m-b-0 m-r-20 m-t-15 f-20">Have an idea or product you want to develop</p>
                                     @endmobile
                                 @elsedesktop
-                                    <p class="c-gray f-25 m-b-0 m-r-20  m-t-15">Have an idea or product you want to develop</p>
+                                    <p class="c-gray m-b-0 m-r-20 m-t-15 f-22">Have an idea or product you want to develop</p>
                                 @endhandheld
                             </div>
                             <div class="col-xs-2 col-md-2">
@@ -88,7 +88,7 @@
                                         <p class="instructions-text m-0 f-20">Offer yourself as a service or ask for a service</p>
                                     @endmobile
                                 @elsedesktop
-                                    <p class="instructions-text m-0">Offer yourself as a service or ask for a service</p>
+                                    <p class="instructions-text m-0 f-22">Offer yourself as a service or ask for a service</p>
                                 @endhandheld
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                                         <p class="instructions-text m-b-0 m-r-20 m-t-15 f-20">Create or join a <a class="regular-link" href="/teams">team</a> and enjoy working together!</p>
                                     @endmobile
                                 @elsedesktop
-                                    <p class="instructions-text m-b-0 m-r-20 m-t-15">Create or join a <a class="regular-link" href="/teams">team</a> and enjoy working together!</p>
+                                    <p class="instructions-text m-b-0 m-r-20 m-t-15 f-22">Create or join a <a class="regular-link" href="/teams">team</a> and enjoy working together!</p>
                                 @endhandheld
                             </div>
                             <div class="col-xs-2 col-md-2 m-b-20">
@@ -130,7 +130,7 @@
                                             <p class="instructions-second-text m-0 f-20">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-0">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
+                                        <p class="instructions-second-text m-0 f-22">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
                                     @endhandheld
                                 </div>
                             </div>
@@ -145,7 +145,7 @@
                                             <p class="instructions-second-text m-b-0 m-t-15 m-r-20 f-20">Communicate easily with your team through the <a class="regular-link" href="/login">chat system</a></p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-b-0 m-t-15 m-r-20">Communicate easily with your team through the <a class="regular-link" href="/login">chat system</a></p>
+                                        <p class="instructions-second-text m-b-0 m-t-15 m-r-20 f-22">Communicate easily with your team through the <a class="regular-link" href="/login">chat system</a></p>
                                     @endhandheld
                                 </div>
                                 <div class="col-sm-2">
@@ -170,7 +170,7 @@
                                             <p class="instructions-second-text m-0 f-20">Get your idea/product known to the open world!</p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-0">Get your idea/product known to the open world!</p>
+                                        <p class="instructions-second-text m-0 f-22">Get your idea/product known to the open world!</p>
                                     @endhandheld
                                 </div>
                             </div>
@@ -185,7 +185,7 @@
                                             <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-20">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-b-0 m-r-20 m-t-15">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
+                                        <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-22">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
                                     @endhandheld
                                 </div>
                                 <div class="col-sm-2">
@@ -211,7 +211,7 @@
                                             <p class="instructions-second-text m-0 f-20">Have fun, be creative and innovative</p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-0">Have fun, be creative and innovative!</p>
+                                        <p class="instructions-second-text m-0 f-22">Have fun, be creative and innovative!</p>
                                     @endhandheld
                                 </div>
                             </div>

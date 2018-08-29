@@ -23,24 +23,28 @@
                                     <p class="f-14">Invite members instantly through this link. They will create an account and instantly join your team! Keep in mind the link is only usable for 1 hour per link.</p>
                                     <div class="row m-b-10">
                                         <div class="@handheld col-xs-4 m-b-10 m-l-10 @elsedesktop col-sm-4 @endhandheld">
-                                            <? if($team->hasPaid()) { ?>
-                                                <? if($team->packageDetails()->custom_team_package_id == null) { ?>
-                                                    <? if($team->packageDetails()->membershipPackage->id == 3) { ?>
-                                                        <button type="button" class="btn btn-inno btn-sm generateInviteLink" data-team-id="<?= $team->id?>">Create link</button>
-                                                    <? } else if(count($team->getMembers()) >= $team->packageDetails()->membershipPackage->members) { ?>
-                                                        <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Create link</button>
+                                            <? if($team->packageDetails()) { ?>
+                                                <? if($team->hasPaid()) { ?>
+                                                    <? if($team->packageDetails()->custom_team_package_id == null) { ?>
+                                                        <? if($team->packageDetails()->membershipPackage->id == 3) { ?>
+                                                            <button type="button" class="btn btn-inno btn-sm generateInviteLink" data-team-id="<?= $team->id?>">Create link</button>
+                                                        <? } else if(count($team->getMembers()) >= $team->packageDetails()->membershipPackage->members) { ?>
+                                                            <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Create link</button>
+                                                        <? } else { ?>
+                                                            <button type="button" class="btn btn-inno btn-sm generateInviteLink" data-team-id="<?= $team->id?>">Create link</button>
+                                                        <? } ?>
                                                     <? } else { ?>
-                                                        <button type="button" class="btn btn-inno btn-sm generateInviteLink" data-team-id="<?= $team->id?>">Create link</button>
+                                                        <? if(count($team->getMembers()) >= $team->packageDetails()->customTeamPackage->members && $team->packageDetails()->customTeamPackage->members != "unlimited") { ?>
+                                                            <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Create link</button>
+                                                        <? } else { ?>
+                                                            <button type="button" class="btn btn-inno btn-sm generateInviteLink" data-team-id="<?= $team->id?>">Create link</button>
+                                                        <? } ?>
                                                     <? } ?>
                                                 <? } else { ?>
-                                                    <? if(count($team->getMembers()) >= $team->packageDetails()->customTeamPackage->members && $team->packageDetails()->customTeamPackage->members != "unlimited") { ?>
-                                                        <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Create link</button>
-                                                    <? } else { ?>
-                                                        <button type="button" class="btn btn-inno btn-sm generateInviteLink" data-team-id="<?= $team->id?>">Create link</button>
-                                                    <? } ?>
+                                                    <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Create link</button>
                                                 <? } ?>
                                             <? } else { ?>
-                                                <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Create link</button>
+                                                <button type="button" class="btn btn-inno btn-sm generateInviteLink" data-team-id="<?= $team->id?>">Create link</button>
                                             <? } ?>
                                         </div>
                                         <div class="@handheld col-xs-8 m-l-10 @elsedesktop col-sm-8 @endhandheld">
