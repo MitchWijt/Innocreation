@@ -54,10 +54,12 @@
     <? if(\Illuminate\Support\Facades\Session::has("user_id") && $user->finished_helper == 0) {
     $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     ?>
-    <? if(strpos($url, "/account") != false || strpos($url, "/my-team") != false || strpos($url, "/my-account") != false)  { ?>
-        <div style="position: fixed; z-index: 99 !important" class="accountHelper">
-            @include('includes.accountHelper')
-        </div>
+    <? if(!strpos($url, "/my-account/chats")) {  ?>
+        <? if(strpos($url, "/account") != false || strpos($url, "/my-team") != false || strpos($url, "/my-account") != false)  { ?>
+            <div style="position: fixed; z-index: 99 !important" class="accountHelper">
+                @include('includes.accountHelper')
+            </div>
+        <? } ?>
     <? } ?>
 <? } ?>
 @endmobile
@@ -70,11 +72,13 @@
     <? if(\Illuminate\Support\Facades\Session::has("user_id") && $user->finished_helper == 0) {
         $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     ?>
-        <? if(strpos($url, "/account") != false || strpos($url, "/my-team") != false || strpos($url, "/my-account") != false)  { ?>
-            <div style="position: fixed; z-index: 99 !important" class="accountHelper">
-                @include('includes.accountHelper')
-            </div>
-        <? } ?>
+            <? if(!strpos($url, "/my-account/chats")) {  ?>
+                <? if(strpos($url, "/account") != false || strpos($url, "/my-team") != false || strpos($url, "/my-account") != false)  { ?>
+                    <div style="position: fixed; z-index: 99 !important" class="accountHelper">
+                        @include('includes.accountHelper')
+                    </div>
+                <? } ?>
+            <? } ?>
     <? } ?>
 @endnotmobile
 @yield('content')
