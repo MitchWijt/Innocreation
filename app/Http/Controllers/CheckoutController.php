@@ -33,14 +33,16 @@ class CheckoutController extends Controller
     public function pricingAction()
     {
         Session::remove("customPackagesArray");
+        $title = "Pricing list. Create your free account!";
+        $og_description = "The complete pricing list. Create your free account today and start buidling your dream";
         $membershipPackages = MembershipPackage::select("*")->get();
         $customMembershipPackageTypes = CustomMembershipPackageType::select("*")->get();
         $serviceReviews = ServiceReview::select("*")->where("service_review_type_id", 2)->get();
         if (Session::has("user_id")) {
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
-            return view("/public/checkout/pricing", compact("membershipPackages", "customMembershipPackageTypes", "serviceReviews", "user"));
+            return view("/public/checkout/pricing", compact("membershipPackages", "customMembershipPackageTypes", "serviceReviews", "user", "title", "og_description"));
         } else {
-            return view("/public/checkout/pricing", compact("membershipPackages", "customMembershipPackageTypes", "serviceReviews"));
+            return view("/public/checkout/pricing", compact("membershipPackages", "customMembershipPackageTypes", "serviceReviews", "title", "og_description"));
         }
     }
 

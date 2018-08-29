@@ -16,8 +16,10 @@ class UsersExpertisesListController extends Controller
      */
     public function expertisesListAction()
     {
+        $title = "Find the expertise you need for your idea!";
+        $og_description = "All active users and expertises on Innocreation. Find motivated people, create your team and build your idea";
         $expertises = Expertises::select("*")->orderBy("title")->paginate(10);
-        return view("/public/users-expertisesList/expertisesList", compact("expertises"));
+        return view("/public/users-expertisesList/expertisesList", compact("expertises", "title", "og_description"));
     }
 
     /**
@@ -25,10 +27,11 @@ class UsersExpertisesListController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function usersListAction($title)
-    {
+    public function usersListAction($title) {
         $expertise = Expertises::select("*")->where("title", $title)->first();
-        return view("/public/users-expertisesList/usersList", compact("expertise"));
+        $title = "Find your $expertise->title and work together";
+        $og_description = "Find the best $expertise->title for your team. Work together and build your idea!";
+        return view("/public/users-expertisesList/usersList", compact("expertise", "title", "og_description"));
     }
 
     /**

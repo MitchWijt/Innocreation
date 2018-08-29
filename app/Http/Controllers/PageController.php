@@ -78,10 +78,10 @@ class PageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function pagesIndexAction($slug)
-    {
+    public function pagesIndexAction($slug){
         $page = Page::select("*")->where("slug", $slug)->first();
-        return view("/public/pages/pagesIndex", compact("page"));
+        $title = $page->title;
+        return view("/public/pages/pagesIndex", compact("page", "title"));
     }
 
     /**
