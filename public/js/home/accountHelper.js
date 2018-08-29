@@ -3,11 +3,18 @@ $(document).on("click", ".toMotivation",function () {
     $('html, body').animate({
         scrollTop: $(".toLivePage").offset().top
     }, 2000);
+    if($(".mobile").val() == 1){
+        $(".accountHelper").hide();
+    }
 });
 
 $(document).on("change", ".introductionUser",function () {
     $(".helperTextCredentials").text("Great! Now users will know you! P.S dont forget to save :)");
     $(".continueStep1").removeClass("hidden");
+    if($(".mobile").val() == 1){
+        console.log("fdsa");
+        $(".accountHelper").show();
+    }
 });
 
 $(document).ready(function () {

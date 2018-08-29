@@ -1,21 +1,39 @@
 <?
- $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+     $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
 <div class="col-sm-12 d-flex js-center m-b-20 p-l-0">
     <div class="supportTicket">
         <?if(strpos($url, "/my-team/members")){ ?>
-            <div class="card" style="max-width: 450px;">
+            @handheld
+                <div class="card" style="max-width: 300px;">
+            @elsedesktop
+                <div class="card" style="max-width: 600px;">
+            @endhandheld
+            {{--<div class="card" style="max-width: 450px;">--}}
         <? } else { ?>
-            <div class="card" style="max-width: 600px;">
+            @handheld
+                @tablet
+                    <input type="hidden" name="mobile" class="mobile" value="0">
+                    <div class="card" style="max-width: 325px;">
+                @elsemobile
+                    <input type="hidden" name="mobile" class="mobile"  value="1">
+                    <div class="card">
+                @endtablet
+            @elsedesktop
+                <input type="hidden" name="mobile" class="mobile"  value="0">
+                <div class="card" style="max-width: 600px;">
+            @endhandheld
         <? } ?>
             <div class="card-block">
                <p class="m-l-5">Innocreation helper</p>
                 <hr>
                 <div class="row m-l-5 m-b-20">
+                    @notmobile
                     <div class="col-sm-4">
                         <img width="100%" src="/images/Mascot.png" alt="Inno_mascot">
                     </div>
-                    <div class="col-sm-8">
+                    @endnotmobile
+                    <div class="@mobile col-sm-12 @elsedesktop col-sm-8 @endnotmobile">
                         <div class="m-r-5">
                             <? if(strpos($url, "/account") != false) { ?>
                                 <p>Hey! welcome to Innocreation. Let me introduce myself. I am Inno and my motivation is to help you understand Innocreation at its best!  I am curious about you. who are you and what is your motivation?</p>
@@ -42,7 +60,7 @@
                                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                     <input type="hidden" name="user_id" value="<?= $user->id?>">
                                 </form>
-                            <? } else if(!strpos($url, "/my-team/members") && !strpos($url, "/forum") && !strpos($url, "/my-team/team-chat")){ ?>
+                            <? } else if(!strpos($url, "/my-team/members") && !strpos($url, "/forum") && !strpos($url, "/my-team/team-chat") && !strpos($url, "/my-team/workspace")){ ?>
                                 <p>Just like i was exited to know you and your motivation. Here you can fill those in aswell but for your team!</p>
                                 <p>I understand you might need some time to think about this :)</p>
                                 <p>But anyways. Amazing team! you're doing great! I am guessing you won't create the idea on your own. So lets:</p>
@@ -56,7 +74,19 @@
                                 <a href="/my-team/team-chat" class="btn btn-inno toChatBtn hidden">To chat</a>
                             <? } else if(strpos($url, "/my-team/team-chat")){ ?>
                                 <p>Here you can chat and create group chats! ofcourse for your team we also have a special workspace!</p>
-                                <a href="" class="btn btn-inno">To the workspace</a>
+                                <a href="/my-team/workspace" class="btn btn-inno">To the workspace</a>
+                            <? } else if(strpos($url, "/my-team/workspace") && !strpos($url, "/my-team/workspace/short-term-planner-options")){ ?>
+                                <p>Welcome to your team's workspace! Lets read the benefits and <a href="/my-team/workspace/short-term-planner-options" class="btn btn-inno">go to work!</a></p>
+                            <? } else if(strpos($url, "/my-team/workspace/short-term-planner-options")){ ?>
+                                <p>So you want to plan tasks! choose a planner that fits your needs and go to work on your idea!</p>
+                                <p>Now you know some of the key features in Innocreation. It was a pleasure helping you and I wish you goodluck on your journey! See ya!</p>
+                                <form action="/user/finishHelper" method="post">
+                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                    <? if(isset($user)) { ?>
+                                        <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                    <? } ?>
+                                    <button class="btn btn-inno">Close</button>
+                                </form>
                             <? } ?>
                         </div>
                     </div>

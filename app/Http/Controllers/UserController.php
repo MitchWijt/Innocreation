@@ -1098,4 +1098,15 @@ class UserController extends Controller
             return redirect("/teams");
         }
     }
+
+    public function finishHelperAction(Request $request){
+        if($this->authorized()) {
+            $userId = $request->input("user_id");
+            $user = User::select("*")->where("id", $userId)->first();
+            $user->finished_helper = 1;
+            $user->save();
+
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
+    }
 }

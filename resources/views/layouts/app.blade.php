@@ -45,20 +45,37 @@
     <title><? if(isset($title)) echo $title ?> | Innocreation</title>
 </head>
 <body>
+<? if(\Illuminate\Support\Facades\Session::has("user_id")) {
+    $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
+} ?>
 <? if(!isset($pageType) || $pageType != "checkout") { ?>
+@mobile
+    <? if(\Illuminate\Support\Facades\Session::has("user_id") && $user->finished_helper == 0) {
+    $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    ?>
+    <? if(strpos($url, "/account") != false || strpos($url, "/my-team") != false || strpos($url, "/my-account") != false)  { ?>
+        <div style="position: fixed; z-index: 99 !important" class="accountHelper">
+            @include('includes.accountHelper')
+        </div>
+    <? } ?>
+<? } ?>
+@endmobile
     @include('includes.header')
 <? } else { ?>
     @include('includes.headerCheckout')
 <? } ?>
 {{--@include('includes/flash')--}}
-<? if(\Illuminate\Support\Facades\Session::has("user_id")) {
-   $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
-} ?>
-<? if(\Illuminate\Support\Facades\Session::has("user_id") && $user->finished_helper == 0) { ?>
-    <div style="position: fixed; z-index: 99 !important">
-        @include('includes.accountHelper')
-    </div>
-<? } ?>
+@notmobile
+    <? if(\Illuminate\Support\Facades\Session::has("user_id") && $user->finished_helper == 0) {
+        $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    ?>
+        <? if(strpos($url, "/account") != false || strpos($url, "/my-team") != false || strpos($url, "/my-account") != false)  { ?>
+            <div style="position: fixed; z-index: 99 !important" class="accountHelper">
+                @include('includes.accountHelper')
+            </div>
+        <? } ?>
+    <? } ?>
+@endnotmobile
 @yield('content')
 @yield('pagescript')
 <? if(!isset($pageType) || $pageType != "checkout") { ?>
