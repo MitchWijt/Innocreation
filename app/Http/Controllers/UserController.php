@@ -1114,4 +1114,54 @@ class UserController extends Controller
             return redirect($_SERVER["HTTP_REFERER"]);
         }
     }
+
+    public function passwordForgottenIndex(){
+        return view("/public/user/passwordForgotten");
+    }
+
+    public function sendPasswordResetLinkAction(Request $request){
+        $email = $request->input("email");
+        $user = User::select("*")->where("email", $email)->first();
+        if($user){
+            $user->hash_timestamp = date("Y-m-d H:i:s", strtotime("+1 hour"));
+            $user->save();
+            $this->saveAndSendEmail($user, "Reset your password", view("/templates/sendResetPassword", compact("user")));
+
+            return redirect($_SERVER["HTTP_REFERER"])->withSuccess("We have sent an email to $email with a password reset link!");
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors("Couldn't find any account associated with email $email please try again");
+        }
+    }
+
+    public function resetPasswordIndexAction($hash){
+        $user = User::select("*")->where("hash", $hash)->first();
+        if($user) {
+            $today = date("Y-m-d H");
+            $hash_timestamp = date("Y-m-d H", strtotime($user->hash_timestamp));
+            if ($today <= $hash_timestamp) {
+                return view("/public/user/resetPassword", compact("user"));
+            } else {
+                return redirect("/login")->withErrors("The password reset link has been expired");
+            }
+        } else {
+            return redirect("/login")->withErrors("Invalid user");
+        }
+    }
+
+    public function resetPasswordAction(Request $request){
+        $userId = $request->input("user_id");
+        $password = $request->input("password");
+        $confirmPassword = $request->input("confirm_password");
+
+        $user = User::select("*")->where("id", $userId)->first();
+
+        if($password == $confirmPassword){
+            $user->password = bcrypt(($request->input("password")));
+            $user->hash_timestamp = date("Y-m-d H:i:s", strtotime("-1 hour"));
+            $user->save();
+            return redirect("/login")->withSuccess("password succesfully changed.You can login now!");
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors("Passwords don't match");
+        }
+    }
 }
