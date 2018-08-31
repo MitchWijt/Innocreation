@@ -133,6 +133,26 @@
         </form>
     </div>
 </div>
+{{--<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/getstream/dist/js_min/getstream.js"></script>--}}
+{{--<script type="text/javascript">--}}
+    {{--var client = stream.connect('ujpcaxtcmvav', null, '40873');--}}
+    {{--var user1 = client.feed('user', '10', 'VkUcRpmraYFp8n_-3vP_E3P19Iw');--}}
+
+    {{--function callback(data) {--}}
+        {{--console.log(data);--}}
+    {{--}--}}
+
+    {{--function successCallback() {--}}
+        {{--console.log('now listening to changes in realtime');--}}
+    {{--}--}}
+
+    {{--function failCallback(data) {--}}
+        {{--alert('something went wrong, check the console logs');--}}
+        {{--console.log(data);--}}
+    {{--}--}}
+
+    {{--user1.subscribe(callback).then(successCallback, failCallback);--}}
+{{--</script>--}}
 @endsection
 @section('pagescript')
     <script src="/js/user/userAccountCredentials.js"></script>

@@ -18,6 +18,8 @@ use App\SplitTheBillLinktable;
 use App\Http\Requests;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Invoice;
+use GetStream;
+use GetStream\StreamLaravel\Facades\FeedManager;
 use Session;
 
 class DebugController extends Controller
@@ -27,8 +29,28 @@ class DebugController extends Controller
      */
     public function test(){
         if($this->authorized(true)) {
-            $user = User::select("*")->where("id", 10)->first();
-            $this->saveAndSendEmail($user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+//            $client = $this->getService("stream");
+//            $ericFeed = $client->feed('user', 10);
+//
+//// Add the activity to the feed
+////            $data = [
+////                "actor"=>"10",
+////                "verb"=>"userMessage",
+////                "object"=>"3",
+////                "receiver"=>"11",
+////                "tweet"=>"Hello world",
+////            ];
+////
+////            $ericFeed->addActivity($data);
+//
+//            $token = $ericFeed->getToken();
+//            dd($token);
+//
+//            $response = $ericFeed->getActivities();
+//            dd($response);
+//            $user = User::select("*")->where("id", 10)->first();
+//            $feed = FeedManager::getUserFeed($user->id);
+//            dd($feed);
 
 //        if($this->authorized(true)){
 

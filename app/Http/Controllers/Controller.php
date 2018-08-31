@@ -12,6 +12,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Support\Facades\Session;
+use GetStream;
 use Mailgun\Mailgun;
 use App\MailMessage;
 
@@ -71,6 +72,9 @@ class Controller extends BaseController
             $mollie = new MollieApiClient();
             $mollie->setApiKey($apiKey);
             return $mollie;
+        } else if("stream"){
+            $client = new GetStream\Stream\Client('ujpcaxtcmvav', 't7bkq85zvutj4qnyvt3kkv7uts9mfaxz99cuv52ctgqy7gh9up3scpzvms99s8k6');
+            return $client;
         }
     }
 
