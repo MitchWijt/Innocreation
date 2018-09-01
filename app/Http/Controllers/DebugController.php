@@ -28,20 +28,23 @@ class DebugController extends Controller
      *
      */
     public function test(){
-        if($this->authorized(true)) {
-//            $client = $this->getService("stream");
-//            $ericFeed = $client->feed('user', 10);
-//
-//// Add the activity to the feed
-////            $data = [
-////                "actor"=>"10",
-////                "verb"=>"userMessage",
-////                "object"=>"3",
-////                "receiver"=>"11",
-////                "tweet"=>"Hello world",
-////            ];
-////
-////            $ericFeed->addActivity($data);
+//        if($this->authorized(true)) {
+            $client = $this->getService("stream");
+            $ericFeed = $client->feed('user', 10);
+            $timeSent = $this->getTimeSent();
+
+            // Add the activity to the feed
+            $data = [
+                "actor"=> "10",
+                "receiver"=> "14",
+                "userChat"=> "28",
+                "message"=> "hoi",
+                "timeSent"=> "2 PM",
+                "verb"=>"userMessage",
+                "object"=>"3",
+            ];
+
+            $ericFeed->addActivity($data);
 //
 //            $token = $ericFeed->getToken();
 //            dd($token);
@@ -66,6 +69,6 @@ class DebugController extends Controller
 //        foreach($subscriptions as $subscription){
 //            $customer->cancelSubscription($subscription->id);
 //        }
-        }
+//        }
     }
 }

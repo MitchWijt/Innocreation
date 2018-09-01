@@ -13,6 +13,8 @@
             </div>
             <div class="hr col-md-12"></div>
             <div class="row">
+                <input type="hidden" class="streamToken" value="<?= $streamToken?>">
+                <input type="hidden" class="userId" value="<?= $user_id?>">
                 <div class="col-md-6">
                     <form action="/searchChatUsers" class="searchChatUsersForm @mobile text-center @endmobile" method="post">
                         <input type="hidden" class="url_content" name="url_content" value="<? if(isset($urlParameter)) echo $urlParameter?>">
@@ -52,7 +54,8 @@
                                                 <? if($userChat->getUnreadMessages($user_id) > 0) { ?>
                                                     <i class="zmdi zmdi-circle f-10 c-orange p-absolute unreadNotification" style="left: 10px; top: 5px;"></i>
                                                 <? } ?>
-                                                <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
+                                                    <i class="zmdi zmdi-circle f-10 c-orange p-absolute unreadNotification hidden" data-user-chat-id="<?= $userChat->id?>" style="left: 10px; top: 5px;"></i>
+                                                    <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
                                                     <img class="circle circleImage m-0" src="/images/profilePicturesTeams/cartwheel.png" alt="">
                                                     <p class="f-22 m-t-15 m-b-5 p-0">Innocreation</p>
                                                 </div>
@@ -68,6 +71,7 @@
                                                     <? if($userChat->getUnreadMessages($user_id) > 0) { ?>
                                                         <i class="zmdi zmdi-circle f-10 c-orange p-absolute unreadNotification" style="left: 10px; top: 5px;"></i>
                                                     <? } ?>
+                                                    <i class="zmdi zmdi-circle f-10 c-orange p-absolute unreadNotification hidden" data-user-chat-id="<?= $userChat->id?>" style="left: 10px; top: 5px;"></i>
                                                     <i class="zmdi zmdi-close c-orange p-absolute deleteChat" data-chat-id="<?= $userChat->id?>" style="right: 10px; top: 5px;"></i>
                                                     <? if($userChat->receiver_user_id == $user_id) { ?>
                                                         <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
@@ -146,6 +150,31 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/getstream/dist/js_min/getstream.js"></script>
+    <script type="text/javascript">
+        var client = stream.connect('ujpcaxtcmvav', null, '40873');
+        var user1 = client.feed('user', '<?= $user_id?>', '<?= $streamToken?>');
+
+        function callback(data) {
+            $(".unreadNotification").each(function () {
+               var userChatId = $(this).data("user-chat-id");
+               if(userChatId == data["new"][0]["userChat"]){
+                   $(this).removeClass("hidden");
+               }
+            });
+
+        }
+
+        function successCallback() {
+            console.log('now listening to changes in realtime');
+        }
+
+        function failCallback(data) {
+            alert('something went wrong, check the console logs');
+            console.log(data);
+        }
+        user1.subscribe(callback).then(successCallback, failCallback);
+    </script>
 @endsection
 @section('pagescript')
     <script src="/js/user/userAccountChats.js"></script>
