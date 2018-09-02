@@ -166,7 +166,7 @@
         }
 
         function successCallback() {
-            console.log('now listening to changes in realtime');
+//            console.log('now listening to changes in realtime');
         }
 
         function failCallback(data) {

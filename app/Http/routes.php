@@ -507,6 +507,8 @@ Route::get("/admin/mailMessageList", "AdminController@mailMessageListAction");
 
 Route::post("/admin/getMailMessageModalData", "AdminController@getMailMessageModalDataAction");
 
+Route::post("/admin/getSearchResultsUserChat", "AdminController@getSearchResultsUserChatAction");
+
 
 //=======================FEED=============================
 Route::get("/team-products", "FeedController@TeamProductsAction");

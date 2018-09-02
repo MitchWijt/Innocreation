@@ -739,4 +739,25 @@ class AdminController extends Controller
             return $mailMessage->message;
         }
     }
+
+    public function getSearchResultsUserChatAction(Request $request){
+        if ($this->authorized(true)) {
+            $searchString = $request->input("searchChatBackend");
+            if ($searchString != "") { // checks if the search input is empty
+                $userChatIds = [];
+                $userChats = UserChat::select("*")->where("creator_user_id", 1)->get();
+                foreach ($userChats as $userChat) {
+                    if($userChat->receiver_user_id != 1 && $userChat->receiver) {
+                        if (strpos($userChat->receiver->getName(), ucfirst($searchString)) !== false) { //gets all the teams which the user searched on
+                            array_push($userChatIds, $userChat->id);
+                        }
+                    }
+                }
+                $searchedUserChats = UserChat::select("*")->whereIn("id", $userChatIds)->get(); // all the teams where users searched on
+                return view("/admin/messages", compact("searchedUserChats"));
+            } else {
+                return redirect("/admin/messages");
+            }
+        }
+    }
 }

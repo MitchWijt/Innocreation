@@ -68,7 +68,6 @@ $(".chat-card").on("click",function () {
            var user1 = client.feed('user', userId, streamToken);
 
            function callback(data) {
-               console.log(data);
                $(".userChatMessages").each(function () {
                    var userChatId = $(this).data("chat-id");
                    if(userChatId == data["new"][0]["userChat"]){
@@ -84,7 +83,7 @@ $(".chat-card").on("click",function () {
            }
 
            function successCallback() {
-               console.log('now listening to changes in realtime');
+               // console.log('now listening to changes in realtime');
            }
 
            function failCallback(data) {

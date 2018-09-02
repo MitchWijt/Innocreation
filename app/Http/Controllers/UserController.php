@@ -429,9 +429,11 @@ class UserController extends Controller
             ];
             $messageFeed->addActivity($data);
 
-            $user = User::select("*")->where("id", $receiverId)->first();
+            if($receiverId != 1) {
+                $user = User::select("*")->where("id", $receiverId)->first();
 
-            $this->saveAndSendEmail($user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+                $this->saveAndSendEmail($user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+            }
 
             $messageArray = ["message" => $message, "timeSent" => $this->getTimeSent()];
             echo json_encode($messageArray);
