@@ -14,8 +14,9 @@
                 <div class="col-sm-12">
                     <button class="btn btn-inno pull-right">Log in</button>
                     <? if($pageType == "default") { ?>
-                        <p class="m-t-10">Don't have an account? <a class="regular-link toRegister" href="#">Sign up here!</a></p>
+                        <p class="m-t-10 m-b-0">Don't have an account? <a class="regular-link toRegister" href="#">Sign up here!</a></p>
                     <? } ?>
+                    <a href="/password-forgotten" class="regular-link">I forgot my password</a>
                 </div>
             </div>
         </div>

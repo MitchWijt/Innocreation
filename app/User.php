@@ -208,6 +208,10 @@ class User extends Authenticatable
         }
     }
 
+    public function getPasswordResetLink(){
+        return "/resetPassword/$this->hash";
+    }
+
     /**
      * The attributes that are mass assignable.
      *

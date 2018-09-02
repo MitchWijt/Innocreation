@@ -13,12 +13,12 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'ddc0a4d7e61c0286f0f8593b1903e894' => __DIR__ . '/..' . '/clue/stream-filter/src/functions.php',
         '8cff32064859f4559445b89279f3199c' => __DIR__ . '/..' . '/php-http/message/src/filters.php',
+        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
-        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
-        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
     );
@@ -97,9 +97,13 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
+            'GetStream\\Unit\\' => 15,
+            'GetStream\\Stubs\\' => 16,
+            'GetStream\\Integration\\' => 22,
         ),
         'F' => 
         array (
+            'Firebase\\JWT\\' => 13,
             'Faker\\' => 6,
         ),
         'D' => 
@@ -289,6 +293,22 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
+        'GetStream\\Unit\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/get-stream/stream/tests/unit',
+        ),
+        'GetStream\\Stubs\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/get-stream/stream/tests/stubs',
+        ),
+        'GetStream\\Integration\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/get-stream/stream/tests/integration',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
         'Faker\\' => 
         array (
             0 => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker',
@@ -359,6 +379,17 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
             'JakubOnderka\\PhpConsoleColor' => 
             array (
                 0 => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src',
+            ),
+        ),
+        'G' => 
+        array (
+            'GetStream\\StreamLaravel\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/get-stream/stream-laravel/src',
+            ),
+            'GetStream\\Stream' => 
+            array (
+                0 => __DIR__ . '/..' . '/get-stream/stream/lib',
             ),
         ),
         'D' => 
@@ -952,6 +983,32 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'File_Iterator' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Iterator.php',
         'File_Iterator_Facade' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Facade.php',
         'File_Iterator_Factory' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Factory.php',
+        'Firebase\\JWT\\BeforeValidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/BeforeValidException.php',
+        'Firebase\\JWT\\ExpiredException' => __DIR__ . '/..' . '/firebase/php-jwt/src/ExpiredException.php',
+        'Firebase\\JWT\\JWT' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWT.php',
+        'Firebase\\JWT\\SignatureInvalidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/SignatureInvalidException.php',
+        'GetStream\\StreamLaravel\\Eloquent\\Activity' => __DIR__ . '/..' . '/get-stream/stream-laravel/src/GetStream/StreamLaravel/Eloquent/Activity.php',
+        'GetStream\\StreamLaravel\\Eloquent\\ActivityTrait' => __DIR__ . '/..' . '/get-stream/stream-laravel/src/GetStream/StreamLaravel/Eloquent/ActivityTrait.php',
+        'GetStream\\StreamLaravel\\Eloquent\\CreateRemoveObserver' => __DIR__ . '/..' . '/get-stream/stream-laravel/src/GetStream/StreamLaravel/Eloquent/CreateRemoveObserver.php',
+        'GetStream\\StreamLaravel\\Eloquent\\Utils' => __DIR__ . '/..' . '/get-stream/stream-laravel/src/GetStream/StreamLaravel/Eloquent/Utils.php',
+        'GetStream\\StreamLaravel\\Enrich' => __DIR__ . '/..' . '/get-stream/stream-laravel/src/GetStream/StreamLaravel/Enrich.php',
+        'GetStream\\StreamLaravel\\EnrichedActivity' => __DIR__ . '/..' . '/get-stream/stream-laravel/src/GetStream/StreamLaravel/EnrichedActivity.php',
+        'GetStream\\StreamLaravel\\Exceptions\\MissingDataException' => __DIR__ . '/..' . '/get-stream/stream-laravel/src/GetStream/StreamLaravel/Exceptions/MissingDataException.php',
+        'GetStream\\StreamLaravel\\Exceptions\\ModelReferenceException' => __DIR__ . '/..' . '/get-stream/stream-laravel/src/GetStream/StreamLaravel/Exceptions/ModelReferenceException.php',
+        'GetStream\\StreamLaravel\\Facades\\FeedManager' => __DIR__ . '/..' . '/get-stream/stream-laravel/src/GetStream/StreamLaravel/Facades/FeedManager.php',
+        'GetStream\\StreamLaravel\\StreamLaravelManager' => __DIR__ . '/..' . '/get-stream/stream-laravel/src/GetStream/StreamLaravel/StreamLaravelManager.php',
+        'GetStream\\StreamLaravel\\StreamLaravelServiceProvider' => __DIR__ . '/..' . '/get-stream/stream-laravel/src/GetStream/StreamLaravel/StreamLaravelServiceProvider.php',
+        'GetStream\\Stream\\ActivityUpdateOperation' => __DIR__ . '/..' . '/get-stream/stream/lib/GetStream/Stream/ActivityUpdateOperation.php',
+        'GetStream\\Stream\\Analytics' => __DIR__ . '/..' . '/get-stream/stream/lib/GetStream/Stream/Analytics.php',
+        'GetStream\\Stream\\BaseFeed' => __DIR__ . '/..' . '/get-stream/stream/lib/GetStream/Stream/BaseFeed.php',
+        'GetStream\\Stream\\Batcher' => __DIR__ . '/..' . '/get-stream/stream/lib/GetStream/Stream/Batcher.php',
+        'GetStream\\Stream\\Client' => __DIR__ . '/..' . '/get-stream/stream/lib/GetStream/Stream/Client.php',
+        'GetStream\\Stream\\Collections' => __DIR__ . '/..' . '/get-stream/stream/lib/GetStream/Stream/Collections.php',
+        'GetStream\\Stream\\Feed' => __DIR__ . '/..' . '/get-stream/stream/lib/GetStream/Stream/Feed.php',
+        'GetStream\\Stream\\Personalization' => __DIR__ . '/..' . '/get-stream/stream/lib/GetStream/Stream/Personalization.php',
+        'GetStream\\Stream\\Signer' => __DIR__ . '/..' . '/get-stream/stream/lib/GetStream/Stream/Signer.php',
+        'GetStream\\Stream\\StreamFeedException' => __DIR__ . '/..' . '/get-stream/stream/lib/GetStream/Stream/StreamFeedException.php',
+        'GetStream\\Stream\\StreamWrongInputException' => __DIR__ . '/..' . '/get-stream/stream/lib/GetStream/Stream/StreamWrongInputException.php',
         'GuzzleHttp\\Client' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Client.php',
         'GuzzleHttp\\ClientInterface' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/ClientInterface.php',
         'GuzzleHttp\\Cookie\\CookieJar' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/Cookie/CookieJar.php',

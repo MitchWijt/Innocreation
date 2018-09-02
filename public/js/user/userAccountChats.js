@@ -22,6 +22,8 @@ $(".userCircle").on("click",function () {
 
 $(".chat-card").on("click",function () {
     var user_id = $(this).data("user-id");
+    var streamToken = $(".streamToken").val();
+    var userId = $(".userId").val();
     var user_chat_id = $(this).data("chat-id");
     var admin = 0;
    $(".collapse").each(function () {
@@ -50,7 +52,7 @@ $(".chat-card").on("click",function () {
            }
            setTimeout(function(){
                getUserChatMessages();
-           }, 300);
+           }, 500);
            setTimeout(function(){
                $(".userChatMessages").each(function () {
                    if($(this).data("chat-id") == user_chat_id) {
@@ -61,9 +63,34 @@ $(".chat-card").on("click",function () {
                    }
                });
            }, 1000);
-           setInterval(function () {
-               getUserChatMessages();
-           }, 500);
+
+           var client = stream.connect('ujpcaxtcmvav', null, '40873');
+           var user1 = client.feed('user', userId, streamToken);
+
+           function callback(data) {
+               $(".userChatMessages").each(function () {
+                   var userChatId = $(this).data("chat-id");
+                   if(userChatId == data["new"][0]["userChat"]){
+                       var message = $('.messageReceived').first().clone();
+                       var allMessages = $(this);
+                       $(message).appendTo(allMessages);
+                       message.find(".message").text(data["new"][0]["message"]);
+                       message.find(".timeSent").text(data["new"][0]["timeSent"]);
+                       $(this).parents(".userChatTextarea").find(".messageInput").val("");
+                   }
+               });
+
+           }
+
+           function successCallback() {
+               // console.log('now listening to changes in realtime');
+           }
+
+           function failCallback(data) {
+               alert('something went wrong, check the console logs');
+               console.log(data);
+           }
+           user1.subscribe(callback).then(successCallback, failCallback);
            $(this).collapse('toggle');
        }
    });

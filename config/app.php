@@ -162,6 +162,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        GetStream\StreamLaravel\StreamLaravelServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
     ],
@@ -180,6 +181,7 @@ return [
     'aliases' => [
 
         'App' => Illuminate\Support\Facades\App::class,
+        'FeedManager' => GetStream\StreamLaravel\Facades\FeedManager::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
         'Blade' => Illuminate\Support\Facades\Blade::class,

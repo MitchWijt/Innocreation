@@ -323,10 +323,12 @@ class UserController extends Controller
             }
             $innocreationChat = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", 1)->first();
             $userChats = UserChat::select("*")->where("creator_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->get();
+            $user = User::select("*")->where("id", $user_id)->first();
+            $streamToken = $user->stream_token;
             if (count($userChats) != 0) {
-                return view("/public/user/userAccountChats", compact("userChats", "user_id", "urlParameter", "urlParameterChat", "innocreationChat"));
+                return view("/public/user/userAccountChats", compact("userChats", "user_id", "urlParameter", "urlParameterChat", "innocreationChat", "streamToken"));
             }
-            return view("/public/user/userAccountChats", compact("user_id", "inn"));
+            return view("/public/user/userAccountChats", compact("user_id", "inn", "streamToken"));
         }
     }
 
@@ -405,10 +407,33 @@ class UserController extends Controller
             $userMessage->created_at = date("Y-m-d H:i:s");
             $userMessage->save();
 
-            $user = User::select("*")->where("id", $userChat->receiver_user_id)->first();
+            if($userChat->receiver_user_id == $sender_user_id) {
+                $receiverId = $userChat->creator_user_id;
+            } else {
+                $receiverId = $userChat->receiver_user_id;
+            }
 
-            $this->saveAndSendEmail($user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+            $client = $this->getService("stream");
+            $messageFeed = $client->feed('user', $receiverId);
+            $timeSent = $this->getTimeSent();
 
+            // Add the activity to the feed
+            $data = [
+                "actor"=> "$receiverId",
+                "receiver"=> "$sender_user_id",
+                "userChat"=> "$user_chat_id",
+                "message"=> "$message",
+                "timeSent"=> "$timeSent",
+                "verb"=>"userMessage",
+                "object"=>"3",
+            ];
+            $messageFeed->addActivity($data);
+
+            if($receiverId != 1) {
+                $user = User::select("*")->where("id", $receiverId)->first();
+
+                $this->saveAndSendEmail($user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+            }
 
             $messageArray = ["message" => $message, "timeSent" => $this->getTimeSent()];
             echo json_encode($messageArray);
@@ -1112,6 +1137,56 @@ class UserController extends Controller
             $user->save();
 
             return redirect($_SERVER["HTTP_REFERER"]);
+        }
+    }
+
+    public function passwordForgottenIndex(){
+        return view("/public/user/passwordForgotten");
+    }
+
+    public function sendPasswordResetLinkAction(Request $request){
+        $email = $request->input("email");
+        $user = User::select("*")->where("email", $email)->first();
+        if($user){
+            $user->hash_timestamp = date("Y-m-d H:i:s", strtotime("+1 hour"));
+            $user->save();
+            $this->saveAndSendEmail($user, "Reset your password", view("/templates/sendResetPassword", compact("user")));
+
+            return redirect($_SERVER["HTTP_REFERER"])->withSuccess("We have sent an email to $email with a password reset link!");
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors("Couldn't find any account associated with email $email please try again");
+        }
+    }
+
+    public function resetPasswordIndexAction($hash){
+        $user = User::select("*")->where("hash", $hash)->first();
+        if($user) {
+            $today = date("Y-m-d H");
+            $hash_timestamp = date("Y-m-d H", strtotime($user->hash_timestamp));
+            if ($today <= $hash_timestamp) {
+                return view("/public/user/resetPassword", compact("user"));
+            } else {
+                return redirect("/login")->withErrors("The password reset link has been expired");
+            }
+        } else {
+            return redirect("/login")->withErrors("Invalid user");
+        }
+    }
+
+    public function resetPasswordAction(Request $request){
+        $userId = $request->input("user_id");
+        $password = $request->input("password");
+        $confirmPassword = $request->input("confirm_password");
+
+        $user = User::select("*")->where("id", $userId)->first();
+
+        if($password == $confirmPassword){
+            $user->password = bcrypt(($request->input("password")));
+            $user->hash_timestamp = date("Y-m-d H:i:s", strtotime("-1 hour"));
+            $user->save();
+            return redirect("/login")->withSuccess("password succesfully changed.You can login now!");
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors("Passwords don't match");
         }
     }
 }

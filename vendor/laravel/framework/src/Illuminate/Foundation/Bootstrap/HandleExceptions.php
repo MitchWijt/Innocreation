@@ -57,7 +57,7 @@ class HandleExceptions
     {
         $fullDomain = $_SERVER['HTTP_HOST'];
         $domainExplode = explode(".", $fullDomain);
-        if($domainExplode[0] == "secret") {
+        if($domainExplode[0] == "secret" || $domainExplode[0] == "test") {
             if (error_reporting() & $level) {
                 throw new ErrorException($message, 0, $level, $file, $line);
             }

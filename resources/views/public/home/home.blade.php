@@ -16,7 +16,7 @@
                         @elsedesktop
                             <div class="hr col-md-10"></div>
                         @endtablet
-                        <p class="m-t-10 slogan text-center" style="color: #696969">Help each other make DREAMS become a reality</p>
+                        <p class="m-t-10 slogan text-center @mobile f-13 @endmobile" style="color: #696969">Help each other make DREAMS become a reality</p>
                     </div>
                 </div>
             </div>
@@ -39,12 +39,12 @@
                         </div>
                         <div class="hr col-md-8"></div>
                         <div class="row">
-                            <div class="col-xs-2 col-md-2 d-flex jc-end">
-                                <div class="circle-instructions">
-                                    <i style="font-size: 50px; color: #C9CCCF; padding-left: 1px;" class="zmdi zmdi-accounts-outline social-icon-instructions"></i>
+                            <div class="@mobile col-2 m-t-15 @elsedesktop col-md-2 d-flex jc-end @endmobile">
+                                <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
+                                    <i style="color: #C9CCCF; padding-left: 1px;" class="zmdi zmdi-accounts-outline @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile"></i>
                                 </div>
                             </div>
-                            <div class="col-xs-10 col-md-10 m-t-15">
+                            <div class="@mobile col-10 @elsedesktop col-md-10 @endmobile m-t-15">
                                 @handheld
                                     @mobile
                                         <p class="instructions-text m-0 allign-center f-17">Create an <a class="regular-link" href="/login">account</a> with your expertise(s)</p>
@@ -52,35 +52,35 @@
                                         <p class="instructions-text m-0 allign-center f-20">Create an <a class="regular-link" href="/login">account</a> with your expertise(s)</p>
                                     @endmobile
                                 @elsedesktop
-                                    <p class="instructions-text m-0 allign-center">Create an <a class="regular-link" href="/login">account</a> with your expertise(s)</p>
+                                    <p class="instructions-text m-0 allign-center f-22">Create an <a class="regular-link" href="/login">account</a> with your expertise(s)</p>
                                 @endhandheld
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-10 col-md-10 d-flex jc-end">
+                            <div class="@mobile col-10 p-r-0 @elsedesktop col-md-10 d-flex jc-end @endmobile">
                                 @handheld
                                     @mobile
-                                        <p class="c-gray m-b-0 m-r-20 m-t-15 f-17">Have an idea or product you want to develop</p>
+                                        <p class="c-gray m-b-0 m-t-15 f-17">Have an idea or product you want to develop</p>
                                     @elsetablet
                                         <p class="c-gray m-b-0 m-r-20 m-t-15 f-20">Have an idea or product you want to develop</p>
                                     @endmobile
                                 @elsedesktop
-                                    <p class="c-gray f-25 m-b-0 m-r-20  m-t-15">Have an idea or product you want to develop</p>
+                                    <p class="c-gray m-b-0 m-r-20 m-t-15 f-22">Have an idea or product you want to develop</p>
                                 @endhandheld
                             </div>
-                            <div class="col-xs-2 col-md-2">
-                                <div class="circle-instructions">
-                                    <i style="font-size: 50px; color: #C9CCCF; padding-top: 9px; padding-left: 3px;" class="zmdi zmdi-developer-board social-icon-instructions"></i>
+                            <div class="@mobile col-2 p-l-0 @elsedesktop col-md-2 @endmobile">
+                                <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
+                                    <i style="font-size: 50px; color: #C9CCCF; padding-top: 9px; padding-left: 3px;" class="zmdi zmdi-developer-board @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50 social-icon-instructions @endmobile"></i>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-xs-2 col-md-2 d-flex jc-end">
-                                <div class="circle-instructions">
-                                    <i style="font-size: 50px; color: #C9CCCF; padding-left: 1px;" class="zmdi zmdi-pin-drop social-icon-instructions"></i>
+                        <div class="row @mobile m-t-20 @endmobile">
+                            <div class="@mobile col-2 m-t-0 @elsedesktop col-md-2 d-flex jc-end @endmobile">
+                                <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
+                                    <i style="font-size: 50px; color: #C9CCCF; padding-left: 1px;" class="zmdi zmdi-pin-drop @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile"></i>
                                 </div>
                             </div>
-                            <div class="col-xs-10 col-md-10 m-t-15">
+                            <div class="@mobile col-10 @elsedesktop col-md-10 m-t-15 @endmobile ">
                                 @handheld
                                     @mobile
                                         <p class="instructions-text m-0 f-17">Offer yourself as a service or ask for a service</p>
@@ -88,25 +88,25 @@
                                         <p class="instructions-text m-0 f-20">Offer yourself as a service or ask for a service</p>
                                     @endmobile
                                 @elsedesktop
-                                    <p class="instructions-text m-0">Offer yourself as a service or ask for a service</p>
+                                    <p class="instructions-text m-0 f-22">Offer yourself as a service or ask for a service</p>
                                 @endhandheld
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-xs-10 col-md-10 jc-end d-flex">
+                        <div class="row @mobile p-b-20 @endmobile">
+                            <div class="@mobile col-10 @elsedesktop col-md-10 jc-end d-flex @endmobile ">
                                 @handheld
                                     @mobile
-                                        <p class="instructions-text m-b-0 m-r-20 m-t-15 f-17">Create or join a <a class="regular-link" href="/teams">team</a> and enjoy working together!</p>
+                                        <p class="instructions-text m-b-0 m-t-15 f-17">Create or join a <a class="regular-link" href="/teams">team</a> and enjoy working together!</p>
                                     @elsetablet
                                         <p class="instructions-text m-b-0 m-r-20 m-t-15 f-20">Create or join a <a class="regular-link" href="/teams">team</a> and enjoy working together!</p>
                                     @endmobile
                                 @elsedesktop
-                                    <p class="instructions-text m-b-0 m-r-20 m-t-15">Create or join a <a class="regular-link" href="/teams">team</a> and enjoy working together!</p>
+                                    <p class="instructions-text m-b-0 m-r-20 m-t-15 f-22">Create or join a <a class="regular-link" href="/teams">team</a> and enjoy working together!</p>
                                 @endhandheld
                             </div>
-                            <div class="col-xs-2 col-md-2 m-b-20">
-                                <div class="circle-instructions">
-                                    <i style="font-size: 50px; color: #C9CCCF; padding-top: 12px; padding-left: 0;" class="zmdi zmdi-badge-check social-icon-instructions"></i>
+                            <div class="@mobile col-2 p-l-0 m-t-10 @elsedesktop col-md-2 m-b-20 @endmobile">
+                                <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
+                                    <i style="font-size: 50px; color: #C9CCCF; padding-top: 12px; padding-left: 0;" class="zmdi zmdi-badge-check @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50 social-icon-instructions @endmobile"></i>
                                 </div>
                             </div>
                         </div>
@@ -117,27 +117,27 @@
                     <div class="row">
                         <div class="col-md-12 m-t-20">
                             <div class="row">
-                                <div class="col-sm-2 d-flex jc-end">
-                                    <div class="circle-instructions">
-                                        <i style="font-size: 50px; padding-left: 1px;" class="material-icons social-icon-instructions">lightbulb_outline</i>
+                                <div class="@mobile col-2 m-t-15 @elsedesktop col-sm-2 d-flex jc-end @endmobile">
+                                    <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
+                                        <i style="font-size: 50px; padding-left: 1px;" class="material-icons @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile">lightbulb_outline</i>
                                     </div>
                                 </div>
-                                <div class="col-sm-10 m-t-15">
+                                <div class="@mobile col-10 m-t-15 @elsedesktop col-sm-10 m-t-15 @endmobile ">
                                     @handheld
                                         @mobile
-                                            <p class="instructions-second-text m-0 f-17">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
+                                            <p class="instructions-second-text m-0 f-15">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
                                         @elsetablet
                                             <p class="instructions-second-text m-0 f-20">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-0">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
+                                        <p class="instructions-second-text m-0 f-22">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
                                     @endhandheld
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="col-sm-10 d-flex jc-end">
+                                <div class="@mobile col-10 p-r-0 @elsedesktop col-sm-10 d-flex jc-end @endmobile ">
                                     @handheld
                                         @mobile
                                             <p class="instructions-second-text m-b-0 m-t-15 m-r-20 f-17">Communicate easily with your team through the <a class="regular-link" href="/login">chat system</a></p>
@@ -145,24 +145,24 @@
                                             <p class="instructions-second-text m-b-0 m-t-15 m-r-20 f-20">Communicate easily with your team through the <a class="regular-link" href="/login">chat system</a></p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-b-0 m-t-15 m-r-20">Communicate easily with your team through the <a class="regular-link" href="/login">chat system</a></p>
+                                        <p class="instructions-second-text m-b-0 m-t-15 m-r-20 f-22">Communicate easily with your team through the <a class="regular-link" href="/login">chat system</a></p>
                                     @endhandheld
                                 </div>
-                                <div class="col-sm-2">
-                                    <div class="circle-instructions">
-                                        <i style="font-size: 50px; padding-left: 1px; padding-top: 10px;" class="material-icons social-icon-instructions">chat</i>
+                                <div class="@mobile col-2 p-l-0 m-t-10 @elsedesktop col-sm-2 @endmobile">
+                                    <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
+                                        <i style="font-size: 50px; padding-left: 1px; padding-top: 10px;" class="material-icons @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile">chat</i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-xs-2 col-md-2 d-flex jc-end">
-                                    <div class="circle-instructions">
-                                        <i style="font-size: 50px; color: #000; padding-left: 1px;" class="zmdi zmdi-globe social-icon-instructions"></i>
+                            <div class="row @mobile p-t-20 @endmobile">
+                                <div class="@mobile col-2 @elsedesktop col-md-2 d-flex jc-end @endmobile">
+                                    <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
+                                        <i style="font-size: 50px; color: #000; padding-left: 1px;" class="zmdi zmdi-globe @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile"></i>
                                     </div>
                                 </div>
-                                <div class="col-sm-10 m-t-15">
+                                <div class="@mobile col-10 p-r-0 @elsedesktop col-sm-10 m-t-15 @endmobile ">
                                     @handheld
                                         @mobile
                                             <p class="instructions-second-text m-0 f-17">Get your idea/product known to the open world!</p>
@@ -170,40 +170,39 @@
                                             <p class="instructions-second-text m-0 f-20">Get your idea/product known to the open world!</p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-0">Get your idea/product known to the open world!</p>
+                                        <p class="instructions-second-text m-0 f-22">Get your idea/product known to the open world!</p>
                                     @endhandheld
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="col-sm-10 d-flex jc-end">
+                                <div class="@mobile col-10 p-r-0 @elsedesktop col-sm-10 d-flex jc-end @endmobile ">
                                     @handheld
                                         @mobile
-                                            <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-17">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
+                                            <p class="instructions-second-text m-b-0 m-t-15 f-17">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
                                         @elsetablet
                                             <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-20">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-b-0 m-r-20 m-t-15">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
+                                        <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-22">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
                                     @endhandheld
                                 </div>
-                                <div class="col-sm-2">
-                                    <div class="circle-instructions">
-                                        <i style="font-size: 50px; padding-right: 5px; padding-top: 8px;" class="zmdi zmdi-share social-icon-instructions"></i>
-                                        {{--<i  class="material-icons ">shopping_basket</i>--}}
+                                <div class="@mobile col-2 p-l-0 m-t-10 @elsedesktop col-sm-2 @endmobile">
+                                    <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
+                                        <i style="font-size: 50px; padding-right: 5px; padding-top: 8px;" class="zmdi zmdi-share @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="row ">
-                                <div class="col-sm-2 d-flex jc-end">
-                                    <div class="circle-instructions">
-                                        <i style="font-size: 50px; padding-right: 4px;padding-top: 8px;" class="zmdi zmdi-mood social-icon-instructions"></i>
+                            <div class="row @mobile p-t-20 p-b-20 @endmobile">
+                                <div class="@mobile col-2 @elsedesktop col-sm-2 d-flex jc-end @endmobile">
+                                    <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
+                                        <i style="font-size: 50px; padding-right: 4px;padding-top: 8px;" class="zmdi zmdi-mood @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile"></i>
                                     </div>
                                 </div>
-                                <div class="col-sm-10 m-t-15">
+                                <div class="@mobile col-10 @elsedesktop col-sm-10 m-t-15 @endmobile ">
                                     @handheld
                                         @mobile
                                             <p class="instructions-second-text m-0 f-17">Have fun, be creative and innovative</p>
@@ -211,7 +210,7 @@
                                             <p class="instructions-second-text m-0 f-20">Have fun, be creative and innovative</p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-0">Have fun, be creative and innovative!</p>
+                                        <p class="instructions-second-text m-0 f-22">Have fun, be creative and innovative!</p>
                                     @endhandheld
                                 </div>
                             </div>

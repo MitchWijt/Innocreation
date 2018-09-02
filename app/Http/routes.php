@@ -28,6 +28,8 @@ Route::get("/logout", "LoginController@logout");
 
 Route::get("/header", "HomeController@headerMail");
 
+Route::get("/password-forgotten", "UserController@passwordForgottenIndex");
+
 // CONTACT US
 Route::get("/contact-us", "HomeController@contactAction");
 
@@ -43,6 +45,12 @@ Route::get("/account", "UserController@userAccountCredentials");
 Route::post("/my-account/saveUserAccount", "UserController@saveUserAccount");
 
 Route::get("/my-account", "UserController@userAccountCredentials");
+
+Route::post("/user/sendPasswordResetLink", "UserController@sendPasswordResetLinkAction");
+
+Route::get("/resetPassword/{hash}", "UserController@resetPasswordIndexAction");
+
+Route::post("/user/resetPassword", "UserController@resetPasswordAction");
 
 //User Expertises
 
@@ -506,6 +514,8 @@ Route::get("/admin/serviceReviewList", "AdminController@serviceReviewListAction"
 Route::get("/admin/mailMessageList", "AdminController@mailMessageListAction");
 
 Route::post("/admin/getMailMessageModalData", "AdminController@getMailMessageModalDataAction");
+
+Route::post("/admin/getSearchResultsUserChat", "AdminController@getSearchResultsUserChatAction");
 
 
 //=======================FEED=============================

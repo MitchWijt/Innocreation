@@ -30,7 +30,7 @@ class LoginController extends Controller
         $expertises = Expertises::select("*")->get();
         $pageType = "default";
         if($hash != null && $teamName != null){
-            $team = Team::select("*")->where("hash", $hash)->where("team_name", $teamName)->first();
+            $team = Team::select("*")->where("hash", $hash)->where("slug", $teamName)->first();
             $today2 = date("Y-m-d H:i:s", strtotime("+1 hour"));
             if(date("Y-m-d H:i:s", strtotime($team->timestamp)) <= $today2){
                 Session::set("hash", $hash);
@@ -96,6 +96,9 @@ class LoginController extends Controller
             $user->created_at = date("Y-m-d H:i:s");
             $user->save();
 
+            $client = $this->getService("stream");
+            $streamFeed = $client->feed('user', $user->id);
+            $token = $streamFeed->getToken();
 
             $mollie = $this->getService("mollie");
             $customer = $mollie->customers->create([
@@ -104,6 +107,7 @@ class LoginController extends Controller
             ]);
             $newCustomer = User::select("*")->where("id", $user->id)->first();
             $newCustomer->mollie_customer_id = $customer->id;
+            $newCustomer->stream_token = $token;
             $newCustomer->save();
 
             $userChat = new UserChat();
@@ -205,6 +209,13 @@ class LoginController extends Controller
             if($user->team_id != null) {
                 Session::set('team_id', $user->team_id);
                 Session::set("team_name", $user->team->team_name);
+            }
+            if($user->stream_token == null){
+                $client = $this->getService("stream");
+                $streamFeed = $client->feed('user', $user->id);
+                $token = $streamFeed->getToken();
+                $user->stream_token = $token;
+                $user->save();
             }
             if($request->input("pageType") && $request->input("pageType") == "checkout"){
                 return redirect($request->input("backlink"));
