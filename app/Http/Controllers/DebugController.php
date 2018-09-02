@@ -18,6 +18,8 @@ use App\SplitTheBillLinktable;
 use App\Http\Requests;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Invoice;
+use GetStream;
+use GetStream\StreamLaravel\Facades\FeedManager;
 use Session;
 
 class DebugController extends Controller
@@ -26,9 +28,32 @@ class DebugController extends Controller
      *
      */
     public function test(){
-        if($this->authorized(true)) {
-            $user = User::select("*")->where("id", 10)->first();
-            $this->saveAndSendEmail($user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+//        if($this->authorized(true)) {
+//            $client = $this->getService("stream");
+//            $ericFeed = $client->feed('user', 1);
+//            $timeSent = $this->getTimeSent();
+//
+//            // Add the activity to the feed
+//            $data = [
+//                "actor"=> "10",
+//                "receiver"=> "14",
+//                "userChat"=> "28",
+//                "message"=> "hoi",
+//                "timeSent"=> "2 PM",
+//                "verb"=>"userMessage",
+//                "object"=>"3",
+//            ];
+//
+//            $ericFeed->addActivity($data);
+//
+//            $token = $ericFeed->getToken();
+//            dd($token);
+//
+//            $response = $ericFeed->getActivities();
+//            dd($response);
+//            $user = User::select("*")->where("id", 10)->first();
+//            $feed = FeedManager::getUserFeed($user->id);
+//            dd($feed);
 
 //        if($this->authorized(true)){
 
@@ -44,6 +69,6 @@ class DebugController extends Controller
 //        foreach($subscriptions as $subscription){
 //            $customer->cancelSubscription($subscription->id);
 //        }
-        }
+//        }
     }
 }

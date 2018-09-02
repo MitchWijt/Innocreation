@@ -13,6 +13,7 @@
         "php-http/curl-client": "^1.7",
         "guzzlehttp/psr7": "^1.4",
         "spipu/html2pdf": "^5.2",
+        "get-stream/stream-laravel": "~2.2.6",
         "mollie/mollie-api-php": "^2.0"
     },
     "require-dev": {
