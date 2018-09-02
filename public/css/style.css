@@ -443,8 +443,8 @@ footer{
     border: 2px solid #FF6100;
     border-radius: 100%;
     margin-right: 20px;
-    height: 70px !important;
-    width: 70px !important;
+    height: 50px !important;
+    width: 50px !important;
 }
 
 .circle-instructions-second{
@@ -596,6 +596,13 @@ footer{
 /*========================================INSTRUCTIONS===============================*/
 .social-icon-instructions{
     width: 70px ;
+    height: 70px ;
+    text-align: center;
+    padding-top: 7px;
+}
+
+.social-icon-instructions-mobile{
+    width: 47px ;
     height: 70px ;
     text-align: center;
     padding-top: 7px;
