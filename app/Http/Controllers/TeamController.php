@@ -685,7 +685,7 @@ class TeamController extends Controller
         $team->timestamp = date("Y-m-d H:i:s");
         $team->save();
 
-        $link = $_SERVER["HTTP_HOST"] . "/invite/$team->hash/" . $team->team_name;
+        $link = $_SERVER["HTTP_HOST"] . "/invite/$team->hash/" . $team->slug;
 
         return $link;
     }
