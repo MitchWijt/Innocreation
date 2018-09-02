@@ -49,7 +49,11 @@
                                 @tablet
                                     <div class="row d-flex fd-column p-l-10">
                                         <span class="col-sm-4"><?= $user->getName()?></span>
-                                        <span class="col-sm-8 m-0">Team: <a target="_blank" class="regular-link" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
+                                        <? if($user->team_id != null) { ?>
+                                            <span class="col-sm-8 m-0">Team: <a target="_blank" class="regular-link" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
+                                        <? } else { ?>
+                                            <span class="col-sm-8 m-0">Team: -</span>
+                                        <? } ?>
                                     </div>
                                 @endtablet
                             </div>
