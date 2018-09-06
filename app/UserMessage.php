@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use GetStream;
 
 class UserMessage extends Model{
-//    use GetStream\StreamLaravel\Eloquent\ActivityTrait;
     public $table = "user_message";
+
 
     public function users(){
         return $this->hasMany("\App\User", "id","receiver_user_id");
