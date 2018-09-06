@@ -1,6 +1,6 @@
 @extends("layouts.app")
 @section("content")
-<div class="home-background-wrapper">
+<div class="home-background-wrapper vh85">
     <div class="container">
         <div class="main-content">
             <div class="row">
@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-        <div class="homepage-mainContent hidden">
+        <div class="homepage-mainContent">
             <div class="instructions">
                 <div class="container">
                         <div class="row">
@@ -216,15 +216,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12 text-center m-t-0 m-b-20">
-                            <a href="/login?register=1" class="btn btn-lg btn-inno @mobile btn-sm @endmobile">Join for free!</a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 text-center m-t-0 m-b-20">
-                            <i>(Want a one on one demo of Innocreation? contact us at info@innocreation.net!)</i>
-                        </div>
+                    <div class="row d-flex js-center p-b-25">
+                        <input type="text" placeholder="E-mail" name="emailCustomer" class="input pull-right">
+                        <a href="/login?register=1" class="btn btn-lg btn-inno @mobile btn-sm @endmobile">Get more info!</a>
                     </div>
                 </div>
             </div>
@@ -241,48 +235,11 @@
     }
 </style>
 <script>
-
-    $('body').bind('touchmove', function(e) {
-        $(".headerShow").fadeIn();
-        $(".home-background-wrapper").css("height","85vh");
-        $(".homepage-mainContent").removeClass("hidden");
-        $(".footerView").load("/includes/footer");
-        $(".footerView").attr("style", "display: block !important");
-    });
-
-    $(window).bind('mousewheel DOMMouseScroll', function(event){
-        if (event.originalEvent.wheelDelta > 0 || event.originalEvent.detail < 0) {
-            // scroll up
-        }
-        else {
-            $(".headerShow").fadeIn();
-            $(".home-background-wrapper").css("height","85vh");
-            $(".homepage-mainContent").removeClass("hidden");
-            $(".footerView").load("/includes/footer");
-            $(".footerView").attr("style", "display: block !important");
-        }
-    });
-    var position = $(window).scrollTop();
-    $(document).scroll(function(event) {
-        var scroll = $(window).scrollTop();
-        if(scroll > position) {
-
-        }
-        position = scroll;
-//        if( event.originalEvent.detail > 0 || event.originalEvent.wheelDelta < 0 ) {
-
-//        }
-    });
-
     $(document).ready(function () {
-        $('.headerShow').hide();
+        $(".footerView").load("/includes/footer");
     });
 
     $(".scrollHomeBtn").click(function() {
-        $(".headerShow").fadeIn();
-        $(".home-background-wrapper").css("height","85vh");
-        $(".homepage-mainContent").removeClass("hidden");
-        $(".footerView").load("/includes/footer");
         setTimeout(function(){
             $('html, body').animate({
                 scrollTop: $("#scrollToHome").offset().top - 120

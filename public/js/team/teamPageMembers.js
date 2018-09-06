@@ -43,6 +43,17 @@ $(".generateInviteLink").on("click",function () {
         data: {'team_id': team_id},
         success: function (data) {
            $(".inviteLink").val(data);
+           $(".fb-share-button").attr("data-href", data);
+           $(".shareFb").attr("data-href", data);
+           $(".fb-share-button").attr("href", data);
         }
     });
+});
+
+$('.shareFb').click( function() {
+    console.log("gfdsa");
+    var shareurl = $(this).attr("data-href");
+    window.open('https://www.facebook.com/sharer/sharer.php?u='+escape(shareurl)+'&t='+document.title, '',
+        'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');
+    return false;
 });

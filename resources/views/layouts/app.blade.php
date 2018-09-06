@@ -41,6 +41,19 @@
     {{--==============--}}
         <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=i4hrh8gzmh7fted3hqpgatcuwma8kl075x378rgkki09j852"></script>
     {{------------------------------}}
+    {{--FACEBOOK--}}
+    <div id="fb-root"></div>
+    <script>
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/nl_NL/sdk.js#xfbml=1&version=v3.1';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    {{--================--}}
+
     <meta name="description" content="<? if(isset($og_description)) echo $og_description?>" />
     <meta name="google-site-verification" content="7i4l0CQ7KL5Rcffr4TDf0e7doWEObxrI-mRC_RXai2g" />
     <title><? if(isset($title)) echo $title ?> | Innocreation</title>

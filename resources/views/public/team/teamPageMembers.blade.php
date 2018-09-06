@@ -49,6 +49,9 @@
                                         </div>
                                         <div class="@handheld col-xs-8 m-l-10 @elsedesktop col-sm-8 @endhandheld">
                                             <input type="text" class="input inviteLink">
+                                            {{--<div class="shareFb" data-href="">--}}
+                                                {{--<div class="fb-share-button" data-href="" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" class="fb-xfbml-parse-ignore">Delen</a></div>--}}
+                                            {{--</div>--}}
                                         </div>
                                     </div>
                                 </div>
