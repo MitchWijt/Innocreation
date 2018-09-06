@@ -8,6 +8,13 @@
                 .webfont {
                     font-family: "Corbert", Lato Regular, sans-serif !important;
                 }
+
+                .circle{
+                    border: 2px solid #FF6100 !important;
+                    border-radius: 100% !important;
+                    width: 100px !important;
+                    height: 100px !important;
+                }
             }
         </style>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />

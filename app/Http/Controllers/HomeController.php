@@ -96,8 +96,21 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function sendMoreInfoMailAction(Request $request){
+        $email = $request->input("emailCustomer");
+        if($email != "" || !empty($email)) {
+            $mgClient = $this->getService("mailgun");
+            $mgClient[0]->sendMessage($mgClient[1], array(
+                'from' => 'Innocreation <info@innocreation.net>',
+                'to' => $email,
+                'subject' => "Detailed information Innocreation!",
+                'html' => view("/templates/sendMoreInfoMail")
+            ), array(
+                'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png', $_SERVER['DOCUMENT_ROOT'] . '/images/icons/dashboard.png', $_SERVER['DOCUMENT_ROOT'] . '/images/icons/teamwork-icon.png', $_SERVER['DOCUMENT_ROOT'] . '/images/icons/workspace.png')
+            ));
+            return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Mail has been sent!");
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
     }
 }

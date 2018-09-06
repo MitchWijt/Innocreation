@@ -217,8 +217,11 @@
                         </div>
                     </div>
                     <div class="row d-flex js-center p-b-25">
-                        <input type="text" placeholder="E-mail" name="emailCustomer" class="input pull-right">
-                        <a href="/login?register=1" class="btn btn-lg btn-inno @mobile btn-sm @endmobile">Get more info!</a>
+                        <form action="/home/sendMoreInfoMail" method="post">
+                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                            <input type="text" placeholder="Your email address..." name="emailCustomer" class="input-fat m-0 p-r-0">
+                            <button type="submit" class="btn btn-lg btn-inno @mobile btn-sm @endmobile">Get more info!</button>
+                        </form>
                     </div>
                 </div>
             </div>
