@@ -32,7 +32,7 @@
                                             <div class="col-sm-12 m-t-15 m-b-20">
                                                 <i class="zmdi zmdi-close c-orange pull-right f-20 p-absolute deleteProfilePicture" style="right: 240px;"></i>
                                                 <img  src="<?= $team->getProfilePicture()?>" class="circle circleMedium m-0">
-                                                <p class="m-t-10 m-l-30">Team leader:<br> <a target="_blank" class="regular-link" href="<?= $team->users->First()->getUrl()?>"><?= $team->users->First()->getName()?></a></p>
+                                                <p class="m-t-10 m-l-30">Team leader:<br> <a target="_blank" class="regular-link" href="<?= $team->users->getUrl()?>"><?= $team->users->getName()?></a></p>
                                             </div>
                                         </div>
                                         <div class="col-sm-7">
