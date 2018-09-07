@@ -317,10 +317,11 @@ class TeamController extends Controller
     }
 
     public function teamMembersPage(){
+        $title = "My team members. Join my team!";
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $team = Team::select("*")->where("id", $user->team_id)->first();
         $teamRoles = UserRole::select("*")->where("team_role", 1)->get();
-        return view("/public/team/teamPageMembers", compact("team", "user","teamRoles"));
+        return view("/public/team/teamPageMembers", compact("team", "user","teamRoles", "title"));
     }
 
     public function kickMemberFromTeamAction(Request $request){
@@ -685,7 +686,7 @@ class TeamController extends Controller
         $team->timestamp = date("Y-m-d H:i:s");
         $team->save();
 
-        $link = $_SERVER["HTTP_HOST"] . "/invite/$team->hash/" . $team->slug;
+        $link = "https://innocreation.net" . "/invite/$team->hash/" . $team->slug;
 
         return $link;
     }

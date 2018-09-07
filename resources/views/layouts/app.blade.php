@@ -41,8 +41,19 @@
     {{--==============--}}
         <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=i4hrh8gzmh7fted3hqpgatcuwma8kl075x378rgkki09j852"></script>
     {{------------------------------}}
+    {{--FACEBOOK--}}
+    <div id="fb-root"></div>
+    {{--================--}}
+
+    {{--RECAPTCHA--}}
+        <script src='https://www.google.com/recaptcha/api.js?hl=en'></script>
+    {{--==============--}}
+
+    <script></script>
+
     <meta name="description" content="<? if(isset($og_description)) echo $og_description?>" />
     <meta name="google-site-verification" content="7i4l0CQ7KL5Rcffr4TDf0e7doWEObxrI-mRC_RXai2g" />
+    <link rel="canonical" class="tweet-button-link" href="">
     <title><? if(isset($title)) echo $title ?> | Innocreation</title>
 </head>
 <body>

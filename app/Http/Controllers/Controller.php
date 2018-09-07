@@ -98,23 +98,29 @@ class Controller extends BaseController
         return $url;
     }
 
-    public function saveAndSendEmail($to, $subject, $message, $from = 'Innocreation <mitchel@innocreation.net>'){
+    public function saveAndSendEmail($email = false, $to = false, $subject, $message, $from = 'Innocreation <info@innocreation.net>'){
         $mgClient = $this->getService("mailgun");
+        if($email != false){
+            $email = $email;
+        } else {
+            $email = $to->email;
+        }
         $mgClient[0]->sendMessage($mgClient[1], array(
             'from' => $from,
-            'to' => $to->email,
+            'to' => $email,
             'subject' => $subject,
             'html' => $message
         ), array(
             'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
         ));
-
-        $mailMessage = new MailMessage();
-        $mailMessage->receiver_user_id = $to->id;
-        $mailMessage->subject = $subject;
-        $mailMessage->message = $message;
-        $mailMessage->created_at = date("Y-m-d");
-        $mailMessage->save();
+        if($email == false) {
+            $mailMessage = new MailMessage();
+            $mailMessage->receiver_user_id = $to->id;
+            $mailMessage->subject = $subject;
+            $mailMessage->message = $message;
+            $mailMessage->created_at = date("Y-m-d");
+            $mailMessage->save();
+        }
     }
 
     public function getControllerName(){
