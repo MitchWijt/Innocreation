@@ -44,8 +44,34 @@ $(".generateInviteLink").on("click",function () {
         success: function (data) {
            $(".inviteLink").val(data);
            $(".fb-share-button").attr("data-href", data);
-           $(".shareFb").attr("data-href", data);
            $(".fb-share-button").attr("href", data);
+            (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+            $(".twitter-share-button").attr("href", data);
+            $(".twitter-share-button").removeClass("hidden");
+            $(".tweet-button-link").attr("href", data);
+            window.twttr = (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0],
+                    t = window.twttr || {};
+                if (d.getElementById(id)) return t;
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "https://platform.twitter.com/widgets.js";
+                fjs.parentNode.insertBefore(js, fjs);
+
+                t._e = [];
+                t.ready = function(f) {
+                    t._e.push(f);
+                };
+
+                return t;
+            }(document, "script", "twitter-wjs"));
         }
     });
 });

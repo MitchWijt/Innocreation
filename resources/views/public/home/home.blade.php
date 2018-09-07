@@ -2,6 +2,11 @@
 @section("content")
 <div class="home-background-wrapper vh85">
     <div class="container">
+        <div class="row">
+            <div class="col-sm-12 d-flex js-center">
+                @include("includes.flash")
+            </div>
+        </div>
         <div class="main-content">
             <div class="row">
                 <div class="col-md-12">
@@ -219,7 +224,7 @@
                     <div class="row d-flex js-center p-b-25">
                         <form action="/home/sendMoreInfoMail" method="post">
                             <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                            <input type="text" placeholder="Your email address..." name="emailCustomer" class="input-fat m-0 p-r-0">
+                            <input type="text" placeholder="Your email address..." name="emailCustomer" class="@mobile input @elsedesktop input-fat @endmobile m-0 p-r-0">
                             <button type="submit" class="btn btn-lg btn-inno @mobile btn-sm @endmobile">Get more info!</button>
                         </form>
                     </div>
