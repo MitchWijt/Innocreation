@@ -49,6 +49,16 @@
                                         </div>
                                         <div class="@handheld col-xs-8 m-l-10 @elsedesktop col-sm-8 @endhandheld">
                                             <input type="text" class="input inviteLink">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="fb-share-button" data-href="" data-layout="button"></div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="m-t-5">
+                                                        <a class="twitter-share-button hidden" href="">Tweet</a>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

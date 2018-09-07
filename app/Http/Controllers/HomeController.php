@@ -61,20 +61,37 @@ class HomeController extends Controller
         $email = $request->input("email");
         $message = $request->input("contactMessage");
 
-        $sender = [$firstname, $lastname, $email, $message];
-        $html  = view("/templates/sendMailFromContactForm", compact("sender"));
+        $data = array(
+            'secret' => '6LfW7G4UAAAAAM1bLVc1WzYb37sbVoFogB8rByea',
+            'response' =>  $request->input("g-recaptcha-response")
+        );
 
-        $mgClient = $this->getService("mailgun");
-        $mgClient[0]->sendMessage($mgClient[1], array(
-            'from' => $email,
-            'to' => "info@innocreation.net",
-            'subject' => "Contact form submit",
-            'html' => $html
-        ), array(
-            'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
-        ));
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,"https://www.google.com/recaptcha/api/siteverify");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $server_output = curl_exec($ch);
+        curl_close ($ch);
+        $captcha_response = json_decode($server_output);
+        if ($captcha_response->success == false) {
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors("Captcha hasn't been filled in correctly");
+        } else if ($captcha_response->success ==true) {
+            $sender = [$firstname, $lastname, $email, $message];
+            $html  = view("/templates/sendMailFromContactForm", compact("sender"));
 
-        return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Successfully sent contact form");
+            $mgClient = $this->getService("mailgun");
+            $mgClient[0]->sendMessage($mgClient[1], array(
+                'from' => $email,
+                'to' => "info@innocreation.net",
+                'subject' => "Contact form submit",
+                'html' => $html
+            ), array(
+                'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
+            ));
+
+            return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Successfully sent contact form");
+        }
     }
 
 
@@ -96,8 +113,21 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function sendMoreInfoMailAction(Request $request){
+        $email = $request->input("emailCustomer");
+        if($email != "" || !empty($email)) {
+            $mgClient = $this->getService("mailgun");
+            $mgClient[0]->sendMessage($mgClient[1], array(
+                'from' => 'Innocreation <info@innocreation.net>',
+                'to' => $email,
+                'subject' => "Detailed information Innocreation!",
+                'html' => view("/templates/sendMoreInfoMail")
+            ), array(
+                'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png', $_SERVER['DOCUMENT_ROOT'] . '/images/icons/dashboard.png', $_SERVER['DOCUMENT_ROOT'] . '/images/icons/teamwork-icon.png', $_SERVER['DOCUMENT_ROOT'] . '/images/icons/workspace.png')
+            ));
+            return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Mail has been sent!");
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
     }
 }

@@ -30,6 +30,8 @@ Route::get("/header", "HomeController@headerMail");
 
 Route::get("/password-forgotten", "UserController@passwordForgottenIndex");
 
+Route::post("/home/sendMoreInfoMail", "HomeController@sendMoreInfoMailAction");
+
 // CONTACT US
 Route::get("/contact-us", "HomeController@contactAction");
 

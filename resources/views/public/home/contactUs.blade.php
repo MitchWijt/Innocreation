@@ -2,6 +2,11 @@
 @section("content")
     <div class="d-flex grey-background vh100">
         <div class="container">
+            <div class="row">
+                <div class="col-sm-12 d-flex js-center">
+                    @include("includes.flash")
+                </div>
+            </div>
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">Contact us</h1>
             </div>
@@ -43,6 +48,11 @@
                         <div class="col-sm-12 text-center">
                             <textarea name="contactMessage" placeholder="Your message..." class="input col-sm-12 message" cols="30" rows="10"></textarea>
                         </div>
+                    </div>
+                </div>
+                <div class="row m-b-20 d-flex js-center">
+                    <div class="col-sm-8 p-l-15">
+                        <div class="g-recaptcha" data-sitekey="6LfW7G4UAAAAAOJvDkQiKgOONaSkHIE4vEjuWJg3"></div>
                     </div>
                 </div>
                 {{--<div class="row d-flex js-center">--}}
