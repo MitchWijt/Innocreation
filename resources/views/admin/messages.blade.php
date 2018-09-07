@@ -237,7 +237,7 @@
                 data: {'user_chat_id': user_chat_id, 'sender_user_id' : sender_user_id, 'message' : message},
                 dataType: "JSON",
                 success: function (data) {
-                    var message = $('.sendedMessageAjax').first().clone();
+                    var message = $('.messageSent').first().clone();
                     $(".userChatMessages").each(function () {
                         if($(this).data("chat-id") == user_chat_id){
                             var allMessages = $(this);
