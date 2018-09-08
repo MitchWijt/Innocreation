@@ -17,7 +17,9 @@
                     <? if($user->id == $team->ceo_user_id || $user->role == 1 || $user->role == 4) { ?>
                         <button class="btn btn-inno btn-sm addNewBucketlistBoard">Add bucketlist board</button>
                     <? } ?>
-                    <button class="btn btn-inno btn-sm" data-toggle="modal" data-target="#addNewGoalModal">Add new goal</button>
+                    <? if(isset($workspaceBucketlistTypes)) { ?>
+                        <button class="btn btn-inno btn-sm" data-toggle="modal" data-target="#addNewGoalModal">Add new goal</button>
+                    <? } ?>
                 </div>
             </div>
             <div class="d-flex js-center m-t-20 row hidden newBoard bucketlistBoard">
