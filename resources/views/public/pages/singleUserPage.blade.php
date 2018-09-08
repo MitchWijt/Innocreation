@@ -3,7 +3,7 @@
     <div class="d-flex grey-background">
         <div class="container">
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black"><?=$user->getName()?></h1>
+                <h1 class="sub-title-black"><?=$user->firstname . " active as " . strtolower($user->getSeoExpertises())?></h1>
             </div>
             <div class="row">
                 <div class="col-sm-12 text-center">

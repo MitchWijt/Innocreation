@@ -68,7 +68,11 @@ class PageController extends Controller
                 }
             }
         }
-        return view("public/pages/singleUserPage", compact("user","expertise_linktable", "loggedIn", "portfolios","team", "neededExpertisesArray"));
+
+        $title = $user->firstname . " active as " . strtolower($user->getSeoExpertises());
+        $activeAs = strtolower($user->getSeoExpertises());
+        $og_description = "This is $user->firstname who is active as a $activeAs. Start working with each other! Create a team or join a team";
+        return view("public/pages/singleUserPage", compact("user","expertise_linktable", "loggedIn", "portfolios","team", "neededExpertisesArray", "title", "og_description"));
     }
 
 
