@@ -20,7 +20,7 @@
                     <img class="circle circleImgLg m-r-0" src="<?=$user->getProfilePicture()?>" alt="<?=$user->getName()?>">
                 </div>
             </div>
-            <? if($loggedIn) { ?>
+            <? if($loggedIn && \Illuminate\Support\Facades\Session::get("user_id") != $user->id) { ?>
                 <div class="row">
                     <div class="col-sm-12 text-center m-t-20">
                         <form action="/selectChatUser" method="post">
