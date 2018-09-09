@@ -573,6 +573,9 @@ Route::post("/checkout/changePackage", "CheckoutController@changePackageAction")
 Route::post("/invoice/{hash}", "InvoiceController@generateMonthlyInvoiceAction");
 
 
+//========================ALEXA========================
+Route::post("/alexa", "AlexaController@alexaEndpoint");
+
 
 //==
 

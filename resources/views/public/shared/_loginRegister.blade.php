@@ -1,5 +1,9 @@
 <form action="/loginUser" method="POST" class="loginForm <? if(isset($urlParameter)) echo "hidden"?>">
     <input type="hidden" name="_token" value="<?= csrf_token()?>">
+    <? if(isset($url)) { ?>
+        <input type="hidden" name="redirect_uri" value="<?= $url?>">
+        <input type="hidden" name="token" value="<?= $token?>">
+    <? } ?>
     <? if($pageType == "checkout") { ?>
         <input type="hidden" name="pageType" value="<?= $pageType?>">
         <input type="hidden" name="backlink" value="<?= $backlink?>">

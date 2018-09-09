@@ -29,6 +29,7 @@ class DebugController extends Controller
      *
      */
     public function test(){
+//        dd(bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM)));
 //        if($this->authorized(true)) {
 //            $client = $this->getService("stream");
 //            $jaFeed = $client->feed('timeline', 11);

@@ -24,17 +24,16 @@ $(document).on("click", ".addShortTermTask",function () {
     });
 });
 var inputCounter = 0;
-$(document).on("keyup", ".shortTermTaskTitleInput",function () {
-    inputCounter++;
-});
-$("body").on("click",function () {
-    $(".emptyCard").each(function () {
-        if (!$(this).hasClass("hidden") && inputCounter < 1) {
-            $(this).remove();
-        }
-    });
-    inputCounter = 0;
-});
+// $(document).on("keyup", ".shortTermTaskTitleInput",function () {
+//     inputCounter++;
+// });
+// $("body").on("click",function () {
+//     $(".emptyCard").each(function () {
+//         if (!$(this).hasClass("hidden") && inputCounter < 1) {
+//             $(this).remove();
+//         }
+//     });
+// });
 
 $(document).on("change", ".shortTermTaskTitleInput",function () {
     var creator_user_id = $(this).data("creator-user-id");
