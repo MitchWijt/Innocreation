@@ -23,6 +23,18 @@ $(document).on("click", ".addShortTermTask",function () {
        }
     });
 });
+var inputCounter = 0;
+$(document).on("keyup", ".shortTermTaskTitleInput",function () {
+    inputCounter++;
+});
+$("body").on("click",function () {
+    $(".emptyCard").each(function () {
+        if (!$(this).hasClass("hidden") && inputCounter < 1) {
+            $(this).remove();
+        }
+    });
+    inputCounter = 0;
+});
 
 $(document).on("change", ".shortTermTaskTitleInput",function () {
     var creator_user_id = $(this).data("creator-user-id");
@@ -248,7 +260,7 @@ var intTopHandler= null;
 var intBottomHandler= null;
 var distance = 70;
 var timer = 5;
-var step = 5;
+var step = 7;
 
 
 
@@ -260,17 +272,14 @@ function clearInetervals()
     clearInterval(intTopHandler);
     clearInterval(intBottomHandler);
 }
-// $(".shortTermTask").draggable({
-//     start: function () {
-//     },
-//     stop: function () {
-//         clearInetervals();
-//     },
-//     drag: function (e) {
-
-//     }
-// });
 function drag(e) {
+    $('.board').css({
+        overflow: 'hidden'
+    });
+    $('html, body').css({
+        overflow: 'hidden'
+
+    });
     e.dataTransfer.setData("text", e.target.id);
 }
 
@@ -323,6 +332,14 @@ function dragging(e){
 }
 
 function drop(ev, el,category) {
+    $('html, body').css({
+        overflow: 'auto',
+        height: 'auto'
+    });
+    $('.board').css({
+        overflow: 'auto',
+        height: 'auto'
+    });
     clearInetervals();
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
@@ -362,13 +379,6 @@ function drop(ev, el,category) {
                         $(this).parents(".shortTermTask").attr("id", "drag-"+task_id[1]);
                         $(this).parents(".shortTermTask").find(".unassign").attr("data-short-planner-task-id", data["task_id"]);
                         $(this).parents(".shortTermTask").find(".card-block").attr("data-short-planner-task-id", data["task_id"]);
-                        // $(this).parents(".shortTermTaskModalContainer").find(".dueDate").removeClass("hidden");
-                        // $(this).parents(".shortTermTaskModalContainer").find(".dueDate").attr("data-short-planner-task-id", data["task_id"]);
-                        // $(this).parents(".shortTermTaskModalContainer").find(".datepicker").attr("data-short-planner-task-id", data["task_id"]);
-                        // $(this).parents(".shortTermTaskModalContainer").find(".assignTaskToMemberToggle").attr("data-short-planner-task-id", data["task_id"]);
-                        // $(this).parents(".shortTermTaskModalContainer").find(".assignTaskToMember option").attr("data-short-planner-task-id", data["task_id"]);
-                        // $(this).parents(".shortTermTaskModalContainer").find(".datepicker").removeClass("hidden");
-                        // $(this).parents(".shortTermTaskModalContainer").find(".assignMember").removeClass("hidden");
                         $(this).parents(".shortTermTask").find(".card-block-new").attr("class", "card-block");
                         $(this).parents(".shortTermTask").find(".card-task").attr("data-category", data["category"]);
                         $(this).parents(".shortTermTask").find(".card-task").attr("data-short-planner-task-id", data["task_id"]);

@@ -203,10 +203,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex fd-row x-scroll p-b-20 board">
+                <div class="d-flex fd-row x-scroll p-b-20 board" onclick="void(0);">
                     <input type="hidden" name="urlParameter" class="urlParameter" value="<? if(isset($urlParameter)) echo $urlParameter?>">
                     <? foreach($shortTermPlannerCategories as $shortTermPlannerCategory) { ?>
-                        <div class="col-sm-3 category">
+                        <div class="col-sm-3 category @tablet min-248 m-l-5 m-r-5 @endtablet">
                             <p class="f-19 text-center"><?=$shortTermPlannerCategory?> <i class="zmdi zmdi-chevron-down toggleMenu"></i></p>
                             <div class="menuShortTermPlanner hidden text-center">
                                 <a class="m-r-10 completeAllTasks btn btn-sm btn-inno c-gray" id="completeAllTasks-<?= $shortTermPlannerCategory?>" data-category="<?= $shortTermPlannerCategory?>">Complete all in column</a>
@@ -218,7 +218,7 @@
                                 <div id="div" ondrop="drop(event, this, $(this).parents('.shortTermtasksColumn').data('short-term-planner-category'))"  ondragover="allowDrop(event)" style="padding-bottom: 400px!important">
                                     <? foreach($shortTermPlannerTasks as $shortPlannerTask) { ?>
                                         <? if($shortPlannerTask->category == $shortTermPlannerCategory) { ?>
-                                            <div class="m-b-10 shortTermTask" id="drag-<?=$shortPlannerTask->id?>" draggable="true" ondrag="dragging(event)" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
+                                            <div class="m-b-10 shortTermTask min-248" id="drag-<?=$shortPlannerTask->id?>" draggable="true" ondrag="dragging(event)" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
                                                 <div class="card card-task col-sm-12 " data-short-planner-task-id="<?= $shortPlannerTask->id?>" data-category="<?= $shortPlannerTask->category?>" data-completed="<? if($shortPlannerTask->completed == 1) echo 1; else echo 0?>">
                                                     <div class="card-block" style="min-height: 100%" data-short-planner-task-id="<?= $shortPlannerTask->id?>" data-team-id="<?= $team->id?>">
                                                         <p class="m-t-10 f-19 m-b-0"><?= $shortPlannerTask->title?></p>
@@ -289,7 +289,7 @@
                                                             <span class="m-l-10 m-t-10">Assign this task to: <br></span>
                                                             <hr>
                                                             <div class="text-center">
-                                                                <select name="assignMembers" class="input col-sm-11 m-t-10 p-b-20 assignTaskToMember">
+                                                                <select name="assignMembers" class="input col-sm-11 m-t-10 m-b-20 assignTaskToMember">
                                                                     <option value="" selected disabled>Choose member</option>
                                                                     <? foreach($team->getMembers() as $member) { ?>
                                                                         <option value="<?= $member->id?>" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><?= $member->getName()?></option>
@@ -323,5 +323,7 @@
 @endsection
 @section('pagescript')
     <script src="/js/workspace/workspaceShortTermPlannerBoard.js"></script>
-    <script src="/js/DragDropTouch.js"></script>
+    @mobile
+        <script src="/js/DragDropTouch.js"></script>
+    @endmobile
 @endsection
