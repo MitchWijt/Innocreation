@@ -13,60 +13,6 @@ use App\Http\Requests;
 
 class AlexaController extends Controller{
     public function alexaEndpoint(){
-
-//        $input = file_get_contents('php://input');
-//        $post = json_decode($input);
-//
-//        date_default_timezone_set('UTC');
-//
-//        $SignatureCertChainUrl = $_SERVER['HTTP_SIGNATURECERTCHAINURL'];
-//
-//        if ('amzn1.ask.skill.223d97e6-efcb-4b43-9723-d3da7e82c98c' == $post->session->application->applicationId AND $post->request->timestamp > date('Y-m-d\TH:i:s\Z', time()-150) AND preg_match('/https:\/\/s3\.amazonaws\.com(:433)?\/echo\.api\//', $SignatureCertChainUrl)) {
-//            $SignatureCertChainUrl_File = md5($SignatureCertChainUrl);
-//            $SignatureCertChainUrl_File = $SignatureCertChainUrl_File . '.pem';
-//
-//            if (!file_exists($SignatureCertChainUrl_File)) {
-//                file_put_contents($SignatureCertChainUrl_File, file_get_contents($SignatureCertChainUrl));
-//            }
-//
-//            $SignatureCertChainUrl_Content = file_get_contents($SignatureCertChainUrl_File);
-//            $Signature_Content = $_SERVER['HTTP_SIGNATURE'];
-//
-//            $SignatureCertChainUrl_Content_Array = openssl_x509_parse($SignatureCertChainUrl_Content);
-//
-//            $Signature_PublicKey = openssl_pkey_get_public($SignatureCertChainUrl_Content);
-//            $Signature_PublicKey_Data = openssl_pkey_get_details($Signature_PublicKey);
-//            $Signature_Content_Decoded = base64_decode($Signature_Content);
-//
-////            $Signature_Verify = openssl_verify($original_post, $Signature_Content_Decoded, $Signature_PublicKey_Data['key'], 'sha1');
-//
-////            if (preg_match('/echo-api\.amazon\.com/', base64_decode($SignatureCertChainUrl_Content)) AND $SignatureCertChainUrl_Content_Array['validTo_time_t'] > time() AND $SignatureCertChainUrl_Content_Array['validFrom_time_t'] < time() AND $Signature_Content AND $Signature_Verify == 1) {
-//                header ('Content-Type: application/json');
-//
-//                $PHP_Output = array('version' => '1.0', 'response' => array('outputSpeech' => array('type' => 'PlainText')));
-//
-//                $PHP_Output['response']['outputSpeech']['text'] = 'Hello world!';
-//
-//                echo json_encode($PHP_Output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-////            }
-////            else {
-////                http_response_code(400);
-////            }
-//        }
-//        else {
-//            http_response_code(400);
-//        }
-//
-//        die();
-        /* This is a simple PHP example to host your own Amazon Alexa Skill written in PHP.
-In my Case it connects to my smarthome Raspberry pi Cat Feeder with two intents;
-1: Dispense Food to the cats.
-2: When did the Feeder last time feed the cats? Return a spoken time / date
-This Script contains neccessary calls and security to give you a easy to use DIY example.
-
-v2016.12.29
-Details in my Blogpost:  https://solariz.de/de/amazon-echo-alexa-meets-catfeeder.htm
-*/
         header('Cache-Control: no-cache, must-revalidate');
 // SETUP / CONFIG
 
@@ -191,7 +137,7 @@ Details in my Blogpost:  https://solariz.de/de/amazon-echo-alexa-meets-catfeeder
         exit();
     }
 
-    private function GetJsonMessageResponse($RequestMessageType, $EchoReqObj){
+    private function GetJsonMessageResponse($RequestMessageType, $EchoReqObj, $shouldEndSession = true){
         GLOBAL $SETUP;
         $RequestId = $EchoReqObj->request->requestId;
         $ReturnValue = "";
@@ -202,12 +148,12 @@ Details in my Blogpost:  https://solariz.de/de/amazon-echo-alexa-meets-catfeeder
                     'countActionList' => array(
                         'read' => true,
                         'category' => true
-                    )
+                    ),
                 ) ,
                 'response' => array(
                     'outputSpeech' => array(
                         'type' => "PlainText",
-                        'text' => "Welcome at Innocreation"
+                        'text' => "Welcome at Innocreation",
                     ) ,
                     'card' => array(
                         'type' => "Simple",
@@ -219,9 +165,9 @@ Details in my Blogpost:  https://solariz.de/de/amazon-echo-alexa-meets-catfeeder
                             'type' => "PlainText",
                             'text' => "How can i help you?"
                         )
-                    )
+                    ),
+                    'shouldEndSession' => $shouldEndSession,
                 ) ,
-                'shouldEndSession' => true
             );
             $ReturnValue = json_encode($return_defaults);
         } else if ($RequestMessageType == "SessionEndedRequest") {
@@ -247,16 +193,24 @@ Details in my Blogpost:  https://solariz.de/de/amazon-echo-alexa-meets-catfeeder
                 // do what ever your intent should do here. In my Case I call home to my raspberry pi, see function comment for more info.
                 //CREATE A TASK
 
-            } else if ($EchoReqObj->request->intent->name == "innoSendMessage") {// 2nd Alexa Intent name{
+            } else if ($EchoReqObj->request->intent->name == "innoSendMessageStart") {// 2nd Alexa Intent name{
+                $speakPhrase = "You want to sent a message to Innocreation?";
+                $promtMessage = "Please tell me the message to sent";
+                $shouldEndSession = false;
+                // do what ever your intent should do here. In my Case I call home to my raspberry pi, see function comment for more info.
+            }  else if ($EchoReqObj->request->intent->name == "innoCaptureMessageText") {
+                $speakPhrase = "Message has been sent";
+                $shouldEndSession = true;
+            } else if ($EchoReqObj->request->intent->name == "innoSendMessage") {
                 $accessToken = $EchoReqObj->context->System->user->accessToken;
                 $receiverUserId = $EchoReqObj->request->intent->slots->username->resolutions->resolutionsPerAuthority[0]->values[0]->value->id;
                 $user = User::select("*")->where("access_token", $accessToken)->first();
                 $receiver = User::select("*")->where("id", $receiverUserId)->first();
-//                $userchat = new UserChat();
-//                $userchat->creator_user_id = $user->id;
-//                $userchat->receiver_user_id = $receiverUserId;
-//                $userchat->created_at = date("Y-m-d H:i:s");
-//                $userchat->save();
+                $userchat = new UserChat();
+                $userchat->creator_user_id = $user->id;
+                $userchat->receiver_user_id = $receiverUserId;
+                $userchat->created_at = date("Y-m-d H:i:s");
+                $userchat->save();
 
                 $usermessage = new UserMessage();
                 $usermessage->sender_user_id = $user->id;
@@ -265,24 +219,7 @@ Details in my Blogpost:  https://solariz.de/de/amazon-echo-alexa-meets-catfeeder
                 $usermessage->time_sent = $this->getTimeSent();
                 $usermessage->created_at = date("Y-m-d H:i:s");
                 $usermessage->save();
-
-                $client = $this->getService("stream");
-                $messageFeed = $client->feed('user', $receiver->id);
-                $timeSent = $this->getTimeSent();
-
-                // Add the activity to the feed
-                $data = [
-                    "actor"=> "$receiver->id",
-                    "receiver"=> "$user->id",
-                    "userChat"=> "45",
-                    "message"=> "test message from alexa",
-                    "timeSent"=> "$timeSent",
-                    "verb"=>"userMessage",
-                    "object"=>"3",
-                ];
-                $messageFeed->addActivity($data);
                 $speakPhrase = "Message has been sent";
-                // do what ever your intent should do here. In my Case I call home to my raspberry pi, see function comment for more info.
             }
 
             $ReturnValue = json_encode(array(
@@ -291,7 +228,7 @@ Details in my Blogpost:  https://solariz.de/de/amazon-echo-alexa-meets-catfeeder
                     'countActionList' => array(
                         'read' => true,
                         'category' => true
-                    )
+                    ),
                 ) ,
                 'response' => array(
                     'outputSpeech' => array(
@@ -302,9 +239,15 @@ Details in my Blogpost:  https://solariz.de/de/amazon-echo-alexa-meets-catfeeder
                         'type' => "Simple",
                         'title' => "Inno",
                         'content' => $speakPhrase
-                    )
+                    ),
+                    'reprompt' => array(
+                        'outputSpeech' => array(
+                            'type' => "PlainText",
+                            'text' => $promtMessage
+                        )
+                    ),
+                    'shouldEndSession' => $shouldEndSession,
                 ) ,
-                'shouldEndSession' => true
             ));
         } else {
             $this->ThrowRequestError();
