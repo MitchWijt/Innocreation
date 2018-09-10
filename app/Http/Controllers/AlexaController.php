@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\UserChat;
 use App\UserMessage;
 use App\WorkspaceShortTermPlannerBoard;
 use App\WorkspaceShortTermPlannerTask;
@@ -247,6 +248,39 @@ Details in my Blogpost:  https://solariz.de/de/amazon-echo-alexa-meets-catfeeder
                 //CREATE A TASK
 
             } else if ($EchoReqObj->request->intent->name == "innoSendMessage") {// 2nd Alexa Intent name{
+                $accessToken = $EchoReqObj->context->System->user->accessToken;
+                $receiverUserId = $EchoReqObj->request->intent->slots->username->resolutions->resolutionsPerAuthority[0]->values[0]->value->id;
+                $user = User::select("*")->where("access_token", $accessToken)->first();
+                $receiver = User::select("*")->where("id", $receiverUserId)->first();
+//                $userchat = new UserChat();
+//                $userchat->creator_user_id = $user->id;
+//                $userchat->receiver_user_id = $receiverUserId;
+//                $userchat->created_at = date("Y-m-d H:i:s");
+//                $userchat->save();
+
+                $usermessage = new UserMessage();
+                $usermessage->sender_user_id = $user->id;
+                $usermessage->user_chat_id = 45;
+                $usermessage->message = "test message from alexa";
+                $usermessage->time_sent = $this->getTimeSent();
+                $usermessage->created_at = date("Y-m-d H:i:s");
+                $usermessage->save();
+
+                $client = $this->getService("stream");
+                $messageFeed = $client->feed('user', $receiver->id);
+                $timeSent = $this->getTimeSent();
+
+                // Add the activity to the feed
+                $data = [
+                    "actor"=> "$receiver->id",
+                    "receiver"=> "$user->id",
+                    "userChat"=> "45",
+                    "message"=> "test message from alexa",
+                    "timeSent"=> "$timeSent",
+                    "verb"=>"userMessage",
+                    "object"=>"3",
+                ];
+                $messageFeed->addActivity($data);
                 $speakPhrase = "Message has been sent";
                 // do what ever your intent should do here. In my Case I call home to my raspberry pi, see function comment for more info.
             }
