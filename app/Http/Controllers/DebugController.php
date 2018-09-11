@@ -17,6 +17,7 @@ use App\SiteSetting;
 use App\TeamPackage;
 use App\SplitTheBillLinktable;
 use App\Http\Requests;
+use Monolog\Handler\SyslogUdp\UdpSocket;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Invoice;
 use GetStream;

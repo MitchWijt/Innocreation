@@ -182,7 +182,21 @@ class LoginController extends Controller
                 Session::remove("hash");
                 Session::remove("teamName");
 
-                $this->saveAndSendEmail($user, 'Welcome to Innocreation!', view("/templates/sendWelcomeMail", compact("user")));
+                $mgClient = $this->getService("mailgun");
+                $mgClient[0]->sendMessage($mgClient[1], array(
+                    'from' => "Innocreation <info@innocreation.net>",
+                    'to' => $user->email,
+                    'subject' => "Welcome to Innocreation!",
+                    'html' => view("/templates/sendWelcomeMail", compact("user"))
+                ), array(
+                    'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png', $_SERVER['DOCUMENT_ROOT'] . '/images/email.png')
+                ));
+                $mailMessage = new MailMessage();
+                $mailMessage->receiver_user_id = $user->id;
+                $mailMessage->subject = "Welcome to Innocreation!";
+                $mailMessage->message = view("/templates/sendWelcomeMail", compact("user"));
+                $mailMessage->created_at = date("Y-m-d");
+                $mailMessage->save();
 
                 if($request->input("pageType") && $request->input("pageType") == "checkout"){
                     return redirect($request->input("backlink"));

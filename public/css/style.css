@@ -808,3 +808,7 @@ footer{
     min-width: 248px !important;
 }
 
+.singleBucketlistGoal:hover{
+    background: #232323 !important;
+}
+

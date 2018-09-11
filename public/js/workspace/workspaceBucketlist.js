@@ -36,7 +36,7 @@ $(document).on("change", ".bucketlistType_title",function () {
     });
 });
 
-$(".completeBucketlistGoal").on("click",function () {
+$(".completeBucketlistGoal").on("click",function (e) {
     var bucketlist_id = $(this).data("bucketlist-id");
     $.ajax({
         method: "POST",
@@ -65,6 +65,8 @@ $(".completeBucketlistGoal").on("click",function () {
             });
         }
     });
+    e.preventDefault();
+    e.stopPropagation();
 });
 
 $(document).ready(function () {
@@ -183,6 +185,26 @@ $(".deleteBucketlistGoal").on("click",function () {
                     $(this).fadeOut();
                 }
             });
+        }
+    });
+});
+
+$(".singleBucketlistGoal").on("click",function () {
+    var bucketlist_id = $(this).data("bucketlist-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/workspace/getBucketlistItemModal",
+        data: {'bucketlist_id': bucketlist_id},
+        success: function (data) {
+            $(".bucketlistItemModalData").html(data);
+            $("#bucketlistItemModal").modal().toggle();
         }
     });
 });
