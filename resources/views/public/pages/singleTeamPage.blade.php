@@ -281,7 +281,9 @@
                                 </div>
                                 <div class="row d-flex js-center m-l-25">
                                     <div class="col-md-12">
-                                        <p class="f-18"><?= $review->users->First()->getName()?></p>
+                                        <a class="c-gray" href="<?= $review->users->First()->getUrl()?>">
+                                            <p class="f-18"><?= $review->users->First()->getName()?></p>
+                                        </a>
                                         <p class="m-b-0"><?= $review->review?></p>
                                     </div>
                                 </div>
