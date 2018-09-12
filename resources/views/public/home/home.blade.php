@@ -65,12 +65,12 @@
                             <div class="@mobile col-10 p-r-0 @elsedesktop col-md-10 d-flex jc-end @endmobile">
                                 @handheld
                                     @mobile
-                                        <p class="c-gray m-b-0 m-t-15 f-17">Have an idea or product you want to develop</p>
+                                        <p class="c-gray m-b-0 m-t-15 f-17">Have an idea or product you want to create</p>
                                     @elsetablet
-                                        <p class="c-gray m-b-0 m-r-20 m-t-15 f-20">Have an idea or product you want to develop</p>
+                                        <p class="c-gray m-b-0 m-r-20 m-t-15 f-20">Have an idea or product you want to create</p>
                                     @endmobile
                                 @elsedesktop
-                                    <p class="c-gray m-b-0 m-r-20 m-t-15 f-22">Have an idea or product you want to develop</p>
+                                    <p class="c-gray m-b-0 m-r-20 m-t-15 f-22">Have an idea or product you want to create</p>
                                 @endhandheld
                             </div>
                             <div class="@mobile col-2 p-l-0 @elsedesktop col-md-2 @endmobile">
