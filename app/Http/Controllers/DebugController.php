@@ -30,27 +30,12 @@ class DebugController extends Controller
      */
     public function test(){
 //        if($this->authorized(true)) {
-//            $client = $this->getService("stream");
-//            $jaFeed = $client->feed('timeline', 11);
-//            $jaFeed->follow('user', 10);
-//
-////            $testFeed = $client->feed('timeline', 11);
-////            $messageFeed = $client->feed('timeline', 10);
-//
-////             Add the activity to the feed
-////            $data = [
-////                "actor"=> "10",
-////                "message"=> "timeline message",
-////                "verb"=>"userMessage",
-////                "object"=>"1",
-////            ];
-////            $jaFeed->addActivity($data);
+
 ////            $messageFeed = $client->feed('timeline', 10);
 //
 //            $messageFeed2 = $client->feed('timeline', 11);
 ////            $fdsa = FeedManager::getUserFeed(10);
-//            $response = $messageFeed2->getActivities()['results'];
-//            dd($response);
+//
 //            $response = $this->getTimeSent();
 
 //            // Add the activity to the feed
