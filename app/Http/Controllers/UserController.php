@@ -257,30 +257,31 @@ class UserController extends Controller
         $user_id = $request->input("user_id");
         $portfolio_titles = $request->input("portfolio_title");
         $portfolio_image = $request->file("portfolio_image");
-        $portfolio_links = $request->file("portfolio_link");
+        $portfolio_links = $request->input("portfolio_link");
         $portfolio_descriptions = $request->input("description_portfolio");
 
 
-        if($portfolio_image[0] != null) {
 
             $rowCount = count($portfolio_titles);
 
             for ($i = 0; $i < $rowCount; $i++) {
-                $portfolio_image[$i]->move($destinationPath, $portfolio_image[$i]->getClientOriginalName());
+                if($portfolio_image[$i] != null) {
+                    $portfolio_image[$i]->move($destinationPath, $portfolio_image[$i]->getClientOriginalName());
+                }
                 $userPortfolio = new UserPortfolio;
                 $userPortfolio->user_id = $user_id;
                 $userPortfolio->title = $portfolio_titles[$i];
                 $userPortfolio->description = $portfolio_descriptions[$i];
-                $userPortfolio->image = $portfolio_image[$i]->getClientOriginalName();
+                if($portfolio_image[$i] != null) {
+                    $userPortfolio->image = $portfolio_image[$i]->getClientOriginalName();
+                }
                 if($portfolio_links != null) {
                     $userPortfolio->link = $portfolio_links[$i];
                 }
                 $userPortfolio->save();
             }
             return redirect($_SERVER["HTTP_REFERER"]);
-        } else {
-            return redirect($_SERVER["HTTP_REFERER"]);
-        }
+
     }
 
     public function editUserPortfolio(Request $request){

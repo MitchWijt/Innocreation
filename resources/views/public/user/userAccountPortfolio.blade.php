@@ -47,7 +47,7 @@
                         </div>
                     </form>
                 </div>
-                <?foreach($userPortfolios as $userPortfolio) { ?>
+                <? foreach($userPortfolios as $userPortfolio) { ?>
                     <form action="/my-account/editUserPortfolio" enctype="multipart/form-data" class="portfolioForm" method="post" data-portfolio_id="<?=$userPortfolio->id?>">
                         <input type="hidden" name="portfolio_id" value="<?= $userPortfolio->id?>">
                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
@@ -65,16 +65,28 @@
                                     <input type="text" name="portfolio_link" placeholder="www.github.com" class="input col-sm-12 portfolio_link" value="<? if(isset($userPortfolio->link)) echo $userPortfolio->link?>">
                                 </div>
                             </div>
-                            <div class="row m-b-0 d-flex js-center">
-                                <div class="form-group col-md-6 m-t-10 p-r-0">
-                                    <img class="col-sm-12 h-100 p-0 radius img-responsive" src="<?= $userPortfolio->getUrl()?>" alt="">
-                                    <div class="fileUpload">
-                                        <input type="file" class="portfolio_image hidden" name="portfolio_image">
-                                        <button type="button" class="btn btn-inno pull-right m-t-10 editPortfolioImage">Edit picture</button>
-                                        <span class="fileName pull-right m-t-15 m-r-10"></span>
+                            <? if($userPortfolio->image != null) { ?>
+                                <div class="row m-b-0 d-flex js-center">
+                                    <div class="form-group col-md-6 m-t-10 p-r-0">
+                                        <img class="col-sm-12 h-100 p-0 radius img-responsive" src="<?= $userPortfolio->getUrl()?>" alt="">
+                                        <div class="fileUpload">
+                                            <input type="file" class="portfolio_image hidden" name="portfolio_image">
+                                            <button type="button" class="btn btn-inno pull-right m-t-10 editPortfolioImage">Edit picture</button>
+                                            <span class="fileName pull-right m-t-15 m-r-10"></span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            <? } else { ?>
+                                <div class="row m-b-0 d-flex js-center">
+                                    <div class="form-group col-md-6 m-t-10 p-r-0">
+                                        <div class="fileUpload text-center">
+                                            <input type="file" class="portfolio_image hidden" name="portfolio_image">
+                                            <button type="button" class="btn btn-inno m-t-10 editPortfolioImage">Add picture</button>
+                                            <span class="fileName pull-right m-t-15 m-r-10"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            <? } ?>
                             <div class="row d-flex js-center m-b-0 m-t-10">
                                 <div class="form-group col-md-6 m-t-10 p-r-0">
                                     <label class="m-0 col-sm-12 p-0">Description</label>

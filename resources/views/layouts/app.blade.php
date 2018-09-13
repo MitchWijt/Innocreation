@@ -63,6 +63,7 @@
 </head>
 <body>
 <? if(\Illuminate\Support\Facades\Session::has("user_id")) {
+    $sessionUserId = \Illuminate\Support\Facades\Session::get("user_id");
     $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
 } ?>
 <? if(!isset($pageType) || $pageType != "checkout") { ?>

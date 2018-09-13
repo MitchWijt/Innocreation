@@ -208,6 +208,15 @@ class User extends Authenticatable
         }
     }
 
+    public function getSeoExpertises(){
+        $expertiseLinktable = expertises_linktable::select("*")->where("user_id", $this->id)->get();
+        if(count($expertiseLinktable) > 1){
+            return $expertiseLinktable->First()->expertises->First()->title . " and more!";
+        } else {
+            return $expertiseLinktable->First()->expertises->First()->title;
+        }
+    }
+
     public function getPopoverView(){
         $expertises = $this->getExpertises();
         $user = $this;
