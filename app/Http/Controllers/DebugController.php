@@ -17,6 +17,7 @@ use App\SiteSetting;
 use App\TeamPackage;
 use App\SplitTheBillLinktable;
 use App\Http\Requests;
+use Monolog\Handler\SyslogUdp\UdpSocket;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Invoice;
 use GetStream;
@@ -29,8 +30,7 @@ class DebugController extends Controller
      *
      */
     public function test(){
-//        $user = User::select("*")->where("id", 10)->first();
-//        return $user->getPopoverView();
+//        dd(bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM)));
 //        if($this->authorized(true)) {
 
 ////            $messageFeed = $client->feed('timeline', 10);

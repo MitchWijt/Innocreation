@@ -51,10 +51,11 @@
                     </div>
                 </div>
             </div>
+            <? $counter = 0;?>
             <div class="allBucketlistBoards m-b-20">
                 <? foreach($workspaceBucketlistTypes as $workspaceBucketlistType) { ?>
                     <div class="row d-flex js-center m-t-20 bucketlistBoard" data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>">
-                        <div class="col-md-9">
+                        <div class="col-md-9 p-0">
                             <div class="card card-lg">
                                 <div class="card-block">
                                     <div class="row">
@@ -67,36 +68,30 @@
                                         <p class="bcg-black border-default border-bottom-none m-b-0 deleteBucketlistBoard menu-item" data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>">Delete board</p>
                                         <p class="bcg-black border-default renameBucketlistBoard menu-item" data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>">Rename board</p>
                                     </div>
-                                    <div class="row text-center">
-                                        <div class="col-sm-4">
-                                            <span class="f-13">Title</span>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <span class="f-13">Description</span>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <span class="f-13">Completed</span>
-                                        </div>
-                                    </div>
-                                    <div class="hr-card p-b-20 col-md-10"></div>
                                     <div id="div" ondrop="drop(event, this, $(this).parents('.bucketlistBoard').data('bucketlist-type-id'))"  ondragover="allowDrop(event)" class="p-b-40">
                                         <? foreach($workspaceBucketlistType->getWorkspaceBucketlist($team->id) as $workspaceBucketlist) { ?>
-                                            <div class="row text-center p-relative singleBucketlistGoal" id="drag-<?=$workspaceBucketlist->id?>" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-bucketlist-id="<?= $workspaceBucketlist->id?>">
-                                                <i class="zmdi zmdi-close c-orange p-absolute deleteBucketlistGoal" style="right: 35px; top: 5px; z-index: 1;" data-bucketlist-id="<?= $workspaceBucketlist->id?>"></i>
-                                                <div class="col-sm-4">
-                                                    <p><?= $workspaceBucketlist->title?></p>
-                                                </div>
-                                                <div class="col-sm-4">
-                                                    <p><?= $workspaceBucketlist->description?></p>
-                                                </div>
-                                                <div class="col-sm-4 d-flex js-center">
-                                                    <? if($workspaceBucketlist->completed == 0) { ?>
-                                                        <p class="circle circleSmall m-0 completeBucketlistGoal" data-bucketlist-id="<?= $workspaceBucketlist->id?>"><i class="zmdi zmdi-check"></i></p>
-                                                    <? } else { ?>
-                                                        <p class="circle circleSmall m-0 completeBucketlistGoal c-black" style="background: #FF6100" data-bucketlist-id="<?= $workspaceBucketlist->id?>"><i class="zmdi zmdi-check"></i></p>
-                                                    <? } ?>
+                                            <? $counter++?>
+                                            <? if($counter == 1 || $counter < 2) { ?>
+                                                <hr class="p-0 m-0">
+                                            <? } ?>
+                                            <div style="width: 100% !important;" class="row p-relative singleBucketlistGoal p-0 m-0" id="drag-<?=$workspaceBucketlist->id?>" draggable="true" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-bucketlist-id="<?= $workspaceBucketlist->id?>">
+                                                <i class="zmdi zmdi-close c-orange p-absolute deleteBucketlistGoal" style="right: 10px; top: 2px; z-index: 1;" data-bucketlist-id="<?= $workspaceBucketlist->id?>"></i>
+                                                <div class="col-sm-12 p-0">
+                                                    <div class="row">
+                                                        <div class="col-sm-2 p-r-0">
+                                                            <? if($workspaceBucketlist->completed == 0) { ?>
+                                                                <p class="circle circleSmall completeBucketlistGoal m-l-30 m-t-10" data-bucketlist-id="<?= $workspaceBucketlist->id?>"><i class="m-l-5 zmdi zmdi-check"></i></p>
+                                                            <? } else { ?>
+                                                                <p class="circle circleSmall m-0 completeBucketlistGoal m-0 c-black" style="background: #FF6100" data-bucketlist-id="<?= $workspaceBucketlist->id?>"><i class="zmdi zmdi-check"></i></p>
+                                                            <? } ?>
+                                                        </div>
+                                                        <div class="col-sm-10 p-l-0">
+                                                            <p class="m-t-10"><?= $workspaceBucketlist->title?></p>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <hr class="p-0 m-0">
                                         <? } ?>
                                     </div>
                                 </div>
@@ -104,6 +99,13 @@
                         </div>
                     </div>
                 <? } ?>
+            </div>
+            <div class="modal fade" id="bucketlistItemModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content bucketlistItemModalData">
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>

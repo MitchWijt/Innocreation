@@ -20,7 +20,7 @@
                 $counterValidated = 0;
             ?>
             <div class="hr p-b-20 col-md-10"></div>
-            <? if(count($team->getMembers()) > 2) { ?>
+            <? if(count($team->getMembers()) > 2 || $team->packageDetails()) { ?>
                 <div class="row d-flex js-center m-t-20">
                     <div class="col-md-10">
                         <div class="card card-lg">

@@ -189,6 +189,27 @@ var DragDropTouch;
                 }
             }
         };
+        var yellow = $('.board');
+        var offset = yellow.offset();
+        var offsetWidth = offset.left + yellow.width();
+        var offsetHeight = offset.top + yellow.height();
+
+
+
+        var intRightHandler = null;
+        var intLeftHandler = null;
+        var intTopHandler= null;
+        var intBottomHandler= null;
+        var distance = 70;
+        var timer = 5;
+        var step = 5;
+
+        function clearInetervals() {
+            clearInterval(intRightHandler);
+            clearInterval(intLeftHandler);
+            clearInterval(intTopHandler);
+            clearInterval(intBottomHandler);
+        }
         DragDropTouch.prototype._touchmove = function (e) {
             if (this._shouldHandle(e)) {
                 // see if target wants to handle move
@@ -209,6 +230,51 @@ var DragDropTouch;
                 }
                 // continue dragging
                 if (this._img) {
+                    var isMoving = false;
+                    //Left
+                    if((e.pageX - offset.left) <= distance)
+                    {
+                        isMoving = true;
+                        clearInetervals();
+                        intLeftHandler= setInterval(function(){
+                            yellow.scrollLeft(yellow.scrollLeft() - step)
+                        },timer);
+                    }
+
+                    //Right
+                    if(e.pageX >= (offsetWidth - distance))
+                    {
+                        isMoving = true;
+                        clearInetervals();
+                        intRightHandler = setInterval(function(){
+                            yellow.scrollLeft(yellow.scrollLeft() + step)
+                        },timer);
+                    }
+
+                    //Top
+                    if((e.pageY - offset.top) <= distance)
+                    {
+                        isMoving = true;
+                        clearInetervals();
+                        intTopHandler= setInterval(function(){
+                            yellow.scrollTop(yellow.scrollTop() - step)
+                        },timer);
+                    }
+
+                    //Bottom
+                    if(e.pageY >= (offsetHeight - distance))
+                    {
+                        isMoving = true;
+                        clearInetervals();
+                        intBottomHandler= setInterval(function(){
+                            yellow.scrollTop(yellow.scrollTop() + step)
+                        },timer);
+                    }
+
+                    //No events
+                    if(!isMoving) {
+                        clearInetervals();
+                    }
                     this._lastTouch = e;
                     e.preventDefault(); // prevent scrolling
                     if (target != this._lastTarget) {
@@ -239,6 +305,15 @@ var DragDropTouch;
                 if (this._dragSource) {
                     if (e.type.indexOf('cancel') < 0) {
                         this._dispatchEvent(this._lastTouch, 'drop', this._lastTarget);
+                        clearInetervals();
+                        $('html, body').css({
+                            overflow: 'auto',
+                            height: 'auto'
+                        });
+                        $('.board').css({
+                            overflow: 'auto',
+                            height: 'auto'
+                        });
                     }
                     this._dispatchEvent(this._lastTouch, 'dragend', this._dragSource);
                     this._reset();

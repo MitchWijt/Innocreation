@@ -20,10 +20,10 @@
                                         <p class="instructions-text f-13 m-0 p-b-10">Max. amount of 2 members in your team</p>
                                     </li>
                                     <li class="instructions-list-item">
-                                        <p class="instructions-text f-13 m-0 p-b-10">Create up up to 1 task planner</p>
+                                        <p class="instructions-text f-13 m-0 p-b-10">Create up to 1 task planner</p>
                                     </li>
                                     <li class="instructions-list-item">
-                                        <p class="instructions-text f-13 m-0 p-b-10">Create up up to 2 meeting at the same time</p>
+                                        <p class="instructions-text f-13 m-0 p-b-10">Create up to 2 meeting at the same time</p>
                                     </li>
                                 </ul>
                             </div>

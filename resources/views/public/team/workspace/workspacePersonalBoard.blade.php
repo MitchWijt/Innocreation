@@ -50,7 +50,7 @@
                                             </div>
                                             <div class="col-sm-3 toDoDescription">
                                                 <? if($toDoTask->description != null) { ?>
-                                                   <?= mb_strimwidth(str_replace("contenteditable", "", htmlspecialchars_decode(strip_tags($toDoTask->description))), 0, 130, "... <span class='c-orange underline c-pointer openPersonalBoardTaskModal' data-task-id='$toDoTask->id'>read more</span>");?>
+                                                <p class="m-0"><?= mb_strimwidth(str_replace("contenteditable", "", htmlspecialchars_decode(strip_tags($toDoTask->description))), 0, 130, "... <span class='c-orange underline c-pointer openPersonalBoardTaskModal' data-task-id='$toDoTask->id'>read more</span>");?></p>
                                                 <? } else { ?>
                                                     <p> - </p>
                                                 <? } ?>

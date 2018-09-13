@@ -1494,6 +1494,13 @@ class WorkspaceController extends Controller
 
     }
 
+    public function getBucketlistItemModalAction(Request $request){
+        $bucketlistId = $request->input("bucketlist_id");
+        $bucketlistItem = WorkspaceBucketlist::select("*")->where("id", $bucketlistId)->first();
+
+        return view("/public/team/workspace/shared/_workspaceBucketlistModal", compact("bucketlistItem"));
+    }
+
 
 
 }
