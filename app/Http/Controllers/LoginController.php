@@ -24,8 +24,13 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($hash = null, $teamName = null)
-    {
+    public function index($hash = null, $teamName = null){
+        if(request()->has('redirect_uri')){
+            $redirectUri = request()->redirect_uri;
+            $state = request()->state;
+            $token = bin2hex(random_bytes(16));
+            $url = $redirectUri . "#state=".$state. "&access_token=".$token."&token_type=Bearer";
+        }
         $countries = Country::select("*")->orderBy("country")->get();
         $expertises = Expertises::select("*")->get();
         $pageType = "default";
@@ -42,12 +47,20 @@ class LoginController extends Controller
                 return view("public/register/login", compact("countries", "expertises", "pageType", "error"));
             }
         }
-        if(request()->has('register')){
-            $urlParameter = request()->register;
-            return view("public/register/login", compact("countries", "expertises", "urlParameter", "pageType"));
-
+        if(!request()->has('redirect_uri')) {
+            if (request()->has('register')) {
+                $urlParameter = request()->register;
+                return view("public/register/login", compact("countries", "expertises", "urlParameter", "pageType"));
+            } else {
+                return view("public/register/login", compact("countries", "expertises", "pageType"));
+            }
         } else {
-            return view("public/register/login", compact("countries", "expertises", "pageType"));
+            if (request()->has('register')) {
+                $urlParameter = request()->register;
+                return view("public/register/login", compact("countries", "expertises", "urlParameter", "pageType", "url", "token"));
+            } else {
+                return view("public/register/login", compact("countries", "expertises", "pageType", "url", "token"));
+            }
         }
     }
 
@@ -169,7 +182,21 @@ class LoginController extends Controller
                 Session::remove("hash");
                 Session::remove("teamName");
 
-                $this->saveAndSendEmail($user, 'Welcome to Innocreation!', view("/templates/sendWelcomeMail", compact("user")));
+                $mgClient = $this->getService("mailgun");
+                $mgClient[0]->sendMessage($mgClient[1], array(
+                    'from' => "Innocreation <info@innocreation.net>",
+                    'to' => $user->email,
+                    'subject' => "Welcome to Innocreation!",
+                    'html' => view("/templates/sendWelcomeMail", compact("user"))
+                ), array(
+                    'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png', $_SERVER['DOCUMENT_ROOT'] . '/images/email.png')
+                ));
+                $mailMessage = new MailMessage();
+                $mailMessage->receiver_user_id = $user->id;
+                $mailMessage->subject = "Welcome to Innocreation!";
+                $mailMessage->message = view("/templates/sendWelcomeMail", compact("user"));
+                $mailMessage->created_at = date("Y-m-d");
+                $mailMessage->save();
 
                 if($request->input("pageType") && $request->input("pageType") == "checkout"){
                     return redirect($request->input("backlink"));
@@ -190,9 +217,10 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function login(Request $request)
-    {
-        $this->validate($request, [
+    public function login(Request $request){
+        $redirectUri = $request->input("redirect_uri");
+        $token = $request->input("token");
+        $this->validate($request,[
             'email' => 'required',
             'password' => 'required'
         ]);
@@ -217,10 +245,16 @@ class LoginController extends Controller
                 $user->stream_token = $token;
                 $user->save();
             }
-            if($request->input("pageType") && $request->input("pageType") == "checkout"){
-                return redirect($request->input("backlink"));
+            if(!isset($redirectUri)){
+                if ($request->input("pageType") && $request->input("pageType") == "checkout") {
+                    return redirect($request->input("backlink"));
+                } else {
+                    return redirect("/account");
+                }
             } else {
-                return redirect("/account");
+                $user->access_token = $token;
+                $user->save();
+                return redirect($redirectUri);
             }
         } else {
             return redirect($_SERVER["HTTP_REFERER"])->withErrors('It seems that you have logged in with the wrong credentials. Please try again.');

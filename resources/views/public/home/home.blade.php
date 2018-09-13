@@ -21,7 +21,7 @@
                         @elsedesktop
                             <div class="hr col-md-10"></div>
                         @endtablet
-                        <p class="m-t-10 slogan text-center @mobile f-13 @endmobile" style="color: #696969">Help each other make DREAMS become a reality</p>
+                        <p class="m-t-10 slogan text-center @mobile f-13 @endmobile" style="color: #696969">Match with your ideal team and create your dream!</p>
                     </div>
                 </div>
             </div>
@@ -65,12 +65,12 @@
                             <div class="@mobile col-10 p-r-0 @elsedesktop col-md-10 d-flex jc-end @endmobile">
                                 @handheld
                                     @mobile
-                                        <p class="c-gray m-b-0 m-t-15 f-17">Have an idea or product you want to develop</p>
+                                        <p class="c-gray m-b-0 m-t-15 f-17">Have an idea or product you want to create</p>
                                     @elsetablet
-                                        <p class="c-gray m-b-0 m-r-20 m-t-15 f-20">Have an idea or product you want to develop</p>
+                                        <p class="c-gray m-b-0 m-r-20 m-t-15 f-20">Have an idea or product you want to create</p>
                                     @endmobile
                                 @elsedesktop
-                                    <p class="c-gray m-b-0 m-r-20 m-t-15 f-22">Have an idea or product you want to develop</p>
+                                    <p class="c-gray m-b-0 m-r-20 m-t-15 f-22">Have an idea or product you want to create</p>
                                 @endhandheld
                             </div>
                             <div class="@mobile col-2 p-l-0 @elsedesktop col-md-2 @endmobile">
@@ -222,11 +222,41 @@
                         </div>
                     </div>
                     <div class="row d-flex js-center p-b-25">
-                        <form action="/home/sendMoreInfoMail" method="post">
-                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                            <input type="text" placeholder="Your email address..." name="emailCustomer" class="@mobile input @elsedesktop input-fat @endmobile m-0 p-r-0">
-                            <button type="submit" class="btn btn-lg btn-inno @mobile btn-sm @endmobile">Get more info!</button>
-                        </form>
+                        <a href="/login?register=1" class="btn btn-inno">Start now!</a>
+                    </div>
+                </div>
+            </div>
+            <div class="instructions" style="border-bottom: 1px solid #FF6100">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 text-center m-t-20">
+                            <h1 class="sub-title col-sm-12">Start networking</h1>
+                        </div>
+                    </div>
+                    <div class="hr col-md-8"></div>
+                    <div class="row">
+                        <div class="col-sm-12 d-flex js-center m-t-20">
+                            <img class="img-responsive" src="/images/icons/network_gray.png" alt="">
+                        </div>
+                    </div>
+                    <div class="row d-flex js-center m-t-40 m-b-20">
+                        <ul class="instructions-list">
+                            <li class="instructions-list-item">
+                                <p class="instructions-text f-19 m-0 p-b-10">Instantly create a team and start working with like-minded and motivated people!</p>
+                            </li>
+                            <li class="instructions-list-item">
+                                <p class="instructions-text f-19 m-0 p-b-10">Network and chat easliy with all users of Innocreation</p>
+                            </li>
+                            <li class="instructions-list-item">
+                                <p class="instructions-text f-19 m-0 p-b-10">Find your ideal team and disucuss ideas/passions</p>
+                            </li>
+                            <li class="instructions-list-item">
+                                <p class="instructions-text f-19 m-0 p-b-10">Get to know other like-minded people!</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row d-flex js-center" style="margin-bottom: 50px !important">
+                        <a href="/collaborate" class="btn btn-inno">Start networking!</a>
                     </div>
                 </div>
             </div>

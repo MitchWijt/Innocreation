@@ -23,10 +23,11 @@ class ForumController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function forums()
-    {
+    public function forums(){
+        $title = "Forums";
+        $og_description = "Discuss with each other, create threads and find like-minded people!";
         $forumMainTopicTypes = ForumMainTopicType::select("*")->get();
-        return view("/public/forum/forums", compact("forumMainTopicTypes"));
+        return view("/public/forum/forums", compact("forumMainTopicTypes", "og_description", "title"));
     }
 
     /**
@@ -34,9 +35,10 @@ class ForumController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function forumMainTopicThreads($id)
-    {
+    public function forumMainTopicThreads($id){
         $forumMainTopic = ForumMainTopic::select("*")->where("id", $id)->first();
+        $title = $forumMainTopic->title;
+        $og_description = $forumMainTopic->description;
         $threads = ForumThread::select("*")->where("main_topic_id", $forumMainTopic->id)->where("closed", 0)->orderBy("created_at", "DESC")->paginate(10);
         if(Session::has("user_id")) {
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
@@ -51,7 +53,7 @@ class ForumController extends Controller
             $isFollowingTopic = false;
         }
 
-        return view("/public/forum/forumMainTopicThreads", compact("forumMainTopic", "threads", "user", "isFollowingTopic"));
+        return view("/public/forum/forumMainTopicThreads", compact("forumMainTopic", "threads", "user", "isFollowingTopic", "title", "og_description"));
 
 
     }
@@ -67,6 +69,7 @@ class ForumController extends Controller
         $forumMainTopic = ForumMainTopic::select("*")->where("slug", $slug)->first();
         $forumThread = ForumThread::select("*")->where("id", $id)->first();
         if($forumThread) {
+            $title = $forumThread->title;
             $loggedIn = false;
 //        $forumThread->views = $forumThread->views + 1;
 //        $forumThread->save();
@@ -75,9 +78,9 @@ class ForumController extends Controller
             if ($this->isLoggedIn()) {
                 $loggedIn = true;
                 $user = User::select("*")->where("id", Session::get("user_id"))->first();
-                return view("/public/forum/forumThread", compact("forumThread", "forumMainTopic", "forumThreadComments", "loggedIn", "user", "allForumThreadComments"));
+                return view("/public/forum/forumThread", compact("forumThread", "forumMainTopic", "forumThreadComments", "loggedIn", "user", "allForumThreadComments", "title"));
             } else {
-                return view("/public/forum/forumThread", compact("forumThread", "forumMainTopic", "forumThreadComments", "loggedIn", "allForumThreadComments"));
+                return view("/public/forum/forumThread", compact("forumThread", "forumMainTopic", "forumThreadComments", "loggedIn", "allForumThreadComments", "title"));
             }
         } else {
             abort(404);

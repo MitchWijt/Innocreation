@@ -208,8 +208,32 @@ class User extends Authenticatable
         }
     }
 
+    public function getSeoExpertises(){
+        $expertiseLinktable = expertises_linktable::select("*")->where("user_id", $this->id)->get();
+        if(count($expertiseLinktable) > 1){
+            return $expertiseLinktable->First()->expertises->First()->title . " and more!";
+        } else {
+            return $expertiseLinktable->First()->expertises->First()->title;
+        }
+    }
+
+    public function getPopoverView(){
+        $expertises = $this->getExpertises();
+        $user = $this;
+        return view("/public/collaborateChat/shared/_popoverView", compact("expertises", "user"));
+    }
+
     public function getPasswordResetLink(){
         return "/resetPassword/$this->hash";
+    }
+
+    public function isActiveInExpertise($expertiseId){
+        $userExpertiseLinktable = Expertises_linktable::select("*")->where("user_id", $this->id)->where("expertise_id", $expertiseId)->first();
+        if($userExpertiseLinktable){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

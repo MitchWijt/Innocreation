@@ -259,6 +259,8 @@ Route::post("/workspace/changePlaceBucketlistGoal", "WorkspaceController@changeP
 
 Route::post("/workspace/deleteSingleBucketlistGoal", "WorkspaceController@deleteSingleBucketlistGoalAction");
 
+Route::post("/workspace/getBucketlistItemModal", "WorkspaceController@getBucketlistItemModalAction");
+
 // Short term planner task planner
 
 Route::get("/my-team/workspace/short-term-planner-options", "WorkspaceController@workspaceShortTermPlannerOptionPicker");
@@ -572,6 +574,14 @@ Route::post("/checkout/changePackage", "CheckoutController@changePackageAction")
 
 Route::post("/invoice/{hash}", "InvoiceController@generateMonthlyInvoiceAction");
 
+//========================COLLABORATION CHAT========================
+
+Route::get("/collaborate", "CollaborateController@indexAction");
+
+Route::post("/collaborate/sendMessage", "CollaborateController@sendMessageAction");
+
+//========================ALEXA========================
+Route::post("/alexa", "AlexaController@alexaEndpoint");
 
 
 //==

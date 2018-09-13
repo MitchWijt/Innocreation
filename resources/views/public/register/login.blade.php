@@ -16,9 +16,17 @@
         <? } ?>
         <?
             if(isset($urlParameter)){
-                echo view("/public/shared/_loginRegister", compact("countries", "expertises", "urlParameter", "pageType"));
+                if(isset($url)){
+                    echo view("/public/shared/_loginRegister", compact("countries", "expertises", "urlParameter", "pageType", "url", "token"));
+                } else {
+                    echo view("/public/shared/_loginRegister", compact("countries", "expertises", "urlParameter", "pageType"));
+                }
             } else {
-                echo view("/public/shared/_loginRegister", compact("countries", "expertises", "pageType"));
+                if(isset($url)){
+                    echo view("/public/shared/_loginRegister", compact("countries", "expertises", "pageType", "url", "token"));
+                } else {
+                    echo view("/public/shared/_loginRegister", compact("countries", "expertises", "pageType"));
+                }
             }
         ?>
     </div>

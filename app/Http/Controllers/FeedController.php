@@ -22,21 +22,21 @@ class FeedController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function TeamProductsAction($slug = null) {
-
+        $title = "New innovative products";
         $teamProducts = TeamProduct::select("*")->get();
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         if($slug) {
             $teamProductSlug = TeamProduct::select("slug")->where("slug", $slug)->first();
             if($user){
-                return view("/public/feed/teamProducts", compact("teamProducts", "teamProductSlug", "user"));
+                return view("/public/feed/teamProducts", compact("teamProducts", "teamProductSlug", "user", "title"));
             } else {
-                return view("/public/feed/teamProducts", compact("teamProducts", "teamProductSlug"));
+                return view("/public/feed/teamProducts", compact("teamProducts", "teamProductSlug", "title"));
             }
         } else {
             if($user){
-                return view("/public/feed/teamProducts", compact("teamProducts", "user"));
+                return view("/public/feed/teamProducts", compact("teamProducts", "user", "title"));
             } else {
-                return view("/public/feed/teamProducts", compact("teamProducts"));
+                return view("/public/feed/teamProducts", compact("teamProducts", "title"));
             }
         }
 
