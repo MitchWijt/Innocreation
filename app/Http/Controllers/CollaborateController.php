@@ -25,31 +25,49 @@ class CollaborateController extends Controller{
         $senderUserId = $request->input("sender_user_id");
         $message = $request->input("message");
 
-        $user = User::select("*")->where("id", $senderUserId)->first();
+        if($message != "" || !empty($message)) {
+            $user = User::select("*")->where("id", $senderUserId)->first();
 
-        $collaborationMessage = new CollaborateChatMessage();
-        $collaborationMessage->sender_user_id = $senderUserId;
-        $collaborationMessage->message = $message;
-        $collaborationMessage->time_sent = $this->getTimeSent();
-        $collaborationMessage->created_at = date("Y-m-d H:i:s");
-        $collaborationMessage->save();
+            $collaborationMessage = new CollaborateChatMessage();
+            $collaborationMessage->sender_user_id = $senderUserId;
+            $collaborationMessage->message = $message;
+            $collaborationMessage->time_sent = $this->getTimeSent();
+            $collaborationMessage->popover_html = $user->getPopoverView();
+            $collaborationMessage->created_at = date("Y-m-d H:i:s");
+            $collaborationMessage->save();
 
-        $array = ["message" => $message, "timeSent" => $this->getTimeSent()];
+            $array = ["message" => $message, "timeSent" => $this->getTimeSent()];
 
 
-        $client = $this->getService("stream");
-        $data = [
-            "actor"=> "1",
-            "name"=> $user->getName(),
-            "userId"=> $user->id,
-            "team"=> $user->team->team_name,
-            "timeSent"=> $this->getTimeSent(),
-            "message"=> $message,
-            "verb"=>"collaborationMessage",
-            "object"=>"1",
-        ];
-        $adminFeed = $client->feed('user', 1);
-        $adminFeed->addActivity($data);
-        return json_encode($array);
+            $client = $this->getService("stream");
+            if ($user->team_id != null) {
+                $data = [
+                    "actor" => "1",
+                    "name" => $user->getName(),
+                    "userId" => $user->id,
+                    "team" => $user->team->team_name,
+                    "popoverView" => "$collaborationMessage->popover_html",
+                    "timeSent" => $this->getTimeSent(),
+                    "message" => $message,
+                    "verb" => "collaborationMessage",
+                    "object" => "1",
+                ];
+            } else {
+                $data = [
+                    "actor" => "1",
+                    "name" => $user->getName(),
+                    "userId" => $user->id,
+                    "team" => 0,
+                    "popoverView" => "$collaborationMessage->popover_html",
+                    "timeSent" => $this->getTimeSent(),
+                    "message" => $message,
+                    "verb" => "collaborationMessage",
+                    "object" => "1",
+                ];
+            }
+            $adminFeed = $client->feed('user', 1);
+            $adminFeed->addActivity($data);
+            return json_encode($array);
+        }
     }
 }

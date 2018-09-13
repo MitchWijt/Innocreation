@@ -20,6 +20,7 @@ $(".sendMessageBtn").on("click",function () {
             message.find(".messageSent").find(".message").text(data['message']);
             message.find(".messageSent").find(".timeSent").text(data['timeSent']);
             $(".messageInput").val("");
+            message.removeClass("hidden");
         }
     });
     setTimeout(function(){

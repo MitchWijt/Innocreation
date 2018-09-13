@@ -29,6 +29,8 @@ class DebugController extends Controller
      *
      */
     public function test(){
+//        $user = User::select("*")->where("id", 10)->first();
+//        return $user->getPopoverView();
 //        if($this->authorized(true)) {
 
 ////            $messageFeed = $client->feed('timeline', 10);
