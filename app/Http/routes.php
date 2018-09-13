@@ -572,6 +572,11 @@ Route::post("/checkout/changePackage", "CheckoutController@changePackageAction")
 
 Route::post("/invoice/{hash}", "InvoiceController@generateMonthlyInvoiceAction");
 
+//========================COLLABORATION CHAT========================
+
+Route::get("/collaborate", "CollaborateController@indexAction");
+
+Route::post("/collaborate/sendMessage", "CollaborateController@sendMessageAction");
 
 
 //==

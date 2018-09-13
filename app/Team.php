@@ -5,8 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use DateTime;
 
-class Team extends Model
-{
+class Team extends Model {
     public function users(){
         return $this->hasOne("\App\User", "id","ceo_user_id");
     }

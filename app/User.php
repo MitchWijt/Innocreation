@@ -208,6 +208,12 @@ class User extends Authenticatable
         }
     }
 
+    public function getPopoverView(){
+        $expertises = $this->getExpertises();
+        $user = $this;
+        return view("/public/collaborateChat/shared/_popoverView", compact("expertises", "user"));
+    }
+
     public function getPasswordResetLink(){
         return "/resetPassword/$this->hash";
     }
