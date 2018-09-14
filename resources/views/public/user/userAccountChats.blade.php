@@ -55,7 +55,7 @@
                                                     <i class="zmdi zmdi-circle f-10 c-orange p-absolute unreadNotification" style="left: 10px; top: 5px;"></i>
                                                 <? } ?>
                                                     <i class="zmdi zmdi-circle f-10 c-orange p-absolute unreadNotification hidden" data-user-chat-id="<?= $userChat->id?>" style="left: 10px; top: 5px;"></i>
-                                                    <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
+                                                    <div class="card-block chat-card d-flex js-around m-t-10" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
                                                     <img class="circle circleImage m-0" src="/images/profilePicturesTeams/cartwheel.png" alt="">
                                                     <p class="f-22 m-t-15 m-b-5 p-0">Innocreation</p>
                                                 </div>
@@ -74,7 +74,7 @@
                                                     <i class="zmdi zmdi-circle f-10 c-orange p-absolute unreadNotification hidden" data-user-chat-id="<?= $userChat->id?>" style="left: 10px; top: 5px;"></i>
                                                     <i class="zmdi zmdi-close c-orange p-absolute deleteChat" data-chat-id="<?= $userChat->id?>" style="right: 10px; top: 5px;"></i>
                                                     <? if($userChat->receiver_user_id == $user_id) { ?>
-                                                        <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
+                                                        <div class="card-block chat-card d-flex js-around m-t-10" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
                                                             <img class="circle circleImage m-0" src="<?=$userChat->creator->getProfilePicture()?>" alt="">
                                                             <p class="f-22 m-t-15 m-b-5 p-0"><?=$userChat->creator->firstname?></p>
                                                             <? if($userChat->creator->team_id != null) { ?>
@@ -86,7 +86,7 @@
                                                         </div>
                                                     <? } else { ?>
                                                         <? if($userChat->receiver) { ?>
-                                                            <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
+                                                            <div class="card-block chat-card d-flex js-around m-t-10" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
                                                                 <img class="circle circleImage m-0" src="<?=$userChat->receiver->getProfilePicture()?>" alt="">
                                                                 <p class="f-22 m-t-15 m-b-5 p-0"><?=$userChat->receiver->firstname?></p>
                                                                 <? if($userChat->receiver->team_id != null) { ?>
@@ -97,7 +97,7 @@
                                                                 <? } ?>
                                                             </div>
                                                         <? } else { ?>
-                                                            <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
+                                                            <div class="card-block chat-card d-flex js-around m-t-10" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
                                                                 <div class="circle circleImage"><i class="zmdi zmdi-eye-off f-25 m-t-15"></i></div>
                                                                 <p class="f-22 m-t-15 m-b-5 p-0">User doesn't exist anymore</p>
                                                             </div>
@@ -111,7 +111,7 @@
                                             <div class="col-md-12">
                                                 <div class="card text-center p-relative" style="height: 90px;">
                                                     <i class="zmdi zmdi-close c-orange p-absolute deleteChat" data-chat-id="<?= $userChat->id?>" style="right: 10px; top: 5px;"></i>
-                                                    <div class="card-block chat-card d-flex js-around m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-chat-id="<?= $userChat->id?>">
+                                                    <div class="card-block chat-card d-flex js-around m-t-10" data-chat-id="<?= $userChat->id?>">
                                                         <div class="circle circleImage"><i class="zmdi zmdi-eye-off f-25 m-t-15"></i></div>
                                                         <p class="f-22 m-t-15 m-b-5 p-0">User doesn't exist anymore</p>
                                                     </div>
