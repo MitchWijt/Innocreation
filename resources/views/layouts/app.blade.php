@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf_token" content="{{ csrf_token() }}" />
+    <meta name="description" content="<? if(isset($og_description)) echo $og_description?>" />
+    <meta name="google-site-verification" content="7i4l0CQ7KL5Rcffr4TDf0e7doWEObxrI-mRC_RXai2g" />
+    <link rel="canonical" class="tweet-button-link" href="">
+    <title><? if(isset($title)) echo $title ?> | Innocreation</title>
     {{--JS--}}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     {{--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>--}}
@@ -54,13 +58,6 @@
     {{--RECAPTCHA--}}
         <script src='https://www.google.com/recaptcha/api.js?hl=en'></script>
     {{--==============--}}
-
-    <script></script>
-
-    <meta name="description" content="<? if(isset($og_description)) echo $og_description?>" />
-    <meta name="google-site-verification" content="7i4l0CQ7KL5Rcffr4TDf0e7doWEObxrI-mRC_RXai2g" />
-    <link rel="canonical" class="tweet-button-link" href="">
-    <title><? if(isset($title)) echo $title ?> | Innocreation</title>
 </head>
 <body>
 <? if(\Illuminate\Support\Facades\Session::has("user_id")) {
