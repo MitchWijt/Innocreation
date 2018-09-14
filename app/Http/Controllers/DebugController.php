@@ -8,6 +8,7 @@ use App\UserMessage;
 use App\WorkspaceShortTermPlannerBoard;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Mailgun\Mailgun;
 use App\User;
 use App\ServiceReview;

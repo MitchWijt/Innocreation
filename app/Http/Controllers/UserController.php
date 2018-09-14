@@ -31,6 +31,7 @@ use App\Http\Middleware\RolesMiddleware;
 
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Storage;
 use Session;
 
 class UserController extends Controller
@@ -231,6 +232,8 @@ class UserController extends Controller
     public function saveUserProfilePictureAction(Request $request){
         $user_id = $request->input("user_id");
         $file = $request->file("profile_picture");
+        Storage::disk('spaces')->putFile('uploads', $request->file("profile_picture"), 'public');
+        dd("test");
         $destinationPath = public_path().'/images/profilePicturesUsers';
         $fullname = $file->getClientOriginalName();
 
