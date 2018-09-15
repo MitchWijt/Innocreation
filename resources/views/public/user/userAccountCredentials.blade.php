@@ -30,7 +30,7 @@
                     </div>
                     <div class="row text-center m-t-20 d-flex js-center">
                         <div class="col-md-6">
-                            <button type="button" class="btn btn-inno editProfilePicture">Edit profile picture</button>
+                            <button type="button" class="btn btn-inno editProfilePicture">Edit profile picture <img class="hidden loadingGear" src="/images/icons/loadingGear.gif" width="20" alt=""></button>
                         </div>
                     </div>
                     <div class="row text-center m-t-20 m-b-20 d-flex js-center toLivePage">

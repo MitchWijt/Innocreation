@@ -8,7 +8,11 @@ class TeamGroupChat extends Model
 {
     public $table = "team_group_chat";
 
+    public function getTeam(){
+        return TeamGroupChatLinktable::select("*")->where("team_group_chat_id", $this->id)->first()->team;
+    }
+
     public function getProfilePicture(){
-        return "/images/teamGroupChatProfilePictures/" . $this->profile_picture;
+         return "https://space-innocreation.ams3.digitaloceanspaces.com/teams/" . $this->getTeam()->slug ."/groupchats/" .strtolower(str_replace(" ", "-", $this->title)) ."/$this->profile_picture";
     }
 }

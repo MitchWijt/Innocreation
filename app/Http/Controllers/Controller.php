@@ -136,6 +136,18 @@ class Controller extends BaseController
         $signature = base64_encode($binaryHmac);
         return $signature;
     }
+
+    public function formatBytes($bytes, $precision = 2) {
+        $unit = ["B", "KB", "MB", "GB"];
+        $exp = floor(log($bytes, 1024)) | 0;
+        if($unit[$exp] == "MB") {
+            return round($bytes / (pow(1024, $exp)), $precision);
+        } else if($unit[$exp] == "KB"){
+            return 6;
+        } else if($unit[$exp] == "GB"){
+            return 9;
+        }
+    }
 }
 
     date_default_timezone_set("Europe/Amsterdam");

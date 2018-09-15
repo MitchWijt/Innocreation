@@ -36,6 +36,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -209,6 +210,10 @@ class AdminController extends Controller
             $userId = $request->input("user_id");
 
             $user = User::select("*")->where("id", $userId)->first();
+            $exists = Storage::disk('spaces')->exists("users/" . $user->slug . "/profilepicture/" . $user->profile_picture);
+            if ($exists) {
+                Storage::disk('spaces')->delete("users/" . $user->slug . "/profilepicture/" . $user->profile_picture);
+            }
             $user->profile_picture = "defaultProfilePicture.png";
             $user->save();
             return redirect($_SERVER["HTTP_REFERER"]);

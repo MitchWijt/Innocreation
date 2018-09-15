@@ -23,7 +23,12 @@ class User extends Authenticatable
     }
 
     public function getProfilePicture(){
-        return "/images/profilePicturesUsers/" . $this->profile_picture;
+        if($this->profile_picture != "defaultProfilePicture.png") {
+            echo "https://space-innocreation.ams3.digitaloceanspaces.com/users/$this->slug/profilepicture/$this->profile_picture";
+        } else {
+            return "/images/profilePicturesUsers/defaultProfilePicture.png";
+        }
+//        return "/images/profilePicturesUsers/" . $this->profile_picture;
     }
 
     public function getName(){
