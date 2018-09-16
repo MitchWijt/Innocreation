@@ -32,7 +32,9 @@
                                     <div class="userCircle">
                                         <div class="d-flex fd-column m-t-20">
                                             <div class="col-md-4 text-center">
-                                                <img class="circle circleImage m-0 text-center" src="<?= $searchedUser->getProfilePicture()?>" alt="">
+                                                <div class="d-flex js-center ">
+                                                    <div class="avatar" style="background: url('<?=$searchedUser->getProfilePicture()?>')"></div>
+                                                </div>
                                                 <p class=" m-b-0"><?= $searchedUser->getName()?></p>
                                                 <button class="btn btn-inno btn-sm">Start chat</button>
                                             </div>

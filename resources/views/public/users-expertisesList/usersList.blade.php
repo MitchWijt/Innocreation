@@ -15,7 +15,9 @@
                                     <div class="col-sm-4">
                                         <div class="d-flex fd-column">
                                             <div class="col-sm-9 text-center m-b-10">
-                                                <img class="circle circleImage m-0 p-0" src="<?= $user->getProfilePicture()?>" alt="<?= $expertise->title?>">
+                                                <div class="d-flex js-center @mobile m-b-10 @endmobile">
+                                                    <div class="avatar" style="background: url('<?= $user->getProfilePicture()?>')"></div>
+                                                </div>
                                             </div>
                                             @nottablet
                                                 <div class="col-sm-9 text-center">

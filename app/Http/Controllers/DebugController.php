@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Expertises;
+use App\Expertises_linktable;
 use App\Team;
 use App\UserChat;
 use App\UserMessage;
@@ -31,6 +33,11 @@ class DebugController extends Controller
      *
      */
     public function test(){
+        $expertises = Expertises::select("*")->get();
+        foreach($expertises as $expertise){
+            $expertise->slug = str_replace(" ", "-", strtolower($expertise->title));
+            $expertise->save();
+        }
 //        dd(bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM)));
 //        if($this->authorized(true)) {
 

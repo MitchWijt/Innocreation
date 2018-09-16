@@ -95,9 +95,9 @@ class LoginController extends Controller
             $user->password = bcrypt(($request->input("password")));
             $user->email = $request->input("email");
             if ($request->input("middlename") != null) {
-                $user->slug = strtolower($request->input("firstname")) . strtolower($user->middlename = $request->input("middlename")) . strtolower($request->input("lastname"));
+                $user->slug = str_replace(" ", "-", strtolower($request->input("firstname")) . strtolower($user->middlename = $request->input("middlename")) . strtolower($request->input("lastname")));
             } else {
-                $user->slug = strtolower($request->input("firstname")) . strtolower($request->input("lastname"));
+                $user->slug = str_replace(" ", "-",strtolower($request->input("firstname")) . strtolower($request->input("lastname")));
             }
             $user->hash = bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM));
             $user->city = $request->input("city");
@@ -141,6 +141,7 @@ class LoginController extends Controller
                 if (!in_array(ucfirst($expertise), $existingArray)) {
                     $newExpertise = New Expertises;
                     $newExpertise->title = ucfirst($expertise);
+                    $newExpertise->slug = str_replace(" ", "-",strtolower($expertise));
                     $newExpertise->save();
 
                     $userExpertise = New expertises_linktable;

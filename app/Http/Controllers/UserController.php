@@ -400,7 +400,9 @@ class UserController extends Controller
             } else {
                 $searchInput = false;
             }
-            return view("/public/user/userAccountChats", compact("searchedUsers", "user_id", "userChats"));
+            $user = User::select("*")->where("id", $user_id)->first();
+            $streamToken = $user->stream_token;
+            return view("/public/user/userAccountChats", compact("searchedUsers", "user_id", "userChats", "streamToken"));
         }
     }
 

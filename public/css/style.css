@@ -823,4 +823,88 @@ footer{
     background: #232323 !important;
 }
 
+.avatar-lg{
+    width: 250px;
+    height: 250px;
+    border: 2px solid #C9CCCF !important;
+    -webkit-border-radius: 60px !important;
+    -webkit-background-clip: padding-box !important;
+    -moz-border-radius: 60px !important;
+    -moz-background-clip: padding !important;
+    border-radius: 140px !important;
+    background-clip: padding-box !important;
+    float: left !important;
+    background-size: cover !important;
+    background-repeat:no-repeat !important;
+    /*background-attachment:fixed !important;*/
+    background-position:center,center !important;
+}
+
+.avatar-sm{
+    width: 25px;
+    height: 25px;
+    border: 2px solid #C9CCCF;
+    -webkit-border-radius: 60px !important;
+    -webkit-background-clip: padding-box !important;
+    -moz-border-radius: 60px !important;
+    -moz-background-clip: padding !important;
+    border-radius: 60px !important;
+    background-clip: padding-box !important;
+    float: left !important;
+    background-size: cover !important;
+    background-repeat:no-repeat !important;
+    /*background-attachment:fixed !important;*/
+    background-position:center,center !important;
+}
+
+.avatar{
+    width: 65px;
+    height: 65px;
+    border: 2px solid #C9CCCF;
+    -webkit-border-radius: 60px !important;
+    -webkit-background-clip: padding-box !important;
+    -moz-border-radius: 60px !important;
+    -moz-background-clip: padding !important;
+    border-radius: 100px !important;
+    background-clip: padding-box !important;
+    float: left !important;
+    background-size: cover !important;
+    background-repeat:no-repeat !important;
+    /*background-attachment:fixed !important;*/
+    background-position:center,center !important;
+}
+
+.avatar-not{
+    width: 30px;
+    height: 30px;
+    border: 2px solid #C9CCCF;
+    -webkit-border-radius: 60px !important;
+    -webkit-background-clip: padding-box !important;
+    -moz-border-radius: 60px !important;
+    -moz-background-clip: padding !important;
+    border-radius: 60px !important;
+    background-clip: padding-box !important;
+    float: left !important;
+    background-size: cover !important;
+    background-repeat:no-repeat !important;
+    /*background-attachment:fixed !important;*/
+    background-position:center,center !important;
+}
+
+.avatar-med{
+    width: 150px;
+    height: 150px;
+    border: 2px solid #C9CCCF;
+    -webkit-border-radius: 60px !important;
+    -webkit-background-clip: padding-box !important;
+    -moz-border-radius: 60px !important;
+    -moz-background-clip: padding !important;
+    border-radius: 110px !important;
+    background-clip: padding-box !important;
+    float: left !important;
+    background-size: cover !important;
+    background-repeat:no-repeat !important;
+    /*background-attachment:fixed !important;*/
+    background-position:center,center !important;
+}
 

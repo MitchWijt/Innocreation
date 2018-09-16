@@ -46,7 +46,9 @@
                                         <div class="row">
                                             <div class="col-sm-12 d-flex">
                                                 <div class="col-sm-2 m-r-0 text-center">
-                                                    <img class="circleImage circle m-r-0" src="<?= $forumThread->creator->getProfilePicture()?>" alt="<?= $forumThread->title?>">
+                                                    <div class="d-flex js-center ">
+                                                        <div class="avatar" style="background: url('<?= $forumThread->creator->getProfilePicture()?>')"></div>
+                                                    </div>
                                                     <a href="<?= $forumThread->creator->getUrl()?>" class="regular-link" target="_blank"><p class="m-b-0 m-t-5"><?= $forumThread->creator->getName()?></p></a>
                                                     <p class="m-b-5"><?= count($forumThread->creator->getAmountThreadPosts())?> posts</p>
                                                 </div>
@@ -108,7 +110,9 @@
                                         <div class="row">
                                             <div class="col-sm-12 d-flex">
                                                 <div class="col-sm-2 m-r-0 text-center">
-                                                    <img class="circleImage circle m-r-0" src="<?= $threadComment->creator->getProfilePicture()?>" alt="<?= $forumThread->title?>">
+                                                    <div class="d-flex js-center ">
+                                                        <div class="avatar" style="background: url('<?= $threadComment->creator->getProfilePicture()?>')"></div>
+                                                    </div>
                                                     <a href="<?= $threadComment->creator->getUrl()?>" class="regular-link" target="_blank"><p class="m-b-0 m-t-5"><?= $threadComment->creator->getName()?></p></a>
                                                     <p class="m-b-5"><?= count($threadComment->creator->getAmountThreadPosts())?> posts</p>
                                                 </div>

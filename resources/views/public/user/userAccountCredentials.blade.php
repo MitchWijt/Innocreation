@@ -25,7 +25,9 @@
                     <div class="row text-center d-flex js-center">
                         <div class="col-md-6">
                             <input type="file" name="profile_picture" class="hidden uploadFile">
-                            <img class="circle m-0 circleImgLg" src="<?=$user->getProfilePicture()?>" alt="Profile picture">
+                            <div class="d-flex js-center ">
+                                <div class="avatar-lg" style="background: url('<?=$user->getProfilePicture()?>')"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="row text-center m-t-20 d-flex js-center">

@@ -72,7 +72,9 @@
                                 <div class="card-lg text-center member">
                                     <div class="card-block row">
                                         <div class="col-sm-2 m-t-15">
-                                            <img class="circleImage circle m-0" src="<?= $member->getProfilePicture()?>" alt="<?=$member->firstname?>">
+                                            <div class="d-flex js-center ">
+                                                <div class="avatar" style="background: url('<?= $member->getProfilePicture()?>')"></div>
+                                            </div>
                                         </div>
                                         <div class="col-sm-4 m-t-20">
                                             <p class="m-t-15"><?= $member->getName()?></p>

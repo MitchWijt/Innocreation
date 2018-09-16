@@ -17,7 +17,9 @@
             <hr class="m-b-20">
             <div class="row">
                 <div class="col-sm-12 text-center">
-                    <img class="circle circleImgLg m-r-0 img-responsive" src="<?=$team->getProfilePicture()?>" alt="<?=$team->team_name?>">
+                    <div class="d-flex js-center">
+                        <div class="avatar-lg" style="background: url('<?=$team->getProfilePicture()?>')"></div>
+                    </div>
                 </div>
             </div>
             <? if($user) { ?>
@@ -58,7 +60,7 @@
                                     <div class="col-sm-12 m-b-20 d-flex">
                                         <div class="col-sm-4">
                                             <a target="_blank" href="<?= $member->getUrl()?>">
-                                                <img class="circleImage circle" src="<?= $member->getProfilePicture()?>" alt="<?=$member->firstname?>">
+                                                <div class="avatar" style="background: url('<?=$member->getProfilePicture()?>')"></div>
                                             </a>
                                         </div>
                                         <div class="col-sm-4 text-center">
