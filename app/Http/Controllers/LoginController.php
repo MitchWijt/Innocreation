@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Expertises;
 use App\Expertises_linktable;
+use App\MailMessage;
 use App\Team;
 use App\UserChat;
 use Faker\Provider\Payment;
@@ -190,7 +191,7 @@ class LoginController extends Controller
                     'subject' => "Welcome to Innocreation!",
                     'html' => view("/templates/sendWelcomeMail", compact("user"))
                 ), array(
-                    'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png', $_SERVER['DOCUMENT_ROOT'] . '/images/email.png')
+                    'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png', $_SERVER['DOCUMENT_ROOT'] . '/images/icons/email.png')
                 ));
                 $mailMessage = new MailMessage();
                 $mailMessage->receiver_user_id = $user->id;
