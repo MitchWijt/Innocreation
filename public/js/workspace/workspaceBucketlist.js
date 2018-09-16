@@ -74,7 +74,7 @@ $(document).ready(function () {
     $(".bucketlistBoardMenu").toggle();
 });
 
-$(document).on("click",".openBoardMenu",function () {
+$(document).on("click touchstart",".openBoardMenu",function () {
     $(this).parents(".bucketlistBoard").find(".bucketlistBoardMenu").toggle();
 });
 
