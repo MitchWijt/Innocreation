@@ -30,10 +30,7 @@ $(".amount").on("change",function () {
         } else if(title == "Task planners"){
             if($(".recentTaskOption").val() != "" && option < $(".recentTaskOption").val()){
                 var priceNow = parseInt($(".priceCustom").text());
-                console.log(priceNow);
                 var recentPrice = parseInt($(".recentTaskOption").attr("data-recent-price"));
-                console.log(recentPrice);
-                console.log(chosenPrice);
                 var fullPrice = priceNow - recentPrice + chosenPrice;
                 $(".priceCustom").text(fullPrice + ".00");
             } else {
@@ -119,4 +116,31 @@ $(document).on("click", ".submitCustomForm",function () {
 
 $(document).on("click", ".submitVerificationRequest",function () {
     $(".verificationChangePackageForm").submit();
+});
+
+$(".submitCustom").on("click",function () {
+    var members = $(".members").val();
+    var taskplanner = $(".task-planners").val();
+    var meetings = $(".meetings").val();
+    var newsletter = $(".newsLetter").val();
+    if(meetings && taskplanner && members && newsletter){
+       var bool = true;
+    } else if(!members){
+        var error = "Please enter the amount of members value to continue";
+        bool = false;
+    } else if(!taskplanner){
+        var error = "Please enter the amount of task planners you would like";
+        bool = false;
+    } else if(!meetings){
+        var error = "Please enter the amount of meetings you would like";
+        bool = false;
+    } else if(!newsletter){
+        var error = "Please let us know if you want to create newsletters";
+        bool = false;
+    }
+    if(bool){
+        $(".customPackageForm").submit();
+    } else{
+        $(".error").text(error);
+    }
 });

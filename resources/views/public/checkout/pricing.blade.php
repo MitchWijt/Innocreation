@@ -132,7 +132,7 @@
                                             <div class="col-sm-12 d-flex  customSelect">
                                                 <div class="col-sm-9">
                                                     <input type="hidden" name="types[]" value="<?= $customMembershipPackageType->id?>">
-                                                    <select name="amountValues[]" class="input amount">
+                                                    <select name="amountValues[]" class="input amount <?= str_replace(" ", "-",strtolower($customMembershipPackageType->title))?>">
                                                         <option selected disabled="">Choose amount</option>
                                                         <? foreach($customMembershipPackageType->getCustomPackages() as $customPackage) { ?>
                                                             <option value="<?= $customPackage->option?>" data-price="<?= $customPackage->price?>" ><?= $customPackage->option?></option>
@@ -174,6 +174,9 @@
                                     <div class="col-sm-12">
                                         <p class="f-20 m-t-15 text-center">Custom</p>
                                     </div>
+                                    <div class="col-sm-12 errorList text-center">
+                                        <p class="error c-red f-11 "></p>
+                                    </div>
                                     <div class="hr"></div>
                                 </div>
                                 <div class="m-b-20"></div>
@@ -191,10 +194,10 @@
                                             <button type="button" class="btn btn-inno m-b-20 openModalChangePackage customBtn" data-user-id="<?= $user->id?>" data-membership-package-id="custom">Choose</button>
                                         <? } ?>
                                     <? } else { ?>
-                                        <button type="submit" class="btn btn-inno m-b-20 customBtn">Choose</button>
+                                        <button type="button" class="btn btn-inno m-b-20 customBtn submitCustom">Choose</button>
                                     <? } ?>
                                 <? } else { ?>
-                                    <button type="submit" class="btn btn-inno m-b-20 customBtn">Choose</button>
+                                    <button type="button" class="btn btn-inno m-b-20 customBtn submitCustom">Choose</button>
                                 <? } ?>
                             </div>
                         </div>
