@@ -50,8 +50,7 @@ class PageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function singleUserPageIndex($slug = null)
-    {
+    public function singleUserPageIndex($slug = null){
         if($slug){
             $user  = User::select("*")->where("slug", $slug)->first();
         }

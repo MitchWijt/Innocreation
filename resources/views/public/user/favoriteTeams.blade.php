@@ -19,7 +19,9 @@
                             <div class="card-block">
                                 <div class="row m-t-20">
                                         <div class="col-sm-4 text-center">
-                                            <img class="circle circleImage m-0" src="<?= $favoriteTeam->team->getProfilePicture()?>" alt="<?= $favoriteTeam->team->team_name?>">
+                                            <div class="d-flex js-center ">
+                                                <div class="avatar" style="background: url('<?=$favoriteTeam->team->getProfilePicture()?>')"></div>
+                                            </div>
                                             <p class="m-t-10"><?= $favoriteTeam->team->team_name?></p>
                                         </div>
                                     <div class="col-sm-8 p-r-30">

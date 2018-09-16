@@ -17,7 +17,9 @@
             <hr class="m-b-20">
             <div class="row">
                 <div class="col-sm-12 text-center cropper">
-                    <img class="circle circleImgLg m-r-0" src="<?=$user->getProfilePicture()?>" alt="<?=$user->getName()?>">
+                    <div class="d-flex js-center @mobile m-b-10 @endmobile">
+                        <div class="avatar-lg" style="background: url('<?= $user->getProfilePicture()?>')"></div>
+                    </div>
                 </div>
             </div>
             <? if($loggedIn && \Illuminate\Support\Facades\Session::get("user_id") != $user->id) { ?>
@@ -165,7 +167,9 @@
                                     <div class="row d-flex js-center @mobile p-l-30 p-r-30 @endmobile">
                                         <div class="col-sm-11">
                                             <div class="d-flex fd-row">
-                                                <img class="circleImage openPortfolioModal c-pointer m-t-10 circle" src="<?= $portfolio->getUrl()?>" alt="<?= $portfolio->title?>">
+                                                <div class="d-flex js-center @mobile m-b-10 @endmobile">
+                                                    <div class="avatar openPortfolioModal c-pointer m-t-10 m-r-15" style="background: url('<?= $portfolio->getUrl()?>')"></div>
+                                                </div>
                                                 <div class="col-sm-11 p-0">
                                                     <p class="f-21 m-0"><?= $portfolio->title?></p>
                                                     <hr>

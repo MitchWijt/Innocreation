@@ -39,7 +39,9 @@
                                         <div class="col-sm-5">
                                             <div class="col-sm-5 m-t-15 m-b-20">
                                                 <i class="zmdi zmdi-close c-orange pull-right f-20 p-absolute deleteProfilePicture" style="right: 5px;"></i>
-                                                <img src="<?= $user->getProfilePicture()?>" class="circle circleMedium">
+                                                <div class="d-flex js-center @mobile m-b-10 @endmobile">
+                                                    <div class="avatar-med" style="background: url('<?= $user->getProfilePicture()?>')"></div>
+                                                </div>
                                                 <p class="text-center">Team: <? if($user->team_id != null) { ?><a target="_blank" class="regular-link" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a><? } else { ?> - <? } ?></p>
                                             </div>
                                         </div>

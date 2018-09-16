@@ -10,6 +10,10 @@ class TeamGroupChatLinktable extends Model
         return $this->hasMany("\App\User", "id","user_id");
     }
 
+    public function team(){
+        return $this->hasOne("\App\Team", "id","team_id");
+    }
+
     public function groupChat(){
         return $this->hasMany("\App\TeamGroupChat", "id","team_group_chat_id");
     }

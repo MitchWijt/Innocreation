@@ -31,6 +31,8 @@ use App\Http\Middleware\RolesMiddleware;
 
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 use Session;
 
 class UserController extends Controller
@@ -231,14 +233,23 @@ class UserController extends Controller
     public function saveUserProfilePictureAction(Request $request){
         $user_id = $request->input("user_id");
         $file = $request->file("profile_picture");
-        $destinationPath = public_path().'/images/profilePicturesUsers';
-        $fullname = $file->getClientOriginalName();
+        $size = $this->formatBytes($file->getSize());
+        if($size < 8) {
+            $filename = $file->getClientOriginalName();
 
-        $user = User::select("*")->where("id", $user_id)->first();
-        $user->profile_picture = $fullname;
-        $user->save();
-        $file->move($destinationPath, $fullname);
-        return redirect($_SERVER["HTTP_REFERER"]);
+            $user = User::select("*")->where("id", $user_id)->first();
+            $exists = Storage::disk('spaces')->exists("users/" . $user->slug . "/profilepicture/" . $filename);
+            if (!$exists) {
+                Storage::disk('spaces')->delete("users/" . $user->slug . "/profilepicture/" . $user->profile_picture);
+                $image = $request->file('profile_picture');
+                Storage::disk('spaces')->put("users/" . $user->slug . "/profilepicture/" . $filename, file_get_contents($image->getRealPath()), "public");
+            }
+            $user->profile_picture = $filename;
+            $user->save();
+            return redirect($_SERVER["HTTP_REFERER"]);
+        } else {
+            return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
+        }
     }
 
     public function userAccountPortfolio(){
@@ -252,33 +263,41 @@ class UserController extends Controller
     }
 
     public function saveUseraccountPortfolio(Request $request){
-        $destinationPath = public_path().'/images/portfolioImages';
-
         $user_id = $request->input("user_id");
         $portfolio_titles = $request->input("portfolio_title");
         $portfolio_image = $request->file("portfolio_image");
         $portfolio_links = $request->input("portfolio_link");
         $portfolio_descriptions = $request->input("description_portfolio");
 
+        $user = User::select("*")->where("id", $user_id)->first();
+
 
 
             $rowCount = count($portfolio_titles);
 
             for ($i = 0; $i < $rowCount; $i++) {
-                if($portfolio_image[$i] != null) {
-                    $portfolio_image[$i]->move($destinationPath, $portfolio_image[$i]->getClientOriginalName());
-                }
                 $userPortfolio = new UserPortfolio;
                 $userPortfolio->user_id = $user_id;
                 $userPortfolio->title = $portfolio_titles[$i];
                 $userPortfolio->description = $portfolio_descriptions[$i];
-                if($portfolio_image[$i] != null) {
-                    $userPortfolio->image = $portfolio_image[$i]->getClientOriginalName();
-                }
                 if($portfolio_links != null) {
                     $userPortfolio->link = $portfolio_links[$i];
                 }
-                $userPortfolio->save();
+
+                if($portfolio_image[$i] != null) {
+                    $file = $portfolio_image[$i];
+                    $size = $this->formatBytes($file->getSize());
+                    if($size < 8) {
+                        $filename = strtolower(str_replace(" ","-",$userPortfolio->title)) . "." . $file->getClientOriginalExtension();
+                        Storage::disk('spaces')->put("users/$user->slug/portfolios/" . $filename, file_get_contents($file->getRealPath()), "public");
+
+                        $userPortfolio->image = $filename;
+                        $userPortfolio->save();
+                        return redirect($_SERVER["HTTP_REFERER"]);
+                    } else {
+                        return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
+                    }
+                }
             }
             return redirect($_SERVER["HTTP_REFERER"]);
 
@@ -286,7 +305,7 @@ class UserController extends Controller
 
     public function editUserPortfolio(Request $request){
         $portfolio_id = $request->input("portfolio_id");
-        $image = $request->file("portfolio_image");
+        $file = $request->file("portfolio_image");
         $title = $request->input("portfolio_title");
         $description = $request->input("description_portfolio");
         $link = $request->input("portfolio_link");
@@ -294,21 +313,36 @@ class UserController extends Controller
         $userPortfolio = UserPortfolio::select("*")->where("id",$portfolio_id)->first();
         $userPortfolio->title = $title;
         $userPortfolio->description = $description;
-        if($image != null){
-            $destinationPath = public_path().'/images/portfolioImages';
-            $userPortfolio->image = $image->getClientOriginalName();
-            $image->move($destinationPath,$image->getClientOriginalName());
-        }
         if($link != null){
             $userPortfolio->link = $link;
         }
-        $userPortfolio->save();
+        $userSlug = $userPortfolio->user->slug;
+        if($file != null) {
+            $size = $this->formatBytes($file->getSize());
+            if ($size < 8) {
+                $filename = strtolower(str_replace(" ", "-", $userPortfolio->title)) . "." . $file->getClientOriginalExtension();
+                $exists = Storage::disk('spaces')->exists("users/" . $userSlug . "/portfolios/" . $filename);
+                if ($exists) {
+                    Storage::disk('spaces')->delete("users/" . $userSlug . "/portfolios/" . $filename);
+                }
+                Storage::disk('spaces')->put("users/$userSlug/portfolios/" . $filename, file_get_contents($file->getRealPath()), "public");
+                $userPortfolio->image = $filename;
+                $userPortfolio->save();
+                return redirect($_SERVER["HTTP_REFERER"]);
+            } else {
+                return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
+            }
+        }
         return redirect($_SERVER["HTTP_REFERER"]);
     }
 
     public function deleteUserPortfolio(Request $request){
         $portfolio_id = $request->input("portfolio_id");
         $userPortfolio = UserPortfolio::select("*")->where("id", $portfolio_id)->first();
+        $exists = Storage::disk('spaces')->exists("users/" . $userPortfolio->user->slug . "/portfolios/" . $userPortfolio->image);
+        if($exists) {
+            Storage::disk('spaces')->delete("users/" . $userPortfolio->user->slug . "/portfolios/" . $userPortfolio->image);
+        }
         $userPortfolio->delete();
         return 1;
     }
@@ -366,7 +400,9 @@ class UserController extends Controller
             } else {
                 $searchInput = false;
             }
-            return view("/public/user/userAccountChats", compact("searchedUsers", "user_id", "userChats"));
+            $user = User::select("*")->where("id", $user_id)->first();
+            $streamToken = $user->stream_token;
+            return view("/public/user/userAccountChats", compact("searchedUsers", "user_id", "userChats", "streamToken"));
         }
     }
 

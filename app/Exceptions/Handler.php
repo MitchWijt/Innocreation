@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Http\Requests\Request;
 use Exception;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
@@ -47,6 +48,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+
         return parent::render($request, $e);
     }
 }

@@ -15,68 +15,79 @@
             <div class="row d-flex js-center ">
                 <? if($user->id == $team->ceo_user_id || $user->role == 1) { ?>
                     <div class="col-sm-11 p-r-0 m-t-15">
-                        <button class="btn btn-inno pull-right" data-toggle="modal" data-target="#createGroupChat">Create group chat</button>
+                        <button class="btn btn-inno pull-right @mobile m-r-10 @endmobile" data-toggle="modal" data-target="#createGroupChat">Create group chat</button>
                     </div>
                 <? } ?>
-                <div class="card col-sm-11 m-t-20 m-b-20">
-                    <div class="card-block">
-                        <div class="row text-center m-t-20 m-b-20 d-flex">
-                            <div class="col-sm-4">
-                                <img class="circleImage circle m-r-0 @mobile m-b-10 @endmobile" src="<?= $team->getProfilePicture()?>" alt="<?= $team->team_name?>">
+                @mobile
+                <div class="@mobile p-10 @endmobile">
+                @endmobile
+                    <div class="card col-sm-11 m-t-20 m-b-20">
+                        <div class="card-block">
+                            <div class="row text-center m-t-20 m-b-20 d-flex">
+                                <div class="col-sm-4">
+                                    <div class="d-flex js-center @mobile m-b-10 @endmobile">
+                                        <div class="avatar" style="background: url('<?= $team->getProfilePicture()?>')"></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h3><?= $team->team_name?></h3>
+                                    <p class="c-orange"><?= count($team->getMembers())?> members</p>
+                                </div>
+                                <div class="col-sm-4 m-t-10">
+                                    <a href="/team/<?=$team->slug?>" class="btn btn-inno livePage">Go to live page</a>
+                                </div>
                             </div>
-                            <div class="col-sm-4">
-                                <h3><?= $team->team_name?></h3>
-                                <p class="c-orange"><?= count($team->getMembers())?> members</p>
+                            <div class="d-flex js-center">
+                                <hr class="col-sm-12 m-b-20">
                             </div>
-                            <div class="col-sm-4 m-t-10">
-                                <a href="/team/<?=$team->slug?>" class="btn btn-inno livePage">Go to live page</a>
-                            </div>
-                        </div>
-                        <div class="d-flex js-center">
-                            <hr class="col-sm-12 m-b-20">
-                        </div>
-                        <div class="o-scroll m-t-20 teamChatMessages" style="height: 400px;">
+                            <div class="o-scroll m-t-20 teamChatMessages" style="height: 400px;">
 
-                        </div>
-                        <div class="d-flex js-center">
-                            <hr class="col-sm-12 m-b-20">
-                        </div>
-                        <? if($user->muted <= date("Y-m-d H:i:s")) { ?>
-                            <form action="/my-team/sendTeamMessage" method="post">
-                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                <input type="hidden" name="team_id" value="<?=$team->id?>">
-                                <input type="hidden" name="sender_user_id" value="<?=$user->id?>">
+                            </div>
+                            <div class="d-flex js-center">
+                                <hr class="col-sm-12 m-b-20">
+                            </div>
+                            <? if($user->muted <= date("Y-m-d H:i:s")) { ?>
+                                <form action="/my-team/sendTeamMessage" method="post">
+                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                    <input type="hidden" name="team_id" value="<?=$team->id?>">
+                                    <input type="hidden" name="sender_user_id" value="<?=$user->id?>">
 
-                                <div class="row m-t-20">
+                                    <div class="row m-t-20">
+                                        <div class="col-sm-12 text-center">
+                                            <textarea name="teamMessage" placeholder="Send your message..." class="input col-sm-10" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-11 m-b-20 m-t-20">
+                                            <button class="btn btn-inno pull-right">Send message</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            <? } else { ?>
+                                <?
+                                $today = new DateTime(date("Y-m-d H:i:s"));
+                                $date = new DateTime(date("Y-m-d H:i:s",strtotime($user->muted)));
+                                $interval = $date->diff($today);
+                                ?>
+                                <div class="row m-t-20 m-b-10">
                                     <div class="col-sm-12 text-center">
-                                        <textarea name="teamMessage" placeholder="Send your message..." class="input col-sm-10" rows="5"></textarea>
+                                        <p>You have been muted for <?= $interval->format('%h hours, %i minutes, %s seconds');?></p>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-sm-11 m-b-20 m-t-20">
-                                        <button class="btn btn-inno pull-right">Send message</button>
-                                    </div>
-                                </div>
-                            </form>
-                        <? } else { ?>
-                            <?
-                            $today = new DateTime(date("Y-m-d H:i:s"));
-                            $date = new DateTime(date("Y-m-d H:i:s",strtotime($user->muted)));
-                            $interval = $date->diff($today);
-                            ?>
-                            <div class="row m-t-20 m-b-10">
-                                <div class="col-sm-12 text-center">
-                                    <p>You have been muted for <?= $interval->format('%h hours, %i minutes, %s seconds');?></p>
-                                </div>
-                            </div>
-                        <? } ?>
+                            <? } ?>
+                        </div>
                     </div>
+                @mobile
                 </div>
+                @endmobile
             </div>
 
 
             {{--GROUP CHAT PLACE AND CODE--}}
             <div class="m-b-20">
+                @mobile
+                <div class="@mobile p-10 @endmobile">
+                @endmobile
                 <? foreach($groupChats as $groupChat) { ?>
                     <div class="groupChat">
                         <div class="d-flex fd-column m-t-20">
@@ -94,11 +105,13 @@
                                                     </form>
                                                 <? } ?>
                                             <? } else { ?>
-                                                <img class="circleImage circle m-t-10" src="<?= $groupChat->groupChat->First()->getProfilePicture()?>" alt="<?= $groupChat->groupChat->First()->title?>">
+                                                <div class="d-flex js-center m-t-10">
+                                                    <div class="avatar" style="background: url('<?= $groupChat->groupChat->First()->getProfilePicture()?>')"></div>
+                                                </div>
                                             <? } ?>
                                         </div>
                                         <div class="col-sm-4">
-                                            <div class="card-block groupChatCardToggle d-flex js-around m-t-10" data-group-chat-id="<?= $groupChat->team_group_chat_id?>">
+                                            <div class="card-block groupChatCardToggle d-flex js-around @notmobile m-t-10 @endnotmobile" data-group-chat-id="<?= $groupChat->team_group_chat_id?>">
                                                 <p class="f-22 m-t-15 m-b-5 p-0"><?= $groupChat->groupChat->First()->title?></p>
                                             </div>
                                         </div>
@@ -216,6 +229,9 @@
                         </div>
                     </div>
                 <? } ?>
+                @mobile
+                </div>
+                @endmobile
             </div>
         </div>
     </div>

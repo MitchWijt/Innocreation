@@ -49,10 +49,10 @@
         <a class="regular-link c-gray" href="/my-team/neededExpertises">My needed expertises</a>
     </div>
     <hr>
-    <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="">My team newsletters</a>
-    </div>
-    <hr>
+    {{--<div class="sidebar-tab text-center">--}}
+        {{--<a class="regular-link c-gray" href="">My team newsletters</a>--}}
+    {{--</div>--}}
+    {{--<hr>--}}
     <div class="sidebar-tab text-center">
         <? $workspaceShortTermPlanner = \App\WorkspaceShortTermPlannerBoard::select("*")->where("team_id", $team->id)->get()?>
         <? if(count($workspaceShortTermPlanner) > 0) { ?>
@@ -110,10 +110,10 @@
                         <a class="regular-link c-gray" href="/my-team/neededExpertises">My needed expertises</a>
                     </div>
                     <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="">My team newsletters</a>
-                    </div>
-                    <hr>
+                    {{--<div class="sidebar-tab text-center">--}}
+                        {{--<a class="regular-link c-gray" href="">My team newsletters</a>--}}
+                    {{--</div>--}}
+                    {{--<hr>--}}
                     <div class="sidebar-tab text-center">
                         <? $workspaceShortTermPlanner = \App\WorkspaceShortTermPlannerBoard::select("*")->where("team_id", $user->team->id)->get()?>
                         <? if(count($workspaceShortTermPlanner) > 0) { ?>

@@ -217,8 +217,8 @@ $(document).on("change",".assignTaskToMember",function () {
                         $(this).parents(".assignMember").find(".memberAssignPlaceholder").addClass("hidden");
                         $(this).parents(".assignMember").find(".memberAssignIcon").addClass("hidden");
                         if ($(this).hasClass("placeholderMemberAssign")) {
-                            var profilepicture = "<img class='circle circleSmall assignTaskToMemberToggle' src=" + data + " data-short-planner-id=" + task_id + ">";
-                            $(this).parents(".assignMember").find("img").remove();
+                            var profilepicture = "<div class='avatar-sm assignTaskToMemberToggle img' data-short-planner-task-id=" + task_id + " style=background:url('" + data + "')" + "></div>";
+                            $(this).parents(".assignMember").find(".img").remove();
                             $(this).parents(".assignMember").prepend(profilepicture);
                             $(this).addClass("hidden");
                         }

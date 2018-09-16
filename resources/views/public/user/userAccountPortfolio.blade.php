@@ -5,6 +5,11 @@
             @include("includes.userAccount_sidebar")
         @endnotmobile
         <div class="container">
+            <div class="row">
+                <div class="col-sm-12 d-flex js-center">
+                    @include("includes.flash")
+                </div>
+            </div>
             @mobile
                 @include("includes.userAccount_sidebar")
             @endmobile

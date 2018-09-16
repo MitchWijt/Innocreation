@@ -28,7 +28,7 @@ class UsersExpertisesListController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function usersListAction($title) {
-        $expertise = Expertises::select("*")->where("title", $title)->first();
+        $expertise = Expertises::select("*")->where("slug", $title)->first();
         $title = "Find your $expertise->title and work together";
         $og_description = "Find the best $expertise->title for your team. Work together and build your idea!";
         return view("/public/users-expertisesList/usersList", compact("expertise", "title", "og_description"));
