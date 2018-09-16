@@ -4,7 +4,7 @@
 <div class="modal-body">
     <div class="row">
         <div class="col-sm-12">
-            <?= $bucketlistItem->description?>
+            <textarea class="bucketListDescription input col-sm-12" data-bucketlistitem-id="<?= $bucketlistItem->id?>" rows="10"><?= htmlspecialchars_decode($bucketlistItem->description)?></textarea>
         </div>
     </div>
 </div>
