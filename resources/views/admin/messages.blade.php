@@ -214,7 +214,7 @@
                         if (objDiv.length > 0){
                             objDiv[0].scrollTop = objDiv[0].scrollHeight;
                         }
-                    }, 500);
+                    }, 1000);
                     $(this).collapse('toggle');
                 }
             });
