@@ -15,7 +15,11 @@ class Team extends Model {
     }
 
     public function getProfilePicture(){
-        return "/images/profilePicturesTeams/" . $this->team_profile_picture;
+        if($this->team_profile_picture != "defaultProfilePicture.png") {
+            return "https://space-innocreation.ams3.digitaloceanspaces.com/teams/$this->slug/profilepicture/$this->team_profile_picture";
+        } else {
+            return "/images/profilePicturesTeams/defaultProfilePicture.png";
+        }
     }
 
     public function getMembers(){

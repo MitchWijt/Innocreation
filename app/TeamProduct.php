@@ -31,7 +31,7 @@ class TeamProduct extends Model
     }
 
     public function getImage(){
-        return "/images/teamProductImages/$this->image";
+        return "https://space-innocreation.ams3.digitaloceanspaces.com/teams/" . $this->team->slug .  "/team_products/$this->image";
     }
 
     public function getComments(){

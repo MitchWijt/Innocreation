@@ -39,7 +39,9 @@
                                         <p class="c-pointer ideaToggle regular-link c-gray" data-idea-id="<?= $workplaceIdea->id?>"><?= $workplaceIdea->title?></p>
                                     </div>
                                     <div class="col-sm-4">
-                                        <img class="circle circleSmall m-0" src="<?= $workplaceIdea->users->First()->getProfilePicture()?>" alt="<?= $workplaceIdea->users->First()->firstname?>">
+                                        <div class="d-flex js-center @mobile m-b-10 @endmobile">
+                                            <div class="avatar-sm" style="background: url('<?= $workplaceIdea->users->First()->getProfilePicture()?>')"></div>
+                                        </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <? if($user->id == $team->ceo_user_id || $user->role == 1 || $user->role == 4) { ?>

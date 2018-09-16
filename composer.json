@@ -14,7 +14,9 @@
         "guzzlehttp/psr7": "^1.4",
         "spipu/html2pdf": "^5.2",
         "get-stream/stream-laravel": "~2.2.6",
-        "mollie/mollie-api-php": "^2.0"
+        "mollie/mollie-api-php": "^2.0",
+        "league/flysystem-aws-s3-v3": "^1.0",
+        "intervention/image": "^2.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

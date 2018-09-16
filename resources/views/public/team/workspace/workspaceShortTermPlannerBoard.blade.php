@@ -237,7 +237,7 @@
                                                             <? if($shortPlannerTask->assigned_to != null) { ?>
                                                                 <div class="assignMember">
                                                                     <? if($shortPlannerTask->assignedUser) { ?>
-                                                                        <img class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>" src="<?= $shortPlannerTask->assignedUser->getProfilePicture()?>" alt="<?=$shortPlannerTask->assignedUser->getName()?>">
+                                                                        <div class="avatar-sm assignTaskToMemberToggle img" data-short-planner-task-id="<?= $shortPlannerTask->id?>" style="background: url('<?= $shortPlannerTask->assignedUser->getProfilePicture()?>')"></div>
                                                                     <? } else { ?>
                                                                         <div class="text-center">
                                                                             <div class="circle circleSmall assignTaskToMemberToggle" data-short-planner-task-id="<?= $shortPlannerTask->id?>"><i class="zmdi zmdi-eye-off "></i></div>

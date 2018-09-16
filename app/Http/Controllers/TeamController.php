@@ -18,6 +18,7 @@ use App\UserChat;
 use App\UserMessage;
 use App\UserRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Session;
 use App\Http\Requests;
 
@@ -42,21 +43,26 @@ class TeamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function saveTeamProfilePictureAction(Request $request)
-    {
+    public function saveTeamProfilePictureAction(Request $request){
         // grabs the uploaded file moves it into the correct folder and adds it to the database for the team
         $team_id = $request->input("team_id");
-
-
         $file = $request->file("profile_picture");
-        $destinationPath = public_path().'/images/profilePicturesTeams';
-        $fullname = $file->getClientOriginalName();
-
-        $team = Team::select("*")->where("id", $team_id)->first();
-        $team->team_profile_picture = $fullname;
-        $team->save();
-        $file->move($destinationPath, $fullname);
-        return redirect($_SERVER["HTTP_REFERER"]);
+        $size = $this->formatBytes($file->getSize());
+        if($size < 8) {
+            $filename = $file->getClientOriginalName();
+            $team = Team::select("*")->where("id", $team_id)->first();
+            $exists = Storage::disk('spaces')->exists("teams/" . $team->slug . "/profilepicture/" . $filename);
+            if (!$exists) {
+                Storage::disk('spaces')->delete("teams/" . $team->slug . "/profilepicture/" . $team->team_profile_picture);
+                $image = $request->file('profile_picture');
+                Storage::disk('spaces')->put("teams/" . $team->slug . "/profilepicture/" . $filename, file_get_contents($image->getRealPath()), "public");
+            }
+            $team->team_profile_picture = $filename;
+            $team->save();
+            return redirect($_SERVER["HTTP_REFERER"]);
+        } else {
+            return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
+        }
     }
 
     /**
@@ -535,14 +541,22 @@ class TeamController extends Controller
 
 
         $file = $request->file("profile_picture_group_chat");
-        $destinationPath = public_path().'/images/teamGroupChatProfilePictures';
-        $fullname = $file->getClientOriginalName();
-
         $groupChat = TeamGroupChat::select("*")->where("id", $group_chat_id)->first();
-        $groupChat->profile_picture = $fullname;
-        $groupChat->save();
-        $file->move($destinationPath, $fullname);
-        return redirect($_SERVER["HTTP_REFERER"]);
+        $groupChatLinktable = TeamGroupChatLinktable::select("*")->where("team_group_chat_id", $group_chat_id)->first();
+        $size = $this->formatBytes($file->getSize());
+        if ($size < 8) {
+            $filename = $file->getClientOriginalName();
+            $exists = Storage::disk('spaces')->exists("teams/" . $groupChatLinktable->team->slug . "/groupchats/" . strtolower(str_replace(" ", "-", $groupChat->title)) . "/" . $filename);
+            if (!$exists) {
+                Storage::disk('spaces')->delete("teams/" . $groupChatLinktable->team->slug . "/groupchats/" . strtolower(str_replace(" ", "-", $groupChat->title)) . "/" . $groupChat->profile_picture);
+                Storage::disk('spaces')->put("teams/" . $groupChatLinktable->team->slug .  "/groupchats/" . strtolower(str_replace(" ", "-", $groupChat->title)) . "/" . $filename, file_get_contents($file->getRealPath()), "public");
+            }
+            $groupChat->profile_picture = $filename;
+            $groupChat->save();
+            return redirect($_SERVER["HTTP_REFERER"]);
+        } else {
+            return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
+        }
     }
 
     public function muteMemberFromTeamChatAction(Request $request){
@@ -590,7 +604,7 @@ class TeamController extends Controller
         $teamProductId = $request->input("team_product_id");
         $teamId = $request->input("team_id");
         $productName = $request->input("product_name");
-        $productImage = $request->file("product_image");
+        $file = $request->file("product_image");
         $productDescription = $request->input("product_description");
 
         if(!$teamProductId) {
@@ -601,10 +615,22 @@ class TeamController extends Controller
         }
         $teamProduct->title = $productName;
         $teamProduct->description = $productDescription;
-        if($productImage != null) {
-            $teamProduct->image = $productImage->getClientOriginalName();
-            $destinationPath = public_path().'/images/teamProductImages';
-            $productImage->move($destinationPath,$productImage->getClientOriginalName());
+        if($file != null) {
+            $size = $this->formatBytes($file->getSize());
+            if($size < 8) {
+                $filename = str_replace(" ", "-",strtolower($productName)) . "." . $file->getClientOriginalExtension();
+                $team = Team::select("*")->where("id", $teamId)->first();
+                $exists = Storage::disk('spaces')->exists("teams/" . $team->slug . "/team_products/" . $filename);
+                if ($exists) {
+                    Storage::disk('spaces')->delete("teams/" . $team->slug . "/team_products/" . $filename);
+                }
+                Storage::disk('spaces')->put("teams/" . $team->slug . "/team_products/" . $filename, file_get_contents($file->getRealPath()), "public");
+                $team->team_profile_picture = $filename;
+                $team->save();
+            } else {
+                return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
+            }
+            $teamProduct->image = $filename;
         } else {
             $teamProduct->image = null;
         }

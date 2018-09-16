@@ -14,7 +14,7 @@
                                 <? foreach($expertises as $expertise) { ?>
                                     <div class="row">
                                         <div class="col-sm-6 @mobile text-center @endmobile">
-                                            <a href="/<?= $expertise->title?>/users" class="c-gray"><p class="m-b-0 m-t-20"><?= $expertise->title?></p></a>
+                                            <a href="/<?= $expertise->slug?>/users" class="c-gray"><p class="m-b-0 m-t-20"><?= $expertise->title?></p></a>
                                         </div>
                                         <div class="col-sm-6 @mobile text-center p-b-20 @endmobile">
                                             <p class="m-b-0 m-t-20 @notmobile pull-right @endnotmobile">Active users: <?= count($expertise->getActiveUsers())?></p>
