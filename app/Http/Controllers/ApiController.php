@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Payments;
 use App\SplitTheBillLinktable;
+use App\Team;
 use App\TeamPackage;
 use App\User;
 use Faker\Provider\el_CY\Payment;
@@ -176,18 +177,26 @@ class ApiController extends Controller
 
     public function webhookMolliePaymentAction(Request $request){
         $subscriptionId = $request->input("subscriptionId");
-        $paymentId = $request->input("id");
         $payment = Payments::select("*")->where("sub_id", $subscriptionId)->first();
         $payments = Payments::select("*")->orderBy("id", "DESC")->first();
         $reference = $payments->reference + 1;
 
+        $teamPackage = TeamPackage::select("*")->where("team_id", $payment->team_id)->first();
+        $team = Team::select("*")->where("id", $payment->team_id)->first();
+
+        if($team->split_the_bill == 1){
+            $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $payment->user_id)->where("team_id", $payment->team_id)->first();
+            $amount = $splitTheBillLinktable->amount;
+        } else {
+            $amount = $teamPackage->price;
+        }
         $newPayment = new Payments();
         $newPayment->user_id = $payment->user_id;
-        $newPayment->payment_id = $paymentId;
+        $newPayment->payment_id = "recurring";
         $newPayment->team_id = $payment->team_id;
         $newPayment->sub_id = $subscriptionId;
         $newPayment->payment_method = "creditcard";
-        $newPayment->amount = $payment->amount;
+        $newPayment->amount = $amount;
         $newPayment->reference = $reference;
         $newPayment->payment_status = "paid";
         $newPayment->created_at = date("Y-m-d H:i:s");
@@ -200,7 +209,7 @@ class ApiController extends Controller
         $invoice->user_id = $payment->user_id;
         $invoice->team_id = $payment->team_id;
         $invoice->team_package_id = $teamPackage->id;
-        $invoice->amount = number_format($payment->amount, 2, ".", ".");
+        $invoice->amount = number_format($amount, 2, ".", ".");
         $invoice->hash = $payment->user->hash;
         $invoice->invoice_number = $invoiceNumber + 1;
         $invoice->paid_date = date("Y-m-d");

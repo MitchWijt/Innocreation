@@ -518,7 +518,7 @@ class UserController extends Controller
 
                 $ceoFirstname = $team->users->firstname;
 
-                $existingUserChat = UserChat::select("*")->where("creator_user_id", $user_id)->where("receiver_user_id",  $joinRequest->team->ceo_user_id)->orWhere("creator_user_id",  $joinRequest->team->ceo_user_id)->where("receiver_user_id", $user_id)->get();
+                $existingUserChat = UserChat::select("*")->where("creator_user_id", $user_id)->where("receiver_user_id",  $joinRequest->team->ceo_user_id)->orWhere("creator_user_id",  $joinRequest->team->ceo_user_id)->where("receiver_user_id", $user_id)->first();
                 if(count($existingUserChat) < 1){
                     $userChat = new UserChat();
                     $userChat->creator_user_id = $user_id;
@@ -804,9 +804,9 @@ class UserController extends Controller
                 if($user->getMostRecentPayment()){
                     $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
                     if ($teamPackage->custom_team_package_id == null) {
-                        $description = $teamPackage->title . " for team " . $teamPackage->team->team_name;
+                        $description = $teamPackage->title . " for team " . $teamPackage->team->team_name . "2";
                     } else {
-                        $description =  " custom package for team " . $teamPackage->team->team_name;
+                        $description =  " custom package for team " . $teamPackage->team->team_name . "2";
                     }
 
                     if($teamPackage->payment_preference == "monthly"){
@@ -824,10 +824,10 @@ class UserController extends Controller
                         $customer->createSubscription([
                             "amount" => [
                                 "currency" => "EUR",
-                                "value" => number_format($teamPackage->price, 2, ".", "."),
+                                "value" => number_format($splitTheBillLinktable->amount, 2, ".", "."),
                             ],
                             "interval" => "$range",
-                            "description" => $description . "recurring",
+                            "description" => $description . $reference . "recurring",
                             "webhookUrl" => $this->getWebhookUrl(true),
                         ]);
 
@@ -1131,6 +1131,7 @@ class UserController extends Controller
                     "currency" => "EUR",
                     "value" => number_format($newLeaderPrice, 2, ".", "."),
                 ];
+                $subscription->startDate = date("Y-m-d");
                 $subscription->webhookUrl = $this->getWebhookUrl(true);
                 $subscription->update();
 

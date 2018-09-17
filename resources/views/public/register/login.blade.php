@@ -5,9 +5,15 @@
         <div class="sub-title-container p-t-20">
             <h1 class="sub-title-black" id="titleLogin"><? if(isset($urlParameter)) echo "Register"; else echo "Login"?></h1>
         </div>
-        <div class="row d-flex js-center">
-            <i class="f-11 m-b-15">* required fields</i>
-        </div>
+        <? if(isset($urlParameter)) { ?>
+            <div class="row d-flex js-center requiredFields">
+                <i class="f-11 m-b-15">* required fields</i>
+            </div>
+        <? } else { ?>
+            <div class="row d-flex js-center requiredFields" style="display: none !important">
+                <i class="f-11 m-b-15">* required fields</i>
+            </div>
+        <? } ?>
         <div class="hr col-md-8"></div>
         <? if(isset($error)) { ?>
             <p class="c-orange text-center"><?=$error?></p>
