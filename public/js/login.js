@@ -19,16 +19,10 @@ $(document).ready(function () {
 });
 
 $(".submitRegister").on("click",function () {
-    if($(".agreePrivacy").is(":checked") && $(".agreeTermOfService").is(":checked")){
+    if($(".agreeTerms").is(":checked")){
         $(".registerForm").submit();
     } else {
-        if(!$(".agreePrivacy").is(":checked")){
-            $(".agreePrivacyLabel").css("color", "red");
-        } else {
-            $(".agreePrivacyLabel").css("color", "black");
-        }
-
-        if(!$(".agreeTermOfService").is(":checked")){
+        if(!$(".agreeTerms").is(":checked")){
             $(".agreeTermsLabel").css("color", "red");
         } else {
             $(".agreeTermsLabel").css("color", "black");

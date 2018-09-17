@@ -80,7 +80,6 @@ class LoginController extends Controller
             'city' => 'required',
             'postcode' => 'required',
             'country' => 'required',
-            'phonenumber' => 'required',
 
         ]);
         $existingUser = User::select("*")->where("email", $request->input("email"))->first();

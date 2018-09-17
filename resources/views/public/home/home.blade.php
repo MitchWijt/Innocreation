@@ -21,7 +21,7 @@
                         @elsedesktop
                             <div class="hr col-md-10"></div>
                         @endtablet
-                        <p class="m-t-10 slogan text-center @mobile f-13 @endmobile" style="color: #696969">Match with your ideal team and create your dream!</p>
+                        <p class="m-t-10 slogan text-center @mobile f-13 @endmobile" style="color: #696969">Find your ideal team and create your dream!</p>
                     </div>
                 </div>
             </div>
@@ -130,12 +130,12 @@
                                 <div class="@mobile col-10 m-t-15 @elsedesktop col-sm-10 m-t-15 @endmobile ">
                                     @handheld
                                         @mobile
-                                            <p class="instructions-second-text m-0 f-15">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
+                                            <p class="instructions-second-text m-0 f-15">Network with various artists and come up with new ideas in the <a class="regular-link" href="/collaborate">network chat</a></p>
                                         @elsetablet
-                                            <p class="instructions-second-text m-0 f-20">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
+                                            <p class="instructions-second-text m-0 f-20">Network with various artists and come up with new ideas in the <a class="regular-link" href="/collaborate">network chat</a></p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-0 f-22">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
+                                        <p class="instructions-second-text m-0 f-22">Network with various artists and come up with new ideas in the <a class="regular-link" href="/collaborate">network chat</a></p>
                                     @endhandheld
                                 </div>
                             </div>

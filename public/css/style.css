@@ -908,3 +908,6 @@ footer{
     background-position:center,center !important;
 }
 
+input::placeholder{
+    padding-left: 2px !important;;
+}
