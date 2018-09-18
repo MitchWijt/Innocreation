@@ -49,7 +49,7 @@ class TeamController extends Controller
         $file = $request->file("profile_picture");
         $size = $this->formatBytes($file->getSize());
         if($size < 8) {
-            $filename = $file->getClientOriginalName();
+            $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
             $team = Team::select("*")->where("id", $team_id)->first();
             $exists = Storage::disk('spaces')->exists("teams/" . $team->slug . "/profilepicture/" . $filename);
             if (!$exists) {
@@ -545,7 +545,7 @@ class TeamController extends Controller
         $groupChatLinktable = TeamGroupChatLinktable::select("*")->where("team_group_chat_id", $group_chat_id)->first();
         $size = $this->formatBytes($file->getSize());
         if ($size < 8) {
-            $filename = $file->getClientOriginalName();
+            $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
             $exists = Storage::disk('spaces')->exists("teams/" . $groupChatLinktable->team->slug . "/groupchats/" . strtolower(str_replace(" ", "-", $groupChat->title)) . "/" . $filename);
             if (!$exists) {
                 Storage::disk('spaces')->delete("teams/" . $groupChatLinktable->team->slug . "/groupchats/" . strtolower(str_replace(" ", "-", $groupChat->title)) . "/" . $groupChat->profile_picture);

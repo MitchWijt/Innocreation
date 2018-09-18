@@ -235,7 +235,7 @@ class UserController extends Controller
         $file = $request->file("profile_picture");
         $size = $this->formatBytes($file->getSize());
         if($size < 8) {
-            $filename = $file->getClientOriginalName();
+            $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
 
             $user = User::select("*")->where("id", $user_id)->first();
             $exists = Storage::disk('spaces')->exists("users/" . $user->slug . "/profilepicture/" . $filename);
