@@ -406,6 +406,8 @@ Route::get("/expertises", "UsersExpertisesListController@expertisesListAction");
 
 Route::get("/{title}/users", "UsersExpertisesListController@usersListAction");
 
+Route::post("/userExpertiseList/searchExpertise", "UsersExpertisesListController@searchExpertiseAction");
+
 
 
 
@@ -520,6 +522,12 @@ Route::get("/admin/mailMessageList", "AdminController@mailMessageListAction");
 Route::post("/admin/getMailMessageModalData", "AdminController@getMailMessageModalDataAction");
 
 Route::post("/admin/getSearchResultsUserChat", "AdminController@getSearchResultsUserChatAction");
+
+//expertises
+
+Route::get("/admin/expertise/{id}", "AdminController@expertiseEditorAction");
+
+Route::post("/admin/saveExpertise", "AdminController@saveExpertiseAction");
 
 
 //=======================FEED=============================

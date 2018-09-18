@@ -911,3 +911,19 @@ footer{
 input::placeholder{
     padding-left: 2px !important;;
 }
+
+.b-t-r-0{
+    border-top-right-radius: 0 !important;
+}
+
+.b-b-r-0{
+    border-bottom-right-radius: 0 !important;
+}
+
+.b-t-l-0{
+    border-top-left-radius: 0 !important;
+}
+
+.b-b-l-0{
+    border-bottom-left-radius: 0 !important;
+}

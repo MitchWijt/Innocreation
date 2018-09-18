@@ -16,4 +16,18 @@ class Expertises extends Model
         $users = User::select("*")->whereIn("id", $usersArray)->get();
         return $users;
     }
+
+    public function getTags(){
+        $tagsExplode = explode(",", $this->tags);
+        $temp = "";
+        foreach($tagsExplode as $item){
+            if($temp == ""){
+                $temp = trim($item);
+            } else {
+                $temp = $temp . ",  " . trim($item);
+            }
+        }
+
+        return $temp;
+    }
 }

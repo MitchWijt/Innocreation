@@ -765,4 +765,33 @@ class AdminController extends Controller
             }
         }
     }
+
+    public function expertiseEditorAction($id){
+        if ($this->authorized(true)) {
+            $expertise = Expertises::select("*")->where("id", $id)->first();
+            return view("/admin/expertises/expertiseEditor", compact("expertise"));
+        }
+    }
+
+    public function saveExpertiseAction(Request $request){
+        if ($this->authorized(true)) {
+            $expertiseId = $request->input("expertise_id");
+            $tags = $request->input("tags");
+            $explodeTags = explode(",", $tags);
+            $temp = "";
+            foreach($explodeTags as $item){
+                if($temp == ""){
+                    $temp = $item;
+                } else {
+                    $temp = $temp . ", " . $item;
+                }
+            }
+
+            $expertise = Expertises::select("*")->where("id", $expertiseId)->first();
+            $expertise->tags = $temp;
+            $expertise->save();
+
+            return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Tags have been added");
+        }
+    }
 }

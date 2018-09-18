@@ -177,6 +177,7 @@ class ApiController extends Controller
 
     public function webhookMolliePaymentAction(Request $request){
         $subscriptionId = $request->input("subscriptionId");
+        $paymentId = $request->input("id");
         $payment = Payments::select("*")->where("sub_id", $subscriptionId)->first();
         $payments = Payments::select("*")->orderBy("id", "DESC")->first();
         $reference = $payments->reference + 1;
@@ -192,7 +193,7 @@ class ApiController extends Controller
         }
         $newPayment = new Payments();
         $newPayment->user_id = $payment->user_id;
-        $newPayment->payment_id = "recurring";
+        $newPayment->payment_id = $paymentId;
         $newPayment->team_id = $payment->team_id;
         $newPayment->sub_id = $subscriptionId;
         $newPayment->payment_method = "creditcard";
