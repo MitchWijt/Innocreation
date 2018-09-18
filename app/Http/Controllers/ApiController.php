@@ -216,6 +216,8 @@ class ApiController extends Controller
         $invoice->created_at = date("Y-m-d H:i:s");
         $invoice->save();
 
+        $user = User::select("*")->where("id", $payment->user_id)->first();
+
         $mgClient = $this->getService("mailgun");
         $mgClient[0]->sendMessage($mgClient[1], array(
             'from' => "mitchel@innocreation.net",

@@ -23,11 +23,9 @@
             <div class="form-group d-flex js-center m-b-0 ">
                 <div class="d-flex fd-column col-sm-9 m-t-20">
                     <div class="row text-center d-flex js-center">
-                        <div class="col-md-6">
-                            <input type="file" name="profile_picture" class="hidden uploadFile">
-                            <div class="d-flex js-center ">
-                                <div class="avatar-lg" style="background: url('<?=$user->getProfilePicture()?>')"></div>
-                            </div>
+                        <input type="file" name="profile_picture" class="hidden uploadFile">
+                        <div class="d-flex js-center ">
+                            <div class="avatar-lg" style="background: url('<?=$user->getProfilePicture()?>')"></div>
                         </div>
                     </div>
                     <div class="row text-center m-t-20 d-flex js-center">

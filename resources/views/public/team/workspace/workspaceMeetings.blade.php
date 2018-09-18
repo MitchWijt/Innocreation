@@ -53,7 +53,7 @@
                     <div class="row m-t-20">
                         <div class="col-md-7 p-l-0">
                             <div class="card m-l-15">
-                                <div class="card-block meetingCardToggle m-t-10" data-toggle="collapse" href=".collapseExample" aria-controls="collapseExample" aria-expanded="false" data-meeting-id="<?= $meeting->id?>">
+                                <div class="card-block meetingCardToggle m-t-10" data-meeting-id="<?= $meeting->id?>">
                                     <div class="row pull-right">
                                         <i class="zmdi zmdi-edit f-20 c-orange editMeeting"></i>
                                         <i class="zmdi zmdi-close c-orange m-r-30 m-l-15 f-20 deleteMeeting"></i>
