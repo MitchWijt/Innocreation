@@ -270,6 +270,11 @@ class LoginController extends Controller
      */
     public function logout()
     {
+        $userId = Session::get("user_id");
+        $user = User::select("*")->where("id", $userId)->first();
+        $user->active_status = "offline";
+        $user->save();
+        
         Session::flush();
         return view("public/home/home");
     }

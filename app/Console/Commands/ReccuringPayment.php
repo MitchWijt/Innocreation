@@ -37,8 +37,8 @@ class ReccuringPayment extends Command
         date_default_timezone_set("Europe/Amsterdam");
         $users = User::select("*")->where("online_timestamp", "!=", null)->get();
         foreach($users as $user){
-            $newTime = date("Y-m-d H:i:s", strtotime("2 minutes"));
-            if($newTime >= date("Y-m-d H:i:s", strtotime($user->online_timestamp))){
+            $newTime = date("Y-m-d H:i:s", strtotime("+10 minutes"));
+            if($newTime <= date("Y-m-d H:i:s", strtotime($user->online_timestamp))){
                 $user->active_status = "offline";
                 $user->save();
             }
