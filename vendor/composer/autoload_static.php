@@ -99,6 +99,7 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
             'Http\\Client\\Curl\\' => 17,
             'Http\\Client\\Common\\' => 19,
             'Http\\Client\\' => 12,
+            'HighIdeas\\UsersOnline\\' => 22,
         ),
         'G' => 
         array (
@@ -301,6 +302,10 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'Http\\Client\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-http/httplug/src',
+        ),
+        'HighIdeas\\UsersOnline\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/highideas/laravel-users-online/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -1628,6 +1633,11 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'Hamcrest\\Type\\IsString' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Type/IsString.php',
         'Hamcrest\\Util' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Util.php',
         'Hamcrest\\Xml\\HasXPath' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Xml/HasXPath.php',
+        'HighIdeas\\UsersOnline\\Listeners\\LogoutListener' => __DIR__ . '/..' . '/highideas/laravel-users-online/src/Listeners/LogoutListener.php',
+        'HighIdeas\\UsersOnline\\Middleware\\UsersOnline' => __DIR__ . '/..' . '/highideas/laravel-users-online/src/Middleware/UsersOnline.php',
+        'HighIdeas\\UsersOnline\\Providers\\UsersOnlineEventServiceProvider' => __DIR__ . '/..' . '/highideas/laravel-users-online/src/Providers/UsersOnlineEventServiceProvider.php',
+        'HighIdeas\\UsersOnline\\Traits\\UsersOnlineTrait' => __DIR__ . '/..' . '/highideas/laravel-users-online/src/Traits/UsersOnlineTrait.php',
+        'HighIdeas\\UsersOnline\\UsersOnlineServiceProvider' => __DIR__ . '/..' . '/highideas/laravel-users-online/src/UsersOnlineServiceProvider.php',
         'Http\\Client\\Common\\BatchClient' => __DIR__ . '/..' . '/php-http/client-common/src/BatchClient.php',
         'Http\\Client\\Common\\BatchResult' => __DIR__ . '/..' . '/php-http/client-common/src/BatchResult.php',
         'Http\\Client\\Common\\EmulatedHttpAsyncClient' => __DIR__ . '/..' . '/php-http/client-common/src/EmulatedHttpAsyncClient.php',
@@ -2701,8 +2711,11 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'Mollie\\Api\\Endpoints\\InvoiceEndpoint' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Endpoints/InvoiceEndpoint.php',
         'Mollie\\Api\\Endpoints\\MandateEndpoint' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Endpoints/MandateEndpoint.php',
         'Mollie\\Api\\Endpoints\\MethodEndpoint' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Endpoints/MethodEndpoint.php',
+        'Mollie\\Api\\Endpoints\\OrganizationEndpoint' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Endpoints/OrganizationEndpoint.php',
+        'Mollie\\Api\\Endpoints\\PaymentChargebackEndpoint' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Endpoints/PaymentChargebackEndpoint.php',
         'Mollie\\Api\\Endpoints\\PaymentEndpoint' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Endpoints/PaymentEndpoint.php',
         'Mollie\\Api\\Endpoints\\PaymentRefundEndpoint' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Endpoints/PaymentRefundEndpoint.php',
+        'Mollie\\Api\\Endpoints\\PermissionEndpoint' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Endpoints/PermissionEndpoint.php',
         'Mollie\\Api\\Endpoints\\ProfileEndpoint' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Endpoints/ProfileEndpoint.php',
         'Mollie\\Api\\Endpoints\\RefundEndpoint' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Endpoints/RefundEndpoint.php',
         'Mollie\\Api\\Endpoints\\SettlementsEndpoint' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Endpoints/SettlementsEndpoint.php',
@@ -2725,8 +2738,12 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'Mollie\\Api\\Resources\\MandateCollection' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Resources/MandateCollection.php',
         'Mollie\\Api\\Resources\\Method' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Resources/Method.php',
         'Mollie\\Api\\Resources\\MethodCollection' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Resources/MethodCollection.php',
+        'Mollie\\Api\\Resources\\Organization' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Resources/Organization.php',
+        'Mollie\\Api\\Resources\\OrganizationCollection' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Resources/OrganizationCollection.php',
         'Mollie\\Api\\Resources\\Payment' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Resources/Payment.php',
         'Mollie\\Api\\Resources\\PaymentCollection' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Resources/PaymentCollection.php',
+        'Mollie\\Api\\Resources\\Permission' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Resources/Permission.php',
+        'Mollie\\Api\\Resources\\PermissionCollection' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Resources/PermissionCollection.php',
         'Mollie\\Api\\Resources\\Profile' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Resources/Profile.php',
         'Mollie\\Api\\Resources\\ProfileCollection' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Resources/ProfileCollection.php',
         'Mollie\\Api\\Resources\\Refund' => __DIR__ . '/..' . '/mollie/mollie-api-php/src/Resources/Refund.php',

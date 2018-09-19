@@ -47,6 +47,7 @@ return array(
     'Http\\Client\\Curl\\' => array($vendorDir . '/php-http/curl-client/src'),
     'Http\\Client\\Common\\' => array($vendorDir . '/php-http/client-common/src'),
     'Http\\Client\\' => array($vendorDir . '/php-http/httplug/src'),
+    'HighIdeas\\UsersOnline\\' => array($vendorDir . '/highideas/laravel-users-online/src'),
     'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
     'GuzzleHttp\\Promise\\' => array($vendorDir . '/guzzlehttp/promises/src'),
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),

@@ -61,7 +61,6 @@ class DebugController extends Controller
 //
 //            $response = $ericFeed->getActivities();
 //            dd($response);
-//            $user = User::select("*")->where("id", 10)->first();
 //            $feed = FeedManager::getUserFeed($user->id);
 //            dd($feed);
 
