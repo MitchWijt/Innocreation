@@ -30,7 +30,7 @@
                     <div class="col-md-5 d-flex js-center">
                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                         <input type="email" required name="email" class="input pull-right col-sm-7 b-t-r-0 b-b-r-0" placeholder="Your email address...">
-                        <button class="btn btn-inno col-sm-5 b-t-l-0 b-b-l-0">Start collaborating!</button>
+                        <button class="btn btn-inno col-sm-5 b-t-l-0 b-b-l-0" style="border-top-right-radius: 10px; border-bottom-right-radius: 10px;">Start collaborating!</button>
                     </div>
                 </div>
             </form>
