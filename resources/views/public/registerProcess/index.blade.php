@@ -11,8 +11,8 @@
             </div>
             <div class="progress">
                 <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
-                     aria-valuemin="0" aria-valuemax="100" style="width:20%">
-                    10% Complete
+                     aria-valuemin="0" aria-valuemax="100" style="<? if(isset($user)) echo "width: 40%"; else echo "with: 10%"?>">
+                    <? if(isset($user)) echo "40% Complete"; else echo "10% Complete"?>
                 </div>
             </div>
             <div class="row d-flex js-center">
@@ -27,14 +27,15 @@
                     </div>
                 </div>  
             </div>
-            <div class="row credentials">
+            <div class="row credentials <? if(isset($user)) echo "hidden"?>">
                 <div class="col-sm-12">
                     <div class="d-flex js-center">
                         <div class="card card-lg m-t-20 m-b-20 col-sm-12">
                             <div class="card-block m-t-10">
                                 <div class="row">
                                     <div class="col-sm-12 p-0">
-                                        <p class="f-18 m-l-20">We are Innocreation. And who are you?</p>
+                                        <p class="f-18 m-l-20 m-b-0">We are Innocreation. And who are you?</p>
+                                        <i class="m-l-20 f-12 existingError c-orange"></i>
                                         <hr>
                                     </div>
                                 </div>
@@ -56,22 +57,22 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row d-flex js-center">
-                                    <div class="col-md-9">
-                                        <div class="row m-t-10">
-                                            <div class="col-sm-4">
-                                                <input type="radio" name="gender" class="gender" value="male" id="male">
-                                                <label for="male" class="m-r-10">Male</label>
+                                {{--<div class="row d-flex js-center">--}}
+                                    {{--<div class="col-md-9">--}}
+                                        {{--<div class="row m-t-10">--}}
+                                            {{--<div class="col-sm-4">--}}
+                                                {{--<input type="radio" name="gender" class="gender" value="male" id="male">--}}
+                                                {{--<label for="male" class="m-r-10">Male</label>--}}
 
-                                                <input type="radio" name="gender" class="gender" value="female" id="female">
-                                                <label for="female" class="m-r-10">Female</label>
+                                                {{--<input type="radio" name="gender" class="gender" value="female" id="female">--}}
+                                                {{--<label for="female" class="m-r-10">Female</label>--}}
 
-                                                <input type="radio" name="gender" class="gender" value="private" id="private">
-                                                <label for="private">Private</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                                {{--<input type="radio" name="gender" class="gender" value="private" id="private">--}}
+                                                {{--<label for="private">Private</label>--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
                                 <div class="row d-flex js-center">
                                     <div class="col-md-9">
                                         <div class="row m-t-10">
@@ -82,6 +83,7 @@
                                             <div class="col-sm-6 labelConfirm">
                                                 <p class="m-0">Confirm password*</p>
                                                 <input type="password" placeholder="Make sure password matches" class="password-confirm input col-sm-12" name="passwordConfirm">
+                                                <i class="f-12 c-orange hidden errorMatch">Your password doesn't seem to match with the first one.</i>
                                             </div>
                                         </div>
                                     </div>
@@ -97,7 +99,7 @@
                                         <div class="row">
                                             <div class="col-sm-10">
                                                 <input type="checkbox" name="termsCheck" id="terms">
-                                                <label for="terms">I agree with the <a target="_blank" href="/page/terms-of-service" class="regular-link">Terms of service</a> and the <a target="_blank" href="/page/privacy-policy" class="regular-link">Privacy policy</a></label>
+                                                <label for="terms" class="terms">I agree with the <a target="_blank" href="/page/terms-of-service" class="regular-link">Terms of service</a> and the <a target="_blank" href="/page/privacy-policy" class="regular-link">Privacy policy</a></label>
                                             </div>
                                             <div class="col-sm-2">
                                                 <button class="btn btn-inno pull-right goToStep2">Let's continue!</button>
@@ -110,14 +112,14 @@
                     </div>
                 </div>
             </div>
-            <div class="row residence hidden">
+            <div class="row residence <? if(!isset($user)) echo "hidden"?>">
                 <div class="col-sm-12">
                     <div class="d-flex js-center">
                         <div class="card card-lg m-t-20 m-b-20 col-sm-12">
                             <div class="card-block m-t-10">
                                 <div class="row">
                                     <div class="col-sm-12 p-0">
-                                        <p class="f-18 m-l-20 m-b-0 residenceHeader"></p>
+                                        <p class="f-18 m-l-20 m-b-0 residenceHeader"><? if(isset($user)) echo "Welcome $user->firstname, what is your residence info?"?></p>
                                         <i class="f-11 c-dark-grey m-l-20">This information is needed for other people and teams to identify you to network even better!</i>
                                         <hr>
                                     </div>
