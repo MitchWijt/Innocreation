@@ -19,27 +19,31 @@ $(".goToStep2").on("click",function () {
         $(".labelLastname").attr("style", "color: #C9CCCF !important");
     }
 
-    if($(".password").val().length < 1){
-        $(".password").attr("style", "border: 1px solid red !important");
-        $(".labelPassword").attr("style", "color: red !important");
-        bool = false;
-    } else {
-        $(".password").attr("style", "border: 1px solid black !important");
-        $(".labelPassword").attr("style", "color: #C9CCCF !important");
-    }
 
-    if($(".password-confirm").val().length < 1){
-        $(".password-confirm").attr("style", "border: 1px solid red !important");
-        $(".labelConfirm").attr("style", "color: red !important");
-        bool = false;
-    } else {
-        $(".password-confirm").attr("style", "border: 1px solid black !important");
-        $(".labelConfirm").attr("style", "color: #C9CCCF !important");
+    if($(".back").val() == 0) {
+        if ($(".password").val().length < 1) {
+            $(".password").attr("style", "border: 1px solid red !important");
+            $(".labelPassword").attr("style", "color: red !important");
+            bool = false;
+        } else {
+            $(".password").attr("style", "border: 1px solid black !important");
+            $(".labelPassword").attr("style", "color: #C9CCCF !important");
+        }
+
+        if ($(".password-confirm").val().length < 1) {
+            $(".password-confirm").attr("style", "border: 1px solid red !important");
+            $(".labelConfirm").attr("style", "color: red !important");
+            bool = false;
+        } else {
+            $(".password-confirm").attr("style", "border: 1px solid black !important");
+            $(".labelConfirm").attr("style", "color: #C9CCCF !important");
+        }
     }
 
     if(!$("#terms").is(":checked")){
         $(this).attr("style", "border: 1px solid red !important");
         $(".terms").attr("style", "color: red !important");
+        bool = false
     }
 
     if($(".email").val().length < 1){
@@ -91,4 +95,84 @@ $(".goToStep2").on("click",function () {
             }
         });
     }
+});
+
+
+$(".goToStep3").on("click",function () {
+    var bool = true;
+
+    if($(".city").val().length < 1){
+        $(".city").attr("style", "border: 1px solid red !important");
+        $(".labelCity").attr("style", "color: red !important");
+        bool = false;
+    } else {
+        $(".city").attr("style", "border: 1px solid black !important");
+        $(".labelCity").attr("style", "color: #C9CCCF !important");
+    }
+
+    if($(".postalcode").val().length < 1){
+        $(".postalcode").attr("style", "border: 1px solid red !important");
+        $(".labelPostalcode").attr("style", "color: red !important");
+        bool = false;
+    } else {
+        $(".postalcode").attr("style", "border: 1px solid black !important");
+        $(".labelPostalcode").attr("style", "color: #C9CCCF !important");
+    }
+
+    if($(".country option:selected").val().length < 1){
+        $(".country").attr("style", "border: 1px solid red !important");
+        $(".country").attr("style", "color: red");
+        bool = false;
+    } else {
+        $(".country").attr("style", "border: 1px solid black !important");
+        $(".country").attr("style", "color: #000 !important");
+    }
+
+    if(bool) {
+        var city = $(".city").val();
+        var postalcode = $(".postalcode").val();
+        var countryId = $('.country option:selected').val();
+        var phonenumber = $(".phonenumber").val();
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/registerProcess/saveUserResidence",
+            data: {'city': city, 'postalcode' : postalcode, 'countryId': countryId, 'phonenumber': phonenumber},
+            success: function (data) {
+                $(".progress-bar").attr("style", "width: 60% !important");
+                $(".progress-bar").text("60% complete");
+                $(".residence").addClass("hidden");
+                $('.expertises').removeClass("hidden");
+
+            }
+        });
+    }
+});
+
+$(".backToStep1").on("click",function () {
+   $(".residence").addClass("hidden");
+   $(".credentials").removeClass("hidden");
+    $(".progress-bar").attr("style", "width: 20% !important");
+    $(".progress-bar").text("20% complete");
+});
+
+$(".backToStep2").on("click",function () {
+    $(".residence").removeClass("hidden");
+    $(".expertises").addClass("hidden");
+    $(".progress-bar").attr("style", "width: 40% !important");
+    $(".progress-bar").text("40% complete");
+});
+
+$(document).ready(function () {
+    $(".ui-menu").appendTo(".expertisesTokens");
+    $(".token-input").attr("style", "");
+
+    $(".tokenfield").removeClass("form-control");
+    $(".tokenfield").addClass("col-sm-9");
 });

@@ -588,7 +588,11 @@ Route::post("/alexa", "AlexaController@alexaEndpoint");
 
 Route::post("/create-my-account", "RegisterProcessController@indexAction");
 
+Route::get("/create-my-account", "RegisterProcessController@indexAction");
+
 Route::post("/registerProcess/saveUserCredentials", "RegisterProcessController@saveUserCredentialsAction");
+
+Route::post("/registerProcess/saveUserResidence", "RegisterProcessController@saveUserResidenceAction");
 
 
 //==

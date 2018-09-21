@@ -31,6 +31,7 @@ class User extends Authenticatable
 //        return "/images/profilePicturesUsers/" . $this->profile_picture;
     }
 
+
     public function getName(){
         if($this->middlename != null){
             return $this->firstname . " " . $this->middlename . " " . $this->lastname;
@@ -44,14 +45,30 @@ class User extends Authenticatable
         return "/user/". $this->slug;
     }
 
-    public function getExpertises(){
-        $expertiseArray = [];
+    public function getExpertises($temp = false){
+        if($temp){
+            $expertiseArray = "";
+        } else {
+            $expertiseArray = [];
+        }
         $expertiseLinktable = expertises_linktable::select("*")->where("user_id", $this->id)->with("Expertises")->get();
         foreach($expertiseLinktable as $expertise){
-            array_push($expertiseArray, $expertise->expertise_id);
+            if($temp){
+                if($expertiseArray == ""){
+                    $expertiseArray = $expertise->expertises->First()->title;
+                } else {
+                    $expertiseArray = $expertiseArray . ", " . $expertise->expertises->First()->title;
+                }
+            } else {
+                array_push($expertiseArray, $expertise->expertise_id);
+            }
         }
-        $expertises = Expertises::select("*")->whereIn("id", $expertiseArray)->get();
-        return $expertises;
+        if(!$temp) {
+            $expertises = Expertises::select("*")->whereIn("id", $expertiseArray)->get();
+            return $expertises;
+        } else {
+            return $expertiseArray;
+        }
     }
 
     public function getJoinedExpertise(){
