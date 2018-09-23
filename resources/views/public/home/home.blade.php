@@ -231,7 +231,7 @@
                         </div>
                     </div>
                     <div class="row d-flex js-center p-b-25">
-                        <a href="/login?register=1" class="btn btn-inno">Start now!</a>
+                        <a href="/create-my-account" class="btn btn-inno">Start now!</a>
                     </div>
                 </div>
             </div>
