@@ -177,7 +177,7 @@ class UserController extends Controller
         $user = User::select("*")->where("id", $user_id)->first();
         if(count($all_teams) != 0){
             $error = "This name already exists";
-            return view("/public/user/teamBenefits", compact("error", "user"));
+            return redirect("/my-account/teamInfo")->withErrors("This name already exists");
         } else {
             $team = new Team;
             $team->team_name = ucfirst($team_name);

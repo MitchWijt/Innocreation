@@ -31,6 +31,9 @@ class RegisterProcessController extends Controller {
         if(Session::has("user_id")){
             $userId = Session::get("user_id");
             $user = User::select("*")->where("id", $userId)->first();
+            if($user->country_id != null && $user->getExpertises(true) != "" && $user->team_id != null){
+                return redirect("/account")->withSuccess("You have already completed the process. Good luck!");
+            }
             if($user->getExpertises(true) != ""){
                 $teamIdArray = [];
                 $neededExpertises = NeededExpertiseLinktable::select("*")->where("amount", "!=", 0)->get();

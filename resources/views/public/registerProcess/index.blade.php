@@ -15,7 +15,11 @@
             <div class="progress">
                 <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
                      aria-valuemin="0" aria-valuemax="100" style="<? if(isset($user) && $user->country_id == null) echo "width: 40%"; else if(isset($user) && $user->country_id != null && $expertisesUser == "") echo "width: 60%"; else if(isset($user) && $user->country_id != null && $expertisesUser != "" && $user->introduction == null) echo "width: 80%"; else if(isset($user) && $user->country_id != null && $expertisesUser != "" && $user->introduction != null) echo "width: 90%"; else echo "width: 20%"?>">
-                    <? if(isset($user) && $user->country_id == null) echo "40% Complete"; else if(isset($user) && $user->country_id != null && $expertisesUser == "") echo "60% Complete"; else if(isset($user) && $user->country_id != null && $expertisesUser != "" && $user->introduction == null) echo "80% Complete"; else if(isset($user) && $user->country_id != null && $expertisesUser != "" && $user->introduction != null) echo "90% Complete"; else echo "20% Complete"?>
+                    @mobile
+                        <? if(isset($user) && $user->country_id == null) echo "40%"; else if(isset($user) && $user->country_id != null && $expertisesUser == "") echo "60%"; else if(isset($user) && $user->country_id != null && $expertisesUser != "" && $user->introduction == null) echo "80%"; else if(isset($user) && $user->country_id != null && $expertisesUser != "" && $user->introduction != null) echo "90%"; else echo "20%"?>
+                    @elsedesktop
+                        <? if(isset($user) && $user->country_id == null) echo "40% Complete"; else if(isset($user) && $user->country_id != null && $expertisesUser == "") echo "60% Complete"; else if(isset($user) && $user->country_id != null && $expertisesUser != "" && $user->introduction == null) echo "80% Complete"; else if(isset($user) && $user->country_id != null && $expertisesUser != "" && $user->introduction != null) echo "90% Complete"; else echo "20% Complete"?>
+                    @endmobile
                 </div>
             </div>
             <div class="row d-flex js-center">
@@ -113,9 +117,19 @@
                                 <div class="row d-flex js-center">
                                     <div class="col-md-9 m-t-10 m-b-10">
                                         <div class="row">
-                                            <div class="col-sm-10">
-                                                <input type="checkbox" name="termsCheck" id="terms">
-                                                <label for="terms" class="terms">I agree with the <a target="_blank" href="/page/terms-of-service" class="regular-link">Terms of service</a> and the <a target="_blank" href="/page/privacy-policy" class="regular-link">Privacy policy</a></label>
+                                            <div class="col-md-10">
+                                                <div class="row">
+                                                    <div class="@mobile col-1 @elsedesktop col-sm-1 @endmobile">
+                                                        <input type="checkbox" name="termsCheck" id="terms">
+                                                    </div>
+                                                    <div class="@mobile col-11 @elsedesktop col-sm-11 @endmobile">
+                                                        @tablet
+                                                        <label for="terms" class="terms">I agree the <a target="_blank" href="/page/terms-of-service" class="regular-link">Terms of service</a> and <a target="_blank" href="/page/privacy-policy" class="regular-link">Privacy policy</a></label>
+                                                        @elsedesktop
+                                                        <label for="terms" class="terms">I agree with the <a target="_blank" href="/page/terms-of-service" class="regular-link">Terms of service</a> and the <a target="_blank" href="/page/privacy-policy" class="regular-link">Privacy policy</a></label>
+                                                        @endtablet
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-sm-2">
                                                 <button class="btn btn-inno pull-right goToStep2">Let's continue!</button>
@@ -276,14 +290,14 @@
                                 <div class="row d-flex js-center">
                                     <div class="col-md-9 d-flex js-center">
                                         <div class="row m-t-15">
-                                            <p>Top teams which you can request to join right now!</p>
+                                            <p class="m-0 @mobile p-l-15 @endmobile">Top teams which you can request to join right now!</p>
                                         </div>
                                     </div>
                                     <div class="col-md-9">
                                         <div class="row m-t-15">
                                             <? if(isset($user) && $user->introduction != null && $expertisesUser != ""){ ?>
                                                 <? foreach($teams as $team) { ?>
-                                                    <div class="<? if(count($teams) == 1) echo "col-md-12"; else if(count($teams) == 2) echo "col-sm-6"; else echo "col-md-4"?>">
+                                                    <div class="@mobile m-b-20 @endmobile <? if(count($teams) == 1) echo "col-md-12"; else if(count($teams) == 2) echo "col-sm-6"; else echo "col-md-4"?>">
                                                         <div class="card-sm text-center p-10">
                                                             <div class="card-block col-sm-12">
                                                                 <div class="row">
@@ -313,17 +327,17 @@
                                                                     <? foreach($team->getNeededExpertises() as $neededExpertise) { ?>
                                                                         <? if($user->isActiveInExpertise($neededExpertise->expertise_id)) { ?>
                                                                             <div class="row col-sm-12">
-                                                                                <div class="col-sm-6">
+                                                                                <div class="@handheld col-6 @elsedekstop col-sm-6 @endhandheld">
                                                                                     <p><?= $neededExpertise->expertises->First()->title?></p>
                                                                                 </div>
-                                                                                <div class="col-sm-6">
+                                                                                <div class="@handheld col-6 @elsedekstop col-sm-6 @endhandheld">
                                                                                     <form action="/applyForTeam" method="post">
                                                                                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                                                                         <input type="hidden" name="team_id" value="<?= $team->id?>">
                                                                                         <input type="hidden" name="register" value="1">
                                                                                         <input type="hidden" name="user_id" value="<?= $user->id?>">
                                                                                         <input type="hidden" name="expertise_id" value="<?= $neededExpertise->expertises->First()->id?>">
-                                                                                        <button class="btn btn-inno btn-sm">Apply for expertise</button>
+                                                                                        <button class="btn btn-inno btn-sm">@tablet Apply @elsedesktop Apply for expertise @endtablet</button>
                                                                                     </form>
                                                                                 </div>
                                                                             </div>
@@ -337,6 +351,21 @@
                                             <? } ?>
                                         </div>
                                     </div>
+                                    <? if(isset($user)) { ?>
+                                        <div class="col-md-9 d-flex js-center">
+                                            <div class="row m-t-15">
+                                                <p class="m-0 @mobile p-l-15 @endmobile">Or create your own team of like-minded people!</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9 d-flex js-center m-t-15 @mobile m-b-20 @endmobile">
+                                            <form action="/createTeam" method="post">
+                                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                                <input type="text" name="team_name" placeholder="Your team name" class="input ">
+                                                <button class="btn btn-inno btn-sm m-l-5">Create team</button>
+                                            </form>
+                                        </div>
+                                    <? } ?>
                                 </div>
                                 <div class="row d-flex js-center">
                                     <div class="col-md-9 m-t-10 m-b-10">

@@ -29,8 +29,8 @@
                 <div class="row d-flex js-center">
                     <div class="col-md-5 d-flex js-center">
                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                        <input type="email" required name="email" class="input pull-right col-sm-7 b-t-r-0 b-b-r-0" placeholder="Your email address...">
-                        <button type="button" class="btn btn-inno col-sm-5 b-t-l-0 b-b-l-0 startRegisterProcess" style="border-top-right-radius: 10px; border-bottom-right-radius: 10px;">Start collaborating!</button>
+                        <input type="email" required name="email" class="input pull-right col-sm-7 b-t-r-0 b-b-r-0" placeholder="@handheld Email address @elsedesktop Your email address... @endhandheld">
+                        <button type="button" class="btn btn-inno col-sm-5 b-t-l-0 b-b-l-0 startRegisterProcess @tablet p-l-8 @endtablet" style="border-top-right-radius: 10px; border-bottom-right-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</button>
                     </div>
                 </div>
             </form>
