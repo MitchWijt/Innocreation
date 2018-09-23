@@ -5,6 +5,11 @@
             @include("includes.userAccount_sidebar")
         @endnotmobile
         <div class="container">
+            <div class="row">
+                <div class="col-sm-12 d-flex js-center">
+                    @include("includes.flash")
+                </div>
+            </div>
             @mobile
                 @include("includes.userAccount_sidebar")
             @endmobile
@@ -13,7 +18,7 @@
             </div>
             <div class="hr p-b-20"></div>
             <div class="d-flex js-around p-b-20">
-                <button type="button" class="btn btn-inno c-gray joinTeamBtn">Join a team</button>
+                <a href="/teams" class="btn btn-inno c-gray joinTeamBtn">Join a team</a>
                 <a class="btn btn-inno c-gray" data-toggle="modal" data-target="#myModal">Create a team</a>
             </div>
             <div class="row d-flex js-center p-b-20">

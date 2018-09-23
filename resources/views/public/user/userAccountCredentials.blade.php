@@ -23,11 +23,9 @@
             <div class="form-group d-flex js-center m-b-0 ">
                 <div class="d-flex fd-column col-sm-9 m-t-20">
                     <div class="row text-center d-flex js-center">
-                        <div class="col-md-6">
-                            <input type="file" name="profile_picture" class="hidden uploadFile">
-                            <div class="d-flex js-center ">
-                                <div class="avatar-lg" style="background: url('<?=$user->getProfilePicture()?>')"></div>
-                            </div>
+                        <input type="file" name="profile_picture" class="hidden uploadFile">
+                        <div class="d-flex js-center ">
+                            <div class="avatar-lg" style="background: url('<?=$user->getProfilePicture()?>')"></div>
                         </div>
                     </div>
                     <div class="row text-center m-t-20 d-flex js-center">
@@ -114,7 +112,7 @@
                             <p class="m-t-30">My motivation:</p>
                         </div>
                         <div class="col-sm-6">
-                            <textarea class="input" name="motivation_user" cols="30" rows="5"><? if(isset($user->motivation)) echo $user->motivation ?></textarea>
+                            <textarea class="input" placeholder="What is your motivation for your passion? What keeps you driven?" name="motivation_user" cols="30" rows="5"><? if(isset($user->motivation)) echo $user->motivation ?></textarea>
                         </div>
                     </div>
                     <div class="row text-center m-t-20">
@@ -122,7 +120,7 @@
                             <p class="m-t-30">My introduction:</p>
                         </div>
                         <div class="col-sm-6">
-                            <textarea class="input introductionUser" name="introduction_user" cols="30" rows="5"><? if(isset($user->introduction)) echo $user->introduction ?></textarea>
+                            <textarea class="input introductionUser" placeholder="Tell us more about yourself, how did you start, who are you?" name="introduction_user" cols="30" rows="5"><? if(isset($user->introduction)) echo $user->introduction ?></textarea>
                         </div>
                     </div>
                     <div class="row m-t-20 p-b-20">

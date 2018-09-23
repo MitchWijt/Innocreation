@@ -28,7 +28,7 @@
                                     </thead>
                                     <tbody>
                                     <? foreach($expertises as $expertise) { ?>
-                                        <tr class="expertiseTable">
+                                        <tr class="clickable-row expertiseTable" data-href="/admin/expertise/<? echo $expertise->id?>">
                                             <td scope="row" data-visible="false"><?= $expertise->id?></td>
                                             <td><?= $expertise->title?></td>
                                             <td><?= count($expertise->getActiveUsers())?></td>
@@ -55,10 +55,18 @@
             $('#table').DataTable();
         } );
 
-        $(".deleteExpertiseBtn").on("click",function () {
+        $(document).ready(function($) {
+            $(".clickable-row").click(function() {
+                window.location = $(this).data("href");
+            });
+        });
+
+        $(".deleteExpertiseBtn").on("click",function (e) {
             if(confirm("Are you sure you want to delete this expertise?")){
                 $(this).parents(".expertiseTable").find(".deleteExpertiseForm").submit();
             }
+            e.preventDefault();
+            e.stopPropagation();
         });
     </script>
 @endsection

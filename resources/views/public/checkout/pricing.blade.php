@@ -132,7 +132,7 @@
                                             <div class="col-sm-12 d-flex  customSelect">
                                                 <div class="col-sm-9">
                                                     <input type="hidden" name="types[]" value="<?= $customMembershipPackageType->id?>">
-                                                    <select name="amountValues[]" class="input amount">
+                                                    <select name="amountValues[]" class="input amount <?= str_replace(" ", "-",strtolower($customMembershipPackageType->title))?>">
                                                         <option selected disabled="">Choose amount</option>
                                                         <? foreach($customMembershipPackageType->getCustomPackages() as $customPackage) { ?>
                                                             <option value="<?= $customPackage->option?>" data-price="<?= $customPackage->price?>" ><?= $customPackage->option?></option>
@@ -174,6 +174,9 @@
                                     <div class="col-sm-12">
                                         <p class="f-20 m-t-15 text-center">Custom</p>
                                     </div>
+                                    <div class="col-sm-12 errorList text-center">
+                                        <p class="error c-red f-11 "></p>
+                                    </div>
                                     <div class="hr"></div>
                                 </div>
                                 <div class="m-b-20"></div>
@@ -191,16 +194,42 @@
                                             <button type="button" class="btn btn-inno m-b-20 openModalChangePackage customBtn" data-user-id="<?= $user->id?>" data-membership-package-id="custom">Choose</button>
                                         <? } ?>
                                     <? } else { ?>
-                                        <button type="submit" class="btn btn-inno m-b-20 customBtn">Choose</button>
+                                        <button type="button" class="btn btn-inno m-b-20 customBtn submitCustom">Choose</button>
                                     <? } ?>
                                 <? } else { ?>
-                                    <button type="submit" class="btn btn-inno m-b-20 customBtn">Choose</button>
+                                    <button type="button" class="btn btn-inno m-b-20 customBtn submitCustom">Choose</button>
                                 <? } ?>
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
+            <div class="row m-b-25">
+                <div class="col-sm-12 p-l-0">
+                    <div class="card no-hover">
+                        <div class="card-block">
+                            <p class="f-20 col-sm-12 m-t-5 m-b-5">Split the bill with your members</p>
+                            <hr>
+                            <div class="">
+                                <ul class="instructions-list m-t-10 m-b-10">
+                                    <li class="instructions-list-item">
+                                        <p class="instructions-text f-13 m-0 p-b-10">Split the monthly/yearly bill with your team members</p>
+                                    </li>
+                                    <li class="instructions-list-item">
+                                        <p class="instructions-text f-13 m-0 p-b-10">Choose how much each member pays</p>
+                                    </li>
+                                    <li class="instructions-list-item">
+                                        <p class="instructions-text f-13 m-0 p-b-10">€11.00/Month will become a min of €2.20/Month for each member</p>
+                                    </li>
+                                    <li class="instructions-list-item">
+                                        <p class="instructions-text f-13 m-0 p-b-10">Create and collaborate together!</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="sub-title-container p-t-20 m-t-20">
                 <h1 class="sub-title-black @mobile f-25 @endmobile">Reviews</h1>
             </div>

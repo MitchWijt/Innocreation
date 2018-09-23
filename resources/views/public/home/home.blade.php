@@ -1,7 +1,7 @@
 @extends("layouts.app")
 @section("content")
 <div class="home-background-wrapper vh85">
-    <div class="container">
+    <div class="container p-relative">
         <div class="row">
             <div class="col-sm-12 d-flex js-center">
                 @include("includes.flash")
@@ -21,17 +21,26 @@
                         @elsedesktop
                             <div class="hr col-md-10"></div>
                         @endtablet
-                        <p class="m-t-10 slogan text-center @mobile f-13 @endmobile" style="color: #696969">Match with your ideal team and create your dream!</p>
+                        <p class="m-t-10 slogan text-center @mobile f-13 @endmobile" style="color: #696969">Find your ideal team and create your dream!</p>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12 d-flex js-center">
-                    <div class="circle m-r-0" style="width: 80px !important; height: 80px !important;">
-                        <i style="font-size: 65px; color: #FF6100; margin-left: 8px" class="zmdi zmdi-chevron-down social-icon-home scrollHomeBtn arrow"></i>
+            <form action="/create-my-account" method="post" class="startRegisterForm">
+                <div class="row d-flex js-center">
+                    <div class="col-md-5 d-flex js-center">
+                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                        <input type="email" required name="email" class="input pull-right col-sm-7 b-t-r-0 b-b-r-0" placeholder="@handheld Email address @elsedesktop Your email address... @endhandheld">
+                        <button type="button" class="btn btn-inno col-sm-5 b-t-l-0 b-b-l-0 startRegisterProcess @tablet p-l-8 @endtablet" style="border-top-right-radius: 10px; border-bottom-right-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</button>
                     </div>
                 </div>
-            </div>
+            </form>
+            {{--<div class="row p-absolute" style="bottom: 30px; left: 520px">--}}
+                {{--<div class="col-md-12 d-flex js-center">--}}
+                    {{--<div class="circle m-r-0" style="width: 80px !important; height: 80px !important;">--}}
+                        {{--<i style="font-size: 65px; color: #FF6100; margin-left: 8px" class="zmdi zmdi-chevron-down social-icon-home scrollHomeBtn arrow"></i>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
         </div>
     </div>
         <div class="homepage-mainContent">
@@ -130,12 +139,12 @@
                                 <div class="@mobile col-10 m-t-15 @elsedesktop col-sm-10 m-t-15 @endmobile ">
                                     @handheld
                                         @mobile
-                                            <p class="instructions-second-text m-0 f-15">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
+                                            <p class="instructions-second-text m-0 f-15">Network with various artists and come up with new ideas in the <a class="regular-link" href="/collaborate">network chat</a></p>
                                         @elsetablet
-                                            <p class="instructions-second-text m-0 f-20">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
+                                            <p class="instructions-second-text m-0 f-20">Network with various artists and come up with new ideas in the <a class="regular-link" href="/collaborate">network chat</a></p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-0 f-22">Experience other people their ideas. And discuss ideas in the <a class="regular-link" href="/forum">forum</a></p>
+                                        <p class="instructions-second-text m-0 f-22">Network with various artists and come up with new ideas in the <a class="regular-link" href="/collaborate">network chat</a></p>
                                     @endhandheld
                                 </div>
                             </div>

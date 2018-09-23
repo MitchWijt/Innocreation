@@ -14,12 +14,21 @@ class UsersExpertisesListController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function expertisesListAction()
-    {
+    public function expertisesListAction(){
+        $allTags2 = [];
         $title = "Find the expertise you need for your idea!";
         $og_description = "All active users and expertises on Innocreation. Find motivated people, create your team and build your idea";
         $expertises = Expertises::select("*")->orderBy("title")->paginate(10);
-        return view("/public/users-expertisesList/expertisesList", compact("expertises", "title", "og_description"));
+        foreach($expertises as $expertise){
+            $explodeSingleExpertise = explode(",", $expertise->getTags());
+            foreach($explodeSingleExpertise as $tag){
+                if($tag != "") {
+                    array_push($allTags2, trim($tag));
+                }
+            }
+        }
+        $allTags = array_unique($allTags2);
+        return view("/public/users-expertisesList/expertisesList", compact("expertises", "title", "og_description", "allTags"));
     }
 
     /**
@@ -40,9 +49,36 @@ class UsersExpertisesListController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function searchExpertiseAction(Request $request){
+        $allTags2 = [];
+        $title = "Find the expertise you need for your idea!";
+        $og_description = "All active users and expertises on Innocreation. Find motivated people, create your team and build your idea";
+        $expertises = Expertises::select("*")->orderBy("title")->paginate(10);
+        foreach($expertises as $expertise){
+            $explodeSingleExpertise = explode(",", $expertise->getTags());
+            foreach($explodeSingleExpertise as $tag){
+                if($tag != "") {
+                    array_push($allTags2, trim($tag));
+                }
+            }
+        }
+
+        $allTags = array_unique($allTags2);
+
+        $searchInput = $request->input("searchedExpertise");
+        $searchedExpertises = [];
+        $expertises = Expertises::select("*")->get();
+        foreach($expertises as $expertise){
+            if($searchInput != "") {
+                if (strpos($expertise->tags, $searchInput) !== false) {
+                    array_push($searchedExpertises, $expertise);
+                }
+            } else {
+                array_push($searchedExpertises, $expertise);
+            }
+        }
+
+        return view("/public/users-expertisesList/expertisesList", compact("searchedExpertises", "allTags", "title", "og_description"));
     }
 
     /**

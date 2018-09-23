@@ -32,6 +32,8 @@ Route::get("/password-forgotten", "UserController@passwordForgottenIndex");
 
 Route::post("/home/sendMoreInfoMail", "HomeController@sendMoreInfoMailAction");
 
+Route::post("/home/getStatusUser", "HomeController@getStatusUserAction");
+
 // CONTACT US
 Route::get("/contact-us", "HomeController@contactAction");
 
@@ -261,6 +263,8 @@ Route::post("/workspace/deleteSingleBucketlistGoal", "WorkspaceController@delete
 
 Route::post("/workspace/getBucketlistItemModal", "WorkspaceController@getBucketlistItemModalAction");
 
+Route::post("/workspace/editBucketlistItemDescription", "WorkspaceController@editBucketlistItemDescriptionAction");
+
 // Short term planner task planner
 
 Route::get("/my-team/workspace/short-term-planner-options", "WorkspaceController@workspaceShortTermPlannerOptionPicker");
@@ -406,6 +410,8 @@ Route::get("/expertises", "UsersExpertisesListController@expertisesListAction");
 
 Route::get("/{title}/users", "UsersExpertisesListController@usersListAction");
 
+Route::post("/userExpertiseList/searchExpertise", "UsersExpertisesListController@searchExpertiseAction");
+
 
 
 
@@ -521,6 +527,12 @@ Route::post("/admin/getMailMessageModalData", "AdminController@getMailMessageMod
 
 Route::post("/admin/getSearchResultsUserChat", "AdminController@getSearchResultsUserChatAction");
 
+//expertises
+
+Route::get("/admin/expertise/{id}", "AdminController@expertiseEditorAction");
+
+Route::post("/admin/saveExpertise", "AdminController@saveExpertiseAction");
+
 
 //=======================FEED=============================
 Route::get("/team-products", "FeedController@TeamProductsAction");
@@ -582,6 +594,21 @@ Route::post("/collaborate/sendMessage", "CollaborateController@sendMessageAction
 
 //========================ALEXA========================
 Route::post("/alexa", "AlexaController@alexaEndpoint");
+
+
+//========================REGISTER PROCESS========================
+
+Route::post("/create-my-account", "RegisterProcessController@indexAction");
+
+Route::get("/create-my-account", "RegisterProcessController@indexAction");
+
+Route::post("/registerProcess/saveUserCredentials", "RegisterProcessController@saveUserCredentialsAction");
+
+Route::post("/registerProcess/saveUserResidence", "RegisterProcessController@saveUserResidenceAction");
+
+Route::post("/registerProcess/saveUserExpertises", "RegisterProcessController@saveUserExpertisesAction");
+
+Route::post("/registerProcess/saveUserTexts", "RegisterProcessController@saveUserTextsAction");
 
 
 //==
