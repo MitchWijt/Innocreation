@@ -240,6 +240,7 @@ class LoginController extends Controller
                 Session::set('team_id', $user->team_id);
                 Session::set("team_name", $user->team->team_name);
             }
+
             if($user->stream_token == null){
                 $client = $this->getService("stream");
                 $streamFeed = $client->feed('user', $user->id);
@@ -247,6 +248,13 @@ class LoginController extends Controller
                 $user->stream_token = $token;
                 $user->save();
             }
+
+            if($user->country_id == null){
+                return redirect("/create-my-account");
+            } else if($user->country_id != null && $user->getExpertises(true) == ""){
+                return redirect("/create-my-account");
+            }
+
             if(!isset($redirectUri)){
                 if ($request->input("pageType") && $request->input("pageType") == "checkout") {
                     return redirect($request->input("backlink"));

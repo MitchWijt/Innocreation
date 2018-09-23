@@ -586,5 +586,20 @@ Route::post("/collaborate/sendMessage", "CollaborateController@sendMessageAction
 Route::post("/alexa", "AlexaController@alexaEndpoint");
 
 
+//========================REGISTER PROCESS========================
+
+Route::post("/create-my-account", "RegisterProcessController@indexAction");
+
+Route::get("/create-my-account", "RegisterProcessController@indexAction");
+
+Route::post("/registerProcess/saveUserCredentials", "RegisterProcessController@saveUserCredentialsAction");
+
+Route::post("/registerProcess/saveUserResidence", "RegisterProcessController@saveUserResidenceAction");
+
+Route::post("/registerProcess/saveUserExpertises", "RegisterProcessController@saveUserExpertisesAction");
+
+Route::post("/registerProcess/saveUserTexts", "RegisterProcessController@saveUserTextsAction");
+
+
 //==
 

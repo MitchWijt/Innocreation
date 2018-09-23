@@ -1,7 +1,7 @@
 @extends("layouts.app")
 @section("content")
 <div class="home-background-wrapper vh85">
-    <div class="container">
+    <div class="container p-relative">
         <div class="row">
             <div class="col-sm-12 d-flex js-center">
                 @include("includes.flash")
@@ -25,13 +25,22 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12 d-flex js-center">
-                    <div class="circle m-r-0" style="width: 80px !important; height: 80px !important;">
-                        <i style="font-size: 65px; color: #FF6100; margin-left: 8px" class="zmdi zmdi-chevron-down social-icon-home scrollHomeBtn arrow"></i>
+            <form action="/create-my-account" method="post" class="startRegisterForm">
+                <div class="row d-flex js-center">
+                    <div class="col-md-5 d-flex js-center">
+                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                        <input type="email" required name="email" class="input pull-right col-sm-7 b-t-r-0 b-b-r-0" placeholder="Your email address...">
+                        <button type="button" class="btn btn-inno col-sm-5 b-t-l-0 b-b-l-0 startRegisterProcess" style="border-top-right-radius: 10px; border-bottom-right-radius: 10px;">Start collaborating!</button>
                     </div>
                 </div>
-            </div>
+            </form>
+            {{--<div class="row p-absolute" style="bottom: 30px; left: 520px">--}}
+                {{--<div class="col-md-12 d-flex js-center">--}}
+                    {{--<div class="circle m-r-0" style="width: 80px !important; height: 80px !important;">--}}
+                        {{--<i style="font-size: 65px; color: #FF6100; margin-left: 8px" class="zmdi zmdi-chevron-down social-icon-home scrollHomeBtn arrow"></i>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
         </div>
     </div>
         <div class="homepage-mainContent">

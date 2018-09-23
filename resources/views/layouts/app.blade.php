@@ -35,6 +35,7 @@
         <link rel="stylesheet" href="/css/activityTimeline.css">
         <link rel="stylesheet" href="/css/checkout/pricing.css">
         <link rel="stylesheet" href="/css/checkout/selectPackage.css">
+        <link rel="stylesheet" href="/css/registerProcess/index.css">
     {{--CSS PLUGINS--}}
         <link rel="stylesheet" href="/assets/build/content-tools.min.css">
         <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">

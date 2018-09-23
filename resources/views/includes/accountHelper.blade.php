@@ -35,7 +35,7 @@
                                 <input type="hidden" name="user_id" value="<?= $user->id?>">
                             <? } ?>
                             <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                            <button class="btn btn-sm btn-inno m-t-5">I understand</button>
+                            <button class="btn btn-sm btn-inno m-t-5">Close helper</button>
                         </form>
                     </div>
                 </div>
