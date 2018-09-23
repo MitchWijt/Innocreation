@@ -76,6 +76,9 @@
                                                     <i class="zmdi zmdi-circle f-10 c-orange p-absolute unreadNotification hidden" data-user-chat-id="<?= $userChat->id?>" style="left: 10px; top: 5px;"></i>
                                                     <i class="zmdi zmdi-close c-orange p-absolute deleteChat" data-chat-id="<?= $userChat->id?>" style="right: 10px; top: 5px;"></i>
                                                     <? if($userChat->receiver_user_id == $user_id) { ?>
+                                                        <? if($userChat->creator->active_status == "online") { ?>
+                                                            <i class="zmdi zmdi-circle f-15 c-green p-absolute onlineDot" data-user-id="<?= $userChat->creator->id?>" style="left: 95px; top: 10px;"></i>
+                                                        <? } ?>
                                                         <div class="card-block chat-card d-flex js-around m-t-10" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
                                                             <img class="circle circleImage m-0" src="<?=$userChat->creator->getProfilePicture()?>" alt="">
                                                             <p class="f-22 m-t-15 m-b-5 p-0"><?=$userChat->creator->firstname?></p>
@@ -88,6 +91,9 @@
                                                         </div>
                                                     <? } else { ?>
                                                         <? if($userChat->receiver) { ?>
+                                                        <? if($userChat->receiver->active_status == "online") { ?>
+                                                            <i class="zmdi zmdi-circle f-15 c-green p-absolute onlineDot" data-user-id="<?= $userChat->receiver->id?>" style="left: 95px; top: 10px;"></i>
+                                                        <? } ?>
                                                             <div class="card-block chat-card d-flex js-around m-t-10" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
                                                                 <img class="circle circleImage m-0" src="<?=$userChat->receiver->getProfilePicture()?>" alt="">
                                                                 <p class="f-22 m-t-15 m-b-5 p-0"><?=$userChat->receiver->firstname?></p>
@@ -165,15 +171,28 @@
                }
             });
 
+            if(data["new"][0]["status"] && data["new"][0]["status"] == "online"){
+                $(".onlineDot").each(function () {
+                    var userId = $(this).data("user-id");
+                    if(userId == data["new"][0]["userId"]){
+                        console.log(data);
+                        $(this).removeClass("hidden");
+                    } else {
+                        console.log(data);
+                        $(this).addClass("hidden");
+                    }
+                });
+            }
+
+
         }
 
         function successCallback() {
-//            console.log('now listening to changes in realtime');
+            console.log('now listening to changes in realtime');
         }
 
         function failCallback(data) {
             alert('something went wrong, check the console logs');
-            console.log(data);
         }
         user1.subscribe(callback).then(successCallback, failCallback);
     </script>

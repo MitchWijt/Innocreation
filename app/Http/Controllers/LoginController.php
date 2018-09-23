@@ -80,7 +80,6 @@ class LoginController extends Controller
             'city' => 'required',
             'postcode' => 'required',
             'country' => 'required',
-            'phonenumber' => 'required',
 
         ]);
         $existingUser = User::select("*")->where("email", $request->input("email"))->first();
@@ -279,6 +278,11 @@ class LoginController extends Controller
      */
     public function logout()
     {
+        $userId = Session::get("user_id");
+        $user = User::select("*")->where("id", $userId)->first();
+        $user->active_status = "offline";
+        $user->save();
+        
         Session::flush();
         return view("public/home/home");
     }

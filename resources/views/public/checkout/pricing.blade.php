@@ -204,6 +204,32 @@
                     </div>
                 </div>
             </form>
+            <div class="row m-b-25">
+                <div class="col-sm-12 p-l-0">
+                    <div class="card no-hover">
+                        <div class="card-block">
+                            <p class="f-20 col-sm-12 m-t-5 m-b-5">Split the bill with your members</p>
+                            <hr>
+                            <div class="">
+                                <ul class="instructions-list m-t-10 m-b-10">
+                                    <li class="instructions-list-item">
+                                        <p class="instructions-text f-13 m-0 p-b-10">Split the monthly/yearly bill with your team members</p>
+                                    </li>
+                                    <li class="instructions-list-item">
+                                        <p class="instructions-text f-13 m-0 p-b-10">Choose how much each member pays</p>
+                                    </li>
+                                    <li class="instructions-list-item">
+                                        <p class="instructions-text f-13 m-0 p-b-10">€11.00/Month will become a min of €2.20/Month for each member</p>
+                                    </li>
+                                    <li class="instructions-list-item">
+                                        <p class="instructions-text f-13 m-0 p-b-10">Create and collaborate together!</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="sub-title-container p-t-20 m-t-20">
                 <h1 class="sub-title-black @mobile f-25 @endmobile">Reviews</h1>
             </div>

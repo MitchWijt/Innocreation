@@ -11,8 +11,11 @@ use Mollie\Api\Endpoints\CustomerPaymentsEndpoint;
 use Mollie\Api\Endpoints\InvoiceEndpoint;
 use Mollie\Api\Endpoints\MandateEndpoint;
 use Mollie\Api\Endpoints\MethodEndpoint;
+use Mollie\Api\Endpoints\OrganizationEndpoint;
+use Mollie\Api\Endpoints\PaymentChargebackEndpoint;
 use Mollie\Api\Endpoints\PaymentEndpoint;
 use Mollie\Api\Endpoints\PaymentRefundEndpoint;
+use Mollie\Api\Endpoints\PermissionEndpoint;
 use Mollie\Api\Endpoints\ProfileEndpoint;
 use Mollie\Api\Endpoints\RefundEndpoint;
 use Mollie\Api\Endpoints\SettlementsEndpoint;
@@ -27,7 +30,7 @@ class MollieApiClient
     /**
      * Version of our client.
      */
-    const CLIENT_VERSION = "2.0.11";
+    const CLIENT_VERSION = "2.0.14";
 
     /**
      * Endpoint of the remote API.
@@ -115,6 +118,20 @@ class MollieApiClient
     public $profiles;
 
     /**
+     * RESTful Organization resource.
+     *
+     * @var OrganizationEndpoint
+     */
+    public $organizations;
+    
+    /**
+     * RESTful Permission resource.
+     *
+     * @var PermissionEndpoint
+     */
+    public $permissions;
+
+    /**
      * RESTful Invoice resource.
      *
      * @var InvoiceEndpoint
@@ -134,6 +151,13 @@ class MollieApiClient
      * @var PaymentRefundEndpoint
      */
     public $paymentRefunds;
+
+    /**
+     * RESTful Payment Chargebacks resource.
+     *
+     * @var PaymentChargebacksEndpoint
+     */
+    public $paymentChargebacks;
 
     /**
      * @var string
@@ -190,9 +214,12 @@ class MollieApiClient
         $this->customerPayments = new CustomerPaymentsEndpoint($this);
         $this->mandates = new MandateEndpoint($this);
         $this->invoices = new InvoiceEndpoint($this);
+        $this->permissions = new PermissionEndpoint($this);
         $this->profiles = new ProfileEndpoint($this);
+        $this->organizations = new OrganizationEndpoint($this);
         $this->refunds = new RefundEndpoint($this);
         $this->paymentRefunds = new PaymentRefundEndpoint($this);
+        $this->paymentChargebacks = new PaymentChargebackEndpoint($this);
     }
 
     /**

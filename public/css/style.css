@@ -831,7 +831,7 @@ footer{
     -webkit-background-clip: padding-box !important;
     -moz-border-radius: 60px !important;
     -moz-background-clip: padding !important;
-    border-radius: 140px !important;
+    border-radius: 180px !important;
     background-clip: padding-box !important;
     float: left !important;
     background-size: cover !important;
@@ -913,7 +913,26 @@ footer{
     transition: all 0.5s;
     -webkit-transition: all 0.5s; /* Safari */
 }
+input::placeholder{
+    padding-left: 2px !important;;
+}
 
 .messageInputNetwork:focus {
     height:130px;
+}
+
+.b-t-r-0{
+    border-top-right-radius: 0 !important;
+}
+
+.b-b-r-0{
+    border-bottom-right-radius: 0 !important;
+}
+
+.b-t-l-0{
+    border-top-left-radius: 0 !important;
+}
+
+.b-b-l-0{
+    border-bottom-left-radius: 0 !important;
 }

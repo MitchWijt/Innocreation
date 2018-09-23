@@ -108,4 +108,14 @@
                 </div>
             @endmobile
         </div>
+        <script>
+            <?
+                if(\Illuminate\Support\Facades\Session::has("user_id")){
+                    $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
+                    $user->online_timestamp = date("Y-m-d H:i:s");
+                    $user->active_status = "online";
+                    $user->save(); ?>
+                <? }
+            ?>
+        </script>
     </footer>

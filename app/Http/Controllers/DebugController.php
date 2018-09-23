@@ -33,11 +33,20 @@ class DebugController extends Controller
      *
      */
     public function test(){
-        $expertises = Expertises::select("*")->get();
-        foreach($expertises as $expertise){
-            $expertise->slug = str_replace(" ", "-", strtolower($expertise->title));
-            $expertise->save();
-        }
+//        $client = $this->getService("stream");
+//        $messageFeed = $client->feed('user', 10);
+//
+////        if($userChat->receiver->active_status == "online") {
+//        // Add the activity to the feed
+//        $data = [
+//            "actor" => "10",
+//            "status" => "online",
+//            "userId" => "14",
+//            "userChatId" => "28",
+//            "verb" => "userMessage",
+//            "object" => "3",
+//        ];
+//        $messageFeed->addActivity($data);
 //        dd(bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM)));
 //        if($this->authorized(true)) {
 
@@ -66,7 +75,6 @@ class DebugController extends Controller
 //
 //            $response = $ericFeed->getActivities();
 //            dd($response);
-//            $user = User::select("*")->where("id", 10)->first();
 //            $feed = FeedManager::getUserFeed($user->id);
 //            dd($feed);
 
