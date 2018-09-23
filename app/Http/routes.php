@@ -261,6 +261,8 @@ Route::post("/workspace/deleteSingleBucketlistGoal", "WorkspaceController@delete
 
 Route::post("/workspace/getBucketlistItemModal", "WorkspaceController@getBucketlistItemModalAction");
 
+Route::post("/workspace/editBucketlistItemDescription", "WorkspaceController@editBucketlistItemDescriptionAction");
+
 // Short term planner task planner
 
 Route::get("/my-team/workspace/short-term-planner-options", "WorkspaceController@workspaceShortTermPlannerOptionPicker");

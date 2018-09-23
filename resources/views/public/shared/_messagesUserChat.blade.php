@@ -46,15 +46,15 @@
             <div class="row m-t-20">
                 <div class="col-sm-12">
                     <div class="col-sm-5 messageReceivedInnocreation messageSent pull-right m-b-10">
-                        <p><?= $message->message?></p>
-                        <span class="f-12 pull-right"><?=$message->time_sent?></span>
+                        <p class="message"><?= $message->message?></p>
+                        <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
                     </div>
                 </div>
             </div>
         <? } else { ?>
             <div class="row m-t-20">
                 <div class="col-sm-12">
-                    <div class="col-sm-5 messageSent messageReceived pull-left m-b-10">
+                    <div class="col-sm-5 messageReceived pull-left m-b-10">
                         <p class="message"><?= $message->message?></p>
                         <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
                     </div>

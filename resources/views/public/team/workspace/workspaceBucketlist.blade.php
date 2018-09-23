@@ -9,7 +9,7 @@
                 @include("includes.workspace_sidebar")
             @endmobile
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black"><?= $team->team_name?> bucketlist</h1>
+                <h1 class="sub-title-black @mobile f-25 @endmobile"><?= $team->team_name?> bucketlist</h1>
             </div>
             <hr class="m-b-20 col-xs-12">
             <div class="row d-flex js-center">
@@ -32,21 +32,6 @@
                                     <p class="m-l-10 m-t-10 f-18 hidden newBoardTitle"></p>
                                 </div>
                             </div>
-                            <div class="row text-center">
-                                <div class="col-sm-4">
-                                    <span class="f-13">Title</span>
-                                </div>
-                                <div class="col-sm-4">
-                                    <span class="f-13">Description</span>
-                                </div>
-                                <div class="col-sm-4">
-                                    <span class="f-13">Completed</span>
-                                </div>
-                            </div>
-                            <div class="hr-card p-b-20"></div>
-                            <div class="row text-center">
-
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -55,7 +40,7 @@
             <div class="allBucketlistBoards m-b-20">
                 <? foreach($workspaceBucketlistTypes as $workspaceBucketlistType) { ?>
                     <div class="row d-flex js-center m-t-20 bucketlistBoard" data-bucketlist-type-id="<?= $workspaceBucketlistType->id?>">
-                        <div class="col-md-9 p-0">
+                        <div class="@mobile col-9 @elsedesktop col-md-9 @endmobile p-0">
                             <div class="card card-lg">
                                 <div class="card-block">
                                     <div class="row">
@@ -78,14 +63,14 @@
                                                 <i class="zmdi zmdi-close c-orange p-absolute deleteBucketlistGoal" style="right: 10px; top: 2px; z-index: 1;" data-bucketlist-id="<?= $workspaceBucketlist->id?>"></i>
                                                 <div class="col-sm-12 p-0">
                                                     <div class="row">
-                                                        <div class="col-sm-2 p-r-0">
+                                                        <div class="@mobile col-2 @elsedesktop col-sm-2 p-r-0 @endmobile">
                                                             <? if($workspaceBucketlist->completed == 0) { ?>
                                                                 <p class="circle circleSmall completeBucketlistGoal m-l-30 m-t-10" data-bucketlist-id="<?= $workspaceBucketlist->id?>"><i class="m-l-5 zmdi zmdi-check"></i></p>
                                                             <? } else { ?>
                                                                 <p class="circle circleSmall m-0 completeBucketlistGoal m-0 c-black" style="background: #FF6100" data-bucketlist-id="<?= $workspaceBucketlist->id?>"><i class="zmdi zmdi-check"></i></p>
                                                             <? } ?>
                                                         </div>
-                                                        <div class="col-sm-10 p-l-0">
+                                                        <div class="@mobile col-10 text-center @elsedesktop col-sm-10 p-l-0 @endmobile">
                                                             <p class="m-t-10"><?= $workspaceBucketlist->title?></p>
                                                         </div>
                                                     </div>
@@ -154,5 +139,5 @@
 @endsection
 @section('pagescript')
     <script src="/js/workspace/workspaceBucketlist.js"></script>
-    <script src="/js/DragDropTouch.js"></script>
+    {{--<script src="/js/DragDropTouch.js"></script>--}}
 @endsection

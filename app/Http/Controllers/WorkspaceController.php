@@ -1501,6 +1501,14 @@ class WorkspaceController extends Controller
         return view("/public/team/workspace/shared/_workspaceBucketlistModal", compact("bucketlistItem"));
     }
 
+    public function editBucketlistItemDescriptionAction(Request $request){
+        $bucketlistItemId = $request->input("bucketlist_id");
+        $description = $request->input("description");
+        $bucketlistItem = WorkspaceBucketlist::select("*")->where("id", $bucketlistItemId)->first();
+        $bucketlistItem->description = htmlspecialchars($description);
+        $bucketlistItem->save();
+    }
+
 
 
 }
