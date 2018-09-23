@@ -908,3 +908,12 @@ footer{
     background-position:center,center !important;
 }
 
+.messageInputNetwork {
+    height:40px;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s; /* Safari */
+}
+
+.messageInputNetwork:focus {
+    height:130px;
+}
