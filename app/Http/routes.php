@@ -594,6 +594,10 @@ Route::post("/registerProcess/saveUserCredentials", "RegisterProcessController@s
 
 Route::post("/registerProcess/saveUserResidence", "RegisterProcessController@saveUserResidenceAction");
 
+Route::post("/registerProcess/saveUserExpertises", "RegisterProcessController@saveUserExpertisesAction");
+
+Route::post("/registerProcess/saveUserTexts", "RegisterProcessController@saveUserTextsAction");
+
 
 //==
 

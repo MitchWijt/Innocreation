@@ -103,6 +103,37 @@ class Team extends Model {
         return $bool;
     }
 
+    public function allowedRequest(){
+        $bool = true;
+        if(!$this->packageDetails() || !$this->hasPaid()) {
+            if (count($this->getMembers()) >= 2) {
+                $bool = false;
+            } else {
+                $bool = true;
+            }
+        } else {
+            if($this->hasPaid()) {
+                if($this->packageDetails()->custom_team_package_id == null) {
+                    if($this->packageDetails()->membershipPackage->id == 3) {
+                        $bool = true;
+                    } else if(count($this->getMembers()) >= $this->packageDetails()->membershipPackage->members) {
+                        $bool = false;
+                    } else {
+                        $bool = true;
+                    }
+                } else {
+                    if(count($this->getMembers()) >= $this->packageDetails()->customTeamPackage->members && $this->packageDetails()->customTeamPackage->members != "unlimited") {
+                        $bool = false;
+                    } else {
+                        $bool = true;
+                    }
+                }
+            } else {
+                $bool = false;
+            }
+        }
+         return $bool;
+    }
     public function packageDetails(){
         $teamPackage = TeamPackage::select("*")->where("team_id",$this->id)->first();
         if($teamPackage){

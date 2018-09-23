@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Country;
 use App\Expertises;
+use App\Expertises_linktable;
 use App\MailMessage;
+use App\NeededExpertiseLinktable;
+use App\Team;
 use App\User;
 use App\UserChat;
 use Illuminate\Http\Request;
@@ -20,11 +23,30 @@ class RegisterProcessController extends Controller {
         $expertises = Expertises::select("*")->get();
         $countries = Country::select("*")->orderBy("country")->get();
         $email = $request->input("email");
+        $existingUser = User::select("*")->where("email", $email)->first();
+        if($existingUser){
+            return redirect("/")->withErrors("We're sorry. There has already been a account registered with this email address");
+        }
         $pageType = "checkout";
         if(Session::has("user_id")){
             $userId = Session::get("user_id");
             $user = User::select("*")->where("id", $userId)->first();
-            return view("/public/registerProcess/index", compact("pageType", "email", "countries", "user", "expertises", "title"));
+            if($user->getExpertises(true) != ""){
+                $teamIdArray = [];
+                $neededExpertises = NeededExpertiseLinktable::select("*")->where("amount", "!=", 0)->get();
+                foreach($neededExpertises as $neededExpertise){
+                    $expertiseLinktable = Expertises_linktable::select("*")->where("user_id", $user->id)->where("expertise_id", $neededExpertise->expertise_id)->first();
+                    if ($expertiseLinktable) {
+                        if($neededExpertise->teams->First()->allowedRequest()) {
+                            array_push($teamIdArray, $neededExpertise->team_id);
+                        }
+                    }
+                }
+                $teams = Team::select("*")->whereIn("id", $teamIdArray)->limit(3)->get();
+                return view("/public/registerProcess/index", compact("pageType", "email", "countries", "user", "expertises", "title", "teams"));
+            } else {
+                return view("/public/registerProcess/index", compact("pageType", "email", "countries", "user", "expertises", "title"));
+            }
         } else {
             return view("/public/registerProcess/index", compact("pageType", "email", "countries", "expertises", "title"));
         }
@@ -36,6 +58,7 @@ class RegisterProcessController extends Controller {
         $lastname = $request->input("lastname");
         $email = $request->input("email");
         $password = $request->input("password");
+        $back = $request->input("back");
 
         if(Session::has('user_id')){
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
@@ -47,7 +70,9 @@ class RegisterProcessController extends Controller {
                     $user->middlename = $middlename;
                 }
                 $user->lastname = ucfirst($lastname);
-                $user->password = bcrypt($password);
+                if($back != 1) {
+                    $user->password = bcrypt($password);
+                }
                 $user->email = $email;
                 if ($request->input("middlename") != null || $request->input("middlename") != "") {
                     $user->slug = str_replace(" ", "-", strtolower($request->input("firstname")) . strtolower($user->middlename = $request->input("middlename")) . strtolower($request->input("lastname")));
@@ -56,6 +81,25 @@ class RegisterProcessController extends Controller {
                 }
                 $user->created_at = date("Y-m-d H:i:s");
                 $user->save();
+
+                if($back != 1) {
+                    $mgClient = $this->getService("mailgun");
+                    $mgClient[0]->sendMessage($mgClient[1], array(
+                        'from' => "Innocreation <info@innocreation.net>",
+                        'to' => $user->email,
+                        'subject' => "Welcome to Innocreation!",
+                        'html' => view("/templates/sendWelcomeMail", compact("user"))
+                    ), array(
+                        'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png', $_SERVER['DOCUMENT_ROOT'] . '/images/icons/email.png')
+                    ));
+                    $mailMessage = new MailMessage();
+                    $mailMessage->receiver_user_id = $user->id;
+                    $mailMessage->subject = "Welcome to Innocreation!";
+                    $mailMessage->message = view("/templates/sendWelcomeMail", compact("user"));
+                    $mailMessage->created_at = date("Y-m-d");
+                    $mailMessage->save();
+                }
+
                 return 1;
             } else {
                 return 0;
@@ -133,6 +177,58 @@ class RegisterProcessController extends Controller {
         $user->save();
         return 1;
 
+    }
+
+    public function saveUserExpertisesAction(Request $request){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $expertisesAll = Expertises::select("*")->get();
+        $existingArray = [];
+        foreach ($expertisesAll as $existingExpertise) {
+            array_push($existingArray, $existingExpertise->title);
+        }
+
+        $existingExpertises = Expertises_linktable::select("*")->where("user_id", $user->id)->get();
+        $existingExpArray = [];
+        foreach ($existingExpertises as $existingExpertise) {
+            array_push($existingExpArray, $existingExpertise->expertise_id);
+        }
+
+        $chosenExpertisesString = $request->input("expertises");
+        $chosenExpertises = explode(", ", $chosenExpertisesString);
+        foreach ($chosenExpertises as $expertise) {
+            if (!in_array(ucfirst($expertise), $existingArray)) {
+                $newExpertise = New Expertises;
+                $newExpertise->title = ucfirst($expertise);
+                $newExpertise->slug = str_replace(" ", "-",strtolower($expertise));
+                $newExpertise->save();
+
+                $userExpertise = New expertises_linktable;
+                $userExpertise->user_id = $user->id;
+                $userExpertise->expertise_id = $newExpertise->id;
+                $userExpertise->save();
+
+            } else {
+                $expertiseNewUser = Expertises::select("*")->where("title", $expertise)->first();
+                if (!in_array($expertiseNewUser->id, $existingExpArray)) {
+                    $userExpertise = New expertises_linktable;
+                    $userExpertise->user_id = $user->id;
+                    $userExpertise->expertise_id = $expertiseNewUser->id;
+                    $userExpertise->save();
+                }
+            }
+        }
+        return 1;
+    }
+
+    public function saveUserTextsAction(Request $request){
+        $introduction = $request->input("introduction");
+        $motivation = $request->input("motivation");
+
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $user->introduction = $introduction;
+        $user->motivation = $motivation;
+        $user->save();
+        return 1;
     }
 
 

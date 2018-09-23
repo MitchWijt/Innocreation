@@ -63,6 +63,12 @@ class UserController extends Controller
     public function userAccountCredentials(){
         if($this->authorized()) {
             if (Session::has("user_name")) {
+                $user = User::select("*")->where("id", Session::get("user_id"))->first();
+                if($user->country_id == null){
+                    return redirect("/create-my-account");
+                } else if($user->country_id != null && $user->getExpertises(true) == ""){
+                    return redirect("/create-my-account");
+                }
                 $id = Session::get("user_id");
                 $user = User::select("*")->where("id", $id)->first();
                 return view("/public/user/userAccountCredentials", compact("user"));
@@ -541,9 +547,17 @@ class UserController extends Controller
                 $user = User::select("*")->where("id", $user_id)->first();
                 $this->saveAndSendEmail($joinRequest->team->users, "Team join request from $user->firstname!", view("/templates/sendJoinRequestToTeam", compact("user", "team")));
 
-                return redirect($_SERVER["HTTP_REFERER"]);
+                if($request->input("register")){
+                    return redirect("/my-account/team-join-requests");
+                } else {
+                    return redirect($_SERVER["HTTP_REFERER"]);
+                }
             } else {
-                return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already applied for this team");
+                if($request->input("register")){
+                    return redirect("/account")->withErrors("You already applied for this team");
+                } else {
+                    return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already applied for this team");
+                }
             }
         }
     }
