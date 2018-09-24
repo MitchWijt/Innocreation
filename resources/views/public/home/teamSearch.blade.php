@@ -27,15 +27,32 @@
             <form action="/team/searchTeams" method="POST">
                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                 <div class="hr col-sm-12"></div>
-                <div class="row text-center v-center">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-sm-6">
+                            </div>
+                            <div class="col-sm-6">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row v-center">
                     <div class="col-md-10 p-r-10">
+                        <select name="expertiseSearch" class="input m-b-10">
+                            <option value="" selected disabled>Choose expertise to join</option>
+                            <? foreach($allNeededExpertises as $allNeededExpertise) { ?>
+                                <option value="<?= $allNeededExpertise->id?>"><?= $allNeededExpertise->title?></option>
+                            <? } ?>
+                        </select>
                         <input type="text" class="input-fat col-sm-12 p-r-5" name="searchTeams" placeholder="Search teams...">
                     </div>
                     <div class="col-md-2 p-l-5">
                         @mobile
                             <button class="btn btn-sm btn-inno searchTeamBtn pull-right m-t-10">Search</button>
                         @elsedesktop
-                            <button class="btn btn-lg btn-inno searchTeamBtn btn-block">Search</button>
+                            <button class="btn btn-lg btn-inno searchTeamBtn btn-block m-t-35">Search</button>
                         @endmobile
                     </div>
                 </div>
