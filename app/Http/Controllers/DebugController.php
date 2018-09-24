@@ -33,6 +33,18 @@ class DebugController extends Controller
      *
      */
     public function test(){
+        $user = User::select("*")->where("id", 56)->first();
+        $receiver = User::select("*")->where("id", 51)->first();
+
+        $mgClient = $this->getService("mailgun"); 
+        $mgClient[0]->sendMessage($mgClient[1], array(
+            'from' => "Innocreation <info@innocreation.net>",
+            'to' => "mitchel@wijt.net",
+            'subject' => "You have a match!",
+            'html' => view("/templates/matchEmail", compact("user", "receiver"))
+        ), array(
+            'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
+        ));
 //        $client = $this->getService("stream");
 //        $messageFeed = $client->feed('user', 10);
 //
