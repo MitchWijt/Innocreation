@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        date_default_timezone_set("Europe/Amsterdam");
+//        date_default_timezone_set("Europe/Amsterdam");
         $schedule->command('recurring:payment')->everyMinute();
     }
 }
