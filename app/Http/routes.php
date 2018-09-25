@@ -34,6 +34,8 @@ Route::post("/home/sendMoreInfoMail", "HomeController@sendMoreInfoMailAction");
 
 Route::post("/home/getStatusUser", "HomeController@getStatusUserAction");
 
+Route::post("/home/getModalCarouselUser", "HomeController@getModalCarouselUserAction");
+
 // CONTACT US
 Route::get("/contact-us", "HomeController@contactAction");
 

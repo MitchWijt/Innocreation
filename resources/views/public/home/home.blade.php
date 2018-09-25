@@ -34,6 +34,40 @@
                     </div>
                 </div>
             </form>
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <? $counter = 0;?>
+                    <? foreach($carouselUsers as $carouselUser) { ?>
+                        <? if($counter % 3 == 0) { ?>
+                        <div class="carousel-item <? if($counter == 0) echo "active"?>">
+                            <div class="row">
+                        <? } ?>
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="card-sm m-t-20 m-b-20 @tablet p-10 @endtablet">
+                                        <div class="card-block m-t-10 openCarouselModal" style="max-height: 165px !important;" data-user-id="<?= $carouselUser->id?>">
+                                            <div class="row">
+                                                <div class="col-sm-4 p-l-20 p-r-0 text-center">
+                                                    <div class="d-flex js-center @mobile m-b-10 @endmobile">
+                                                        <div class="avatar" style="background: url('<?= $carouselUser->getProfilePicture()?>')"></div>
+                                                    </div>
+                                                    <p style="word-break: break-all"><?= $carouselUser->firstname?></p>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <p class="underline m-b-5">Introduction:</p>
+                                                    <p class="m-0"><?= mb_strimwidth($carouselUser->introduction, 0, 100,"... <span class='c-orange openCarouselModalLink underline c-pointer' data-user-id='$carouselUser->id'>read more</span>");?></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        <? if($counter % 3 == 2) { ?>
+                            </div>
+                        </div>
+                        <? } ?>
+                        <? $counter++;?>
+                    <? } ?>
+                </div>
+            </div>
             {{--<div class="row p-absolute" style="bottom: 30px; left: 520px">--}}
                 {{--<div class="col-md-12 d-flex js-center">--}}
                     {{--<div class="circle m-r-0" style="width: 80px !important; height: 80px !important;">--}}
@@ -266,6 +300,13 @@
                     </div>
                     <div class="row d-flex js-center" style="margin-bottom: 50px !important">
                         <a href="/collaborate" class="btn btn-inno">Start networking!</a>
+                    </div>
+                    <div class="modal fade carouselUserModal" id="carouselUserModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content carouselUserModalData">
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -19,8 +19,10 @@ class HomeController extends Controller
     public function index() {
         $title = "Make your dreams become a reality!";
         $og_description = "Create a team with like-minded people, help each other make dreams become a reality!";
+        $carouselUsers = User::select("*")->where("introduction", "!=", null)->where("motivation", "!=", null)->where("profile_picture", "!=", "defaultProfilePicture.png")->get();
+
 //        Session::flush();
-       return view("public/home/home", compact("title", "og_description"));
+       return view("public/home/home", compact("title", "og_description", "carouselUsers"));
     }
 
     /**
@@ -130,6 +132,12 @@ class HomeController extends Controller
         } else {
             return redirect($_SERVER["HTTP_REFERER"]);
         }
+    }
+
+    public function getModalCarouselUserAction(Request $request){
+        $userId = $request->input("userId");
+        $user = User::select("*")->where("id", "$userId")->first();
+        return view("/public/home/shared/_carouselUserModal", compact("user"));
     }
 
 //    public function getStatusUserAction(Request $request){
