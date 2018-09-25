@@ -49,7 +49,11 @@
                                             <? } else { ?>
                                                 <td> - </td>
                                             <? } ?>
-                                            <td><?= $user->country->country?></td>
+                                            <? if($user->country_id != null) { ?>
+                                                <td><?= $user->country->country?></td>
+                                            <? } else { ?>
+                                                <td> - </td>
+                                            <? } ?>
                                             <td><?= date("d-m-Y",strtotime($user->created_at))?></td>
                                         </tr>
                                     <? } ?>

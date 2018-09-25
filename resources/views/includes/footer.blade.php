@@ -16,7 +16,7 @@
                                 @endtablet
                             @elsedesktop
                                 <h1 class="title" style="color: #C9CCCF">Inn<img class="cartwheelLogo" src="/images/cartwheel.png" alt="">creation</h1>
-                                <a class="td-none" style="width: 80% !important" href="/login?register=1"><p class="instructions-text create-account" style="width: 75%; margin-left: 12%;">Create your account</p></a>
+                                <a class="td-none" style="width: 80% !important" href="/create-my-account"><p class="instructions-text create-account" style="width: 75%; margin-left: 12%;">Create your account</p></a>
                             @endhandheld
                         </div>
                     </div>
