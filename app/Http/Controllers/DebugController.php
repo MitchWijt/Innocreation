@@ -24,6 +24,7 @@ use Monolog\Handler\SyslogUdp\UdpSocket;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Invoice;
 use GetStream;
+use DateTime;
 use GetStream\StreamLaravel\Facades\FeedManager;
 use Session;
 
@@ -33,18 +34,7 @@ class DebugController extends Controller
      *
      */
     public function test(){
-        $user = User::select("*")->where("id", 56)->first();
-        $receiver = User::select("*")->where("id", 51)->first();
-
-        $mgClient = $this->getService("mailgun"); 
-        $mgClient[0]->sendMessage($mgClient[1], array(
-            'from' => "Innocreation <info@innocreation.net>",
-            'to' => "mitchel@wijt.net",
-            'subject' => "You have a match!",
-            'html' => view("/templates/matchEmail", compact("user", "receiver"))
-        ), array(
-            'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
-        ));
+        if($this->authorized(true)){
 //        $client = $this->getService("stream");
 //        $messageFeed = $client->feed('user', 10);
 //
@@ -90,7 +80,7 @@ class DebugController extends Controller
 //            $feed = FeedManager::getUserFeed($user->id);
 //            dd($feed);
 
-//        if($this->authorized(true)){
+
 
 
 //        $user = User::select("*")->where("id", 10)->first();
@@ -104,6 +94,6 @@ class DebugController extends Controller
 //        foreach($subscriptions as $subscription){
 //            $customer->cancelSubscription($subscription->id);
 //        }
-//        }
+        }
     }
 }

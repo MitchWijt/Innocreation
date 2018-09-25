@@ -85,24 +85,6 @@ class RegisterProcessController extends Controller {
                 $user->created_at = date("Y-m-d H:i:s");
                 $user->save();
 
-                if($back != 1) {
-                    $mgClient = $this->getService("mailgun");
-                    $mgClient[0]->sendMessage($mgClient[1], array(
-                        'from' => "Innocreation <info@innocreation.net>",
-                        'to' => $user->email,
-                        'subject' => "Welcome to Innocreation!",
-                        'html' => view("/templates/sendWelcomeMail", compact("user"))
-                    ), array(
-                        'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png', $_SERVER['DOCUMENT_ROOT'] . '/images/icons/email.png')
-                    ));
-                    $mailMessage = new MailMessage();
-                    $mailMessage->receiver_user_id = $user->id;
-                    $mailMessage->subject = "Welcome to Innocreation!";
-                    $mailMessage->message = view("/templates/sendWelcomeMail", compact("user"));
-                    $mailMessage->created_at = date("Y-m-d");
-                    $mailMessage->save();
-                }
-
                 return 1;
             } else {
                 return 0;
@@ -155,6 +137,22 @@ class RegisterProcessController extends Controller {
                     Session::set('user_role', $user->role);
                     Session::set('user_id', $user->id);
                 }
+
+                $mgClient = $this->getService("mailgun");
+                $mgClient[0]->sendMessage($mgClient[1], array(
+                    'from' => "Innocreation <info@innocreation.net>",
+                    'to' => $user->email,
+                    'subject' => "Welcome to Innocreation!",
+                    'html' => view("/templates/sendWelcomeMail", compact("user"))
+                ), array(
+                    'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png', $_SERVER['DOCUMENT_ROOT'] . '/images/icons/email.png')
+                ));
+                $mailMessage = new MailMessage();
+                $mailMessage->receiver_user_id = $user->id;
+                $mailMessage->subject = "Welcome to Innocreation!";
+                $mailMessage->message = view("/templates/sendWelcomeMail", compact("user"));
+                $mailMessage->created_at = date("Y-m-d");
+                $mailMessage->save();
                 return 1;
             } else {
                 return 0;
