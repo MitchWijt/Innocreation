@@ -57,3 +57,7 @@ $(".openCarouselModalLink").on("click",function (e) {
     e.preventDefault();
     e.stopPropagation();
 });
+
+$(".closeModal").on("click",function () {
+    $(".carouselUserModal").modal().toggle();
+});
