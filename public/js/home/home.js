@@ -8,6 +8,14 @@ $(".startRegisterProcess").on("click",function () {
 });
 $('.carousel').carousel();
 
+$(".carousel-control-prev").on("click",function () {
+    $('.carousel').carousel("prev");
+});
+
+$(".carousel-control-next").on("click",function () {
+    $('.carousel').carousel("next");
+});
+
 $(".openCarouselModal").on("click",function () {
     var user_id = $(this).data("user-id");
     $.ajax({

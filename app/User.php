@@ -258,6 +258,15 @@ class User extends Authenticatable
         }
     }
 
+    public function getSinglePortfolio(){
+        $portfolio = UserPortfolio::select("*")->where("user_id", $this->id)->first();
+        if($portfolio){
+            return $portfolio;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * The attributes that are mass assignable.
      *

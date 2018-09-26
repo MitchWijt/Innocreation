@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </form>
-            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <div id="carouselExampleIndicators" class="carousel slide p-relative" data-ride="carousel">
                 <div class="carousel-inner">
                     <? $counter = 0;?>
                     <? foreach($carouselUsers as $carouselUser) { ?>
@@ -54,7 +54,7 @@
                                                 </div>
                                                 <div class="col-sm-8">
                                                     <p class="underline m-b-5">Introduction:</p>
-                                                    <p class="m-0"><?= mb_strimwidth($carouselUser->introduction, 0, 100,"... <span class='c-orange openCarouselModalLink underline c-pointer' data-user-id='$carouselUser->id'>read more</span>");?></p>
+                                                    <p class="m-0"><?= substr($carouselUser->introduction, 0, 40) . "... <span class='c-orange openCarouselModalLink underline c-pointer' data-user-id='$carouselUser->id'>read more</span>";?></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -67,6 +67,12 @@
                         <? $counter++;?>
                     <? } ?>
                 </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                    <i class="zmdi zmdi-chevron-left p-absolute c-orange" style="top: 55px; left: -30px; font-size: 40px !important;"></i>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="prev">
+                    <i class="zmdi zmdi-chevron-right p-absolute c-orange" style="top: 55px; right: -30px; font-size: 40px !important;"></i>
+                </a>
             </div>
             {{--<div class="row p-absolute" style="bottom: 30px; left: 520px">--}}
                 {{--<div class="col-md-12 d-flex js-center">--}}
