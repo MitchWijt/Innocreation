@@ -58,6 +58,6 @@ $(".openCarouselModalLink").on("click",function (e) {
     e.stopPropagation();
 });
 
-$(".closeModal").on("click",function () {
-    $(".carouselUserModal").modal().toggle();
+$(document).on("click", ".closeModal", function () {
+    $(".carouselUserModal").modal("toggle")
 });

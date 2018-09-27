@@ -144,7 +144,7 @@
                     <div class="sidebar-tab text-center">
                         <div class="d-flex js-center">
                             <a class="regular-link c-gray m-r-10" href="/my-account/team-join-requests">Join requests </a>
-                            <? if(count($userJoinRequestsCounter) > 0) { ?>
+                            <? if($userJoinRequestsCounter > 0) { ?>
                             <div class="circle circleNotification c-orange text-center">
                                 <span><?= $userJoinRequestsCounter?></span>
                             </div>
