@@ -4,7 +4,6 @@ $(".startRegisterProcess").on("click",function () {
         eventCategory: 'RegisterProcess',
         eventAction: 'submit/click'
     });
-    $(".startRegisterForm").submit();
 });
 $('.carousel').carousel();
 

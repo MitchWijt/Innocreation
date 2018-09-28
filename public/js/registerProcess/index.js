@@ -257,7 +257,7 @@ $(".backToStep2").on("click",function () {
 $(".backToStep3").on("click",function () {
     $(".expertises").removeClass("hidden");
     $(".introText").addClass("hidden");
-    $(".innoText").html("Hey, Welcome! <br> We are glad you want to take your dreams and ideas to the next level with Innocreation! <br> Follow the steps below to create your account and start connecting, networking and creating!");
+    $(".innoText").html("Welcome! <br> Follow the steps below to start creating!");
     $(".progress-bar").attr("style", "width: 60% !important");
     $(".progress-bar").text("60% complete");
 });

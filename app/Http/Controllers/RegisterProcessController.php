@@ -23,11 +23,6 @@ class RegisterProcessController extends Controller {
         $title = "Create my account";
         $expertises = Expertises::select("*")->get();
         $countries = Country::select("*")->orderBy("country")->get();
-        $email = $request->input("email");
-        $existingUser = User::select("*")->where("email", $email)->first();
-        if($existingUser){
-            return redirect("/")->withErrors("We're sorry. There has already been a account registered with this email address");
-        }
         $pageType = "checkout";
         if(Session::has("user_id")){
             $userId = Session::get("user_id");

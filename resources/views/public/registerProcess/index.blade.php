@@ -34,7 +34,7 @@
                             <? } else if(isset($user) && $user->country_id != null && $expertisesUser != "" && $user->introduction != null) { ?>
                                 <p class="innoText">You're doing a great job! <br> Here you can join a team of like-minded and ceative people to participate in a new idea/dream! <br> Or you can create your own team and invite like-minded people to help you with your idea/dream!</p>
                             <? } else { ?>
-                                <p class="innoText">Hey, Welcome! <br> We are glad you want to take your dreams and ideas to the next level with Innocreation! <br> Follow the steps below to create your account and start connecting, networking and creating!</p>
+                                <p class="innoText">Welcome! <br> Follow the steps below to start creating!</p>
                             <? } ?>
                         </div>
                     </div>
@@ -183,7 +183,7 @@
                                         <div class="row m-t-10">
                                             <div class="col-sm-6">
                                                 <p class="m-0">Phonenumber</p>
-                                                <input type="tel" placeholder="Your phonenumber" class="phonenumber input col-sm-12" name="phonenumber" value="<? if(isset($user) && isset($user->phonenumber)) echo $user->phonenumber?>">
+                                                <input type="tel" placeholder="Optional(+311234567)" class="phonenumber input col-sm-12" name="phonenumber" value="<? if(isset($user) && isset($user->phonenumber)) echo $user->phonenumber?>">
                                             </div>
                                         </div>
                                     </div>
@@ -243,7 +243,7 @@
                             <div class="card-block m-t-10">
                                 <div class="row">
                                     <div class="col-sm-12 p-0">
-                                        <p class="f-18 m-l-20 m-b-0 expertisesHeader">Now that you know quite some info about us. Tell us more bout yourself!</p>
+                                        <p class="f-18 m-l-20 m-b-0 expertisesHeader">You're almost done! Tell us more about yourself!</p>
                                         <hr>
                                     </div>
                                 </div>

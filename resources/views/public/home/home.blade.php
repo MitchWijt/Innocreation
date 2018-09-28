@@ -9,7 +9,7 @@
         </div>
         <div class="main-content">
             <div class="row" style="margin-top: 180px !important">
-                <div class="col-md-12">
+                <div class="col-md-12 m-b-20">
                     <div class="title-home">
                         @mobile
                             <h1 style="font-weight: bold;" class="text-center col-md-12 f-40">Innocreation</h1>
@@ -21,19 +21,14 @@
                         @elsedesktop
                             <div class="hr col-md-10"></div>
                         @endtablet
-                        <p class="m-t-10 slogan text-center @mobile f-13 @endmobile" style="color: #696969">Find your ideal team and create your dream!</p>
                     </div>
                 </div>
             </div>
-            <form action="/create-my-account" method="post" class="startRegisterForm">
-                <div class="row d-flex js-center">
-                    <div class="col-md-5 d-flex js-center">
-                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                        <input type="email" required name="email" class="input pull-right col-sm-7 b-t-r-0 b-b-r-0" placeholder="@handheld Email address @elsedesktop Your email address... @endhandheld">
-                        <button type="button" class="btn btn-inno col-sm-5 b-t-l-0 b-b-l-0 startRegisterProcess @tablet p-l-8 @endtablet" style="border-top-right-radius: 10px; border-bottom-right-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</button>
-                    </div>
+            <div class="row d-flex js-center">
+                <div class="col-md-5 d-flex js-center">
+                    <a href="/create-my-account" class="btn btn-inno col-sm-5 startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</a>
                 </div>
-            </form>
+            </div>
             <div id="carouselExampleIndicators" class="carousel slide p-relative" @desktop style="margin-top: 180px !important" @enddesktop @tablet  style="margin-top: 130px !important" @endtablet data-ride="carousel">
                 <div class="carousel-inner">
                     <? $counter = 0;?>
