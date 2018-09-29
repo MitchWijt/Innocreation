@@ -9,6 +9,7 @@ use App\TeamProductLinktable;
 use App\User;
 use App\UserChat;
 use App\UserMessage;
+use App\UserWork;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -184,4 +185,20 @@ class FeedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function workFeedIndexAction(){
+        $pageType = "innoCreatives";
+        if(Session::has("user_id")){
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            return view("/public/userworkFeed/index", compact("user", "pageType"));
+        } else {
+            return view("/public/userworkFeed/index", compact("pageType"));
+        }
+
+    }
+
+    public function getUserworkPostsAction(){
+        $userWorkPosts = UserWork::select("*")->orderBy("created_at", "DESC")->limit(15)->get();
+        return view("/public/userworkFeed/shared/_userworkPosts", compact("userWorkPosts"));
+    }
 }

@@ -111,7 +111,9 @@
 @yield('content')
 @yield('pagescript')
 <? if(!isset($pageType) || $pageType != "checkout") { ?>
-    @include('includes/footer')
+    <? if( $pageType != "innoCreatives") { ?>
+        @include('includes/footer')
+    <? } ?>
 <? } ?>
 
 </body>

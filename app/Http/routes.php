@@ -549,6 +549,10 @@ Route::post("/feed/postTeamProductComment", "FeedController@postTeamProductComme
 
 Route::get("/team-product/{slug?}", "FeedController@TeamProductsAction");
 
+//=======================WORKFEED=============================
+Route::get("/innocreatives", "FeedController@workFeedIndexAction");
+
+Route::post("/feed/getUserworkPosts", "FeedController@getUserworkPostsAction");
 
 //========================CHECKOUT/PACKAGES========================
 
