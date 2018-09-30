@@ -191,6 +191,14 @@ class UserController extends Controller
             $user->team_id = $team->id;
             $user->save();
 
+            $teamCreateRequests = TeamCreateRequest::select("*")->where("receiver_user_id", $user_id)->where("accepted", 0)->get();
+            if(count($teamCreateRequests)){
+                foreach($teamCreateRequests as $teamCreateRequest){
+                    $teamCreateRequest->accepted = 2;
+                    $teamCreateRequest->save();
+                }
+            }
+
             Session::set("team_id", $team->id);
             Session::set("team_name", $team->team_name);
 
@@ -643,6 +651,14 @@ class UserController extends Controller
                 foreach ($otherInvites as $otherInvite) {
                     $otherInvite->accepted = 2;
                     $otherInvite->save();
+                }
+            }
+
+            $teamCreateRequests = TeamCreateRequest::select("*")->where("receiver_user_id", $user_id)->where("accepted", 0)->get();
+            if(count($teamCreateRequests)){
+                foreach($teamCreateRequests as $teamCreateRequest){
+                    $teamCreateRequest->accepted = 2;
+                    $teamCreateRequest->save();
                 }
             }
 
@@ -1273,11 +1289,45 @@ class UserController extends Controller
         $joinRequest->created_at = date("Y-m-d");
         $joinRequest->save();
 
+
         Session::set("team_id", $team->id);
         Session::set("team_name", $team->team_name);
 
         $sender = User::select("*")->where("id", $teamCreateRequest->sender_user_id)->first();
         $receiver = User::select("*")->where("id", $teamCreateRequest->receiver_user_id)->first();
+
+        $allJoinRequestsSender = JoinRequestLinktable::select("*")->where("user_id", $sender->id)->where("accepted", 0)->get();
+        if(count($allJoinRequestsSender) > 0){
+            foreach($allJoinRequestsSender as $item){
+                $item->accepted = 2;
+                $item->save();
+            }
+        }
+
+        $allJoinRequestsReceiver = JoinRequestLinktable::select("*")->where("user_id", $receiver->id)->where("accepted", 0)->get();
+        if(count($allJoinRequestsReceiver) > 0){
+            foreach($allJoinRequestsReceiver as $item){
+                $item->accepted = 2;
+                $item->save();
+            }
+        }
+
+        $allInvitesSender = InviteRequestLinktable::select("*")->where("user_id", $sender->id)->where("accepted", 0)->get();
+        if(count($allInvitesSender) > 0){
+            foreach($allInvitesSender as $item){
+                $item->accepted = 2;
+                $item->save();
+            }
+        }
+
+        $allInvitesReceiver = InviteRequestLinktable::select("*")->where("user_id", $receiver->id)->where("accepted", 0)->get();
+        if(count($allInvitesReceiver) > 0){
+            foreach($allInvitesReceiver as $item){
+                $item->accepted = 2;
+                $item->save();
+            }
+        }
+
 
         $sender->team_id = $team->id;
         $sender->save();

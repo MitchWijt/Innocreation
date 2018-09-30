@@ -33,8 +33,8 @@
                                                         <p class="f-22 m-t-15 m-b-5 p-0"><?=$userChat->receiver->firstname?></p>
                                                         <? if($userChat->receiver->team_id != null) { ?>
                                                         <div class="d-flex fd-column">
-                                                            <p class="f-20 m-t-15 m-b-0"><?= $userChat->receiver->team->First()->team_name?></p>
-                                                            <span class="f-13 c-orange"><?if($userChat->receiver->team->First()->ceo_user_id == $userChat->receiver->id) echo "Team leader"?></span>
+                                                            <p class="f-20 m-t-15 m-b-0"><?= $userChat->receiver->team->team_name?></p>
+                                                            <span class="f-13 c-orange"><?if($userChat->receiver->team->ceo_user_id == $userChat->receiver->id) echo "Team leader"?></span>
                                                         </div>
                                                         <? } ?>
                                                     </div>
