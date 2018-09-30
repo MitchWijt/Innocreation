@@ -9,6 +9,7 @@ use App\TeamProductLinktable;
 use App\User;
 use App\UserChat;
 use App\UserMessage;
+use App\UserUpvoteLinktable;
 use App\UserWork;
 use Illuminate\Http\Request;
 
@@ -99,7 +100,7 @@ class FeedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function shareTeamProductAction(Request $request) {
+    public function shareFeedPostAction(Request $request) {
         if($this->authorized()){
             $userIds = $request->input("userIds");
             $teamProductId = $request->input("team_product_id");
@@ -143,14 +144,16 @@ class FeedController extends Controller
                 $message->save();
             }
 
-            $teamProductLinktable = TeamProductLinktable::select("*")->where("team_product_id", $teamProductId)->where("user_id", $user->id)->first();
-            if(count($teamProductLinktable) > 0){
-                $teamProductLinktable->shared = 1;
-                $teamProductLinktable->save();
-            } else {
-                $teamProductLinktable = new TeamProductLinktable();
-                $teamProductLinktable->shared = 1;
-                $teamProductLinktable->save();
+            if($teamProductId) {
+                $teamProductLinktable = TeamProductLinktable::select("*")->where("team_product_id", $teamProductId)->where("user_id", $user->id)->first();
+                if (count($teamProductLinktable) > 0) {
+                    $teamProductLinktable->shared = 1;
+                    $teamProductLinktable->save();
+                } else {
+                    $teamProductLinktable = new TeamProductLinktable();
+                    $teamProductLinktable->shared = 1;
+                    $teamProductLinktable->save();
+                }
             }
 
             return redirect($_SERVER["HTTP_REFERER"])->with("success", "Shared team product");
@@ -186,19 +189,61 @@ class FeedController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function workFeedIndexAction(){
+    public function workFeedIndexAction($id = null){
         $pageType = "innoCreatives";
+        $totalAmount = UserWork::select("id")->count();
         if(Session::has("user_id")){
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
-            return view("/public/userworkFeed/index", compact("user", "pageType"));
+            if($id){
+                $sharedUserWorkId = $id;
+                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount", "sharedUserWorkId"));
+            } else {
+                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount"));
+            }
         } else {
-            return view("/public/userworkFeed/index", compact("pageType"));
+            if($id){
+                $sharedUserWorkId = $id;
+                return view("/public/userworkFeed/index", compact( "pageType", "totalAmount", "sharedUserWorkId"));
+            } else {
+                return view("/public/userworkFeed/index", compact("pageType", "totalAmount"));
+            }
         }
 
     }
 
     public function getUserworkPostsAction(){
         $userWorkPosts = UserWork::select("*")->orderBy("created_at", "DESC")->limit(15)->get();
+        if(Session::has("user_id")) {
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            return view("/public/userworkFeed/shared/_userworkPosts", compact("user", "userWorkPosts"));
+        }
         return view("/public/userworkFeed/shared/_userworkPosts", compact("userWorkPosts"));
+    }
+
+    public function getMoreUserworkPostsAction(Request $request){
+        $userworkArray = $request->input("userworkArray");
+        $userWorkPosts = UserWork::select("*")->whereNotIn("id", $userworkArray)->orderBy("created_at", "DESC")->limit(15)->get();
+        if(Session::has("user_id")) {
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            return view("/public/userworkFeed/shared/_userworkPosts", compact("user", "userWorkPosts"));
+        }
+        return view("/public/userworkFeed/shared/_userworkPosts", compact("userWorkPosts"));
+    }
+
+    public function upvoteUserWorkAction(Request $request){
+        $userWorkId = $request->input("userWorkId");
+        if(Session::has("user_id")) {
+            $userUpvote = new UserUpvoteLinktable();
+            $userUpvote->user_id = Session::get("user_id");
+            $userUpvote->user_work_id = $userWorkId;
+            $userUpvote->save();
+
+            $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
+            $userWork->upvotes = $userWork->upvotes + 1;
+            $userWork->save();
+            return 1;
+        } else {
+            return 2;
+        }
     }
 }

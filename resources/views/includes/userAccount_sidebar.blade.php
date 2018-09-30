@@ -17,6 +17,9 @@
         $userJoinRequests = \App\JoinRequestLinktable::select("*")->where("team_id", $team_id)->where("accepted", 0)->get();
         $teamJoinRequestsCounter = count($userJoinRequests);
     }
+
+    $teamCreateRequests = \App\TeamCreateRequest::select("*")->where("receiver_user_id", $user->id)->where("accepted", 0)->get();
+    $teamCreateCounter = count($teamCreateRequests);
 ?>
 @notmobile
 <div class="sidebar">
@@ -69,6 +72,17 @@
             <? if($userJoinRequestsCounter > 0) { ?>
             <div class="circle circleNotification c-orange text-center">
                 <span><?= $userJoinRequestsCounter?></span>
+            </div>
+            <? } ?>
+        </div>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <div class="d-flex js-center">
+            <a class="regular-link c-gray m-r-10" href="/my-account/team-create-requests">Create team requests </a>
+            <? if($teamCreateCounter > 0) { ?>
+            <div class="circle circleNotification c-orange text-center">
+                <span><?= $teamCreateCounter?></span>
             </div>
             <? } ?>
         </div>
@@ -147,6 +161,17 @@
                             <? if($userJoinRequestsCounter > 0) { ?>
                             <div class="circle circleNotification c-orange text-center">
                                 <span><?= $userJoinRequestsCounter?></span>
+                            </div>
+                            <? } ?>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="sidebar-tab text-center">
+                        <div class="d-flex js-center">
+                            <a class="regular-link c-gray m-r-10" href="/my-account/team-create-requests">Create team requests </a>
+                            <? if($teamCreateCounter > 0) { ?>
+                            <div class="circle circleNotification c-orange text-center">
+                                <span><?= $teamCreateCounter?></span>
                             </div>
                             <? } ?>
                         </div>

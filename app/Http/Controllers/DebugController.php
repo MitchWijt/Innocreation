@@ -7,6 +7,7 @@ use App\Expertises_linktable;
 use App\Team;
 use App\UserChat;
 use App\UserMessage;
+use App\UserWork;
 use App\WorkspaceShortTermPlannerBoard;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
@@ -35,6 +36,8 @@ class DebugController extends Controller
      */
     public function test(){
         if($this->authorized(true)){
+            $userWorkPosts = UserWork::select("*")->whereNotIn("id", [1,2,3,4,5,6])->orderBy("created_at", "DESC")->limit(15)->get();
+            dd($userWorkPosts);
 //        $client = $this->getService("stream");
 //        $messageFeed = $client->feed('user', 10);
 //

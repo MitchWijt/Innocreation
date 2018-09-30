@@ -80,7 +80,6 @@
                                                     <? if($team) { ?>
                                                         <? if(in_array($expertise->expertise_id, $neededExpertisesArray)) { ?>
                                                             <? if($team->checkInvite($expertise->expertise_id, $team->id, $user->id) == false) { ?>
-
                                                                 <? if(!$team->packageDetails() || !$team->hasPaid()) { ?>
                                                                     <? if(count($team->getMembers()) >= 2) { ?>
                                                                         <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>

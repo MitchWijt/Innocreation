@@ -120,6 +120,12 @@ Route::post("/my-account/acceptTeamInvite","UserController@acceptTeamInviteActio
 
 Route::post("/my-account/rejectTeamInvite","UserController@rejectTeamInviteAction");
 
+Route::get("/my-account/team-create-requests","UserController@TeamCreateRequestsAction");
+
+Route::post("/my-account/acceptCreateTeamRequest","UserController@acceptCreateTeamRequestAction");
+
+Route::post("/my-account/rejectCreateTeamRequest","UserController@rejectCreateTeamRequestAction");
+
 //Support tickets
 Route::get("/my-account/support-tickets","UserController@userSupportTickets");
 
@@ -543,7 +549,7 @@ Route::post("/feed/likeTeamProduct", "FeedController@likeTeamProductAction");
 
 Route::post("/feed/getSearchedUsersTeamProduct", "FeedController@getSearchedUsersTeamProductAction");
 
-Route::post("/feed/shareTeamProduct", "FeedController@shareTeamProductAction");
+Route::post("/feed/shareFeedPost", "FeedController@shareFeedPostAction");
 
 Route::post("/feed/postTeamProductComment", "FeedController@postTeamProductCommentAction");
 
@@ -553,6 +559,12 @@ Route::get("/team-product/{slug?}", "FeedController@TeamProductsAction");
 Route::get("/innocreatives", "FeedController@workFeedIndexAction");
 
 Route::post("/feed/getUserworkPosts", "FeedController@getUserworkPostsAction");
+
+Route::post("/feed/getMoreUserworkPosts", "FeedController@getMoreUserworkPostsAction");
+
+Route::post("/feed/upvoteUserWork", "FeedController@upvoteUserWorkAction");
+
+Route::get("/innocreatives/{id?}", "FeedController@workFeedIndexAction");
 
 //========================CHECKOUT/PACKAGES========================
 

@@ -17,6 +17,7 @@ use App\SplitTheBillLinktable;
 use App\SupportTicket;
 use App\SupportTicketMessage;
 use App\Team;
+use App\TeamCreateRequest;
 use App\TeamReview;
 use App\User;
 use App\UserChat;
@@ -1240,5 +1241,90 @@ class UserController extends Controller
         } else {
             return redirect($_SERVER["HTTP_REFERER"])->withErrors("Passwords don't match");
         }
+    }
+
+    public function TeamCreateRequestsAction(){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $teamCreateRequests = TeamCreateRequest::select("*")->where("receiver_user_id", $user->id)->get();
+
+        return view("/public/user/teamCreateRequests", compact("user", "teamCreateRequests"));
+    }
+
+    public function acceptCreateTeamRequestAction(Request $request){
+        $teamRequestId = $request->input("teamCreateRequestId");
+        $teamCreateRequest = TeamCreateRequest::select("*")->where("id", $teamRequestId)->first();
+        $teamCreateRequest->accepted = 1;
+        $teamCreateRequest->save();
+
+        $team_name = $teamCreateRequest->sender->firstname . " and " . $teamCreateRequest->receiver->firstname . " " . "team";
+        $team = new Team;
+        $team->team_name = ucfirst($team_name);
+        $team->slug = str_replace(" ", "-", strtolower($team_name));
+        $team->ceo_user_id = $teamCreateRequest->sender_user_id;
+        $team->created_at = date("Y-m-d H:i:s");
+        $team->team_profile_picture = "defaultProfilePicture.png";
+        $team->save();
+
+        $joinRequest = new JoinRequestLinktable();
+        $joinRequest->team_id = $team->id;
+        $joinRequest->user_id = $teamCreateRequest->receiver_user_id;
+        $joinRequest->expertise_id = $teamCreateRequest->receiver->getExpertises()->First()->id;
+        $joinRequest->accepted = 1;
+        $joinRequest->created_at = date("Y-m-d");
+        $joinRequest->save();
+
+        Session::set("team_id", $team->id);
+        Session::set("team_name", $team->team_name);
+
+        $sender = User::select("*")->where("id", $teamCreateRequest->sender_user_id)->first();
+        $receiver = User::select("*")->where("id", $teamCreateRequest->receiver_user_id)->first();
+
+        $sender->team_id = $team->id;
+        $sender->save();
+
+        $receiver->team_id = $team->id;
+        $receiver->save();
+
+        $UserChat = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", $sender->id)->first();
+
+        $message = new UserMessage();
+        $message->sender_user_id = 1;
+        $message->message = "$sender->firstname has accepted to create a team with you! start chatting and with each other and start creating! goodluck!";
+        $message->user_chat_id = $UserChat->id;
+        $message->time_sent = $this->getTimeSent();
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+
+        $user = User::select("*")->where("id", $teamCreateRequest->sender_user_id)->first();
+        $this->saveAndSendEmail($sender, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+
+
+        return redirect("/my-team");
+
+    }
+
+    public function rejectCreateTeamRequestAction(Request $request){
+        $teamRequestId = $request->input("teamCreateRequestId");
+        $teamCreateRequest = TeamCreateRequest::select("*")->where("id", $teamRequestId)->first();
+        $teamCreateRequest->accepted = 2;
+        $teamCreateRequest->save();
+
+        $sender = User::select("*")->where("id", $teamCreateRequest->sender_user_id)->first();
+
+
+        $UserChat = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", $sender->id)->first();
+
+        $message = new UserMessage();
+        $message->sender_user_id = 1;
+        $message->message = "$sender->firstname has declined your request to create a team together. But don't worry there more chances! have a look again at all the InnoCreatives!";
+        $message->user_chat_id = $UserChat->id;
+        $message->time_sent = $this->getTimeSent();
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+
+        $user = User::select("*")->where("id", $teamCreateRequest->sender_user_id)->first();
+        $this->saveAndSendEmail($sender, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+
+        return redirect($_SERVER["HTTP_REFERER"]);
     }
 }

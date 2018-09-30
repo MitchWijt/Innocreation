@@ -36,6 +36,7 @@
         <link rel="stylesheet" href="/css/checkout/pricing.css">
         <link rel="stylesheet" href="/css/checkout/selectPackage.css">
         <link rel="stylesheet" href="/css/registerProcess/index.css">
+        <link rel="stylesheet" href="/css/userworkFeed/index.css">
     {{--CSS PLUGINS--}}
         <link rel="stylesheet" href="/assets/build/content-tools.min.css">
         <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
@@ -111,7 +112,7 @@
 @yield('content')
 @yield('pagescript')
 <? if(!isset($pageType) || $pageType != "checkout") { ?>
-    <? if( $pageType != "innoCreatives") { ?>
+    <? if(!isset($pageType) || $pageType != "innoCreatives") { ?>
         @include('includes/footer')
     <? } ?>
 <? } ?>
