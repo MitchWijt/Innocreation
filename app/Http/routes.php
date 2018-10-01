@@ -92,6 +92,8 @@ Route::post("/my-account/saveUserPortfolio", "UserController@saveUseraccountPort
 
 Route::post("/my-account/editUserPortfolio", "UserController@editUserPortfolio");
 
+Route::post("/user/savePortfolioAsUserWork", "UserController@savePortfolioAsUserWorkAction");
+
 Route::post("/deleteUserPortfolio", "UserController@deleteUserPortfolio");
 // User chats
 Route::get("/my-account/chats", "UserController@userAccountChats");
@@ -141,6 +143,11 @@ Route::get("/my-account/favorite-teams","UserController@favoriteTeamsAction");
 Route::post("/user/joinTeamFromHelper","UserController@joinTeamFromHelperAction");
 
 Route::post("/user/finishHelper","UserController@finishHelperAction");
+
+// follow user
+Route::post("/user/followUser","UserController@followUserAction");
+
+Route::post("/user/unfollowUser","UserController@unfollowUserAction");
 
 
 //payments

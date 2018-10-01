@@ -5,6 +5,7 @@ use App\Expertises_linktable;
 
 use Faker\Provider\Payment;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Session;
 use Mollie\Api\MollieApiClient;
 use Symfony\Component\EventDispatcher\Tests\Service;
 
@@ -276,6 +277,15 @@ class User extends Authenticatable
     public function hasUpvote($userWorkId){
         $userUpvote = UserUpvoteLinktable::select("*")->where("user_id", $this->id)->where("user_work_id", $userWorkId)->get();
         if(count($userUpvote) > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function checkFollow($user_id){
+        $userFollow = UserFollowLinktable::select("*")->where("user_id", Session::get("user_id"))->where("followed_user_id", $user_id)->get();
+        if(count($userFollow) > 0){
             return true;
         } else {
             return false;

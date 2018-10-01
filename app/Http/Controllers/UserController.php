@@ -21,11 +21,13 @@ use App\TeamCreateRequest;
 use App\TeamReview;
 use App\User;
 use App\UserChat;
+use App\UserFollowLinktable;
 use App\UserMessage;
 use App\Payments;
 use App\UserPortfolio;
 use App\TeamPackage;
 use App\NeededExpertiseLinktable;
+use App\UserWork;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Http\Middleware\RolesMiddleware;
@@ -1376,5 +1378,60 @@ class UserController extends Controller
         $this->saveAndSendEmail($sender, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
 
         return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function followUserAction(Request $request){
+        if($this->authorized()){
+            $userId = $request->input("user_id");
+            $userFollow = new UserFollowLinktable();
+            $userFollow->user_id = Session::get("user_id");
+            $userFollow->followed_user_id = $userId;
+            $userFollow->created_at = date("Y-m-d H:i:s");
+            $userFollow->save();
+
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
+    }
+
+    public function unfollowUserAction(Request $request){
+        if($this->authorized()){
+            $userId = $request->input("user_id");
+            $userFollow = UserFollowLinktable::select("*")->where("user_id", Session::get("user_id"))->where("followed_user_id", $userId)->first();
+            $userFollow->delete();
+
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
+    }
+
+    public function savePortfolioAsUserWorkAction(Request $request){
+        if($this->authorized()){
+            $portfolioId = $request->input("portfolio_id");
+
+            $userPortfolio = UserPortfolio::select("*")->where("id", $portfolioId)->first();
+            $userPortfolio->posted_as_work = 1;
+            $userPortfolio->save();
+
+            $userSlug = $userPortfolio->user->slug;
+
+            $userWork = new UserWork();
+            $userWork->user_id = $userPortfolio->user_id;
+            $userWork->title = $userPortfolio->title;
+            $userWork->description = $userPortfolio->description;
+            $userWork->save();
+
+            if($userPortfolio->image != null) {
+                Storage::disk('spaces')->copy("users/$userSlug/portfolios/$userPortfolio->image", "users/$userSlug/userworks/$userWork->id/$userPortfolio->image");
+                $userWork->content = $userPortfolio->image;
+                $userWork->save();
+            }
+
+            $userWork->progress = null;
+            $userWork->pinned = 0;
+            $userWork->upvotes = null;
+            $userWork->created_at = date("Y-m-d H:i:s");
+            $userWork->save();
+
+            return redirect("/innocreatives/$userWork->id");
+        }
     }
 }

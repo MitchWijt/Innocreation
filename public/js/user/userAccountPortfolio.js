@@ -71,3 +71,9 @@ $(".deleteCrossPortfolio").on("click",function () {
         });
     }
 });
+
+$(".saveAsUserWork").on("click",function () {
+    var id = $(this).data("id");
+
+    $(".saveAsUserWorkForm-" + id).submit();
+});

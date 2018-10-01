@@ -17,16 +17,18 @@
                 </div>
                 <div class="col-sm-12 text-center">
                     <p class="f-17 m-t-15 m-b-5" style="padding: 5px !important"><?= $userWorkPost->description?></p>
-                    <img style="width: 100% !important;" src="/images/portfolioImages/<?= $userWorkPost->content?>" alt="">
+                    <img style="width: 100% !important;" src="<?= $userWorkPost->getImage()?>" alt="">
                 </div>
                 <div class="col-sm-12">
                     <div class="row">
                         <div class="col-sm-6 p-l-25 m-t-10">
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="70"
-                                     aria-valuemin="0" aria-valuemax="100" style="width:<?= $userWorkPost->progress?>;"><?= $userWorkPost->progress?> finished
+                            <? if($userWorkPost->progress != null) { ?>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="70"
+                                         aria-valuemin="0" aria-valuemax="100" style="width:<?= $userWorkPost->progress?>;"><?= $userWorkPost->progress?> finished
+                                    </div>
                                 </div>
-                            </div>
+                            <? } ?>
                         </div>
                         <div class="col-sm-6 m-t-5 p-r-25">
                             <a class="regular-link pull-right f-14 m-0">20 Comments</a>
