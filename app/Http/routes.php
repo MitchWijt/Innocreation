@@ -404,6 +404,8 @@ Route::post("/message/getAssistanceTicketMessages", "MessageController@getAssist
 
 Route::post("/message/getTeamProductComments", "MessageController@getTeamProductCommentsAction");
 
+Route::post("/message/getUserWorkComments", "MessageController@getUserWorkCommentsAction");
+
 
 
 
@@ -572,6 +574,10 @@ Route::post("/feed/getMoreUserworkPosts", "FeedController@getMoreUserworkPostsAc
 Route::post("/feed/upvoteUserWork", "FeedController@upvoteUserWorkAction");
 
 Route::get("/innocreatives/{id?}", "FeedController@workFeedIndexAction");
+
+Route::post("/feed/postUserWork", "FeedController@postUserWorkAction");
+
+Route::post("/feed/postUserWorkComment", "FeedController@postUserWorkCommentAction");
 
 //========================CHECKOUT/PACKAGES========================
 

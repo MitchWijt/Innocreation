@@ -203,3 +203,141 @@ $(document).on("click",".toggleLink",function () {
     window.open('/login', '_blank');
 });
 
+
+if($(".userJS").val() == 1) {
+    var textarea = document.querySelector('textarea');
+
+    textarea.addEventListener('keydown', autosize);
+
+    function autosize() {
+        var el = this;
+        setTimeout(function () {
+            el.style.cssText = 'height:auto; ';
+            // for box-sizing other than "content-box" use:
+            // el.style.cssText = '-moz-box-sizing:content-box';
+            el.style.cssText = 'height:' + el.scrollHeight + 'px';
+        }, 200);
+    }
+}
+
+$(".submitPost").on("mouseover",function () {
+    $(this).attr("style", "color: #FF6100")
+});
+
+$(".submitPost").on("mouseleave",function () {
+    $(this).attr("style", "color: #000000")
+});
+
+$(".openForm").on("mouseover",function () {
+    $(this).attr("style", "color: #FF6100")
+});
+
+$(".openForm").on("mouseleave",function () {
+    $(this).attr("style", "color: #646567")
+});
+
+$(".openForm").on("click",function () {
+    $(".userworkPostForm").removeClass("hidden");
+    $(this).addClass("hidden");
+});
+
+$(".closeForm").on("click",function () {
+    $(".userworkPostForm").addClass("hidden");
+    $(".openForm").removeClass("hidden");
+});
+
+
+$(document).on('click', '.addPicture', function() {
+    $(this).parents(".fileUpload").find(".userwork_image").click();
+});
+
+$(document).on("change", ".userwork_image",function () {
+    var _this = $(this);
+    var filename = $(this).val().split('\\').pop();
+    _this.parents(".fileUpload").find(".fileName").text(filename);
+
+});
+
+$(".submitPost").on("click",function () {
+    $(".userWorkForm").submit();
+});
+
+$(document).on("click", ".toggleComments", function () {
+    var user_work_id = $(this).data("id");
+
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/message/getUserWorkComments",
+        data: {'user_work_id': user_work_id},
+        success: function (data) {
+            $(".comments").each(function () {
+                if($(this).data("id") == user_work_id){
+                    $(this).find(".userWorkComments").html(data);
+                    $("#commentCollapse-" + user_work_id).toggle();
+                }
+            });
+        }
+    });
+    setTimeout(function(){
+        $(".userWorkComments").each(function () {
+            if($(this).data("id") == user_work_id) {
+                var objDiv = $(this);
+                if (objDiv.length > 0) {
+                    objDiv[0].scrollTop = objDiv[0].scrollHeight;
+                }
+            }
+        });
+    }, 1000);
+});
+
+$(document).on("click", ".postComment", function () {
+    var user_work_id = $(this).parents(".postCommentForm").find(".user_work_id").val();
+    var sender_user_id = $(this).parents(".postCommentForm").find(".sender_user_id").val();
+    var comment = $(this).parents(".postCommentForm").find(".comment").val();
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/feed/postUserWorkComment",
+        data: {'user_work_id': user_work_id, 'sender_user_id' : sender_user_id, 'comment' : comment},
+        dataType: "JSON",
+        success: function (data) {
+            var message = $('.emptyMessage').first().clone();
+            console.log(message);
+            $(".userWorkComments").each(function () {
+                if($(this).data("id") == user_work_id){
+                    console.log("yep");
+                    var allMessages = $(this);
+                    $(message).appendTo(allMessages);
+                    message.removeClass("hidden");
+                    message.find(".message").text(data['message']);
+                    message.find(".timeSent").text(data['timeSent']);
+                    $(".comment").val("");
+                }
+            });
+        }
+    });
+    setTimeout(function(){
+        $(".userWorkComments").each(function () {
+            if($(this).data("id") == user_work_id) {
+                var objDiv = $(this);
+                if (objDiv.length > 0) {
+                    objDiv[0].scrollTop = objDiv[0].scrollHeight;
+                }
+            }
+        });
+    }, 1000);
+});
+

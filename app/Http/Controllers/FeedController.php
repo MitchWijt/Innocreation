@@ -11,10 +11,12 @@ use App\UserChat;
 use App\UserMessage;
 use App\UserUpvoteLinktable;
 use App\UserWork;
+use App\UserWorkComment;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class FeedController extends Controller
 {
@@ -244,6 +246,70 @@ class FeedController extends Controller
             return 1;
         } else {
             return 2;
+        }
+    }
+
+    public function postUserWorkAction(Request $request){
+        if($this->authorized()){
+            $userId = $request->input("user_id");
+            $file = $request->file("image");
+            $percentage = $request->input("percentageProgress");
+            $link = $request->input("imageLink");
+            $description = htmlspecialchars($request->input("newUserWorkDescription"));
+
+            $userWork = new UserWork();
+            $userWork->description = $description;
+            $userWork->user_id = $userId;
+            if($percentage){
+                $userWork->progress = $percentage;
+            }
+            $userWork->save();
+
+            if($link){
+                $userWork->link = $link;
+            }
+            if($file) {
+                $size = $this->formatBytes($file->getSize());
+                if ($size < 8) {
+                    $filename = preg_replace('/[^a-zA-Z0-9-_\.]/', '', $file->getClientOriginalName());
+
+                    $user = User::select("*")->where("id", $userId)->first();
+                    Storage::disk('spaces')->put("users/$user->slug/userworks/$userWork->id/$filename", file_get_contents($file->getRealPath()), "public");
+
+                    $userWork->content = $filename;
+                    $userWork->created_at = date("Y-m-d H:i:s");
+                    $userWork->save();
+                    return redirect($_SERVER["HTTP_REFERER"]);
+                } else {
+                    $userWork->delete();
+                    return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
+                }
+            } else {
+                $userWork->created_at = date("Y-m-d H:i:s");
+                $userWork->save();
+                return redirect($_SERVER["HTTP_REFERER"]);
+            }
+        }
+    }
+
+    public function postUserWorkCommentAction(Request $request){
+        if($this->authorized()){
+            $senderUserId = $request->input("sender_user_id");
+            $user_work_id = $request->input("user_work_id");
+            $comment = $request->input("comment");
+
+            $userWorkComment = new UserWorkComment();
+            $userWorkComment->sender_user_id = $senderUserId;
+            $userWorkComment->user_work_id = $user_work_id;
+            $userWorkComment->time_sent = $this->getTimeSent();
+            $userWorkComment->description = $comment;
+            $userWorkComment->created_at = date("Y-m-d H:i:s");
+            $userWorkComment->save();
+
+
+            $messageArray = ["message" => $comment, "timeSent" => $this->getTimeSent()];
+            echo json_encode($messageArray);
+
         }
     }
 }
