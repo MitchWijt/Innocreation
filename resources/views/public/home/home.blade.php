@@ -41,28 +41,30 @@
                         <? $result1 = 0?>
                         <? $result2 = 2?>
                         @endhandheld
-                    <? foreach($carouselUsers as $carouselUser) { ?>
+                    <? foreach($carouselUserWorks as $carouselUserWork) { ?>
                         <? if($counter % $modulo == $result1) { ?>
                         <div class="carousel-item <? if($counter == 0) echo "active"?>">
                             <div class="row @handheld d-flex js-center @endhandheld">
                         <? } ?>
                                 <div class="@handheld col-10 @elsedesktop col-md-4 @endhandheld carouselItem">
+                                    <a class="td-none" href="<?= $carouselUserWork->getUrl()?>">
                                     <div class="card-sm m-t-20 m-b-20 @tablet p-10 @endtablet">
-                                        <div class="card-block m-t-10 openCarouselModal" @notmobile style="max-height: 165px !important;" @endnotmobile data-user-id="<?= $carouselUser->id?>">
+                                        <div class="card-block m-t-10 " @notmobile style="max-height: 165px !important;" @endnotmobile data-user-id="<?= $carouselUserWork->user_id?>">
                                             <div class="row">
                                                 <div class="col-sm-4 p-l-20 @notmobile p-r-0 @endnotmobile text-center">
                                                     <div class="d-flex js-center">
-                                                        <div class="avatar" style="background: url('<?= $carouselUser->getProfilePicture()?>')"></div>
+                                                        <div class="avatar" style="background: url('<?= $carouselUserWork->getImage()?>')"></div>
                                                     </div>
-                                                    <p style="word-break: break-all"><?= $carouselUser->firstname?></p>
+                                                    <p style="word-break: break-all"><?= $carouselUserWork->user->firstname?></p>
                                                 </div>
                                                 <div class="col-sm-8 p-l-25 p-b-10">
                                                     <p class="underline m-b-5">Introduction:</p>
-                                                    <p class="m-0"><?= substr($carouselUser->introduction, 0, 40) . "... <span class='c-orange openCarouselModalLink underline c-pointer' data-user-id='$carouselUser->id'>read more</span>";?></p>
+                                                    <p class="m-0" style="word-break: break-all"><?= substr($carouselUserWork->description, 0, 40) . "... <span class='c-orange underline c-pointer' data-user-id='$carouselUserWork->user_id'>read more</span>";?></p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    </a>
                                 </div>
                         <? if($counter % $modulo == $result2) { ?>
                             </div>
@@ -73,15 +75,15 @@
                 </div>
                 @handheld
                     @mobile
-                        <i class="zmdi zmdi-chevron-left p-absolute c-orange carousel-control-prev" style="top: 85px; left: -15px; font-size: 40px !important;"></i>
-                        <i class="zmdi zmdi-chevron-right p-absolute c-orange carousel-control-next" style="top: 85px; right: -15px; font-size: 40px !important;"></i>
+                        <i class="zmdi zmdi-chevron-left p-absolute c-orange carousel-control-prev c-pointer" style="top: 85px; left: -15px; font-size: 40px !important;"></i>
+                        <i class="zmdi zmdi-chevron-right p-absolute c-orange carousel-control-next c-pointer" style="top: 85px; right: -15px; font-size: 40px !important;"></i>
                     @elsetablet
-                        <i class="zmdi zmdi-chevron-left p-absolute c-orange carousel-control-prev" style="top: 70px; left: -30px; font-size: 40px !important;"></i>
-                        <i class="zmdi zmdi-chevron-right p-absolute c-orange carousel-control-next" style="top: 70px; right: -30px; font-size: 40px !important;"></i>
+                        <i class="zmdi zmdi-chevron-left p-absolute c-orange carousel-control-prev c-pointer" style="top: 70px; left: -30px; font-size: 40px !important;"></i>
+                        <i class="zmdi zmdi-chevron-right p-absolute c-orange carousel-control-next c-pointer" style="top: 70px; right: -30px; font-size: 40px !important;"></i>
                     @endmobile
                 @elsedesktop
-                    <i class="zmdi zmdi-chevron-left p-absolute c-orange carousel-control-prev" style="top: 55px; left: -120px; font-size: 40px !important;"></i>
-                    <i class="zmdi zmdi-chevron-right p-absolute c-orange carousel-control-next" style="top: 55px; right: -120px; font-size: 40px !important;"></i>
+                    <i class="zmdi zmdi-chevron-left p-absolute c-orange carousel-control-prev c-pointer" style="top: 55px; left: -120px; font-size: 40px !important;"></i>
+                    <i class="zmdi zmdi-chevron-right p-absolute c-orange carousel-control-next c-pointer" style="top: 55px; right: -120px; font-size: 40px !important;"></i>
                 @endhandheld
             </div>
             {{--<div class="row p-absolute" style="bottom: 30px; left: 520px">--}}

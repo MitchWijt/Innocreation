@@ -9,7 +9,7 @@
 <? foreach($userWork->getComments() as $comment) { ?>
 <? if(isset($user)) { ?>
 <? if($comment->sender_user_id == $user->id) { ?>
-<div class="row c-gray sendedMessageAjax">
+<div class="row c-gray sendedMessageAjax ">
     <div class="col-md-12">
         <div class="col-md-5 messageSent pull-right m-b-10">
             <p class="message break-word"><?= $comment->description?></p>

@@ -908,7 +908,7 @@ footer{
     background-position:center,center !important;
 }
 
-.messageInputNetwork {
+.messageInputDynamic {
     height:40px;
     transition: all 0.5s;
     -webkit-transition: all 0.5s; /* Safari */
@@ -917,7 +917,7 @@ input::placeholder{
     padding-left: 2px !important;;
 }
 
-.messageInputNetwork:focus {
+.messageInputDynamic:focus {
     height:130px;
 }
 

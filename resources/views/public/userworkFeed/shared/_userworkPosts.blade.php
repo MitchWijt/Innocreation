@@ -5,27 +5,42 @@
                 <div class="col-sm-12 m-t-15">
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="avatar-sm m-r-10 m-l-10" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>')"></div>
-                            <p style="margin-top: 3px !important" data-toggle="popover" data-content='<?= $userWorkPost->user->getPopoverViewUserWork()?>'><?= $userWorkPost->user->firstname?></p>
+                            <div class="avatar-sm m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>')"></div>
+                            <p class="popoverUser" style="margin-top: 3px !important" data-toggle="popover" data-content='<?= $userWorkPost->user->getPopoverViewUserWork()?>'><?= $userWorkPost->user->firstname?></p>
                         </div>
                         <div class="col-sm-6 p-r-25">
-                            <p class="pull-right m-b-0 upvoteNumber-<?= $userWorkPost->id?>" style="margin-top: 7px !important"><?= $userWorkPost->upvotes?></p>
+                            <p class="pull-right m-b-0 upvoteNumber-<?= $userWorkPost->id?>" style="margin-top: 7px !important"><? if($userWorkPost->upvotes) echo $userWorkPost->upvotes; else echo 0;?></p>
                             <i class="zmdi zmdi-caret-up f-40 pull-right m-r-5"></i>
                         </div>
                     </div>
                     <div class="hr col-sm-12 p-l-0"></div>
                 </div>
-                <div class="col-sm-12 text-center">
-                    <p class="f-17 m-t-15 m-b-5" style="padding: 5px !important; white-space: pre-line;"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
-                    <? if($userWorkPost->content != null) { ?>
-                        <? if($userWorkPost->link != null) { ?>
-                            <a target="_blank" href="<?= $userWorkPost->link?>">
-                                <img style="width: 100% !important;" src="<?= $userWorkPost->getImage()?>" alt="<?= $userWorkPost->user->firstname?>">
-                            </a>
-                        <? } else { ?>
-                            <img style="width: 100% !important;" src="<?= $userWorkPost->getImage()?>" alt="<?= $userWorkPost->user->firstname?>">
+                <div class="col-sm-12 text-center p-relative desc">
+                        <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
+                            <i class="zmdi zmdi-more p-absolute f-20 c-pointer popoverMenu" data-toggle="popover" data-content='<?= $userWorkPost->getPopoverMenu()?>' style="top: 2px; right: 25px;"></i>
                         <? } ?>
-                    <? } ?>
+                        <p class="f-17 m-t-15 m-b-5 descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: break-all"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
+                        <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
+                            <div class="m-t-15 m-b-5 editUserWork-<?= $userWorkPost->id?> hidden">
+                                <form action="/feed/editUserWorkPost" method="post">
+                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                    <input type="hidden" name="userWorkId" value="<?= $userWorkPost->id?>">
+                                    <textarea id="description_id" class="col-sm-11 input" rows="6" name="newUserWorkDescription"><? if($userWorkPost->description != null) echo htmlspecialchars_decode($userWorkPost->description);?></textarea>
+                                    <div class="col-sm-12">
+                                        <button class="pull-right btn btn-sm btn-inno m-r-15 m-b-10">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        <? } ?>
+                        <? if($userWorkPost->content != null) { ?>
+                            <? if($userWorkPost->link != null) { ?>
+                                <a target="_blank" href="<?= $userWorkPost->link?>">
+                                    <img style="width: 100% !important;" src="<?= $userWorkPost->getImage()?>" alt="<?= $userWorkPost->user->firstname?>">
+                                </a>
+                            <? } else { ?>
+                                <img style="width: 100% !important;" src="<?= $userWorkPost->getImage()?>" alt="<?= $userWorkPost->user->firstname?>">
+                            <? } ?>
+                        <? } ?>
                 </div>
                 <div class="col-sm-12">
                     <div class="row">
@@ -53,7 +68,7 @@
                                 <i class="zmdi zmdi-share c-pointer f-22 pull-left toggleLink" data-url="<?= $_SERVER["HTTP_HOST"]?>/innocreatives/<?= $userWorkPost->id?>" style="margin-top: 10px !important"></i>
                             <? } ?>
                             <? if(isset($user) && $user->hasUpvote($userWorkPost->id)) { ?>
-                                <p class="pull-right m-b-0 upvoteText c-orange c-pointer" style="margin-top: 7px !important">Upvoted</p>
+                                <p class="pull-right m-b-0 upvoteText c-orange" style="margin-top: 7px !important">Upvoted</p>
                             <? } else { ?>
                                 <p class="pull-right m-b-0 upvoteBtn upvoteText c-pointer" style="margin-top: 7px !important">Upvote</p>
                                 <i class="zmdi zmdi-caret-up f-40 pull-right m-r-5 upvoteBtn upvoteIcon c-pointer"></i>
@@ -64,7 +79,7 @@
             </div>
         </div>
         <div class="collapse" id="commentCollapse-<?= $userWorkPost->id?>">
-            <div class="card-lg userWorkPost" data-id="<?= $userWorkPost->id?>">
+            <div class="card-lg" data-id="<?= $userWorkPost->id?>">
                 <div class="card-block row">
                     <div class="col-sm-12 comments m-t-15" data-id="<?= $userWorkPost->id?>">
                         <div class="o-scroll m-t-20 userWorkComments p-10" data-id="<?= $userWorkPost->id?>" style="height: 350px;">
@@ -77,7 +92,7 @@
                                 <input type="hidden" name="sender_user_id" class="sender_user_id" value="<?= $user->id?>">
                                 <input type="hidden" name="user_work_id" class="user_work_id" value="<?= $userWorkPost->id?>">
                                 <div class="text-center m-t-10">
-                                    <textarea name="comment" placeholder="Write your comment..." class="comment input col-sm-11" rows="1"></textarea>
+                                    <textarea name="comment" placeholder="Write your comment..." class="comment input col-sm-11 messageInputDynamic" rows="1"></textarea>
                                 </div>
                                 <div class="d-flex js-center">
                                     <div class="col-sm-11 p-r-0 m-b-10">
@@ -98,7 +113,7 @@
     </div>
 <? } ?>
 <script>
-    $('[data-toggle="popover"]').popover({ trigger: "manual" , html: true, animation:false, placement: 'auto'})
+    $('.popoverUser').popover({ trigger: "manual" , html: true, animation:false, placement: 'auto'})
         .on("mouseenter", function () {
             var _this = $('[data-toggle="popover"]');
             $(this).popover("show");
@@ -113,6 +128,9 @@
             }
         }, 300);
     });
+
+    $('.popoverMenu').popover({ trigger: "click" , html: true, animation:false, placement: 'right'});
+
 
     $(document).on("click", ".closePopover", function () {
         var _this = $('[data-toggle="popover"]');

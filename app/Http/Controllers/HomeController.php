@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\UserChat;
+use App\UserWork;
 use Illuminate\Http\Request;
 use Session;
 use App\User;
@@ -19,10 +20,11 @@ class HomeController extends Controller
     public function index() {
         $title = "Make your dreams become a reality!";
         $og_description = "Create a team with like-minded people, help each other make dreams become a reality!";
-        $carouselUsers = User::select("*")->where("introduction", "!=", null)->where("motivation", "!=", null)->where("profile_picture", "!=", "defaultProfilePicture.png")->get();
+        $carouselUserWorks = UserWork::select("*")->where("content", "!=", null)->orderBy("created_at", "DESC")->limit(6)->get();
+
 
 //        Session::flush();
-       return view("public/home/home", compact("title", "og_description", "carouselUsers"));
+       return view("public/home/home", compact("title", "og_description", "carouselUserWorks"));
     }
 
     /**

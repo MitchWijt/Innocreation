@@ -312,4 +312,33 @@ class FeedController extends Controller
 
         }
     }
+
+    public function deleteUserWorkPostAction(Request $request){
+        $userWorkId = $request->input("userWorkId");
+        $userId = Session::get("user_id");
+
+        $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
+        if($userWork->user_id == $userId){
+            $userWork->delete();
+            return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Successfully deleted your post");
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors("Failed to delete the post");
+        }
+    }
+
+    public function editUserWorkPostAction(Request $request){
+        $userWorkId = $request->input("userWorkId");
+        $userId = Session::get("user_id");
+        $description = $request->input("newUserWorkDescription");
+
+        $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
+        if($userWork->user_id == $userId){
+            $userWork->description = $description;
+            $userWork->save();
+            return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Successfully edited your post!");
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors("Failed to edit the post");
+        }
+
+    }
 }

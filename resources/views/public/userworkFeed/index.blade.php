@@ -3,6 +3,11 @@
     <input type="hidden" class="totalAmount" value="<?= $totalAmount?>">
     <div class="d-flex grey-background vh85">
         <div class="container">
+            <div class="row">
+                <div class="col-sm-12 d-flex js-center">
+                    @include("includes.flash")
+                </div>
+            </div>
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black m-b-0">Innocreatives</h1>
             </div>
@@ -11,17 +16,12 @@
                     <i class="f-12 c-dark-grey">Post your best work/project for everyone to see!</i>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12 d-flex js-center">
-                    @include("includes.flash")
-                </div>
-            </div>
             <hr class="m-b-20">
             <? if(isset($user)) { ?>
             <input type="hidden" class="userJS" value="1">
                 <div class="row">
                     <div class="col-sm-12 d-flex js-center c-dark-grey">
-                        <i class="zmdi zmdi-plus-circle openForm f-40 m-b-20"></i>
+                        <i class="zmdi zmdi-plus-circle openForm f-40 m-b-20 c-pointer"></i>
                     </div>
                 </div>
                 <div class="userworkPostForm hidden">

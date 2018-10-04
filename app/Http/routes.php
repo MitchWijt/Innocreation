@@ -579,6 +579,10 @@ Route::post("/feed/postUserWork", "FeedController@postUserWorkAction");
 
 Route::post("/feed/postUserWorkComment", "FeedController@postUserWorkCommentAction");
 
+Route::post("/feed/deleteUserWorkPost", "FeedController@deleteUserWorkPostAction");
+
+Route::post("/feed/editUserWorkPost", "FeedController@editUserWorkPostAction");
+
 //========================CHECKOUT/PACKAGES========================
 
 Route::get("/pricing", "CheckoutController@pricingAction");

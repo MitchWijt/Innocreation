@@ -318,7 +318,6 @@ $(document).on("click", ".postComment", function () {
             console.log(message);
             $(".userWorkComments").each(function () {
                 if($(this).data("id") == user_work_id){
-                    console.log("yep");
                     var allMessages = $(this);
                     $(message).appendTo(allMessages);
                     message.removeClass("hidden");
@@ -341,3 +340,8 @@ $(document).on("click", ".postComment", function () {
     }, 1000);
 });
 
+$(document).on("click", ".editPostBtn",function () {
+    var id = $(this).data("id");
+    $(".descriptionUserWork-" + id).addClass("hidden");
+    $(".editUserWork-" + id).removeClass("hidden");
+});
