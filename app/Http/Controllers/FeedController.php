@@ -8,6 +8,7 @@ use App\TeamProductComment;
 use App\TeamProductLinktable;
 use App\User;
 use App\UserChat;
+use App\UserFollowLinktable;
 use App\UserMessage;
 use App\UserUpvoteLinktable;
 use App\UserWork;
@@ -287,6 +288,16 @@ class FeedController extends Controller
             } else {
                 $userWork->created_at = date("Y-m-d H:i:s");
                 $userWork->save();
+
+                $followers = UserFollowLinktable::select("*")->where("followed_user_id", $userWork->user_id)->get();
+                if($followers){
+                    foreach($followers as $follower){
+                        $poster = User::select("*")->where("id", $userWork->user_id)->first();
+                        $user = User::select("*")->where("id", $follower->user_id)->first();
+                        $this->saveAndSendEmail($user, "$poster->firstname has posted a new post!", view("/templates/sendInnocreativeNotification", compact("user", "poster")));
+                    }
+                }
+
                 return redirect($_SERVER["HTTP_REFERER"]);
             }
         }

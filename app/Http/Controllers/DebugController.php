@@ -36,8 +36,10 @@ class DebugController extends Controller
      */
     public function test(){
         if($this->authorized(true)){
-            $userWorkPosts = UserWork::select("*")->whereNotIn("id", [1,2,3,4,5,6])->orderBy("created_at", "DESC")->limit(15)->get();
-            dd($userWorkPosts);
+            $user = User::select("*")->where("id", 10)->first();
+            $poster = User::select("*")->where("id", 11)->first();
+            $this->saveAndSendEmail($user, 'You have got a message!', view("/templates/sendInnocreativeNotification", compact("user", "poster")));
+
 //        $client = $this->getService("stream");
 //        $messageFeed = $client->feed('user', 10);
 //

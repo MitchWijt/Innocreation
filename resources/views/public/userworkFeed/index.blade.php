@@ -29,7 +29,7 @@
                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                         <input type="hidden" name="user_id" value="<?= $user->id?>">
                         <div class="row m-b-5 p-relative">
-                            <i class="zmdi zmdi-close c-orange f-19 p-absolute closeForm" style="top: -15px; right: 205px;"></i>
+                            <i class="zmdi zmdi-close c-orange f-19 p-absolute closeForm" @handheld @mobile style="top: -15px; right: 30px;" @elsetablet style="top: -15px; right: 140px;" @endmobile @elsedesktop style="top: -15px; right: 205px;" @endhandheld></i>
                             <div class="col-md-12 d-flex js-center m-t-5">
                                 <textarea placeholder="Post your best work!" id="description_id" class="col-sm-8 input" rows="2" name="newUserWorkDescription"></textarea>
                             </div>
@@ -37,8 +37,8 @@
                         <div class="row m-b-5 d-flex js-center">
                             <div class="col-md-8 m-t-5">
                                 <div class="row">
-                                    <div class="col-sm-4">
-                                        <select name="percentageProgress" class="input">
+                                    <div class="@handheld col-12 @elsedesktop col-sm-4 @endhandheld">
+                                        <select name="percentageProgress" class="input @handheld pull-right m-b-10 @endhandheld">
                                             <option value="" selected disabled>% Progress on project</option>
                                             <option value="10%">10% finished</option>
                                             <option value="20%">20% finished</option>
@@ -52,27 +52,15 @@
                                             <option value="100%">100% finished</option>
                                         </select>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="@handheld col-12 m-b-10 @elsedesktop col-sm-4 @endhandheld">
                                         <input type="text" placeholder="Optional demo link" name="imageLink" class="input pull-right">
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="@handheld col-12 m-b-10 @elsedesktop col-sm-4 @endhandheld">
                                         <div class="fileUpload">
                                             <input type="file" class="userwork_image hidden" name="image">
                                             <button class="btn btn-inno btn-sm pull-right addPicture" type="button">Add picture/video</button>
                                             <span class="fileName pull-right m-r-10"></span>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row m-b-5 d-flex js-center">
-                            <div class="col-md-8 ">
-                                <div class="row">
-                                    <div class="col-sm-6">
-
-                                    </div>
-                                    <div class="col-sm-6">
-
                                     </div>
                                 </div>
                             </div>
