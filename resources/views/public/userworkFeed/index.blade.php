@@ -75,7 +75,7 @@
             <? } else { ?>
                 <input type="hidden" class="userJS" value="0">
                 <div class="text-center m-b-20">
-                    Login or create an account to post your work!
+                    <p class="f-20 text-center"><a class="regular-link" href="/create-my-account">Create an account</a> or <a class="regular-link" href="/login">login</a> to post your work!</p>
                 </div>
             <? } ?>
             <div class="row d-flex js-center userworkData">
@@ -146,6 +146,16 @@
             </div>
         <? } ?>
     </div>
+    <script>
+        $('body').on('click', function (e) {
+            $('[data-toggle=popover]').each(function () {
+                // hide any open popovers when the anywhere else in the body is clicked
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                }
+            });
+        });
+    </script>
 @endsection
 @section('pagescript')
     <script src="/js/userworkFeed/index.js"></script>

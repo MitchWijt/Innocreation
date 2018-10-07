@@ -27,4 +27,7 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
     </php>
+    <php>
+        <server name='HTTP_HOST' value='http://localhost' />
+    </php>
 </phpunit>

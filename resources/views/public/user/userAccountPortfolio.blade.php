@@ -100,7 +100,7 @@
                                     <? if($userPortfolio->posted_as_work != 1) { ?>
                                         <button type="button" class="btn btn-inno pull-right m-t-10 m-r-10 saveAsUserWork" data-id="<?= $userPortfolio->id?>">Post as Innocreative work</button>
                                     <? } else { ?>
-                                        <p class="pull-right m-t-10 m-r-10">posted as innocreative</p>
+                                        <i class="pull-right m-t-15 f-12 m-r-15">posted as innocreative</i>
                                     <? } ?>
                                 </div>
                             </div>

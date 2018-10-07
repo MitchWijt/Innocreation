@@ -76,7 +76,6 @@
                                 <div class="col-sm-12">
                                         <p class="f-20 m-b-0 text-center"><?="&euro;".  $membershipPackage->getPrice()?>/Month</p>
                                     <div class="text-center">
-                                        <small class="f-12">(<?= "&euro;" . $membershipPackage->getPrice(true)?>/Year)</small>
                                     </div>
                                     @notmobile
                                         <hr class="col-sm-4">
