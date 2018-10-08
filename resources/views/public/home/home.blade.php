@@ -191,12 +191,12 @@
                                 <div class="@mobile col-10 m-t-15 @elsedesktop col-sm-10 m-t-15 @endmobile ">
                                     @handheld
                                         @mobile
-                                            <p class="instructions-second-text m-0 f-15">Network with various artists and come up with new ideas in the <a class="regular-link" href="/collaborate">network chat</a></p>
+                                            <p class="instructions-second-text m-0 f-15">Network with various artists and come up with new ideas in the <a class="regular-link" href="/innocreatives">Innocreatives feed</a></p>
                                         @elsetablet
-                                            <p class="instructions-second-text m-0 f-20">Network with various artists and come up with new ideas in the <a class="regular-link" href="/collaborate">network chat</a></p>
+                                            <p class="instructions-second-text m-0 f-20">Network with various artists and come up with new ideas in the <a class="regular-link" href="/innocreatives">Innocreatives feed</a></p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-0 f-22">Network with various artists and come up with new ideas in the <a class="regular-link" href="/collaborate">network chat</a></p>
+                                        <p class="instructions-second-text m-0 f-22">Network with various artists and come up with new ideas in the <a class="regular-link" href="/innocreatives">Innocreatives feed</a></p>
                                     @endhandheld
                                 </div>
                             </div>
@@ -291,7 +291,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 text-center m-t-20">
-                            <h1 class="sub-title col-sm-12">Start networking</h1>
+                            <h1 class="sub-title col-sm-12">Post your work!</h1>
                         </div>
                     </div>
                     <div class="hr col-md-8"></div>
@@ -303,16 +303,16 @@
                     <div class="row d-flex js-center m-t-40 m-b-20">
                         <ul class="instructions-list">
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Instantly create a team and start working with like-minded and motivated people!</p>
+                                <p class="instructions-text f-19 m-0 p-b-10">Discover and engage on other people their work</p>
                             </li>
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Network and chat easliy with all users of Innocreation</p>
+                                <p class="instructions-text f-19 m-0 p-b-10">Post your own best work that you are most proud of</p>
                             </li>
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Find your ideal team and disucuss ideas/passions</p>
+                                <p class="instructions-text f-19 m-0 p-b-10">Get a place in the spotlight on the homepage!</p>
                             </li>
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Get to know other like-minded people!</p>
+                                <p class="instructions-text f-19 m-0 p-b-10">Send a request to create a team together</p>
                             </li>
                         </ul>
                     </div>

@@ -335,7 +335,7 @@ Route::post("/workspace/sendAssistanceTicketMessage", "WorkspaceController@sendA
 Route::post("/workspace/completeAssistanceTicket", "WorkspaceController@completeAssistanceTicketAction");
 
 Route::post("/workspace/deleteAssistanceTicket", "WorkspaceController@deleteAssistanceTicketAction");
-
+ 
 // Dashboard
 
 Route::get("/my-team/workspace/dashboard", "WorkspaceController@workspaceDashboard");
