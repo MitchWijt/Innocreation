@@ -56,3 +56,12 @@ $(".deleteCross").on("click",function () {
     }
 });
 
+$(document).ready(function () {
+    $(".token-input").attr("style", "");
+
+    $(".tokenfield").removeClass("form-control");
+    $(".tokenfield").addClass("col-sm-12");
+
+    $(".token-input").attr("style", "width: 100% !important");
+});
+

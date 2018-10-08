@@ -24,7 +24,7 @@ class User extends Authenticatable
 
     public function getProfilePicture(){
         if($this->profile_picture != "defaultProfilePicture.png") {
-            echo "https://space-innocreation.ams3.digitaloceanspaces.com/users/$this->slug/profilepicture/$this->profile_picture";
+            echo "https://space-innocreation.ams3.cdn.digitaloceanspaces.com/users/$this->slug/profilepicture/$this->profile_picture";
         } else {
             return "/images/profilePicturesUsers/defaultProfilePicture.png";
         }

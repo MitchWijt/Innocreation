@@ -138,12 +138,34 @@ class UserController extends Controller
         $user_id = $request->input("user_id");
         $expertise_id = $request->input("expertise");
         $experience = $request->input("expertise_description");
+        $newExpertise = ucfirst($request->input("newExpertises"));
 
-        $expertise_linktable = new expertises_linktable();
-        $expertise_linktable->user_id = $user_id;
-        $expertise_linktable->expertise_id = $expertise_id;
-        $expertise_linktable->description = $experience;
-        $expertise_linktable->save();
+
+
+        if(!$newExpertise) {
+            $expertise_linktable = new expertises_linktable();
+            $expertise_linktable->user_id = $user_id;
+            $expertise_linktable->expertise_id = $expertise_id;
+            $expertise_linktable->description = $experience;
+            $expertise_linktable->save();
+        } else {
+            $existingExpertise = Expertises::select("*")->where("title", $newExpertise)->first();
+            if(count($existingExpertise) > 0){
+                return redirect($_SERVER["HTTP_REFERER"])->withErrors("This expertise already seems to exist");
+            } else {
+                $expertise = new Expertises();
+                $expertise->title = $newExpertise;
+                $expertise->slug = str_replace(" ", "-", strtolower($newExpertise));
+                $expertise->save();
+
+                $expertise_linktable = new expertises_linktable();
+                $expertise_linktable->user_id = $user_id;
+                $expertise_linktable->expertise_id = $expertise->id;
+                $expertise_linktable->description = $experience;
+                $expertise_linktable->save();
+                return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Succesfully added $newExpertise as your expertise!");
+            }
+        }
         return redirect($_SERVER["HTTP_REFERER"]);
     }
 
