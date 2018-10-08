@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Request;
 use App\User;
 use Mollie\Api\MollieApiClient;
+use Formatter;
 use Redirect;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -13,6 +14,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Support\Facades\Session;
 use GetStream;
+use Response;
 use Mailgun\Mailgun;
 use App\MailMessage;
 
@@ -147,6 +149,71 @@ class Controller extends BaseController
         } else if($unit[$exp] == "GB"){
             return 9;
         }
+    }
+
+    public function export()
+    {
+        $headers = array(
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=file.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        );
+
+        $reviews = User::select("*")->where("id", 10)->get();
+        $columns = array('ReviewID', 'Provider', 'Title', 'Review', 'Location', 'Created', 'Anonymous', 'Escalate', 'Rating', 'Name');
+
+        $callback = function() use ($reviews, $columns)
+        {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach($reviews as $review) {
+                dd($review);
+                fputcsv($file, array($review->id, $review->firstname, $review->lastname, $review->middlename, $review->city, $review->country_id, $review->slug, $review->hash, $review->introduction, $review->created_at));
+            }
+            fclose($file);
+        };
+        response()->download("test.csv", "test.csv", $headers);
+    }
+
+    public function csv(){
+
+    }
+    public function download()
+    {
+        $list = User::select("*")->where("id", 10)->get()->toArray();
+
+        # add headers for each column in the CSV download
+        array_unshift($list, array_keys($list[0]));
+
+
+
+        $FH = fopen('php://output', 'w');
+        foreach ($list as $row) {
+            fputcsv($FH, $row, ",");
+        }
+        header('Content-Type: application/csv');
+        header('Content-Disposition: attachment; filename=galleries.csv');
+        fpassthru($FH);
+    }
+
+    public function array_to_csv_download($array, $filename = "export.csv", $delimiter=";") {
+        // open raw memory as file so no temp files needed, you might run out of memory though
+        $f = fopen('php://output', 'w');
+        // loop over the input array
+        foreach ($array as $line) {
+            // generate csv lines from the inner arrays
+            fputcsv($f, $line, $delimiter);
+        }
+        // reset the file pointer to the start of the file
+        // tell the browser it's going to be a csv file
+        header('Content-Type: application/csv');
+        // tell the browser we want to save it instead of displaying it
+        header('Content-Disposition: attachment; filename="'.$filename.'";');
+        // make php send the generated csv lines to the browser
+
     }
 }
 

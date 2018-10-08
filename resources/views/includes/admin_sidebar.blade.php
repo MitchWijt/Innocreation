@@ -27,6 +27,10 @@
         </div>
     </div>
     <hr>
+    <div class="sidebar-tab text-center p-relative">
+        <a class="regular-link c-gray" href="/admin/commercialData">Data</a>
+    </div>
+    <hr>
     <div class="sidebar-tab text-center">
         <a class="regular-link c-gray" href="">Payments *</a>
     </div>

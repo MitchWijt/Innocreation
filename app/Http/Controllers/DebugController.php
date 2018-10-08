@@ -36,9 +36,7 @@ class DebugController extends Controller
      */
     public function test(){
         if($this->authorized(true)){
-            $user = User::select("*")->where("id", 10)->first();
-            $poster = User::select("*")->where("id", 11)->first();
-            $this->saveAndSendEmail($user, 'You have got a message!', view("/templates/sendInnocreativeNotification", compact("user", "poster")));
+            $this->csv();
 
 //        $client = $this->getService("stream");
 //        $messageFeed = $client->feed('user', 10);
