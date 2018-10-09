@@ -291,7 +291,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 text-center m-t-20">
-                            <h1 class="sub-title col-sm-12">Post your work!</h1>
+                            <h1 class="sub-title col-sm-12">Share your work!</h1>
                         </div>
                     </div>
                     <div class="hr col-md-8"></div>
@@ -306,7 +306,7 @@
                                 <p class="instructions-text f-19 m-0 p-b-10">Discover and engage on other people their work</p>
                             </li>
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Post your own best work that you are most proud of</p>
+                                <p class="instructions-text f-19 m-0 p-b-10">Share your own best work that you are most proud of</p>
                             </li>
                             <li class="instructions-list-item">
                                 <p class="instructions-text f-19 m-0 p-b-10">Get a place in the spotlight on the homepage!</p>

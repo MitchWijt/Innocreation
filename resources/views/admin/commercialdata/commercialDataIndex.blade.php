@@ -42,7 +42,6 @@
             $(".dateStart").datepicker({
                 weekStart: 1,
                 autoclose: true,
-                minDate: new Date()
             });
         });
 

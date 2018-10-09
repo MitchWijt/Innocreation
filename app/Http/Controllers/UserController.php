@@ -309,6 +309,7 @@ class UserController extends Controller
                         Storage::disk('spaces')->put("users/$user->slug/portfolios/" . $filename, file_get_contents($file->getRealPath()), "public");
 
                         $userPortfolio->image = $filename;
+                        $userPortfolio->created_at = date("Y-m-d H:i:s");
                         $userPortfolio->save();
                         return redirect($_SERVER["HTTP_REFERER"]);
                     } else {
