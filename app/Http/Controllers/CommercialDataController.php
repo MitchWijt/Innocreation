@@ -59,9 +59,7 @@ class CommercialDataController extends Controller
             $AccountsWithTeam = User::select("*")->where("team_id", "!=", null)->whereBetween("created_at", array($startDate, $endDate))->count();
             $AccountsWithProfilePic = User::select("*")->where("profile_picture", "!=", "defaultProfilePicture.png")->whereBetween("created_at", array($startDate, $endDate))->count();
 
-
-
-            $users = User::all();
+            
             $date1 = $request->input("startDate");
             $date2 = $request->input("endDate");
             header("Content-type: application/csv");

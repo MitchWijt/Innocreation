@@ -20,7 +20,7 @@ class HomeController extends Controller
     public function index() {
         $title = "Make your dreams become a reality!";
         $og_description = "Create a team with like-minded people, help each other make dreams become a reality!";
-        $carouselUserWorks = UserWork::select("*")->where("content", "!=", null)->orderBy("created_at", "DESC")->limit(6)->get();
+        $carouselUserWorks = UserWork::select("*")->where("content", "!=", null)->orderBy("upvotes", "DESC")->limit(6)->get();
 
 
 //        Session::flush();

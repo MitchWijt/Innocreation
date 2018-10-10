@@ -86,13 +86,6 @@
                     <i class="zmdi zmdi-chevron-right p-absolute c-orange carousel-control-next c-pointer" style="top: 55px; right: -120px; font-size: 40px !important;"></i>
                 @endhandheld
             </div>
-            {{--<div class="row p-absolute" style="bottom: 30px; left: 520px">--}}
-                {{--<div class="col-md-12 d-flex js-center">--}}
-                    {{--<div class="circle m-r-0" style="width: 80px !important; height: 80px !important;">--}}
-                        {{--<i style="font-size: 65px; color: #FF6100; margin-left: 8px" class="zmdi zmdi-chevron-down social-icon-home scrollHomeBtn arrow"></i>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-            {{--</div>--}}
         </div>
     </div>
         <div class="homepage-mainContent">
@@ -113,12 +106,12 @@
                             <div class="@mobile col-10 @elsedesktop col-md-10 @endmobile m-t-15">
                                 @handheld
                                     @mobile
-                                        <p class="instructions-text m-0 allign-center f-17">Create an <a class="regular-link" href="/login">account</a> with your expertise(s)</p>
+                                        <p class="instructions-text m-0 allign-center f-17">Create an <a class="regular-link" href="/create-my-account">account</a> with your expertise(s)</p>
                                     @elsetablet
-                                        <p class="instructions-text m-0 allign-center f-20">Create an <a class="regular-link" href="/login">account</a> with your expertise(s)</p>
+                                        <p class="instructions-text m-0 allign-center f-20">Create an <a class="regular-link" href="/create-my-account">account</a> with your expertise(s)</p>
                                     @endmobile
                                 @elsedesktop
-                                    <p class="instructions-text m-0 allign-center f-22">Create an <a class="regular-link" href="/login">account</a> with your expertise(s)</p>
+                                    <p class="instructions-text m-0 allign-center f-22">Create an <a class="regular-link" href="/create-my-account">account</a> with your expertise(s)</p>
                                 @endhandheld
                             </div>
                         </div>
