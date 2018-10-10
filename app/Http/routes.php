@@ -545,9 +545,20 @@ Route::post("/admin/getMailMessageModalData", "AdminController@getMailMessageMod
 Route::post("/admin/getSearchResultsUserChat", "AdminController@getSearchResultsUserChatAction");
 
 // commercial data
-Route::get("/admin/commercialData", "CommercialDataController@commercialDataIndexAction");
+Route::get("/admin/commercialData", "AdminCommercialDataController@commercialDataIndexAction");
 
-Route::post("/commercialData/exportDataCsv", "CommercialDataController@exportDataCsvAction");
+Route::post("/commercialData/exportDataCsv", "AdminCommercialDataController@exportDataCsvAction");
+
+//mass message
+Route::get("/admin/mass-message", "AdminMassMessageController@massMessageIndexAction");
+
+Route::get("/admin/mailTemplateList", "AdminTemplateController@mailTemplateListAction");
+
+Route::get("/admin/mailTemplateEditor/{id}", "AdminTemplateController@mailTemplateEditorAction");
+
+Route::get("/admin/mailTemplateEditor", "AdminTemplateController@mailTemplateEditorAction");
+
+Route::post("/admin/saveMailTemplate", "AdminTemplateController@saveMailTemplateAction");
 
 
 //expertises

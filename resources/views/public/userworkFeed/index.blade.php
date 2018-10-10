@@ -58,7 +58,7 @@
                                     <div class="@handheld col-12 m-b-10 @elsedesktop col-sm-4 @endhandheld">
                                         <div class="fileUpload">
                                             <input type="file" class="userwork_image hidden" name="image">
-                                            <button class="btn btn-inno btn-sm pull-right addPicture" type="button">Add picture/video</button>
+                                            <button class="btn btn-inno btn-sm pull-right addPicture" type="button">Add picture</button>
                                             <span class="fileName pull-right m-r-10"></span>
                                         </div>
                                     </div>

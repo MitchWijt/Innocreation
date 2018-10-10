@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class CommercialDataController extends Controller
+class AdminCommercialDataController extends Controller
 {
     public function commercialDataIndexAction(){
         if($this->authorized(true)){
