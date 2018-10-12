@@ -22,7 +22,28 @@ use App\InviteRequestLinktable;
 class AdminMassMessageController extends Controller
 {
     public function massMessageIndexAction(){
-        $mailTemplates = MailTemplate::select("*")->get();
-        return view("/admin/massMessage/massMessageIndex", compact("mailTemplates"));
+        if($this->authorized()) {
+            $mailTemplates = MailTemplate::select("*")->get();
+            return view("/admin/massMessage/massMessageIndex", compact("mailTemplates"));
+        }
+    }
+
+    public function sendMassEmailAction(Request $request){
+        if($this->authorized()){
+            $message = $request->input("emailMessage");
+            $subject = $request->input("subject");
+
+            $mgClient = $this->getService("mailgun");
+            $mgClient[0]->sendMessage($mgClient[1], array(
+                'from' => "innocreation <info@innocreation.net>",
+                'to' => "mitchel@wijt.net",
+                'subject' => $subject,
+                'html' => $message
+            ), array(
+                'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
+            ));
+
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
     }
 }

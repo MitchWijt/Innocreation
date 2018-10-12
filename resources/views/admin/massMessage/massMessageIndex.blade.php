@@ -16,15 +16,22 @@
                                 <h4 class="m-t-5">Mass message</h4>
                             </div>
                             <div class="hr col-sm-12"></div>
-                            <div class="col-sm-12 m-t-20">
+                            <div class="col-sm-12 m-t-20 templates">
                                 <p class="m-b-5">Choose mail template</p>
                                 <select name="mail_template" class="selectMailTemplate input col-sm-5">
+                                    <option value="" selected disabled>Choose template</option>
                                     <? foreach($mailTemplates as $mailTemplate) { ?>
-                                        <option value="<?= $mailTemplate->content?>"><?= $mailTemplate->subject?></option>
+                                        <option data-subject="<?= $mailTemplate->subject?>" value="<?= $mailTemplate->content?>"><?= $mailTemplate->subject?></option>
                                     <? } ?>
                                 </select>
                             </div>
                             <form action="/admin/sendMassEmail" method="post">
+                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                <div class="form-group">
+                                    <div class="col-sm-12 m-t-20">
+                                        <input type="text" name="subject" class="input subjectMail">
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="col-sm-12 m-t-20">
                                         <textarea name="emailMessage" id="content" class="content" rows="10"></textarea>
@@ -53,6 +60,13 @@
     </div>
 
     <script>
+        $(".selectMailTemplate").on("change",function () {
+            var v = $(this).val();
+            var s = $(this).parents(".templates").find(".selectMailTemplate option:selected").data("subject");
+            console.log(s);
+            $(".subjectMail").val(s);
+            tinyMCE.get('content').setContent(v);
+        });
         $(document).on('click', '.addPicture', function() {
             $(this).parents(".fileUpload").find(".image_input").click();
         });

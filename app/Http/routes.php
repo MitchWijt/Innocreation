@@ -560,6 +560,8 @@ Route::get("/admin/mailTemplateEditor", "AdminTemplateController@mailTemplateEdi
 
 Route::post("/admin/saveMailTemplate", "AdminTemplateController@saveMailTemplateAction");
 
+Route::post("/admin/sendMassEmail", "AdminMassMessageController@sendMassEmailAction");
+
 
 //expertises
 
