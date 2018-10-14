@@ -10,6 +10,7 @@ use App\UserMessage;
 use App\UserWork;
 use App\WorkspaceShortTermPlannerBoard;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Mailgun\Mailgun;
@@ -26,6 +27,7 @@ use Spipu\Html2Pdf\Html2Pdf;
 use App\Invoice;
 use GetStream;
 use DateTime;
+use App\Services\UserMessageService as userMessageService;
 use GetStream\StreamLaravel\Facades\FeedManager;
 use Session;
 
@@ -34,9 +36,10 @@ class DebugController extends Controller
     /**
      *
      */
-    public function test(){
+    public function test(Request $request, UserMessageService $userMessage){
         if($this->authorized(true)){
-            $this->csv();
+            dd($userMessage->createMessage($request));
+
 
 //        $client = $this->getService("stream");
 //        $messageFeed = $client->feed('user', 10);

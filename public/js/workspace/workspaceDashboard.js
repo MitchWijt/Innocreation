@@ -184,7 +184,6 @@ function getDashboardData() {
                 if(newValueTotalTeamChats >= 0){
                     $(".completedGoalsNewValue").text("+ " + newValueCompletedGoals);
                 } else {
-                    console.log("gfdsa");
                     $(".completedGoalsNewValue").text(newValueCompletedGoals);
                 }
             }

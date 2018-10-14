@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    $('#toggle-demo').bootstrapToggle();
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -315,7 +316,6 @@ $(document).on("click", ".postComment", function () {
         dataType: "JSON",
         success: function (data) {
             var message = $('.emptyMessage').first().clone();
-            console.log(message);
             $(".userWorkComments").each(function () {
                 if($(this).data("id") == user_work_id){
                     var allMessages = $(this);
@@ -344,4 +344,23 @@ $(document).on("click", ".editPostBtn",function () {
     var id = $(this).data("id");
     $(".descriptionUserWork-" + id).addClass("hidden");
     $(".editUserWork-" + id).removeClass("hidden");
+});
+
+$(document).on("click", ".switch__toggle", function () {
+    var _this = $(this);
+    if($(".userId").val() != 0) {
+        if (!$(this).is(":checked")) {
+            $(this).parents(".userSwitch").find(".popoverSwitch").popover.toggle();
+        }
+
+        $(this).parents(".userSwitch").find(".popoverSwitch").popover("show");
+    } else {
+        _this.prop("checked", true);
+        setTimeout(function(){
+            _this.prop("checked", false);
+            _this.parents(".userSwitch").find(".popoverSwitch").popover("show");
+        }, 1000);
+
+    }
+
 });

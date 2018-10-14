@@ -6,52 +6,54 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="avatar-sm m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>')"></div>
-                            <p class="popoverUser" style="margin-top: 3px !important" data-toggle="popover" data-content='<?= $userWorkPost->user->getPopoverViewUserWork()?>'><?= $userWorkPost->user->firstname?></p>
+                            <p class="popoverUser col-sm-6" style="margin-top: 3px !important" data-toggle="popover" data-content='<?= $userWorkPost->user->getPopoverViewUserWork()?>'><?= $userWorkPost->user->firstname?></p>
                         </div>
                         <div class="col-sm-6 p-r-25">
-                            <p class="pull-right m-b-0 upvoteNumber-<?= $userWorkPost->id?>" style="margin-top: 7px !important"><? if($userWorkPost->upvotes) echo $userWorkPost->upvotes; else echo 0;?></p>
-                            <i class="zmdi zmdi-caret-up f-40 pull-right m-r-5"></i>
-                        </div>
-                    </div>
-                    <div class="hr col-sm-12 p-l-0"></div>
-                </div>
-                <div class="col-sm-12 text-center p-relative desc">
-                        <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
-                            <i class="zmdi zmdi-more p-absolute f-20 c-pointer popoverMenu" data-toggle="popover" data-content='<?= $userWorkPost->getPopoverMenu()?>' style="top: 2px; right: 25px;"></i>
-                        <? } ?>
-                        <p class="f-17 m-t-15 m-b-5 descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: break-all"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
-                        <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
-                            <div class="m-t-15 m-b-5 editUserWork-<?= $userWorkPost->id?> hidden">
-                                <form action="/feed/editUserWorkPost" method="post">
-                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                    <input type="hidden" name="userWorkId" value="<?= $userWorkPost->id?>">
-                                    <textarea id="description_id" class="col-sm-11 input" rows="6" name="newUserWorkDescription"><? if($userWorkPost->description != null) echo htmlspecialchars_decode($userWorkPost->description);?></textarea>
-                                    <div class="col-sm-12">
-                                        <button class="pull-right btn btn-sm btn-inno m-r-15 m-b-10">Save</button>
-                                    </div>
-                                </form>
-                            </div>
-                        <? } ?>
-                        <? if($userWorkPost->content != null) { ?>
-                            <? if($userWorkPost->link != null) { ?>
-                                <a target="_blank" href="<?= $userWorkPost->link?>">
-                                    <img style="width: 100% !important;" src="<?= $userWorkPost->getImage()?>" alt="<?= $userWorkPost->user->firstname?>">
-                                </a>
-                            <? } else { ?>
-                                <img style="width: 100% !important;" src="<?= $userWorkPost->getImage()?>" alt="<?= $userWorkPost->user->firstname?>">
-                            <? } ?>
-                        <? } ?>
-                </div>
-                <div class="col-sm-12">
-                    <div class="row">
-                        <div class="col-sm-6 p-l-25 m-t-10">
                             <? if($userWorkPost->progress != null) { ?>
-                                <div class="progress">
+                                <div class="progress" style="margin-top: 3px !important">
                                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
                                          aria-valuemin="0" aria-valuemax="100" style="width:<?= $userWorkPost->progress?>;"><?= $userWorkPost->progress?> finished
                                     </div>
                                 </div>
                             <? } ?>
+                        </div>
+                    </div>
+                    <div class="hr col-sm-12 p-l-0"></div>
+                </div>
+                <div class="col-sm-12 text-center p-relative desc">
+                    <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
+                        <i class="zmdi zmdi-more p-absolute f-20 c-pointer popoverMenu" data-toggle="popover" data-content='<?= $userWorkPost->getPopoverMenu()?>' style="top: 2px; right: 25px;"></i>
+                    <? } ?>
+                    <p class="f-17 m-t-15 m-b-5 descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: break-all"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
+                    <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
+                        <div class="m-t-15 m-b-5 editUserWork-<?= $userWorkPost->id?> hidden">
+                            <form action="/feed/editUserWorkPost" method="post">
+                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                <input type="hidden" name="userWorkId" value="<?= $userWorkPost->id?>">
+                                <textarea id="description_id" class="col-sm-11 input" rows="6" name="newUserWorkDescription"><? if($userWorkPost->description != null) echo htmlspecialchars_decode($userWorkPost->description);?></textarea>
+                                <div class="col-sm-12">
+                                    <button class="pull-right btn btn-sm btn-inno m-r-15 m-b-10">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    <? } ?>
+                    <? if($userWorkPost->content != null) { ?>
+                        <? if($userWorkPost->link != null) { ?>
+                            <a target="_blank" href="<?= $userWorkPost->link?>">
+                                <img style="width: 100% !important;" src="<?= $userWorkPost->getImage()?>" alt="<?= $userWorkPost->user->firstname?>">
+                            </a>
+                        <? } else { ?>
+                            <img style="width: 100% !important;" src="<?= $userWorkPost->getImage()?>" alt="<?= $userWorkPost->user->firstname?>">
+                        <? } ?>
+                    <? } ?>
+                </div>
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6 p-l-25 userSwitch">
+                            <label class="switch switch_type2 m-t-10  m-l-15" role="switch">
+                                <input data-toggle="popover" <? if(isset($user) && $userWorkPost->hasSwitched()) echo "checked disabled"; ?> data-content='<?= $userWorkPost->getPopoverSwitchView()?>' type="checkbox" class="switch__toggle popoverSwitch">
+                                <span class="switch__label"></span>
+                            </label>
                         </div>
                         <div class="col-sm-6 m-t-5 p-r-25">
                             <a class="regular-link pull-right f-14 m-0 toggleComments" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Comments</a>
@@ -59,22 +61,6 @@
                     </div>
                 </div>
                 <div class="col-sm-12">
-                    <div class="row m-t-15 m-b-15">
-                        <div class="col-sm-12 p-l-25 p-r-25 actionList actions-<?= $userWorkPost->id?>">
-                            <input type="hidden" class="user_work_id" value="<?= $userWorkPost->id?>">
-                            <? if(isset($user)) { ?>
-                                <i class="zmdi zmdi-share c-pointer f-22 pull-left toggleModal" data-url="<?= $_SERVER["HTTP_HOST"]?>/innocreatives/<?= $userWorkPost->id?>" style="margin-top: 8px !important"></i>
-                            <? } else { ?>
-                                <i class="zmdi zmdi-share c-pointer f-22 pull-left toggleLink" data-url="<?= $_SERVER["HTTP_HOST"]?>/innocreatives/<?= $userWorkPost->id?>" style="margin-top: 10px !important"></i>
-                            <? } ?>
-                            <? if(isset($user) && $user->hasUpvote($userWorkPost->id)) { ?>
-                                <p class="pull-right m-b-0 upvoteText c-orange" style="margin-top: 7px !important">Upvoted</p>
-                            <? } else { ?>
-                                <p class="pull-right m-b-0 upvoteBtn upvoteText c-pointer" style="margin-top: 7px !important">Upvote</p>
-                                <i class="zmdi zmdi-caret-up f-40 pull-right m-r-5 upvoteBtn upvoteIcon c-pointer"></i>
-                            <? } ?>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -113,9 +99,12 @@
     </div>
 <? } ?>
 <script>
-    $('.popoverUser').popover({ trigger: "manual" , html: true, animation:false, placement: 'auto'})
+
+    $('.popoverSwitch').popover({ trigger: "manual" , html: true, animation:false, placement: 'top'})
+
+    $('.popoverUser').popover({ trigger: "manual" , html: true, animation:false, placement: 'right'})
         .on("mouseenter", function () {
-            var _this = $('[data-toggle="popover"]');
+            var _this = $('.popoverUser');
             $(this).popover("show");
             $(".popover").on("mouseleave", function () {
                 $(_this).popover('hide');
@@ -133,7 +122,7 @@
 
 
     $(document).on("click", ".closePopover", function () {
-        var _this = $('[data-toggle="popover"]');
+        var _this = $('.popoverUser');
         $(_this).popover("hide");
     });
 </script>

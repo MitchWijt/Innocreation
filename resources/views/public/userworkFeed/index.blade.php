@@ -1,6 +1,11 @@
 @extends("layouts.app")
 @section("content")
     <input type="hidden" class="totalAmount" value="<?= $totalAmount?>">
+    <? if(isset($user)) { ?>
+        <input type="hidden" class="userId" value="<?= $user->id?>">
+    <? } else { ?>
+        <input type="hidden" class="userId" value="0">
+    <? } ?>
     <div class="d-flex grey-background vh85">
         <div class="container">
             <div class="row">

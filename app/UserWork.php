@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 
 class UserWork extends Model
 {
+
+    public $table = "user_work";
 
     public function user(){
         return $this->hasOne("\App\User", "id","user_id");
@@ -17,7 +20,7 @@ class UserWork extends Model
 
     public function getImage(){
         $userslug = $this->user->slug;
-        return "https://space-innocreation.ams3.cdn.digitaloceanspaces.com/users/$userslug/userworks/$this->id/$this->content";
+        return sprintf('https://space-innocreation.ams3.cdn.digitaloceanspaces.com/users/%s/userworks/%d/%s', $userslug, $this->id, $this->content);
     }
 
     public function getComments(){
@@ -29,6 +32,27 @@ class UserWork extends Model
         return view("/public/userworkFeed/shared/_popoverMenu", compact("userWork"));
 
     }
-    public $table = "user_work";
+
+    public function getPopoverSwitchView(){
+        $userWork = $this;
+
+        if(!Session::has("user_id")){
+            return view("/public/userworkFeed/shared/_popoverSwitch", compact("userWork"));
+        }
+
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        return view("/public/userworkFeed/shared/_popoverSwitch", compact("userWork", "user"));
+
+    }
+
+    public function hasSwitched(){
+        $connectRequest = ConnectRequestLinktable::select("*")->where("receiver_user_id", $this->user_id)->where("sender_user_id", Session::get("user_id"))->first();
+        if(count($connectRequest) > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 }

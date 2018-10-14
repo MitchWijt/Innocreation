@@ -602,6 +602,8 @@ Route::post("/feed/deleteUserWorkPost", "FeedController@deleteUserWorkPostAction
 
 Route::post("/feed/editUserWorkPost", "FeedController@editUserWorkPostAction");
 
+Route::post("/feed/sendConnectRequest", "FeedController@sendConnectRequestAction");
+
 //========================CHECKOUT/PACKAGES========================
 
 Route::get("/pricing", "CheckoutController@pricingAction");

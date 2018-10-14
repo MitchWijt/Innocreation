@@ -14,6 +14,7 @@ use App\UserUpvoteLinktable;
 use App\UserWork;
 use App\UserWorkComment;
 use Illuminate\Http\Request;
+use App\Services\SwitchUserWork as SwitchUserWork;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Session;
@@ -350,6 +351,12 @@ class FeedController extends Controller
         } else {
             return redirect($_SERVER["HTTP_REFERER"])->withErrors("Failed to edit the post");
         }
+
+    }
+
+    public function sendConnectRequestAction(Request $request, SwitchUserWork $switch){
+        $newRequest = $switch->createNewConnectRequest($request);
+        return redirect(sprintf('/innocreatives/%d', json_decode($newRequest)->user_work_id));
 
     }
 }
