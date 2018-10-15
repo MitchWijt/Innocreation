@@ -149,6 +149,11 @@ Route::post("/user/followUser","UserController@followUserAction");
 
 Route::post("/user/unfollowUser","UserController@unfollowUserAction");
 
+//connections
+Route::post("/user/acceptConnection","UserController@acceptConnectionAction");
+
+Route::post("/user/declineConnection","UserController@declineConnectionAction");
+
 
 //payments
 Route::get("/my-account/payment-details", "UserController@paymentDetailsAction");

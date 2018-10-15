@@ -364,6 +364,10 @@
     overflow: scroll;
 }
 
+.o-scroll-with{
+    overflow: scroll;
+}
+
 .o-scroll::-webkit-scrollbar {
     display: none;
 }

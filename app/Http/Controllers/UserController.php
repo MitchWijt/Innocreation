@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ConnectRequestLinktable;
 use App\CustomTeamPackage;
 use App\Expertises;
 use App\Expertises_linktable;
@@ -31,6 +32,8 @@ use App\UserWork;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Http\Middleware\RolesMiddleware;
+use App\Services\SwitchUserWork as SwitchUserWork;
+use App\Services\MailgunService as Mailgun;
 
 
 use App\Http\Requests;
@@ -63,7 +66,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function userAccountCredentials(){
+    public function userAccountCredentials(SwitchUserWork $switch){
         if($this->authorized()) {
             if (Session::has("user_name")) {
                 $user = User::select("*")->where("id", Session::get("user_id"))->first();
@@ -74,7 +77,9 @@ class UserController extends Controller
                 }
                 $id = Session::get("user_id");
                 $user = User::select("*")->where("id", $id)->first();
-                return view("/public/user/userAccountCredentials", compact("user"));
+
+                $connections = $switch->listConnections($id);
+                return view("/public/user/userAccountCredentials", compact("user", "connections"));
             } else {
                 return view("/public/home/home");
             }
@@ -1434,5 +1439,15 @@ class UserController extends Controller
 
             return redirect("/innocreatives/$userWork->id");
         }
+    }
+
+    public function declineConnectionAction(Request $request, SwitchUserWork $switch, Mailgun $mailgun){
+        $switch->declineConnection($request, $mailgun);
+        return redirect ("/account");
+    }
+
+    public function acceptConnectionAction(Request $request, SwitchUserWork $switch, Mailgun $mailgun){
+        $switch->acceptConnection($request, $mailgun);
+        return redirect ("/account");
     }
 }

@@ -41,6 +41,85 @@
                 </div>
             </div>
         </form>
+        <div class="row d-flex js-center">
+            <div class="col-md-10 p-0">
+                <div class="card card-lg m-t-20 m-b-20">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-sm-6 p-t-5 p-r-0 p-l-0 c-pointer" style="border-right: 1px solid #FF6100 !important">
+                                <h3 class="f-20 text-center activeItem toConnections">My connections</h3>
+                            </div>
+                            <div class="col-sm-6 p-t-5 c-pointer">
+                                <h3 class="f-20 text-center c-dark-grey toConnectionRequests">Connection requests</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr" style="width: 100%!important"></div>
+                    <div class="connections o-scroll-with" style="max-height: 400px;">
+                        <? foreach($connections as $connection) { ?>
+                            <? if($connection->accepted == 1 || $connection->sender_user_id == $user->id) { ?>
+                                <div class="row m-t-20">
+                                    <div class="col-sm-4">
+                                        <div class="row m-l-25">
+                                            <div class="avatar" style="background: url('<?= $connection->user->getProfilePicture()?>')"></div>
+                                        </div>
+                                        <p class="col-sm-12 m-l-15"><?= $connection->user->firstname?></p>
+                                    </div>
+                                    <div class="col-sm-4 text-center">
+                                        <? foreach($connection->user->getExpertises() as $expertise) { ?>
+                                            <p><?= $expertise->title?></p>
+                                        <? } ?>
+                                    </div>
+                                    <div class="col-sm-4 text-center">
+                                        <? if($connection->acceptation == 0) { ?>
+                                            <p class="c-orange">On hold</p>
+                                        <? } else { ?>
+                                            <p class="c-green">Connected</p>
+                                        <? } ?>
+                                    </div>
+                                </div>
+                            <hr>
+                            <? } ?>
+                        <? } ?>
+                    </div>
+                    <div class="connections-received o-scroll-with hidden" style="max-height: 400px;">
+                        <? foreach($connections as $connection) { ?>
+                            <? if($connection->accepted == 0 && $connection->sender_user_id != $user->id) { ?>
+                                <div class="row m-t-20">
+                                    <div class="col-sm-4">
+                                        <div class="row m-l-25">
+                                            <div class="avatar" style="background: url('<?= $connection->sender->getProfilePicture()?>')"></div>
+                                        </div>
+                                        <p class="col-sm-12 m-l-15"><?= $connection->sender->firstname?></p>
+                                    </div>
+                                    <div class="col-sm-4 text-center m-t-30">
+                                       <a class="c-orange underline-link messagePopover" data-toggle="popover" data-content='<p><?= $connection->message?></p>'>Show message</a>
+                                    </div>
+                                    <div class="col-sm-4 text-center ">
+                                        <label class="switch switch_type2 m-t-10  m-l-15" role="switch">
+                                            <input data-toggle="popover" type="checkbox" class="switch__toggle">
+                                            <span class="switch__label"></span>
+                                        </label>
+                                        <form action="/user/acceptConnection" method="post" class="acceptConnection">
+                                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                            <input type="hidden" name="connection_id" value="<?= $connection->id?>">
+                                        </form>
+                                        <form action="/user/declineConnection" method="post">
+                                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                            <input type="hidden" name="connection_id" value="<?= $connection->id?>">
+                                            <div class="row d-flex js-center">
+                                                <button class="btn btn-inno btn-sm">Decline</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <hr>
+                            <? } ?>
+                        <? } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
         <form action="/my-account/saveUserAccount" method="post">
             <input type="hidden" name="_token" value="<?= csrf_token()?>">
             <input type="hidden" name="user_id" value="<? if(isset($user)) echo $user->id ?>">
@@ -133,6 +212,9 @@
         </form>
     </div>
 </div>
+<script>
+    $('.messagePopover').popover({ trigger: "click" , html: true, animation:false, placement: 'left'});
+</script>
 @endsection
 @section('pagescript')
     <script src="/js/user/userAccountCredentials.js"></script>

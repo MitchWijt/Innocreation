@@ -292,6 +292,16 @@ class User extends Authenticatable
         }
     }
 
+    public function hasContent(){
+        $userPortflio = UserPortfolio::select("*")->where("id", $this->id)->get();
+        $userWork = UserWork::select("*")->where("user_id", $this->id)->get();
+        $bool = false;
+        if(count($userWork) > 0 || count($userPortflio) > 0){
+            $bool = true;
+        }
+        return $bool;
+    }
+
     /**
      * The attributes that are mass assignable.
      *
