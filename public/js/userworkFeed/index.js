@@ -359,7 +359,7 @@ $(document).on("click", ".switch__toggle", function () {
         setTimeout(function(){
             _this.prop("checked", false);
             _this.parents(".userSwitch").find(".popoverSwitch").popover("show");
-        }, 1000);
+        }, 500);
 
     }
 

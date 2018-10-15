@@ -1448,6 +1448,6 @@ class UserController extends Controller
 
     public function acceptConnectionAction(Request $request, SwitchUserWork $switch, Mailgun $mailgun){
         $switch->acceptConnection($request, $mailgun);
-        return redirect ("/account");
+        return redirect("/my-account/chats");
     }
 }

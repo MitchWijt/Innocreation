@@ -4,11 +4,11 @@
             <div class="card-block row">
                 <div class="col-sm-12 m-t-15">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="@mobile col-6 @elsedesktop col-sm-6 @endmobile">
                             <div class="avatar-sm m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>')"></div>
                             <p class="popoverUser col-sm-6" style="margin-top: 3px !important" data-toggle="popover" data-content='<?= $userWorkPost->user->getPopoverViewUserWork()?>'><?= $userWorkPost->user->firstname?></p>
                         </div>
-                        <div class="col-sm-6 p-r-25">
+                        <div class="@mobile col-6 @elsedesktop col-sm-6 @endmobile p-r-25">
                             <? if($userWorkPost->progress != null) { ?>
                                 <div class="progress" style="margin-top: 3px !important">
                                     <div class="progress-bar" role="progressbar" aria-valuenow="70"
@@ -49,13 +49,15 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="row">
-                        <div class="col-sm-6 p-l-25 userSwitch">
-                            <label class="switch switch_type2 m-t-10  m-l-15" role="switch">
-                                <input data-toggle="popover" <? if(isset($user) && $userWorkPost->hasSwitched()) echo "checked disabled"; ?> data-content='<?= $userWorkPost->getPopoverSwitchView()?>' type="checkbox" class="switch__toggle popoverSwitch">
-                                <span class="switch__label"></span>
-                            </label>
+                        <div class="@mobile col-6 @elsedesktop col-sm-6 @endmobile p-l-25 userSwitch">
+                            <? if((isset($user) && $user->id != $userWorkPost->user_id) || !isset($user)) { ?>
+                                <label class="switch switch_type2 m-t-10  m-l-15" role="switch">
+                                    <input data-toggle="popover" <? if(isset($user) && $userWorkPost->hasSwitched()) echo "checked disabled"; ?> data-content='<?= $userWorkPost->getPopoverSwitchView()?>' type="checkbox" class="switch__toggle popoverSwitch">
+                                    <span class="switch__label"></span>
+                                </label>
+                            <? } ?>
                         </div>
-                        <div class="col-sm-6 m-t-5 p-r-25">
+                        <div class="@mobile col-6 @elsedesktop col-sm-6 @endmobile m-t-5 p-r-25">
                             <a class="regular-link pull-right f-14 m-0 toggleComments" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Comments</a>
                         </div>
                     </div>

@@ -45,6 +45,33 @@ class SwitchUserWork
 
     public function acceptConnection($request, $mailgun){
         $connectRequest = ConnectRequestLinktable::select("*")->where("id", $request->input("connection_id"))->first();
+        $connectRequest->accepted = 1;
+        $connectRequest->save();
+
+        $existingUserChat = UserChat::select("*")->where("receiver_user_id", $connectRequest->sender_user_id)->where("creator_user_id", $connectRequest->receiver_user_id)->orWhere("receiver_user_id", $connectRequest->receiver_user_id)->where("creator_user_id", $connectRequest->sender_user_id)->first();
+        if(count($existingUserChat) > 0){
+            $userChat = $existingUserChat;
+        } else {
+            $userchat = new UserChat();
+            $userchat->creator_user_id = $connectRequest->receiver_user_id;
+            $userchat->receiver_user_id = $connectRequest->sender_user_id;;
+            $userchat->created_at = date("Y-m-d H:i:s");
+            $userchat->save();
+        }
+        $userMessage = new UserMessage();
+        $userMessage->sender_user_id = 1;
+        $userMessage->user_chat_id = $userChat->id;
+        $userMessage->time_sent = $mailgun->getTimeSent();
+        $userMessage->message = 'You have been connected with each other! <br> Get to know each other some more';
+        $userMessage->created_at = date("Y-m-d H:i:s");
+        $userMessage->save();
+
+        $user = $connectRequest->sender;
+        $mailgun->saveAndSendEmail($connectRequest->sender, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+
+        $user = $connectRequest->user;
+        $mailgun->saveAndSendEmail($connectRequest->user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+
     }
 
     public function declineConnection($request, $mailgun){
@@ -52,7 +79,7 @@ class SwitchUserWork
         $connectRequest->accepted = 2;
         $connectRequest->save();
 
-        $userChat = UserChat::select("*")->where("receiver_user_id", $connectRequest->receiver_user_id)->where("creator_user_id", 1)->first();
+        $userChat = UserChat::select("*")->where("receiver_user_id", $connectRequest->sender_user_id)->where("creator_user_id", 1)->first();
         $userMessage = new UserMessage();
         $userMessage->sender_user_id = 1;
         $userMessage->user_chat_id = $userChat->id;
@@ -61,9 +88,9 @@ class SwitchUserWork
         $userMessage->created_at = date("Y-m-d H:i:s");
         $userMessage->save();
 
-        $user = $connectRequest->user;
+        $user = $connectRequest->sender;
 
-        $mailgun->saveAndSendEmail($connectRequest->user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+        $mailgun->saveAndSendEmail($connectRequest->sender, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
     }
 
 }
