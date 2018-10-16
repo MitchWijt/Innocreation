@@ -41,7 +41,7 @@ class ReccuringPayment extends Command
             $today = new DateTime(date("Y-m-d H:i:s"));
             $date = new DateTime(date("Y-m-d H:i:s",strtotime($user->online_timestamp)));
             $interval = $date->diff($today);
-            if($interval->format('%i') >= 10){
+            if($interval->format('%i') >= 10 || $interval->format('%h') > 1 || $interval->format('%Y') > 1 || $interval->format('%m') > 1 || $interval->format('%d') > 1){
                 $user->active_status = "offline";
                 $user->save();
             }

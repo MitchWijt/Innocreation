@@ -90,7 +90,7 @@
 
                                             <div class="row m-t-20 @mobile p-10 @endmobile">
                                                 <div class="col-sm-12 text-center">
-                                                    <textarea name="teamMessage" placeholder="Send your message..." class="input col-sm-10 messageInput messageInputNetwork" rows="1"></textarea>
+                                                    <textarea name="teamMessage" placeholder="Send your message..." class="input col-sm-10 messageInput messageInputDynamic" rows="1"></textarea>
                                                 </div>
                                             </div>
                                             <div class="row">

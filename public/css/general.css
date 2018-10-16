@@ -363,6 +363,14 @@
 .o-scroll{
     overflow: scroll;
 }
+
+.o-scroll-with{
+    overflow: scroll;
+}
+
+.o-scroll::-webkit-scrollbar {
+    display: none;
+}
 .x-scroll{
     /*position: absolute;*/
     /*top: 20px;*/
@@ -402,7 +410,6 @@ hr{
 
 .underline{
     text-decoration: underline;
-    text-decoration-color: #FF6100;
 }
 
 .border-red{

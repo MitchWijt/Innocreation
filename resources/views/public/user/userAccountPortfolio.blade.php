@@ -97,9 +97,18 @@
                                     <label class="m-0 col-sm-12 p-0">Description</label>
                                     <textarea name="description_portfolio" class="input col-sm-12" rows="12"><? if(isset($userPortfolio->description)) echo $userPortfolio->description?></textarea>
                                     <button type="submit" class="btn btn-inno pull-right m-t-10">Save portfolio</button>
+                                    <? if($userPortfolio->posted_as_work != 1) { ?>
+                                        <button type="button" class="btn btn-inno pull-right m-t-10 m-r-10 saveAsUserWork" data-id="<?= $userPortfolio->id?>">Post as Innocreative work</button>
+                                    <? } else { ?>
+                                        <i class="pull-right m-t-15 f-12 m-r-15">posted as innocreative</i>
+                                    <? } ?>
                                 </div>
                             </div>
                         </div>
+                    </form>
+                    <form action="/user/savePortfolioAsUserWork" class="saveAsUserWorkForm-<?= $userPortfolio->id?>" method="post">
+                        <input type="hidden" name="portfolio_id" value="<?= $userPortfolio->id?>">
+                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
                     </form>
                 <? } ?>
                 <div class="emptyForms">

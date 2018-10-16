@@ -24,7 +24,17 @@
             <div class="sidebar-tab text-center">
                 <a class="regular-link c-gray" href="/admin/messages">User messages</a>
             </div>
+            <div class="sidebar-tab text-center">
+                <a class="regular-link c-gray" href="/admin/mass-message">Mass message</a>
+            </div>
+            <div class="sidebar-tab text-center">
+                <a class="regular-link c-gray" href="/admin/mailTemplateList">Mail templates</a>
+            </div>
         </div>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center p-relative">
+        <a class="regular-link c-gray" href="/admin/commercialData">Data</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

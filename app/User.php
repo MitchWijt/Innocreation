@@ -5,6 +5,7 @@ use App\Expertises_linktable;
 
 use Faker\Provider\Payment;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Session;
 use Mollie\Api\MollieApiClient;
 use Symfony\Component\EventDispatcher\Tests\Service;
 
@@ -245,6 +246,12 @@ class User extends Authenticatable
         return view("/public/collaborateChat/shared/_popoverView", compact("expertises", "user"));
     }
 
+    public function getPopoverViewUserWork(){
+        $expertises = $this->getExpertises();
+        $user = $this;
+        return view("/public/userworkFeed/shared/_popoverView", compact("expertises", "user"));
+    }
+
     public function getPasswordResetLink(){
         return "/resetPassword/$this->hash";
     }
@@ -256,6 +263,43 @@ class User extends Authenticatable
         } else {
             return false;
         }
+    }
+
+    public function getSinglePortfolio(){
+        $portfolio = UserPortfolio::select("*")->where("user_id", $this->id)->first();
+        if($portfolio){
+            return $portfolio;
+        } else {
+            return false;
+        }
+    }
+
+    public function hasUpvote($userWorkId){
+        $userUpvote = UserUpvoteLinktable::select("*")->where("user_id", $this->id)->where("user_work_id", $userWorkId)->get();
+        if(count($userUpvote) > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function checkFollow($user_id){
+        $userFollow = UserFollowLinktable::select("*")->where("user_id", Session::get("user_id"))->where("followed_user_id", $user_id)->get();
+        if(count($userFollow) > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function hasContent(){
+        $userPortflio = UserPortfolio::select("*")->where("id", $this->id)->get();
+        $userWork = UserWork::select("*")->where("user_id", $this->id)->get();
+        $bool = false;
+        if(count($userWork) > 0 || count($userPortflio) > 0){
+            $bool = true;
+        }
+        return $bool;
     }
 
     /**

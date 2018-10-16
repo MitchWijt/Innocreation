@@ -7,8 +7,10 @@ use App\Expertises_linktable;
 use App\Team;
 use App\UserChat;
 use App\UserMessage;
+use App\UserWork;
 use App\WorkspaceShortTermPlannerBoard;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Mailgun\Mailgun;
@@ -33,8 +35,10 @@ class DebugController extends Controller
     /**
      *
      */
-    public function test(){
+    public function test(Request $request){
         if($this->authorized(true)){
+
+
 //        $client = $this->getService("stream");
 //        $messageFeed = $client->feed('user', 10);
 //

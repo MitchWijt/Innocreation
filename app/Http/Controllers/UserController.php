@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ConnectRequestLinktable;
 use App\CustomTeamPackage;
 use App\Expertises;
 use App\Expertises_linktable;
@@ -17,17 +18,22 @@ use App\SplitTheBillLinktable;
 use App\SupportTicket;
 use App\SupportTicketMessage;
 use App\Team;
+use App\TeamCreateRequest;
 use App\TeamReview;
 use App\User;
 use App\UserChat;
+use App\UserFollowLinktable;
 use App\UserMessage;
 use App\Payments;
 use App\UserPortfolio;
 use App\TeamPackage;
 use App\NeededExpertiseLinktable;
+use App\UserWork;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Http\Middleware\RolesMiddleware;
+use App\Services\FeedServices\SwitchUserWork as SwitchUserWork;
+use App\Services\AppServices\MailgunService as Mailgun;
 
 
 use App\Http\Requests;
@@ -60,7 +66,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function userAccountCredentials(){
+    public function userAccountCredentials(SwitchUserWork $switch){
         if($this->authorized()) {
             if (Session::has("user_name")) {
                 $user = User::select("*")->where("id", Session::get("user_id"))->first();
@@ -71,7 +77,9 @@ class UserController extends Controller
                 }
                 $id = Session::get("user_id");
                 $user = User::select("*")->where("id", $id)->first();
-                return view("/public/user/userAccountCredentials", compact("user"));
+
+                $connections = $switch->listConnections($id);
+                return view("/public/user/userAccountCredentials", compact("user", "connections"));
             } else {
                 return view("/public/home/home");
             }
@@ -212,6 +220,14 @@ class UserController extends Controller
             $user->team_id = $team->id;
             $user->save();
 
+            $teamCreateRequests = TeamCreateRequest::select("*")->where("receiver_user_id", $user_id)->where("accepted", 0)->get();
+            if(count($teamCreateRequests)){
+                foreach($teamCreateRequests as $teamCreateRequest){
+                    $teamCreateRequest->accepted = 2;
+                    $teamCreateRequest->save();
+                }
+            }
+
             Session::set("team_id", $team->id);
             Session::set("team_name", $team->team_name);
 
@@ -320,6 +336,7 @@ class UserController extends Controller
                         Storage::disk('spaces')->put("users/$user->slug/portfolios/" . $filename, file_get_contents($file->getRealPath()), "public");
 
                         $userPortfolio->image = $filename;
+                        $userPortfolio->created_at = date("Y-m-d H:i:s");
                         $userPortfolio->save();
                         return redirect($_SERVER["HTTP_REFERER"]);
                     } else {
@@ -664,6 +681,14 @@ class UserController extends Controller
                 foreach ($otherInvites as $otherInvite) {
                     $otherInvite->accepted = 2;
                     $otherInvite->save();
+                }
+            }
+
+            $teamCreateRequests = TeamCreateRequest::select("*")->where("receiver_user_id", $user_id)->where("accepted", 0)->get();
+            if(count($teamCreateRequests)){
+                foreach($teamCreateRequests as $teamCreateRequest){
+                    $teamCreateRequest->accepted = 2;
+                    $teamCreateRequest->save();
                 }
             }
 
@@ -1262,5 +1287,193 @@ class UserController extends Controller
         } else {
             return redirect($_SERVER["HTTP_REFERER"])->withErrors("Passwords don't match");
         }
+    }
+
+    public function TeamCreateRequestsAction(){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $teamCreateRequests = TeamCreateRequest::select("*")->where("receiver_user_id", $user->id)->get();
+
+        return view("/public/user/teamCreateRequests", compact("user", "teamCreateRequests"));
+    }
+
+    public function acceptCreateTeamRequestAction(Request $request){
+        $teamRequestId = $request->input("teamCreateRequestId");
+        $teamCreateRequest = TeamCreateRequest::select("*")->where("id", $teamRequestId)->first();
+        $teamCreateRequest->accepted = 1;
+        $teamCreateRequest->save();
+
+        $team_name = $teamCreateRequest->sender->firstname . " and " . $teamCreateRequest->receiver->firstname . " " . "team";
+        $team = new Team;
+        $team->team_name = ucfirst($team_name);
+        $team->slug = str_replace(" ", "-", strtolower($team_name));
+        $team->ceo_user_id = $teamCreateRequest->sender_user_id;
+        $team->created_at = date("Y-m-d H:i:s");
+        $team->team_profile_picture = "defaultProfilePicture.png";
+        $team->save();
+
+        $joinRequest = new JoinRequestLinktable();
+        $joinRequest->team_id = $team->id;
+        $joinRequest->user_id = $teamCreateRequest->receiver_user_id;
+        $joinRequest->expertise_id = $teamCreateRequest->receiver->getExpertises()->First()->id;
+        $joinRequest->accepted = 1;
+        $joinRequest->created_at = date("Y-m-d");
+        $joinRequest->save();
+
+
+        Session::set("team_id", $team->id);
+        Session::set("team_name", $team->team_name);
+
+        $sender = User::select("*")->where("id", $teamCreateRequest->sender_user_id)->first();
+        $receiver = User::select("*")->where("id", $teamCreateRequest->receiver_user_id)->first();
+
+        $allJoinRequestsSender = JoinRequestLinktable::select("*")->where("user_id", $sender->id)->where("accepted", 0)->get();
+        if(count($allJoinRequestsSender) > 0){
+            foreach($allJoinRequestsSender as $item){
+                $item->accepted = 2;
+                $item->save();
+            }
+        }
+
+        $allJoinRequestsReceiver = JoinRequestLinktable::select("*")->where("user_id", $receiver->id)->where("accepted", 0)->get();
+        if(count($allJoinRequestsReceiver) > 0){
+            foreach($allJoinRequestsReceiver as $item){
+                $item->accepted = 2;
+                $item->save();
+            }
+        }
+
+        $allInvitesSender = InviteRequestLinktable::select("*")->where("user_id", $sender->id)->where("accepted", 0)->get();
+        if(count($allInvitesSender) > 0){
+            foreach($allInvitesSender as $item){
+                $item->accepted = 2;
+                $item->save();
+            }
+        }
+
+        $allInvitesReceiver = InviteRequestLinktable::select("*")->where("user_id", $receiver->id)->where("accepted", 0)->get();
+        if(count($allInvitesReceiver) > 0){
+            foreach($allInvitesReceiver as $item){
+                $item->accepted = 2;
+                $item->save();
+            }
+        }
+
+
+        $sender->team_id = $team->id;
+        $sender->save();
+
+        $receiver->team_id = $team->id;
+        $receiver->save();
+
+        $UserChat = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", $sender->id)->first();
+
+        $message = new UserMessage();
+        $message->sender_user_id = 1;
+        $message->message = "$sender->firstname has accepted to create a team with you! start chatting and with each other and start creating! goodluck!";
+        $message->user_chat_id = $UserChat->id;
+        $message->time_sent = $this->getTimeSent();
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+
+        $user = User::select("*")->where("id", $teamCreateRequest->sender_user_id)->first();
+        $this->saveAndSendEmail($sender, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+
+
+        return redirect("/my-team");
+
+    }
+
+    public function rejectCreateTeamRequestAction(Request $request){
+        $teamRequestId = $request->input("teamCreateRequestId");
+        $teamCreateRequest = TeamCreateRequest::select("*")->where("id", $teamRequestId)->first();
+        $teamCreateRequest->accepted = 2;
+        $teamCreateRequest->save();
+
+        $sender = User::select("*")->where("id", $teamCreateRequest->sender_user_id)->first();
+
+
+        $UserChat = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", $sender->id)->first();
+
+        $message = new UserMessage();
+        $message->sender_user_id = 1;
+        $message->message = "$sender->firstname has declined your request to create a team together. But don't worry there more chances! have a look again at all the InnoCreatives!";
+        $message->user_chat_id = $UserChat->id;
+        $message->time_sent = $this->getTimeSent();
+        $message->created_at = date("Y-m-d H:i:s");
+        $message->save();
+
+        $user = User::select("*")->where("id", $teamCreateRequest->sender_user_id)->first();
+        $this->saveAndSendEmail($sender, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+
+        return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function followUserAction(Request $request){
+        if($this->authorized()){
+            $userId = $request->input("user_id");
+            $userFollow = new UserFollowLinktable();
+            $userFollow->user_id = Session::get("user_id");
+            $userFollow->followed_user_id = $userId;
+            $userFollow->created_at = date("Y-m-d H:i:s");
+            $userFollow->save();
+
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
+    }
+
+    public function unfollowUserAction(Request $request){
+        if($this->authorized()){
+            $userId = $request->input("user_id");
+            $userFollow = UserFollowLinktable::select("*")->where("user_id", Session::get("user_id"))->where("followed_user_id", $userId)->first();
+            $userFollow->delete();
+
+            return redirect($_SERVER["HTTP_REFERER"]);
+        }
+    }
+
+    public function savePortfolioAsUserWorkAction(Request $request){
+        if($this->authorized()){
+            $portfolioId = $request->input("portfolio_id");
+
+            $userPortfolio = UserPortfolio::select("*")->where("id", $portfolioId)->first();
+            $userPortfolio->posted_as_work = 1;
+            $userPortfolio->save();
+
+            $userSlug = $userPortfolio->user->slug;
+
+            $userWork = new UserWork();
+            $userWork->user_id = $userPortfolio->user_id;
+            $userWork->title = $userPortfolio->title;
+            $userWork->description = $userPortfolio->description;
+            $userWork->save();
+
+            if($userPortfolio->image != null) {
+                Storage::disk('spaces')->copy("users/$userSlug/portfolios/$userPortfolio->image", "users/$userSlug/userworks/$userWork->id/$userPortfolio->image");
+                $userWork->content = $userPortfolio->image;
+                $userWork->save();
+            }
+
+            $userWork->progress = null;
+            $userWork->pinned = 0;
+            $userWork->upvotes = null;
+            $userWork->created_at = date("Y-m-d H:i:s");
+            $userWork->save();
+
+            return redirect("/innocreatives/$userWork->id");
+        }
+    }
+
+    public function declineConnectionAction(Request $request, SwitchUserWork $switch, Mailgun $mailgun){
+        $switch->declineConnection($request, $mailgun);
+        return redirect ("/account");
+    }
+
+    public function acceptConnectionAction(Request $request, SwitchUserWork $switch, Mailgun $mailgun){
+        $switch->acceptConnection($request, $mailgun);
+        return redirect("/my-account/chats");
+    }
+
+    public function removeChatSessionAction(){
+        Session::remove("userChatId");
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\UserChat;
+use App\UserWork;
 use Illuminate\Http\Request;
 use Session;
 use App\User;
@@ -19,8 +20,11 @@ class HomeController extends Controller
     public function index() {
         $title = "Make your dreams become a reality!";
         $og_description = "Create a team with like-minded people, help each other make dreams become a reality!";
+        $carouselUserWorks = UserWork::select("*")->where("content", "!=", null)->orderBy("upvotes", "DESC")->limit(6)->get();
+
+
 //        Session::flush();
-       return view("public/home/home", compact("title", "og_description"));
+       return view("public/home/home", compact("title", "og_description", "carouselUserWorks"));
     }
 
     /**
@@ -130,6 +134,12 @@ class HomeController extends Controller
         } else {
             return redirect($_SERVER["HTTP_REFERER"]);
         }
+    }
+
+    public function getModalCarouselUserAction(Request $request){
+        $userId = $request->input("userId");
+        $user = User::select("*")->where("id", "$userId")->first();
+        return view("/public/home/shared/_carouselUserModal", compact("user"));
     }
 
 //    public function getStatusUserAction(Request $request){

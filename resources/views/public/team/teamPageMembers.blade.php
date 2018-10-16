@@ -44,7 +44,11 @@
                                                     <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Create link</button>
                                                 <? } ?>
                                             <? } else { ?>
-                                                <button type="button" class="btn btn-inno btn-sm generateInviteLink" data-team-id="<?= $team->id?>">Create link</button>
+                                                <? if(count($team->getMembers()) >= 2) { ?>
+                                                    <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Create link</button>
+                                                <? } else { ?>
+                                                    <button type="button" class="btn btn-inno btn-sm generateInviteLink" data-team-id="<?= $team->id?>">Create link</button>
+                                                <? } ?>
                                             <? } ?>
                                         </div>
                                         <div class="@handheld col-xs-8 m-l-10 @elsedesktop col-sm-8 @endhandheld">

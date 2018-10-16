@@ -10,6 +10,7 @@ use App\NeededExpertiseLinktable;
 use App\Team;
 use App\User;
 use App\UserChat;
+use App\UserMessage;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -22,11 +23,6 @@ class RegisterProcessController extends Controller {
         $title = "Create my account";
         $expertises = Expertises::select("*")->get();
         $countries = Country::select("*")->orderBy("country")->get();
-        $email = $request->input("email");
-        $existingUser = User::select("*")->where("email", $email)->first();
-        if($existingUser){
-            return redirect("/")->withErrors("We're sorry. There has already been a account registered with this email address");
-        }
         $pageType = "checkout";
         if(Session::has("user_id")){
             $userId = Session::get("user_id");
@@ -130,6 +126,17 @@ class RegisterProcessController extends Controller {
                 $userChat->receiver_user_id = $user->id;
                 $userChat->created_at = date("Y-m-d H:i:s");
                 $userChat->save();
+
+                $message = "Hey $user->firstname!<br><br> Welcome to Innocreation! <br> We're very excited to see you taking the step to take action on your dreams and ideas! <br> Here are some tips for you to be noticed even quiker: <br><br> 1. Fill in your motivation and introduction <br> 2. Fill in your work experience with your expertises why are you the best in what you do? <br> 3. Network and connect fellow Innocreatives to perhaps help you create your dream! <br> 4. Reach out to people and teams via the chat system <br> 5. Have fun and be creative! <br><br> If you have any more questions, feel free to ask them! <br><br> Best regards - Innocreation";
+                $userMessage = new UserMessage();
+                $userMessage->sender_user_id = 1;
+                $userMessage->user_chat_id = $userChat->id;
+                $userMessage->time_sent = $this->getTimeSent();
+                $userMessage->message = $message;
+                $userMessage->created_at = date("Y-m-d H:i:s");
+                $userMessage->save();
+
+
 
                 if (Auth::attempt(['email' => $request->input("email"), 'password' => $request->input("password")])) {
                     $user = User::select("*")->where("email", $request->input("email"))->first();

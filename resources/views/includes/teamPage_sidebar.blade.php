@@ -1,5 +1,8 @@
 <?
     $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
+    $team_id = $user->team_id;
+    $userJoinRequests = \App\JoinRequestLinktable::select("*")->where("team_id", $team_id)->where("accepted", 0)->get();
+    $teamJoinRequestsCounter = count($userJoinRequests);
 ?>
 @notmobile
 <div class="sidebar">
@@ -20,7 +23,7 @@
     <hr>
     <div class="sidebar-tab text-center p-relative">
         <?
-            $team = \App\Team::select("*")->where("team_name", \Illuminate\Support\Facades\Session::get("team_name"))->first();
+            $team = \App\Team::select("*")->where("team_name", $user->team->team_name)->first();
             $unseenMessages = \App\UserMessage::select("*")->where("team_id", $team->id)->where("seen_at" ,null)->get();
         ?>
         <a class="regular-link c-gray" href="/my-team/team-chat">Team chat</a>
@@ -42,7 +45,14 @@
         <hr>
     <? } ?>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-team/user-join-requests">Team join requests</a>
+        <div class="d-flex js-center">
+            <a class="regular-link c-gray m-r-10" href="/my-team/user-join-requests">Team join requests </a>
+            <? if($teamJoinRequestsCounter > 0) { ?>
+                <div class="circle circleNotification c-orange text-center">
+                    <span><?= $teamJoinRequestsCounter?></span>
+                </div>
+            <? } ?>
+        </div>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

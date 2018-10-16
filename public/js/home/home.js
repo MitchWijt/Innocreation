@@ -4,5 +4,18 @@ $(".startRegisterProcess").on("click",function () {
         eventCategory: 'RegisterProcess',
         eventAction: 'submit/click'
     });
-    $(".startRegisterForm").submit();
+});
+$('.carousel').carousel();
+
+$(".carousel-control-prev").on("click",function () {
+    $('.carousel').carousel("prev");
+});
+
+$(".carousel-control-next").on("click",function () {
+    $('.carousel').carousel("next");
+});
+
+
+$(document).on("click", ".closeModal", function () {
+    $(".carouselUserModal").modal("toggle")
 });

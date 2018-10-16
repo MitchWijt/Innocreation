@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Request;
 use App\User;
 use Mollie\Api\MollieApiClient;
+use Formatter;
 use Redirect;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -13,6 +14,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Support\Facades\Session;
 use GetStream;
+use Response;
 use Mailgun\Mailgun;
 use App\MailMessage;
 
@@ -123,18 +125,6 @@ class Controller extends BaseController
         $explode2 = explode("@", $explode1[3]);
         $controller = $explode2[0];
         return $controller;
-    }
-
-    public function calculateAdyenSignature($pairs, $key, $binaryHmacKey){
-        ksort($pairs, SORT_STRING);
-        foreach ($pairs as $key => $value) {
-            $escapedPairs[$key] = str_replace(':','\\:', str_replace('\\', '\\\\', $value));
-        }
-
-        $signingString = implode(":", array_merge(array_keys($escapedPairs), array_values($escapedPairs)));
-        $binaryHmac = hash_hmac('sha256', $signingString, $binaryHmacKey, true);
-        $signature = base64_encode($binaryHmac);
-        return $signature;
     }
 
     public function formatBytes($bytes, $precision = 2) {

@@ -20,6 +20,7 @@ use App\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Session;
+use App\Services\TeamServices\CredentialService as CredentialService;
 use App\Http\Requests;
 
 class TeamController extends Controller
@@ -86,6 +87,10 @@ class TeamController extends Controller
         $team->save();
         return redirect($_SERVER["HTTP_REFERER"]);
 
+    }
+
+    public function saveTeamNameAction(Request $request, CredentialService $credentialService){
+        return $credentialService->saveTeamName($request);
     }
 
     /**

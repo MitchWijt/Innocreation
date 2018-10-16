@@ -23,6 +23,27 @@
                 </div>
             </div>
             <? if($loggedIn && \Illuminate\Support\Facades\Session::get("user_id") != $user->id) { ?>
+                <? if($user->checkFollow($user->id)) { ?>
+                    <div class="row">
+                        <div class="col-sm-12 text-center m-t-20">
+                            <form action="/user/unfollowUser" method="post">
+                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                <button class="btn btn-inno">Unfollow <?= $user->firstname?> <i class="zmdi zmdi-notifications-off c-orange"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                <? } else { ?>
+                    <div class="row">
+                        <div class="col-sm-12 text-center m-t-20">
+                            <form action="/user/followUser" method="post">
+                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                <button class="btn btn-inno">Follow <?= $user->firstname?> <i class="zmdi zmdi-notifications-active c-orange"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                <? } ?>
                 <div class="row">
                     <div class="col-sm-12 text-center m-t-20">
                         <form action="/selectChatUser" method="post">
@@ -80,7 +101,6 @@
                                                     <? if($team) { ?>
                                                         <? if(in_array($expertise->expertise_id, $neededExpertisesArray)) { ?>
                                                             <? if($team->checkInvite($expertise->expertise_id, $team->id, $user->id) == false) { ?>
-
                                                                 <? if(!$team->packageDetails() || !$team->hasPaid()) { ?>
                                                                     <? if(count($team->getMembers()) >= 2) { ?>
                                                                         <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>

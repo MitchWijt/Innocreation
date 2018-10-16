@@ -284,7 +284,7 @@ class LoginController extends Controller
         $user->save();
         
         Session::flush();
-        return view("public/home/home");
+        return redirect("/");
     }
 
     /**

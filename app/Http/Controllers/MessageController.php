@@ -10,6 +10,7 @@ use App\User;
 use App\Team;
 use App\UserChat;
 use App\UserMessage;
+use App\UserWork;
 use Session;
 use App\TeamGroupChatLinktable;
 use Illuminate\Http\Request;
@@ -131,8 +132,20 @@ class MessageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function getUserWorkCommentsAction(Request $request){
+        $userWorkId = $request->input("user_work_id");
+
+
+        $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
+        if(Session::has("user_id")) {
+            $userId = Session::get("user_id");
+            $user = User::select("*")->where("id", $userId)->first();
+        }
+
+        if(Session::has("user_id")) {
+            return view("/public/shared/_commentsUserWork", compact( "userWork", "user"));
+        } else {
+            return view("/public/shared/_commentsUserWork", compact( "userWork"));
+        }
     }
 }
