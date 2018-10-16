@@ -7,6 +7,7 @@
  */
 
 namespace App\Services\FeedServices;
+
 use App\ConnectRequestLinktable;
 use App\User;
 use App\UserChat;
@@ -20,13 +21,14 @@ class SwitchUserWork
     private $modal;
     private $requestModal;
 
-    public function __construct(UserWork $userWork, ConnectRequestLinktable $connectRequest) {
+    public function __construct(UserWork $userWork, ConnectRequestLinktable $connectRequest)
+    {
         $this->modal = $userWork;
         $this->requestModal = $connectRequest;
-
     }
 
-    public function createNewConnectRequest($request){
+    public function createNewConnectRequest($request)
+    {
         $connectRequest = new $this->requestModal;
         $connectRequest->receiver_user_id = $request->input("receiver_user_id");
         $connectRequest->sender_user_id = $request->input("sender_user_id");
@@ -39,23 +41,32 @@ class SwitchUserWork
         return json_encode($connectRequest);
     }
 
-    public function listConnections($id){
-        $connections = ConnectRequestLinktable::select("*")->where("receiver_user_id", $id)->orWhere("sender_user_id", $id)->get();
+    public function listConnections($id)
+    {
+        $connections = ConnectRequestLinktable::select("*")
+            ->where("receiver_user_id", $id)
+            ->orWhere("sender_user_id", $id)->get();
         return $connections;
-
     }
 
-    public function acceptConnection($request, $mailgun){
-        $connectRequest = ConnectRequestLinktable::select("*")->where("id", $request->input("connection_id"))->first();
+    public function acceptConnection($request, $mailgun)
+    {
+        $connectRequest = ConnectRequestLinktable::select("*")
+            ->where("id", $request->input("connection_id"))->first();
         $connectRequest->accepted = 1;
         $connectRequest->save();
 
-        $existingUserChat = UserChat::select("*")->where("receiver_user_id", $connectRequest->sender_user_id)->where("creator_user_id", $connectRequest->receiver_user_id)->orWhere("receiver_user_id", $connectRequest->receiver_user_id)->where("creator_user_id", $connectRequest->sender_user_id)->first();
+        $existingUserChat = UserChat::select("*")
+            ->where("receiver_user_id", $connectRequest->sender_user_id)
+            ->where("creator_user_id", $connectRequest->receiver_user_id)
+            ->orWhere("receiver_user_id", $connectRequest->receiver_user_id)
+            ->where("creator_user_id", $connectRequest->sender_user_id)->first();
         $userChat = $existingUserChat;
-        if(count($existingUserChat) > 0) {
+        if (count($existingUserChat) > 0) {
             $userchat = new UserChat();
             $userchat->creator_user_id = $connectRequest->receiver_user_id;
-            $userchat->receiver_user_id = $connectRequest->sender_user_id;;
+            $userchat->receiver_user_id = $connectRequest->sender_user_id;
+            ;
             $userchat->created_at = date("Y-m-d H:i:s");
             $userchat->save();
         }
@@ -78,12 +89,14 @@ class SwitchUserWork
         Session::set("userChatId", $userChat->id);
     }
 
-    public function declineConnection($request, $mailgun){
+    public function declineConnection($request, $mailgun)
+    {
         $connectRequest = ConnectRequestLinktable::select("*")->where("id", $request->input("connection_id"))->first();
         $connectRequest->accepted = 2;
         $connectRequest->save();
 
-        $userChat = UserChat::select("*")->where("receiver_user_id", $connectRequest->sender_user_id)->where("creator_user_id", 1)->first();
+        $userChat = UserChat::select("*")
+            ->where("receiver_user_id", $connectRequest->sender_user_id)->where("creator_user_id", 1)->first();
         $userMessage = new UserMessage();
         $userMessage->sender_user_id = 1;
         $userMessage->user_chat_id = $userChat->id;
@@ -96,5 +109,4 @@ class SwitchUserWork
 
         $mailgun->saveAndSendEmail($connectRequest->sender, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
     }
-
 }
