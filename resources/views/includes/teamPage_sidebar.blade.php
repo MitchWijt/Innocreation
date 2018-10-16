@@ -23,7 +23,7 @@
     <hr>
     <div class="sidebar-tab text-center p-relative">
         <?
-            $team = \App\Team::select("*")->where("team_name", \Illuminate\Support\Facades\Session::get("team_name"))->first();
+            $team = \App\Team::select("*")->where("team_name", $user->team->team_name)->first();
             $unseenMessages = \App\UserMessage::select("*")->where("team_id", $team->id)->where("seen_at" ,null)->get();
         ?>
         <a class="regular-link c-gray" href="/my-team/team-chat">Team chat</a>

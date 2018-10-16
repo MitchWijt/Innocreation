@@ -90,7 +90,9 @@
                         <? } ?>
                         <? if($counter1 < 1) { ?>
                             <div class="row d-flex js-center m-t-20">
-                                <i class="c-dark-grey f-14">No connections create connection at the <a class="regular-link" href="/innocreatives">feed</a></i>
+                                <div class="col-sm-12">
+                                    <i class="c-dark-grey f-14">No connections create connection at the <a class="regular-link" href="/innocreatives">feed</a></i>
+                                </div>
                             </div>
                         <? } ?>
                     </div>
@@ -166,8 +168,10 @@
                             <? } ?>
                         <? } ?>
                         <? if($counter2 < 1) { ?>
-                            <div class="row d-flex js-center m-t-20">
+                            <div class="row d-flex js-center m-t-20 @mobile p-10 @endmobile">
+                                <div class="col-sm-12">
                                 <i class="c-dark-grey f-14">No connection requests, create connections at the <a class="regular-link" href="/innocreatives">feed!</a></i>
+                                </div>
                             </div>
                         <? } ?>
                     </div>

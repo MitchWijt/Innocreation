@@ -14,7 +14,7 @@ use App\UserUpvoteLinktable;
 use App\UserWork;
 use App\UserWorkComment;
 use Illuminate\Http\Request;
-use App\Services\SwitchUserWork as SwitchUserWork;
+use App\Services\FeedServices\SwitchUserWork as SwitchUserWork;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Session;

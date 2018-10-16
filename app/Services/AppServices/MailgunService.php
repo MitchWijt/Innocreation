@@ -6,7 +6,7 @@
  * Time: 05:20
  */
 
-namespace App\Services;
+namespace App\Services\AppServices;
 use App\MailMessage;
 use Mailgun\Mailgun;
 

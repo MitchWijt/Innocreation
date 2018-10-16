@@ -6,12 +6,14 @@
  * Time: 11:05
  */
 
-namespace App\Services;
+namespace App\Services\FeedServices;
 use App\ConnectRequestLinktable;
 use App\User;
 use App\UserChat;
 use App\UserMessage;
 use App\UserWork;
+use function GuzzleHttp\json_encode;
+use Illuminate\Support\Facades\Session;
 
 class SwitchUserWork
 {
@@ -49,15 +51,15 @@ class SwitchUserWork
         $connectRequest->save();
 
         $existingUserChat = UserChat::select("*")->where("receiver_user_id", $connectRequest->sender_user_id)->where("creator_user_id", $connectRequest->receiver_user_id)->orWhere("receiver_user_id", $connectRequest->receiver_user_id)->where("creator_user_id", $connectRequest->sender_user_id)->first();
-        if(count($existingUserChat) > 0){
-            $userChat = $existingUserChat;
-        } else {
+        $userChat = $existingUserChat;
+        if(count($existingUserChat) > 0) {
             $userchat = new UserChat();
             $userchat->creator_user_id = $connectRequest->receiver_user_id;
             $userchat->receiver_user_id = $connectRequest->sender_user_id;;
             $userchat->created_at = date("Y-m-d H:i:s");
             $userchat->save();
         }
+
         $userMessage = new UserMessage();
         $userMessage->sender_user_id = 1;
         $userMessage->user_chat_id = $userChat->id;
@@ -72,6 +74,8 @@ class SwitchUserWork
         $user = $connectRequest->user;
         $mailgun->saveAndSendEmail($connectRequest->user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
 
+
+        Session::set("userChatId", $userChat->id);
     }
 
     public function declineConnection($request, $mailgun){

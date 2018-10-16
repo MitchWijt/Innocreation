@@ -10,6 +10,32 @@ $('.searchChatUsers').keyup(function(){
     }
 });
 
+$(document).ready(function () {
+   var userChatId = $(".userChatId").val();
+   if(userChatId != 0){
+       $(".chat-card").each(function () {
+          if($(this).data("chat-id") == userChatId){
+              $(this).click();
+          }
+       });
+       $.ajax({
+           method: "POST",
+           beforeSend: function (xhr) {
+               var token = $('meta[name="csrf_token"]').attr('content');
+
+               if (token) {
+                   return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+               }
+           },
+           url: "/user/removeChatSession",
+           data: "",
+           success: function (data) {
+
+           }
+       });
+       sessionStorage.removeItem('userChatId');
+   }
+});
 //user is "finished typing," do something
 function doneTyping () {
     $(".searchChatUsersForm").submit();
@@ -18,6 +44,7 @@ function doneTyping () {
 $(".userCircle").on("click",function () {
     $(this).closest("form").submit();
 });
+
 
 
 $(".chat-card").on("click",function () {

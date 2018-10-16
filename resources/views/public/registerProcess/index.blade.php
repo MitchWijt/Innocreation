@@ -372,14 +372,14 @@
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <button class="btn btn-inno pull-left backToStep4">Back</button>
-                                                <a href="/account" class="btn btn-inno pull-right completeRegister">Finish!</a>
+                                                <a href="/innocreatives" class="btn btn-inno pull-right completeRegister">Finish!</a>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-9">
                                         <div class="row pull-right">
                                             <div class="col-sm-12">
-                                                <a href="/account"><i class="f-11 c-dark-grey">I will do this later</i></a>
+                                                <a href="/innocreatives"><i class="f-11 c-dark-grey">I will do this later</i></a>
                                             </div>
                                         </div>
                                     </div>

@@ -27,7 +27,6 @@ use Spipu\Html2Pdf\Html2Pdf;
 use App\Invoice;
 use GetStream;
 use DateTime;
-use App\Services\UserMessageService as userMessageService;
 use GetStream\StreamLaravel\Facades\FeedManager;
 use Session;
 
@@ -36,9 +35,8 @@ class DebugController extends Controller
     /**
      *
      */
-    public function test(Request $request, UserMessageService $userMessage){
+    public function test(Request $request){
         if($this->authorized(true)){
-            dd($userMessage->createMessage($request));
 
 
 //        $client = $this->getService("stream");

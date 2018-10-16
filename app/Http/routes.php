@@ -106,6 +106,10 @@ Route::post("/sendMessageUser", "UserController@sendMessageUserAction");
 
 Route::post("/user/deleteUserChat", "UserController@deleteUserChatAction");
 
+Route::post("/user/removeChatSession", "UserController@removeChatSessionAction");
+
+
+
 // Create team for user
 Route::post("/createTeam","UserController@createNewTeam");
 
@@ -241,6 +245,8 @@ Route::post("/my-team/getTeamProductModalData", "TeamController@getTeamProductMo
 Route::post("/my-team/deleteTeamProduct", "TeamController@deleteTeamProductAction");
 
 Route::post("/my-team/generateInviteLink", "TeamController@generateInviteLinkAction");
+
+Route::post("/my-team/saveNewName", "TeamController@saveTeamNameAction");
 
 //Payment
 Route::get("/my-team/payment-details", "TeamController@teamPaymentDetailsAction");

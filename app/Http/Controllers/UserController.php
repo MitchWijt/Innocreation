@@ -32,8 +32,8 @@ use App\UserWork;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Http\Middleware\RolesMiddleware;
-use App\Services\SwitchUserWork as SwitchUserWork;
-use App\Services\MailgunService as Mailgun;
+use App\Services\FeedServices\SwitchUserWork as SwitchUserWork;
+use App\Services\AppServices\MailgunService as Mailgun;
 
 
 use App\Http\Requests;
@@ -1449,5 +1449,9 @@ class UserController extends Controller
     public function acceptConnectionAction(Request $request, SwitchUserWork $switch, Mailgun $mailgun){
         $switch->acceptConnection($request, $mailgun);
         return redirect("/my-account/chats");
+    }
+
+    public function removeChatSessionAction(){
+        Session::remove("userChatId");
     }
 }

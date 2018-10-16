@@ -18,7 +18,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-12 text-center">
-                    <i class="f-12 c-dark-grey">Post your best work/project for everyone to see!</i>
+                    <i class="f-12 c-dark-grey">Share your best project/story!</i>
                 </div>
             </div>
             <hr class="m-b-20">
