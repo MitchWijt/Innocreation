@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Expertises;
 use App\Http\Requests\Request;
+use App\NeededExpertiseLinktable;
 use App\User;
 use Mollie\Api\MollieApiClient;
 use Formatter;
@@ -137,6 +139,17 @@ class Controller extends BaseController
         } else if($unit[$exp] == "GB"){
             return 9;
         }
+    }
+
+    public function getAllNeededExpertises(){
+        $expertisesIdArray = [];
+        $neededExpertises = NeededExpertiseLinktable::select("*")->get();
+        foreach($neededExpertises as $neededExpertise){
+            array_push($expertisesIdArray, $neededExpertise->expertise_id);
+        }
+        $expertiseIds = array_unique($expertisesIdArray);
+        $expertises = Expertises::select("*")->whereIn("id", $expertiseIds)->get();
+        return $expertises;
     }
 }
 
