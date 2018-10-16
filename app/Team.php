@@ -16,7 +16,7 @@ class Team extends Model {
 
     public function getProfilePicture(){
         if($this->team_profile_picture != "defaultProfilePicture.png") {
-            return "https://space-innocreation.ams3.digitaloceanspaces.com/teams/$this->slug/profilepicture/$this->team_profile_picture";
+            return "https://space-innocreation.ams3.cdn.digitaloceanspaces.com/teams/$this->slug/profilepicture/$this->team_profile_picture";
         } else {
             return "/images/profilePicturesTeams/defaultProfilePicture.png";
         }

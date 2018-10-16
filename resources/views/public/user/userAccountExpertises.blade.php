@@ -5,6 +5,11 @@
             @include("includes.userAccount_sidebar")
         @endnotmobile
         <div class="container">
+            <div class="row">
+                <div class="col-sm-12 d-flex js-center">
+                    @include("includes.flash")
+                </div>
+            </div>
             @mobile
                 @include("includes.userAccount_sidebar")
             @endmobile
@@ -62,17 +67,21 @@
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                        <div class="modal-header d-flex js-center">
+                        <div class="modal-header d-flex js-center p-relative">
+                            @mobile
+                            <i class="zmdi zmdi-close p-absolute c-orange" data-dismiss="modal" style="top: 4px; right: 7px"></i>
+                            @endmobile
                             <h2 class="modal-title text-center" id="modalLabel">Add your expertise</h2>
                         </div>
                         <div class="modal-body ">
                             <form action="/my-account/addUserExpertise" method="post">
                                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                 <input type="hidden" name="user_id" value="<?= $user_id?>">
-                                <p class="f-19">Expertise: </p>
+                                <p class=" m-b-5">Choose existing expertise: </p>
                                 <div class="row">
-                                    <div class="col-sm-12 text-center m-b-15">
+                                    <div class="col-sm-12 text-center m-b-25">
                                         <select name="expertise" class="input col-sm-12">
+                                            <option value="" selected disabled>Choose expertise</option>
                                             <? foreach($expertises as $expertise) { ?>
                                                 <? if(!in_array($expertise->id, $chosenExpertisesArray)) { ?>
                                                     <option value="<?= $expertise->id?>"><?= $expertise->title?></option>
@@ -82,8 +91,20 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-sm-12 text-center">
+                                        <p>Or</p>
+                                    </div>
+                                </div>
+                                <div class="row expertises">
+                                    <div class="col-sm-12 m-b-15">
+                                        <label class="m-b-0 p-0 col-sm-12">Add a new expertise: </label>
+                                        <i class="c-orange textWarning f-12"></i>
+                                        <input type="text" class="input p-b-10 col-sm-12" name="newExpertises" id="tokenfield" value=""/>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-sm-12">
-                                        <p class="f-19">Expertise experience: </p>
+                                        <p class="f-19 m-b-5">Expertise experience: </p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -103,6 +124,20 @@
             </div>
         </div>
     </div>
+    <script>
+        $('#tokenfield')
+            .on('tokenfield:createdtoken', function (e) {
+                var tokens = $('#tokenfield').tokenfield('getTokens');
+                if(tokens.length >= 1){
+                    $(".textWarning").text("You can add a max. of 1 expertise at the same time");
+                }
+            })
+            .tokenfield({
+            showAutocompleteOnFocus: true,
+            createTokensOnBlur: true,
+            limit: 1
+        });
+    </script>
 @endsection
 @section('pagescript')
     <script src="/js/user/userAccountExpertises.js"></script>

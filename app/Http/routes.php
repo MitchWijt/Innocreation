@@ -527,6 +527,8 @@ Route::post("/admin/getMailMessageModalData", "AdminController@getMailMessageMod
 
 Route::post("/admin/getSearchResultsUserChat", "AdminController@getSearchResultsUserChatAction");
 
+Route::post("/admin/sendUserMessage", "AdminController@sendUserMessageAction");
+
 //expertises
 
 Route::get("/admin/expertise/{id}", "AdminController@expertiseEditorAction");

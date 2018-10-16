@@ -89,6 +89,22 @@ class AdminController extends Controller
         }
     }
 
+    public function sendUserMessageAction(Request $request){
+        $userId = $request->input("user_id");
+        $message = $request->input("message");
+
+        $userChat = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", $userId)->first();
+        $userMessage = new UserMessage();
+        $userMessage->sender_user_id = 1;
+        $userMessage->user_chat_id = $userChat->id;
+        $userMessage->time_sent = $this->getTimeSent();
+        $userMessage->message = $message;
+        $userMessage->created_at = date("Y-m-d H:i:s");
+        $userMessage->save();
+        return redirect("/admin/messages");
+
+    }
+
     /**
      * Display the specified resource.
      *
