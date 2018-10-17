@@ -310,7 +310,7 @@
                         </ul>
                     </div>
                     <div class="row d-flex js-center" style="margin-bottom: 50px !important">
-                        <a href="/collaborate" class="btn btn-inno">Start networking!</a>
+                        <a href="/innocreatives" class="btn btn-inno">Start networking!</a>
                     </div>
                     <div class="modal fade carouselUserModal" id="carouselUserModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">

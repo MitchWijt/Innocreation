@@ -194,22 +194,24 @@ class FeedController extends Controller
      */
 
     public function workFeedIndexAction($id = null){
+        $title = "Share your work/story and connect!";
+        $og_description = "Connect with fellow innocreators and start executing on your ideas!";
         $pageType = "innoCreatives";
         $totalAmount = UserWork::select("id")->count();
         if(Session::has("user_id")){
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
             if($id){
                 $sharedUserWorkId = $id;
-                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount", "sharedUserWorkId"));
+                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount", "sharedUserWorkId", "title", "og_description"));
             } else {
-                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount"));
+                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount", "title", "og_description"));
             }
         } else {
             if($id){
                 $sharedUserWorkId = $id;
-                return view("/public/userworkFeed/index", compact( "pageType", "totalAmount", "sharedUserWorkId"));
+                return view("/public/userworkFeed/index", compact( "pageType", "totalAmount", "sharedUserWorkId", "title", "og_description"));
             } else {
-                return view("/public/userworkFeed/index", compact("pageType", "totalAmount"));
+                return view("/public/userworkFeed/index", compact("pageType", "totalAmount", "title", "og_description"));
             }
         }
 
