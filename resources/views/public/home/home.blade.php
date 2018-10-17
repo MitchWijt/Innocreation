@@ -42,10 +42,15 @@
                         <? $result2 = 2?>
                         @endhandheld
                     <? foreach($carouselUserWorks as $carouselUserWork) { ?>
-                        <? if($counter % $modulo == $result1) { ?>
-                        <div class="carousel-item <? if($counter == 0) echo "active"?>">
-                            <div class="row @handheld d-flex js-center @endhandheld">
-                        <? } ?>
+                        <? if(count($carouselUserWorks) >= 3) { ?>
+                                <? if($counter % $modulo == $result1) { ?>
+                                <div class="carousel-item <? if($counter == 0) echo "active"?>">
+                                    <div class="row @handheld d-flex js-center @endhandheld">
+                                <? } ?>
+                            <? } else { ?>
+                            <div class="carousel-item <? if($counter == 0) echo "active"?>">
+                                <div class="row @handheld d-flex js-center @endhandheld">
+                            <? } ?>
                                 <div class="@handheld col-10 @elsedesktop col-md-4 @endhandheld carouselItem">
                                     <a class="td-none" href="<?= $carouselUserWork->getUrl()?>">
                                     <div class="card-sm m-t-20 m-b-20 @tablet p-10 @endtablet">
@@ -66,9 +71,14 @@
                                     </div>
                                     </a>
                                 </div>
-                        <? if($counter % $modulo == $result2) { ?>
+                        <? if(count($carouselUserWorks) >= 3) { ?>
+                            <? if($counter % $modulo == $result2) { ?>
+                                </div>
                             </div>
-                        </div>
+                            <? } ?>
+                        <? } else { ?>
+                                    </div>
+                                </div>
                         <? } ?>
                         <? $counter++;?>
                     <? } ?>
