@@ -53,7 +53,10 @@
 <div class="modal fade sidebarModal" id="sidebarModal" tabindex="-1" role="dialog" aria-labelledby="sidebarModal" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
-            <div class="modal-body d-flex js-center">
+            <div class="modal-body d-flex js-center p-relative">
+                @mobile
+                    <i class="zmdi zmdi-close p-absolute c-orange" data-dismiss="modal" style="top: 4px; right: 7px"></i>
+                @endmobile
                 <div class="sidebar">
                     <div class="text-center">
                         <a href="/my-team" class="td-none">

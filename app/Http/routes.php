@@ -34,6 +34,8 @@ Route::post("/home/sendMoreInfoMail", "HomeController@sendMoreInfoMailAction");
 
 Route::post("/home/getStatusUser", "HomeController@getStatusUserAction");
 
+Route::post("/home/getModalCarouselUser", "HomeController@getModalCarouselUserAction");
+
 // CONTACT US
 Route::get("/contact-us", "HomeController@contactAction");
 
@@ -90,6 +92,8 @@ Route::post("/my-account/saveUserPortfolio", "UserController@saveUseraccountPort
 
 Route::post("/my-account/editUserPortfolio", "UserController@editUserPortfolio");
 
+Route::post("/user/savePortfolioAsUserWork", "UserController@savePortfolioAsUserWorkAction");
+
 Route::post("/deleteUserPortfolio", "UserController@deleteUserPortfolio");
 // User chats
 Route::get("/my-account/chats", "UserController@userAccountChats");
@@ -101,6 +105,10 @@ Route::post("/selectChatUser", "UserController@selectChatUser");
 Route::post("/sendMessageUser", "UserController@sendMessageUserAction");
 
 Route::post("/user/deleteUserChat", "UserController@deleteUserChatAction");
+
+Route::post("/user/removeChatSession", "UserController@removeChatSessionAction");
+
+
 
 // Create team for user
 Route::post("/createTeam","UserController@createNewTeam");
@@ -118,6 +126,12 @@ Route::post("/my-account/acceptTeamInvite","UserController@acceptTeamInviteActio
 
 Route::post("/my-account/rejectTeamInvite","UserController@rejectTeamInviteAction");
 
+Route::get("/my-account/team-create-requests","UserController@TeamCreateRequestsAction");
+
+Route::post("/my-account/acceptCreateTeamRequest","UserController@acceptCreateTeamRequestAction");
+
+Route::post("/my-account/rejectCreateTeamRequest","UserController@rejectCreateTeamRequestAction");
+
 //Support tickets
 Route::get("/my-account/support-tickets","UserController@userSupportTickets");
 
@@ -133,6 +147,16 @@ Route::get("/my-account/favorite-teams","UserController@favoriteTeamsAction");
 Route::post("/user/joinTeamFromHelper","UserController@joinTeamFromHelperAction");
 
 Route::post("/user/finishHelper","UserController@finishHelperAction");
+
+// follow user
+Route::post("/user/followUser","UserController@followUserAction");
+
+Route::post("/user/unfollowUser","UserController@unfollowUserAction");
+
+//connections
+Route::post("/user/acceptConnection","UserController@acceptConnectionAction");
+
+Route::post("/user/declineConnection","UserController@declineConnectionAction");
 
 
 //payments
@@ -221,6 +245,8 @@ Route::post("/my-team/getTeamProductModalData", "TeamController@getTeamProductMo
 Route::post("/my-team/deleteTeamProduct", "TeamController@deleteTeamProductAction");
 
 Route::post("/my-team/generateInviteLink", "TeamController@generateInviteLinkAction");
+
+Route::post("/my-team/saveNewName", "TeamController@saveTeamNameAction");
 
 //Payment
 Route::get("/my-team/payment-details", "TeamController@teamPaymentDetailsAction");
@@ -389,6 +415,8 @@ Route::post("/message/getAssistanceTicketMessages", "MessageController@getAssist
 
 Route::post("/message/getTeamProductComments", "MessageController@getTeamProductCommentsAction");
 
+Route::post("/message/getUserWorkComments", "MessageController@getUserWorkCommentsAction");
+
 
 
 
@@ -527,6 +555,27 @@ Route::post("/admin/getMailMessageModalData", "AdminController@getMailMessageMod
 
 Route::post("/admin/getSearchResultsUserChat", "AdminController@getSearchResultsUserChatAction");
 
+// commercial data
+Route::get("/admin/commercialData", "AdminCommercialDataController@commercialDataIndexAction");
+
+Route::post("/commercialData/exportDataCsv", "AdminCommercialDataController@exportDataCsvAction");
+
+//mass message
+Route::get("/admin/mass-message", "AdminMassMessageController@massMessageIndexAction");
+
+Route::get("/admin/mailTemplateList", "AdminTemplateController@mailTemplateListAction");
+
+Route::get("/admin/mailTemplateEditor/{id}", "AdminTemplateController@mailTemplateEditorAction");
+
+Route::get("/admin/mailTemplateEditor", "AdminTemplateController@mailTemplateEditorAction");
+
+Route::post("/admin/saveMailTemplate", "AdminTemplateController@saveMailTemplateAction");
+
+Route::post("/admin/sendMassEmail", "AdminMassMessageController@sendMassEmailAction");
+
+
+Route::post("/admin/sendUserMessage", "AdminController@sendUserMessageAction");
+
 //expertises
 
 Route::get("/admin/expertise/{id}", "AdminController@expertiseEditorAction");
@@ -541,12 +590,32 @@ Route::post("/feed/likeTeamProduct", "FeedController@likeTeamProductAction");
 
 Route::post("/feed/getSearchedUsersTeamProduct", "FeedController@getSearchedUsersTeamProductAction");
 
-Route::post("/feed/shareTeamProduct", "FeedController@shareTeamProductAction");
+Route::post("/feed/shareFeedPost", "FeedController@shareFeedPostAction");
 
 Route::post("/feed/postTeamProductComment", "FeedController@postTeamProductCommentAction");
 
 Route::get("/team-product/{slug?}", "FeedController@TeamProductsAction");
 
+//=======================WORKFEED=============================
+Route::get("/innocreatives", "FeedController@workFeedIndexAction");
+
+Route::post("/feed/getUserworkPosts", "FeedController@getUserworkPostsAction");
+
+Route::post("/feed/getMoreUserworkPosts", "FeedController@getMoreUserworkPostsAction");
+
+Route::post("/feed/upvoteUserWork", "FeedController@upvoteUserWorkAction");
+
+Route::get("/innocreatives/{id?}", "FeedController@workFeedIndexAction");
+
+Route::post("/feed/postUserWork", "FeedController@postUserWorkAction");
+
+Route::post("/feed/postUserWorkComment", "FeedController@postUserWorkCommentAction");
+
+Route::post("/feed/deleteUserWorkPost", "FeedController@deleteUserWorkPostAction");
+
+Route::post("/feed/editUserWorkPost", "FeedController@editUserWorkPostAction");
+
+Route::post("/feed/sendConnectRequest", "FeedController@sendConnectRequestAction");
 
 //========================CHECKOUT/PACKAGES========================
 

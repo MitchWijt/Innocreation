@@ -13,6 +13,10 @@
             </div>
             <div class="hr col-md-12"></div>
             <div class="row">
+                <? if(\Illuminate\Support\Facades\Session::has("userChatId")) { ?>
+                    <input type="hidden" class="userChatId" value="<?= \Illuminate\Support\Facades\Session::get("userChatId")?>">
+                <? } ?>
+                <input type="hidden" class="userChatId" value="0">
                 <input type="hidden" class="streamToken" value="<?= $streamToken?>">
                 <input type="hidden" class="userId" value="<?= $user_id?>">
                 <div class="col-md-6">

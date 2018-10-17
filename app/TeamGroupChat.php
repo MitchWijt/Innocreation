@@ -13,6 +13,6 @@ class TeamGroupChat extends Model
     }
 
     public function getProfilePicture(){
-         return "https://space-innocreation.ams3.digitaloceanspaces.com/teams/" . $this->getTeam()->slug ."/groupchats/" .strtolower(str_replace(" ", "-", $this->title)) ."/$this->profile_picture";
+         return "https://space-innocreation.ams3.cdn.digitaloceanspaces.com/teams/" . $this->getTeam()->slug ."/groupchats/" .strtolower(str_replace(" ", "-", $this->title)) ."/$this->profile_picture";
     }
 }

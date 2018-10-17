@@ -128,7 +128,7 @@
                                 <? if($user->team_id != null) { ?>
                                     <hr class="m-b-20 col-md-10">
                                 <? } ?>
-                                <form action="/feed/shareTeamProduct" class="shareTeamProductUsersForm" method="post">
+                                <form action="/feed/shareFeedPost" class="shareTeamProductUsersForm" method="post">
                                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                     <input type="hidden" name="team_product_id" class="team_product_id" value="">
                                     <div class="shareWithUsers <? if($user->team_id != null) echo "hidden" ?>">

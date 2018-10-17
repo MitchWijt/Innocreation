@@ -9,7 +9,13 @@
                 @include("includes.teamPage_sidebar")
             @endmobile
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">My team</h1>
+                <h1 class="sub-title-black p-relative TeamName"><?= $team->team_name?><i class="zmdi zmdi-edit f-18 p-absolute c-pointer editTeamName" style="right: -20px;"></i></h1>
+                <div class="p-relative">
+                    <p class="error c-red m-0 f-14"></p>
+                    <input type="text" name="teamName" class="hidden newTeamNameInput input m-b-15" value="<?= $team->team_name?>">
+                    <input type="hidden" name="teamId" class="teamId" value="<?= $team->id?>">
+                    <i class="zmdi zmdi-close f-18 p-absolute c-pointer closeEditName hidden" style="right: -20px; top: -10px"></i>
+                </div>
             </div>
             <div class="hr col-md-10"></div>
             <form action="/my-team/saveTeamProfilePicture" enctype="multipart/form-data" method="post" class="saveTeamProfilePicture">

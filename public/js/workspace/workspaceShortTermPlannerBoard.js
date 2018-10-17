@@ -222,7 +222,7 @@ $(document).on("change",".assignTaskToMember",function () {
                             $(this).parents(".assignMember").prepend(profilepicture);
                             $(this).addClass("hidden");
                         }
-                        $(this).attr("src", data);
+                        // $(this).attr("src", data);
                         if (modal_check != 1) {
                             $(this).parents(".shortTermTask").find(".collapse").collapse('toggle');
                         }
@@ -231,7 +231,7 @@ $(document).on("change",".assignTaskToMember",function () {
                         $(this).parents(".assignMember").find(".memberAssignIcon").removeClass("hidden");
                         $(this).parents(".assignMember").find(".placeholderMemberAssign").removeClass("hidden");
                         $(this).parents(".assignMember").find(".hasImage").removeClass("hidden");
-                        $(this).parents(".assignMember").find("img").addClass("hidden");
+                        $(this).parents(".assignMember").find(".img").addClass("hidden");
                         if (modal_check != 1) {
                             $(this).parents(".shortTermTask").find(".collapse").collapse('toggle');
                         }

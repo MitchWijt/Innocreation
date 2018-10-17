@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Expertises;
 use App\Http\Requests\Request;
+use App\NeededExpertiseLinktable;
 use App\User;
 use Mollie\Api\MollieApiClient;
+use Formatter;
 use Redirect;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -13,6 +16,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Support\Facades\Session;
 use GetStream;
+use Response;
 use Mailgun\Mailgun;
 use App\MailMessage;
 
@@ -125,18 +129,6 @@ class Controller extends BaseController
         return $controller;
     }
 
-    public function calculateAdyenSignature($pairs, $key, $binaryHmacKey){
-        ksort($pairs, SORT_STRING);
-        foreach ($pairs as $key => $value) {
-            $escapedPairs[$key] = str_replace(':','\\:', str_replace('\\', '\\\\', $value));
-        }
-
-        $signingString = implode(":", array_merge(array_keys($escapedPairs), array_values($escapedPairs)));
-        $binaryHmac = hash_hmac('sha256', $signingString, $binaryHmacKey, true);
-        $signature = base64_encode($binaryHmac);
-        return $signature;
-    }
-
     public function formatBytes($bytes, $precision = 2) {
         $unit = ["B", "KB", "MB", "GB"];
         $exp = floor(log($bytes, 1024)) | 0;
@@ -147,6 +139,17 @@ class Controller extends BaseController
         } else if($unit[$exp] == "GB"){
             return 9;
         }
+    }
+
+    public function getAllNeededExpertises(){
+        $expertisesIdArray = [];
+        $neededExpertises = NeededExpertiseLinktable::select("*")->get();
+        foreach($neededExpertises as $neededExpertise){
+            array_push($expertisesIdArray, $neededExpertise->expertise_id);
+        }
+        $expertiseIds = array_unique($expertisesIdArray);
+        $expertises = Expertises::select("*")->whereIn("id", $expertiseIds)->get();
+        return $expertises;
     }
 }
 

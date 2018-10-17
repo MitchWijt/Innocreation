@@ -8,11 +8,17 @@ use App\TeamProductComment;
 use App\TeamProductLinktable;
 use App\User;
 use App\UserChat;
+use App\UserFollowLinktable;
 use App\UserMessage;
+use App\UserUpvoteLinktable;
+use App\UserWork;
+use App\UserWorkComment;
 use Illuminate\Http\Request;
+use App\Services\FeedServices\SwitchUserWork as SwitchUserWork;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class FeedController extends Controller
 {
@@ -98,7 +104,7 @@ class FeedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function shareTeamProductAction(Request $request) {
+    public function shareFeedPostAction(Request $request) {
         if($this->authorized()){
             $userIds = $request->input("userIds");
             $teamProductId = $request->input("team_product_id");
@@ -142,14 +148,16 @@ class FeedController extends Controller
                 $message->save();
             }
 
-            $teamProductLinktable = TeamProductLinktable::select("*")->where("team_product_id", $teamProductId)->where("user_id", $user->id)->first();
-            if(count($teamProductLinktable) > 0){
-                $teamProductLinktable->shared = 1;
-                $teamProductLinktable->save();
-            } else {
-                $teamProductLinktable = new TeamProductLinktable();
-                $teamProductLinktable->shared = 1;
-                $teamProductLinktable->save();
+            if($teamProductId) {
+                $teamProductLinktable = TeamProductLinktable::select("*")->where("team_product_id", $teamProductId)->where("user_id", $user->id)->first();
+                if (count($teamProductLinktable) > 0) {
+                    $teamProductLinktable->shared = 1;
+                    $teamProductLinktable->save();
+                } else {
+                    $teamProductLinktable = new TeamProductLinktable();
+                    $teamProductLinktable->shared = 1;
+                    $teamProductLinktable->save();
+                }
             }
 
             return redirect($_SERVER["HTTP_REFERER"])->with("success", "Shared team product");
@@ -184,4 +192,172 @@ class FeedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function workFeedIndexAction($id = null){
+        $title = "Share your work/story and connect!";
+        $og_description = "Connect with fellow innocreators and start executing on your ideas!";
+        $pageType = "innoCreatives";
+        $totalAmount = UserWork::select("id")->count();
+        if(Session::has("user_id")){
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            if($id){
+                $sharedUserWorkId = $id;
+                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount", "sharedUserWorkId", "title", "og_description"));
+            } else {
+                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount", "title", "og_description"));
+            }
+        } else {
+            if($id){
+                $sharedUserWorkId = $id;
+                return view("/public/userworkFeed/index", compact( "pageType", "totalAmount", "sharedUserWorkId", "title", "og_description"));
+            } else {
+                return view("/public/userworkFeed/index", compact("pageType", "totalAmount", "title", "og_description"));
+            }
+        }
+
+    }
+
+    public function getUserworkPostsAction(){
+        $userWorkPosts = UserWork::select("*")->orderBy("created_at", "DESC")->limit(15)->get();
+        if(Session::has("user_id")) {
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            return view("/public/userworkFeed/shared/_userworkPosts", compact("user", "userWorkPosts"));
+        }
+        return view("/public/userworkFeed/shared/_userworkPosts", compact("userWorkPosts"));
+    }
+
+    public function getMoreUserworkPostsAction(Request $request){
+        $userworkArray = $request->input("userworkArray");
+        $userWorkPosts = UserWork::select("*")->whereNotIn("id", $userworkArray)->orderBy("created_at", "DESC")->limit(15)->get();
+        if(Session::has("user_id")) {
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            return view("/public/userworkFeed/shared/_userworkPosts", compact("user", "userWorkPosts"));
+        }
+        return view("/public/userworkFeed/shared/_userworkPosts", compact("userWorkPosts"));
+    }
+
+    public function upvoteUserWorkAction(Request $request){
+        $userWorkId = $request->input("userWorkId");
+        if(Session::has("user_id")) {
+            $userUpvote = new UserUpvoteLinktable();
+            $userUpvote->user_id = Session::get("user_id");
+            $userUpvote->user_work_id = $userWorkId;
+            $userUpvote->save();
+
+            $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
+            $userWork->upvotes = $userWork->upvotes + 1;
+            $userWork->save();
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
+    public function postUserWorkAction(Request $request){
+        if($this->authorized()){
+            $userId = $request->input("user_id");
+            $file = $request->file("image");
+            $percentage = $request->input("percentageProgress");
+            $link = $request->input("imageLink");
+            $description = htmlspecialchars($request->input("newUserWorkDescription"));
+
+            $userWork = new UserWork();
+            $userWork->description = $description;
+            $userWork->user_id = $userId;
+            if($percentage){
+                $userWork->progress = $percentage;
+            }
+            $userWork->save();
+
+            if($link){
+                $userWork->link = $link;
+            }
+            if($file) {
+                $size = $this->formatBytes($file->getSize());
+                if ($size < 8) {
+                    $filename = preg_replace('/[^a-zA-Z0-9-_\.]/', '', $file->getClientOriginalName());
+
+                    $user = User::select("*")->where("id", $userId)->first();
+                    Storage::disk('spaces')->put("users/$user->slug/userworks/$userWork->id/$filename", file_get_contents($file->getRealPath()), "public");
+
+                    $userWork->content = $filename;
+                    $userWork->created_at = date("Y-m-d H:i:s");
+                    $userWork->save();
+                    return redirect($_SERVER["HTTP_REFERER"]);
+                } else {
+                    $userWork->delete();
+                    return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
+                }
+            } else {
+                $userWork->created_at = date("Y-m-d H:i:s");
+                $userWork->save();
+
+                $followers = UserFollowLinktable::select("*")->where("followed_user_id", $userWork->user_id)->get();
+                if($followers){
+                    foreach($followers as $follower){
+                        $poster = User::select("*")->where("id", $userWork->user_id)->first();
+                        $user = User::select("*")->where("id", $follower->user_id)->first();
+                        $this->saveAndSendEmail($user, "$poster->firstname has posted a new post!", view("/templates/sendInnocreativeNotification", compact("user", "poster")));
+                    }
+                }
+
+                return redirect($_SERVER["HTTP_REFERER"]);
+            }
+        }
+    }
+
+    public function postUserWorkCommentAction(Request $request){
+        if($this->authorized()){
+            $senderUserId = $request->input("sender_user_id");
+            $user_work_id = $request->input("user_work_id");
+            $comment = $request->input("comment");
+
+            $userWorkComment = new UserWorkComment();
+            $userWorkComment->sender_user_id = $senderUserId;
+            $userWorkComment->user_work_id = $user_work_id;
+            $userWorkComment->time_sent = $this->getTimeSent();
+            $userWorkComment->description = $comment;
+            $userWorkComment->created_at = date("Y-m-d H:i:s");
+            $userWorkComment->save();
+
+
+            $messageArray = ["message" => $comment, "timeSent" => $this->getTimeSent()];
+            echo json_encode($messageArray);
+
+        }
+    }
+
+    public function deleteUserWorkPostAction(Request $request){
+        $userWorkId = $request->input("userWorkId");
+        $userId = Session::get("user_id");
+
+        $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
+        if($userWork->user_id == $userId){
+            $userWork->delete();
+            return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Successfully deleted your post");
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors("Failed to delete the post");
+        }
+    }
+
+    public function editUserWorkPostAction(Request $request){
+        $userWorkId = $request->input("userWorkId");
+        $userId = Session::get("user_id");
+        $description = $request->input("newUserWorkDescription");
+
+        $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
+        if($userWork->user_id == $userId){
+            $userWork->description = $description;
+            $userWork->save();
+            return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Successfully edited your post!");
+        } else {
+            return redirect($_SERVER["HTTP_REFERER"])->withErrors("Failed to edit the post");
+        }
+
+    }
+
+    public function sendConnectRequestAction(Request $request, SwitchUserWork $switch){
+        $newRequest = $switch->createNewConnectRequest($request);
+        return redirect(sprintf('/innocreatives/%d', json_decode($newRequest)->user_work_id));
+    }
 }

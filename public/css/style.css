@@ -908,7 +908,7 @@ footer{
     background-position:center,center !important;
 }
 
-.messageInputNetwork {
+.messageInputDynamic {
     height:40px;
     transition: all 0.5s;
     -webkit-transition: all 0.5s; /* Safari */
@@ -917,7 +917,7 @@ input::placeholder{
     padding-left: 2px !important;;
 }
 
-.messageInputNetwork:focus {
+.messageInputDynamic:focus {
     height:130px;
 }
 
@@ -935,4 +935,24 @@ input::placeholder{
 
 .b-b-l-0{
     border-bottom-left-radius: 0 !important;
+}
+
+ul.dashed {
+    list-style-type: none;
+}
+ul.dashed > li {
+    text-indent: -5px;
+}
+ul.dashed > li:before {
+    content: "-";
+    text-indent: -5px;
+}
+
+.activeItem{
+    color: #fff !important;
+}
+
+.underline-link:hover{
+    border-bottom: 1px solid #FF6100;
+    cursor: pointer;
 }

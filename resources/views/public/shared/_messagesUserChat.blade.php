@@ -24,19 +24,19 @@
             <? if($message->sender_user_id == $user_id) { ?>
                 <div class="row m-t-20 sendedMessageAjax">
                     <div class="col-sm-12">
-                        <div class="col-sm-5 messageSent pull-right m-b-10">
+                        <div class="@mobile col-10 @elsedesktop col-sm-5 @endmobile messageSent pull-right m-b-10">
                             <p class="message"><?= $message->message?></p>
                             <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
                         </div>
                     </div>
                 </div>
             <? } else { ?>
-                <div class="row messageReceived m-b-10 m-r-200 m-l-30 m-t-15">
-                    <div class="col-sm-8">
-                        <p class="message"><?=$message->message?></p>
-                    </div>
-                    <div class="col-sm-4">
-                        <span class="f-12 timeSent"><?=$message->time_sent?></span>
+                <div class="row m-t-20">
+                    <div class="col-sm-12">
+                        <div class="@mobile col-10 @elsedesktop col-sm-5 @endmobile pull-left m-b-10 messageReceived">
+                            <p class="message"><?= $message->message?></p>
+                            <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
+                        </div>
                     </div>
                 </div>
             <? } ?>

@@ -3,7 +3,7 @@
     <tr>
         <td style="display: flex; justify-content: center;">
             <div>
-                <p class="webfont" style="width: 410px; font-size: 16px; margin-bottom: 0; margin-top: 0;">The recurring payment for <?= $user->getName()?> has been paid: </p>
+                <p class="webfont" style="width: 410px; font-size: 16px; margin-bottom: 0; margin-top: 0;">The recurring payment for <?= $user->getName()?> has been paid.</p>
             </div>
         </td>
     </tr>

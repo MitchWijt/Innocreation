@@ -8,6 +8,18 @@
             $counterMessages = $counterMessages + count($unreadMessages);
         }
     }
+
+    $invites = \App\InviteRequestLinktable::select("*")->where("user_id", $user->id)->where("accepted", 0)->get();
+    $userJoinRequestsCounter = count($invites);
+
+    if($user->team_id != null){
+        $team_id = $user->team_id;
+        $userJoinRequests = \App\JoinRequestLinktable::select("*")->where("team_id", $team_id)->where("accepted", 0)->get();
+        $teamJoinRequestsCounter = count($userJoinRequests);
+    }
+
+    $teamCreateRequests = \App\TeamCreateRequest::select("*")->where("receiver_user_id", $user->id)->where("accepted", 0)->get();
+    $teamCreateCounter = count($teamCreateRequests);
 ?>
 @notmobile
 <div class="sidebar">
@@ -25,7 +37,14 @@
     <hr>
     <div class="sidebar-tab text-center">
         <? if($user->team_id != null) { ?>
-            <a class="regular-link c-gray" href="/my-team">Team</a>
+            <div class="d-flex js-center">
+                <a class="regular-link c-gray m-r-10" href="/my-team">Team </a>
+                <? if($teamJoinRequestsCounter > 0) { ?>
+                    <div class="circle circleNotification c-orange text-center">
+                        <span><?= $teamJoinRequestsCounter?></span>
+                    </div>
+                <? } ?>
+            </div>
         <? } else { ?>
             <a class="regular-link c-gray" href="/my-account/teamInfo">Team</a>
         <? } ?>
@@ -48,7 +67,25 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-account/team-join-requests">Join requests</a>
+        <div class="d-flex js-center">
+            <a class="regular-link c-gray m-r-10" href="/my-account/team-join-requests">Join requests </a>
+            <? if($userJoinRequestsCounter > 0) { ?>
+            <div class="circle circleNotification c-orange text-center">
+                <span><?= $userJoinRequestsCounter?></span>
+            </div>
+            <? } ?>
+        </div>
+    </div>
+    <hr>
+    <div class="sidebar-tab text-center">
+        <div class="d-flex js-center">
+            <a class="regular-link c-gray m-r-10" href="/my-account/team-create-requests">Create team requests </a>
+            <? if($teamCreateCounter > 0) { ?>
+            <div class="circle circleNotification c-orange text-center">
+                <span><?= $teamCreateCounter?></span>
+            </div>
+            <? } ?>
+        </div>
     </div>
     <hr>
     <div class="sidebar-tab text-center">
@@ -76,7 +113,10 @@
 <div class="modal fade sidebarModal" id="sidebarModal" tabindex="-1" role="dialog" aria-labelledby="sidebarModal" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
-            <div class="modal-body d-flex js-center">
+            <div class="modal-body d-flex js-center p-relative">
+                @mobile
+                    <i class="zmdi zmdi-close p-absolute c-orange" data-dismiss="modal" style="top: 4px; right: 7px"></i>
+                @endmobile
                 <div class="sidebar">
                     <div class="text-center">
                         <p class="c-gray f-20 text-center m-0"><?= \Illuminate\Support\Facades\Session::get("user_name")?></p>
@@ -119,7 +159,25 @@
                     </div>
                     <hr>
                     <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="/my-account/team-join-requests">Join requests</a>
+                        <div class="d-flex js-center">
+                            <a class="regular-link c-gray m-r-10" href="/my-account/team-join-requests">Join requests </a>
+                            <? if($userJoinRequestsCounter > 0) { ?>
+                            <div class="circle circleNotification c-orange text-center">
+                                <span><?= $userJoinRequestsCounter?></span>
+                            </div>
+                            <? } ?>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="sidebar-tab text-center">
+                        <div class="d-flex js-center">
+                            <a class="regular-link c-gray m-r-10" href="/my-account/team-create-requests">Create team requests </a>
+                            <? if($teamCreateCounter > 0) { ?>
+                            <div class="circle circleNotification c-orange text-center">
+                                <span><?= $teamCreateCounter?></span>
+                            </div>
+                            <? } ?>
+                        </div>
                     </div>
                     <hr>
                     <div class="sidebar-tab text-center">

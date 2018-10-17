@@ -124,6 +124,31 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="card card-lg col-sm-12 m-t-20">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-sm-12 d-flex js-between m-b-10">
+                                <h4 class="m-t-5">Chat message</h4>
+                            </div>
+                            <div class="hr col-sm-12"></div>
+                            <div class="col-sm-12 m-t-20">
+                                <form action="/admin/sendUserMessage" method="post" class="m-b-20">
+                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                    <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                    <textarea name="message" class="input col-sm-12" cols="30" rows="6">Hello <?= $user->firstname?>,
+Best regards Innocreation</textarea>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <button class="btn btn-inno pull-right">Send</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row m-b-20">
                 <div class="card card-lg col-sm-12 m-t-20">
                     <div class="card-block">
