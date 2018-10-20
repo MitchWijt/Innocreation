@@ -19,9 +19,11 @@ $(document).on("change", ".introductionUser",function () {
 
 $(document).ready(function () {
     if(url.indexOf("my-") == -1) {
-        if ($(".introductionUser").val().length > 1) {
-            $(".helperTextCredentials").text("Great! Now users will know you! P.S dont forget to save :)");
-            $(".continueStep1").removeClass("hidden");
+        if($(".introductionUser").val()) {
+            if ($(".introductionUser").val().length > 1) {
+                $(".helperTextCredentials").text("Great! Now users will know you! P.S dont forget to save :)");
+                $(".continueStep1").removeClass("hidden");
+            }
         }
     }
     if(url.indexOf("expertises") != 0) {
