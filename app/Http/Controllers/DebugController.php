@@ -37,8 +37,6 @@ class DebugController extends Controller
      */
     public function test(Request $request){
         if($this->authorized(true)){
-
-
 //        $client = $this->getService("stream");
 //        $messageFeed = $client->feed('user', 10);
 //

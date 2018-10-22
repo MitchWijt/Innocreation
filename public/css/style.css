@@ -956,3 +956,7 @@ ul.dashed > li:before {
     border-bottom: 1px solid #FF6100;
     cursor: pointer;
 }
+
+.hr-main{
+    border-bottom: 3px solid #FF6100 !important;
+}

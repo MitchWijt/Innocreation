@@ -41,7 +41,7 @@
                                     <? if(isset($user)) { ?>
                                         <a href="/account" class="btn btn-inno @tablet btn-sm @endtablet m-t-10">Join for free!</a>
                                     <? } else { ?>
-                                        <a href="/login?register=1" class="btn btn-inno @tablet btn-sm @endtablet m-t-10">Join for free!</a>
+                                        <a href="/create-my-account" class="btn btn-inno @tablet btn-sm @endtablet m-t-10">Join for free!</a>
                                     <? } ?>
                                 </div>
                             </div>
@@ -87,11 +87,11 @@
                                     <div class="text-center">
                                         <? if(isset($user)) { ?>
                                             <? if($user->team_id != null && $user->team->packageDetails()) { ?>
-                                                <? if($user->isMember() && $user->team->packageDetails()->membership_package_id == $membershipPackage->id &&  $user->team->packageDetails()->custom_team_package_id == null) { ?>
-                                                    <button class="btn btn-inno @tablet btn-sm @endtablet" disabled>Your current package!</button>
-                                                <? } else { ?>
-                                                    <button class="openModalChangePackage btn btn-inno @tablet btn-sm @endtablet" data-user-id="<?= $user->id?>" data-membership-package-id="<?= $membershipPackage->id?>">Choose</button>
-                                                <? } ?>
+                                                    <? if($user->isMember() && $user->team->packageDetails()->membership_package_id == $membershipPackage->id && $user->team->packageDetails()->custom_team_package_id == null) { ?>
+                                                        <button class="btn btn-inno @tablet btn-sm @endtablet" disabled>Your current package!</button>
+                                                    <? } else { ?>
+                                                        <button class="openModalChangePackage btn btn-inno @tablet btn-sm @endtablet" data-user-id="<?= $user->id?>" data-membership-package-id="<?= $membershipPackage->id?>">Choose</button>
+                                                    <? } ?>
                                                 <? } else { ?>
                                                     <a href="/becoming-a-<?= lcfirst($membershipPackage->title)?>" class="btn btn-inno @tablet btn-sm @endtablet">Choose</a>
                                                 <? } ?>
@@ -229,38 +229,41 @@
                     </div>
                 </div>
             </div>
-            <div class="sub-title-container p-t-20 m-t-20">
-                <h1 class="sub-title-black @mobile f-25 @endmobile">Reviews</h1>
-            </div>
-            <div class="hr col-md-12 m-b-20"></div>
-            <? foreach($serviceReviews as $serviceReview) { ?>
-                <div class="row d-flex js-center m-b-20">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-block">
-                                <div class="row text-center d-flex js-center m-t-20">
-                                    <div class="circle circleImage m-r-0">
-                                        <p class="text-center c-orange f-23 m-t-10"><?= $serviceReview->rating?></p>
+            <? if(count($serviceReviews) > 0) { ?>
+                <div class="sub-title-container p-t-20 m-t-20">
+                    <h1 class="sub-title-black @mobile f-25 @endmobile">Reviews</h1>
+                </div>
+                <div class="hr col-md-12 m-b-20"></div>
+                <? foreach($serviceReviews as $serviceReview) { ?>
+                    <div class="row d-flex js-center m-b-20">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-block">
+                                    <div class="row text-center d-flex js-center m-t-20">
+                                        <div class="circle circleImage m-r-0">
+                                            <p class="text-center c-orange f-23 m-t-10"><?= $serviceReview->rating?></p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row d-flex js-center m-t-10">
-                                    <p><?= $serviceReview->users->getName()?> had a <?= strtolower($serviceReview->review)?> experience</p>
-                                </div>
-                                @notmobile
-                                    <hr class="col-md-11">
-                                @elsemobile
-                                    <hr class="col-xs-12">
-                                @endnotmobile
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <p class="col-sm-12"><?= $serviceReview->review_description?></p>
+                                    <div class="row d-flex js-center m-t-10">
+                                        <p><?= $serviceReview->users->getName()?> had a <?= strtolower($serviceReview->review)?> experience</p>
+                                    </div>
+                                    @notmobile
+                                        <hr class="col-md-11">
+                                    @elsemobile
+                                        <hr class="col-xs-12">
+                                    @endnotmobile
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <p class="col-sm-12"><?= $serviceReview->review_description?></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                <? } ?>
             <? } ?>
+
             <div class="modal fade changePackageModal" id="changePackageModal" tabindex="-1" role="dialog" aria-labelledby="changePackageModal" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content changePackageModalData">

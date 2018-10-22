@@ -23,10 +23,17 @@
 ?>
 @notmobile
 <div class="sidebar">
-    <div class="text-center">
-        <p class="c-gray f-20 text-center m-0"><?= \Illuminate\Support\Facades\Session::get("user_name")?></p>
+    <div class="text-center col-sm-12">
+        <div class="row">
+            <div class="col-sm-3 p-r-0" style="margin-top: 3px ">
+                <div class="avatar-sm m-l-10" style="background: url('<?= $user->getProfilePicture()?>')"></div>
+            </div>
+            <div class="col-sm-9 p-l-10">
+                <p class="c-gray f-20 pull-left m-0"><?= \Illuminate\Support\Facades\Session::get("user_name")?></p>
+            </div>
+        </div>
     </div>
-    <hr>
+    <div class="hr-main m-t-5 m-b-5"></div>
     <div class="sidebar-tab text-center">
         <a class="regular-link c-gray" href="/my-account">My Profile</a>
     </div>
@@ -38,7 +45,7 @@
     <div class="sidebar-tab text-center">
         <? if($user->team_id != null) { ?>
             <div class="d-flex js-center">
-                <a class="regular-link c-gray m-r-10" href="/my-team">Team </a>
+                <a class="regular-link c-gray m-r-10" href="/my-team">My team </a>
                 <? if($teamJoinRequestsCounter > 0) { ?>
                     <div class="circle circleNotification c-orange text-center">
                         <span><?= $teamJoinRequestsCounter?></span>
