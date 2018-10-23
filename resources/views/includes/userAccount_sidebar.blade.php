@@ -116,19 +116,26 @@
     <hr>
 </div>
 @elsemobile
-<i class="zmdi zmdi-view-toc f-25 m-t-10 toggleSidebar" data-toggle="modal" data-target=".sidebarModal"></i>
+<i class="zmdi zmdi-view-toc f-25 m-t-10 toggleSidebar p-t-10 p-b-10 p-l-10 p-r-10" style="border: 1px solid #77787a !important; border-radius: 15px;" data-toggle="modal" data-target=".sidebarModal"></i></span>
 <div class="modal fade sidebarModal" id="sidebarModal" tabindex="-1" role="dialog" aria-labelledby="sidebarModal" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-body d-flex js-center p-relative">
                 @mobile
-                    <i class="zmdi zmdi-close p-absolute c-orange" data-dismiss="modal" style="top: 4px; right: 7px"></i>
+                    <i class="zmdi zmdi-close p-absolute c-orange f-22" data-dismiss="modal" style="top: 6px; right: 9px; padding: 5px !important"></i>
                 @endmobile
                 <div class="sidebar">
-                    <div class="text-center">
-                        <p class="c-gray f-20 text-center m-0"><?= \Illuminate\Support\Facades\Session::get("user_name")?></p>
+                    <div class="text-center col-sm-12">
+                        <div class="row">
+                            <div class="col-3 p-r-0" style="margin-top: 3px ">
+                                <div class="avatar-sm m-l-10" style="background: url('<?= $user->getProfilePicture()?>')"></div>
+                            </div>
+                            <div class="col-9 p-l-10">
+                                <p class="c-gray f-20 pull-left m-0"><?= \Illuminate\Support\Facades\Session::get("user_name")?></p>
+                            </div>
+                        </div>
                     </div>
-                    <hr>
+                    <div class="hr-main m-t-5 m-b-5"></div>
                     <div class="sidebar-tab text-center">
                         <a class="regular-link c-gray" href="/my-account">My Profile</a>
                     </div>
