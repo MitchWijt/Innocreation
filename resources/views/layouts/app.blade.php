@@ -120,6 +120,6 @@
         @include('includes/footer')
     <? } ?>
 <? } ?>
-
+<script src="/js/home/general.js"></script>
 </body>
 </html>

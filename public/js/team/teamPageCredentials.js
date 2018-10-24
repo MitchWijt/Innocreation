@@ -20,7 +20,7 @@ $(".closeEditName").on("click",function () {
     $(".editTeamName").removeClass("hidden");
 });
 
-$(".newTeamNameInput").on("change",function () {
+$(".newTeamNameInput").on("blur" ,function () {
     var newName = $(this).val();
     var id = $(".teamId").val();
 

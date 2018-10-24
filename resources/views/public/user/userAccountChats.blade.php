@@ -179,10 +179,8 @@
                 $(".onlineDot").each(function () {
                     var userId = $(this).data("user-id");
                     if(userId == data["new"][0]["userId"]){
-                        console.log(data);
                         $(this).removeClass("hidden");
                     } else {
-                        console.log(data);
                         $(this).addClass("hidden");
                     }
                 });

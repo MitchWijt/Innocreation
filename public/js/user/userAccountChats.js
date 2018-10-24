@@ -98,6 +98,7 @@ $(".chat-card").on("click",function () {
                $(".userChatMessages").each(function () {
                    var userChatId = $(this).data("chat-id");
                    if(userChatId == data["new"][0]["userChat"]){
+                       console.log("test");
                        var message = $('.messageReceived').first().clone();
                        var allMessages = $(this);
                        $(message).appendTo(allMessages);
