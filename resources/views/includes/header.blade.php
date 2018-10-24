@@ -1,4 +1,3 @@
-@section("header")
 <header class="headerShow">
         @handheld
             <div class="p-t-10 container">

@@ -5,6 +5,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\User;
 
+
 class BasicTest extends TestCase
 {
     /**
@@ -15,18 +16,16 @@ class BasicTest extends TestCase
     public function testUserGetName()
     {
         $user = User::select("*")->where("id", 10)->first();
-        $user->firstname = "MitchelTest";
-        $user->middlename = "Van";
+        $user->firstname = "Mitchel";
         $user->lastname = "Wijt";
         $user->save();
-        $this->assertEquals('MitchelTest Van Wijt', $user->getName());
+        $this->assertEquals('Mitchel Wijt', $user->getName());
 
+    }
 
-//
-//        $user = new User();
-//        $user->firstname = "Mitchel";
-//        $user->lastname = "Wijt";
-//        $this->assertEquals('Mitchel Wijt', $user->getName());
+    public function testCheckHomepage(){
+        $this->visit('/')
+            ->click('collaborateNow');
 
     }
 }

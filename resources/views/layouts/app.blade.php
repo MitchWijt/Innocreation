@@ -118,6 +118,7 @@
 <? if(!isset($pageType) || $pageType != "checkout") { ?>
     <? if(!isset($pageType) || $pageType != "innoCreatives") { ?>
         @include('includes/footer')
+@endsection
     <? } ?>
 <? } ?>
 <script src="/js/home/general.js"></script>

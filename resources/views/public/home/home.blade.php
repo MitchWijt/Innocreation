@@ -26,7 +26,7 @@
             </div>
             <div class="row d-flex js-center">
                 <div class="col-md-5 d-flex js-center">
-                    <a href="/create-my-account" class="btn btn-inno col-sm-5 startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</a>
+                    <a id="collaborateNow" href="/create-my-account" class="btn btn-inno col-sm-5 startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</a>
                 </div>
             </div>
             <div id="carouselExampleIndicators" class="carousel slide p-relative" @desktop style="margin-top: 180px !important" @enddesktop @tablet  style="margin-top: 130px !important" @endtablet data-ride="carousel">
@@ -249,12 +249,12 @@
                                 <div class="@mobile col-10 p-r-0 @elsedesktop col-sm-10 d-flex jc-end @endmobile ">
                                     @handheld
                                         @mobile
-                                            <p class="instructions-second-text m-b-0 m-t-15 f-17">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
+                                            <p class="instructions-second-text m-b-0 m-t-15 f-17">Post your project/story on the inno  <a class="regular-link" href="/innocreatives">feed</a></p>
                                         @elsetablet
-                                            <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-20">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
+                                            <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-20">Post your project/story on the inno  <a class="regular-link" href="/innocreatives">feed</a></p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-22">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
+                                        <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-22">Post your project/story on the inno  <a class="regular-link" href="/innocreatives">feed</a></p>
                                     @endhandheld
                                 </div>
                                 <div class="@mobile col-2 p-l-0 m-t-10 @elsedesktop col-sm-2 @endmobile">
