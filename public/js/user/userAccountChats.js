@@ -99,11 +99,11 @@ $(".chat-card").on("click",function () {
                    var userChatId = $(this).data("chat-id");
                    if(userChatId == data["new"][0]["userChat"]){
                        console.log("test");
-                       var message = $('.messageReceived').first().clone();
+                       var message = $('.messageReceivedAjax').first().clone();
                        var allMessages = $(this);
                        $(message).appendTo(allMessages);
-                       message.find(".message").text(data["new"][0]["message"]);
-                       message.find(".timeSent").text(data["new"][0]["timeSent"]);
+                       message.find(".messageReceived").find(".message").text(data["new"][0]["message"]);
+                       message.find(".messageReceived").find(".timeSent").text(data["new"][0]["timeSent"]);
                        $(this).parents(".userChatTextarea").find(".messageInput").val("");
                    }
                });
