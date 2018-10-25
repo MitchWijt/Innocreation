@@ -26,7 +26,7 @@
             </div>
             <div class="row d-flex js-center">
                 <div class="col-md-5 d-flex js-center">
-                    <a id="collaborateNow" href="/create-my-account" class="btn btn-inno col-sm-5 startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</a>
+                    <a id="collaborateNow" href="/create-my-account" class="btn btn-inno startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</a>
                 </div>
             </div>
             <div id="carouselExampleIndicators" class="carousel slide p-relative" @desktop style="margin-top: 180px !important" @enddesktop @tablet  style="margin-top: 130px !important" @endtablet data-ride="carousel">
