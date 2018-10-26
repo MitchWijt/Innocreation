@@ -41,13 +41,20 @@
                         <? $result1 = 0?>
                         <? $result2 = 2?>
                         @endhandheld
+
+                        <? if($counter < 3) { ?>
+                        @handheld
+                        <? $modulo = 1?>
+                        <? $result1 = 0 ?>
+                        <? $result2 = 0?>
+                        @elsedesktop
+                        <? $modulo = 2?>
+                        <? $result1 = 0?>
+                        <? $result2 = 1?>
+                        @endhandheld
+                        <? } ?>
                     <? foreach($carouselUserWorks as $carouselUserWork) { ?>
-                        <? if(count($carouselUserWorks) >= 3) { ?>
-                                <? if($counter % $modulo == $result1) { ?>
-                                <div class="carousel-item <? if($counter == 0) echo "active"?>">
-                                    <div class="row @handheld d-flex js-center @endhandheld">
-                                <? } ?>
-                            <? } else { ?>
+                            <? if($counter % $modulo == $result1) { ?>
                             <div class="carousel-item <? if($counter == 0) echo "active"?>">
                                 <div class="row @handheld d-flex js-center @endhandheld">
                             <? } ?>
@@ -71,15 +78,10 @@
                                     </div>
                                     </a>
                                 </div>
-                        <? if(count($carouselUserWorks) >= 3) { ?>
                             <? if($counter % $modulo == $result2) { ?>
                                 </div>
                             </div>
                             <? } ?>
-                        <? } else { ?>
-                                    </div>
-                                </div>
-                        <? } ?>
                         <? $counter++;?>
                     <? } ?>
                 </div>
