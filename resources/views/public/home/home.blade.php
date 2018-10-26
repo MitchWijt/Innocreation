@@ -65,7 +65,7 @@
                                             <div class="row">
                                                 <div class="col-sm-4 p-l-20 @notmobile p-r-0 @endnotmobile text-center">
                                                     <div class="d-flex js-center">
-                                                        <div class="avatar" style="background: url('<?= $carouselUserWork->getImage()?>')"></div>
+                                                        <div class="avatar" style="background: url('<?= $carouselUserWork->user->getProfilePicture()?>')"></div>
                                                     </div>
                                                     <p style="word-break: break-all"><?= $carouselUserWork->user->firstname?></p>
                                                 </div>
