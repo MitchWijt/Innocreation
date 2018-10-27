@@ -29,13 +29,17 @@
     .main-title p{
         font-size: 9px !important;
     }
+
+    .main-title img{
+        width: 6% !important;
+        height: 6% !important;
+    }
 }
 
 @media screen and (max-width: 841px) {
     .carousel-control-prev{
         left: -80px !important;
     }
-
     .carousel-control-next{
         right: -80px !important;
     }
@@ -82,5 +86,10 @@
     .footer-title img{
         width: 5% !important;
         height: 5% !important;
+    }
+
+    .main-title img{
+        width: 4% !important;
+        height: 4% !important;
     }
 }

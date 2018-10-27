@@ -51,7 +51,7 @@
                             <div class="carousel-item <? if($counter == 0) echo "active"?>">
                                 <div class="row @handheld d-flex js-center @endhandheld">
                             <? } ?>
-                                <div class="@handheld col-10 @elsedesktop col-md-4 @endhandheld carouselItem">
+                                <div class="@handheld col-12 @elsedesktop col-md-4 @endhandheld carouselItem">
                                     <a class="td-none" href="<?= $carouselUserWork->getUrl()?>">
                                     <div class="card-sm m-t-20 m-b-20 @tablet p-10 @endtablet">
                                         <div class="card-block m-t-10 " @notmobile style="max-height: 165px !important;" @endnotmobile data-user-id="<?= $carouselUserWork->user_id?>">
@@ -108,12 +108,12 @@
                         </div>
                         <div class="hr col-md-8"></div>
                         <div class="row">
-                            <div class="@mobile col-2 m-t-15 @elsedesktop col-md-2 d-flex jc-end @endmobile">
+                            <div class="@mobile col-2 m-t-15 @elsedesktop col-sm-2 d-flex jc-end @endmobile">
                                 <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
                                     <i style="color: #C9CCCF; padding-left: 1px;" class="zmdi zmdi-accounts-outline @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile"></i>
                                 </div>
                             </div>
-                            <div class="@mobile col-10 @elsedesktop col-md-10 @endmobile m-t-15">
+                            <div class="@mobile col-10 @elsedesktop col-sm-10 @endmobile m-t-15">
                                 @handheld
                                     @mobile
                                         <p class="instructions-text m-0 allign-center f-17">Create an <a class="regular-link" href="/create-my-account">account</a> with your expertise(s)</p>

@@ -1,4 +1,7 @@
-<div class="row">
+<div class="row p-relative">
+    @mobile
+        <i class="zmdi zmdi-close f-18 c-orange p-absolute closePopover" style="top: -7px !important; right: 8px!important;"></i>
+    @endmobile
     <div class="col-sm-12">
         <? if(isset($user)) { ?>
             <? if($user->hasContent()) { ?>

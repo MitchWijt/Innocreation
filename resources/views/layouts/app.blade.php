@@ -37,6 +37,7 @@
         <link rel="stylesheet" href="/css/checkout/selectPackage.css">
         <link rel="stylesheet" href="/css/registerProcess/index.css">
         <link rel="stylesheet" href="/css/userworkFeed/index.css">
+        <link rel="stylesheet" href="/css/popovers.css">
     {{--CSS MEDIA QUERIES--}}
         <link rel="stylesheet" href="/css/responsiveness/home.css">
     {{------------------------}}
@@ -121,7 +122,6 @@
 <? if(!isset($pageType) || $pageType != "checkout") { ?>
     <? if(!isset($pageType) || $pageType != "innoCreatives") { ?>
         @include('includes/footer')
-@endsection
     <? } ?>
 <? } ?>
 <script src="/js/home/general.js"></script>
