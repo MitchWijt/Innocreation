@@ -48,99 +48,19 @@
     </div>
 </div>
 @elsemobile
-<i class="zmdi zmdi-view-toc f-25 m-t-10 toggleSidebar p-t-10 p-b-10 p-l-10 p-r-10" style="border: 1px solid #77787a !important; border-radius: 15px;" data-toggle="modal" data-target=".sidebarModal"></i></span>
-<div class="modal fade sidebarModal" id="sidebarModal" tabindex="-1" role="dialog" aria-labelledby="sidebarModal" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-body d-flex js-center p-relative">
-                @mobile
-                    <i class="zmdi zmdi-close p-absolute c-orange f-22" data-dismiss="modal" style="top: 6px; right: 9px; padding: 5px !important"></i>
-                @endmobile
-                <div class="sidebar">
-                    <div class="text-center col-sm-12">
-                        <div class="row">
-                            <div class="col-3 p-r-0" style="margin-top: 3px ">
-                                <div class="avatar-sm m-l-10" style="background: url('<?= $user->getProfilePicture()?>')"></div>
-                            </div>
-                            <div class="col-9 p-l-10">
-                                <p class="c-gray f-20 pull-left m-0"><?= \Illuminate\Support\Facades\Session::get("user_name")?></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="hr-main m-t-5 m-b-5"></div>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="/my-account">My Profile</a>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="/my-account/expertises">Expertises</a>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <? if($user->team_id != null) { ?>
-                        <a class="regular-link c-gray" href="/my-team">My team</a>
-                        <? } else { ?>
-                        <a class="regular-link c-gray" href="/my-account/teamInfo">My team</a>
-                        <? } ?>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="/my-account/favorite-expertises">Favorite expertises</a>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="/my-account/support-tickets">My support tickets</a>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="/my-account/payment-details">Package details</a>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="/my-account/billing">Billing</a>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="">Recent transactions</a>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <div class="d-flex js-center">
-                            <a class="regular-link c-gray m-r-10" href="/my-account/team-join-requests">Join requests </a>
-                            <? if($userJoinRequestsCounter > 0) { ?>
-                            <div class="circle circleNotification c-orange text-center">
-                                <span><?= $userJoinRequestsCounter?></span>
-                            </div>
-                            <? } ?>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <div class="d-flex js-center">
-                            <a class="regular-link c-gray m-r-10" href="/my-account/team-create-requests">Create team requests </a>
-                            <? if($teamCreateCounter > 0) { ?>
-                            <div class="circle circleNotification c-orange text-center">
-                                <span><?= $teamCreateCounter?></span>
-                            </div>
-                            <? } ?>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="/my-account/portfolio">My portfolio</a>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="/my-account/chats">Chat</a>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="/user/favorite-teams">Favorite teams</a>
-                    </div>
-                    <hr>
-                </div>
-            </div>
-        </div>
+<div id="mobileMenu" class="row p-t-20 p-l-5 p-r-5 hidden p-relative">
+    <i class="zmdi zmdi-arrow-left c-orange f-20 p-absolute menuBackArrow" style="top: 5px; right: 15px;"></i>
+    <div class="col-4 text-center" style="background: #000; border: 1px solid #FF6100 !important">
+        <a class="regular-link c-gray" href="/my-account/expertises">Expertises</a>
+    </div>
+    <div class="col-4 text-center" style="background: #000; border: 1px solid #FF6100 !important">
+        <a class="regular-link c-gray" href="/my-account/portfolio">portfolio</a>
+    </div>
+    <i class="zmdi zmdi-more c-black f-30 m-l-30 c-pointer userAccountPopover" data-toggle="popover" data-content='<?= view("includes.popovers.userAccountSidebar_popover")?>'></i>
+</div>
+<div class="row">
+    <div class="col-2 sidebarIcon">
+        <i class="zmdi zmdi-view-toc f-25 m-t-10 toggleSidebar p-t-10 p-b-10 p-l-10 p-r-10" style="border: 1px solid #77787a !important; border-radius: 15px;" data-target="mobileMenu" data-toggle="toggle"></i>
     </div>
 </div>
 @endnotmobile
