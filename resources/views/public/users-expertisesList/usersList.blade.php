@@ -9,10 +9,10 @@
             <? foreach($expertise->getActiveUsers() as $user) { ?>
                 <div class="row d-flex js-center">
                     <div class="col-md-8">
-                        <div class="card-lg m-t-20 m-b-20">
+                        <div class="card-lg m-t-20">
                             <div class="card-block m-t-10">
                                 <div class="row m-t-10 m-b-10">
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="d-flex fd-column">
                                             <div class="col-sm-9 text-center m-b-10">
                                                 <div class="d-flex js-center @mobile m-b-10 @endmobile">
@@ -24,27 +24,16 @@
                                                     <span class=""><?= $user->getName()?></span>
                                                 </div>
                                                 <? if($user->team_id != null) { ?>
-                                                    <div class="col-sm-12 @mobile text-center @endmobile">
-                                                        <span class="@notmobile pull-left @endnotmobile">Team: <a target="_blank" class="regular-link" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
+                                                    <div class="col-sm-9 text-center @mobile text-center @endmobile">
+                                                        <span >Team: <a target="_blank" class="regular-link" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
                                                     </div>
                                                 <? } ?>
                                             @endnottablet
                                         </div>
                                     </div>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-6">
                                         <div class="col-sm-12 text-center m-t-30">
                                             <a href="<?= $user->getUrl()?>" class="btn btn-inno">Go to <?= $user->firstname?></a>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div class="col-sm-12 m-t-25">
-                                            <div class="d-flex fd-column @notmobile pull-right @elsemobile text-center @endnotmobile">
-                                                <? foreach($user->getExpertises() as $userExpertise) { ?>
-                                                    <div class="@notmobile pull-right @endnotmobile">
-                                                        <p class="@notmobile pull-right @endnotmobile m-0"><?= $userExpertise->title ?></p>
-                                                    </div>
-                                                <? } ?>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -59,6 +48,28 @@
                                     </div>
                                 @endtablet
                             </div>
+                        </div>
+                        <div class="row p-l-15 p-r-15">
+                        <? foreach($user->getExpertiseLinktable() as $expertiseLinktable) { ?>
+                            <div class="<? if(count($user->getExpertiseLinktable()) > 1) echo "col-sm-6"; else echo "col-sm-12"?> p-0">
+                                <div class="card m-b-20 @tablet p-10 @endtablet" >
+                                    <div class="card-block expertiseCard p-relative " style="max-height: 150px !important">
+                                        <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
+                                            <a class="c-gray f-9 c-pointer"  href="<?= $expertiseLinktable->photographer_link?>"><?= $expertiseLinktable->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer"  href="https://unsplash.com">Unsplash</a>
+                                        </div>
+                                        <div class="p-t-40 p-absolute" style="z-index: 100; top: 35%; left: 50%; transform: translate(-50%, -50%);">
+                                            <div class="hr-sm"></div>
+                                        </div>
+                                        <div class="p-t-40 p-absolute" style="z-index: 99; top: 25%; left: 50%; transform: translate(-50%, -50%);">
+                                            <p class="c-white f-20"><?= $expertiseLinktable->expertises->First()->title?></p>
+                                        </div>
+                                        <div class="overlay-users">
+                                            <div class="contentExpertiseUsers" style="background: url('<?= $expertiseLinktable->image?>');"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <? } ?>
                         </div>
                     </div>
                 </div>

@@ -28,6 +28,7 @@ use App\Invoice;
 use GetStream;
 use DateTime;
 use GetStream\StreamLaravel\Facades\FeedManager;
+use App\Services\AppServices\UnsplashService as Unsplash;
 use Session;
 
 class DebugController extends Controller
@@ -35,9 +36,18 @@ class DebugController extends Controller
     /**
      *
      */
-    public function test(Request $request){
+    public function test(Request $request, Unsplash $unsplash){
         if($this->authorized(true)){
+//            $expertiseLinktables = Expertises_linktable::select("*")->get();
+//            foreach($expertiseLinktables as $expertiseLink){
+//                $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertiseLink->expertises->First()->title));
+//                $expertiseLink->image = $imageObject->image;
+//                $expertiseLink->photographer_name = $imageObject->photographer->name;
+//                $expertiseLink->photographer_link = $imageObject->photographer->url;
+//                $expertiseLink->save();
+            }
 
+            die('test');
 
 //        $client = $this->getService("stream");
 //        $messageFeed = $client->feed('user', 10);
