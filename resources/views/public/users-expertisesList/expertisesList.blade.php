@@ -32,7 +32,7 @@
             <div class="row">
             <? foreach($expertises as $expertise) { ?>
                 <div class="col-sm-4">
-                    <div class="card m-t-20 m-b-20 @tablet p-10 @endtablet" >
+                    <div class="card m-t-20 m-b-20 ">
                         <div class="card-block expertiseCard p-relative c-pointer" data-url="<?= $expertise->slug?>/users" style="max-height: 210px !important">
                             <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
                                 <a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
@@ -53,6 +53,7 @@
                     </div>
                 </div>
             <? } ?>
+                <?= $expertises->links()?>
             </div>
         </div>
     </div>

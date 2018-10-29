@@ -68,6 +68,10 @@ Route::post("/deleteUserExpertise","UserController@deleteUserExpertiseAction");
 
 Route::post("/my-account/addUserExpertise","UserController@addUserExpertiseAction");
 
+Route::post("/user/getEditUserExpertiseModal","UserController@getEditUserExpertiseModalAction");
+
+Route::post("/user/editUserExpertiseImage","UserController@editUserExpertiseImage");
+
 // Team info (benefits)
 
 Route::get("/my-account/teamInfo", "UserController@teamBenefits");

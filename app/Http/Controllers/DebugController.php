@@ -38,6 +38,7 @@ class DebugController extends Controller
      */
     public function test(Request $request, Unsplash $unsplash){
         if($this->authorized(true)){
+//            dd(json_decode($unsplash->getListOfImages("developer")));
 //            $expertiseLinktables = Expertises_linktable::select("*")->get();
 //            foreach($expertiseLinktables as $expertiseLink){
 //                $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertiseLink->expertises->First()->title));
@@ -108,6 +109,6 @@ class DebugController extends Controller
 //        foreach($subscriptions as $subscription){
 //            $customer->cancelSubscription($subscription->id);
 //        }
-        }
+
     }
 }

@@ -65,3 +65,45 @@ $(document).ready(function () {
     $(".token-input").attr("style", "width: 100% !important");
 });
 
+$(".editImage").on("click",function () {
+    var expertise_id = $(this).data("expertise-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/user/getEditUserExpertiseModal",
+        data: {'expertise_id': expertise_id},
+        success: function (data) {
+           $(".editImageModalData").html(data);
+           $(".editImageModal").modal().toggle();
+        }
+    });
+});
+
+$(document).on("click", ".userExpImg", function () {
+    var expertise_id = $(this).data("expertise-id");
+    var image = $(this).data("img");
+    var photographerLink = $(this).data("pl");
+    var photographerName = $(this).data("pn");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/user/editUserExpertiseImage",
+        data: {'expertise_id': expertise_id, 'photographerLink' : photographerLink, 'image' : image, 'photographerName' : photographerName},
+        success: function (data) {
+           window.location.reload();
+        }
+    });
+});
+
