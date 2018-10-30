@@ -36,19 +36,20 @@ class DebugController extends Controller
     /**
      *
      */
-    public function test(Request $request, Unsplash $unsplash){
-        if($this->authorized(true)){
-//            dd(json_decode($unsplash->getListOfImages("developer")));
-//            $expertiseLinktables = Expertises_linktable::select("*")->get();
-//            foreach($expertiseLinktables as $expertiseLink){
-//                $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertiseLink->expertises->First()->title));
-//                $expertiseLink->image = $imageObject->image;
-//                $expertiseLink->photographer_name = $imageObject->photographer->name;
-//                $expertiseLink->photographer_link = $imageObject->photographer->url;
-//                $expertiseLink->save();
-            }
+    public function test(Request $request, Unsplash $unsplash) {
 
-            die('test');
+//            dd(json_decode($unsplash->getListOfImages("developer")));
+        $expertises = Expertises::select("*")->get();
+        foreach ($expertises as $expertise) {
+            $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertise->title));
+            $expertise->image = $imageObject->image;
+            $expertise->photographer_name = $imageObject->photographer->name;
+            $expertise->photographer_link = $imageObject->photographer->url;
+            $expertise->image_link = $imageObject->image_link;
+            $expertise->save();
+        }
+
+        die('test');
 
 //        $client = $this->getService("stream");
 //        $messageFeed = $client->feed('user', 10);
@@ -96,8 +97,6 @@ class DebugController extends Controller
 //            dd($feed);
 
 
-
-
 //        $user = User::select("*")->where("id", 10)->first();
 //        $this->saveAndSendEmail($user, 'Welcome to Innocreation!', view("/templates/sendWelcomeMail", compact("user")));
 
@@ -109,6 +108,7 @@ class DebugController extends Controller
 //        foreach($subscriptions as $subscription){
 //            $customer->cancelSubscription($subscription->id);
 //        }
+
 
     }
 }

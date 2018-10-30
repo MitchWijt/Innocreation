@@ -33,7 +33,7 @@
                             <div class="card m-t-20 m-b-20 ">
                                 <div class="card-block expertiseCard p-relative c-pointer" style="max-height: 150px !important">
                                     <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
-                                        <a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $userExpertises->photographer_link?>"><?= $userExpertises->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
+                                        <a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $userExpertises->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $userExpertises->photographer_link?>"><?= $userExpertises->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                                     </div>
                                     <div class="p-t-40 p-absolute" style="z-index: 100; top: 45%; left: 50%; transform: translate(-50%, -50%);">
                                         <div class="hr-sm"></div>
@@ -62,7 +62,7 @@
                     <div class="row m-t-10 d-flex js-center">
                         <div class="col-md-7">
                             <div data-id="<?= $userExpertises->expertises->first()->id?>" class="expertise-description">
-                                <p class="desc"><?=$userExpertises->description?></p>
+                                <p class="desc m-b-0"><?=$userExpertises->description?></p>
                             </div>
                         </div>
                     </div>

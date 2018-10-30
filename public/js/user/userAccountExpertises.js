@@ -107,3 +107,8 @@ $(document).on("click", ".userExpImg", function () {
     });
 });
 
+$(document).on("click", ".closeModal" ,function () {
+    console.log("fdsa");
+    $(".editImageModal").modal().toggle();
+});
+

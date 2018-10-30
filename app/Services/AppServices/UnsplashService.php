@@ -30,7 +30,8 @@ class UnsplashService
 
         $search = Search::photos($keyword, $page, $per_page, $orientation);
         $images = $search->getResults();
-        return json_encode(["image" => $images[array_rand($images)]['urls']['regular'], "photographer" => array("name" => $images[array_rand($images)]["user"]['name'], 'url' => $images[array_rand($images)]["user"]['links']['html'])]);
+        $singleImage = $images[array_rand($images)];
+        return json_encode(["image" => $singleImage['urls']['regular'], "photographer" => array("name" => $singleImage["user"]['name'], 'url' => $singleImage["user"]['links']['html']), "image_link" => $singleImage['links']['html']]);
     }
 
     public function getListOfImages($keyword){

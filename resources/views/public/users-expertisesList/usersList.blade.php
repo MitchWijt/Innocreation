@@ -20,9 +20,6 @@
                                                 </div>
                                             </div>
                                             @nottablet
-                                                <div class="col-sm-9 text-center">
-                                                    <span class=""><?= $user->getName()?></span>
-                                                </div>
                                                 <? if($user->team_id != null) { ?>
                                                     <div class="col-sm-9 text-center @mobile text-center @endmobile">
                                                         <span >Team: <a target="_blank" class="regular-link" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
@@ -36,25 +33,33 @@
                                             <a href="<?= $user->getUrl()?>" class="btn btn-inno">Go to <?= $user->firstname?></a>
                                         </div>
                                     </div>
-                                    <? if(count($user->getExpertiseLinktable()) > 2) { ?>
-                                        @mobile
-                                            <div class="col-sm-12 moreLink text-center d-flex js-center">
-                                               <p class="m-b-0 m-r-5 regular-link collapseExpertise" data-user-id="<?= $user->id?>" data-toggle="collapse" data-target="#collapseExpertise-<?= $user->id?>" aria-expanded="false" aria-controls="collapseExpertise-<?= $user->id?>">Show more expertises</p> <i class="zmdi zmdi-chevron-left m-t-5 m-r-10 c-orange"></i>
-                                            </div>
-                                        @elsedesktop
-                                            <div class="col-sm-12 moreLink">
-                                                <i class="zmdi zmdi-chevron-left pull-right m-t-5 m-r-10 c-orange"></i> <p class="m-b-0 pull-right m-r-5 regular-link collapseExpertise" data-user-id="<?= $user->id?>" data-toggle="collapse" data-target="#collapseExpertise-<?= $user->id?>" aria-expanded="false" aria-controls="collapseExpertise-<?= $user->id?>">Show more expertises</p>
-                                            </div>
-                                        @endmobile
-                                    <? } ?>
+                                    @nottablet
+                                        <? if(count($user->getExpertiseLinktable()) > 2) { ?>
+                                            @mobile
+                                                <div class="col-sm-12 moreLink text-center d-flex js-center">
+                                                   <p class="m-b-0 m-r-5 regular-link collapseExpertise" data-user-id="<?= $user->id?>" data-toggle="collapse" data-target="#collapseExpertise-<?= $user->id?>" aria-expanded="false" aria-controls="collapseExpertise-<?= $user->id?>">Show more expertises</p> <i class="zmdi zmdi-chevron-left m-t-5 m-r-10 c-orange"></i>
+                                                </div>
+                                            @elsedesktop
+                                                <div class="col-sm-12 moreLink">
+                                                    <i class="zmdi zmdi-chevron-left pull-right m-t-5 m-r-10 c-orange"></i> <p class="m-b-0 pull-right m-r-5 regular-link collapseExpertise" data-user-id="<?= $user->id?>" data-toggle="collapse" data-target="#collapseExpertise-<?= $user->id?>" aria-expanded="false" aria-controls="collapseExpertise-<?= $user->id?>">Show more expertises</p>
+                                                </div>
+                                            @endmobile
+                                        <? } ?>
+                                    @endnottablet
                                 </div>
                                 @tablet
-                                    <div class="row d-flex fd-column p-l-10">
-                                        <span class="col-sm-4"><?= $user->getName()?></span>
-                                        <? if($user->team_id != null) { ?>
-                                            <span class="col-sm-8 m-0">Team: <a target="_blank" class="regular-link" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
-                                        <? } else { ?>
-                                            <span class="col-sm-8 m-0">Team: -</span>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <? if($user->team_id != null) { ?>
+                                                <span class="col-sm-12 m-0">Team: <a target="_blank" class="regular-link" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
+                                            <? } else { ?>
+                                                <span class="col-sm-12 m-0">Team: -</span>
+                                            <? } ?>
+                                        </div>
+                                        <? if(count($user->getExpertiseLinktable()) > 2) { ?>
+                                            <div class="col-sm-6 moreLink">
+                                                <i class="zmdi zmdi-chevron-left pull-right m-t-5 m-r-10 c-orange"></i> <p class="m-b-0 pull-right m-r-5 regular-link collapseExpertise" data-user-id="<?= $user->id?>" data-toggle="collapse" data-target="#collapseExpertise-<?= $user->id?>" aria-expanded="false" aria-controls="collapseExpertise-<?= $user->id?>">Show more expertises</p>
+                                            </div>
                                         <? } ?>
                                     </div>
                                 @endtablet
@@ -70,7 +75,7 @@
                                         <div class="card" >
                                             <div class="card-block expertiseCard p-relative " style="max-height: 150px !important">
                                                 <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
-                                                    <a class="c-gray f-9 c-pointer"  href="<?= $expertiseLinktable->photographer_link?>"><?= $expertiseLinktable->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer"  href="https://unsplash.com">Unsplash</a>
+                                                    <a class="c-gray f-9 c-pointer" target="_blank" href="<?= $expertiseLinktable->image_link?>">Photo</a> <span class="f-9 c-gray"> by </span> <a class="c-gray f-9 c-pointer" target="_blank" href="<?= $expertiseLinktable->photographer_link?>"><?= $expertiseLinktable->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer"  href="https://unsplash.com" target="_blank">Unsplash</a>
                                                 </div>
                                                 <div class="p-t-40 p-absolute" style="z-index: 100; top: 35%; left: 50%; transform: translate(-50%, -50%);">
                                                     <div class="hr-sm"></div>
@@ -97,7 +102,7 @@
                                             <div class="card m-b-20" >
                                                 <div class="card-block expertiseCard p-relative " style="max-height: 150px !important">
                                                     <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
-                                                        <a class="c-gray f-9 c-pointer"  href="<?= $expertiseLinktable->photographer_link?>"><?= $expertiseLinktable->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer"  href="https://unsplash.com">Unsplash</a>
+                                                        <a class="c-gray f-9 c-pointer" target="_blank" href="<?= $expertiseLinktable->image_link?>">Photo</a> <span class="f-9 c-gray"> by </span> <a class="c-gray f-9 c-pointer" target="_blank" href="<?= $expertiseLinktable->photographer_link?>"><?= $expertiseLinktable->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer"  href="https://unsplash.com" target="_blank">Unsplash</a>
                                                     </div>
                                                     <div class="p-t-40 p-absolute" style="z-index: 100; top: 35%; left: 50%; transform: translate(-50%, -50%);">
                                                         <div class="hr-sm"></div>

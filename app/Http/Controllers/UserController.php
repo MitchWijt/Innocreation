@@ -163,6 +163,7 @@ class UserController extends Controller
             $expertise_linktable->image = $imageObject->image;
             $expertise_linktable->photographer_name = $imageObject->photographer->name;
             $expertise_linktable->photographer_link = $imageObject->photographer->url;
+            $expertise_linktable->image_link = $imageObject->image_link;
             $expertise_linktable->save();
         } else {
             $existingExpertise = Expertises::select("*")->where("title", $newExpertise)->first();
@@ -175,6 +176,7 @@ class UserController extends Controller
                 $expertise->image = $imageObject->image;
                 $expertise->photographer_name = $imageObject->photographer->name;
                 $expertise->photographer_link = $imageObject->photographer->url;
+                $expertise->image_link = $imageObject->image_link;
                 $expertise->slug = str_replace(" ", "-", strtolower($newExpertise));
                 $expertise->save();
 
@@ -188,6 +190,7 @@ class UserController extends Controller
                 $expertise_linktable->image = $imageObject->image;
                 $expertise_linktable->photographer_name = $imageObject->photographer->name;
                 $expertise_linktable->photographer_link = $imageObject->photographer->url;
+                $expertise_linktable->image_link = $imageObject->image_link;
                 $expertise_linktable->save();
                 return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Succesfully added $newExpertise as your expertise!");
             }
