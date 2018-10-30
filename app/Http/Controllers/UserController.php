@@ -225,8 +225,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function createNewTeam(Request $request)
-    {
+    public function createNewTeam(Request $request) {
         $team_name = $request->input("team_name");
         $user_id = $request->input("user_id");
         $all_teams = Team::select("*")->where("team_name", $team_name)->get();

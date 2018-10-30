@@ -286,7 +286,7 @@ footer{
     overflow: scroll;
     position: absolute !important;
     top: 60px !important;
-    z-index: 1;
+    z-index: 300 !important;
 }
 
 .ui-menu-item-wrapper{

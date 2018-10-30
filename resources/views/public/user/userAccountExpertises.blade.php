@@ -68,9 +68,9 @@
                     </div>
                     <div class="row d-flex js-center">
                         <div class="col-md-7 expertiseButtons">
-                            <button data-expertise-id="<?= $userExpertises->expertises->first()->id?>" class="btn btn-inno pull-right saveDescriptionBtn m-b-5 hidden">Save experience</button>
-                            <button data-expertise-id="<?= $userExpertises->expertises->first()->id?>" class="btn btn-inno pull-right editDescriptionBtn m-b-5">Edit experience</button>
-                            <button data-expertise-id="<?= $userExpertises->expertises->first()->id?>" class="btn btn-inno pull-right editImage m-b-5 m-r-10"><i class="zmdi zmdi-camera-add m-r-5"></i>Edit image</button>
+                            <button data-expertise-id="<?= $userExpertises->expertises->first()->id?>" class="btn btn-inno pull-right saveDescriptionBtn m-b-5 hidden @mobile btn-sm @endmobile">Save experience</button>
+                            <button data-expertise-id="<?= $userExpertises->expertises->first()->id?>" class="btn btn-inno pull-right editDescriptionBtn m-b-5 @mobile btn-sm @endmobile">Edit experience</button>
+                            <button data-expertise-id="<?= $userExpertises->expertises->first()->id?>" class="btn btn-inno pull-right editImage m-b-5 m-r-10 @mobile btn-sm @endmobile"><i class="zmdi zmdi-camera-add m-r-5"></i>Edit image</button>
                         </div>
                     </div>
                 </div>

@@ -32,6 +32,7 @@ use App\UserChat;
 use App\UserMessage;
 use App\WorkspaceShortTermPlannerTask;
 use Illuminate\Http\Request;
+use App\Services\AdminServices\AdminExpertiseEditorService as AdminExpertiseEditorService;
 
 use Auth;
 use App\Http\Requests;
@@ -787,6 +788,10 @@ class AdminController extends Controller
             $expertise = Expertises::select("*")->where("id", $id)->first();
             return view("/admin/expertises/expertiseEditor", compact("expertise"));
         }
+    }
+
+    public function editExpertiseImageAction(AdminExpertiseEditorService $adminExpertiseEditorService, Request $request){
+        $adminExpertiseEditorService->editExpertiseImage($request);
     }
 
     public function saveExpertiseAction(Request $request){

@@ -586,6 +586,8 @@ Route::get("/admin/expertise/{id}", "AdminController@expertiseEditorAction");
 
 Route::post("/admin/saveExpertise", "AdminController@saveExpertiseAction");
 
+Route::post("/admin/editExpertiseImage", "AdminController@editExpertiseImageAction");
+
 
 //=======================FEED=============================
 Route::get("/team-products", "FeedController@TeamProductsAction");

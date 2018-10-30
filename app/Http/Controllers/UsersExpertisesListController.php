@@ -53,7 +53,7 @@ class UsersExpertisesListController extends Controller
         $allTags2 = [];
         $title = "Find the expertise you need for your idea!";
         $og_description = "All active users and expertises on Innocreation. Find motivated people, create your team and build your idea";
-        $expertises = Expertises::select("*")->orderBy("title")->paginate(10);
+        $expertises = Expertises::select("*")->orderBy("title")->get();
         foreach($expertises as $expertise){
             $explodeSingleExpertise = explode(",", $expertise->getTags());
             foreach($explodeSingleExpertise as $tag){
@@ -78,7 +78,7 @@ class UsersExpertisesListController extends Controller
             }
         }
 
-        return view("/public/users-expertisesList/expertisesList", compact("searchedExpertises", "allTags", "title", "og_description"));
+        return view("/public/users-expertisesList/expertisesList", compact("searchedExpertises", "allTags", "title", "og_description", "expertises"));
     }
 
     /**

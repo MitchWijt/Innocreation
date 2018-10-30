@@ -25,12 +25,14 @@ class UserExpertises
         $image = $request->input("image");
         $photographerName = $request->input("photographerName");
         $photographerLink = $request->input("photographerLink");
+
         $userId = Session::get("user_id");
         $expertiseLinktable = Expertises_linktable::select("*")->where("expertise_id", $expertiseId)->where("user_id", $userId)->first();
         $expertiseLinktable->image = $image;
         $expertiseLinktable->photographer_name = $photographerName;
         $expertiseLinktable->photographer_link = $photographerLink;
         $expertiseLinktable->save();
+
 
     }
 }
