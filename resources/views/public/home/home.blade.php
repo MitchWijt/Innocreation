@@ -41,18 +41,6 @@
                         <? $result1 = 0?>
                         <? $result2 = 2?>
                         @endhandheld
-
-                        <? if($counter < 3) { ?>
-                        @handheld
-                        <? $modulo = 1?>
-                        <? $result1 = 0 ?>
-                        <? $result2 = 0?>
-                        @elsedesktop
-                        <? $modulo = 2?>
-                        <? $result1 = 0?>
-                        <? $result2 = 1?>
-                        @endhandheld
-                        <? } ?>
                     <? foreach($carouselUserWorks as $carouselUserWork) { ?>
                             <? if($counter % $modulo == $result1) { ?>
                             <div class="carousel-item <? if($counter == 0) echo "active"?>">
