@@ -72,9 +72,6 @@
             $(".ui-menu").appendTo(".expertises");
         });
     </script>
-    <style>
-
-    </style>
 @endsection
 @section('pagescript')
     <script src="/js/expertisesList/expertisesList.js"></script>

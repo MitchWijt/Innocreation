@@ -99,7 +99,7 @@
                                     <? if(!in_array($expertiseLinktable->id, $arrayExpertiseId)) { ?>
                                     <? array_push($arrayExpertiseId, $expertiseLinktable->id)?>
                                         <div class="<? if(count($user->getExpertiseLinktable()) > 1) echo "col-sm-6"; else echo "col-sm-12"?> p-0">
-                                            <div class="card m-b-20" >
+                                            <div class="card" >
                                                 <div class="card-block expertiseCard p-relative " style="max-height: 150px !important">
                                                     <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
                                                         <a class="c-gray f-9 c-pointer" target="_blank" href="<?= $expertiseLinktable->image_link?>">Photo</a> <span class="f-9 c-gray"> by </span> <a class="c-gray f-9 c-pointer" target="_blank" href="<?= $expertiseLinktable->photographer_link?>"><?= $expertiseLinktable->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer"  href="https://unsplash.com" target="_blank">Unsplash</a>
