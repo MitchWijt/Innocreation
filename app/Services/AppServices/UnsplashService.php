@@ -10,6 +10,7 @@ namespace App\Services\AppServices;
 
 
 use Crew\Unsplash\HttpClient;
+use Crew\Unsplash\Photo;
 use Crew\Unsplash\Search;
 use function GuzzleHttp\json_encode;
 
@@ -31,7 +32,7 @@ class UnsplashService
         $search = Search::photos($keyword, $page, $per_page, $orientation);
         $images = $search->getResults();
         $singleImage = $images[array_rand($images)];
-        return json_encode(["image" => $singleImage['urls']['regular'], "photographer" => array("name" => $singleImage["user"]['name'], 'url' => $singleImage["user"]['links']['html']), "image_link" => $singleImage['links']['html']]);
+        return json_encode(["id" => $singleImage['id'],"image" => $singleImage['urls']['regular'], "photographer" => array("name" => $singleImage["user"]['name'], 'url' => $singleImage["user"]['links']['html']), "image_link" => $singleImage['links']['html']]);
     }
 
     public function getListOfImages($keyword){
@@ -52,5 +53,10 @@ class UnsplashService
         }
         return json_encode($array);
 
+    }
+
+    public function downloadPhoto($id){
+       $photo = Photo::find($id);
+       $photo->download();
     }
 }

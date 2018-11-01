@@ -202,8 +202,8 @@ class UserController extends Controller
         return $userExpertises->getEditUserExpertiseModalImage($request, $unsplash);
     }
 
-    public function editUserExpertiseImage(Request $request, UserExpertises $userExpertises){
-        $userExpertises->editUserExpertiseImage($request);
+    public function editUserExpertiseImage(Request $request, UserExpertises $userExpertises, Unsplash $unsplash){
+        $userExpertises->editUserExpertiseImage($request, $unsplash);
     }
 
     /**

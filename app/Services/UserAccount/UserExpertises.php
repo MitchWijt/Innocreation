@@ -20,11 +20,12 @@ class UserExpertises
         return view("/public/user/shared/_editUserExpertiseImageModal", compact("expertise", "imageObjects"));
     }
 
-    public function editUserExpertiseImage($request){
+    public function editUserExpertiseImage($request, $unsplash){
         $expertiseId = $request->input('expertise_id');
         $image = $request->input("image");
         $photographerName = $request->input("photographerName");
         $photographerLink = $request->input("photographerLink");
+        $imgId = $request->input("imgId");
 
         $userId = Session::get("user_id");
         $expertiseLinktable = Expertises_linktable::select("*")->where("expertise_id", $expertiseId)->where("user_id", $userId)->first();
@@ -33,6 +34,7 @@ class UserExpertises
         $expertiseLinktable->photographer_link = $photographerLink;
         $expertiseLinktable->save();
 
+        $unsplash->downloadPhoto($imgId);
 
     }
 }

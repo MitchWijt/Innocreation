@@ -3,7 +3,7 @@
     <? foreach($imageObjects as $imagesObject) { ?>
         <div class="col-md-6">
             <div class="card m-t-20 m-b-20 ">
-                <div class="card-block userExpImg p-relative c-pointer" style="max-height: 150px !important" data-expertise-id="<?= $expertise->id?>" data-img="<?= $imagesObject->urls->regular?>" data-pn="<?= $imagesObject->user->name?>" data-pl="<?= $imagesObject->user->links->html?>">
+                <div class="card-block userExpImg p-relative c-pointer" style="max-height: 150px !important" data-expertise-id="<?= $expertise->id?>" data-img="<?= $imagesObject->urls->regular?>" data-pn="<?= $imagesObject->user->name?>" data-pl="<?= $imagesObject->user->links->html?>" data-id="<?= $imagesObject->id?>">
                     <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
                         <a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $imagesObject->links->html?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $imagesObject->user->links->html?>"><?= $imagesObject->user->name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                     </div>

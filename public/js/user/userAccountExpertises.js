@@ -90,6 +90,7 @@ $(document).on("click", ".userExpImg", function () {
     var image = $(this).data("img");
     var photographerLink = $(this).data("pl");
     var photographerName = $(this).data("pn");
+    var id = $(this).data("id");
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -100,7 +101,7 @@ $(document).on("click", ".userExpImg", function () {
             }
         },
         url: "/user/editUserExpertiseImage",
-        data: {'expertise_id': expertise_id, 'photographerLink' : photographerLink, 'image' : image, 'photographerName' : photographerName},
+        data: {'expertise_id': expertise_id, 'photographerLink' : photographerLink, 'image' : image, 'photographerName' : photographerName, "imgId" : id},
         success: function (data) {
            window.location.reload();
         }
