@@ -36,6 +36,7 @@ use App\Services\FeedServices\SwitchUserWork as SwitchUserWork;
 use App\Services\AppServices\MailgunService as Mailgun;
 use App\Services\AppServices\UnsplashService as Unsplash;
 use App\Services\UserAccount\UserExpertises as UserExpertises;
+use App\Services\UserAccount\UserPrivacySettingsService as UserPrivacySettings;
 
 
 use App\Http\Requests;
@@ -50,25 +51,12 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function userAccount()
-    {
-        if($this->authorized()) {
-            if (Session::has("user_name")) {
-                $id = Session::get("user_id");
-                $user = User::select("*")->where("id", $id)->first();
-                return view("/public/user/userAccount", compact("user"));
-            } else {
-                return view("/public/home/home");
-            }
-        }
-    }
-
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function userAccountCredentials(SwitchUserWork $switch){
+    public function userAccount(SwitchUserWork $switch){
         if($this->authorized()) {
             if (Session::has("user_name")) {
                 $user = User::select("*")->where("id", Session::get("user_id"))->first();
@@ -81,7 +69,7 @@ class UserController extends Controller
                 $user = User::select("*")->where("id", $id)->first();
 
                 $connections = $switch->listConnections($id);
-                return view("/public/user/userAccountCredentials", compact("user", "connections"));
+                return view("/public/user/userAccount", compact("user", "connections"));
             } else {
                 return view("/public/home/home");
             }
@@ -101,7 +89,7 @@ class UserController extends Controller
         $user->motivation = $request->input("motivation_user");
         $user->introduction = $request->input("introduction_user");
         $user->save();
-        return redirect($_SERVER["HTTP_REFERER"]);
+        return redirect("/my-account/privacy-settings");
     }
 
     /**
@@ -1503,5 +1491,9 @@ class UserController extends Controller
 
     public function removeChatSessionAction(){
         Session::remove("userChatId");
+    }
+
+    public function userAccountPrivacySettingsAction(UserPrivacySettings $userPrivacySettings){
+        return $userPrivacySettings->userAccountPrivacySettingsIndex();
     }
 }

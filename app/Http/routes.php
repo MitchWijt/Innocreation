@@ -46,11 +46,11 @@ Route::get("/faq", "PageController@faqAction");
 
 //========================USERACCOUNT================================
 
-Route::get("/account", "UserController@userAccountCredentials");
+Route::get("/account", "UserController@userAccount");
 
 Route::post("/my-account/saveUserAccount", "UserController@saveUserAccount");
 
-Route::get("/my-account", "UserController@userAccountCredentials");
+Route::get("/my-account", "UserController@userAccount");
 
 Route::post("/user/sendPasswordResetLink", "UserController@sendPasswordResetLinkAction");
 
@@ -111,6 +111,9 @@ Route::post("/sendMessageUser", "UserController@sendMessageUserAction");
 Route::post("/user/deleteUserChat", "UserController@deleteUserChatAction");
 
 Route::post("/user/removeChatSession", "UserController@removeChatSessionAction");
+
+//Settings
+Route::get("/my-account/privacy-settings", "UserController@userAccountPrivacySettingsAction");
 
 
 
@@ -587,6 +590,10 @@ Route::get("/admin/expertise/{id}", "AdminController@expertiseEditorAction");
 Route::post("/admin/saveExpertise", "AdminController@saveExpertiseAction");
 
 Route::post("/admin/editExpertiseImage", "AdminController@editExpertiseImageAction");
+
+Route::post("/admin/randomImagesExpertises", "AdminController@randomImagesExpertisesAction");
+
+Route::post("/admin/randomImagesExpertiseLinktables", "AdminController@randomImagesExpertiseLinktablesAction");
 
 
 //=======================FEED=============================

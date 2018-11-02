@@ -37,17 +37,9 @@ class DebugController extends Controller
      *
      */
     public function test(Request $request, Unsplash $unsplash) {
-        $imageId = json_decode($unsplash->searchAndGetImageByKeyword("Developer"))->id;
-        $unsplash->downloadPhoto($imageId);
-//        $expertises = Expertises::select("*")->get();
-//        foreach ($expertises as $expertise) {
-//            $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertise->title));
-//            $expertise->image = $imageObject->image;
-//            $expertise->photographer_name = $imageObject->photographer->name;
-//            $expertise->photographer_link = $imageObject->photographer->url;
-//            $expertise->image_link = $imageObject->image_link;
-//            $expertise->save();
-//        }
+//        $imageId = json_decode($unsplash->searchAndGetImageByKeyword("Developer"))->id;
+//        $unsplash->downloadPhoto($imageId);
+
 
         die('test');
 
