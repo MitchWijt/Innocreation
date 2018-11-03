@@ -259,8 +259,8 @@ class LoginController extends Controller
             if($user->stream_token == null){
                 $client = $this->getService("stream");
                 $streamFeed = $client->feed('user', $user->id);
-                $token = $streamFeed->getToken();
-                $user->stream_token = $token;
+                $streamToken = $streamFeed->getToken();
+                $user->stream_token = $streamToken;
                 $user->save();
             }
 

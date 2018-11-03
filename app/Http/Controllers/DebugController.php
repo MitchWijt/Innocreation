@@ -13,7 +13,6 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Mailgun\Mailgun;
 use App\User;
 use App\ServiceReview;
 use App\MailMessage;
@@ -29,6 +28,7 @@ use GetStream;
 use DateTime;
 use GetStream\StreamLaravel\Facades\FeedManager;
 use App\Services\AppServices\UnsplashService as Unsplash;
+use App\Services\AppServices\MailgunService as Mailgun;
 use Session;
 
 class DebugController extends Controller
@@ -36,10 +36,21 @@ class DebugController extends Controller
     /**
      *
      */
-    public function test(Request $request, Unsplash $unsplash) {
+    public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
 //        $imageId = json_decode($unsplash->searchAndGetImageByKeyword("Developer"))->id;
-//        $unsplash->downloadPhoto($imageId);
+        $user = User::select("*")->where("id", 10)->first();
+        $mailgunService->saveAndSendEmail($user, "test", view("templates/sendLateWelcomeMail", compact("user")));
 
+//        $unsplash->downloadPhoto($imageId);
+//        $mgClient = $this->getService("mailgun");
+//        $mgClient[0]->sendMessage($mgClient[1], array(
+//            'from' => "mitchel@innocreation.net",
+//            'to' => "mitchel@wijt.net",
+//            'subject' => "Late welcome",
+//            'html' => view("templates/sendLateWelcomeMail", compact("user"))
+//        ), array(
+//            'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
+//        ));
 
         die('test');
 
