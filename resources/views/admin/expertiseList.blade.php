@@ -1,4 +1,4 @@
-@extends("layouts.app_admin")php artisan update
+@extends("layouts.app_admin")
 @section("content")
     <div class="d-flex grey-background vh100">
         @include("includes.admin_sidebar")
