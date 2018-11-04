@@ -1,11 +1,14 @@
-<div class="row">
+<div class="row p-relative">
     <div class="col-sm-12">
         <i class="c-dark-grey f-11">Active as:</i>
         <? foreach($expertises as $expertise) { ?>
-        <p class="m-0"><?= $expertise->title?></p>
+            <p class="m-0"><?= $expertise->title?></p>
         <? } ?>
     </div>
 </div>
+@mobile
+    <i class="zmdi zmdi-close f-18 c-orange p-absolute closePopover" style="top: 5px !important; right: 15px!important;"></i>
+@endmobile
 <div class="row">
     <div class="col-sm-12">
         <? if(\Illuminate\Support\Facades\Session::has("user_id")){ ?>

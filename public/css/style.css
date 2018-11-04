@@ -956,3 +956,25 @@ ul.dashed > li:before {
     border-bottom: 1px solid #FF6100;
     cursor: pointer;
 }
+
+.hr-main{
+    border-bottom: 3px solid #FF6100 !important;
+}
+
+/*#mobileMenu {*/
+    /*-webkit-transition: width 0.5s ease;*/
+    /*-moz-transition: width 0.5s ease;*/
+    /*-o-transition: width 0.5s ease;*/
+    /*transition: width 0.5s ease;*/
+
+    /*!*display: inline-block;*!*/
+    /*overflow: hidden;*/
+    /*!*white-space: nowrap;*!*/
+    /*!*vertical-align: middle;*!*/
+    /*line-height: 15px;*/
+
+    /*width: 0px;*/
+/*}*/
+/*#mobileMenu.in {*/
+    /*width: 100%;*/
+/*}*/

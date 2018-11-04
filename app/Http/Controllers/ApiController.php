@@ -89,6 +89,16 @@ class ApiController extends Controller
                     'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
                 ));
 
+                $mgClient = $this->getService("mailgun");
+                $mgClient[0]->sendMessage($mgClient[1], array(
+                    'from' => "info@innocreation.net",
+                    'to' => $user->email,
+                    'subject' => "Congratulations for taking the next step towards your dreams!",
+                    'html' => view("/templates/sendPaymentConfirmationCustomer", compact("user", "teamPackage"))
+                ), array(
+                    'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
+                ));
+
 
 
             } elseif ($payment->isOpen()) {

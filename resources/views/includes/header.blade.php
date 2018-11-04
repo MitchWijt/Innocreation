@@ -1,4 +1,3 @@
-@section("header")
 <header class="headerShow">
         @handheld
             <div class="p-t-10 container">
@@ -33,32 +32,39 @@
             @elsemobile
                 <div class="col-md-4 m-t-10 p-0">
             @enddesktop
-                <div class="d-flex js-center">
-                    <div class="d-flex fd-row">
-                        <div class="circle m-l-10 m-r-10" style="width: 40px !important; height: 40px !important">
-                            <a href="https://www.facebook.com/innocreationOfficial/">
-                                <i style="font-size: 20px;" class="zmdi zmdi-facebook social-icon c-orange"></i>
-                            </a>
-                        </div>
-                        <div class="circle m-l-10 m-r-10" style="width: 40px !important; height: 40px !important">
-                            <a href="https://twitter.com/Innocreation_">
-                                <i style="font-size: 20px;" class="zmdi zmdi-twitter social-icon c-orange"></i>
-                            </a>
-                        </div>
-                        <div class="circle m-l-10 m-r-10" style="width: 40px !important; height: 40px !important">
-                            <a href="https://www.instagram.com/innocreation_/">
-                                <i style="font-size: 20px;" class="zmdi zmdi-instagram social-icon c-orange"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                {{--<div class="d-flex js-center">--}}
+                    {{--<div class="d-flex fd-row">--}}
+                        {{--<div class="circle m-l-10 m-r-10" style="width: 40px !important; height: 40px !important">--}}
+                            {{--<a href="https://www.facebook.com/innocreationOfficial/">--}}
+                                {{--<i style="font-size: 20px;" class="zmdi zmdi-facebook social-icon c-orange"></i>--}}
+                            {{--</a>--}}
+                        {{--</div>--}}
+                        {{--<div class="circle m-l-10 m-r-10" style="width: 40px !important; height: 40px !important">--}}
+                            {{--<a href="https://twitter.com/Innocreation_">--}}
+                                {{--<i style="font-size: 20px;" class="zmdi zmdi-twitter social-icon c-orange"></i>--}}
+                            {{--</a>--}}
+                        {{--</div>--}}
+                        {{--<div class="circle m-l-10 m-r-10" style="width: 40px !important; height: 40px !important">--}}
+                            {{--<a href="https://www.instagram.com/innocreation_/">--}}
+                                {{--<i style="font-size: 20px;" class="zmdi zmdi-instagram social-icon c-orange"></i>--}}
+                            {{--</a>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
             </div>
             @mobile
                 <div class="col-md-6">
                     <div class="d-flex jc-end m-t-20">
                         <div class="text-left col-sm-10">
                             <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
-                            <? $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();?>
+                            <? $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
+                            if($user->team_id != null){
+                                $team_id = $user->team_id;
+                                $userJoinRequests = \App\JoinRequestLinktable::select("*")->where("team_id", $team_id)->where("accepted", 0)->get();
+                                $teamJoinRequestsCounter = count($userJoinRequests);
+                            }
+                            ?>
+
                             <? if(\Illuminate\Support\Facades\Session::get("user_role") == 1) { ?>
                             <div class="admin">
                                 <a class="regular-link c-gray" href="/admin/statistics">Admin panel</a>
@@ -67,10 +73,10 @@
                             <? } ?>
                             <div class="accounts">
                                 <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
-                                <a class="regular-link c-gray m-b-5" href="/account">My account</a>
+                                    <a class="regular-link c-gray m-b-5" href="/account">My account</a>
                                 <? } ?>
                                 <? if(\Illuminate\Support\Facades\Session::has("team_id")) { ?>
-                                <a class="regular-link" href="/my-team"><p id="teamLink" class="m-b-0">My team</p></a>
+                                    <a class="regular-link" href="/my-team"><p id="teamLink" class="m-b-0">My team <? if($teamJoinRequestsCounter > 0) echo "<i class='zmdi zmdi-circle c-orange f-9'></i>"?></p></a>
                                 <? } ?>
                             </div>
                             <div class="login">
@@ -95,19 +101,29 @@
                     @endtablet
                         <div class="text-left col-sm-12 p-r-0 text-center ">
                             <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
-                            <? $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();?>
-                            <? if(\Illuminate\Support\Facades\Session::get("user_role") == 1) { ?>
-                            <div class="admin">
-                                <a class="regular-link c-gray" href="/admin/statistics">Admin panel</a>
-                            </div>
-                            <? } ?>
+                                <? $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
+                                if($user->team_id != null){
+                                    $team_id = $user->team_id;
+                                    $userJoinRequests = \App\JoinRequestLinktable::select("*")->where("team_id", $team_id)->where("accepted", 0)->get();
+                                    $teamJoinRequestsCounter = count($userJoinRequests);
+                                }
+                                ?>
+                                <? if(\Illuminate\Support\Facades\Session::get("user_role") == 1) { ?>
+                                    <div class="admin">
+                                        <a class="regular-link c-gray" href="/admin/statistics">Admin panel</a>
+                                    </div>
+                                <? } ?>
                             <? } ?>
                             <div class="accounts text-center ">
                                 <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
                                     <a class="regular-link c-gray m-b-5" href="/account">My account</a>
-                                <? } ?>
-                                <? if(\Illuminate\Support\Facades\Session::has("team_id")) { ?>
-                                    <a class="regular-link" href="/my-team"><p id="teamLink" class="m-b-0">My team</p></a>
+                                    <div>
+                                        <? if($user->team_id != null) { ?>
+                                            <a class="regular-link" href="/my-team"><p id="teamLink" class="m-b-0">My team <? if($teamJoinRequestsCounter > 0) echo "<i class='zmdi zmdi-circle c-orange f-9'></i>"?></p></a>
+                                        <? } else { ?>
+                                            <a class="regular-link m-b-0" id="teamLink" href="/my-account/teamInfo">My team</a>
+                                        <? } ?>
+                                    </div>
                                 <? } ?>
                             </div>
                             <div class="login text-center">

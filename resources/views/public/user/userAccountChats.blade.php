@@ -19,7 +19,7 @@
                 <input type="hidden" class="userChatId" value="0">
                 <input type="hidden" class="streamToken" value="<?= $streamToken?>">
                 <input type="hidden" class="userId" value="<?= $user_id?>">
-                <div class="col-md-6">
+                <div class="@tablet col-md-4 @elsedesktop col-md-6 @endtablet">
                     <form action="/searchChatUsers" class="searchChatUsersForm @mobile text-center @endmobile" method="post">
                         <input type="hidden" class="url_content" name="url_content" value="<? if(isset($urlParameter)) echo $urlParameter?>">
                         <input type="hidden" class="url_content_chat" name="url_content_chat" value="<? if(isset($urlParameterChat)) echo $urlParameterChat?>">
@@ -35,7 +35,7 @@
                                     <input type="hidden" name="receiver_user_id" value="<?=$searchedUser->id?>">
                                     <div class="userCircle">
                                         <div class="d-flex fd-column m-t-20">
-                                            <div class="col-md-4 text-center">
+                                            <div class="@nottablet col-md-4 @endnottablet text-center">
                                                 <div class="d-flex js-center ">
                                                     <div class="avatar" style="background: url('<?=$searchedUser->getProfilePicture()?>')"></div>
                                                 </div>
@@ -49,7 +49,7 @@
                         </div>
                     <? } ?>
                 </div>
-                <div class="d-flex fd-column m-t-20 col-md-6">
+                <div class="d-flex fd-column m-t-20 @tablet col-md-8 @elsedesktop col-md-6 @endtablet">
                     <? if(isset($userChats)) { ?>
                         <? foreach($userChats as $userChat) { ?>
                             <div class="m-b-10 chat">
@@ -179,10 +179,8 @@
                 $(".onlineDot").each(function () {
                     var userId = $(this).data("user-id");
                     if(userId == data["new"][0]["userId"]){
-                        console.log(data);
                         $(this).removeClass("hidden");
                     } else {
-                        console.log(data);
                         $(this).addClass("hidden");
                     }
                 });

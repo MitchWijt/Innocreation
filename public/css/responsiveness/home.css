@@ -1,0 +1,95 @@
+
+/*HEADER + FOOTER*/
+@media screen and (max-width: 1520px) {
+    .textFooter{
+        font-size: 25px !important;
+    }
+
+    .footer-title .instructions-text{
+        font-size: 17px !important;
+    }
+
+    .footer-title img{
+        width: 10% !important;
+        height: 10% !important;
+    }
+}
+
+@media screen and (max-width: 1110px) {
+    .footer-title .instructions-text{
+        font-size: 12px !important;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .main-title h1{
+        font-size: 25px !important;
+    }
+
+    .main-title p{
+        font-size: 9px !important;
+    }
+
+    .main-title img{
+        width: 6% !important;
+        height: 6% !important;
+    }
+}
+
+@media screen and (max-width: 841px) {
+    .carousel-control-prev{
+        left: -80px !important;
+    }
+    .carousel-control-next{
+        right: -80px !important;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .carousel-item{
+        padding-left: 50px !important;
+        padding-right: 50px !important;
+    }
+
+    .carousel-control-prev{
+        top: 80px !important;
+        left: -15px !important;
+    }
+
+    .carousel-control-next{
+        top: 80px !important;
+        right: -15px !important;
+    }
+}
+
+@media screen and (max-width: 806px) {
+    .main-navMenu{
+        font-size: 11px !important;
+    }
+}
+
+@media screen and (max-width: 609px) {
+    .main-navMenu{
+        font-size: 8px !important;
+    }
+}
+
+@media screen and (max-width: 770px) {
+    .textFooter{
+        font-size: 25px !important;
+    }
+
+    .footer-title .instructions-text{
+        font-size: 12px !important;
+    }
+
+    .footer-title img{
+        width: 5% !important;
+        height: 5% !important;
+    }
+
+    .main-title img{
+        width: 4% !important;
+        height: 4% !important;
+    }
+}

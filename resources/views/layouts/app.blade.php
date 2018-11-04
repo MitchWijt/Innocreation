@@ -37,6 +37,10 @@
         <link rel="stylesheet" href="/css/checkout/selectPackage.css">
         <link rel="stylesheet" href="/css/registerProcess/index.css">
         <link rel="stylesheet" href="/css/userworkFeed/index.css">
+        <link rel="stylesheet" href="/css/popovers.css">
+    {{--CSS MEDIA QUERIES--}}
+        <link rel="stylesheet" href="/css/responsiveness/home.css">
+    {{------------------------}}
     {{--CSS PLUGINS--}}
         <link rel="stylesheet" href="/assets/build/content-tools.min.css">
         <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
@@ -120,6 +124,6 @@
         @include('includes/footer')
     <? } ?>
 <? } ?>
-
+<script src="/js/home/general.js"></script>
 </body>
 </html>

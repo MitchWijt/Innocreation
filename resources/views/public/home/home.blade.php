@@ -26,7 +26,7 @@
             </div>
             <div class="row d-flex js-center">
                 <div class="col-md-5 d-flex js-center">
-                    <a href="/create-my-account" class="btn btn-inno col-sm-5 startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</a>
+                    <a id="collaborateNow" href="/create-my-account" class="btn btn-inno startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</a>
                 </div>
             </div>
             <div id="carouselExampleIndicators" class="carousel slide p-relative" @desktop style="margin-top: 180px !important" @enddesktop @tablet  style="margin-top: 130px !important" @endtablet data-ride="carousel">
@@ -46,7 +46,7 @@
                             <div class="carousel-item <? if($counter == 0) echo "active"?>">
                                 <div class="row @handheld d-flex js-center @endhandheld">
                             <? } ?>
-                                <div class="@handheld col-10 @elsedesktop col-md-4 @endhandheld carouselItem">
+                                <div class="@handheld col-12 @elsedesktop col-md-4 @endhandheld carouselItem">
                                     <a class="td-none" href="<?= $carouselUserWork->getUrl()?>">
                                     <div class="card-sm m-t-20 m-b-20 @tablet p-10 @endtablet">
                                         <div class="card-block m-t-10 " @notmobile style="max-height: 165px !important;" @endnotmobile data-user-id="<?= $carouselUserWork->user_id?>">
@@ -98,12 +98,12 @@
                         </div>
                         <div class="hr col-md-8"></div>
                         <div class="row">
-                            <div class="@mobile col-2 m-t-15 @elsedesktop col-md-2 d-flex jc-end @endmobile">
+                            <div class="@mobile col-2 m-t-15 @elsedesktop col-sm-2 d-flex jc-end @endmobile">
                                 <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
                                     <i style="color: #C9CCCF; padding-left: 1px;" class="zmdi zmdi-accounts-outline @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile"></i>
                                 </div>
                             </div>
-                            <div class="@mobile col-10 @elsedesktop col-md-10 @endmobile m-t-15">
+                            <div class="@mobile col-10 @elsedesktop col-sm-10 @endmobile m-t-15">
                                 @handheld
                                     @mobile
                                         <p class="instructions-text m-0 allign-center f-17">Create an <a class="regular-link" href="/create-my-account">account</a> with your expertise(s)</p>
@@ -239,12 +239,12 @@
                                 <div class="@mobile col-10 p-r-0 @elsedesktop col-sm-10 d-flex jc-end @endmobile ">
                                     @handheld
                                         @mobile
-                                            <p class="instructions-second-text m-b-0 m-t-15 f-17">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
+                                            <p class="instructions-second-text m-b-0 m-t-15 f-17">Post your project/story on the inno  <a class="regular-link" href="/innocreatives">feed</a></p>
                                         @elsetablet
-                                            <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-20">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
+                                            <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-20">Post your project/story on the inno  <a class="regular-link" href="/innocreatives">feed</a></p>
                                         @endmobile
                                     @elsedesktop
-                                        <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-22">Post your finished products on the live  <a class="regular-link" href="/team-products">feed</a></p>
+                                        <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-22">Post your project/story on the inno  <a class="regular-link" href="/innocreatives">feed</a></p>
                                     @endhandheld
                                 </div>
                                 <div class="@mobile col-2 p-l-0 m-t-10 @elsedesktop col-sm-2 @endmobile">

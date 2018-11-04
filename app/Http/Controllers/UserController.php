@@ -1402,6 +1402,7 @@ class UserController extends Controller
         $message->created_at = date("Y-m-d H:i:s");
         $message->save();
 
+
         $user = User::select("*")->where("id", $teamCreateRequest->sender_user_id)->first();
         $this->saveAndSendEmail($sender, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
 
