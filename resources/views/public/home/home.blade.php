@@ -73,6 +73,10 @@
                         <? $counter++;?>
                     <? } ?>
                 </div>
+        <? if(count($carouselUserWorks) % $modulo == 1 || count($carouselUserWorks) % $modulo == 2) { ?>
+            </div>
+        </div>
+        <? } ?>
                 @handheld
                     @mobile
                         <i class="zmdi zmdi-chevron-left p-absolute c-orange carousel-control-prev c-pointer" style="top: 85px; left: -15px; font-size: 40px !important;"></i>
