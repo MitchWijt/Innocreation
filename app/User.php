@@ -46,6 +46,11 @@ class User extends Authenticatable
         return "/user/". $this->slug;
     }
 
+    public function getExpertiseLinktable(){
+        $expertiseLinktable = expertises_linktable::select("*")->where("user_id", $this->id)->get();
+        return $expertiseLinktable;
+    }
+
     public function getExpertises($temp = false){
         if($temp){
             $expertiseArray = "";

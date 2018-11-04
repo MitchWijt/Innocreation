@@ -61,23 +61,23 @@ class Controller extends BaseController
     public function getService($service){
         if($service == "mailgun") {
             $mailgun = [
-                $mgClient = new Mailgun('key-8802b754cc5279a431547c306e298ead'),
-                $domain = "mg.innocreation.net"
+                $mgClient = new Mailgun(env('MG_API_KEY')),
+                $domain = env("MG_DOMAIN")
             ];
             return $mailgun;
         } else if($service == "mollie"){
             $fullDomain = $_SERVER['HTTP_HOST'];
             $domainExplode = explode(".", $fullDomain);
             if($domainExplode[0] == "secret") {
-                $apiKey = "test_5PW69PFKTaBS6E9A4Sgb3gzWjQ5k4v";
+                $apiKey = env("MOLLIE_API_TEST");
             } else {
-                $apiKey = "live_BdmQNxeQ3zaQrqbmPepVSS33D3QVKe";
+                $apiKey = env("MOLLIE_API_LIVE");
             }
             $mollie = new MollieApiClient();
             $mollie->setApiKey($apiKey);
             return $mollie;
         } else if("stream"){
-            $client = new GetStream\Stream\Client('ujpcaxtcmvav', 't7bkq85zvutj4qnyvt3kkv7uts9mfaxz99cuv52ctgqy7gh9up3scpzvms99s8k6');
+            $client = new GetStream\Stream\Client(env("STREAM_API"), env("STREAM_SECRET"));
             return $client;
         }
     }

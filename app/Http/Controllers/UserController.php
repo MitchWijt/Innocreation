@@ -34,6 +34,9 @@ use Illuminate\Support\Facades\Input;
 use App\Http\Middleware\RolesMiddleware;
 use App\Services\FeedServices\SwitchUserWork as SwitchUserWork;
 use App\Services\AppServices\MailgunService as Mailgun;
+use App\Services\AppServices\UnsplashService as Unsplash;
+use App\Services\UserAccount\UserExpertises as UserExpertises;
+use App\Services\UserAccount\UserPrivacySettingsService as UserPrivacySettings;
 
 
 use App\Http\Requests;
@@ -48,25 +51,12 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function userAccount()
-    {
-        if($this->authorized()) {
-            if (Session::has("user_name")) {
-                $id = Session::get("user_id");
-                $user = User::select("*")->where("id", $id)->first();
-                return view("/public/user/userAccount", compact("user"));
-            } else {
-                return view("/public/home/home");
-            }
-        }
-    }
-
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function userAccountCredentials(SwitchUserWork $switch){
+    public function userAccount(SwitchUserWork $switch){
         if($this->authorized()) {
             if (Session::has("user_name")) {
                 $user = User::select("*")->where("id", Session::get("user_id"))->first();
@@ -79,7 +69,7 @@ class UserController extends Controller
                 $user = User::select("*")->where("id", $id)->first();
 
                 $connections = $switch->listConnections($id);
-                return view("/public/user/userAccountCredentials", compact("user", "connections"));
+                return view("/public/user/userAccount", compact("user", "connections"));
             } else {
                 return view("/public/home/home");
             }
@@ -99,7 +89,7 @@ class UserController extends Controller
         $user->motivation = $request->input("motivation_user");
         $user->introduction = $request->input("introduction_user");
         $user->save();
-        return redirect($_SERVER["HTTP_REFERER"]);
+        return redirect("/my-account/privacy-settings");
     }
 
     /**
@@ -142,7 +132,7 @@ class UserController extends Controller
         return 1;
     }
 
-    public function addUserExpertiseAction(Request $request){
+    public function addUserExpertiseAction(Request $request, Unsplash $unsplash){
         $user_id = $request->input("user_id");
         $expertise_id = $request->input("expertise");
         $experience = $request->input("expertise_description");
@@ -156,13 +146,25 @@ class UserController extends Controller
             $expertise_linktable->expertise_id = $expertise_id;
             $expertise_linktable->description = $experience;
             $expertise_linktable->save();
+
+            $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertise_linktable->expertises->First()->title));
+            $expertise_linktable->image = $imageObject->image;
+            $expertise_linktable->photographer_name = $imageObject->photographer->name;
+            $expertise_linktable->photographer_link = $imageObject->photographer->url;
+            $expertise_linktable->image_link = $imageObject->image_link;
+            $expertise_linktable->save();
         } else {
             $existingExpertise = Expertises::select("*")->where("title", $newExpertise)->first();
             if(count($existingExpertise) > 0){
                 return redirect($_SERVER["HTTP_REFERER"])->withErrors("This expertise already seems to exist");
             } else {
+                $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($newExpertise));
                 $expertise = new Expertises();
                 $expertise->title = $newExpertise;
+                $expertise->image = $imageObject->image;
+                $expertise->photographer_name = $imageObject->photographer->name;
+                $expertise->photographer_link = $imageObject->photographer->url;
+                $expertise->image_link = $imageObject->image_link;
                 $expertise->slug = str_replace(" ", "-", strtolower($newExpertise));
                 $expertise->save();
 
@@ -171,10 +173,25 @@ class UserController extends Controller
                 $expertise_linktable->expertise_id = $expertise->id;
                 $expertise_linktable->description = $experience;
                 $expertise_linktable->save();
+
+                $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertise_linktable->expertises->First()->title));
+                $expertise_linktable->image = $imageObject->image;
+                $expertise_linktable->photographer_name = $imageObject->photographer->name;
+                $expertise_linktable->photographer_link = $imageObject->photographer->url;
+                $expertise_linktable->image_link = $imageObject->image_link;
+                $expertise_linktable->save();
                 return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Succesfully added $newExpertise as your expertise!");
             }
         }
         return redirect($_SERVER["HTTP_REFERER"]);
+    }
+
+    public function getEditUserExpertiseModalAction(Request $request, UserExpertises $userExpertises, Unsplash $unsplash){
+        return $userExpertises->getEditUserExpertiseModalImage($request, $unsplash);
+    }
+
+    public function editUserExpertiseImage(Request $request, UserExpertises $userExpertises, Unsplash $unsplash){
+        $userExpertises->editUserExpertiseImage($request, $unsplash);
     }
 
     /**
@@ -199,8 +216,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function createNewTeam(Request $request)
-    {
+    public function createNewTeam(Request $request) {
         $team_name = $request->input("team_name");
         $user_id = $request->input("user_id");
         $all_teams = Team::select("*")->where("team_name", $team_name)->get();
@@ -1476,5 +1492,9 @@ class UserController extends Controller
 
     public function removeChatSessionAction(){
         Session::remove("userChatId");
+    }
+
+    public function userAccountPrivacySettingsAction(UserPrivacySettings $userPrivacySettings){
+        return $userPrivacySettings->userAccountPrivacySettingsIndex();
     }
 }

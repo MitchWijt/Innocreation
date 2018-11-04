@@ -12,6 +12,7 @@ use App\User;
 use App\UserChat;
 use App\UserMessage;
 use Illuminate\Http\Request;
+use App\Services\AppServices\UnsplashService as Unsplash;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
@@ -187,7 +188,7 @@ class RegisterProcessController extends Controller {
 
     }
 
-    public function saveUserExpertisesAction(Request $request){
+    public function saveUserExpertisesAction(Request $request, Unsplash $unsplash){
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $expertisesAll = Expertises::select("*")->get();
         $existingArray = [];
@@ -205,22 +206,37 @@ class RegisterProcessController extends Controller {
         $chosenExpertises = explode(", ", $chosenExpertisesString);
         foreach ($chosenExpertises as $expertise) {
             if (!in_array(ucfirst($expertise), $existingArray)) {
+                $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertise));
                 $newExpertise = New Expertises;
                 $newExpertise->title = ucfirst($expertise);
                 $newExpertise->slug = str_replace(" ", "-",strtolower($expertise));
+                $newExpertise->image = $imageObject->image;
+                $newExpertise->image_link = $imageObject->image_link;
+                $newExpertise->photographer_link = $imageObject->photographer->url;
+                $newExpertise->photographer_name = $imageObject->photographer->name;
                 $newExpertise->save();
 
+                $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertise));
                 $userExpertise = New expertises_linktable;
                 $userExpertise->user_id = $user->id;
                 $userExpertise->expertise_id = $newExpertise->id;
+                $userExpertise->image = $imageObject->image;
+                $userExpertise->image_link = $imageObject->image_link;
+                $userExpertise->photographer_link = $imageObject->photographer->url;
+                $userExpertise->photographer_name = $imageObject->photographer->name;
                 $userExpertise->save();
 
             } else {
                 $expertiseNewUser = Expertises::select("*")->where("title", $expertise)->first();
                 if (!in_array($expertiseNewUser->id, $existingExpArray)) {
+                    $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertise));
                     $userExpertise = New expertises_linktable;
                     $userExpertise->user_id = $user->id;
                     $userExpertise->expertise_id = $expertiseNewUser->id;
+                    $userExpertise->image = $imageObject->image;
+                    $userExpertise->image_link = $imageObject->image_link;
+                    $userExpertise->photographer_link = $imageObject->photographer->url;
+                    $userExpertise->photographer_name = $imageObject->photographer->name;
                     $userExpertise->save();
                 }
             }

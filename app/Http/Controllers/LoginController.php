@@ -10,6 +10,7 @@ use App\UserChat;
 use Faker\Provider\Payment;
 use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
+use App\Services\AppServices\UnsplashService as Unsplash;
 
 use App\Http\Requests;
 use App\User;
@@ -70,7 +71,7 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function register(Request $request){
+    public function register(Request $request, Unsplash $unsplash){
         $this->validate($request, [
             'firstname' => 'required',
             'lastname' => 'required',
@@ -139,21 +140,36 @@ class LoginController extends Controller
             $chosenExpertises = explode(", ", $chosenExpertisesString);
             foreach ($chosenExpertises as $expertise) {
                 if (!in_array(ucfirst($expertise), $existingArray)) {
+                    $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertise));
                     $newExpertise = New Expertises;
                     $newExpertise->title = ucfirst($expertise);
                     $newExpertise->slug = str_replace(" ", "-",strtolower($expertise));
+                    $newExpertise->image = $imageObject->image;
+                    $newExpertise->image_link = $imageObject->image_link;
+                    $newExpertise->photographer_link = $imageObject->photographer->url;
+                    $newExpertise->photographer_name = $imageObject->photographer->name;
                     $newExpertise->save();
 
+                    $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertise));
                     $userExpertise = New expertises_linktable;
                     $userExpertise->user_id = $user->id;
                     $userExpertise->expertise_id = $newExpertise->id;
+                    $userExpertise->image = $imageObject->image;
+                    $userExpertise->image_link = $imageObject->image_link;
+                    $userExpertise->photographer_link = $imageObject->photographer->url;
+                    $userExpertise->photographer_name = $imageObject->photographer->name;
                     $userExpertise->save();
 
                 } else {
+                    $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertise));
                     $expertiseNewUser = Expertises::select("*")->where("title", $expertise)->first();
                     $userExpertise = New expertises_linktable;
                     $userExpertise->user_id = $user->id;
                     $userExpertise->expertise_id = $expertiseNewUser->id;
+                    $userExpertise->image = $imageObject->image;
+                    $userExpertise->image_link = $imageObject->image_link;
+                    $userExpertise->photographer_link = $imageObject->photographer->url;
+                    $userExpertise->photographer_name = $imageObject->photographer->name;
                     $userExpertise->save();
                 }
             }
@@ -243,8 +259,8 @@ class LoginController extends Controller
             if($user->stream_token == null){
                 $client = $this->getService("stream");
                 $streamFeed = $client->feed('user', $user->id);
-                $token = $streamFeed->getToken();
-                $user->stream_token = $token;
+                $streamToken = $streamFeed->getToken();
+                $user->stream_token = $streamToken;
                 $user->save();
             }
 

@@ -11,6 +11,7 @@ use App\User;
 use App\SplitTheBillLinktable;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Services\AppServices\MailgunService;
 
 class Kernel extends ConsoleKernel
 {
@@ -21,6 +22,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'App\Console\Commands\ReccuringPayment',
+        'App\Console\Commands\WelcomeMails',
     ];
 
     /**
@@ -32,6 +34,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 //        date_default_timezone_set("Europe/Amsterdam");
-        $schedule->command('recurring:payment')->everyMinute();
+        $schedule->command('recurring:payment')->everyTenMinutes();
+//        $schedule->command('welcome:mail')->everyMinute();
     }
 }

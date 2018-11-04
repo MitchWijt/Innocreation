@@ -1,4 +1,4 @@
-@extends("layouts.app_admin")
+@extends("layouts.app_admin")php artisan update
 @section("content")
     <div class="d-flex grey-background vh100">
         @include("includes.admin_sidebar")
@@ -12,8 +12,16 @@
                 <div class="card card-lg col-sm-12 m-t-20">
                     <div class="card-block">
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 d-flex">
                                 <h4 class="m-t-5">Expertises</h4>
+                                <form action="/admin/randomImagesExpertises" method="post">
+                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                    <button class="btn btn-inno btn-sm m-10">Random pictures expertises</button>
+                                </form>
+                                <form action="/admin/randomImagesExpertiseLinktables" method="post">
+                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                    <button class="btn btn-inno btn-sm m-10">Random pictures user expertises</button>
+                                </form>
                             </div>
                             <div class="hr col-sm-12"></div>
                             <div class="m-t-20 col-sm-12">

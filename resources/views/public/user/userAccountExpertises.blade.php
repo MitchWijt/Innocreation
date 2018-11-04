@@ -30,10 +30,20 @@
                 <div class="expertise" data-expertise-id="<?= $userExpertises->id?>">
                     <div class="row d-flex js-center">
                         <div class="col-md-7">
-                            <div class="card text-center">
-                                <div class="card-block">
-                                    <i class="zmdi zmdi-close pull-right m-r-10 m-t-5 c-orange deleteCross" data-expertise-id="<?= $userExpertises->id?>"></i>
-                                    <p class="f-z-rem m-b-5 p-0"><?=$userExpertises->expertises->first()->title?></p>
+                            <div class="card m-t-20 m-b-20 ">
+                                <div class="card-block expertiseCard p-relative c-pointer" style="max-height: 150px !important">
+                                    <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
+                                        <a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $userExpertises->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $userExpertises->photographer_link?>"><?= $userExpertises->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
+                                    </div>
+                                    <div class="p-t-40 p-absolute" style="z-index: 100; top: 45%; left: 50%; transform: translate(-50%, -50%);">
+                                        <div class="hr-sm"></div>
+                                    </div>
+                                    <div class="p-t-40 p-absolute" style="z-index: 99; top: 35%; left: 50%; transform: translate(-50%, -50%);">
+                                        <p class="c-white f-20"><?= $userExpertises->expertises->First()->title?></p>
+                                    </div>
+                                    <div class="overlay">
+                                        <div class="contentExpertiseUsers" style="background: url('<?= $userExpertises->image?>');"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -52,14 +62,15 @@
                     <div class="row m-t-10 d-flex js-center">
                         <div class="col-md-7">
                             <div data-id="<?= $userExpertises->expertises->first()->id?>" class="expertise-description">
-                                <p class="desc"><?=$userExpertises->description?></p>
+                                <p class="desc m-b-0"><?=$userExpertises->description?></p>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-9 expertiseButtons">
-                            <button data-expertise-id="<?= $userExpertises->expertises->first()->id?>" class="btn btn-inno pull-right saveDescriptionBtn m-b-5 hidden">Save experience</button>
-                            <button data-expertise-id="<?= $userExpertises->expertises->first()->id?>" class="btn btn-inno pull-right editDescriptionBtn m-b-5">Edit experience</button>
+                    <div class="row d-flex js-center">
+                        <div class="col-md-7 expertiseButtons">
+                            <button data-expertise-id="<?= $userExpertises->expertises->first()->id?>" class="btn btn-inno pull-right saveDescriptionBtn m-b-5 hidden @mobile btn-sm @endmobile">Save experience</button>
+                            <button data-expertise-id="<?= $userExpertises->expertises->first()->id?>" class="btn btn-inno pull-right editDescriptionBtn m-b-5 @mobile btn-sm @endmobile">Edit experience</button>
+                            <button data-expertise-id="<?= $userExpertises->expertises->first()->id?>" class="btn btn-inno pull-right editImage m-b-5 m-r-10 @mobile btn-sm @endmobile"><i class="zmdi zmdi-camera-add m-r-5"></i>Edit image</button>
                         </div>
                     </div>
                 </div>
@@ -118,6 +129,15 @@
                                     </div>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade editImageModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body editImageModalData">
+
                         </div>
                     </div>
                 </div>
