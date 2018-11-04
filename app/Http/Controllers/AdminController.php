@@ -23,6 +23,7 @@ use App\NeededExpertiseLinktable;
 use App\Page;
 use App\PageType;
 use App\ServiceReview;
+use App\Services\AppServices\UnsplashService;
 use App\SupportTicket;
 use App\SupportTicketStatus;
 use App\Team;
@@ -32,6 +33,7 @@ use App\UserChat;
 use App\UserMessage;
 use App\WorkspaceShortTermPlannerTask;
 use Illuminate\Http\Request;
+use App\Services\AdminServices\AdminExpertiseService as AdminExpertiseService;
 
 use Auth;
 use App\Http\Requests;
@@ -787,6 +789,18 @@ class AdminController extends Controller
             $expertise = Expertises::select("*")->where("id", $id)->first();
             return view("/admin/expertises/expertiseEditor", compact("expertise"));
         }
+    }
+
+    public function editExpertiseImageAction(AdminExpertiseService $adminExpertiseService, Request $request){
+        $adminExpertiseService->editExpertiseImage($request);
+    }
+
+    public function randomImagesExpertisesAction(AdminExpertiseService $adminExpertiseService, UnsplashService $unsplashService){
+        return $adminExpertiseService->randomImagesExpertises($unsplashService);
+    }
+
+    public function randomImagesExpertiseLinktablesAction(AdminExpertiseService $adminExpertiseService, UnsplashService $unsplashService){
+        return $adminExpertiseService->randomImagesExpertiseLinktables($unsplashService);
     }
 
     public function saveExpertiseAction(Request $request){

@@ -13,7 +13,6 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Mailgun\Mailgun;
 use App\User;
 use App\ServiceReview;
 use App\MailMessage;
@@ -28,6 +27,8 @@ use App\Invoice;
 use GetStream;
 use DateTime;
 use GetStream\StreamLaravel\Facades\FeedManager;
+use App\Services\AppServices\UnsplashService as Unsplash;
+use App\Services\AppServices\MailgunService as Mailgun;
 use Session;
 
 class DebugController extends Controller
@@ -35,9 +36,8 @@ class DebugController extends Controller
     /**
      *
      */
-    public function test(Request $request){
-        if($this->authorized(true)){
-
+    public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
+        die('test');
 
 //        $client = $this->getService("stream");
 //        $messageFeed = $client->feed('user', 10);
@@ -85,8 +85,6 @@ class DebugController extends Controller
 //            dd($feed);
 
 
-
-
 //        $user = User::select("*")->where("id", 10)->first();
 //        $this->saveAndSendEmail($user, 'Welcome to Innocreation!', view("/templates/sendWelcomeMail", compact("user")));
 
@@ -98,6 +96,7 @@ class DebugController extends Controller
 //        foreach($subscriptions as $subscription){
 //            $customer->cancelSubscription($subscription->id);
 //        }
-        }
+
+
     }
 }

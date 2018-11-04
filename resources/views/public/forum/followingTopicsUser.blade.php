@@ -13,6 +13,13 @@
             </div>
             @include("public.forum.shared._searchbarForum")
             <hr class="col-ms-12">
+            <? if(count($followingTopicsUser) < 1) { ?>
+                <div class="row">
+                    <div class="col-sm-12 text-center m-t-20">
+                        <p>You don't follow any topics yet. You can do that in the forum!</p>
+                    </div>
+                </div>
+            <? } ?>
             <? foreach($followingTopicsUser as $followingTopicUser) { ?>
                 <div class="row m-t-20">
                     <div class="card" >

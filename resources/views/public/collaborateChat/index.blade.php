@@ -192,11 +192,6 @@
                 }
             }, 300);
         });
-
-        $(document).on("click", ".closePopover", function () {
-            var _this = $('[data-toggle="popover"]');
-            $(_this).popover("hide");
-        });
     </script>
 @endsection
 @section('pagescript')

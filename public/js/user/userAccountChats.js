@@ -98,11 +98,12 @@ $(".chat-card").on("click",function () {
                $(".userChatMessages").each(function () {
                    var userChatId = $(this).data("chat-id");
                    if(userChatId == data["new"][0]["userChat"]){
-                       var message = $('.messageReceived').first().clone();
+                       console.log("test");
+                       var message = $('.messageReceivedAjax').first().clone();
                        var allMessages = $(this);
                        $(message).appendTo(allMessages);
-                       message.find(".message").text(data["new"][0]["message"]);
-                       message.find(".timeSent").text(data["new"][0]["timeSent"]);
+                       message.find(".messageReceived").find(".message").text(data["new"][0]["message"]);
+                       message.find(".messageReceived").find(".timeSent").text(data["new"][0]["timeSent"]);
                        $(this).parents(".userChatTextarea").find(".messageInput").val("");
                    }
                });

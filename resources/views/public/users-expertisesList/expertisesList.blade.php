@@ -20,40 +20,45 @@
                 </div>
             </form>
             <div class="row">
-                <div class="col-sm-12 d-flex js-center">
-                    <div class="card-lg col-sm-10 m-t-20 m-b-20 col-sm-pull-2">
-                        <div class="card-block m-t-10">
-                            <div class="col-sm-12 p-0">
-                                <? if(isset($searchedExpertises)) { ?>
-                                    <? foreach($searchedExpertises as $expertise) { ?>
-                                        <div class="row">
-                                            <div class="col-sm-6 @mobile text-center @endmobile">
-                                                <a href="/<?= $expertise->slug?>/users" class="c-gray"><p class="m-b-0 m-t-20"><?= $expertise->title?></p></a>
-                                            </div>
-                                            <div class="col-sm-6 @mobile text-center p-b-20 @endmobile">
-                                                <p class="m-b-0 m-t-20 @notmobile pull-right @endnotmobile">Active users: <?= count($expertise->getActiveUsers())?></p>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                    <? } ?>
-                                <? } else { ?>
-                                    <? foreach($expertises as $expertise) { ?>
-                                        <div class="row">
-                                            <div class="col-sm-6 @mobile text-center @endmobile">
-                                                <a href="/<?= $expertise->slug?>/users" class="c-gray"><p class="m-b-0 m-t-20"><?= $expertise->title?></p></a>
-                                            </div>
-                                            <div class="col-sm-6 @mobile text-center p-b-20 @endmobile">
-                                                <p class="m-b-0 m-t-20 @notmobile pull-right @endnotmobile">Active users: <?= count($expertise->getActiveUsers())?></p>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                    <? } ?>
-                                <? } ?>
+                <? if(isset($searchedExpertises)) {
+                    $expertises = $searchedExpertises;
+                } else {
+                    $expertises = $expertises;
+                }
+                ?>
+                <? foreach($expertises as $expertise) { ?>
+                    <div class="col-sm-4">
+                        <div class="card m-t-20 m-b-20">
+                            <div class="card-block expertiseCard p-relative c-pointer" data-url="/" style="max-height: 210px !important">
+                                    <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
+                                        <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
+                                    </div>
+                                <a href="<?= $expertise->slug?>/users" style="z-index: 400;">
+                                    <div class="p-t-40 p-absolute" style="z-index: 102; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                        <p class="c-white @tablet f-14 @elsedesktop f-20 @endtablet">Active users: <?= count($expertise->getActiveUsers())?></p>
+                                    </div>
+                                    <div class="p-t-40 p-absolute" style="z-index: 100; top: 35%; left: 50%; transform: translate(-50%, -50%);">
+                                        <div class="hr-sm"></div>
+                                    </div>
+                                    <div class="p-t-40 p-absolute" style="z-index: 99; top: 25%; left: 50%; transform: translate(-50%, -50%);">
+                                        <p class="c-white @tablet f-15 @elsedesktop f-20 @endtablet"><?= $expertise->title?></p>
+                                    </div>
+                                </a>
+                                <div class="overlay">
+                                    <a href="<?= $expertise->slug?>/users" style="z-index: 400;">
+                                        <div class="contentExpertise" style="background: url('<?= $expertise->image?>');"></div>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                <? } ?>
             </div>
+            <? if(!isset($searchedExpertises)) { ?>
+                <div class="row bcg-black m-b-20 @mobile m-l-5 m-r-5 @endmobile" style="opacity: 0.4; border-radius: 10px !important;">
+                    <?= $expertises->links()?>
+                </div>
+            <? } ?>
         </div>
     </div>
     <script>
@@ -71,9 +76,6 @@
             $(".ui-menu").appendTo(".expertises");
         });
     </script>
-    <style>
-
-    </style>
 @endsection
 @section('pagescript')
     <script src="/js/expertisesList/expertisesList.js"></script>

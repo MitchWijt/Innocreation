@@ -16,10 +16,10 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'ddc0a4d7e61c0286f0f8593b1903e894' => __DIR__ . '/..' . '/clue/stream-filter/src/functions.php',
         '8cff32064859f4559445b89279f3199c' => __DIR__ . '/..' . '/php-http/message/src/filters.php',
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
+        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
-        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
@@ -37,6 +37,10 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'W' => 
         array (
             'Webmozart\\Assert\\' => 17,
+        ),
+        'U' => 
+        array (
+            'Unsplash\\OAuth2\\Client\\' => 23,
         ),
         'S' => 
         array (
@@ -78,6 +82,7 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         ),
         'L' => 
         array (
+            'League\\OAuth2\\Client\\' => 21,
             'League\\Flysystem\\AwsS3v3\\' => 25,
             'League\\Flysystem\\' => 17,
         ),
@@ -124,6 +129,7 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'C' => 
         array (
             'Cron\\' => 5,
+            'Crew\\Unsplash\\' => 14,
             'Composer\\CaBundle\\' => 18,
             'Clue\\StreamFilter\\' => 18,
             'ClassPreloader\\' => 15,
@@ -149,6 +155,10 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'Webmozart\\Assert\\' => 
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
+        ),
+        'Unsplash\\OAuth2\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hughbertd/oauth2-unsplash/src',
         ),
         'Symfony\\Polyfill\\Util\\' => 
         array (
@@ -254,6 +264,10 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         array (
             0 => __DIR__ . '/..' . '/mollie/mollie-api-php/src',
         ),
+        'League\\OAuth2\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/oauth2-client/src',
+        ),
         'League\\Flysystem\\AwsS3v3\\' => 
         array (
             0 => __DIR__ . '/..' . '/league/flysystem-aws-s3-v3/src',
@@ -354,6 +368,10 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'Cron\\' => 
         array (
             0 => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron',
+        ),
+        'Crew\\Unsplash\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/unsplash/unsplash/src',
         ),
         'Composer\\CaBundle\\' => 
         array (
@@ -505,8 +523,9 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\ServiceReview' => __DIR__ . '/../..' . '/app/ServiceReview.php',
         'App\\ServiceReviewType' => __DIR__ . '/../..' . '/app/ServiceReviewType.php',
-        'App\\Services\\SwitchUserWork' => __DIR__ . '/../..' . '/app/Services/SwitchUserWork.php',
-        'App\\Services\\UserMessageService' => __DIR__ . '/../..' . '/app/Services/UserMessageService.php',
+        'App\\Services\\AppServices\\MailgunService' => __DIR__ . '/../..' . '/app/Services/AppServices/MailgunService.php',
+        'App\\Services\\FeedServices\\SwitchUserWork' => __DIR__ . '/../..' . '/app/Services/FeedServices/SwitchUserWork.php',
+        'App\\Services\\TeamServices\\CredentialService' => __DIR__ . '/../..' . '/app/Services/TeamServices/CredentialService.php',
         'App\\SiteSetting' => __DIR__ . '/../..' . '/app/SiteSetting.php',
         'App\\SplitTheBillLinktable' => __DIR__ . '/../..' . '/app/SplitTheBillLinktable.php',
         'App\\SupportTicket' => __DIR__ . '/../..' . '/app/SupportTicket.php',
@@ -1019,6 +1038,20 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'Composer\\CaBundle\\CaBundle' => __DIR__ . '/..' . '/composer/ca-bundle/src/CaBundle.php',
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
+        'Crew\\Unsplash\\ArrayObject' => __DIR__ . '/..' . '/unsplash/unsplash/src/ArrayObject.php',
+        'Crew\\Unsplash\\Category' => __DIR__ . '/..' . '/unsplash/unsplash/src/Category.php',
+        'Crew\\Unsplash\\Collection' => __DIR__ . '/..' . '/unsplash/unsplash/src/Collection.php',
+        'Crew\\Unsplash\\Connection' => __DIR__ . '/..' . '/unsplash/unsplash/src/Connection.php',
+        'Crew\\Unsplash\\CuratedBatch' => __DIR__ . '/..' . '/unsplash/unsplash/src/CuratedBatch.php',
+        'Crew\\Unsplash\\CuratedCollection' => __DIR__ . '/..' . '/unsplash/unsplash/src/CuratedCollection.php',
+        'Crew\\Unsplash\\Endpoint' => __DIR__ . '/..' . '/unsplash/unsplash/src/Endpoint.php',
+        'Crew\\Unsplash\\Exception' => __DIR__ . '/..' . '/unsplash/unsplash/src/Exception.php',
+        'Crew\\Unsplash\\HttpClient' => __DIR__ . '/..' . '/unsplash/unsplash/src/HttpClient.php',
+        'Crew\\Unsplash\\PageResult' => __DIR__ . '/..' . '/unsplash/unsplash/src/PageResult.php',
+        'Crew\\Unsplash\\Photo' => __DIR__ . '/..' . '/unsplash/unsplash/src/Photo.php',
+        'Crew\\Unsplash\\Search' => __DIR__ . '/..' . '/unsplash/unsplash/src/Search.php',
+        'Crew\\Unsplash\\Stat' => __DIR__ . '/..' . '/unsplash/unsplash/src/Stat.php',
+        'Crew\\Unsplash\\User' => __DIR__ . '/..' . '/unsplash/unsplash/src/User.php',
         'Cron\\AbstractField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/AbstractField.php',
         'Cron\\CronExpression' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/CronExpression.php',
         'Cron\\DayOfMonthField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/DayOfMonthField.php',
@@ -2539,6 +2572,26 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'League\\Flysystem\\Util\\ContentListingFormatter' => __DIR__ . '/..' . '/league/flysystem/src/Util/ContentListingFormatter.php',
         'League\\Flysystem\\Util\\MimeType' => __DIR__ . '/..' . '/league/flysystem/src/Util/MimeType.php',
         'League\\Flysystem\\Util\\StreamHasher' => __DIR__ . '/..' . '/league/flysystem/src/Util/StreamHasher.php',
+        'League\\OAuth2\\Client\\Grant\\AbstractGrant' => __DIR__ . '/..' . '/league/oauth2-client/src/Grant/AbstractGrant.php',
+        'League\\OAuth2\\Client\\Grant\\AuthorizationCode' => __DIR__ . '/..' . '/league/oauth2-client/src/Grant/AuthorizationCode.php',
+        'League\\OAuth2\\Client\\Grant\\ClientCredentials' => __DIR__ . '/..' . '/league/oauth2-client/src/Grant/ClientCredentials.php',
+        'League\\OAuth2\\Client\\Grant\\Exception\\InvalidGrantException' => __DIR__ . '/..' . '/league/oauth2-client/src/Grant/Exception/InvalidGrantException.php',
+        'League\\OAuth2\\Client\\Grant\\GrantFactory' => __DIR__ . '/..' . '/league/oauth2-client/src/Grant/GrantFactory.php',
+        'League\\OAuth2\\Client\\Grant\\Password' => __DIR__ . '/..' . '/league/oauth2-client/src/Grant/Password.php',
+        'League\\OAuth2\\Client\\Grant\\RefreshToken' => __DIR__ . '/..' . '/league/oauth2-client/src/Grant/RefreshToken.php',
+        'League\\OAuth2\\Client\\Provider\\AbstractProvider' => __DIR__ . '/..' . '/league/oauth2-client/src/Provider/AbstractProvider.php',
+        'League\\OAuth2\\Client\\Provider\\Exception\\IdentityProviderException' => __DIR__ . '/..' . '/league/oauth2-client/src/Provider/Exception/IdentityProviderException.php',
+        'League\\OAuth2\\Client\\Provider\\GenericProvider' => __DIR__ . '/..' . '/league/oauth2-client/src/Provider/GenericProvider.php',
+        'League\\OAuth2\\Client\\Provider\\GenericResourceOwner' => __DIR__ . '/..' . '/league/oauth2-client/src/Provider/GenericResourceOwner.php',
+        'League\\OAuth2\\Client\\Provider\\ResourceOwnerInterface' => __DIR__ . '/..' . '/league/oauth2-client/src/Provider/ResourceOwnerInterface.php',
+        'League\\OAuth2\\Client\\Token\\AccessToken' => __DIR__ . '/..' . '/league/oauth2-client/src/Token/AccessToken.php',
+        'League\\OAuth2\\Client\\Tool\\ArrayAccessorTrait' => __DIR__ . '/..' . '/league/oauth2-client/src/Tool/ArrayAccessorTrait.php',
+        'League\\OAuth2\\Client\\Tool\\BearerAuthorizationTrait' => __DIR__ . '/..' . '/league/oauth2-client/src/Tool/BearerAuthorizationTrait.php',
+        'League\\OAuth2\\Client\\Tool\\MacAuthorizationTrait' => __DIR__ . '/..' . '/league/oauth2-client/src/Tool/MacAuthorizationTrait.php',
+        'League\\OAuth2\\Client\\Tool\\ProviderRedirectTrait' => __DIR__ . '/..' . '/league/oauth2-client/src/Tool/ProviderRedirectTrait.php',
+        'League\\OAuth2\\Client\\Tool\\QueryBuilderTrait' => __DIR__ . '/..' . '/league/oauth2-client/src/Tool/QueryBuilderTrait.php',
+        'League\\OAuth2\\Client\\Tool\\RequestFactory' => __DIR__ . '/..' . '/league/oauth2-client/src/Tool/RequestFactory.php',
+        'League\\OAuth2\\Client\\Tool\\RequiredParameterTrait' => __DIR__ . '/..' . '/league/oauth2-client/src/Tool/RequiredParameterTrait.php',
         'Mailgun\\Api\\Domain' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Api/Domain.php',
         'Mailgun\\Api\\Event' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Api/Event.php',
         'Mailgun\\Api\\HttpApi' => __DIR__ . '/..' . '/mailgun/mailgun-php/src/Mailgun/Api/HttpApi.php',
@@ -4359,6 +4412,8 @@ class ComposerStaticInit685498e8ed3e48f860840eae12a91777
         'TCPDF_STATIC' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_static.php',
         'TestCase' => __DIR__ . '/../..' . '/tests/TestCase.php',
         'Text_Template' => __DIR__ . '/..' . '/phpunit/php-text-template/src/Template.php',
+        'Unsplash\\OAuth2\\Client\\Provider\\Unsplash' => __DIR__ . '/..' . '/hughbertd/oauth2-unsplash/src/Provider/Unsplash.php',
+        'Unsplash\\OAuth2\\Client\\Provider\\UnsplashResourceOwner' => __DIR__ . '/..' . '/hughbertd/oauth2-unsplash/src/Provider/UnsplashResourceOwner.php',
         'Webmozart\\Assert\\Assert' => __DIR__ . '/..' . '/webmozart/assert/src/Assert.php',
         'XdgBaseDir\\Xdg' => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src/Xdg.php',
         'phpDocumentor\\Reflection\\DocBlock' => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src/DocBlock.php',

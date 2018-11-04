@@ -1,6 +1,4 @@
-@section("footer")
-    <script src="/js/home/general.js"></script>
-    <footer>
+ <footer>
         <div class="row col-sm-12">
             <div class="col-md-4 m-t-10">
                 <div class="row">
@@ -8,15 +6,21 @@
                         <div class="footer-title text-center">
                             @handheld
                                 @tablet
-                                    <h1 class="title f-22" style="color: #C9CCCF">In<img class="cartwheelLogo" src="/images/cartwheel.png" alt="">creation</h1>
-                                    <a class="td-none" style="width: 80% !important" href="/login?register=1"><p class="instructions-text create-account f-16">Create your account</p></a>
+                                    <h1 class="title f-22 textFooter" style="color: #C9CCCF">In<img class="cartwheelLogo" src="/images/cartwheel.png" alt="">creation</h1>
+                                    <div class="d-flex js-center">
+                                        <a class="td-none" href="/create-my-account"><p class="instructions-text create-account f-16" style="padding-left: 10px; padding-right: 10px;">Create your account</p></a>
+                                    </div>
                                 @elsemobile
-                                    <h1 class="title f-40" style="color: #C9CCCF">In<img class="cartwheelLogo" src="/images/cartwheel.png" alt="">creation</h1>
-                                    <a class="td-none" style="width: 80px !important" href="/login?register=1"><p class="instructions-text create-account f-20" style="width: 76%; margin-left: 12%;">Create your account</p></a>
+                                    <h1 class="title f-40 textFooter" style="color: #C9CCCF">In<img class="cartwheelLogo" src="/images/cartwheel.png" alt="">creation</h1>
+                                    <div class="d-flex js-center">
+                                        <a class="td-none" href="/create-my-account"><p class="instructions-text create-account f-20" style="padding-left: 10px; padding-right: 10px;">Create your account</p></a>
+                                    </div>
                                 @endtablet
                             @elsedesktop
-                                <h1 class="title" style="color: #C9CCCF">Inn<img class="cartwheelLogo" src="/images/cartwheel.png" alt="">creation</h1>
-                                <a class="td-none" style="width: 80% !important" href="/create-my-account"><p class="instructions-text create-account" style="width: 75%; margin-left: 12%;">Create your account</p></a>
+                                <h1 class="title textFooter" style="color: #C9CCCF">Inn<img class="cartwheelLogo" src="/images/cartwheel.png" alt="">creation</h1>
+                                <div class="d-flex js-center">
+                                    <a class="td-none" href="/create-my-account"><p class="instructions-text create-account" style="padding-left: 10px; padding-right: 10px;">Create your account</p></a>
+                                </div>
                             @endhandheld
                         </div>
                     </div>
@@ -69,7 +73,7 @@
             @elsedesktop
                 <div class="col-md-8 p-t-20 p-b-20">
                     <div class="row d-flex js-center">
-                        <div class="@mobile col-4 @elsedesktop col-md-4 @endmobile">
+                        <div class="@mobile col-4 @elsedesktop col-sm-4 @endmobile">
                             <div class="d-flex">
                                 <div class="d-flex list-links">
                                     <p class="regular-link td-none m-0">Find us on:</p>
@@ -79,7 +83,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="@mobile col-4 @elsedesktop col-md-4 @endmobile">
+                        <div class="@mobile col-4 @elsedesktop col-sm-4 @endmobile">
                             <div class="d-flex">
                                 <div class="d-flex list-links">
                                     <p class="regular-link td-none m-0">General info:</p>
@@ -91,7 +95,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="@mobile col-4 @elsedesktop col-md-4 @endmobile">
+                        <div class="@mobile col-4 @elsedesktop col-sm-4 @endmobile">
                             <div class="d-flex">
                                 <div class="d-flex list-links">
                                     <p class="regular-link td-none m-0">The platform:</p>
