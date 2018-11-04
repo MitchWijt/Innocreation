@@ -37,21 +37,6 @@ class DebugController extends Controller
      *
      */
     public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
-//        $imageId = json_decode($unsplash->searchAndGetImageByKeyword("Developer"))->id;
-        $user = User::select("*")->where("id", 10)->first();
-        $mailgunService->saveAndSendEmail($user, "test", view("templates/sendLateWelcomeMail", compact("user")));
-
-//        $unsplash->downloadPhoto($imageId);
-//        $mgClient = $this->getService("mailgun");
-//        $mgClient[0]->sendMessage($mgClient[1], array(
-//            'from' => "mitchel@innocreation.net",
-//            'to' => "mitchel@wijt.net",
-//            'subject' => "Late welcome",
-//            'html' => view("templates/sendLateWelcomeMail", compact("user"))
-//        ), array(
-//            'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
-//        ));
-
         die('test');
 
 //        $client = $this->getService("stream");
