@@ -76,7 +76,7 @@
                                     <a class="regular-link c-gray m-b-5" href="/account">My account</a>
                                 <? } ?>
                                 <? if(\Illuminate\Support\Facades\Session::has("team_id")) { ?>
-                                    <a class="regular-link" href="/my-team"><p id="teamLink" class="m-b-0">My team</p></a>
+                                    <a class="regular-link" href="/my-team"><p id="teamLink" class="m-b-0">My team <? if($teamJoinRequestsCounter > 0) echo "<i class='zmdi zmdi-circle c-orange f-9'></i>"?></p></a>
                                 <? } ?>
                             </div>
                             <div class="login">
@@ -119,7 +119,7 @@
                                     <a class="regular-link c-gray m-b-5" href="/account">My account</a>
                                     <div>
                                         <? if($user->team_id != null) { ?>
-                                            <a class="regular-link" href="/my-team"><p id="teamLink" class="m-b-0">My team</p></a>
+                                            <a class="regular-link" href="/my-team"><p id="teamLink" class="m-b-0">My team <? if($teamJoinRequestsCounter > 0) echo "<i class='zmdi zmdi-circle c-orange f-9'></i>"?></p></a>
                                         <? } else { ?>
                                             <a class="regular-link m-b-0" id="teamLink" href="/my-account/teamInfo">My team</a>
                                         <? } ?>
