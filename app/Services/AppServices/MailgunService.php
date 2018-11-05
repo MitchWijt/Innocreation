@@ -27,12 +27,11 @@ class MailgunService
 
     public function saveAndSendEmail($to, $subject, $message, $from = 'Innocreation <info@innocreation.net>'){
         $mailMessage = new MailMessage();
-        $mailMessage->receiver_user_id = 10;
+        $mailMessage->receiver_user_id = $to->id;
         $mailMessage->subject = $subject;
         $mailMessage->message = $message;
         $mailMessage->created_at = date("Y-m-d H:i:s");
         $mailMessage->save();
-        dd("fdsa");
 
         $user = User::select("*")->where("id", $mailMessage->receiver_user_id)->first();
         $this->sendMail($mailMessage, $user);
