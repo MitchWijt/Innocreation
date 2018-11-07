@@ -1,5 +1,4 @@
-var counterFav = 0;
-$(".card-square").on("click", function () {
+$(".card-fav").on("click", function () {
     var postData = "";
     var user_id = $(this).parents(".ChoosefavExpertisesForm").find(".user_id").val();
     var expertise_id = $(this).parents(".ChoosefavExpertisesForm").find(".expertise_id").val();
@@ -15,14 +14,14 @@ $(".card-square").on("click", function () {
         url: "/saveFavoriteExpertisesUser",
         data: {'user_id': user_id, 'expertise_id': expertise_id},
         success: function (data) {
-            counterFav++;
+            console.log(data);
             if(data == "max"){
                 location.reload();
             }
-            $('.card-square').each(function () {
+            $('.card-fav-').each(function () {
                 if ($(this).data("expertise-id") == expertise_id) {
-                    $(this).removeClass("card-square");
-                    $(this).addClass("card-chosen");
+                    $(this).removeClass("card-fav");
+                    $(this).addClass("card-fav-chosen");
                     $(this).find(".checkMark").removeClass("hidden");
                 }
             });
@@ -43,7 +42,8 @@ $(document).ready(function () {
     $(".deleteCross").toggle();
 });
 
-$(".deleteCross").on("click",function () {
+$(".deleteCross").on("click",function (e) {
+    e.stopPropagation();
     $(".editFavExpertises").submit();
 });
 
