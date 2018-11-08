@@ -36,12 +36,12 @@
                         <div class="row m-b-5 p-relative">
                             <i class="zmdi zmdi-close c-orange f-19 p-absolute closeForm" @handheld @mobile style="top: -15px; right: 30px;" @elsetablet style="top: -15px; right: 140px;" @endmobile @elsedesktop style="top: -15px; right: 205px;" @endhandheld></i>
                             <div class="col-md-12 d-flex js-center m-t-5">
-                                <textarea placeholder="Post your best work!" id="description_id" class="col-sm-8 input" rows="2" name="newUserWorkDescription"></textarea>
+                                <textarea placeholder="Post your best work!" id="description_id" class="col-sm-8 input" rows="2" name="newUserWorkDescription"> </textarea>
                             </div>
                         </div>
                         <div class="row m-b-5 d-flex js-center">
                             <div class="col-md-8 m-t-5">
-                                <div class="row">
+                                <div class="row m-b-20">
                                     <div class="@handheld col-12 @elsedesktop col-sm-4 @endhandheld">
                                         <select name="percentageProgress" class="input @handheld pull-right m-b-10 @endhandheld">
                                             <option value="" selected disabled>% Progress on project</option>
@@ -58,21 +58,19 @@
                                         </select>
                                     </div>
                                     <div class="@handheld col-12 m-b-10 @elsedesktop col-sm-4 @endhandheld">
-                                        <input type="text" placeholder="Optional demo link" name="imageLink" class="input pull-right">
-                                    </div>
-                                    <div class="@handheld col-12 m-b-10 @elsedesktop col-sm-4 @endhandheld">
                                         <div class="fileUpload">
                                             <input type="file" class="userwork_image hidden" name="image">
-                                            <button class="btn btn-inno btn-sm pull-right addPicture" type="button">Add picture</button>
+                                            <i class="zmdi zmdi-camera-add iconCTA addPicture c-pointer"></i>
                                             <span class="fileName pull-right m-r-10"></span>
+                                            <i class="zmdi zmdi-link iconCTA c-pointer popoverAttachment" data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverAttachment")?>'></i>
+                                            <i class="zmdi zmdi-mood iconCTA c-pointer popoverEmojis" data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverEmojis", compact("emojis"))?>'></i>
                                         </div>
+                                        <input type="hidden" placeholder="Your link" name="imageLink" class="input col-sm-12 attachmentLinkDB">
+                                    </div>
+                                    <div class="@handheld col-12 m-b-10 @elsedesktop col-sm-4 @endhandheld">
+                                       <button type="submit" class="btn btn-inno btn-sm pull-right">Post!</button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row d-flex js-center">
-                            <div class="col-md-8 m-b-20">
-                                <i class="zmdi zmdi-check-circle submitPost pull-right f-40 c-black"></i>
                             </div>
                         </div>
                     </form>
@@ -160,6 +158,9 @@
                 }
             });
         });
+        $('.popoverAttachment').popover({ trigger: "click" , html: true, animation:false, placement: 'auto'});
+        $('.popoverEmojis').popover({ trigger: "click" , html: true, animation:false, placement: 'auto'});
+
     </script>
 @endsection
 @section('pagescript')

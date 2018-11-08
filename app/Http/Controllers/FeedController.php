@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Emoji;
 use App\Team;
 use App\TeamProduct;
 use App\TeamProductComment;
@@ -198,20 +199,21 @@ class FeedController extends Controller
         $og_description = "Connect with fellow innocreators and start executing on your ideas!";
         $pageType = "innoCreatives";
         $totalAmount = UserWork::select("id")->count();
+        $emojis = Emoji::select("*")->get();
         if(Session::has("user_id")){
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
             if($id){
                 $sharedUserWorkId = $id;
-                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount", "sharedUserWorkId", "title", "og_description"));
+                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount", "sharedUserWorkId", "title", "og_description", "emojis"));
             } else {
-                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount", "title", "og_description"));
+                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount", "title", "og_description", "emojis"));
             }
         } else {
             if($id){
                 $sharedUserWorkId = $id;
-                return view("/public/userworkFeed/index", compact( "pageType", "totalAmount", "sharedUserWorkId", "title", "og_description"));
+                return view("/public/userworkFeed/index", compact( "pageType", "totalAmount", "sharedUserWorkId", "title", "og_description", "emojis"));
             } else {
-                return view("/public/userworkFeed/index", compact("pageType", "totalAmount", "title", "og_description"));
+                return view("/public/userworkFeed/index", compact("pageType", "totalAmount", "title", "og_description", "emojis"));
             }
         }
 

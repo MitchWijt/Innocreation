@@ -364,3 +364,14 @@ $(document).on("click", ".switch__toggle", function () {
     }
 
 });
+
+$(document).on("keyup", ".attachmentLink", function () {
+   var val = $(this).val();
+   $(".attachmentLinkDB").val(val);
+});
+
+$(document).on("click", ".emoji", function () {
+   var code = $(this).data("code");
+   var val = $("#description_id").val();
+   $("#description_id").val(val + code);
+});

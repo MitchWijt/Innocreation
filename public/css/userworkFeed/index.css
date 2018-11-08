@@ -122,3 +122,17 @@
     --switchBgColorActive: #e85c3f;
     --switchBgColorFocus: #d54b2e;
 }
+
+
+.iconCTA{
+    padding-top: 5px !important;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 5px !important;
+    border: 1px solid #77787a;
+    border-radius: 10px;
+}
+
+.iconCTA:hover{
+    border: 1px solid #000000 !important;
+}
