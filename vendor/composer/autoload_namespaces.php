@@ -10,7 +10,6 @@ return array(
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
     'Mailgun' => array($vendorDir . '/mailgun/mailgun-php/src'),
     'JakubOnderka\\PhpConsoleHighlighter' => array($vendorDir . '/jakub-onderka/php-console-highlighter/src'),
-    'JakubOnderka\\PhpConsoleColor' => array($vendorDir . '/jakub-onderka/php-console-color/src'),
     'GetStream\\StreamLaravel\\' => array($vendorDir . '/get-stream/stream-laravel/src'),
     'GetStream\\Stream' => array($vendorDir . '/get-stream/stream/lib'),
     'Detection' => array($vendorDir . '/mobiledetect/mobiledetectlib/namespaced'),

@@ -97,7 +97,7 @@
                 <div class="container">
                         <div class="row">
                             <div class="col-md-12 text-center m-t-20">
-                                <h1 id="scrollToHome" class="sub-title col-sm-12">How it works</h1>
+                                <h1 id="scrollToHome" class="sub-title col-sm-12">How it works  ☣ &#x2623; &#x1F600;</h1>
                             </div>
                         </div>
                         <div class="hr col-md-8"></div>

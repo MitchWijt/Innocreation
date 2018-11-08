@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf_token" content="{{ csrf_token() }}" />
-    <meta name="description" content="<? if(isset($og_description)) echo $og_description?>" />
+    <meta name="description" content="<? if(isset($og_description)) echo $og_description; else echo "Innocreation | The platform to connect,network,share and build with people active in various expertises on your innovative idea or project!"?>" />
     <meta name="google-site-verification" content="7i4l0CQ7KL5Rcffr4TDf0e7doWEObxrI-mRC_RXai2g" />
     <link rel="canonical" class="tweet-button-link" href="">
-    <title><? if(isset($title)) echo $title ?> | Innocreation</title>
+    <title><? if(isset($title)) echo $title  . " | "?>Innocreation</title>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124028721-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];

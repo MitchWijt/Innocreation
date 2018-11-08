@@ -30,13 +30,17 @@ use GetStream\StreamLaravel\Facades\FeedManager;
 use App\Services\AppServices\UnsplashService as Unsplash;
 use App\Services\AppServices\MailgunService as Mailgun;
 use Session;
+use Spipu\Html2Pdf\Tag\Html\Em;
 
 class DebugController extends Controller
 {
     /**
      *
      */
+
     public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
+        $emojis = new Emoji();
+        $emojis->listAllEmojis();
         die('test');
 
 //        $client = $this->getService("stream");
