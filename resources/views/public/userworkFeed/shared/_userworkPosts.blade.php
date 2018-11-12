@@ -84,6 +84,7 @@
                                 </div>
                                 <div class="d-flex js-center">
                                     <div class="col-sm-11 p-r-0 m-b-10">
+                                        <i class="zmdi zmdi-mood iconCTA c-pointer popoverEmojis pull-right" data-toggle="popover" data-content=''></i>
                                         <button type="button" class="btn btn-inno btn-sm pull-right postComment">Comment</button>
                                     </div>
                                 </div>

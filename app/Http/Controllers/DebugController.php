@@ -39,8 +39,6 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
-        $emojis = new Emoji();
-        $emojis->listAllEmojis();
         die('test');
 
 //        $client = $this->getService("stream");

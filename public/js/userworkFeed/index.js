@@ -221,14 +221,6 @@ if($(".userJS").val() == 1) {
     }
 }
 
-$(".submitPost").on("mouseover",function () {
-    $(this).attr("style", "color: #FF6100")
-});
-
-$(".submitPost").on("mouseleave",function () {
-    $(this).attr("style", "color: #000000")
-});
-
 $(".openForm").on("mouseover",function () {
     $(this).attr("style", "color: #FF6100")
 });
@@ -260,7 +252,14 @@ $(document).on("change", ".userwork_image",function () {
 });
 
 $(".submitPost").on("click",function () {
-    $(".userWorkForm").submit();
+    var bool = true;
+    if($("#description_id").val().length < 1){
+        $("#description_id").attr("style", "border: 1px solid red !important");
+        bool = false;
+    }
+    if(bool) {
+        $(".userWorkForm").submit();
+    }
 });
 
 $(document).on("click", ".toggleComments", function () {
@@ -368,6 +367,13 @@ $(document).on("click", ".switch__toggle", function () {
 $(document).on("keyup", ".attachmentLink", function () {
    var val = $(this).val();
    $(".attachmentLinkDB").val(val);
+});
+
+$(document).on("click", ".popoverAttachment", function () {
+    if($(".attachmentLinkDB").val().length > 0){
+        var val = $(".attachmentLinkDB").val();
+        $(".attachmentLink").val(val);
+    }
 });
 
 $(document).on("click", ".emoji", function () {

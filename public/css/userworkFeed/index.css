@@ -136,3 +136,16 @@
 .iconCTA:hover{
     border: 1px solid #000000 !important;
 }
+
+#description_id::placeholder{
+    color: #77787a!important;
+    font-size: 16px !important;
+}
+
+.emojidiv{
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select:none;
+    user-select:none;
+    -o-user-select:none;
+}
