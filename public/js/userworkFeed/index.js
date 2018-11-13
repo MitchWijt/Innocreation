@@ -381,3 +381,11 @@ $(document).on("click", ".emoji", function () {
    var val = $("#description_id").val();
    $("#description_id").val(val + code);
 });
+
+$(document).on("click", ".emojiComment", function () {
+    var id = $(this).data("id");
+    var code = $(this).data("code");
+    var val = $("#messageInput-" + id).val();
+
+    $("#messageInput-" + id).val(val + code)
+});

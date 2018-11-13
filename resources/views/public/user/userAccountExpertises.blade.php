@@ -31,7 +31,8 @@
                     <div class="row d-flex js-center">
                         <div class="col-md-7">
                             <div class="card m-t-20 m-b-20 ">
-                                <div class="card-block expertiseCard p-relative c-pointer" style="max-height: 150px !important">
+                                <div class="card-block expertiseCard p-relative " style="max-height: 150px !important">
+                                    <i class="zmdi zmdi-close c-orange f-25 p-absolute deleteCross" data-expertise-id="<?= $userExpertises->id?>" style="top: 5px !important; right: 10px !important; z-index: 201;"></i>
                                     <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
                                         <a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $userExpertises->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $userExpertises->photographer_link?>"><?= $userExpertises->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                                     </div>

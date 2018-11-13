@@ -137,6 +137,19 @@
     border: 1px solid #000000 !important;
 }
 
+.iconCTAComments{
+    padding-top: 5px !important;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 5px !important;
+    border: 1px solid #77787a;
+    border-radius: 10px;
+}
+
+.iconCTAComments:hover{
+    border: 1px solid #FF6100 !important;
+}
+
 #description_id::placeholder{
     color: #77787a!important;
     font-size: 16px !important;

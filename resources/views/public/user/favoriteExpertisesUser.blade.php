@@ -84,7 +84,7 @@
                                             <div class="hr-sm"></div>
                                         </div>
                                         <div class="p-t-40 p-absolute" style="z-index: 99; top: 25%; left: 50%; transform: translate(-50%, -50%);">
-                                            <p class="c-white @tablet f-15 @elsedesktop f-20 @endtablet"><?= $favExpertise->expertises->first()->title?></p>
+                                            <p class="c-white @handheld f-15 @elsedesktop f-20 @endhandheld"><?= $favExpertise->expertises->first()->title?></p>
                                         </div>
                                     </a>
                                     <div class="overlay">
@@ -132,7 +132,7 @@
                                                     <div class="hr-sm"></div>
                                                 </div>
                                                 <div class="p-t-40 p-absolute" style="z-index: 99; top: 25%; left: 50%; transform: translate(-50%, -50%);">
-                                                    <p class="c-white @tablet f-15 @elsedesktop f-20 @endtablet"><?= $expertise->title?></p>
+                                                    <p class="c-white @handheld f-15 @elsedesktop f-20 @endhandheld"><?= $expertise->title?></p>
                                                 </div>
                                             </div>
                                             <div class="overlay">
@@ -158,7 +158,7 @@
                                                 <div class="hr-sm"></div>
                                             </div>
                                             <div class="p-t-40 p-absolute" style="z-index: 99; top: 25%; left: 50%; transform: translate(-50%, -50%);">
-                                                <p class="c-white @tablet f-15 @elsedesktop f-20 @endtablet"><?= $expertise->title?></p>
+                                                <p class="c-white @handheld f-15 @elsedesktop f-20 @endhandheld"><?= $expertise->title?></p>
                                             </div>
                                         </div>
                                         <div class="overlay">

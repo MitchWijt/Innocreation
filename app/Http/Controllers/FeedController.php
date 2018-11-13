@@ -221,21 +221,23 @@ class FeedController extends Controller
 
     public function getUserworkPostsAction(){
         $userWorkPosts = UserWork::select("*")->orderBy("created_at", "DESC")->limit(15)->get();
+        $emojis = Emoji::select("*")->get();
         if(Session::has("user_id")) {
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
-            return view("/public/userworkFeed/shared/_userworkPosts", compact("user", "userWorkPosts"));
+            return view("/public/userworkFeed/shared/_userworkPosts", compact("user", "userWorkPosts", "emojis"));
         }
-        return view("/public/userworkFeed/shared/_userworkPosts", compact("userWorkPosts"));
+        return view("/public/userworkFeed/shared/_userworkPosts", compact("userWorkPosts", "emojis"));
     }
 
     public function getMoreUserworkPostsAction(Request $request){
         $userworkArray = $request->input("userworkArray");
+        $emojis = Emoji::select("*")->get();
         $userWorkPosts = UserWork::select("*")->whereNotIn("id", $userworkArray)->orderBy("created_at", "DESC")->limit(15)->get();
         if(Session::has("user_id")) {
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
-            return view("/public/userworkFeed/shared/_userworkPosts", compact("user", "userWorkPosts"));
+            return view("/public/userworkFeed/shared/_userworkPosts", compact("user", "userWorkPosts", "emojis"));
         }
-        return view("/public/userworkFeed/shared/_userworkPosts", compact("userWorkPosts"));
+        return view("/public/userworkFeed/shared/_userworkPosts", compact("userWorkPosts", "emojis"));
     }
 
     public function upvoteUserWorkAction(Request $request){
