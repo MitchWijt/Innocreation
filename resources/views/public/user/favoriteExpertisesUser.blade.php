@@ -8,33 +8,34 @@
             @mobile
                 @include("includes.userAccount_sidebar")
             @endmobile
+            <input type="hidden" class="totalChosen">
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">My favorite expertises</h1>
+                <h1 class="sub-title-black @mobile f-25 @endmobile">My favorite expertises</h1>
             </div>
-            <div class="hr p-b-20"></div>
+            <hr class="p-b-20">
             <? if(count($favoriteExpertisesUser) < 4) { ?>
-                <div class="row d-flex js-center p-b-20">
-                    <div class="card card-lg text-center">
-                        <div class="card-block">
+                <div class="row d-flex js-center p-b-20 @mobile p-20 @endmobile">
+                    <div class="card card-lg text-center ">
+                        <div class="card-block ">
                             <div class="sub-title-container p-t-20">
                                 <h1 class="sub-title-black c-gray">Info</h1>
                             </div>
-                            <div class="hr-card p-b-20"></div>
+                            <hr class="p-b-20">
                             <ul class="instructions-list">
                                 <li class="instructions-list-item">
-                                    <p class="instructions-text f-19 m-0 p-b-10">Choose the expertises that you are interested in</p>
+                                    <p class="instructions-text m-0 p-b-10 @mobile f-15 @elsedesktop f-19 @endmobile">Choose the expertises that you are interested in</p>
                                 </li>
                                 <li class="instructions-list-item">
-                                    <p class="instructions-text f-19 m-0 p-b-10">See daily updated news articles about your expertises</p>
+                                    <p class="instructions-text @mobile f-15 @elsedesktop f-19 @endmobile m-0 p-b-10">See daily updated news articles about your expertises</p>
                                 </li>
                                 <li class="instructions-list-item">
-                                    <p class="instructions-text f-19 m-0 p-b-10">Keep yourself updated with development around your expertises</p>
+                                    <p class="instructions-text @mobile f-15 @elsedesktop f-19 @endmobile m-0 p-b-10">Keep yourself updated with development around your expertises</p>
                                 </li>
                                 <li class="instructions-list-item">
-                                    <p class="instructions-text f-19 m-0 p-b-10">Choose max 4 expertises</p>
+                                    <p class="instructions-text @mobile f-15 @elsedesktop f-19 @endmobile m-0 p-b-10">Choose max 4 expertises</p>
                                 </li>
                                 <li class="instructions-list-item">
-                                    <p class="instructions-text f-19 m-0 p-b-10">Click to add one</p>
+                                    <p class="instructions-text @mobile f-15 @elsedesktop f-19 @endmobile m-0 p-b-10">Click to add one</p>
                                 </li>
                             </ul>
                         </div>
@@ -62,23 +63,38 @@
                         <div class="row d-flex js-center m-b-5">
                     <? } ?>
                 <? } ?>
-                    <div class="col-sm-4">
-                        <div class="card card-final text-center" data-expertise-id="<?= $favExpertise->expertise_id?>" style="position: relative;">
-                            <form action="/deleteFavoriteExpertisesUser" method="post" class="editFavExpertises">
-                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                <input type="hidden" name="expertise_id" value="<?= $favExpertise->expertise_id?>">
-                                <input type="hidden" name="user_id" value="<?= $favExpertise->user_id?>">
-                                <span class="f-22 deleteCross hidden" style="position: absolute; left: 10px; top: 5px; color: #FF6100"><i class="zmdi zmdi-close"></i></span>
-                            </form>
-                            <div class="card-block">
-                                <div class="row d-flex js-center">
-                                    <div class="col-sm-8">
-                                        <p style="margin-top: 140px;" class="border-inno f-22"><?= $favExpertise->expertises->first()->title?></p>
+                        <div class="col-sm-4">
+                            <div class="card m-t-20 m-b-20">
+                                <div class="card expertiseCard p-relative c-pointer" data-url="/" style="max-height: 210px !important">
+                                    <form action="/deleteFavoriteExpertisesUser" method="post" class="editFavExpertises">
+                                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                        <input type="hidden" name="expertise_id" value="<?= $favExpertise->expertise_id?>">
+                                        <input type="hidden" name="user_id" value="<?= $favExpertise->user_id?>">
+                                        <span class="f-22 deleteCross hidden p-absolute c-orange" style="right: 10px; top: 5px; z-index: 100"><i class="zmdi zmdi-close"></i></span>
+
+                                    </form>
+                                    <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
+                                        <a class="c-gray f-9 photographer" target="_blank" href="<?= $favExpertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $favExpertise->expertises->first()->photographer_link?>"><?= $favExpertise->expertises->first()->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
+                                    </div>
+                                    <a href="/<?= $favExpertise->expertises->first()->slug?>/users" style="z-index: 400;">
+                                        <div class="p-t-40 p-absolute" style="z-index: 100; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                            <i class="zmdi zmdi-star c-orange f-40"></i>
+                                        </div>
+                                        <div class="p-t-40 p-absolute" style="z-index: 100; top: 35%; left: 50%; transform: translate(-50%, -50%);">
+                                            <div class="hr-sm"></div>
+                                        </div>
+                                        <div class="p-t-40 p-absolute" style="z-index: 99; top: 25%; left: 50%; transform: translate(-50%, -50%);">
+                                            <p class="c-white @handheld f-15 @elsedesktop f-20 @endhandheld"><?= $favExpertise->expertises->first()->title?></p>
+                                        </div>
+                                    </a>
+                                    <div class="overlay">
+                                        <a href="/<?= $favExpertise->expertises->first()->slug?>/users" style="z-index: 400;">
+                                            <div class="contentExpertise" style="background: url('<?= $favExpertise->expertises->first()->image?>');"></div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 <? if($counter2 % 2 == 1) { ?>
                     </div>
                 <? } ?>
@@ -100,38 +116,59 @@
                     <? } ?>
                 <? } ?>
                         <? if(!in_array($expertise->id, $chosenFavExpertisesArray)) { ?>
-                            <form action="" method="post" class="ajax-form ChoosefavExpertisesForm">
-                                <input type="hidden" class="expertise_id" name="expertise_id" value="<?= $expertise->id?>">
-                                <input type="hidden" class="user_id" name="user_id" value="<?= $user->id?>">
-                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                <div class="col-sm-4">
-                                    <div class="card card-square text-center" data-expertise-id="<?= $expertise->id?>" style="position: relative;">
-                                        <span style="position: absolute; left: 100px; top: -15px; font-size: 250px; z-index: 1;" class="checkMark hidden"><i class="zmdi zmdi-check"></i></span>
-                                        <div class="card-block">
-                                            <div class="row d-flex js-center">
-                                                <div class="col-sm-8">
-                                                    <p style="margin-top: 140px;" class="border-inno f-22"><?= $expertise->title?></p>
+                                <div class="col-sm-4 ChoosefavExpertisesForm">
+                                    <input type="hidden" class="expertise_id" name="expertise_id" value="<?= $expertise->id?>">
+                                    <input type="hidden" class="user_id" name="user_id" value="<?= $user->id?>">
+                                    <div class="card card-fav m-t-20 m-b-20 p-relative">
+                                        <div class="card p-relative c-pointer" data-url="/" style="max-height: 210px !important">
+                                            <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
+                                                <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
+                                            </div>
+                                            <div class="card-fav" data-expertise-id="<?= $expertise->id?>" >
+                                                <div class="p-t-40 p-absolute card-fav-" data-expertise-id="<?= $expertise->id?>"  style="z-index: 100; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                                    <i class="zmdi zmdi-star checkMark hidden c-orange f-40"></i>
+                                                </div>
+                                                <div class="p-t-40 p-absolute" style="z-index: 100; top: 35%; left: 50%; transform: translate(-50%, -50%);">
+                                                    <div class="hr-sm"></div>
+                                                </div>
+                                                <div class="p-t-40 p-absolute" style="z-index: 99; top: 25%; left: 50%; transform: translate(-50%, -50%);">
+                                                    <p class="c-white @handheld f-15 @elsedesktop f-20 @endhandheld"><?= $expertise->title?></p>
+                                                </div>
+                                            </div>
+                                            <div class="overlay">
+                                                <div class="card-fav">
+                                                    <div class="contentExpertise" style="background: url('<?= $expertise->image?>');"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
                         <? } else { ?>
-                            <form action="" method="post" class="ajax-form ChoosefavExpertisesForm">
-                                <div class="col-sm-4">
-                                    <div class="card card-chosen text-center" data-expertise-id="<?= $expertise->id?>" style="position: relative;">
-                                        <span style="position: absolute; left: 100px; top: -15px; font-size: 250px; z-index: 1;" class="checkMark"><i class="zmdi zmdi-check"></i></span>
-                                        <div class="card-block">
-                                            <div class="row d-flex js-center">
-                                                <div class="col-sm-8">
-                                                    <p style="margin-top: 140px;" class="border-inno f-22"><?= $expertise->title?></p>
-                                                </div>
+                            <div class="col-sm-4 ChoosefavExpertisesForm">
+                                <div class="card card-fav m-t-20 m-b-20 p-relative">
+                                    <div class="card p-relative c-pointer" data-url="/" style="max-height: 210px !important">
+                                        <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
+                                            <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
+                                        </div>
+                                        <div class="card-fav" data-expertise-id="<?= $expertise->id?>" >
+                                            <div class="p-t-40 p-absolute card-fav-" data-expertise-id="<?= $expertise->id?>"  style="z-index: 100; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                                                <i class="zmdi zmdi-star c-orange f-40"></i>
+                                            </div>
+                                            <div class="p-t-40 p-absolute" style="z-index: 100; top: 35%; left: 50%; transform: translate(-50%, -50%);">
+                                                <div class="hr-sm"></div>
+                                            </div>
+                                            <div class="p-t-40 p-absolute" style="z-index: 99; top: 25%; left: 50%; transform: translate(-50%, -50%);">
+                                                <p class="c-white @handheld f-15 @elsedesktop f-20 @endhandheld"><?= $expertise->title?></p>
+                                            </div>
+                                        </div>
+                                        <div class="overlay">
+                                            <div class="card-fav">
+                                                <div class="contentExpertise" style="background: url('<?= $expertise->image?>');"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         <? } ?>
                 <? if($counter % 2 == 1) { ?>
                     </div>

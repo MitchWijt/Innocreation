@@ -31,7 +31,6 @@ class InvoiceController extends Controller
 
         $vatRate = SiteSetting::select("*")->where("id", 2)->first()->description;
 
-//        return view("/public/invoice/userMonthlyInvoice", compact("invoice", "vatRate"));
         $html2pdf = new Html2Pdf();
         $html2pdf->writeHTML(view("/public/invoice/userMonthlyInvoice", compact("invoice", "vatRate", "teamPackage")));
         $html2pdf->output("$userName-$invoiceMonth.pdf", 'D');

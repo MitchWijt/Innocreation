@@ -262,32 +262,12 @@ class UserController extends Controller
         }
     }
 
-    public function saveFavoriteExperisesUser(Request $request){
-        $user_id = $request->input("user_id");
-        $expertise_id = $request->input("expertise_id");
-        $existingFavExpertises = Favorite_expertises_linktable::select("*")->where("user_id",$user_id)->where("expertise_id", $expertise_id)->first();
-        $AllFavUser = Favorite_expertises_linktable::select("*")->where("user_id", $user_id)->get();
-        if(count($AllFavUser) >= 4){
-            return "max";
-        } else {
-            if (count($existingFavExpertises == 0)) {
-                $favoriteExpertise = new Favorite_expertises_linktable;
-                $favoriteExpertise->user_id = $user_id;
-                $favoriteExpertise->expertise_id = $expertise_id;
-                $favoriteExpertise->save();
-                return $favoriteExpertise->expertise_id;
-            } else {
-                return 2;
-            }
-        }
+    public function saveFavoriteExperisesUser(Request $request, UserExpertises $userExpertisesService){
+        return $userExpertisesService->saveFavoriteExperisesUser($request);
     }
 
-    public function deleteFavoriteExpertisesUser(Request $request){
-        $user_id = $request->input("user_id");
-        $expertise_id = $request->input("expertise_id");
-        $favoriteExpertises = Favorite_expertises_linktable::select("*")->where("user_id", $user_id)->where("expertise_id", $expertise_id)->first();
-        $favoriteExpertises->delete();
-        return redirect($_SERVER["HTTP_REFERER"]);
+    public function deleteFavoriteExpertisesUser(Request $request, UserExpertises $userExpertisesService){
+        return $userExpertisesService->deleteFavoriteExpertisesUser($request);
     }
 
     public function saveUserProfilePictureAction(Request $request){

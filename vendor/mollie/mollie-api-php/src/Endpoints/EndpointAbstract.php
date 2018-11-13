@@ -7,7 +7,6 @@ use Mollie\Api\MollieApiClient;
 use Mollie\Api\Resources\BaseCollection;
 use Mollie\Api\Resources\BaseResource;
 use Mollie\Api\Resources\ResourceFactory;
-use Psr\Http\Message\StreamInterface;
 
 abstract class EndpointAbstract
 {
@@ -20,7 +19,7 @@ abstract class EndpointAbstract
     /**
      * @var MollieApiClient
      */
-    protected $api;
+    protected $client;
 
     /**
      * @var string
@@ -37,7 +36,7 @@ abstract class EndpointAbstract
      */
     public function __construct(MollieApiClient $api)
     {
-        $this->api = $api;
+        $this->client = $api;
     }
 
     /**
@@ -71,7 +70,7 @@ abstract class EndpointAbstract
      */
     protected function rest_create(array $body, array $filters)
     {
-        $result = $this->api->performHttpCall(
+        $result = $this->client->performHttpCall(
             self::REST_CREATE,
             $this->getResourcePath() . $this->buildQueryString($filters),
             $this->parseRequestBody($body)
@@ -95,7 +94,7 @@ abstract class EndpointAbstract
         }
 
         $id = urlencode($id);
-        $result = $this->api->performHttpCall(
+        $result = $this->client->performHttpCall(
             self::REST_READ,
             "{$this->getResourcePath()}/{$id}" . $this->buildQueryString($filters)
         );
@@ -107,19 +106,19 @@ abstract class EndpointAbstract
      * Sends a DELETE request to a single Molle API object.
      *
      * @param string $id
-     *
      * @param array $body
+     *
      * @return BaseResource
      * @throws ApiException
      */
-    protected function rest_delete($id, array $body)
+    protected function rest_delete($id, array $body = [])
     {
         if (empty($id)) {
             throw new ApiException("Invalid resource id.");
         }
 
         $id = urlencode($id);
-        $result = $this->api->performHttpCall(
+        $result = $this->client->performHttpCall(
             self::REST_DELETE,
             "{$this->getResourcePath()}/{$id}",
             $this->parseRequestBody($body)
@@ -148,7 +147,7 @@ abstract class EndpointAbstract
 
         $apiPath = $this->getResourcePath() . $this->buildQueryString($filters);
 
-        $result = $this->api->performHttpCall(self::REST_LIST, $apiPath);
+        $result = $this->client->performHttpCall(self::REST_LIST, $apiPath);
 
         /** @var BaseCollection $collection */
         $collection = $this->getResourceCollectionObject($result->count, $result->_links);
@@ -209,7 +208,7 @@ abstract class EndpointAbstract
      * @return null|string
      * @throws ApiException
      */
-    private function parseRequestBody(array $body)
+    protected function parseRequestBody(array $body)
     {
         if (empty($body)) {
             return null;

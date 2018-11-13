@@ -27,7 +27,8 @@ $(".saveDescriptionBtn").on("click",function () {
     });
 });
 
-$(".deleteCross").on("click",function () {
+$(".deleteCross").on("click",function (e) {
+    e.stopPropagation();
     if (confirm('Are you sure you want to delete this expertise?')) {
         var postData = "";
         var expertise_id = $(this).data("expertise-id");
