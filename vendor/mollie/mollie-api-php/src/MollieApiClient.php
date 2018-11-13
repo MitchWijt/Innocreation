@@ -11,6 +11,10 @@ use Mollie\Api\Endpoints\CustomerPaymentsEndpoint;
 use Mollie\Api\Endpoints\InvoiceEndpoint;
 use Mollie\Api\Endpoints\MandateEndpoint;
 use Mollie\Api\Endpoints\MethodEndpoint;
+use Mollie\Api\Endpoints\OrderEndpoint;
+use Mollie\Api\Endpoints\OrderLineEndpoint;
+use Mollie\Api\Endpoints\OrderRefundEndpoint;
+use Mollie\Api\Endpoints\PaymentCaptureEndpoint;
 use Mollie\Api\Endpoints\OrganizationEndpoint;
 use Mollie\Api\Endpoints\PaymentChargebackEndpoint;
 use Mollie\Api\Endpoints\PaymentEndpoint;
@@ -19,6 +23,7 @@ use Mollie\Api\Endpoints\PermissionEndpoint;
 use Mollie\Api\Endpoints\ProfileEndpoint;
 use Mollie\Api\Endpoints\RefundEndpoint;
 use Mollie\Api\Endpoints\SettlementsEndpoint;
+use Mollie\Api\Endpoints\ShipmentEndpoint;
 use Mollie\Api\Endpoints\SubscriptionEndpoint;
 use Mollie\Api\Exceptions\ApiException;
 use Mollie\Api\Exceptions\IncompatiblePlatform;
@@ -30,7 +35,7 @@ class MollieApiClient
     /**
      * Version of our client.
      */
-    const CLIENT_VERSION = "2.0.14";
+    const CLIENT_VERSION = "2.1.5";
 
     /**
      * Endpoint of the remote API.
@@ -54,6 +59,11 @@ class MollieApiClient
      * HTTP status codes
      */
     const HTTP_NO_CONTENT = 204;
+
+    /**
+     * Default response timeout (in seconds).
+     */
+    const TIMEOUT = 10;
 
     /**
      * @var ClientInterface
@@ -123,7 +133,7 @@ class MollieApiClient
      * @var OrganizationEndpoint
      */
     public $organizations;
-    
+
     /**
      * RESTful Permission resource.
      *
@@ -139,6 +149,27 @@ class MollieApiClient
     public $invoices;
 
     /**
+     * RESTful Order resource.
+     *
+     * @var OrderEndpoint
+     */
+    public $orders;
+
+    /**
+     * RESTful OrderLine resource.
+     *
+     * @var OrderLineEndpoint
+     */
+    public $orderLines;
+
+    /**
+     * RESTful Shipment resource.
+     *
+     * @var ShipmentEndpoint
+     */
+    public $shipments;
+
+    /**
      * RESTful Refunds resource.
      *
      * @var RefundEndpoint
@@ -146,18 +177,32 @@ class MollieApiClient
     public $refunds;
 
     /**
-     * RESTful Refunds resource.
+     * RESTful Payment Refunds resource.
      *
      * @var PaymentRefundEndpoint
      */
     public $paymentRefunds;
 
     /**
+     * RESTful Payment Captures resource.
+     *
+     * @var PaymentCaptureEndpoint
+     */
+    public $paymentCaptures;
+  
+    /**
      * RESTful Payment Chargebacks resource.
      *
      * @var PaymentChargebacksEndpoint
      */
     public $paymentChargebacks;
+
+    /**
+     * RESTful Order Refunds resource.
+     *
+     * @var OrderRefundEndpoint
+     */
+    public $orderRefunds;
 
     /**
      * @var string
@@ -191,7 +236,8 @@ class MollieApiClient
         $this->httpClient = $httpClient ?
             $httpClient :
             new Client([
-                \GuzzleHttp\RequestOptions::VERIFY => \Composer\CaBundle\CaBundle::getBundledCaBundlePath()
+                \GuzzleHttp\RequestOptions::VERIFY => \Composer\CaBundle\CaBundle::getBundledCaBundlePath(),
+                \GuzzleHttp\RequestOptions::TIMEOUT => self::TIMEOUT,
             ]);
 
         $compatibilityChecker = new CompatibilityChecker();
@@ -217,8 +263,13 @@ class MollieApiClient
         $this->permissions = new PermissionEndpoint($this);
         $this->profiles = new ProfileEndpoint($this);
         $this->organizations = new OrganizationEndpoint($this);
+        $this->orders = new OrderEndpoint($this);
+        $this->orderLines = new OrderLineEndpoint($this);
+        $this->orderRefunds = new OrderRefundEndpoint($this);
+        $this->shipments = new ShipmentEndpoint($this);
         $this->refunds = new RefundEndpoint($this);
         $this->paymentRefunds = new PaymentRefundEndpoint($this);
+        $this->paymentCaptures = new PaymentCaptureEndpoint($this);
         $this->paymentChargebacks = new PaymentChargebackEndpoint($this);
     }
 
@@ -384,7 +435,7 @@ class MollieApiClient
      */
     private function parseResponseBody(ResponseInterface $response)
     {
-        $body = $response->getBody()->getContents();
+        $body = (string) $response->getBody();
         if (empty($body)) {
             if ($response->getStatusCode() === self::HTTP_NO_CONTENT) {
                 return null;

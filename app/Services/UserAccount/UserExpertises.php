@@ -8,6 +8,7 @@
 namespace App\Services\UserAccount;
 use App\Expertises;
 use App\Expertises_linktable;
+use App\Favorite_expertises_linktable;
 use Illuminate\Support\Facades\Session;
 
 class UserExpertises
@@ -36,5 +37,33 @@ class UserExpertises
 
         $unsplash->downloadPhoto($imgId);
 
+    }
+
+    //Favorite Expetises user
+
+    public function deleteFavoriteExpertisesUser($request){
+        $user_id = $request->input("user_id");
+        $expertise_id = $request->input("expertise_id");
+        $favoriteExpertises = Favorite_expertises_linktable::select("*")->where("user_id", $user_id)->where("expertise_id", $expertise_id)->first();
+        $favoriteExpertises->delete();
+        return redirect('/my-account/favorite-expertises');
+    }
+
+    public function saveFavoriteExperisesUser($request){
+        $user_id = $request->input("user_id");
+        $expertise_id = $request->input("expertise_id");
+        $existingFavExpertises = Favorite_expertises_linktable::select("*")->where("user_id",$user_id)->where("expertise_id", $expertise_id)->first();
+        if (count($existingFavExpertises) == 0) {
+            $favoriteExpertise = new Favorite_expertises_linktable;
+            $favoriteExpertise->user_id = $user_id;
+            $favoriteExpertise->expertise_id = $expertise_id;
+            $favoriteExpertise->save();
+
+            $AllFavUser = Favorite_expertises_linktable::select("*")->where("user_id", $user_id)->get();
+            if(count($AllFavUser) >=4 ){
+                return "max";
+            }
+            return $favoriteExpertise->expertise_id;
+        }
     }
 }

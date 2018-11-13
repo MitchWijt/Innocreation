@@ -36,8 +36,7 @@ class WelcomeMails extends Command
     }
 
 
-    public function handle()
-    {
+    public function handle() {
         dd("d");
 //        date_default_timezone_set("Europe/Amsterdam");
 ////        $today = date("Y-m-d H:i:s");

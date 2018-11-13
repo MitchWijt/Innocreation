@@ -32,7 +32,10 @@
     "gift cards",
     "intersolve",
     "fashioncheque",
-    "inghomepay"
+    "inghomepay",
+    "klarna",
+    "paylater",
+    "sliceit"
   ],
   "homepage": "https://www.mollie.com/en/developers",
   "license": "BSD-2-Clause",
@@ -69,5 +72,8 @@
     "psr-4": {
       "Tests\\": "tests"
     }
+  },
+  "scripts": {
+    "test": "./vendor/bin/phpunit tests"
   }
 }

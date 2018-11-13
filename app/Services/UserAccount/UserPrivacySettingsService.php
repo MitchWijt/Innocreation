@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 class UserPrivacySettingsService
 {
     protected $user;
+
     public function __construct() {
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $this->user = $user;

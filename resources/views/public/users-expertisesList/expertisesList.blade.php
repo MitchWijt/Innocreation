@@ -33,7 +33,7 @@
                                     <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
                                         <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                                     </div>
-                                <a href="<?= $expertise->slug?>/users" style="z-index: 400;">
+                                <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
                                     <div class="p-t-40 p-absolute" style="z-index: 102; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                                         <p class="c-white @tablet f-14 @elsedesktop f-20 @endtablet">Active users: <?= count($expertise->getActiveUsers())?></p>
                                     </div>
@@ -45,7 +45,7 @@
                                     </div>
                                 </a>
                                 <div class="overlay">
-                                    <a href="<?= $expertise->slug?>/users" style="z-index: 400;">
+                                    <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
                                         <div class="contentExpertise" style="background: url('<?= $expertise->image?>');"></div>
                                     </a>
                                 </div>
