@@ -61,14 +61,14 @@ class SwitchUserWork
             ->where("creator_user_id", $connectRequest->receiver_user_id)
             ->orWhere("receiver_user_id", $connectRequest->receiver_user_id)
             ->where("creator_user_id", $connectRequest->sender_user_id)->first();
-        $userChat = $existingUserChat;
-        if (count($existingUserChat) > 0) {
-            $userchat = new UserChat();
-            $userchat->creator_user_id = $connectRequest->receiver_user_id;
-            $userchat->receiver_user_id = $connectRequest->sender_user_id;
-            ;
-            $userchat->created_at = date("Y-m-d H:i:s");
-            $userchat->save();
+        if (count($existingUserChat) < 1) {
+            $userChat = new UserChat();
+            $userChat->creator_user_id = $connectRequest->receiver_user_id;
+            $userChat->receiver_user_id = $connectRequest->sender_user_id;
+            $userChat->created_at = date("Y-m-d H:i:s");
+            $userChat->save();
+        } else {
+            $userChat = $existingUserChat;
         }
 
         $userMessage = new UserMessage();
