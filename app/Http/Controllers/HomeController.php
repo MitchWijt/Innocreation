@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Expertises;
 use App\UserChat;
 use App\UserWork;
 use Illuminate\Http\Request;
+use Mailgun\Exception;
 use Session;
 use App\User;
 use App\Http\Requests;
 use App\ServiceReview;
+use App\Services\Home\HomeService as homeService;
 
 class HomeController extends Controller
 {
@@ -21,10 +24,20 @@ class HomeController extends Controller
         $title = "Make your dreams become a reality!";
         $og_description = "Create a team with like-minded people, help each other make dreams become a reality!";
         $carouselUserWorks = UserWork::select("*")->orderBy("created_at", "DESC")->limit(6)->get();
+        $expertises = Expertises::select("*")->get();
+        $limit = 7;
+        $expertises1Array = [];
+        $expertises1 = Expertises::select("*")->limit($limit)->get();
+        foreach($expertises1 as $exp1){
+            array_push($expertises1Array, $exp1->id);
+        }
+        $expertises2 = Expertises::select("*")->whereNotIn("id", $expertises1Array)->limit($limit)->get();
 
+        if(Session::has("user_id")){
+            $loggedIn = true;
+        }
 
-//        Session::flush();
-       return view("public/home/home", compact("title", "og_description", "carouselUserWorks"));
+       return view("public/home/home", compact("title", "og_description", "carouselUserWorks", "loggedIn", 'expertises', 'expertises1', 'expertises2'));
     }
 
     /**
@@ -142,6 +155,11 @@ class HomeController extends Controller
         return view("/public/home/shared/_carouselUserModal", compact("user"));
     }
 
+    public function searchExpertiseAction(Request $request, homeService $homeService){
+        if($this->authorized()){
+            return $homeService->searchExpertise($request);
+        }
+    }
 //    public function getStatusUserAction(Request $request){
 //        $userChat = UserChat::select("*")->where("id", $request->input("userChatId"))->first();
 //        $userId = $request->input("userId");

@@ -153,7 +153,7 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/teams">Teams</a></li>
                 <li><a href="/expertises">Users / expertises</a></li>
-                <li><a href="/page/what-is-innocreation">About us</a></li>
+                <li><a href=/what-is-innocreation">About us</a></li>
                 {{--<li><a href="">Shop</a></li>--}}
                 <li><a href="/pricing">Pricing</a></li>
                 <li><a href="/innocreatives">Innocreatives</a></li>
@@ -167,7 +167,7 @@
             <ul class="main-navMenu @tablet f-13 @endtablet">
                 <li><a href="/">Home</a></li>
                 <li><a href="/teams">Teams</a></li>
-                <li><a href="/page/what-is-innocreation">About us</a></li>
+                <li><a href="/what-is-innocreation">About us</a></li>
                 <li><a href="/innocreatives">Innocreatives</a></li>
                 {{--<li><a href="">Shop</a></li>--}}
                 <li><a href="/pricing">Pricing</a></li>

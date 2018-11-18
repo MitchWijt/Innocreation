@@ -1,4 +1,6 @@
 @extends("layouts.app")
+<link rel="stylesheet" href="/css/home/home.css">
+<script src="/js/floatingcarousel.min.js"></script>
 @section("content")
 <div class="home-background-wrapper vh85">
     <div class="container p-relative">
@@ -8,27 +10,45 @@
             </div>
         </div>
         <div class="main-content">
-            <div class="row" style="margin-top: 180px !important">
-                <div class="col-md-12 m-b-20">
-                    <div class="title-home">
-                        @mobile
-                            <h1 style="font-weight: bold;" class="text-center col-md-12 f-40">Innocreation</h1>
-                        @elsedesktop
-                            <h1 class="title-black text-center col-md-12">Innocreation</h1>
-                        @endmobile
-                        @tablet
-                            <div class="hr col-md-10"></div>
-                        @elsedesktop
-                            <div class="hr col-md-10"></div>
-                        @endtablet
+            <? if(isset($loggedIn) && $loggedIn) { ?>
+                <div class="row" style="margin-top: 180px !important">
+                    <div class="expertises col-12">
+                        <div class="row">
+                            <div class="col-1 p-r-0 m-r-0">
+                                <button class="btn-inno btn btn-block b-t-r-0 b-b-r-0 searchBtnHome" style="border: none !important"><i class="zmdi zmdi-search f-30"></i></button>
+                            </div>
+                            <div class="col-10 p-l-0 m-l-0 p-r-0 m-r-0">
+                                <input type="text" id="tags" placeholder="What expertise or knowledge do you need?" name="SearchExpertises" class="input-fat-home b-0 col-sm-12 searchExpertisesHome b-t-l-0 b-b-l-0 b-b-r-0 b-t-r-0 b-r-0">
+                            </div>
+                            <div class="col-1 clearInput btn-block b-l-0">
+                                <i class="zmdi zmdi-close f-20 pull-right c-dark-grey m-t-10 clearCross hidden"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row d-flex js-center">
-                <div class="col-md-5 d-flex js-center">
-                    <a id="collaborateNow" href="/create-my-account" class="btn btn-inno startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</a>
+            <? } else { ?>
+                <div class="row" style="margin-top: 180px !important">
+                    <div class="col-md-12 m-b-20">
+                        <div class="title-home">
+                            @mobile
+                                <h1 style="font-weight: bold;" class="text-center col-md-12 f-40">Innocreation</h1>
+                            @elsedesktop
+                                <h1 class="title-black text-center col-md-12">Innocreation</h1>
+                            @endmobile
+                            @tablet
+                                <div class="hr col-md-10"></div>
+                            @elsedesktop
+                                <div class="hr col-md-10"></div>
+                            @endtablet
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div class="row d-flex js-center">
+                    <div class="col-md-5 d-flex js-center">
+                        <a id="collaborateNow" href="/create-my-account" class="btn btn-inno startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</a>
+                    </div>
+                </div>
+            <? } ?>
             <div id="carouselExampleIndicators" class="carousel slide p-relative" @desktop style="margin-top: 180px !important" @enddesktop @tablet  style="margin-top: 130px !important" @endtablet data-ride="carousel">
                 <div class="carousel-inner">
                     <? $counter = 0;?>
@@ -94,222 +114,93 @@
     </div>
         <div class="homepage-mainContent">
             <div class="instructions">
-                <div class="container">
-                        <div class="row">
-                            <div class="col-md-12 text-center m-t-20">
-                                <h1 id="scrollToHome" class="sub-title col-sm-12">How it works</h1>
-                            </div>
-                        </div>
-                        <div class="hr col-md-8"></div>
-                        <div class="row">
-                            <div class="@mobile col-2 m-t-15 @elsedesktop col-sm-2 d-flex jc-end @endmobile">
-                                <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
-                                    <i style="color: #C9CCCF; padding-left: 1px;" class="zmdi zmdi-accounts-outline @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile"></i>
+                <div class="carousel carousel-default m-b-30" id="carousel-default">
+                    <ul class="p-l-0">
+                       <? $counterExp = 0;?>
+                        <? foreach($expertises1 as $expertise) { ?>
+                            <? $counterExp++?>
+                            <li class="@desktop col-2 @elsehandheld col-4 @enddesktop <? if($counterExp % 2 == 0) echo "p-t-30"; else echo "p-b-30"?>">
+                                <div class="card m-t-20 m-b-20">
+                                    <div class="card-block expertiseCard p-relative c-pointer" data-url="/" style="max-height: 210px !important">
+                                        <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
+                                            <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
+                                        </div>
+                                        <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
+                                            <div class="p-t-40 p-absolute" style="z-index: 100; top: 45%; left: 50%; transform: translate(-50%, -50%);">
+                                                <div class="hr-sm"></div>
+                                            </div>
+                                            <div class="p-t-40 p-absolute" style="z-index: 99; top: 35%; left: 50%; transform: translate(-50%, -50%);">
+                                                <p class="c-white @tablet f-15 @elsedesktop f-20 @endtablet"><?= $expertise->title?></p>
+                                            </div>
+                                        </a>
+                                        <div class="overlay">
+                                            <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
+                                                <div class="contentExpertise" style="background: url('<?= $expertise->image?>');"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        <? } ?>
+                    </ul>
+                </div>
+                <div class="carousel carousel-default" id="carousel-default2">
+                    <ul class="p-l-0">
+                        <? $counterExp = 0;?>
+                        <? foreach($expertises2 as $expertise) { ?>
+                        <? $counterExp++?>
+                        <li class="@desktop col-2 @elsehandheld col-4 @enddesktop  <? if($counterExp % 2 == 0) echo "p-t-30"; else echo "p-b-30"?>">
+                            <div class="card m-t-20 m-b-20">
+                                <div class="card-block expertiseCard p-relative c-pointer" data-url="/" style="max-height: 210px !important">
+                                    <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
+                                        <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
+                                    </div>
+                                    <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
+                                        <div class="p-t-40 p-absolute" style="z-index: 100; top: 45%; left: 50%; transform: translate(-50%, -50%);">
+                                            <div class="hr-sm"></div>
+                                        </div>
+                                        <div class="p-t-40 p-absolute" style="z-index: 99; top: 35%; left: 50%; transform: translate(-50%, -50%);">
+                                            <p class="c-white @tablet f-15 @elsedesktop f-20 @endtablet"><?= $expertise->title?></p>
+                                        </div>
+                                    </a>
+                                    <div class="overlay">
+                                        <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
+                                            <div class="contentExpertise" style="background: url('<?= $expertise->image?>');"></div>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="@mobile col-10 @elsedesktop col-sm-10 @endmobile m-t-15">
-                                @handheld
-                                    @mobile
-                                        <p class="instructions-text m-0 allign-center f-17">Create an <a class="regular-link" href="/create-my-account">account</a> with your expertise(s)</p>
-                                    @elsetablet
-                                        <p class="instructions-text m-0 allign-center f-20">Create an <a class="regular-link" href="/create-my-account">account</a> with your expertise(s)</p>
-                                    @endmobile
-                                @elsedesktop
-                                    <p class="instructions-text m-0 allign-center f-22">Create an <a class="regular-link" href="/create-my-account">account</a> with your expertise(s)</p>
-                                @endhandheld
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="@mobile col-10 p-r-0 @elsedesktop col-md-10 d-flex jc-end @endmobile">
-                                @handheld
-                                    @mobile
-                                        <p class="c-gray m-b-0 m-t-15 f-17">Have an idea or product you want to create</p>
-                                    @elsetablet
-                                        <p class="c-gray m-b-0 m-r-20 m-t-15 f-20">Have an idea or product you want to create</p>
-                                    @endmobile
-                                @elsedesktop
-                                    <p class="c-gray m-b-0 m-r-20 m-t-15 f-22">Have an idea or product you want to create</p>
-                                @endhandheld
-                            </div>
-                            <div class="@mobile col-2 p-l-0 @elsedesktop col-md-2 @endmobile">
-                                <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
-                                    <i style="font-size: 50px; color: #C9CCCF; padding-top: 9px; padding-left: 3px;" class="zmdi zmdi-developer-board @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50 social-icon-instructions @endmobile"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row @mobile m-t-20 @endmobile">
-                            <div class="@mobile col-2 m-t-0 @elsedesktop col-md-2 d-flex jc-end @endmobile">
-                                <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
-                                    <i style="font-size: 50px; color: #C9CCCF; padding-left: 1px;" class="zmdi zmdi-pin-drop @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile"></i>
-                                </div>
-                            </div>
-                            <div class="@mobile col-10 @elsedesktop col-md-10 m-t-15 @endmobile ">
-                                @handheld
-                                    @mobile
-                                        <p class="instructions-text m-0 f-17">Offer yourself as a service or ask for a service</p>
-                                    @elsetablet
-                                        <p class="instructions-text m-0 f-20">Offer yourself as a service or ask for a service</p>
-                                    @endmobile
-                                @elsedesktop
-                                    <p class="instructions-text m-0 f-22">Offer yourself as a service or ask for a service</p>
-                                @endhandheld
-                            </div>
-                        </div>
-                        <div class="row @mobile p-b-20 @endmobile">
-                            <div class="@mobile col-10 @elsedesktop col-md-10 jc-end d-flex @endmobile ">
-                                @handheld
-                                    @mobile
-                                        <p class="instructions-text m-b-0 m-t-15 f-17">Create or join a <a class="regular-link" href="/teams">team</a> and enjoy working together!</p>
-                                    @elsetablet
-                                        <p class="instructions-text m-b-0 m-r-20 m-t-15 f-20">Create or join a <a class="regular-link" href="/teams">team</a> and enjoy working together!</p>
-                                    @endmobile
-                                @elsedesktop
-                                    <p class="instructions-text m-b-0 m-r-20 m-t-15 f-22">Create or join a <a class="regular-link" href="/teams">team</a> and enjoy working together!</p>
-                                @endhandheld
-                            </div>
-                            <div class="@mobile col-2 p-l-0 m-t-10 @elsedesktop col-md-2 m-b-20 @endmobile">
-                                <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
-                                    <i style="font-size: 50px; color: #C9CCCF; padding-top: 12px; padding-left: 0;" class="zmdi zmdi-badge-check @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50 social-icon-instructions @endmobile"></i>
-                                </div>
-                            </div>
-                        </div>
+                        </li>
+                        <? } ?>
+                    </ul>
                 </div>
             </div>
-            <div class="instructions-second">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 m-t-20">
-                            <div class="row">
-                                <div class="@mobile col-2 m-t-15 @elsedesktop col-sm-2 d-flex jc-end @endmobile">
-                                    <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
-                                        <i style="font-size: 50px; padding-left: 1px;" class="material-icons @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile">lightbulb_outline</i>
-                                    </div>
-                                </div>
-                                <div class="@mobile col-10 m-t-15 @elsedesktop col-sm-10 m-t-15 @endmobile ">
-                                    @handheld
-                                        @mobile
-                                            <p class="instructions-second-text m-0 f-15">Network with various artists and come up with new ideas in the <a class="regular-link" href="/innocreatives">Innocreatives feed</a></p>
-                                        @elsetablet
-                                            <p class="instructions-second-text m-0 f-20">Network with various artists and come up with new ideas in the <a class="regular-link" href="/innocreatives">Innocreatives feed</a></p>
-                                        @endmobile
-                                    @elsedesktop
-                                        <p class="instructions-second-text m-0 f-22">Network with various artists and come up with new ideas in the <a class="regular-link" href="/innocreatives">Innocreatives feed</a></p>
-                                    @endhandheld
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="@mobile col-10 p-r-0 @elsedesktop col-sm-10 d-flex jc-end @endmobile ">
-                                    @handheld
-                                        @mobile
-                                            <p class="instructions-second-text m-b-0 m-t-15 m-r-20 f-17">Communicate easily with your team through the <a class="regular-link" href="/login">chat system</a></p>
-                                        @elsetablet
-                                            <p class="instructions-second-text m-b-0 m-t-15 m-r-20 f-20">Communicate easily with your team through the <a class="regular-link" href="/login">chat system</a></p>
-                                        @endmobile
-                                    @elsedesktop
-                                        <p class="instructions-second-text m-b-0 m-t-15 m-r-20 f-22">Communicate easily with your team through the <a class="regular-link" href="/login">chat system</a></p>
-                                    @endhandheld
-                                </div>
-                                <div class="@mobile col-2 p-l-0 m-t-10 @elsedesktop col-sm-2 @endmobile">
-                                    <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
-                                        <i style="font-size: 50px; padding-left: 1px; padding-top: 10px;" class="material-icons @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile">chat</i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="row @mobile p-t-20 @endmobile">
-                                <div class="@mobile col-2 @elsedesktop col-md-2 d-flex jc-end @endmobile">
-                                    <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
-                                        <i style="font-size: 50px; color: #000; padding-left: 1px;" class="zmdi zmdi-globe @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile"></i>
-                                    </div>
-                                </div>
-                                <div class="@mobile col-10 p-r-0 @elsedesktop col-sm-10 m-t-15 @endmobile ">
-                                    @handheld
-                                        @mobile
-                                            <p class="instructions-second-text m-0 f-17">Get your idea/product known to the open world!</p>
-                                        @elsetablet
-                                            <p class="instructions-second-text m-0 f-20">Get your idea/product known to the open world!</p>
-                                        @endmobile
-                                    @elsedesktop
-                                        <p class="instructions-second-text m-0 f-22">Get your idea/product known to the open world!</p>
-                                    @endhandheld
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="@mobile col-10 p-r-0 @elsedesktop col-sm-10 d-flex jc-end @endmobile ">
-                                    @handheld
-                                        @mobile
-                                            <p class="instructions-second-text m-b-0 m-t-15 f-17">Post your project/story on the inno  <a class="regular-link" href="/innocreatives">feed</a></p>
-                                        @elsetablet
-                                            <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-20">Post your project/story on the inno  <a class="regular-link" href="/innocreatives">feed</a></p>
-                                        @endmobile
-                                    @elsedesktop
-                                        <p class="instructions-second-text m-b-0 m-r-20 m-t-15 f-22">Post your project/story on the inno  <a class="regular-link" href="/innocreatives">feed</a></p>
-                                    @endhandheld
-                                </div>
-                                <div class="@mobile col-2 p-l-0 m-t-10 @elsedesktop col-sm-2 @endmobile">
-                                    <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
-                                        <i style="font-size: 50px; padding-right: 5px; padding-top: 8px;" class="zmdi zmdi-share @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="row @mobile p-t-20 p-b-20 @endmobile">
-                                <div class="@mobile col-2 @elsedesktop col-sm-2 d-flex jc-end @endmobile">
-                                    <div class="@mobile circle-instructions-mobile @elsedesktop circle-instructions @endmobile">
-                                        <i style="font-size: 50px; padding-right: 4px;padding-top: 8px;" class="zmdi zmdi-mood @mobile f-30 social-icon-instructions-mobile @elsedesktop f-50  social-icon-instructions @endmobile"></i>
-                                    </div>
-                                </div>
-                                <div class="@mobile col-10 @elsedesktop col-sm-10 m-t-15 @endmobile ">
-                                    @handheld
-                                        @mobile
-                                            <p class="instructions-second-text m-0 f-17">Have fun, be creative and innovative</p>
-                                        @elsetablet
-                                            <p class="instructions-second-text m-0 f-20">Have fun, be creative and innovative</p>
-                                        @endmobile
-                                    @elsedesktop
-                                        <p class="instructions-second-text m-0 f-22">Have fun, be creative and innovative!</p>
-                                    @endhandheld
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row d-flex js-center p-b-25">
-                        <a href="/create-my-account" class="btn btn-inno">Start now!</a>
-                    </div>
-                </div>
-            </div>
-            <div class="instructions" style="border-bottom: 1px solid #FF6100">
+            <div class="instructions-second" style="border-bottom: 1px solid #FF6100">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12 text-center m-t-20">
-                            <h1 class="sub-title col-sm-12">Share your work!</h1>
+                            <h1 class="sub-title col-sm-12 c-black">Share your work!</h1>
                         </div>
                     </div>
                     <div class="hr col-md-8"></div>
                     <div class="row">
                         <div class="col-sm-12 d-flex js-center m-t-20">
-                            <img class="img-responsive" src="/images/icons/network_gray.png" alt="">
+                            <img class="img-responsive" src="/images/icons/network_black.png" alt="">
                         </div>
                     </div>
                     <div class="row d-flex js-center m-t-40 m-b-20">
                         <ul class="instructions-list">
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Discover and engage on other people their work</p>
+                                <p class="instructions-text f-19 m-0 p-b-10 c-black">Discover and engage on other people their work</p>
                             </li>
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Share your own best work that you are most proud of</p>
+                                <p class="instructions-text f-19 m-0 p-b-10 c-black">Share your own best work that you are most proud of</p>
                             </li>
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Get a place in the spotlight on the homepage!</p>
+                                <p class="instructions-text f-19 m-0 p-b-10 c-black">Get a place in the spotlight on the homepage!</p>
                             </li>
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Send a request to create a team together</p>
+                                <p class="instructions-text f-19 m-0 p-b-10 c-black">Send a request to create a team together</p>
                             </li>
                         </ul>
                     </div>
@@ -341,14 +232,20 @@
     $(document).ready(function () {
         $(".footerView").load("/includes/footer");
     });
-
-    $(".scrollHomeBtn").click(function() {
-        setTimeout(function(){
-            $('html, body').animate({
-                scrollTop: $("#scrollToHome").offset().top - 120
-            }, 2000);
-        }, 500);
-    })
+    $( function() {
+        var availableTags = [
+            <? foreach($expertises as $tag) { ?>
+                "<?=$tag->title?>",
+            <? } ?>
+        ];
+        $( "#tags" ).autocomplete({
+            source: availableTags
+        });
+    } );
+    $(document).ready(function () {
+        $(".ui-menu").appendTo(".expertises");
+        $(".ui-menu").addClass("ui-menu-home");
+    });
 </script>
 @endsection
 @section('pagescript')
