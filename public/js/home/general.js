@@ -43,3 +43,24 @@ $(".menuBackArrow").on("click",function () {
     $("#mobileMenu").toggle();
     $(".sidebarIcon").toggle();
 });
+
+$('.popoverEmojis').popover({ trigger: "click" , html: true, animation:false, placement: 'auto'});
+
+$('body').on('click', function (e) {
+    $('[data-toggle=popover]').each(function () {
+        // hide any open popovers when the anywhere else in the body is clicked
+        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+            $(this).popover('hide');
+        }
+    });
+});
+
+$(document).on("click", ".emojiGen", function () {
+    console.log('gfdsa');
+   var id = $(this).data('id');
+   var emoji = $(this).data('code');
+
+   var textarea = $(".input-" + id);
+   var val = textarea.val();
+   textarea.val(val + emoji);
+});

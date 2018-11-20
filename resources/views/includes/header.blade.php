@@ -32,25 +32,6 @@
             @elsemobile
                 <div class="col-md-4 m-t-10 p-0">
             @enddesktop
-                {{--<div class="d-flex js-center">--}}
-                    {{--<div class="d-flex fd-row">--}}
-                        {{--<div class="circle m-l-10 m-r-10" style="width: 40px !important; height: 40px !important">--}}
-                            {{--<a href="https://www.facebook.com/innocreationOfficial/">--}}
-                                {{--<i style="font-size: 20px;" class="zmdi zmdi-facebook social-icon c-orange"></i>--}}
-                            {{--</a>--}}
-                        {{--</div>--}}
-                        {{--<div class="circle m-l-10 m-r-10" style="width: 40px !important; height: 40px !important">--}}
-                            {{--<a href="https://twitter.com/Innocreation_">--}}
-                                {{--<i style="font-size: 20px;" class="zmdi zmdi-twitter social-icon c-orange"></i>--}}
-                            {{--</a>--}}
-                        {{--</div>--}}
-                        {{--<div class="circle m-l-10 m-r-10" style="width: 40px !important; height: 40px !important">--}}
-                            {{--<a href="https://www.instagram.com/innocreation_/">--}}
-                                {{--<i style="font-size: 20px;" class="zmdi zmdi-instagram social-icon c-orange"></i>--}}
-                            {{--</a>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
             </div>
             @mobile
                 <div class="col-md-6">

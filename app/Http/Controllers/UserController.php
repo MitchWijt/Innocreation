@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ConnectRequestLinktable;
 use App\CustomTeamPackage;
+use App\Emoji;
 use App\Expertises;
 use App\Expertises_linktable;
 use App\Favorite_expertises_linktable;
@@ -401,10 +402,11 @@ class UserController extends Controller
             $userChats = UserChat::select("*")->where("creator_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->get();
             $user = User::select("*")->where("id", $user_id)->first();
             $streamToken = $user->stream_token;
+            $emojis = Emoji::select("*")->get();
             if (count($userChats) != 0) {
-                return view("/public/user/userAccountChats", compact("userChats", "user_id", "urlParameter", "urlParameterChat", "innocreationChat", "streamToken"));
+                return view("/public/user/userAccountChats", compact("userChats", "user_id", "urlParameter", "urlParameterChat", "innocreationChat", "streamToken", "emojis"));
             }
-            return view("/public/user/userAccountChats", compact("user_id", "inn", "streamToken"));
+            return view("/public/user/userAccountChats", compact("user_id", "inn", "streamToken", "emojis"));
         }
     }
 
@@ -475,46 +477,42 @@ class UserController extends Controller
             $sender_user_id = $request->input("sender_user_id");
             $message = $request->input("message");
 
-            $userChat = UserChat::select("*")->where("id", $user_chat_id)->first();
-
-            $userMessage = new UserMessage();
-            $userMessage->sender_user_id = $sender_user_id;
-            $userMessage->user_chat_id = $user_chat_id;
-            $userMessage->time_sent = $this->getTimeSent();
-            $userMessage->message = $request->input("message");
-            $userMessage->created_at = date("Y-m-d H:i:s");
-            $userMessage->save();
-
-            if($userChat->receiver_user_id == $sender_user_id) {
-                $receiverId = $userChat->creator_user_id;
-            } else {
-                $receiverId = $userChat->receiver_user_id;
-            }
-
-            $client = $this->getService("stream");
-            $messageFeed = $client->feed('user', $receiverId);
-            $timeSent = $this->getTimeSent();
-
-            // Add the activity to the feed
-            $data = [
-                "actor"=> "$receiverId",
-                "receiver"=> "$sender_user_id",
-                "userChat"=> "$user_chat_id",
-                "message"=> "$message",
-                "timeSent"=> "$timeSent",
-                "verb"=>"userMessage",
-                "object"=>"3",
-            ];
-            $messageFeed->addActivity($data);
-
-            if($receiverId != 1) {
-                $user = User::select("*")->where("id", $receiverId)->first();
-
-                $this->saveAndSendEmail($user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
-            }
-
             $messageArray = ["message" => $message, "timeSent" => $this->getTimeSent()];
             echo json_encode($messageArray);
+
+            $userChat = UserChat::select("*")->where("id", $user_chat_id)->first();
+
+            if(strlen($message) > 0 && $message != "") {
+                $userMessage = new UserMessage();
+                $userMessage->sender_user_id = $sender_user_id;
+                $userMessage->user_chat_id = $user_chat_id;
+                $userMessage->time_sent = $this->getTimeSent();
+                $userMessage->message = $request->input("message");
+                $userMessage->created_at = date("Y-m-d H:i:s");
+                $userMessage->save();
+
+
+                if ($userChat->receiver_user_id == $sender_user_id) {
+                    $receiverId = $userChat->creator_user_id;
+                } else {
+                    $receiverId = $userChat->receiver_user_id;
+                }
+
+                $client = $this->getService("stream");
+                $messageFeed = $client->feed('user', $receiverId);
+                $timeSent = $this->getTimeSent();
+
+                // Add the activity to the feed
+                $data = ["actor" => "$receiverId", "receiver" => "$sender_user_id", "userChat" => "$user_chat_id", "message" => "$message", "timeSent" => "$timeSent", "verb" => "userMessage", "object" => "3",];
+                $messageFeed->addActivity($data);
+
+                if ($receiverId != 1) {
+                    $user = User::select("*")->where("id", $receiverId)->first();
+
+                    $this->saveAndSendEmail($user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+                }
+
+            }
         }
     }
 
