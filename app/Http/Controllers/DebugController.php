@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Expertises;
 use App\Expertises_linktable;
+use App\NeededExpertiseLinktable;
 use App\Team;
 use App\UserChat;
 use App\UserMessage;
@@ -39,6 +40,7 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
+        $neededExpertises = NeededExpertiseLinktable::select("*")->where("team_id", 4)->where('expertise_id', 4)->first();
         die('test');
     }
 }

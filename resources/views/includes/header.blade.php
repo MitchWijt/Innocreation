@@ -137,8 +137,8 @@
                 <li><a href=/what-is-innocreation">About us</a></li>
                 {{--<li><a href="">Shop</a></li>--}}
                 <li><a href="/pricing">Pricing</a></li>
-                <li><a href="/innocreatives">Innocreatives</a></li>
-                <li><a href="/forum" id="last-child">Forum</a></li>
+                <li><a id="last-child" href="/innocreatives">Innocreatives</a></li>
+                {{--<li><a href="/forum" id="last-child">Forum</a></li>--}}
                 {{--<li><a id="last-child" class="hidden" href="">Crowd funding</a></li>--}}
             </ul>
         </div>
@@ -152,8 +152,8 @@
                 <li><a href="/innocreatives">Innocreatives</a></li>
                 {{--<li><a href="">Shop</a></li>--}}
                 <li><a href="/pricing">Pricing</a></li>
-                <li><a href="/expertises">Users / expertises</a></li>
-                <li><a href="/forum" id="last-child">Forum</a></li>
+                <li><a id="last-child" href="/expertises">Users / expertises</a></li>
+                {{--<li><a href="/forum" id="last-child">Forum</a></li>--}}
 
                 {{--<li><a id="last-child" class="hidden" href="">Crowd funding</a></li>--}}
             </ul>
