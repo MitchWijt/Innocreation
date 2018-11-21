@@ -6,7 +6,7 @@
 header{
     font-family: Corbert;
     background: #000000;
-    min-height: 100px;
+    min-height: 80px;
 }
 
 footer{
@@ -168,6 +168,7 @@ footer{
     min-width: 210px;
     max-width: 20px;
     background: #000000;
+    border-top: 1px solid #C9CCCF !important;
 }
 .border-inno{
     border: 3px solid #FF6100 !important;
@@ -936,6 +937,23 @@ footer{
     background-position:center,center !important;
 }
 
+.avatar-header{
+    width: 40px;
+    height: 40px;
+    border: 2px solid #C9CCCF;
+    -webkit-border-radius: 60px !important;
+    -webkit-background-clip: padding-box !important;
+    -moz-border-radius: 60px !important;
+    -moz-background-clip: padding !important;
+    border-radius: 110px !important;
+    background-clip: padding-box !important;
+    float: left !important;
+    background-size: cover !important;
+    background-repeat:no-repeat !important;
+    /*background-attachment:fixed !important;*/
+    background-position:center,center !important;
+}
+
 .messageInputDynamic {
     height:40px;
     transition: all 0.5s;
@@ -1032,4 +1050,20 @@ ul.dashed > li:before {
 
 .userExpImg:hover{
     border: 2px solid #FF6100 !important
+}
+
+.searchBtn:hover{
+    color: #77787a !important;
+}
+
+.no-select{
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select:none;
+    user-select:none;
+    -o-user-select:none;
+}
+
+.no-focus:focus{
+    outline: none !important;
 }

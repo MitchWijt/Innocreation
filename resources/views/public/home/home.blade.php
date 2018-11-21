@@ -242,8 +242,10 @@
             source: availableTags
         });
     } );
-    $(document).ready(function () {
+    $(".searchExpertisesHome").on("keyup", function () {
         $(".ui-menu").appendTo(".expertises");
+    });
+    $(document).ready(function () {
         $(".ui-menu").addClass("ui-menu-home");
     });
 </script>

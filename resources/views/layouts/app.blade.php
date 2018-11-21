@@ -30,6 +30,7 @@
         <script src="/js/home/accountHelper.js"></script>
     {{--<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>--}}
     {{--CSS--}}
+        <link rel="stylesheet" href="/css/home/home.css">
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="/css/general.css">
         <link rel="stylesheet" href="/css/activityTimeline.css">

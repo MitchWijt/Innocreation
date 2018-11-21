@@ -68,7 +68,7 @@ $(document).on("click", ".ui-menu-item-wrapper", function () {
         url: "/home/searchExpertise",
         data: {'title': title},
         success: function (data) {
-            window.location.href = data;
+            // window.location.href = data;
         }
     });
 });

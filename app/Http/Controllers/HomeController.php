@@ -156,9 +156,7 @@ class HomeController extends Controller
     }
 
     public function searchExpertiseAction(Request $request, homeService $homeService){
-        if($this->authorized()){
-            return $homeService->searchExpertise($request);
-        }
+        return $homeService->searchExpertise($request);
     }
 //    public function getStatusUserAction(Request $request){
 //        $userChat = UserChat::select("*")->where("id", $request->input("userChatId"))->first();

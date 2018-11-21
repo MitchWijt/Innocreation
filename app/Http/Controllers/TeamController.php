@@ -135,9 +135,9 @@ class TeamController extends Controller
             $expertiseLinktables = Expertises_linktable::select("*")->where("expertise_id", $expertise_id)->get();
             foreach($expertiseLinktables as $expertiseLinktable){
                 if($expertiseLinktable->users->First()) {
-                    if ($expertiseLinktable->users->First()->notifications == 1) {
-                        $user = $expertiseLinktable->users;
-                        $userChat = UserChat::select("*")->where("receiver_user_id", $user->First()->id)->where("creator_user_id", 1)->first();
+                    if ($expertiseLinktable->users->First()->notifications == 1 && $expertiseLinktable->users->First()->id != $team->ceo_user_id) {
+                        $user = $expertiseLinktable->users->First();
+                        $userChat = UserChat::select("*")->where("receiver_user_id", $user->id)->where("creator_user_id", 1)->first();
                         if ($userChat) {
                             $userMessage = new UserMessage();
                             $userMessage->sender_user_id = 1;
@@ -147,10 +147,7 @@ class TeamController extends Controller
                             $userMessage->created_at = date("Y-m-d H:i:s");
                             $userMessage->save();
 
-                            $user = $user->First();
-                            echo $user->id;
-                            die();
-                            $mailgunService->saveAndSendEmail($user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+                            $mailgunService->saveAndSendEmail($user, "You have got a message!", view("/templates/sendChatNotification", compact("user")));
                         }
                     }
                 }

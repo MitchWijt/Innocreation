@@ -64,3 +64,29 @@ $(document).on("click", ".emojiGen", function () {
    var val = textarea.val();
    textarea.val(val + emoji);
 });
+
+$('.popoverHeader').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'})
+    .on("click", function () {
+        var _this = $('.popover');
+        _this.addClass("popover-black");
+    });
+
+$(document).on("click", ".ui-menu-item-wrapper", function () {
+    var title = $(this).text();
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/home/searchExpertise",
+        data: {'title': title},
+        success: function (data) {
+            console.log(data);
+            window.location.href = data;
+        }
+    });
+});
