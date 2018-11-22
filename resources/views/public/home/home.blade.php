@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/css/home/home.css">
 <script src="/js/floatingcarousel.min.js"></script>
 @section("content")
-<div class="home-background-wrapper vh85">
+<div class="home-background-wrapper vh80">
     <div class="container p-relative">
         <div class="row">
             <div class="col-sm-12 d-flex js-center">
@@ -27,13 +27,14 @@
                     </div>
                 </div>
             <? } else { ?>
-                <div class="row" style="margin-top: 180px !important">
+                <div class="row">
                     <div class="col-md-12 m-b-20">
                         <div class="title-home">
                             @mobile
                                 <h1 style="font-weight: bold;" class="text-center col-md-12 f-40">Innocreation</h1>
                             @elsedesktop
                                 <h1 class="title-black text-center col-md-12">Innocreation</h1>
+                                <p class="text-center">Have an idea? find team members, create your team and start executing now!</p>
                             @endmobile
                             @tablet
                                 <div class="hr col-md-10"></div>
@@ -45,73 +46,13 @@
                 </div>
                 <div class="row d-flex js-center">
                     <div class="col-md-5 d-flex js-center">
-                        <a id="collaborateNow" href="/create-my-account" class="btn btn-inno startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</a>
+                        <a id="collaborateNow" href="/what-is-innocreation" class="btn btn-inno startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</a>
                     </div>
                 </div>
             <? } ?>
-            <div id="carouselExampleIndicators" class="carousel slide p-relative" @desktop style="margin-top: 180px !important" @enddesktop @tablet  style="margin-top: 130px !important" @endtablet data-ride="carousel">
-                <div class="carousel-inner">
-                    <? $counter = 0;?>
-                        @handheld
-                            <? $modulo = 1?>
-                            <? $result1 = 0 ?>
-                            <? $result2 = 0?>
-                        @elsedesktop
-                        <? $modulo = 3?>
-                        <? $result1 = 0?>
-                        <? $result2 = 2?>
-                        @endhandheld
-                    <? foreach($carouselUserWorks as $carouselUserWork) { ?>
-                            <? if($counter % $modulo == $result1) { ?>
-                            <div class="carousel-item <? if($counter == 0) echo "active"?>">
-                                <div class="row @handheld d-flex js-center @endhandheld">
-                            <? } ?>
-                                <div class="@handheld col-12 @elsedesktop col-md-4 @endhandheld carouselItem">
-                                    <a class="td-none" href="<?= $carouselUserWork->getUrl()?>">
-                                    <div class="card-sm m-t-20 m-b-20 @tablet p-10 @endtablet">
-                                        <div class="card-block m-t-10 " @notmobile style="max-height: 165px !important;" @endnotmobile data-user-id="<?= $carouselUserWork->user_id?>">
-                                            <div class="row">
-                                                <div class="col-sm-4 p-l-20 @notmobile p-r-0 @endnotmobile text-center">
-                                                    <div class="d-flex js-center">
-                                                        <div class="avatar" style="background: url('<?= $carouselUserWork->user->getProfilePicture()?>')"></div>
-                                                    </div>
-                                                    <p style="word-break: break-all"><?= $carouselUserWork->user->firstname?></p>
-                                                </div>
-                                                <div class="col-sm-8 p-l-25 p-b-10">
-                                                    <p class="underline m-b-5">Introduction:</p>
-                                                    <p class="m-0" style="word-break: break-all"><?= substr($carouselUserWork->description, 0, 40) . "... <span class='c-orange underline c-pointer' data-user-id='$carouselUserWork->user_id'>read more</span>";?></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </a>
-                                </div>
-                            <? if($counter % $modulo == $result2) { ?>
-                                </div>
-                            </div>
-                            <? } ?>
-                        <? $counter++;?>
-                    <? } ?>
-                </div>
-        <? if(count($carouselUserWorks) % $modulo == 1 || count($carouselUserWorks) % $modulo == 2) { ?>
             </div>
         </div>
-        <? } ?>
-                @handheld
-                    @mobile
-                        <i class="zmdi zmdi-chevron-left p-absolute c-orange carousel-control-prev c-pointer" style="top: 85px; left: -15px; font-size: 40px !important;"></i>
-                        <i class="zmdi zmdi-chevron-right p-absolute c-orange carousel-control-next c-pointer" style="top: 85px; right: -15px; font-size: 40px !important;"></i>
-                    @elsetablet
-                        <i class="zmdi zmdi-chevron-left p-absolute c-orange carousel-control-prev c-pointer" style="top: 70px; left: -30px; font-size: 40px !important;"></i>
-                        <i class="zmdi zmdi-chevron-right p-absolute c-orange carousel-control-next c-pointer" style="top: 70px; right: -30px; font-size: 40px !important;"></i>
-                    @endmobile
-                @elsedesktop
-                    <i class="zmdi zmdi-chevron-left p-absolute c-orange carousel-control-prev c-pointer" style="top: 55px; left: -120px; font-size: 40px !important;"></i>
-                    <i class="zmdi zmdi-chevron-right p-absolute c-orange carousel-control-next c-pointer" style="top: 55px; right: -120px; font-size: 40px !important;"></i>
-                @endhandheld
-            </div>
-        </div>
-    </div>
+
         <div class="homepage-mainContent">
             <div class="instructions">
                 <div class="carousel carousel-default m-b-30" id="carousel-default">
@@ -194,10 +135,10 @@
                                 <p class="instructions-text f-19 m-0 p-b-10 c-black">Discover and engage on other people their work</p>
                             </li>
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10 c-black">Share your own best work that you are most proud of</p>
+                                <p class="instructions-text f-19 m-0 p-b-10 c-black">Share your own best work/story that you are most proud of</p>
                             </li>
                             <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10 c-black">Get a place in the spotlight on the homepage!</p>
+                                <p class="instructions-text f-19 m-0 p-b-10 c-black">Request to work together and connect</p>
                             </li>
                             <li class="instructions-list-item">
                                 <p class="instructions-text f-19 m-0 p-b-10 c-black">Send a request to create a team together</p>

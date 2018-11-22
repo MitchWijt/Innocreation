@@ -93,3 +93,9 @@ new floatingCarousel('#carousel-default2', {
     reverseOnTouch : false
 
 });
+
+$(document).on("click", ".searchBtnHomeMobile",function () {
+    $(".navMobile").addClass("hidden");
+    $(".searchBarBox").removeClass("hidden");
+
+});

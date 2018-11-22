@@ -95,3 +95,59 @@
         /*height: 4% !important;*/
     /*}*/
 }
+
+@media screen and (max-width: 805px) {
+    .usersHeader{
+        display: none !important;
+    }
+    .feedHeader{
+        display: none !important;
+    }
+
+    .moreChev{
+        display: none !important;
+    }
+
+    .btn-seperator{
+        display: none !important;
+    }
+}
+
+
+@media screen and (max-width: 550px) {
+    .desktopNav{
+        display: none !important;
+    }
+
+    .mobileNav{
+        display: block !important;
+    }
+
+    .registerBtnsMobile{
+        display: flex !important;
+    }
+}
+@media screen and (min-width: 549px) {
+    .desktopNav{
+        display: block !important;
+    }
+
+    .mobileNav{
+        display: none !important;
+    }
+
+    .navMobile{
+        display: none !important;
+    }
+
+    .registerBtnsMobile{
+        display: none !important;
+    }
+
+}
+
+@media screen and (max-width: 870px) {
+   #tagsHeader{
+       width: 10vw !important;
+   }
+}

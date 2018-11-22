@@ -342,6 +342,10 @@
     display: flex;
 }
 
+.d-block{
+    display: block;
+}
+
 .fd-column{
     flex-direction: column !important;
 }
