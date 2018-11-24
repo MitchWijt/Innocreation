@@ -94,8 +94,13 @@ new floatingCarousel('#carousel-default2', {
 
 });
 
-$(document).on("click", ".searchBtnHomeMobile",function () {
-    $(".navMobile").addClass("hidden");
-    $(".searchBarBox").removeClass("hidden");
-
+$("#carousel-default2").on("swipeleft",function(){
+   floatingCarousel('##carousel-default2', {
+       autoScroll : true,
+       autoScrollDirection : 'left',
+       autoScrollSpeed : 20000,
+       enableTouchEvents : false,
+       touchOverflowHidden : false,
+       reverseOnTouch : false
+   });
 });

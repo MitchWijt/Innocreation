@@ -40,7 +40,6 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
-        $neededExpertises = NeededExpertiseLinktable::select("*")->where("team_id", 4)->where('expertise_id', 4)->first();
         die('test');
     }
 }

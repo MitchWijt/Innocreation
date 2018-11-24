@@ -6,19 +6,6 @@
                 <h1 class="sub-title-black">All expertises</h1>
             </div>
             <hr class="m-b-0">
-            <form action="/userExpertiseList/searchExpertise" class="searchExpertiseForm" method="post">
-                <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                <div class="form-group m-b-0 d-flex js-center p-relative expertises">
-                    <div class="row d-flex js-center col-sm-12 m-t-20">
-                        <div class="@mobile col-9 @elsedesktop col-sm-9 @endmobile p-r-0 searchBar">
-                            <input type="text" id="tags" placeholder="Search for the expertise you need..." class="input p-b-10 col-sm-12 b-t-r-0 b-b-r-0 searchInput" name="searchedExpertise" value=""/>
-                        </div>
-                        <div class="@mobile col-2 @elsedesktop col-sm-2 @endmobile m-0 p-0">
-                            <button class="btn btn-inno btn-block b-t-l-0 b-b-l-0 searchButton"><i class="zmdi zmdi-search f-21"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </form>
             <div class="row">
                 <? if(isset($searchedExpertises)) {
                     $expertises = $searchedExpertises;

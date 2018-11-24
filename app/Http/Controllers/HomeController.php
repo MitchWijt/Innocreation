@@ -158,27 +158,4 @@ class HomeController extends Controller
     public function searchExpertiseAction(Request $request, homeService $homeService){
         return $homeService->searchExpertise($request);
     }
-//    public function getStatusUserAction(Request $request){
-//        $userChat = UserChat::select("*")->where("id", $request->input("userChatId"))->first();
-//        $userId = $request->input("userId");
-//         if($userChat->receiver_user_id == $userId) {
-//             $userId2 = $userChat->receiver->id;
-//         } else {
-//             $userId2 = $userChat->creator->id;
-//         }
-//        $client = $this->getService("stream");
-//        $messageFeed = $client->feed('user', $userChat->receiver_user_id);
-//
-////        if($userChat->receiver->active_status == "online") {
-//            // Add the activity to the feed
-//            $data = [
-//                "actor" => "$userId2",
-//                "status" => "online",
-//                "userId" => "$userId2",
-//                "verb" => "userMessage",
-//                "object" => "3",
-//            ];
-//            $messageFeed->addActivity($data);
-////        }
-//    }
 }

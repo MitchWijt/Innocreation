@@ -56,7 +56,6 @@ $('body').on('click', function (e) {
 });
 
 $(document).on("click", ".emojiGen", function () {
-    console.log('gfdsa');
    var id = $(this).data('id');
    var emoji = $(this).data('code');
 
@@ -89,4 +88,18 @@ $(document).on("click", ".ui-menu-item-wrapper", function () {
             window.location.href = data;
         }
     });
+});
+
+
+$(document).on("click touchstart", ".searchBtnHomeMobile",function () {
+    $(".navMobile").addClass("hidden");
+    $(".searchBarBox").removeClass("hidden");
+
+});
+
+$(document).on("click touchstart", ".closeSearchBar", function (e) {
+    $(".navMobile").removeClass("hidden");
+    $(".searchBarBox").addClass("hidden");
+    e.stopPropagation();
+    e.preventDefault();
 });

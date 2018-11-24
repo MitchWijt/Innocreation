@@ -11,19 +11,27 @@
         </div>
         <div class="main-content">
             <? if(isset($loggedIn) && $loggedIn) { ?>
-                <div class="row" style="margin-top: 180px !important">
-                    <div class="expertises col-12">
-                        <div class="row">
-                            <div class="col-1 p-r-0 m-r-0">
-                                <button class="btn-inno btn btn-block b-t-r-0 b-b-r-0 searchBtnHome" style="border: none !important"><i class="zmdi zmdi-search f-30"></i></button>
-                            </div>
-                            <div class="col-10 p-l-0 m-l-0 p-r-0 m-r-0">
-                                <input type="text" id="tags" placeholder="What expertise or knowledge do you need?" name="SearchExpertises" class="input-fat-home b-0 col-sm-12 searchExpertisesHome b-t-l-0 b-b-l-0 b-b-r-0 b-t-r-0 b-r-0">
-                            </div>
-                            <div class="col-1 clearInput btn-block b-l-0">
-                                <i class="zmdi zmdi-close f-20 pull-right c-dark-grey m-t-10 clearCross hidden"></i>
-                            </div>
+                <div class="row">
+                    <div class="col-md-12 m-b-20">
+                        <div class="title-home">
+                            @mobile
+                            <h1 style="font-weight: bold;" class="text-center col-md-12 f-40">Innocreation</h1>
+                            <p class="text-center f-13">Have an idea? find team members, create your team and start building now!</p>
+                            @elsedesktop
+                            <h1 class="title-black text-center col-md-12">Innocreation</h1>
+                            <p class="text-center">Have an idea? find team members, create your team and start building now!</p>
+                            @endmobile
+                            @tablet
+                            <div class="hr col-md-10"></div>
+                            @elsedesktop
+                            <div class="hr col-md-10"></div>
+                            @endtablet
                         </div>
+                    </div>
+                </div>
+                <div class="row d-flex js-center">
+                    <div class="col-md-5 d-flex js-center">
+                        <a id="collaborateNow" href="/innocreatives" class="btn btn-inno startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Connect! @elsedesktop Start connecting! @endtablet</a>
                     </div>
                 </div>
             <? } else { ?>
@@ -32,9 +40,10 @@
                         <div class="title-home">
                             @mobile
                                 <h1 style="font-weight: bold;" class="text-center col-md-12 f-40">Innocreation</h1>
+                                <p class="text-center f-13">Have an idea? find team members, create your team and start building now!</p>
                             @elsedesktop
                                 <h1 class="title-black text-center col-md-12">Innocreation</h1>
-                                <p class="text-center">Have an idea? find team members, create your team and start executing now!</p>
+                                <p class="text-center">Have an idea? find team members, create your team and start building now!</p>
                             @endmobile
                             @tablet
                                 <div class="hr col-md-10"></div>

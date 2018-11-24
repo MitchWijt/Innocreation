@@ -89,6 +89,11 @@ class UserController extends Controller
         $user->skype = $request->input("skype");
         $user->motivation = $request->input("motivation_user");
         $user->introduction = $request->input("introduction_user");
+        if($request->input("notifications") == "on"){
+            $user->notifications = 1;
+        } else {
+            $user->notifications = 0;
+        }
         $user->save();
         return redirect("/my-account/privacy-settings");
     }

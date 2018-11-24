@@ -284,13 +284,13 @@ footer{
     background: #000000;
     list-style-type: none;
     padding-left: 5px;
-    width: 65vh;
+    width: 58vh !important;
     border: 2px solid #FF6100;
     border-radius: 10px;
     height: 200px;
     overflow: scroll;
     position: absolute !important;
-    top: 60px !important;
+    top: 40px !important;
     z-index: 300 !important;
 }
 
