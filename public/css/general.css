@@ -239,6 +239,9 @@
 .p-t-5{
     padding-top: 5px !important;
 }
+.p-t-30{
+    padding-top: 30px !important;
+}
 .p-l-0{
     padding-left: 0 !important;
 }
@@ -337,6 +340,10 @@
 
 .d-flex{
     display: flex;
+}
+
+.d-block{
+    display: block;
 }
 
 .fd-column{

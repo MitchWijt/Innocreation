@@ -134,7 +134,11 @@ footer{
     background: #C9CCCF !important;
     cursor: pointer;
 }
-
+.btn-normal{
+    background: transparent;
+    border: 2px solid #77787a !important;
+    color: #C9CCCF;
+}
 .menu-item:hover{
     color: #000000 !important;
     background: #C9CCCF !important;
@@ -168,6 +172,7 @@ footer{
     min-width: 210px;
     max-width: 20px;
     background: #000000;
+    border-top: 1px solid #C9CCCF !important;
 }
 .border-inno{
     border: 3px solid #FF6100 !important;
@@ -279,13 +284,13 @@ footer{
     background: #000000;
     list-style-type: none;
     padding-left: 5px;
-    width: 65vh;
+    width: 58vh !important;
     border: 2px solid #FF6100;
     border-radius: 10px;
     height: 200px;
     overflow: scroll;
     position: absolute !important;
-    top: 60px !important;
+    top: 40px !important;
     z-index: 300 !important;
 }
 
@@ -609,7 +614,7 @@ footer{
 }
 
 .main-content{
-    height: 85vh;
+    height: 75vh;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -936,6 +941,23 @@ footer{
     background-position:center,center !important;
 }
 
+.avatar-header{
+    width: 40px;
+    height: 40px;
+    border: 2px solid #C9CCCF;
+    -webkit-border-radius: 60px !important;
+    -webkit-background-clip: padding-box !important;
+    -moz-border-radius: 60px !important;
+    -moz-background-clip: padding !important;
+    border-radius: 110px !important;
+    background-clip: padding-box !important;
+    float: left !important;
+    background-size: cover !important;
+    background-repeat:no-repeat !important;
+    /*background-attachment:fixed !important;*/
+    background-position:center,center !important;
+}
+
 .messageInputDynamic {
     height:40px;
     transition: all 0.5s;
@@ -1032,4 +1054,20 @@ ul.dashed > li:before {
 
 .userExpImg:hover{
     border: 2px solid #FF6100 !important
+}
+
+.searchBtn:hover{
+    color: #77787a !important;
+}
+
+.no-select{
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select:none;
+    user-select:none;
+    -o-user-select:none;
+}
+
+.no-focus:focus{
+    outline: none !important;
 }

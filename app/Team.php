@@ -65,6 +65,14 @@ class Team extends Model {
         return $NeededExpertisesNoAcception;
     }
 
+    public function needsExpertise($expertiseId){
+        $neededExpertises = NeededExpertiseLinktable::select("*")->where("team_id", $this->id)->where('expertise_id', $expertiseId)->first();
+        if($neededExpertises){
+            return true;
+        } else
+            return false;
+    }
+
     public function calculateSupport($stars, $team_id){
         $team = Team::select("*")->where("id", $team_id)->first();
         $support = $team->support;

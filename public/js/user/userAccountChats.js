@@ -128,6 +128,7 @@ $(".sendUserMessage").on("click",function () {
     var user_chat_id = $(this).parents(".userChatTextarea").find(".user_chat_id").val();
     var sender_user_id = $(this).parents(".userChatTextarea").find(".sender_user_id").val();
     var message = $(this).parents(".userChatTextarea").find(".messageInput").val();
+
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {

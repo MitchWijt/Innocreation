@@ -1,4 +1,6 @@
 
+
+
 /*HEADER + FOOTER*/
 @media screen and (max-width: 1520px) {
     .textFooter{
@@ -10,8 +12,8 @@
     }
 
     .footer-title img{
-        width: 10% !important;
-        height: 10% !important;
+        width: 8% !important;
+        height: 25% !important;
     }
 }
 
@@ -31,8 +33,8 @@
     }
 
     .main-title img{
-        width: 6% !important;
-        height: 6% !important;
+        width: 7% !important;
+        height: 18% !important;
     }
 }
 
@@ -83,13 +85,69 @@
         font-size: 12px !important;
     }
 
-    .footer-title img{
-        width: 5% !important;
-        height: 5% !important;
+    /*.footer-title img{*/
+        /*width: 5% !important;*/
+        /*height: 5% !important;*/
+    /*}*/
+
+    /*.main-title img{*/
+        /*width: 4% !important;*/
+        /*height: 4% !important;*/
+    /*}*/
+}
+
+@media screen and (max-width: 805px) {
+    .usersHeader{
+        display: none !important;
+    }
+    .feedHeader{
+        display: none !important;
     }
 
-    .main-title img{
-        width: 4% !important;
-        height: 4% !important;
+    /*.moreChev{*/
+        /*display: none !important;*/
+    /*}*/
+
+    .btn-seperator{
+        display: none !important;
     }
+}
+
+
+@media screen and (max-width: 800px) {
+    .desktopNav{
+        display: none !important;
+    }
+
+    .mobileNav{
+        display: block !important;
+    }
+
+    .registerBtnsMobile{
+        display: flex !important;
+    }
+}
+@media screen and (min-width: 799px) {
+    .desktopNav{
+        display: flex !important;
+    }
+
+    .mobileNav{
+        display: none !important;
+    }
+
+    .navMobile{
+        display: none !important;
+    }
+
+    .registerBtnsMobile{
+        display: none !important;
+    }
+
+}
+
+@media screen and (max-width: 870px) {
+   #tagsHeader{
+       width: 10vw !important;
+   }
 }

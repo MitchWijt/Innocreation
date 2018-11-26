@@ -27,9 +27,9 @@
         {{--<script defer src="/js/popover.min.js"></script>--}}
         <script src="/js/jquery.easing.min.js"></script>
         <script src="/js/jquery.mobile.custom.js"></script>
-        <script src="/js/home/accountHelper.js"></script>
     {{--<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>--}}
     {{--CSS--}}
+        <link rel="stylesheet" href="/css/home/home.css">
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="/css/general.css">
         <link rel="stylesheet" href="/css/activityTimeline.css">
@@ -86,37 +86,11 @@
     $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
 } ?>
 <? if(!isset($pageType) || $pageType != "checkout") { ?>
-@mobile
-    <? if(\Illuminate\Support\Facades\Session::has("user_id") && $user->finished_helper == 0) {
-    $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-    ?>
-    <? if(strpos($url, "/account") || strpos($url, "/my-account/expertises") || strpos($url, "/my-account/portfolio")  || strpos($url, "/my-team")) {  ?>
-        <? if(strpos($url, "/account") != false || strpos($url, "/my-team") != false || strpos($url, "/my-account") != false)  { ?>
-            <div style="position: fixed; z-index: 99 !important" class="accountHelper">
-                @include('includes.accountHelper')
-            </div>
-        <? } ?>
-    <? } ?>
-<? } ?>
-@endmobile
     @include('includes.header')
 <? } else { ?>
     @include('includes.headerCheckout')
 <? } ?>
 {{--@include('includes/flash')--}}
-@notmobile
-    <? if(\Illuminate\Support\Facades\Session::has("user_id") && $user->finished_helper == 0) {
-        $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-    ?>
-            <? if(strpos($url, "/account") || strpos($url, "/my-account/expertises") || strpos($url, "/my-account/portfolio")  || strpos($url, "/my-team")) {  ?>
-                <? if(strpos($url, "/account") != false || strpos($url, "/my-team") != false || strpos($url, "/my-account") != false)  { ?>
-                    <div style="position: fixed; z-index: 99 !important" class="accountHelper">
-                        @include('includes.accountHelper')
-                    </div>
-                <? } ?>
-            <? } ?>
-    <? } ?>
-@endnotmobile
 @yield('content')
 @yield('pagescript')
 <? if(!isset($pageType) || $pageType != "checkout") { ?>

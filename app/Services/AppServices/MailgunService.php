@@ -25,9 +25,9 @@ class MailgunService
         $this->initialize = $initialize;
     }
 
-    public function saveAndSendEmail($to, $subject, $message, $from = 'Innocreation <info@innocreation.net>'){
+    public function saveAndSendEmail($user, $subject, $message, $from = 'Innocreation <info@innocreation.net>'){
         $mailMessage = new MailMessage();
-        $mailMessage->receiver_user_id = $to->id;
+        $mailMessage->receiver_user_id = $user->id;
         $mailMessage->subject = $subject;
         $mailMessage->message = $message;
         $mailMessage->created_at = date("Y-m-d H:i:s");

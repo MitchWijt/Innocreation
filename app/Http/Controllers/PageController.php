@@ -125,6 +125,11 @@ class PageController extends Controller
         return redirect($_SERVER["HTTP_REFERER"])->with("success", "We thank you for your contribution on Innocreation!");
     }
 
+    public function pagesAboutUsAction(){
+        $title = "what is Innocreation?";
+       return view("/public/pages/aboutUs");
+    }
+
     /**
      * Remove the specified resource from storage.
      *

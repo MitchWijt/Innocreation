@@ -7,6 +7,7 @@ use App\Expertises;
 use App\Expertises_linktable;
 use App\MailMessage;
 use App\NeededExpertiseLinktable;
+use App\Services\AppServices\MailgunService;
 use App\Team;
 use App\User;
 use App\UserChat;
@@ -188,7 +189,7 @@ class RegisterProcessController extends Controller {
 
     }
 
-    public function saveUserExpertisesAction(Request $request, Unsplash $unsplash){
+    public function saveUserExpertisesAction(Request $request, Unsplash $unsplash, MailgunService $mailgunService){
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $expertisesAll = Expertises::select("*")->get();
         $existingArray = [];
@@ -204,8 +205,11 @@ class RegisterProcessController extends Controller {
 
         $chosenExpertisesString = $request->input("expertises");
         $chosenExpertises = explode(", ", $chosenExpertisesString);
+
+        $expertisesArray = [];
         foreach ($chosenExpertises as $expertise) {
             if (!in_array(ucfirst($expertise), $existingArray)) {
+                $new = true;
                 $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertise));
                 $newExpertise = New Expertises;
                 $newExpertise->title = ucfirst($expertise);
@@ -227,6 +231,7 @@ class RegisterProcessController extends Controller {
                 $userExpertise->save();
 
             } else {
+                $new = false;
                 $expertiseNewUser = Expertises::select("*")->where("title", $expertise)->first();
                 if (!in_array($expertiseNewUser->id, $existingExpArray)) {
                     $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertise));
@@ -240,7 +245,35 @@ class RegisterProcessController extends Controller {
                     $userExpertise->save();
                 }
             }
+
+            if($new){
+                $expertiseObject = $newExpertise;
+                array_push($expertisesArray, $expertiseObject->id);
+            } else {
+                $expertiseObject = $expertiseNewUser;
+                array_push($expertisesArray, $expertiseObject->id);
+            }
         }
+
+
+        $neededExpertises = NeededExpertiseLinktable::select("*")->whereIn("expertise_id", $expertisesArray)->get();
+        foreach($neededExpertises as $neededExpertise) {
+            $team = $neededExpertise->teams;
+            if($team->First()->users->notifications == 1) {
+                $userChat = UserChat::select("*")->where("receiver_user_id", $team->First()->ceo_user_id)->where("creator_user_id", 1)->first();
+                $userMessage = new UserMessage();
+                $userMessage->sender_user_id = 1;
+                $userMessage->user_chat_id = $userChat->id;
+                $userMessage->time_sent = $this->getTimeSent();
+                $userMessage->message = sprintf('We have good news for you and your team! </br> </br> A new %s has joined Innocreation, since your team is in need of a %s you can invite him or chat with him straight away at the account of <a href="https://secret.innocreation.net%s">%s</a>', $neededExpertise->expertises->First()->title, $neededExpertise->expertises->First()->title, $user->getUrl(), $user->firstname);
+                $userMessage->created_at = date("Y-m-d H:i:s");
+                $userMessage->save();
+
+                $user = $team->First()->users;
+                $mailgunService->saveAndSendEmail($team->First()->users, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+            }
+        }
+
         return 1;
     }
 
