@@ -73,34 +73,47 @@ $(document).on("click", ".ui-menu-item-wrapper", function () {
     });
 });
 
-new floatingCarousel('#carousel-default', {
-    autoScroll : true,
-    autoScrollDirection : 'right',
-    autoScrollSpeed : 50000,
-    enableTouchEvents : false,
-    touchOverflowHidden : false,
-    reverseOnTouch : false
 
-});
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    new floatingCarousel('#carousel-default', {
+        autoScroll : true,
+        autoScrollDirection : 'right',
+        autoScrollSpeed : 10000,
+        enableTouchEvents : false,
+        touchOverflowHidden : false,
+        reverseOnTouch : false
+
+    });
 
 
-new floatingCarousel('#carousel-default2', {
-    autoScroll : true,
-    autoScrollDirection : 'left',
-    autoScrollSpeed : 50000,
-    enableTouchEvents : false,
-    touchOverflowHidden : false,
-    reverseOnTouch : false
+    new floatingCarousel('#carousel-default2', {
+        autoScroll : true,
+        autoScrollDirection : 'left',
+        autoScrollSpeed : 10000,
+        enableTouchEvents : false,
+        touchOverflowHidden : false,
+        reverseOnTouch : false
 
-});
+    });
+} else {
+    new floatingCarousel('#carousel-default', {
+        autoScroll : true,
+        autoScrollDirection : 'right',
+        autoScrollSpeed : 50000,
+        enableTouchEvents : false,
+        touchOverflowHidden : false,
+        reverseOnTouch : false
 
-$("#carousel-default2").on("swipeleft",function(){
-   floatingCarousel('##carousel-default2', {
-       autoScroll : true,
-       autoScrollDirection : 'left',
-       autoScrollSpeed : 20000,
-       enableTouchEvents : false,
-       touchOverflowHidden : false,
-       reverseOnTouch : false
-   });
-});
+    });
+
+
+    new floatingCarousel('#carousel-default2', {
+        autoScroll : true,
+        autoScrollDirection : 'left',
+        autoScrollSpeed : 50000,
+        enableTouchEvents : false,
+        touchOverflowHidden : false,
+        reverseOnTouch : false
+
+    });
+}
