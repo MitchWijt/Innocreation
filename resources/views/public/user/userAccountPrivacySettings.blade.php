@@ -85,6 +85,21 @@
                         <hr class="col-xs-12 m-t-20">
                         <div class="row text-center m-t-20">
                             <div class="col-sm-6">
+                                <p class="m-0">Join notifications:</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <input type="radio" name="notifications" value="on" <? if($user->notifications == 1) echo "checked"?> id="on"><label for="on">On</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="radio" name="notifications" value="off" <? if($user->notifications == 0) echo "checked"?> id="off"><label for="off">Off</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-center m-t-20">
+                            <div class="col-sm-6">
                                 <p class="m-t-30">My motivation:</p>
                             </div>
                             <div class="col-sm-6">

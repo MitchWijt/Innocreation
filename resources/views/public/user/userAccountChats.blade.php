@@ -144,12 +144,13 @@
                                             <hr>
                                             <div class="row m-t-20">
                                                 <div class="col-sm-12 text-center">
-                                                    <textarea name="message" placeholder="Send your message..." class="input col-sm-10 messageInput" rows="5"></textarea>
+                                                    <textarea name="message" placeholder="Send your message..." class="input col-sm-10 messageInput input-<?= $userChat->id?>" rows="5"></textarea>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-sm-11 m-b-20 m-t-20">
+                                                <div class="col-sm-11 m-b-20 m-t-10">
                                                     <button class="btn btn-inno pull-right sendUserMessage" type="button">Send message</button>
+                                                    <i class="zmdi zmdi-mood iconCTA c-pointer popoverEmojis pull-right m-r-10" data-toggle="popover" data-content='<?= view("/public/shared/_popoverEmojiGeneric", compact("emojis", 'userChat'))?>'></i>
                                                 </div>
                                             </div>
                                         </form>
@@ -190,7 +191,6 @@
         }
 
         function successCallback() {
-            console.log('now listening to changes in realtime');
         }
 
         function failCallback(data) {

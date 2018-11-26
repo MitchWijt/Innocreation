@@ -36,6 +36,8 @@ Route::post("/home/getStatusUser", "HomeController@getStatusUserAction");
 
 Route::post("/home/getModalCarouselUser", "HomeController@getModalCarouselUserAction");
 
+Route::post("/home/searchExpertise", "HomeController@searchExpertiseAction");
+
 // CONTACT US
 Route::get("/contact-us", "HomeController@contactAction");
 
@@ -432,6 +434,8 @@ Route::post("/message/getUserWorkComments", "MessageController@getUserWorkCommen
 //=============================PAGES=============================
 
 Route::get("/page/{slug}", "PageController@pagesIndexAction");
+
+Route::get("/what-is-innocreation", "PageController@pagesAboutUsAction");
 
 Route::get("/platform-idea", "PageController@platformIdeaAction");
 

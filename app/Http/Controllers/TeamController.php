@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Expertises;
+use App\Expertises_linktable;
 use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
 use App\MailMessage;
@@ -21,6 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Session;
 use App\Services\TeamServices\CredentialService as CredentialService;
+use App\Services\AppServices\MailgunService as MailgunService;
 use App\Http\Requests;
 
 class TeamController extends Controller
@@ -114,19 +116,42 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function addNeededExpertiseAction(Request $request)
+    public function addNeededExpertiseAction(Request $request, MailgunService $mailgunService)
     {
         // Grabs the team id and expertise the team wants to add and adds it to the database for the team. Also checks for doubles
         $team_id = $request->input("team_id");
         $expertise_id = $request->input("expertises");
         $amount = $request->input("amountNewExpertise");
         $expertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
+        $team = Team::select("*")->where("id", $team_id)->first();
+        $expertiseObject = Expertises::select("*")->where("id", $expertise_id)->First();
         if(count($expertise) == 0) {
             $neededExpertise = new NeededExpertiseLinktable();
             $neededExpertise->team_id = $team_id;
             $neededExpertise->expertise_id = $expertise_id;
             $neededExpertise->amount = $amount;
             $neededExpertise->save();
+
+            $expertiseLinktables = Expertises_linktable::select("*")->where("expertise_id", $expertise_id)->get();
+            foreach($expertiseLinktables as $expertiseLinktable){
+                if($expertiseLinktable->users->First()) {
+                    if ($expertiseLinktable->users->First()->notifications == 1 && $expertiseLinktable->users->First()->id != $team->ceo_user_id) {
+                        $user = $expertiseLinktable->users->First();
+                        $userChat = UserChat::select("*")->where("receiver_user_id", $user->id)->where("creator_user_id", 1)->first();
+                        if ($userChat) {
+                            $userMessage = new UserMessage();
+                            $userMessage->sender_user_id = 1;
+                            $userMessage->user_chat_id = $userChat->id;
+                            $userMessage->time_sent = $this->getTimeSent();
+                            $userMessage->message = sprintf('%s is now looking for a %s. <br><br> You can be the first one to join their team at <a href="https://secret.innocreation.net%s">https://secret.innocreation.net%s</a>', $team->team_name, $expertiseObject->title, $team->getUrl(), $team->getUrl());
+                            $userMessage->created_at = date("Y-m-d H:i:s");
+                            $userMessage->save();
+
+                            $mailgunService->saveAndSendEmail($user, "You have got a message!", view("/templates/sendChatNotification", compact("user")));
+                        }
+                    }
+                }
+            }
             return redirect($_SERVER["HTTP_REFERER"]);
         } else {
             $error = "Already added this expertise. Please choose a new one";

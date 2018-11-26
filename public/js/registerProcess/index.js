@@ -57,6 +57,7 @@ $(".goToStep2").on("click",function () {
 
     if($(".password-confirm").val() != $(".password").val()){
         $('.errorMatch').removeClass("hidden");
+        bool = false;
     } else {
         $('.errorMatch').addClass("hidden");
     }

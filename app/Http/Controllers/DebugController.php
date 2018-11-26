@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Expertises;
 use App\Expertises_linktable;
+use App\NeededExpertiseLinktable;
 use App\Team;
 use App\UserChat;
 use App\UserMessage;

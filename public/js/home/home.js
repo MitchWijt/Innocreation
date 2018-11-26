@@ -19,3 +19,88 @@ $(".carousel-control-next").on("click",function () {
 $(document).on("click", ".closeModal", function () {
     $(".carouselUserModal").modal("toggle")
 });
+
+$(".searchExpertisesHome").on("keyup",function () {
+    if($(this).val().length > 0){
+        $(".clearCross").removeClass("hidden");
+    } else {
+        $(".clearCross").addClass("hidden");
+    }
+});
+
+$(".clearInput").on("click",function () {
+   $(".searchExpertisesHome").val("");
+   $(".clearCross").addClass("hidden");
+});
+$(".searchBtnHome").on("click",function () {
+    if($(".searchExpertisesHome").val().length > 0){
+        var title = $(".searchExpertisesHome").val();
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/home/searchExpertise",
+            data: {'title': title},
+            success: function (data) {
+                window.location.href = data;
+            }
+        });
+    }
+});
+
+
+$(document).on("click", ".ui-menu-item-wrapper", function () {
+    var title = $(this).text();
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/home/searchExpertise",
+        data: {'title': title},
+        success: function (data) {
+            // window.location.href = data;
+        }
+    });
+});
+
+new floatingCarousel('#carousel-default', {
+    autoScroll : true,
+    autoScrollDirection : 'right',
+    autoScrollSpeed : 50000,
+    enableTouchEvents : false,
+    touchOverflowHidden : false,
+    reverseOnTouch : false
+
+});
+
+
+new floatingCarousel('#carousel-default2', {
+    autoScroll : true,
+    autoScrollDirection : 'left',
+    autoScrollSpeed : 50000,
+    enableTouchEvents : false,
+    touchOverflowHidden : false,
+    reverseOnTouch : false
+
+});
+
+$("#carousel-default2").on("swipeleft",function(){
+   floatingCarousel('##carousel-default2', {
+       autoScroll : true,
+       autoScrollDirection : 'left',
+       autoScrollSpeed : 20000,
+       enableTouchEvents : false,
+       touchOverflowHidden : false,
+       reverseOnTouch : false
+   });
+});
