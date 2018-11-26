@@ -6,12 +6,12 @@
                         <div class="footer-title text-center">
                             @handheld
                                 @tablet
-                                    <h1 class="title f-22 textFooter" style="color: #C9CCCF">In<img class="cartwheelLogo" src="/images/cartwheel.png" alt="">creation</h1>
+                                    <h1 class="title f-22 textFooter" style="color: #C9CCCF">Inn<img class="cartwheelLogo" src="/images/cartwheel.png" alt="">creation</h1>
                                     <div class="d-flex js-center">
                                         <a class="td-none" href="/create-my-account"><p class="instructions-text create-account f-16" style="padding-left: 10px; padding-right: 10px;">Create your account</p></a>
                                     </div>
                                 @elsemobile
-                                    <h1 class="title f-40 textFooter" style="color: #C9CCCF">In<img class="cartwheelLogo" src="/images/cartwheel.png" alt="">creation</h1>
+                                    <h1 class="title f-40 textFooter" style="color: #C9CCCF">Inn<img class="cartwheelLogo" src="/images/cartwheel.png" alt="">creation</h1>
                                     <div class="d-flex js-center">
                                         <a class="td-none" href="/create-my-account"><p class="instructions-text create-account f-20" style="padding-left: 10px; padding-right: 10px;">Create your account</p></a>
                                     </div>
