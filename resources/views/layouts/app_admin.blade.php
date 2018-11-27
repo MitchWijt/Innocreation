@@ -10,11 +10,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
     {{--CSS--}}
+    <link rel="stylesheet" href="/css/home/home.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/general.css">
     <link rel="stylesheet" href="/css/general_admin.css">
     <link rel="stylesheet" href="/css/activityTimeline.css">
     <link rel="stylesheet" href="/css/dataTables.min.css">
+    <link rel="stylesheet" href="/css/popovers.css">
+    {{--CSS MEDIA QUERIES--}}
+    <link rel="stylesheet" href="/css/responsiveness/home.css">
+    {{------------------------}}
     {{--CSS PLUGINS--}}
     <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
     <link rel="stylesheet" href="/css/jquery-ui-min.css">
@@ -37,6 +42,10 @@
     <title>Innocreation | Admin panel</title>
 </head>
 <body>
+<? if(\Illuminate\Support\Facades\Session::has("user_id")) {
+    $sessionUserId = \Illuminate\Support\Facades\Session::get("user_id");
+    $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
+} ?>
 @include('includes.header')
 {{--@include('includes/flash')--}}
 @yield('content')
