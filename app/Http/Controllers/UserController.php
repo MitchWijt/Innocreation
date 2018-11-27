@@ -434,23 +434,33 @@ class UserController extends Controller
 
             $user_id = Session::get("user_id");
             $searchInput = $request->input("searchChatUsers");
+            $emojis = Emoji::select("*")->get();
 
-            $users = User::select("*")->get();
             $userChats = UserChat::select("*")->where("creator_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->get();
             if (strlen($searchInput) > 0) {
                 $idArray = [];
-                foreach ($users as $user) {
-                    if (strpos($user->getName(), ucfirst($searchInput)) !== false) {
-                        array_push($idArray, $user->id);
+                foreach ($userChats as $userChat) {
+                    if($userChat->creator_user_id == $user_id){
+                        $name = $userChat->receiver->getName();
+                    } else if($userChat->creator_user_id == 1) {
+                        $name = "Innocreation";
+                    } else {
+                        $name = $userChat->creator->getName();
+                    }
+                    if (strpos($name, ucfirst($searchInput)) !== false) {
+                        array_push($idArray, $userChat->id);
                     }
                 }
-                $searchedUsers = User::select("*")->whereIn("id", $idArray)->get();
+                $searchedUserChats = UserChat::select("*")->whereIn("id", $idArray)->get();
             } else {
                 $searchInput = false;
             }
             $user = User::select("*")->where("id", $user_id)->first();
             $streamToken = $user->stream_token;
-            return view("/public/user/userAccountChats", compact("searchedUsers", "user_id", "userChats", "streamToken"));
+            if(strlen($searchInput) < 1){
+                return redirect("/my-account/chats");
+            }
+            return view("/public/user/userAccountChats", compact("searchedUserChats", "user_id", "streamToken", "emojis"));
         }
     }
 
