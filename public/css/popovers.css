@@ -27,3 +27,24 @@
     border-right-color: #FF6100 !important;
 }
 
+.popover-notification{
+    margin-top: 20px !important;
+    background-color: #C9CCCF !important;
+    border-color: #FF6100 !important;
+    color: #C9CCCF !important;
+    min-width: 450px !important;
+    max-height: 250px !important;
+    overflow: scroll !important;
+}
+
+.popover-notification .popover-body p{
+    color: #000 !important;
+}
+
+.popover-notification.bs-popover-right .arrow:after {
+    border-right-color: #FF6100 !important;
+}
+
+.popover-notification .popover-body{
+    padding-top: 0 !important;
+}

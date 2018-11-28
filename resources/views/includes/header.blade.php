@@ -25,13 +25,14 @@
                     <div class="pull-right">
                         <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
                                 <div class="m-t-20 pull-right m-r-30 c-gray">
-                                        <a class="btn btn-inno" href="/expertises">Collaborate</a>
+                                    <i class="popoverNotifications zmdi zmdi-notifications c-gray f-25 m-r-10 m-t-5 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>'></i>
+                                    <a class="btn btn-inno btn-sm" href="/expertises">Collaborate</a>
                                     <? if($user->team_id != null) { ?>
-                                        <a class="btn btn-inno" href="/my-team">Team</a>
+                                        <a class="btn btn-inno btn-sm" href="/my-team">Team</a>
                                     <? } else { ?>
-                                        <a class="btn btn-inno" href="/my-account/teamInfo">Create team</a>
+                                        <a class="btn btn-inno btn-sm" href="/my-account/teamInfo">Create team</a>
                                     <? } ?>
-                                    <a class="btn btn-inno" href="/innocreatives">Share</a>
+                                    <a class="btn btn-inno btn-sm" href="/innocreatives">Share</a>
                                     <i class="popoverHeader zmdi zmdi-chevron-down c-gray f-25 m-l-15 m-t-5 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
                                     <div class="pull-right">
                                         <a href="/my-account">

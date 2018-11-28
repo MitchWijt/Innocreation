@@ -40,6 +40,7 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
+
         die('test');
     }
 }

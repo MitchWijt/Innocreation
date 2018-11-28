@@ -46,6 +46,8 @@ Route::post("/home/sendContactForm", "HomeController@sendContactFormAction");
 Route::get("/faq", "PageController@faqAction");
 
 
+//========================NOTIFICATIONS================================
+Route::post("/notification/getNotifications", "NotificationController@getNotificationsAction");
 //========================USERACCOUNT================================
 
 Route::get("/account", "UserController@userAccount");
