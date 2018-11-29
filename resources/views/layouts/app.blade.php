@@ -82,6 +82,15 @@
 </head>
 <body>
 <? if(\Illuminate\Support\Facades\Session::has("user_id")) {
+    $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
+    $userChats = \App\UserChat::select("*")->where("creator_user_id", $user->id)->orWhere("receiver_user_id", $user->id)->get();
+    $counterMessages = 0;
+    if(count($userChats) > 0){
+        foreach($userChats as $userChat) {
+            $unreadMessages = \App\UserMessage::select("*")->where("user_chat_id", $userChat->id)->where("sender_user_id", "!=", $user->id)->where("seen_at" ,null)->get();
+            $counterMessages = $counterMessages + count($unreadMessages);
+        }
+    }
     $sessionUserId = \Illuminate\Support\Facades\Session::get("user_id");
     $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
 } ?>

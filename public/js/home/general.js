@@ -77,6 +77,11 @@ $('.popoverNotifications').popover({ trigger: "click" , html: true, animation:fa
         _this.addClass("popover-notification");
     });
 
+$('.popoverNotifications').on('hide.bs.popover', function () {
+    var _this = $('.popover');
+    _this.addClass("popover-black");
+});
+
 $(document).on("click", ".popoverNotifications", function () {
     $.ajax({
         method: "POST",

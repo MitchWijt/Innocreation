@@ -112,7 +112,8 @@
                 </div>
             @endmobile
         </div>
-        <script>
+     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/getstream/dist/js_min/getstream.js"></script>
+     <script>
             <?
                 if(\Illuminate\Support\Facades\Session::has("user_id")){
                     $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
@@ -121,5 +122,24 @@
                     $user->save(); ?>
                 <? }
             ?>
+
+            <? if(\Illuminate\Support\Facades\Session::has("user_id")) { ?>
+                <? $user_id = \Illuminate\Support\Facades\Session::get("user_id")?>
+                <? $user = \App\User::select("*")->where("id", $user_id)->first();?>
+            var client = stream.connect('ujpcaxtcmvav', null, '40873');
+            var user1 = client.feed('user', '<?= $user_id?>', '<?= $user->stream_token?>');
+
+            function callback(data) {
+                $(".notificationIdicator").removeClass("hidden");
+            }
+
+            function successCallback() {
+            }
+
+            function failCallback(data) {
+                alert('something went wrong, check the console logs');
+            }
+            user1.subscribe(callback).then(successCallback, failCallback);
+            <? } ?>
         </script>
     </footer>

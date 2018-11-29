@@ -24,8 +24,9 @@
                 <div class="pull-right navBtns">
                     <div class="pull-right">
                         <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
-                                <div class="m-t-20 pull-right m-r-30 c-gray">
+                                <div class="m-t-20 pull-right m-r-30 c-gray p-relative">
                                     <i class="popoverNotifications zmdi zmdi-notifications c-gray f-25 m-r-10 m-t-5 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>'></i>
+                                    <i class="zmdi zmdi-circle c-orange f-13 p-absolute <? if($counterMessages < 1) echo "hidden";?> notificationIdicator" style="top: 10%; left: 3%;"></i>
                                     <a class="btn btn-inno btn-sm" href="/expertises">Collaborate</a>
                                     <? if($user->team_id != null) { ?>
                                         <a class="btn btn-inno btn-sm" href="/my-team">Team</a>

@@ -3,7 +3,7 @@
         if(isset($notification['receiver'])){
             $sender = \App\User::select("*")->where("id", $notification['receiver'])->first();
         ?>
-            <a class="td-none" href="/my-account/chats?user_chat_id=<?= $notification['userChat']?>">
+            <a class="td-none notificationLink" href="/my-account/chats?user_chat_id=<?= $notification['userChat']?>">
                 <div class="row p-b-10 notificationHover" style="border-bottom: 1px solid #FF6100 !important">
                     <div class="col-2 m-b-5 m-t-15">
                         <div class="avatar-header img m-t-0 p-t-0 m-l-15" style="background: url('<?= $sender->getProfilePicture()?>'); border-color: #000 !important"></div>
