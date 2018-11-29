@@ -1,7 +1,19 @@
 <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
+    <? if(\Illuminate\Support\Facades\Session::has("team_id")) { ?>
+        @handheld
+            <div class="sidebar-tab m-b-5">
+                <a class="regular-link c-gray" href="/my-team">My team</a>
+            </div>
+        @endhandheld
+    <? } ?>
     <div class="sidebar-tab m-b-5">
         <a class="regular-link c-gray" href="/what-is-innocreation">About us</a>
     </div>
+    @handheld
+        <div class="sidebar-tab m-b-5">
+            <a class="regular-link c-gray" href="/expertises">All expertises</a>
+        </div>
+    @endhandheld
     <div class="sidebar-tab m-b-5">
         <a class="regular-link c-gray" href="/pricing">Pricing</a>
     </div>

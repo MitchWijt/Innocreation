@@ -74,7 +74,11 @@
     <hr>
 </div>
 @elsemobile
-<i class="zmdi zmdi-view-toc f-25 m-t-10 toggleSidebar p-10" style="border: 1px solid #77787a !important; border-radius: 15px;" data-toggle="modal" data-target=".sidebarModal"></i>
+<div class="row">
+    <div class="col-sm-12">
+    <i class="zmdi zmdi-view-toc f-25 m-t-10 toggleSidebar pull-right p-10" style="border: 1px solid #77787a !important; border-radius: 15px;" data-toggle="modal" data-target=".sidebarModal"></i>
+    </div>
+</div>
 <div class="modal fade sidebarModal" id="sidebarModal" tabindex="-1" role="dialog" aria-labelledby="sidebarModal" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
