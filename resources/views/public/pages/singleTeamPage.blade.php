@@ -3,7 +3,7 @@
     <div class="d-flex grey-background">
         <div class="container">
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black"><?=$team->team_name?></h1>
+                <h1 class="sub-title-black @mobile f-20 @endmobile"><?=$team->team_name?></h1>
             </div>
             <div class="row">
                 <div class="col-sm-12 text-center">
