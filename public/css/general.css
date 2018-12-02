@@ -582,3 +582,7 @@ hr{
 .notificationHover:hover{
     background: #77787a;
 }
+
+.autocomplete-black{
+    color: #000 !important;
+}

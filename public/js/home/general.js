@@ -13,7 +13,6 @@ $(document).ready(function () {
 // });
 
 $(document).on("click touchstart", ".closePopover", function () {
-    console.log("gfdsa");
     var _this = $('[data-toggle="popover"]');
     $(_this).popover("hide");
 });
@@ -132,4 +131,8 @@ $(document).on("click touchstart", ".closeSearchBar", function (e) {
     $(".searchBarBox").addClass("hidden");
     e.stopPropagation();
     e.preventDefault();
+});
+
+$("#tagsHeader").on("keyup", function () {
+    $(".ui-menu-item-wrapper").addClass("autocomplete-black");
 });
