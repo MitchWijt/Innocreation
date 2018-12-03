@@ -32,6 +32,7 @@
         <link rel="stylesheet" href="/css/home/home.css">
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="/css/general.css">
+        <link rel="stylesheet" href="/css/user/user.css">
         <link rel="stylesheet" href="/css/activityTimeline.css">
         <link rel="stylesheet" href="/css/checkout/pricing.css">
         <link rel="stylesheet" href="/css/checkout/selectPackage.css">

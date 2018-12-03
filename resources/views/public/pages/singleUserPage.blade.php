@@ -2,8 +2,8 @@
 @section("content")
     <div class="d-flex grey-background">
         <div class="container">
-            <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black @mobile f-22 @endmobile"><?=$user->firstname . " active as " . strtolower($user->getSeoExpertises())?></h1>
+            <div class="banner p-relative" style="background: url('<?= $user->getBanner()?>'); ">
+                <div class="avatar-med p-absolute userProfilePic" style="background: url('<?= $user->getProfilePicture()?>')"></div>
             </div>
             <div class="row">
                 <div class="col-sm-12 text-center">
@@ -12,14 +12,6 @@
                             <p class="c-orange"><?=$error?></p>
                         <? } ?>
                     <? } ?>
-                </div>
-            </div>
-            <hr class="m-b-20">
-            <div class="row">
-                <div class="col-sm-12 text-center cropper">
-                    <div class="d-flex js-center @mobile m-b-10 @endmobile">
-                        <div class="avatar-lg" style="background: url('<?= $user->getProfilePicture()?>')"></div>
-                    </div>
                 </div>
             </div>
             <? if($loggedIn && \Illuminate\Support\Facades\Session::get("user_id") != $user->id) { ?>

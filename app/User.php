@@ -29,7 +29,14 @@ class User extends Authenticatable
         } else {
             return "/images/profilePicturesUsers/defaultProfilePicture.png";
         }
-//        return "/images/profilePicturesUsers/" . $this->profile_picture;
+    }
+
+    public function getBanner(){
+        if($this->banner != "defaultBanner.png") {
+            echo env("DO_SPACES_URL") . "/users/$this->slug/banner/$this->banner";
+        } else {
+            return "/images/profilePicturesUsers/defaultProfilePicture.png";
+        }
     }
 
 
