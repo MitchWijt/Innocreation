@@ -2,9 +2,6 @@
 @section("content")
     <div class="d-flex grey-background">
         <div class="container">
-            <div class="banner p-relative" style="background: url('<?= $user->getBanner()?>'); ">
-                <div class="avatar-med p-absolute userProfilePic" style="background: url('<?= $user->getProfilePicture()?>')"></div>
-            </div>
             <div class="row">
                 <div class="col-sm-12 text-center">
                     <? if(count($errors) > 0){ ?>
@@ -14,73 +11,49 @@
                     <? } ?>
                 </div>
             </div>
-            <? if($loggedIn && \Illuminate\Support\Facades\Session::get("user_id") != $user->id) { ?>
-                <? if($user->checkFollow($user->id)) { ?>
-                    <div class="row">
-                        <div class="col-sm-12 text-center m-t-20">
-                            <form action="/user/unfollowUser" method="post">
-                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                <input type="hidden" name="user_id" value="<?= $user->id?>">
-                                <button class="btn btn-inno">Unfollow <?= $user->firstname?> <i class="zmdi zmdi-notifications-off c-orange"></i></button>
-                            </form>
+            <div class="banner p-relative " style="background: url('<?= $user->getBanner()?>');">
+                <div class="avatar-med userProfilePic p-absolute " style="background: url('<?= $user->getProfilePicture()?>');"></div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="row d-flex fd-column" style="margin-top: 60px !important">
+                        <p class="f-25 m-b-0" style="margin-left: 9% !important"><?= $user->getName()?></p>
+                        <p class="m-t-0 f-12 c-dark-grey" style="margin-left: 9% !important"><?= $user->country->country?></p>
+                    </div>
+                        <div class="row">
+                            <div class="col-6">
+<!--                                --><?// if($loggedIn && \Illuminate\Support\Facades\Session::get("user_id") != $user->id) { ?>
+                                    <form action="/selectChatUser" style="margin-left: 9% !important" method="post">
+                                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                        <input type="hidden" name="receiver_user_id" value="<?= $user->id?>">
+                                        <input type="hidden" name="creator_user_id" value="<?= $loggedIn->id?>">
+                                        <button class="btn btn-inno btn-sm">Send chat message</button>
+                                    </form>
+<!--                                --><?// } ?>
+                            </div>
                         </div>
-                    </div>
-                <? } else { ?>
-                    <div class="row">
-                        <div class="col-sm-12 text-center m-t-20">
-                            <form action="/user/followUser" method="post">
-                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                <input type="hidden" name="user_id" value="<?= $user->id?>">
-                                <button class="btn btn-inno">Follow <?= $user->firstname?> <i class="zmdi zmdi-notifications-active c-orange"></i></button>
-                            </form>
+                    <? if($user->team_id != null) { ?>
+                        <div class="row">
+                            <div class="col-6 m-t-10">
+                                <span><i class="zmdi zmdi-accounts-alt" style="margin-left: 9% !important"></i> <a class="regular-link" target="_blank" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
+                            </div>
                         </div>
-                    </div>
-                <? } ?>
-                <div class="row">
-                    <div class="col-sm-12 text-center m-t-20">
-                        <form action="/selectChatUser" method="post">
-                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                            <input type="hidden" name="receiver_user_id" value="<?= $user->id?>">
-                            <input type="hidden" name="creator_user_id" value="<?= $loggedIn->id?>">
-                            <button class="btn btn-inno">Send chat message</button>
-                        </form>
-                    </div>
+                    <? } ?>
                 </div>
-            <? } ?>
-            <div class="row d-flex js-center">
-                <div class="col-md-9">
-                    <div class="card card-lg m-t-20 m-b-20">
-                        <div class="card-block m-t-10">
-                            <div class="row">
-                                <div class="col-sm-12 m-l-20">
-                                    <h3>Who am i?</h3>
-                                </div>
-                            </div>
-                            <div class="row d-flex js-center @mobile p-l-30 p-r-30 @endmobile">
-                                <div class="col-sm-11">
-                                    <p class="f-21 m-0">My motivation</p>
-                                    <hr>
-                                    <p><?=$user->motivation?></p>
-                                </div>
-                            </div>
-                            <div class="row d-flex js-center @mobile p-l-30 p-r-30 @endmobile">
-                                <div class="col-sm-11">
-                                    <p class="f-21 m-0">My introduction</p>
-                                    <hr>
-                                    <p><?=$user->introduction?></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-8 m-t-10">
+                    <h3>Introduction:</h3>
+                    <p class="m-l-10 c-dark-grey"><?= $user->introduction?></p>
+                    <h3>Motivation:</h3>
+                    <p class="m-l-10 c-dark-grey"><?= $user->motivation?></p>
                 </div>
             </div>
             <div class="row d-flex js-center">
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="card card-lg m-t-20 m-b-20">
                         <div class="card-block m-t-10">
                             <div class="row">
                                 <div class="col-sm-12 m-l-20">
-                                    <h3>My expertises</h3>
+                                    <h3>Expertises of <?= $user->firstname?></h3>
                                 </div>
                             </div>
                             <? foreach($expertise_linktable as $expertise) { ?>
@@ -175,8 +148,10 @@
                                                 <? } ?>
                                             <? } ?>
                                         </div>
-                                        <div class="row">
+                                        <div class="row d-flex js-center">
+                                            <div class="col-sm-11">
                                             <p><?= $expertise->description?></p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -186,7 +161,7 @@
                 </div>
             </div>
             <div class="row d-flex js-center">
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="card card-lg m-t-20 m-b-20">
                         <div class="card-block m-t-10">
                             <div class="row">
@@ -270,7 +245,7 @@
             </div>
             <? if($user->team_id != null) { ?>
                 <div class="row d-flex js-center">
-                    <div class="col-md-9 col-xs-12">
+                    <div class="col-md-12 col-xs-12">
                         <div class="card card-lg m-t-20 m-b-20">
                             <div class="card-block m-t-10 ">
                                 <div class="row">
