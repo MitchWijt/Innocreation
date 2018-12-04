@@ -101,8 +101,9 @@
                             <img class="cartwheelLogo" src="/images/cartwheel.png" alt="" style="width: 30px !important; height: 30px !important;">
                         </a>
                     </div>
-                    <div class="col-3 text-center">
-                        <i class="zmdi zmdi-search searchBtnHomeMobile c-gray f-30"></i>
+                    <div class="col-3 text-center p-relative">
+                        <i class="popoverNotifications zmdi zmdi-notifications c-gray f-30 m-r-10 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>'></i>
+                        <i class="zmdi zmdi-circle c-orange f-13 p-absolute <? if($counterMessages < 1) echo "hidden";?> notificationIdicator" style="top: 8%; left: 50%;"></i>
                     </div>
                     <div class="col-3 text-center">
                         <a href="/innocreatives">
