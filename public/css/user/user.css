@@ -12,3 +12,31 @@
     top: 65%;
     left: 2%;
 }
+
+.text-test{
+    background: -webkit-linear-gradient(#eee, #333);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+
+.textGradientBox {
+    max-height: 50px !important;
+    position: relative;
+    overflow: hidden;
+}
+.textGradientBox .read-more {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    margin: 0; padding: 30px 0;
+
+    /* "transparent" only works here because == rgba(0,0,0,0) */
+    background-image: linear-gradient(to bottom, transparent, black);
+}
+
+.words{
+    word-break: normal;
+}

@@ -36,6 +36,8 @@ class User extends Authenticatable
             echo env("DO_SPACES_URL") . "/users/$this->slug/banner/$this->banner";
         } else {
             return "/images/profilePicturesUsers/defaultProfilePicture.png";
+
+
         }
     }
 

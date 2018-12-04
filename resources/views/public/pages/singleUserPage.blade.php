@@ -66,6 +66,11 @@
                                                         <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
                                                             <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                                                         </div>
+                                                        <? if($expertise->description) { ?>
+                                                            <div class="p-t-40 p-absolute" style="z-index: 100; top: 65%; left: 50%; transform: translate(-50%, -50%);">
+                                                                <a role="button" class="collapsed read-more no-select c-orange" data-toggle="<?= $expertise->id?>" aria-expanded="false" aria-controls="collapseExample">Read experience <i class="zmdi zmdi-chevron-down f-16"></i></a>
+                                                            </div>
+                                                        <? } ?>
                                                         <div class="p-t-40 p-absolute" style="z-index: 100; top: 45%; left: 50%; transform: translate(-50%, -50%);">
                                                             <div class="hr-sm"></div>
                                                         </div>
@@ -150,7 +155,7 @@
                                         </div>
                                         <div class="row d-flex js-center">
                                             <div class="col-sm-11">
-                                            <p><?= $expertise->description?></p>
+                                                <p class="collapse" id="collapse-<?= $expertise->id?>" aria-expanded="false"><?= $expertise->description?></p>
                                             </div>
                                         </div>
                                     </div>
@@ -200,7 +205,7 @@
                                                 <div class="modal-body p-t-0">
                                                     <div class="row modal-header">
                                                         <div class="col-sm-12 d-flex js-center">
-                                                            <img class=" h-100 radius" style="width: 50%;" src="<?=$portfolio->getUrl()?>" alt="<?= $portfolio->title?>">
+                                                            <img class="h-100 radius" style="width: 50%;" src="<?=$portfolio->getUrl()?>" alt="<?= $portfolio->title?>">
                                                         </div>
                                                     </div>
                                                     <div class="row d-flex js-center">
