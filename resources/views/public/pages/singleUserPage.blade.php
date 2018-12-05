@@ -17,24 +17,22 @@
             <div class="row">
                 <div class="col-4">
                     <div class="row d-flex fd-column" style="margin-top: 60px !important">
-                        <p class="f-25 m-b-0" style="margin-left: 9% !important"><?= $user->getName()?></p>
-                        <p class="m-t-0 f-12 c-dark-grey" style="margin-left: 9% !important"><?= $user->country->country?></p>
+                        <p class="f-25 m-b-0" style="margin-left: 9% !important"><?= $user->getName()?> <i class="zmdi zmdi-chevron-down f-18 popoverSingleUser c-pointer" data-toggle="popover" data-content='<?= view("/public/shared/_popoverSendMessage", compact("user", "loggedIn"))?>'></i></p>
+                        <p class="m-t-0 f-12 m-b-0 c-dark-grey" style="margin-left: 9% !important"><?= $user->country->country?></p>
                     </div>
                         <div class="row">
                             <div class="col-6">
 <!--                                --><?// if($loggedIn && \Illuminate\Support\Facades\Session::get("user_id") != $user->id) { ?>
-                                    <form action="/selectChatUser" style="margin-left: 9% !important" method="post">
-                                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                        <input type="hidden" name="receiver_user_id" value="<?= $user->id?>">
-                                        <input type="hidden" name="creator_user_id" value="<?= $loggedIn->id?>">
-                                        <button class="btn btn-inno btn-sm">Send chat message</button>
-                                    </form>
+                                    <label class="switch switch_type2 m-t-10" style="margin-left: 9% !important" role="switch">
+                                        <input data-toggle="popover" type="checkbox" class="switch__toggle popoverSwitch">
+                                        <span class="switch__label"></span>
+                                    </label>
 <!--                                --><?// } ?>
                             </div>
                         </div>
                     <? if($user->team_id != null) { ?>
                         <div class="row">
-                            <div class="col-6 m-t-10">
+                            <div class="col-6">
                                 <span><i class="zmdi zmdi-accounts-alt" style="margin-left: 9% !important"></i> <a class="regular-link" target="_blank" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
                             </div>
                         </div>
@@ -68,7 +66,7 @@
                                                         </div>
                                                         <? if($expertise->description) { ?>
                                                             <div class="p-t-40 p-absolute" style="z-index: 100; top: 65%; left: 50%; transform: translate(-50%, -50%);">
-                                                                <a role="button" class="collapsed read-more no-select c-orange" data-toggle="<?= $expertise->id?>" aria-expanded="false" aria-controls="collapseExample">Read experience <i class="zmdi zmdi-chevron-down f-16"></i></a>
+                                                                <a role="button" class="collapsed read-more no-select c-orange" data-toggle="<?= $expertise->id?>" aria-expanded="false" aria-controls="collapseExample"><button class="btn btn-inno btn-sm">Read experience <i class="zmdi zmdi-chevron-down f-16"></i></button></a>
                                                             </div>
                                                         <? } ?>
                                                         <div class="p-t-40 p-absolute" style="z-index: 100; top: 45%; left: 50%; transform: translate(-50%, -50%);">
@@ -175,26 +173,20 @@
                                 </div>
                             </div>
                             <? foreach($portfolios as $portfolio) { ?>
+                                <div class="carousel carousel-default m-b-30 carousel-default">
+                                    <ul class="row">
+                                        <? foreach($portfolio->getFiles() as $file) { ?>
+                                            <li class="@desktop col-3 expertiseBoxHome @elsehandheld col-4 @enddesktop td-none" style="list-style-type: none">
+                                                <div class="card m-t-20 m-b-20">
+                                                    <div class="card-block expertiseCard p-relative c-pointer" data-url="/" style="max-height: 180px !important">
+                                                        <div class="contentPortfolio" style="background: url('<?= $file->getUrl()?>');"></div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        <? } ?>
+                                    </ul>
+                                </div>
                                 <div class="portfolio">
-                                    <div class="row d-flex js-center @mobile p-l-30 p-r-30 @endmobile">
-                                        <div class="col-sm-11">
-                                            <div class="d-flex fd-row">
-                                                <div class="d-flex js-center @mobile m-b-10 @endmobile">
-                                                    <div class="avatar openPortfolioModal c-pointer m-t-10 m-r-15" style="background: url('<?= $portfolio->getUrl()?>')"></div>
-                                                </div>
-                                                <div class="col-sm-11 p-0">
-                                                    <p class="f-21 m-0"><?= $portfolio->title?></p>
-                                                    <hr>
-                                                    @mobile
-                                                        <p><?= mb_strimwidth($portfolio->description, 0, 100, "... <span class='c-orange openPortfolioModal underline c-pointer'>read more</span>");?></p>
-                                                    @elsedesktop
-                                                        <p><?= mb_strimwidth($portfolio->description, 0, 160, "... <span class='c-orange openPortfolioModal underline c-pointer'>read more</span>");?></p>
-                                                    @endmobile
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     {{--===========MODAL=========--}}
                                     <div class="modal fade portfolioModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg" role="document">
@@ -283,6 +275,10 @@
             </div>
         </div>
     </div>
+    <script>
+        $('.popoverSingleUser').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'});
+
+    </script>
 @endsection
 @section('pagescript')
     <script src="/js/pages/singleUserPage.js"></script>

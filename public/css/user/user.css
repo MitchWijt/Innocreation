@@ -40,3 +40,13 @@
 .words{
     word-break: normal;
 }
+
+.contentPortfolio{
+    width: 100%;
+    min-height: 180px !important;
+    max-height: 180px !important;
+
+    background-size:     cover !important;                      /* <------ */
+    background-repeat:   no-repeat !important;
+    background-position: center center !important;
+}
