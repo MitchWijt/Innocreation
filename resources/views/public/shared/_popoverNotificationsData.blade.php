@@ -1,5 +1,8 @@
 <? foreach($notifications as $notification) { ?>
     <?
+        $today = new DateTime(date("Y-m-d H:i:s"));
+        $date = new DateTime(date("Y-m-d H:i:s",strtotime($notification['time'])));
+        $interval = $date->diff($today);
         if(isset($notification['receiver'])){
             $sender = ['firstname' => "Innocreation", 'profilePic' => '/images/cartwheel.png'];
             if($notification['receiver'] != 1){
@@ -29,6 +32,9 @@
                                 <p>New notification from <?= $sender['firstname']?> </p>
                             <? } ?>
                         <? } ?>
+                        <div class="pull-right">
+                            <i class="c-dark-grey f-12"><?= \App\Services\GenericService::dateDiffToString($interval)?></i>
+                        </div>
                     </div>
                 </div>
             </a>
