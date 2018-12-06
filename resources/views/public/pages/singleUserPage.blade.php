@@ -166,20 +166,28 @@
             <div class="row d-flex js-center">
                 <div class="col-md-12">
                     <div class="card card-lg m-t-20 m-b-20">
-                        <div class="card-block m-t-10">
+                        <div class="card-block m-t-10" style="overflow: hidden !important">
                             <div class="row">
-                                <div class="col-sm-12 m-l-20">
+                                <div class="col-sm-12 m-l-20 m-b-20">
                                     <h3>My portfolio</h3>
                                 </div>
                             </div>
                             <? foreach($portfolios as $portfolio) { ?>
-                                <div class="carousel carousel-default m-b-30 carousel-default">
-                                    <ul class="row">
+                                <div class="row">
+                                    <div class="col-12 m-l-20">
+                                        <h3><?= $portfolio->title?></h3>
+                                    </div>
+                                </div>
+                                <div class="carousel carousel-default m-b-30 carousel-default carousel-portfolio">
+                                    <ul class="p-l-0">
                                         <? foreach($portfolio->getFiles() as $file) { ?>
-                                            <li class="@desktop col-3 expertiseBoxHome @elsehandheld col-4 @enddesktop td-none" style="list-style-type: none">
-                                                <div class="card m-t-20 m-b-20">
-                                                    <div class="card-block expertiseCard p-relative c-pointer" data-url="/" style="max-height: 180px !important">
-                                                        <div class="contentPortfolio" style="background: url('<?= $file->getUrl()?>');"></div>
+                                            <li class="td-none portfolioFileItem p-r-10 p-l-10" style="list-style-type: none; min-width: 350px !important; z-index: -1 !important">
+                                                <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
+                                                    <div class="p-relative c-pointer" data-url="/" style="max-height: 180px">
+                                                        <div class="p-t-40 p-absolute hidden descriptionPortfolioItem" style="z-index: 99; top: 70%; left: 50%; transform: translate(-50%, -50%);">
+                                                            <p class="c-white f-12"><?= $file->description?></p>
+                                                        </div>
+                                                        <div class="contentPortfolio" style="background: url('<?= $file->getUrl()?>'); z-index: -1 !important"></div>
                                                     </div>
                                                 </div>
                                             </li>

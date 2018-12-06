@@ -43,10 +43,36 @@
 
 .contentPortfolio{
     width: 100%;
-    min-height: 180px !important;
-    max-height: 180px !important;
-
-    background-size:     cover !important;                      /* <------ */
+    min-height: 180px;
+    background-size:     cover !important;
     background-repeat:   no-repeat !important;
     background-position: center center !important;
+
+}
+
+.contentPortfolio {
+    transition: all .8s ease-in-out;
+}
+.contentPortfolio:hover {
+    transform: scale(1.5);
+    background-size:     cover !important;
+    background-repeat:   no-repeat !important;
+    background-position: center center !important;
+    width: 100%;
+    min-height: 180px;
+    border: none !important;
+    box-shadow: 0 0 200px rgba(0,0,0,0.9) inset;
+}
+
+.portfolioFileItem:hover {
+    z-index: 999 !important;
+    border: none !important
+}
+
+.portfolioItemCard:hover{
+    z-index: 99 !important;
+    border: none !important
+}
+.carousel-portfolio{
+    overflow: visible !important;
 }

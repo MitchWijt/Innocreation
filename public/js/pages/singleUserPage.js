@@ -19,3 +19,6 @@ new floatingCarousel('.carousel-default', {
 
 });
 
+$(".portfolioFileItem").on("mouseover",function () {
+
+});
