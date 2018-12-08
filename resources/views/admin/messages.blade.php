@@ -145,7 +145,7 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/getstream/dist/js_min/getstream.js"></script>
+    <script src="/js/stream/stream.min.js"></script>
     <script>
         $(".chat-card").on("click",function () {
             var user_id = $(this).data("user-id");

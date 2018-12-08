@@ -149,7 +149,7 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/getstream/dist/js_min/getstream.js"></script>
+    <script src="/js/stream/stream.min.js"></script>
     <script type="text/javascript">
         var client = stream.connect('ujpcaxtcmvav', null, '40873');
         var user1 = client.feed('user', '<?= $user_id?>', '<?= $streamToken?>');
