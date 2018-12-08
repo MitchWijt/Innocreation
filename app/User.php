@@ -316,6 +316,15 @@ class User extends Authenticatable
         return $bool;
     }
 
+    public function hasSwitched(){
+        $connectRequest = ConnectRequestLinktable::select("*")->where("receiver_user_id", $this->id)->where("sender_user_id", Session::get("user_id"))->Orwhere("receiver_user_id", Session::get("user_id"))->where("sender_user_id", $this->id)->first();
+        if(count($connectRequest) > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * The attributes that are mass assignable.
      *

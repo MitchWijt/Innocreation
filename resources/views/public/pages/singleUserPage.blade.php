@@ -22,12 +22,10 @@
                     </div>
                         <div class="row">
                             <div class="col-6">
-<!--                                --><?// if($loggedIn && \Illuminate\Support\Facades\Session::get("user_id") != $user->id) { ?>
-                                    <label class="switch switch_type2 m-t-10" style="margin-left: 9% !important" role="switch">
-                                        <input data-toggle="popover" type="checkbox" class="switch__toggle popoverSwitch">
-                                        <span class="switch__label"></span>
-                                    </label>
-<!--                                --><?// } ?>
+                                <label class="switch switch_type2 m-t-10" style="margin-left: 9% !important" role="switch">
+                                    <input data-toggle="popover" <? if(isset($loggedIn) && $loggedIn->hasSwitched()) echo "checked disabled"; ?> data-content='<?= view("/public/shared/switch/_popoverSwitch", compact("loggedIn", "user"))?>' type="checkbox" class="switch__toggle popoverSwitch">
+                                    <span class="switch__label"></span>
+                                </label>
                             </div>
                         </div>
                     <? if($user->team_id != null) { ?>
@@ -173,7 +171,7 @@
                                 </div>
                             </div>
                             <? foreach($portfolios as $portfolio) { ?>
-                                <div class="row">
+                                <div class="row" id="test">
                                     <div class="col-12 m-l-20">
                                         <h3><?= $portfolio->title?></h3>
                                     </div>
@@ -183,11 +181,22 @@
                                         <? foreach($portfolio->getFiles() as $file) { ?>
                                             <li class="td-none portfolioFileItem p-r-10 p-l-10" style="list-style-type: none; min-width: 350px !important; z-index: -1 !important">
                                                 <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
-                                                    <div class="p-relative c-pointer" data-url="/" style="max-height: 180px">
-                                                        <div class="p-t-40 p-absolute hidden descriptionPortfolioItem" style="z-index: 99; top: 70%; left: 50%; transform: translate(-50%, -50%);">
-                                                            <p class="c-white f-12"><?= $file->description?></p>
+                                                    <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
+                                                        <div class="contentPortfolio" data-id="<?= $file->id?>" style="background: url('<?= $file->getUrl()?>'); z-index: -1 !important">
+                                                            <? if($file->title != null ) { ?>
+                                                                <div id="content" style="display: none;">
+                                                                    <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 75%; left: 52%; !important; transform: translate(-50%, -50%);">
+                                                                        <p class="c-white f-9" style="width: 300px !important"><?= $file->description?></p>
+                                                                    </div>
+                                                                    <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 50%; left: 56%; width: 100%; transform: translate(-50%, -50%);">
+                                                                        <p class="c-white f-12"><?= $file->title?></p>
+                                                                    </div>
+                                                                    <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 55%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
+                                                                        <hr class="col-8">
+                                                                    </div>
+                                                                </div>
+                                                            <? } ?>
                                                         </div>
-                                                        <div class="contentPortfolio" style="background: url('<?= $file->getUrl()?>'); z-index: -1 !important"></div>
                                                     </div>
                                                 </div>
                                             </li>
@@ -285,6 +294,14 @@
     </div>
     <script>
         $('.popoverSingleUser').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'});
+        $('.popoverSwitch').popover({ trigger: "click" , html: true, animation:false, placement: 'top'});
+
+        $(document).on("click", ".switch__toggle", function () {
+            if (!$(this).is(":checked")) {
+                $(".popoverSwitch").popover('hide');
+            }
+
+        });
 
     </script>
 @endsection

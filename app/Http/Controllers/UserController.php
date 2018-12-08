@@ -478,8 +478,11 @@ class UserController extends Controller
                 $userChat->receiver_user_id = $receiver_user_id;
                 $userChat->created_at = date("Y-m-d H:i:s");
                 $userChat->save();
+                return redirect("/my-account/chats?user_chat_id=$userChat->id");
             }
-            return redirect("/my-account/chats");
+            $id = $existingUserChat->First()->id;
+            return redirect("/my-account/chats?user_chat_id=$id");
+
         }
     }
 
@@ -1489,5 +1492,10 @@ class UserController extends Controller
 
     public function userAccountPrivacySettingsAction(UserPrivacySettings $userPrivacySettings){
         return $userPrivacySettings->userAccountPrivacySettingsIndex();
+    }
+
+    public function sendConnectRequestAction(Request $request, SwitchUserWork $switch){
+        $switch->createNewConnectRequest($request);
+        return redirect('/my-account');
     }
 }

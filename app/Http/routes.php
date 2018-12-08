@@ -60,6 +60,8 @@ Route::get("/resetPassword/{hash}", "UserController@resetPasswordIndexAction");
 
 Route::post("/user/resetPassword", "UserController@resetPasswordAction");
 
+Route::post("/user/sendConnectRequest", "UserController@sendConnectRequestAction");
+
 //User Expertises
 
 Route::get("/my-account/expertises", "UserController@userAccountExpertises");
@@ -631,8 +633,6 @@ Route::post("/feed/postUserWorkComment", "FeedController@postUserWorkCommentActi
 Route::post("/feed/deleteUserWorkPost", "FeedController@deleteUserWorkPostAction");
 
 Route::post("/feed/editUserWorkPost", "FeedController@editUserWorkPostAction");
-
-Route::post("/feed/sendConnectRequest", "FeedController@sendConnectRequestAction");
 
 //========================CHECKOUT/PACKAGES========================
 

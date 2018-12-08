@@ -53,6 +53,7 @@
 .contentPortfolio {
     transition: all .8s ease-in-out;
 }
+
 .contentPortfolio:hover {
     transform: scale(1.5);
     background-size:     cover !important;
@@ -64,6 +65,14 @@
     box-shadow: 0 0 200px rgba(0,0,0,0.9) inset;
 }
 
+#content{
+    transition: all .8s ease-in-out;
+}
+.contentPortfolio:hover #content{
+    display: block !important;
+}
+
+
 .portfolioFileItem:hover {
     z-index: 999 !important;
     border: none !important
@@ -73,6 +82,6 @@
     z-index: 99 !important;
     border: none !important
 }
-.carousel-portfolio{
+.carousel-default{
     overflow: visible !important;
 }

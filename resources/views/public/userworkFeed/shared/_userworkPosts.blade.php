@@ -52,7 +52,7 @@
                         <div class="@mobile col-6 @elsedesktop col-sm-6 @endmobile p-l-25 userSwitch">
                             <? if((isset($user) && $user->id != $userWorkPost->user_id) || !isset($user)) { ?>
                                 <label class="switch switch_type2 m-t-10  m-l-15" role="switch">
-                                    <input data-toggle="popover" <? if(isset($user) && $userWorkPost->hasSwitched()) echo "checked disabled"; ?> data-content='<?= $userWorkPost->getPopoverSwitchView()?>' type="checkbox" class="switch__toggle popoverSwitch">
+                                    <input data-toggle="popover" <? if(isset($user) && $userWorkPost->user->hasSwitched()) echo "checked disabled"; ?> data-content='<?= $userWorkPost->getPopoverSwitchView()?>' type="checkbox" class="switch__toggle popoverSwitch">
                                     <span class="switch__label"></span>
                                 </label>
                             <? } ?>

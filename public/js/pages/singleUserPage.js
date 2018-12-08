@@ -12,13 +12,21 @@ $(".read-more").on("click",function () {
 new floatingCarousel('.carousel-default', {
     autoScroll : true,
     autoScrollDirection : 'right',
-    autoScrollSpeed : 50000,
+    autoScrollSpeed : 70000,
     enableTouchEvents : false,
     touchOverflowHidden : false,
     reverseOnTouch : false
 
 });
 
-$(".portfolioFileItem").on("mouseover",function () {
-
+$(".contentPortfolio").on("mouseover",function () {
+    var id = $(this).data("id");
+    $("#portfolioFileCont-" + id).fadeIn();
 });
+//
+// $(".contentPortfolio").on("mouseleave",function () {
+//     var id = $(this).data("id");
+//     setTimeout(function(){
+//     $(".cont-" + id).addClass("hidden");
+//     }, 800);
+// });
