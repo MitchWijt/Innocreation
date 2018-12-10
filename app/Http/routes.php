@@ -46,6 +46,8 @@ Route::post("/home/sendContactForm", "HomeController@sendContactFormAction");
 Route::get("/faq", "PageController@faqAction");
 
 
+//========================NOTIFICATIONS================================
+Route::post("/notification/getNotifications", "NotificationController@getNotificationsAction");
 //========================USERACCOUNT================================
 
 Route::get("/account", "UserController@userAccount");
@@ -59,6 +61,8 @@ Route::post("/user/sendPasswordResetLink", "UserController@sendPasswordResetLink
 Route::get("/resetPassword/{hash}", "UserController@resetPasswordIndexAction");
 
 Route::post("/user/resetPassword", "UserController@resetPasswordAction");
+
+Route::post("/user/sendConnectRequest", "UserController@sendConnectRequestAction");
 
 //User Expertises
 
@@ -91,16 +95,30 @@ Route::post("/filterFavExpertises", "UserController@filterFavExpertises");
 
 Route::post("/my-account/saveUserProfilePicture", "UserController@saveUserProfilePictureAction");
 
+Route::post("/user/editBannerImage", "UserController@editBannerImageAction");
+
+
 // User Portfolio
 Route::get("/my-account/portfolio", "UserController@userAccountPortfolio");
 
-Route::post("/my-account/saveUserPortfolio", "UserController@saveUseraccountPortfolio");
+Route::post("/user/addUserAccountPortfolio", "UserController@addUserAccountPortfolio");
 
 Route::post("/my-account/editUserPortfolio", "UserController@editUserPortfolio");
 
 Route::post("/user/savePortfolioAsUserWork", "UserController@savePortfolioAsUserWorkAction");
 
 Route::post("/deleteUserPortfolio", "UserController@deleteUserPortfolio");
+
+Route::get("/my-account/portfolio/{slug}", "UserController@userPortfolioDetail");
+
+Route::post("/user/addImagesPortfolio", "UserController@addImagesPortfolio");
+
+Route::post("/user/editTitlePortfolioImage", "UserController@editTitlePortfolioImage");
+
+Route::post("/user/editDescPortfolioImage", "UserController@editDescPortfolioImage");
+
+Route::post("/user/removePortfolioImage", "UserController@removePortfolioImage");
+
 // User chats
 Route::get("/my-account/chats", "UserController@userAccountChats");
 
@@ -631,8 +649,6 @@ Route::post("/feed/postUserWorkComment", "FeedController@postUserWorkCommentActi
 Route::post("/feed/deleteUserWorkPost", "FeedController@deleteUserWorkPostAction");
 
 Route::post("/feed/editUserWorkPost", "FeedController@editUserWorkPostAction");
-
-Route::post("/feed/sendConnectRequest", "FeedController@sendConnectRequestAction");
 
 //========================CHECKOUT/PACKAGES========================
 

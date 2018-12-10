@@ -77,3 +77,85 @@ $(".saveAsUserWork").on("click",function () {
 
     $(".saveAsUserWorkForm-" + id).submit();
 });
+
+$("#fileBox").on("change",function () {
+   $(".addImagesPortfolio").submit();
+});
+
+$(document).ready(function () {
+    $(".descPortImg").removeClass("hidden").toggle();
+    $(".titlePortImg").removeClass("hidden").toggle();
+    $(".hrPortImg").removeClass("hidden").toggle();
+});
+
+
+$(".editPortfolioImage").on("click",function () {
+   var id = $(this).data("file-id");
+
+   $(".title-" + id).toggle().focus();
+   $(".hr-" + id).toggle();
+   $(".desc-" + id).toggle();
+   $(".contentFixed").attr("style", "display:none !important");
+});
+
+$(".titlePortImg").on("change",function () {
+    var file_id = $(this).data("id");
+    var title = $(this).val();
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/user/editTitlePortfolioImage",
+        data: {'fileId': file_id, 'title': title},
+        success: function (data) {
+            $(".titlePortFixed-" + file_id).text(title);
+            $(".title-" + file_id).toggle();
+            $(".hr-" + file_id).toggle();
+            $(".desc-" + file_id).toggle();
+            if(!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                $('.contentFixed').attr("style", "display:none");
+            } else {
+                $('.contentFixed').attr("style", "display:block");
+            }
+        }
+    });
+});
+
+$(".descPortImg").on("change",function () {
+    var file_id = $(this).data("id");
+    var desc = $(this).val();
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/user/editDescPortfolioImage",
+        data: {'fileId': file_id, 'description' : desc},
+        success: function (data) {
+            $(".descPortFixed-" + file_id).text(desc);
+            $(".title-" + file_id).toggle();
+            $(".hr-" + file_id).toggle();
+            $(".desc-" + file_id).toggle();
+            if(!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                $('.contentFixed').attr("style", "display:none");
+            } else {
+                $('.contentFixed').attr("style", "display:block");
+            }
+        }
+    });
+});
+
+$(".removeImage").on("click",function () {
+    var id = $(this).data("id");
+    $(".removeImageForm-" + id).submit();
+});
+

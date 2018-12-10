@@ -29,7 +29,16 @@ class User extends Authenticatable
         } else {
             return "/images/profilePicturesUsers/defaultProfilePicture.png";
         }
-//        return "/images/profilePicturesUsers/" . $this->profile_picture;
+    }
+
+    public function getBanner(){
+        if($this->banner != "banner-default.jpg") {
+            echo env("DO_SPACES_URL") . "/users/$this->slug/banner/$this->banner";
+        } else {
+            return "/images/banner-default.jpg";
+
+
+        }
     }
 
 
@@ -305,6 +314,15 @@ class User extends Authenticatable
             $bool = true;
         }
         return $bool;
+    }
+
+    public function hasSwitched(){
+        $connectRequest = ConnectRequestLinktable::select("*")->where("receiver_user_id", $this->id)->where("sender_user_id", Session::get("user_id"))->Orwhere("receiver_user_id", Session::get("user_id"))->where("sender_user_id", $this->id)->first();
+        if(count($connectRequest) > 0){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

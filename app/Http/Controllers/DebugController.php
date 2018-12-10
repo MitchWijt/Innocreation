@@ -8,6 +8,7 @@ use App\NeededExpertiseLinktable;
 use App\Team;
 use App\UserChat;
 use App\UserMessage;
+use App\UserPortfolioFile;
 use App\UserWork;
 use App\WorkspaceShortTermPlannerBoard;
 use Illuminate\Console\Scheduling\Schedule;
@@ -40,6 +41,7 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
+
         die('test');
     }
 }

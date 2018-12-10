@@ -15,6 +15,7 @@ use App\User;
 use App\JoinRequestLinktable;
 use App\Page;
 use App\UserPortfolio;
+use App\UserPortfolioFile;
 use Illuminate\Http\Request;
 use Session;
 

@@ -13,7 +13,6 @@ $(document).ready(function () {
 // });
 
 $(document).on("click touchstart", ".closePopover", function () {
-    console.log("gfdsa");
     var _this = $('[data-toggle="popover"]');
     $(_this).popover("hide");
 });
@@ -70,6 +69,36 @@ $('.popoverHeader').popover({ trigger: "click" , html: true, animation:false, pl
         _this.addClass("popover-black");
     });
 
+//NOTIFICATIONSBOX
+$('.popoverNotifications').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'})
+    .on("click", function () {
+        var _this = $('.popover');
+        _this.addClass("popover-notification");
+    });
+
+$('.popoverNotifications').on('hide.bs.popover', function () {
+    var _this = $('.popover');
+    _this.addClass("popover-black");
+});
+
+$(document).on("click", ".popoverNotifications", function () {
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/notification/getNotifications",
+        data: "",
+        success: function (data) {
+            $(".notificationsContent").html(data);
+        }
+    });
+});
+
 $(document).on("click", ".ui-menu-item-wrapper", function () {
     var title = $(this).text();
     $.ajax({
@@ -102,4 +131,12 @@ $(document).on("click touchstart", ".closeSearchBar", function (e) {
     $(".searchBarBox").addClass("hidden");
     e.stopPropagation();
     e.preventDefault();
+});
+
+$(document).on("click", ".input-file", function () {
+   $("#fileBox").click();
+});
+
+$("#tagsHeader").on("keyup", function () {
+    $(".ui-menu-item-wrapper").addClass("autocomplete-black");
 });

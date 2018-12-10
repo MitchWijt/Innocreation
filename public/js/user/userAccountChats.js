@@ -12,6 +12,7 @@ $('.searchChatUsers').keyup(function(){
 
 $(document).ready(function () {
    var userChatId = $(".userChatId").val();
+   console.log(userChatId);
    if(userChatId != 0){
        $(".chat-card").each(function () {
           if($(this).data("chat-id") == userChatId){
@@ -98,7 +99,6 @@ $(".chat-card").on("click",function () {
                $(".userChatMessages").each(function () {
                    var userChatId = $(this).data("chat-id");
                    if(userChatId == data["new"][0]["userChat"]){
-                       console.log("test");
                        var message = $('.messageReceivedAjax').first().clone();
                        var allMessages = $(this);
                        $(message).appendTo(allMessages);
@@ -111,12 +111,10 @@ $(".chat-card").on("click",function () {
            }
 
            function successCallback() {
-               // console.log('now listening to changes in realtime');
            }
 
            function failCallback(data) {
                alert('something went wrong, check the console logs');
-               console.log(data);
            }
            user1.subscribe(callback).then(successCallback, failCallback);
            $(this).collapse('toggle');

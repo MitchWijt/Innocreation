@@ -103,6 +103,14 @@ class AdminController extends Controller
         $userMessage->message = $message;
         $userMessage->created_at = date("Y-m-d H:i:s");
         $userMessage->save();
+
+        $client = $this->getService("stream");
+        $messageFeed = $client->feed('user', $userId);
+        $timeSent = $this->getTimeSent();
+
+        // Add the activity to the feed
+        $data = ["actor" => "$userId", "receiver" => 1, "userChat" => "$userChat->id", "message" => "$message", "timeSent" => "$timeSent", "verb" => "userMessage", "object" => "3",];
+        $messageFeed->addActivity($data);
         return redirect("/admin/messages");
 
     }

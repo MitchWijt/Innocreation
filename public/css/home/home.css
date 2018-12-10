@@ -18,7 +18,7 @@
     outline: none !important;
 }
 
-.ui-menu-home{
+.ui-menu{
     margin-top: 0px !important;
     border: none !important;
     border-top-right-radius: 6px !important;
@@ -32,9 +32,13 @@
     height: 200px;
     overflow: scroll;
     position: absolute !important;
-    top: 10% !important;
+    top: 50%;
     z-index: 300 !important;
     padding-left: 0 !important;
+}
+
+.ui-menu-home{
+    top: 120% !important;
 }
 
 .ui-menu-item-wrapper{

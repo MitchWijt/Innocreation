@@ -32,7 +32,6 @@ class SwitchUserWork
         $connectRequest = new $this->requestModal;
         $connectRequest->receiver_user_id = $request->input("receiver_user_id");
         $connectRequest->sender_user_id = $request->input("sender_user_id");
-        $connectRequest->user_work_id = $request->input("user_work_id");
         $connectRequest->message = $request->input("connectMessage");
         $connectRequest->accepted = 0;
         $connectRequest->created_at = date("Y-m-d H:i:s");
@@ -46,6 +45,16 @@ class SwitchUserWork
         $connections = ConnectRequestLinktable::select("*")
             ->where("receiver_user_id", $id)
             ->orWhere("sender_user_id", $id)->get();
+        return $connections;
+    }
+
+    public function listAcceptedConnections($id)
+    {
+        $connections = ConnectRequestLinktable::select("*")
+            ->where("receiver_user_id", $id)
+            ->orWhere("sender_user_id", $id)
+            ->where("accepted", 1)
+            ->get();
         return $connections;
     }
 

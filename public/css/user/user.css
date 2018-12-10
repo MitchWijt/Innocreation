@@ -1,0 +1,130 @@
+.banner{
+    margin-top: 10px !important;
+    min-height: 250px;
+    max-height: 250px;
+    width: 100% !important;
+    background-size:     cover !important;
+    background-repeat:   no-repeat !important;
+    background-position: center center !important;
+}
+
+.userProfilePic{
+    top: 65%;
+    left: 2%;
+}
+
+.text-test{
+    background: -webkit-linear-gradient(#eee, #333);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+
+.textGradientBox {
+    max-height: 50px !important;
+    position: relative;
+    overflow: hidden;
+}
+.textGradientBox .read-more {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    margin: 0; padding: 30px 0;
+
+    /* "transparent" only works here because == rgba(0,0,0,0) */
+    background-image: linear-gradient(to bottom, transparent, black);
+}
+
+.words{
+    word-break: normal;
+}
+
+.contentPortfolio{
+    width: 100%;
+    min-height: 180px;
+    background-size:     cover !important;
+    background-repeat:   no-repeat !important;
+    background-position: center center !important;
+
+}
+
+.contentPortfolio {
+    transition: all .8s ease-in-out;
+}
+
+.contentPortfolio:hover {
+    transform: scale(1.5);
+    background-size:     cover !important;
+    background-repeat:   no-repeat !important;
+    background-position: center center !important;
+    width: 100%;
+    min-height: 180px;
+    border: none !important;
+    box-shadow: 0 0 200px rgba(0,0,0,0.9) inset;
+}
+
+.contentPortfolioNoScale{
+    width: 100%;
+    min-height: 180px;
+    background-size:     cover !important;
+    background-repeat:   no-repeat !important;
+    background-position: center center !important;
+    box-shadow: 0 0 200px rgba(0,0,0,0.9) inset !important;
+}
+
+#content{
+    transition: all .8s ease-in-out;
+}
+.contentPortfolio:hover #content{
+    display: block !important;
+}
+
+
+.portfolioFileItem:hover {
+    z-index: 999 !important;
+    border: none !important
+}
+
+.portfolioItemCard:hover{
+    z-index: 99 !important;
+    border: none !important
+}
+.carousel-default{
+    overflow: visible !important;
+}
+
+.editBannerImage{
+    display: none !important;
+    position: absolute;
+    top: 4%;
+    right: 1%;
+}
+
+.banner:hover .editBannerImage{
+    display: block !important;
+}
+
+.editBtn{
+    border: 1px solid #C9CCCF;
+    border-radius: 10px;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.editBtnDark{
+    border: 1px solid #77787a;
+    border-radius: 10px;
+    padding: 8px;
+    cursor: pointer;
+}
+
+
+.editBtnDark:hover{
+    border: 1px solid #FF6100;
+}
+
+.editBtn:hover{
+    border: 1px solid #FF6100;
+}

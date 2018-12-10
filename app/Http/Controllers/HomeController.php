@@ -27,11 +27,11 @@ class HomeController extends Controller
         $expertises = Expertises::select("*")->get();
         $limit = 7;
         $expertises1Array = [];
-        $expertises1 = Expertises::select("*")->limit($limit)->get();
+        $expertises1 = Expertises::select("*")->limit($limit)->inRandomOrder()->get();
         foreach($expertises1 as $exp1){
             array_push($expertises1Array, $exp1->id);
         }
-        $expertises2 = Expertises::select("*")->whereNotIn("id", $expertises1Array)->limit($limit)->get();
+        $expertises2 = Expertises::select("*")->whereNotIn("id", $expertises1Array)->limit($limit)->inRandomOrder()->get();
 
         if(Session::has("user_id")){
             $loggedIn = true;

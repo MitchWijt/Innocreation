@@ -15,6 +15,7 @@ use App\JoinRequestLinktable;
 use App\MembershipPackage;
 use App\Page;
 use App\ServiceReview;
+use App\Services\UserAccount\UserAccountPortfolioService;
 use App\SplitTheBillLinktable;
 use App\SupportTicket;
 use App\SupportTicketMessage;
@@ -38,6 +39,8 @@ use App\Services\AppServices\MailgunService as Mailgun;
 use App\Services\AppServices\UnsplashService as Unsplash;
 use App\Services\UserAccount\UserExpertises as UserExpertises;
 use App\Services\UserAccount\UserPrivacySettingsService as UserPrivacySettings;
+use App\Services\UserAccount\EditProfileImage as EditProfileImage;
+use App\Services\UserAccount\UserAccountPortfolioService as UserPortfolioService;
 
 
 use App\Http\Requests;
@@ -96,6 +99,10 @@ class UserController extends Controller
         }
         $user->save();
         return redirect("/my-account/privacy-settings");
+    }
+
+    public function editBannerImageAction(Request $request, EditProfileImage $editProfileImage){
+        return $editProfileImage->editBannerImage($request);
     }
 
     /**
@@ -304,50 +311,32 @@ class UserController extends Controller
             $user = User::select("*")->where("id", $user_id)->first();
             $userPortfolios = UserPortfolio::select("*")->where("user_id", $user_id)->get();
             $amountPortfolios = count($userPortfolios);
-            return view("/public/user/userAccountPortfolio", compact("userPortfolios", "amountPortfolios", "user"));
+            return view("/public/user/portfolio/userAccountPortfolio", compact("userPortfolios", "amountPortfolios", "user"));
         }
     }
 
-    public function saveUseraccountPortfolio(Request $request){
-        $user_id = $request->input("user_id");
-        $portfolio_titles = $request->input("portfolio_title");
-        $portfolio_image = $request->file("portfolio_image");
-        $portfolio_links = $request->input("portfolio_link");
-        $portfolio_descriptions = $request->input("description_portfolio");
+    public function addUserAccountPortfolio(Request $request, UserPortfolioService $userPortfolioService){
+        return $userPortfolioService->saveNewPortfolio($request);
+    }
 
-        $user = User::select("*")->where("id", $user_id)->first();
+    public function userPortfolioDetail($slug, UserAccountPortfolioService $userPortfolioService){
+        return $userPortfolioService->portfolioDetailPage($slug);
+    }
 
+    public function addImagesPortfolio(Request $request, UserAccountPortfolioService $userPortfolioService){
+        return $userPortfolioService->addImagesPortfolio($request);
+    }
 
+    public function editTitlePortfolioImage(Request $request, UserAccountPortfolioService $userPortfolioService){
+        $userPortfolioService->editTitleImage($request);
+    }
 
-            $rowCount = count($portfolio_titles);
+    public function editDescPortfolioImage(Request $request, UserAccountPortfolioService $userPortfolioService){
+        $userPortfolioService->editDescImage($request);
+    }
 
-            for ($i = 0; $i < $rowCount; $i++) {
-                $userPortfolio = new UserPortfolio;
-                $userPortfolio->user_id = $user_id;
-                $userPortfolio->title = $portfolio_titles[$i];
-                $userPortfolio->description = $portfolio_descriptions[$i];
-                if($portfolio_links != null) {
-                    $userPortfolio->link = $portfolio_links[$i];
-                }
-
-                if($portfolio_image[$i] != null) {
-                    $file = $portfolio_image[$i];
-                    $size = $this->formatBytes($file->getSize());
-                    if($size < 8) {
-                        $filename = strtolower(str_replace(" ","-",$userPortfolio->title)) . "." . $file->getClientOriginalExtension();
-                        Storage::disk('spaces')->put("users/$user->slug/portfolios/" . $filename, file_get_contents($file->getRealPath()), "public");
-
-                        $userPortfolio->image = $filename;
-                        $userPortfolio->created_at = date("Y-m-d H:i:s");
-                        $userPortfolio->save();
-                        return redirect($_SERVER["HTTP_REFERER"]);
-                    } else {
-                        return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
-                    }
-                }
-            }
-            return redirect($_SERVER["HTTP_REFERER"]);
-
+    public function removePortfolioImage(Request $request, UserAccountPortfolioService $userPortfolioService){
+        return $userPortfolioService->removeImage($request);
     }
 
     public function editUserPortfolio(Request $request){
@@ -402,6 +391,7 @@ class UserController extends Controller
             }
             if (request()->has('user_chat_id')) {
                 $urlParameterChat = request()->user_chat_id;
+                Session::set("userChatId", $urlParameterChat);
             }
             $innocreationChat = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", 1)->first();
             $userChats = UserChat::select("*")->where("creator_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->get();
@@ -478,8 +468,11 @@ class UserController extends Controller
                 $userChat->receiver_user_id = $receiver_user_id;
                 $userChat->created_at = date("Y-m-d H:i:s");
                 $userChat->save();
+                return redirect("/my-account/chats?user_chat_id=$userChat->id");
             }
-            return redirect("/my-account/chats");
+            $id = $existingUserChat->First()->id;
+            return redirect("/my-account/chats?user_chat_id=$id");
+
         }
     }
 
@@ -1489,5 +1482,10 @@ class UserController extends Controller
 
     public function userAccountPrivacySettingsAction(UserPrivacySettings $userPrivacySettings){
         return $userPrivacySettings->userAccountPrivacySettingsIndex();
+    }
+
+    public function sendConnectRequestAction(Request $request, SwitchUserWork $switch){
+        $switch->createNewConnectRequest($request);
+        return redirect('/my-account');
     }
 }

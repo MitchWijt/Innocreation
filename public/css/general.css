@@ -413,6 +413,12 @@ hr{
     margin-top: 5px !important;
 }
 
+.hr-white{
+    border-top: 1px solid #C9CCCF !important;
+    margin-bottom: 5px !important;
+    margin-top: 5px !important;
+}
+
 .c-pointer{
     cursor: pointer;
 }
@@ -577,4 +583,12 @@ hr{
 
 .f-z-rem{
     font-size: 2.5rem;
+}
+
+.notificationHover:hover{
+    background: #77787a;
+}
+
+.autocomplete-black{
+    color: #000 !important;
 }
