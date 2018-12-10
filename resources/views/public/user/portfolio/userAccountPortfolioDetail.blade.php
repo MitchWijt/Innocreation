@@ -36,13 +36,13 @@
                                 <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" style="background: url('<?= $file->getUrl()?>'); z-index: -1 !important">
                                     <? if($file->title != null ) { ?>
                                         <div id="content" class="contentFixed" @desktop style="display: none;" @enddesktop>
-                                            <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 75%; left: 55%; !important; transform: translate(-50%, -50%);">
-                                                <p class="c-white f-9 descPortFixed-<?=$file->id?>" style="width: 340px !important"><?= $file->description?></p>
+                                            <div class="p-absolute cont-<?= $file->id?>" style="top: 42%; left: 50%; !important; transform: translate(-50%, -50%);">
+                                                <p class="c-white f-9 p-t-40 descPortFixed-<?=$file->id?>" style="width: 310px !important;"><?= $file->description?></p>
                                             </div>
-                                            <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 50%; left: 48%; width: 80%; transform: translate(-50%, -50%);">
+                                            <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 5%; left: 48%; width: 80%; transform: translate(-50%, -50%);">
                                                 <p class="c-white f-12 titlePortFixed-<?= $file->id?>"><?= $file->title?></p>
                                             </div>
-                                            <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 55%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
+                                            <div class="p-absolute cont-<?= $file->id?>" style="top: 18%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
                                                 <hr class="col-8">
                                             </div>
                                             <div class="p-absolute cont-<?= $file->id?>" style="top: 1%; right: 5%">
@@ -56,13 +56,13 @@
                                         </div>
                                     <? } ?>
                                     <div id="content inputs" class="contentInputs">
-                                        <div class="p-absolute" style="top: 75%; left: 45%; !important; transform: translate(-50%, -50%);">
+                                        <div class="p-absolute" style="top: 42%; left: 45%; !important; transform: translate(-50%, -50%);">
                                             <textarea data-id="<?= $file->id?>" class="input-transparant col-sm-12 f-9 hidden descPortImg desc-<?= $file->id?>" placeholder="Description" style="width: 300px !important" name="file_desc"><? if(isset($file->title)) echo $file->description?></textarea>
                                         </div>
                                         <div class="cont-<?= $file->id?>">
-                                            <input data-id="<?= $file->id?>" type="text" name="file_title" placeholder="Title" class="p-absolute input-transparant f-9 p-t-30 p-b-30 hidden title-<?= $file->id?> titlePortImg" value="<? if(isset($file->title)) echo $file->title?>" style="top: 50%; left: 55%; width: 100%; transform: translate(-50%, -50%);">
+                                            <input data-id="<?= $file->id?>" type="text" name="file_title" placeholder="Title" class="p-absolute input-transparant f-9 p-t-30 p-b-30 hidden title-<?= $file->id?> titlePortImg" value="<? if(isset($file->title)) echo $file->title?>" style="top: 5%; left: 55%; width: 100%; transform: translate(-50%, -50%);">
                                         </div>
-                                        <div class="p-absolute cont-<?= $file->id?>" style="top: 58%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
+                                        <div class="p-absolute cont-<?= $file->id?>" style="top: 18%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
                                             <hr class="col-8 hr-<?= $file->id?> hidden hrPortImg">
                                         </div>
                                     </div>

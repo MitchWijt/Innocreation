@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="banner p-relative " style="background: url('<?= $user->getBanner()?>');">
-                <? if(isset($loggedIn) && $loggedIn->id != $user->id) { ?>
+                <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
                     <form action="/user/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                         <input type="hidden" name="user_id" value="<?= $user->id?>">
@@ -177,15 +177,21 @@
                     <div class="card card-lg m-t-20 m-b-20">
                         <div class="card-block m-t-10" style="overflow: hidden !important">
                             <div class="row">
-                                <div class="col-sm-12 m-l-20 m-b-20">
+                                <div class="col-sm-12 m-l-20 m-b-5">
                                     <h3>My portfolio</h3>
                                 </div>
                             </div>
+                            <hr class="m-b-20">
                             <? foreach($portfolios as $portfolio) { ?>
                                 <div class="row" id="test">
                                     <div class="col-12 m-l-20">
-                                        <h3><?= $portfolio->title?></h3>
+                                        <h3 class="m-b-0 p-b-0"><?= $portfolio->title?></h3>
                                     </div>
+                                    <? if(isset($portfolio->link)) { ?>
+                                        <div class="col-12 m-l-20 p-t-0 ">
+                                            <i class="c-dark-grey f-11"><a class="c-orange" href="<?= $portfolio->link?>">Referal link</a></i>
+                                        </div>
+                                    <? } ?>
                                 </div>
                                 <div class="carousel carousel-default m-b-30 carousel-default carousel-portfolio">
                                     <ul class="p-l-0">
@@ -196,13 +202,13 @@
                                                         <div class="@mobile contentPortfolioNoScale @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" style="background: url('<?= $file->getUrl()?>'); z-index: -1 !important">
                                                             <? if($file->title != null ) { ?>
                                                                 <div id="content" @desktop style="display: none;" @enddesktop>
-                                                                    <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 75%; left: 52%; !important; transform: translate(-50%, -50%);">
-                                                                        <p class="c-white f-9" style="width: 300px !important"><?= $file->description?></p>
+                                                                    <div class="m-t-10 p-absolute cont-<?= $file->id?>" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
+                                                                        <p class="c-white f-9 p-t-40" style="width: 300px !important"><?= $file->description?></p>
                                                                     </div>
-                                                                    <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 50%; left: 56%; width: 100%; transform: translate(-50%, -50%);">
+                                                                    <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 5%; left: 56%; width: 100%; transform: translate(-50%, -50%);">
                                                                         <p class="c-white f-12"><?= $file->title?></p>
                                                                     </div>
-                                                                    <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 55%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
+                                                                    <div class="p-absolute cont-<?= $file->id?>" style="top: 18%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
                                                                         <hr class="col-8">
                                                                     </div>
                                                                 </div>

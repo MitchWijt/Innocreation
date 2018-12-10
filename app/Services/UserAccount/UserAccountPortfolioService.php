@@ -65,6 +65,7 @@ class UserAccountPortfolioService
     public function addImagesPortfolio($request){
         $portfolioId = $request->input("portfolio_id");
         $userPortfolio = UserPortfolio::select("*")->where("id", $portfolioId)->first();
+        $singleFile = UserPortfolioFile::select("*")->where("portfolio_id", $userPortfolio->id)->first();
         if(Session::get("user_id") != $userPortfolio->user_id){
             return redirect("/my-account");
         }
@@ -76,8 +77,8 @@ class UserAccountPortfolioService
             $size = $this->formatBytes($file->getSize());
             if($size < 8) {
                 $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
-                if(!Storage::disk('spaces')->has("users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/','', $userPortfolio->title) . "/" . $filename)) {
-                    Storage::disk('spaces')->put("users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $userPortfolio->title) . "/" . $filename, file_get_contents($file->getRealPath()), "public");
+                if(!Storage::disk('spaces')->has("users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/','', $singleFile->dir) . "/" . $filename)) {
+                    Storage::disk('spaces')->put("users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $singleFile->dir) . "/" . $filename, file_get_contents($file->getRealPath()), "public");
                     $userPortfolioFile = new UserPortfolioFile();
                     $userPortfolioFile->portfolio_id = $userPortfolio->id;
                     $userPortfolioFile->dirname = preg_replace('/[^a-zA-Z0-9-_\.]/', '', $userPortfolio->title);
