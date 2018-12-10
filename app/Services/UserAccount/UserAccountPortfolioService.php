@@ -62,6 +62,67 @@ class UserAccountPortfolioService
         return view("/public/user/portfolio/userAccountPortfolioDetail", compact('userPortfolioFiles', 'userPortfolio', 'user'));
     }
 
+    public function addImagesPortfolio($request){
+        $portfolioId = $request->input("portfolio_id");
+        $userPortfolio = UserPortfolio::select("*")->where("id", $portfolioId)->first();
+        if(Session::get("user_id") != $userPortfolio->user_id){
+            return redirect("/my-account");
+        }
+
+        $user = User::select("*")->where("id", $request->input("user_id"))->first();
+
+        $files = $request->file("files");
+        foreach($files as $file){
+            $size = $this->formatBytes($file->getSize());
+            if($size < 8) {
+                $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
+                if(!Storage::disk('spaces')->has("users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/','', $userPortfolio->title) . "/" . $filename)) {
+                    Storage::disk('spaces')->put("users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $userPortfolio->title) . "/" . $filename, file_get_contents($file->getRealPath()), "public");
+                    $userPortfolioFile = new UserPortfolioFile();
+                    $userPortfolioFile->portfolio_id = $userPortfolio->id;
+                    $userPortfolioFile->dirname = preg_replace('/[^a-zA-Z0-9-_\.]/', '', $userPortfolio->title);
+                    $userPortfolioFile->filename = $filename;
+                    $userPortfolioFile->extension = $file->getClientOriginalExtension();
+                    $userPortfolioFile->mimetype = $file->getMimetype();
+                    $userPortfolioFile->created_at = date("Y-m-d H:i:s");
+                    $userPortfolioFile->save();
+                }
+            } else {
+                return redirect("/account")->withErrors("Image is too large. The max upload size per image is 8MB");
+            }
+        }
+        return redirect(sprintf('/my-account/portfolio/%s', $userPortfolio->slug));
+
+    }
+
+    public function editTitleImage($request){
+        $fileId = $request->input("fileId");
+        $title = $request->input("title");
+
+        $file = UserPortfolioFile::select("*")->where("id", $fileId)->first();
+        $file->title = $title;
+        $file->save();
+    }
+
+    public function editDescImage($request){
+        $fileId = $request->input("fileId");
+        $description = $request->input("description");
+
+        $file = UserPortfolioFile::select("*")->where("id", $fileId)->first();
+        $file->description = $description;
+        $file->save();
+    }
+
+    public function removeImage($request){
+        $fileId = $request->input("file_id");
+        $user = User::select("*")->where("id", $request->input("user_id"))->first();
+
+        $file = UserPortfolioFile::select("*")->where("id", $fileId)->first();
+        Storage::disk('spaces')->delete("users/$user->slug/portfolios/$file->dirname/" . $file->filename);
+        $file->delete();
+        return redirect(sprintf('/my-account/portfolio/%s', $file->portfolio->slug));
+    }
+
     public function formatBytes($bytes, $precision = 2) {
         $unit = ["B", "KB", "MB", "GB"];
         $exp = floor(log($bytes, 1024)) | 0;

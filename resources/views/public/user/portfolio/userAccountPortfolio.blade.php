@@ -38,7 +38,7 @@
                     <div class="col-sm-3">
                         <a class="td-none" href="/my-account/portfolio/<?= $userPortfolio->slug?>">
                             <div class="card m-t-20 m-b-20 p-relative c-pointer" style="min-height: 180px">
-                                <div style="margin: 0 auto; padding-top: 26%">
+                                <div style="margin: 0 auto; padding-top: 20%">
                                     <p class="f-20 text-center"><?= $userPortfolio->title?></p>
                                 </div>
                             </div>

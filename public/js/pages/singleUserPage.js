@@ -8,14 +8,27 @@ $(".read-more").on("click",function () {
 });
 
 
-new floatingCarousel('.carousel-default', {
-    autoScroll : true,
-    autoScrollDirection : 'right',
-    autoScrollSpeed : 70000,
-    enableTouchEvents : false,
-    touchOverflowHidden : false,
-    reverseOnTouch : false
-});
+if ($(window).width() < 400) {
+    new floatingCarousel('.carousel-default', {
+        autoScroll: true,
+        autoScrollDirection: 'right',
+        autoScrollSpeed: 10000,
+        enableTouchEvents: false,
+        touchOverflowHidden: false,
+        reverseOnTouch: false
+
+    });
+} else {
+    new floatingCarousel('.carousel-default', {
+        autoScroll : true,
+        autoScrollDirection : 'right',
+        autoScrollSpeed : 70000,
+        enableTouchEvents : false,
+        touchOverflowHidden : false,
+        reverseOnTouch : false
+    });
+}
+
 
 $(".editBannerImage").on("click",function () {
    $(".bannerImgInput").click();

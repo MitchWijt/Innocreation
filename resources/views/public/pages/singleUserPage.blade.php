@@ -1,4 +1,5 @@
 @extends("layouts.app")
+<link rel="stylesheet" href="/css/responsiveness/singleUserPage.css">
 @section("content")
     <div class="d-flex grey-background">
         <div class="container">
@@ -12,37 +13,41 @@
                 </div>
             </div>
             <div class="banner p-relative " style="background: url('<?= $user->getBanner()?>');">
-                <form action="/user/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
-                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                    <input type="hidden" name="user_id" value="<?= $user->id?>">
-                    <input type="file" name="bannerImg" class="bannerImgInput">
-                </form>
-                <i class="zmdi zmdi-edit editBtn editBannerImage"></i>
+                <? if(isset($loggedIn) && $loggedIn->id != $user->id) { ?>
+                    <form action="/user/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
+                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                        <input type="hidden" name="user_id" value="<?= $user->id?>">
+                        <input type="file" name="bannerImg" class="bannerImgInput">
+                    </form>
+                    <i class="zmdi zmdi-edit editBtn editBannerImage @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
+                <? } ?>
                 <div class="avatar-med userProfilePic p-absolute" style="background: url('<?= $user->getProfilePicture()?>');"></div>
             </div>
             <div class="row">
-                <div class="col-4">
-                    <div class="row d-flex fd-column" style="margin-top: 60px !important">
-                        <p class="f-25 m-b-0" style="margin-left: 9% !important"><?= $user->getName()?> <i class="zmdi zmdi-chevron-down f-18 popoverSingleUser c-pointer" data-toggle="popover" data-content='<?= view("/public/shared/_popoverSendMessage", compact("user", "loggedIn"))?>'></i></p>
-                        <p class="m-t-0 f-12 m-b-0 c-dark-grey" style="margin-left: 9% !important"><?= $user->country->country?></p>
+                <div class="col-sm-4">
+                    <div class="row d-flex fd-column userName" style="margin-top: 60px !important">
+                        <p class="f-25 m-b-0" style="margin-left: 9%"><?= $user->getName()?> <? if(isset($loggedIn) && $loggedIn->id != $user->id) { ?> <i class="zmdi zmdi-chevron-down f-18 popoverSingleUser c-pointer" data-toggle="popover" data-content='<?= view("/public/shared/_popoverSendMessage", compact("user", "loggedIn"))?>'></i> <? } ?></p>
+                        <p class="m-t-0 f-12 m-b-0 c-dark-grey" style="margin-left: 9%"><?= $user->country->country?></p>
                     </div>
-                        <div class="row">
+                    <? if(isset($loggedIn) && $loggedIn->id != $user->id) { ?>
+                        <div class="row switchDiv">
                             <div class="col-6">
-                                <label class="switch switch_type2 m-t-10" style="margin-left: 9% !important" role="switch">
+                                <label class="switch switch_type2 m-t-10" style="margin-left: 9%" role="switch">
                                     <input data-toggle="popover" <? if(isset($loggedIn) && $loggedIn->hasSwitched()) echo "checked disabled"; ?> data-content='<?= view("/public/shared/switch/_popoverSwitch", compact("loggedIn", "user"))?>' type="checkbox" class="switch__toggle popoverSwitch">
                                     <span class="switch__label"></span>
                                 </label>
                             </div>
                         </div>
+                    <? } ?>
                     <? if($user->team_id != null) { ?>
-                        <div class="row">
+                        <div class="row teamLinkDiv">
                             <div class="col-6">
                                 <span><i class="zmdi zmdi-accounts-alt" style="margin-left: 9% !important"></i> <a class="regular-link" target="_blank" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
                             </div>
                         </div>
                     <? } ?>
                 </div>
-                <div class="col-8 m-t-10">
+                <div class="col-sm-8 m-t-10">
                     <h3>Introduction:</h3>
                     <p class="m-l-10 c-dark-grey"><?= $user->introduction?></p>
                     <h3>Motivation:</h3>
@@ -65,7 +70,7 @@
                                             <div class="col-md-12">
                                                 <div class="card m-t-20 m-b-20 ">
                                                     <div class="card-block expertiseCard p-relative c-pointer" style="max-height: 150px !important">
-                                                        <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
+                                                        <div class="p-absolute" style="z-index: 200; bottom: 0; right: 5px">
                                                             <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                                                         </div>
                                                         <? if($expertise->description) { ?>
@@ -156,7 +161,7 @@
                                             <? } ?>
                                         </div>
                                         <div class="row d-flex js-center">
-                                            <div class="col-sm-11">
+                                            <div class="col-11">
                                                 <p class="collapse" id="collapse-<?= $expertise->id?>" aria-expanded="false"><?= $expertise->description?></p>
                                             </div>
                                         </div>
@@ -188,9 +193,9 @@
                                             <li class="td-none portfolioFileItem p-r-10 p-l-10" style="list-style-type: none; min-width: 350px !important; z-index: -1 !important">
                                                 <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
                                                     <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
-                                                        <div class="contentPortfolio" data-id="<?= $file->id?>" style="background: url('<?= $file->getUrl()?>'); z-index: -1 !important">
+                                                        <div class="@mobile contentPortfolioNoScale @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" style="background: url('<?= $file->getUrl()?>'); z-index: -1 !important">
                                                             <? if($file->title != null ) { ?>
-                                                                <div id="content" style="display: none;">
+                                                                <div id="content" @desktop style="display: none;" @enddesktop>
                                                                     <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 75%; left: 52%; !important; transform: translate(-50%, -50%);">
                                                                         <p class="c-white f-9" style="width: 300px !important"><?= $file->description?></p>
                                                                     </div>

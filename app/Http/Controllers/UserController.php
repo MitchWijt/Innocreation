@@ -323,6 +323,22 @@ class UserController extends Controller
         return $userPortfolioService->portfolioDetailPage($slug);
     }
 
+    public function addImagesPortfolio(Request $request, UserAccountPortfolioService $userPortfolioService){
+        return $userPortfolioService->addImagesPortfolio($request);
+    }
+
+    public function editTitlePortfolioImage(Request $request, UserAccountPortfolioService $userPortfolioService){
+        $userPortfolioService->editTitleImage($request);
+    }
+
+    public function editDescPortfolioImage(Request $request, UserAccountPortfolioService $userPortfolioService){
+        $userPortfolioService->editDescImage($request);
+    }
+
+    public function removePortfolioImage(Request $request, UserAccountPortfolioService $userPortfolioService){
+        return $userPortfolioService->removeImage($request);
+    }
+
     public function editUserPortfolio(Request $request){
         $portfolio_id = $request->input("portfolio_id");
         $file = $request->file("portfolio_image");

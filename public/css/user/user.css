@@ -1,7 +1,7 @@
 .banner{
     margin-top: 10px !important;
-    min-height: 250px !important;
-    max-height: 250px !important;
+    min-height: 250px;
+    max-height: 250px;
     width: 100% !important;
     background-size:     cover !important;
     background-repeat:   no-repeat !important;
@@ -63,6 +63,15 @@
     min-height: 180px;
     border: none !important;
     box-shadow: 0 0 200px rgba(0,0,0,0.9) inset;
+}
+
+.contentPortfolioNoScale{
+    width: 100%;
+    min-height: 180px;
+    background-size:     cover !important;
+    background-repeat:   no-repeat !important;
+    background-position: center center !important;
+    box-shadow: 0 0 200px rgba(0,0,0,0.9) inset !important;
 }
 
 #content{
