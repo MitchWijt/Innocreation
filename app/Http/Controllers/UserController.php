@@ -391,6 +391,7 @@ class UserController extends Controller
             }
             if (request()->has('user_chat_id')) {
                 $urlParameterChat = request()->user_chat_id;
+                Session::set("userChatId", $urlParameterChat);
             }
             $innocreationChat = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", 1)->first();
             $userChats = UserChat::select("*")->where("creator_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->get();

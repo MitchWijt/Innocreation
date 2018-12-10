@@ -257,20 +257,22 @@ class RegisterProcessController extends Controller {
 
 
         $neededExpertises = NeededExpertiseLinktable::select("*")->whereIn("expertise_id", $expertisesArray)->get();
-        foreach($neededExpertises as $neededExpertise) {
-            $team = $neededExpertise->teams;
-            if($team->First()->users->notifications == 1) {
-                $userChat = UserChat::select("*")->where("receiver_user_id", $team->First()->ceo_user_id)->where("creator_user_id", 1)->first();
-                $userMessage = new UserMessage();
-                $userMessage->sender_user_id = 1;
-                $userMessage->user_chat_id = $userChat->id;
-                $userMessage->time_sent = $this->getTimeSent();
-                $userMessage->message = sprintf('We have good news for you and your team! </br> </br> A new %s has joined Innocreation, since your team is in need of a %s you can invite him or chat with him straight away at the account of <a href="https://secret.innocreation.net%s">%s</a>', $neededExpertise->expertises->First()->title, $neededExpertise->expertises->First()->title, $user->getUrl(), $user->firstname);
-                $userMessage->created_at = date("Y-m-d H:i:s");
-                $userMessage->save();
+        if(isset($neededExpertises)) {
+            foreach ($neededExpertises as $neededExpertise) {
+                $team = $neededExpertise->teams;
+                if ($team->First()->users->notifications == 1) {
+                    $userChat = UserChat::select("*")->where("receiver_user_id", $team->First()->ceo_user_id)->where("creator_user_id", 1)->first();
+                    $userMessage = new UserMessage();
+                    $userMessage->sender_user_id = 1;
+                    $userMessage->user_chat_id = $userChat->id;
+                    $userMessage->time_sent = $this->getTimeSent();
+                    $userMessage->message = sprintf('We have good news for you and your team! </br> </br> A new %s has joined Innocreation, since your team is in need of a %s you can invite him or chat with him straight away at the account of <a href="https://secret.innocreation.net%s">%s</a>', $neededExpertise->expertises->First()->title, $neededExpertise->expertises->First()->title, $user->getUrl(), $user->firstname);
+                    $userMessage->created_at = date("Y-m-d H:i:s");
+                    $userMessage->save();
 
-                $user = $team->First()->users;
-                $mailgunService->saveAndSendEmail($team->First()->users, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+                    $user = $team->First()->users;
+                    $mailgunService->saveAndSendEmail($team->First()->users, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+                }
             }
         }
 

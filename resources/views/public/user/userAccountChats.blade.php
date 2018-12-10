@@ -16,8 +16,9 @@
                 <div class="col-12">
                 <? if(\Illuminate\Support\Facades\Session::has("userChatId")) { ?>
                     <input type="hidden" class="userChatId" value="<?= \Illuminate\Support\Facades\Session::get("userChatId")?>">
+                <? } else { ?>
+                    <input type="hidden" class="userChatId" value="0">
                 <? } ?>
-                <input type="hidden" class="userChatId" value="0">
                 <input type="hidden" class="streamToken" value="<?= $streamToken?>">
                 <input type="hidden" class="userId" value="<?= $user_id?>">
                 <form action="/searchChatUsers" class="searchChatUsersForm @mobile text-center @endmobile" method="post">

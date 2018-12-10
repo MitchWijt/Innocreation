@@ -584,3 +584,11 @@ hr{
 .f-z-rem{
     font-size: 2.5rem;
 }
+
+.notificationHover:hover{
+    background: #77787a;
+}
+
+.autocomplete-black{
+    color: #000 !important;
+}

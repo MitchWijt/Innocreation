@@ -12,6 +12,7 @@ $('.searchChatUsers').keyup(function(){
 
 $(document).ready(function () {
    var userChatId = $(".userChatId").val();
+   console.log(userChatId);
    if(userChatId != 0){
        $(".chat-card").each(function () {
           if($(this).data("chat-id") == userChatId){

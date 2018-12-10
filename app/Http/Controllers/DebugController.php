@@ -41,8 +41,7 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
-        $userPortfolioFile = UserPortfolioFile::select("*")->get();
-        dd($userPortfolioFile);
+
         die('test');
     }
 }
