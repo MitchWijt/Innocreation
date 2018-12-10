@@ -72,8 +72,8 @@
                                                         <i class="zmdi zmdi-circle f-15 c-green p-absolute onlineDot" data-user-id="<?= $userChat->creator->id?>" style="left: 95px; top: 10px;"></i>
                                                     <? } ?>
                                                     <div class="card-block chat-card d-flex js-around m-t-10" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
-                                                        <a href="/user/<?= $userChat->receiver->slug?>">
-                                                            <div class="avatar" style="background: url('<?=$userChat->receiver->getProfilePicture()?>')"></div>
+                                                        <a href="/user/<?= $userChat->creator->slug?>">
+                                                            <div class="avatar" style="background: url('<?=$userChat->creator->getProfilePicture()?>')"></div>
                                                         </a>
                                                         <p class="f-22 m-t-15 m-b-5 p-0"><?=$userChat->creator->firstname?></p>
                                                     </div>
