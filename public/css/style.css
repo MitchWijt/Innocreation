@@ -651,6 +651,7 @@ footer{
 
 .instructions{
     background: #000000;
+    overflow: hidden;
 }
 
 .instructions-text{

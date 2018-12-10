@@ -1,0 +1,45 @@
+@media screen and (max-width: 545px) {
+    .userProfilePic{
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        top: 40% !important
+    }
+    .banner{
+        min-height: 150px !important;
+        max-height: 150px !important;
+    }
+
+    .userName p {
+        margin-left: 0 !important;
+        text-align: center !important;
+    }
+
+    .switchDiv{
+        display: flex;
+        justify-content: center;
+    }
+
+    .switchDiv .col-6 .switch_type2{
+        margin-left: 0 !important;
+    }
+
+    .switchDiv .col-6{
+        display: flex;
+        justify-content: center;
+    }
+
+    .teamLinkDiv{
+        display: flex;
+        justify-content: center;
+    }
+
+    .teamLinkDiv .col-6{
+        text-align: center;
+        margin-right: 15px !important;
+    }
+
+    .teamLinkDiv .col-6 .zmdi-accounts-alt{
+        margin-left: 0 !important;
+    }
+}

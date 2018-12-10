@@ -1,10 +1,8 @@
 @extends("layouts.app")
+<link rel="stylesheet" href="/css/responsiveness/singleUserPage.css">
 @section("content")
     <div class="d-flex grey-background">
         <div class="container">
-            <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black @mobile f-22 @endmobile"><?=$user->firstname . " active as " . strtolower($user->getSeoExpertises())?></h1>
-            </div>
             <div class="row">
                 <div class="col-sm-12 text-center">
                     <? if(count($errors) > 0){ ?>
@@ -14,81 +12,55 @@
                     <? } ?>
                 </div>
             </div>
-            <hr class="m-b-20">
-            <div class="row">
-                <div class="col-sm-12 text-center cropper">
-                    <div class="d-flex js-center @mobile m-b-10 @endmobile">
-                        <div class="avatar-lg" style="background: url('<?= $user->getProfilePicture()?>')"></div>
-                    </div>
-                </div>
-            </div>
-            <? if($loggedIn && \Illuminate\Support\Facades\Session::get("user_id") != $user->id) { ?>
-                <? if($user->checkFollow($user->id)) { ?>
-                    <div class="row">
-                        <div class="col-sm-12 text-center m-t-20">
-                            <form action="/user/unfollowUser" method="post">
-                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                <input type="hidden" name="user_id" value="<?= $user->id?>">
-                                <button class="btn btn-inno">Unfollow <?= $user->firstname?> <i class="zmdi zmdi-notifications-off c-orange"></i></button>
-                            </form>
-                        </div>
-                    </div>
-                <? } else { ?>
-                    <div class="row">
-                        <div class="col-sm-12 text-center m-t-20">
-                            <form action="/user/followUser" method="post">
-                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                <input type="hidden" name="user_id" value="<?= $user->id?>">
-                                <button class="btn btn-inno">Follow <?= $user->firstname?> <i class="zmdi zmdi-notifications-active c-orange"></i></button>
-                            </form>
-                        </div>
-                    </div>
+            <div class="banner p-relative " style="background: url('<?= $user->getBanner()?>');">
+                <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
+                    <form action="/user/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
+                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                        <input type="hidden" name="user_id" value="<?= $user->id?>">
+                        <input type="file" name="bannerImg" class="bannerImgInput">
+                    </form>
+                    <i class="zmdi zmdi-edit editBtn editBannerImage @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
                 <? } ?>
-                <div class="row">
-                    <div class="col-sm-12 text-center m-t-20">
-                        <form action="/selectChatUser" method="post">
-                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                            <input type="hidden" name="receiver_user_id" value="<?= $user->id?>">
-                            <input type="hidden" name="creator_user_id" value="<?= $loggedIn->id?>">
-                            <button class="btn btn-inno">Send chat message</button>
-                        </form>
+                <div class="avatar-med userProfilePic p-absolute" style="background: url('<?= $user->getProfilePicture()?>');"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="row d-flex fd-column userName" style="margin-top: 60px !important">
+                        <p class="f-25 m-b-0" style="margin-left: 9%"><?= $user->getName()?> <? if(isset($loggedIn) && $loggedIn->id != $user->id) { ?> <i class="zmdi zmdi-chevron-down f-18 popoverSingleUser c-pointer" data-toggle="popover" data-content='<?= view("/public/shared/_popoverSendMessage", compact("user", "loggedIn"))?>'></i> <? } ?></p>
+                        <p class="m-t-0 f-12 m-b-0 c-dark-grey" style="margin-left: 9%"><?= $user->country->country?></p>
                     </div>
-                </div>
-            <? } ?>
-            <div class="row d-flex js-center">
-                <div class="col-md-9">
-                    <div class="card card-lg m-t-20 m-b-20">
-                        <div class="card-block m-t-10">
-                            <div class="row">
-                                <div class="col-sm-12 m-l-20">
-                                    <h3>Who am i?</h3>
-                                </div>
-                            </div>
-                            <div class="row d-flex js-center @mobile p-l-30 p-r-30 @endmobile">
-                                <div class="col-sm-11">
-                                    <p class="f-21 m-0">My motivation</p>
-                                    <hr>
-                                    <p><?=$user->motivation?></p>
-                                </div>
-                            </div>
-                            <div class="row d-flex js-center @mobile p-l-30 p-r-30 @endmobile">
-                                <div class="col-sm-11">
-                                    <p class="f-21 m-0">My introduction</p>
-                                    <hr>
-                                    <p><?=$user->introduction?></p>
-                                </div>
+                    <? if(isset($loggedIn) && $loggedIn->id != $user->id) { ?>
+                        <div class="row switchDiv">
+                            <div class="col-6">
+                                <label class="switch switch_type2 m-t-10" style="margin-left: 9%" role="switch">
+                                    <input data-toggle="popover" <? if(isset($loggedIn) && $loggedIn->hasSwitched()) echo "checked disabled"; ?> data-content='<?= view("/public/shared/switch/_popoverSwitch", compact("loggedIn", "user"))?>' type="checkbox" class="switch__toggle popoverSwitch">
+                                    <span class="switch__label"></span>
+                                </label>
                             </div>
                         </div>
-                    </div>
+                    <? } ?>
+                    <? if($user->team_id != null) { ?>
+                        <div class="row teamLinkDiv">
+                            <div class="col-6">
+                                <span><i class="zmdi zmdi-accounts-alt" style="margin-left: 9% !important"></i> <a class="regular-link" target="_blank" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
+                            </div>
+                        </div>
+                    <? } ?>
+                </div>
+                <div class="col-sm-8 m-t-10">
+                    <h3>Introduction:</h3>
+                    <p class="m-l-10 c-dark-grey"><?= $user->introduction?></p>
+                    <h3>Motivation:</h3>
+                    <p class="m-l-10 c-dark-grey"><?= $user->motivation?></p>
                 </div>
             </div>
             <div class="row d-flex js-center">
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="card card-lg m-t-20 m-b-20">
                         <div class="card-block m-t-10">
                             <div class="row">
                                 <div class="col-sm-12 m-l-20">
-                                    <h3>My expertises</h3>
+                                    <h3>Expertises of <?= $user->firstname?></h3>
                                 </div>
                             </div>
                             <? foreach($expertise_linktable as $expertise) { ?>
@@ -98,9 +70,14 @@
                                             <div class="col-md-12">
                                                 <div class="card m-t-20 m-b-20 ">
                                                     <div class="card-block expertiseCard p-relative c-pointer" style="max-height: 150px !important">
-                                                        <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
+                                                        <div class="p-absolute" style="z-index: 200; bottom: 0; right: 5px">
                                                             <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                                                         </div>
+                                                        <? if($expertise->description) { ?>
+                                                            <div class="p-t-40 p-absolute" style="z-index: 100; top: 65%; left: 50%; transform: translate(-50%, -50%);">
+                                                                <a role="button" class="collapsed read-more no-select c-orange" data-toggle="<?= $expertise->id?>" aria-expanded="false" aria-controls="collapseExample"><button class="btn btn-inno btn-sm">Read experience <i class="zmdi zmdi-chevron-down f-16"></i></button></a>
+                                                            </div>
+                                                        <? } ?>
                                                         <div class="p-t-40 p-absolute" style="z-index: 100; top: 45%; left: 50%; transform: translate(-50%, -50%);">
                                                             <div class="hr-sm"></div>
                                                         </div>
@@ -183,8 +160,10 @@
                                                 <? } ?>
                                             <? } ?>
                                         </div>
-                                        <div class="row">
-                                            <p><?= $expertise->description?></p>
+                                        <div class="row d-flex js-center">
+                                            <div class="col-11">
+                                                <p class="collapse" id="collapse-<?= $expertise->id?>" aria-expanded="false"><?= $expertise->description?></p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -194,35 +173,54 @@
                 </div>
             </div>
             <div class="row d-flex js-center">
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="card card-lg m-t-20 m-b-20">
-                        <div class="card-block m-t-10">
+                        <div class="card-block m-t-10" style="overflow: hidden !important">
                             <div class="row">
-                                <div class="col-sm-12 m-l-20">
+                                <div class="col-sm-12 m-l-20 m-b-5">
                                     <h3>My portfolio</h3>
                                 </div>
                             </div>
+                            <hr class="m-b-20">
                             <? foreach($portfolios as $portfolio) { ?>
-                                <div class="portfolio">
-                                    <div class="row d-flex js-center @mobile p-l-30 p-r-30 @endmobile">
-                                        <div class="col-sm-11">
-                                            <div class="d-flex fd-row">
-                                                <div class="d-flex js-center @mobile m-b-10 @endmobile">
-                                                    <div class="avatar openPortfolioModal c-pointer m-t-10 m-r-15" style="background: url('<?= $portfolio->getUrl()?>')"></div>
-                                                </div>
-                                                <div class="col-sm-11 p-0">
-                                                    <p class="f-21 m-0"><?= $portfolio->title?></p>
-                                                    <hr>
-                                                    @mobile
-                                                        <p><?= mb_strimwidth($portfolio->description, 0, 100, "... <span class='c-orange openPortfolioModal underline c-pointer'>read more</span>");?></p>
-                                                    @elsedesktop
-                                                        <p><?= mb_strimwidth($portfolio->description, 0, 160, "... <span class='c-orange openPortfolioModal underline c-pointer'>read more</span>");?></p>
-                                                    @endmobile
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="row" id="test">
+                                    <div class="col-12 m-l-20">
+                                        <h3 class="m-b-0 p-b-0"><?= $portfolio->title?></h3>
                                     </div>
-
+                                    <? if(isset($portfolio->link)) { ?>
+                                        <div class="col-12 m-l-20 p-t-0 ">
+                                            <i class="c-dark-grey f-11"><a class="c-orange" href="<?= $portfolio->link?>">Referal link</a></i>
+                                        </div>
+                                    <? } ?>
+                                </div>
+                                <div class="carousel carousel-default m-b-30 carousel-default carousel-portfolio">
+                                    <ul class="p-l-0">
+                                        <? foreach($portfolio->getFiles() as $file) { ?>
+                                            <li class="td-none portfolioFileItem p-r-10 p-l-10" style="list-style-type: none; min-width: 350px !important; z-index: -1 !important">
+                                                <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
+                                                    <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
+                                                        <div class="@mobile contentPortfolioNoScale @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" style="background: url('<?= $file->getUrl()?>'); z-index: -1 !important">
+                                                            <? if($file->title != null ) { ?>
+                                                                <div id="content" @desktop style="display: none;" @enddesktop>
+                                                                    <div class="m-t-10 p-absolute cont-<?= $file->id?>" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
+                                                                        <p class="c-white f-9 p-t-40" style="width: 300px !important"><?= $file->description?></p>
+                                                                    </div>
+                                                                    <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 5%; left: 56%; width: 100%; transform: translate(-50%, -50%);">
+                                                                        <p class="c-white f-12"><?= $file->title?></p>
+                                                                    </div>
+                                                                    <div class="p-absolute cont-<?= $file->id?>" style="top: 18%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
+                                                                        <hr class="col-8">
+                                                                    </div>
+                                                                </div>
+                                                            <? } ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        <? } ?>
+                                    </ul>
+                                </div>
+                                <div class="portfolio">
                                     {{--===========MODAL=========--}}
                                     <div class="modal fade portfolioModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg" role="document">
@@ -233,7 +231,7 @@
                                                 <div class="modal-body p-t-0">
                                                     <div class="row modal-header">
                                                         <div class="col-sm-12 d-flex js-center">
-                                                            <img class=" h-100 radius" style="width: 50%;" src="<?=$portfolio->getUrl()?>" alt="<?= $portfolio->title?>">
+                                                            <img class="h-100 radius" style="width: 50%;" src="<?=$portfolio->getUrl()?>" alt="<?= $portfolio->title?>">
                                                         </div>
                                                     </div>
                                                     <div class="row d-flex js-center">
@@ -278,7 +276,7 @@
             </div>
             <? if($user->team_id != null) { ?>
                 <div class="row d-flex js-center">
-                    <div class="col-md-9 col-xs-12">
+                    <div class="col-md-12 col-xs-12">
                         <div class="card card-lg m-t-20 m-b-20">
                             <div class="card-block m-t-10 ">
                                 <div class="row">
@@ -311,6 +309,18 @@
             </div>
         </div>
     </div>
+    <script>
+        $('.popoverSingleUser').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'});
+        $('.popoverSwitch').popover({ trigger: "click" , html: true, animation:false, placement: 'top'});
+
+        $(document).on("click", ".switch__toggle", function () {
+            if (!$(this).is(":checked")) {
+                $(".popoverSwitch").popover('hide');
+            }
+
+        });
+
+    </script>
 @endsection
 @section('pagescript')
     <script src="/js/pages/singleUserPage.js"></script>

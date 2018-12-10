@@ -69,7 +69,7 @@
                        <? $counterExp = 0;?>
                         <? foreach($expertises1 as $expertise) { ?>
                             <? $counterExp++?>
-                            <li class="@desktop col-2 expertiseBoxHome @elsehandheld col-4 @enddesktop <? if($counterExp % 2 == 0) echo "p-t-30"; else echo "p-b-30"?>">
+                            <li class="<? if($counterExp % 2 == 0) echo "p-t-30"; else echo "p-b-30"?> p-r-20" style="min-width: 350px !important;">
                                 <div class="card m-t-20 m-b-20">
                                     <div class="card-block expertiseCard p-relative c-pointer" data-url="/" style="max-height: 210px !important">
                                         <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
@@ -99,7 +99,7 @@
                         <? $counterExp = 0;?>
                         <? foreach($expertises2 as $expertise) { ?>
                         <? $counterExp++?>
-                        <li class="@desktop col-2 @elsehandheld col-4 @enddesktop  <? if($counterExp % 2 == 0) echo "p-t-30"; else echo "p-b-30"?>">
+                        <li class="<? if($counterExp % 2 == 0) echo "p-t-30"; else echo "p-b-30"?> p-r-20" style="min-width: 350px !important;">
                             <div class="card m-t-20 m-b-20">
                                 <div class="card-block expertiseCard p-relative c-pointer" data-url="/" style="max-height: 210px !important">
                                     <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">

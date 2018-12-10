@@ -103,3 +103,7 @@ $(document).on("click touchstart", ".closeSearchBar", function (e) {
     e.stopPropagation();
     e.preventDefault();
 });
+
+$(document).on("click", ".input-file", function () {
+   $("#fileBox").click();
+});

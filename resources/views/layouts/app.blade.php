@@ -32,6 +32,7 @@
         <link rel="stylesheet" href="/css/home/home.css">
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="/css/general.css">
+        <link rel="stylesheet" href="/css/user/user.css">
         <link rel="stylesheet" href="/css/activityTimeline.css">
         <link rel="stylesheet" href="/css/checkout/pricing.css">
         <link rel="stylesheet" href="/css/checkout/selectPackage.css">
@@ -65,6 +66,7 @@
         <script src="/js/jquery-ui.min.js"></script>
         <script defer src="/js/fontawesome-all.js"></script>
         <script defer src="/js/jquery.timepicker.min.js"></script>
+        <script src="/js/floatingcarousel.min.js"></script>
     {{--ANIMATION--}}
         <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
         <script src="/assets/innocreation-animation.js"></script>
