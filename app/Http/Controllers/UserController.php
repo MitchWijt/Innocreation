@@ -15,6 +15,7 @@ use App\JoinRequestLinktable;
 use App\MembershipPackage;
 use App\Page;
 use App\ServiceReview;
+use App\Services\UserAccount\UserAccountPortfolioService;
 use App\SplitTheBillLinktable;
 use App\SupportTicket;
 use App\SupportTicketMessage;
@@ -38,6 +39,8 @@ use App\Services\AppServices\MailgunService as Mailgun;
 use App\Services\AppServices\UnsplashService as Unsplash;
 use App\Services\UserAccount\UserExpertises as UserExpertises;
 use App\Services\UserAccount\UserPrivacySettingsService as UserPrivacySettings;
+use App\Services\UserAccount\EditProfileImage as EditProfileImage;
+use App\Services\UserAccount\UserAccountPortfolioService as UserPortfolioService;
 
 
 use App\Http\Requests;
@@ -96,6 +99,10 @@ class UserController extends Controller
         }
         $user->save();
         return redirect("/my-account/privacy-settings");
+    }
+
+    public function editBannerImageAction(Request $request, EditProfileImage $editProfileImage){
+        return $editProfileImage->editBannerImage($request);
     }
 
     /**
@@ -304,50 +311,16 @@ class UserController extends Controller
             $user = User::select("*")->where("id", $user_id)->first();
             $userPortfolios = UserPortfolio::select("*")->where("user_id", $user_id)->get();
             $amountPortfolios = count($userPortfolios);
-            return view("/public/user/userAccountPortfolio", compact("userPortfolios", "amountPortfolios", "user"));
+            return view("/public/user/portfolio/userAccountPortfolio", compact("userPortfolios", "amountPortfolios", "user"));
         }
     }
 
-    public function saveUseraccountPortfolio(Request $request){
-        $user_id = $request->input("user_id");
-        $portfolio_titles = $request->input("portfolio_title");
-        $portfolio_image = $request->file("portfolio_image");
-        $portfolio_links = $request->input("portfolio_link");
-        $portfolio_descriptions = $request->input("description_portfolio");
+    public function addUserAccountPortfolio(Request $request, UserPortfolioService $userPortfolioService){
+        return $userPortfolioService->saveNewPortfolio($request);
+    }
 
-        $user = User::select("*")->where("id", $user_id)->first();
-
-
-
-            $rowCount = count($portfolio_titles);
-
-            for ($i = 0; $i < $rowCount; $i++) {
-                $userPortfolio = new UserPortfolio;
-                $userPortfolio->user_id = $user_id;
-                $userPortfolio->title = $portfolio_titles[$i];
-                $userPortfolio->description = $portfolio_descriptions[$i];
-                if($portfolio_links != null) {
-                    $userPortfolio->link = $portfolio_links[$i];
-                }
-
-                if($portfolio_image[$i] != null) {
-                    $file = $portfolio_image[$i];
-                    $size = $this->formatBytes($file->getSize());
-                    if($size < 8) {
-                        $filename = strtolower(str_replace(" ","-",$userPortfolio->title)) . "." . $file->getClientOriginalExtension();
-                        Storage::disk('spaces')->put("users/$user->slug/portfolios/" . $filename, file_get_contents($file->getRealPath()), "public");
-
-                        $userPortfolio->image = $filename;
-                        $userPortfolio->created_at = date("Y-m-d H:i:s");
-                        $userPortfolio->save();
-                        return redirect($_SERVER["HTTP_REFERER"]);
-                    } else {
-                        return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
-                    }
-                }
-            }
-            return redirect($_SERVER["HTTP_REFERER"]);
-
+    public function userPortfolioDetail($slug, UserAccountPortfolioService $userPortfolioService){
+        return $userPortfolioService->portfolioDetailPage($slug);
     }
 
     public function editUserPortfolio(Request $request){

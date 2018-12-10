@@ -32,10 +32,10 @@ class User extends Authenticatable
     }
 
     public function getBanner(){
-        if($this->banner != "defaultBanner.png") {
+        if($this->banner != "banner-default.jpg") {
             echo env("DO_SPACES_URL") . "/users/$this->slug/banner/$this->banner";
         } else {
-            return "/images/profilePicturesUsers/defaultProfilePicture.png";
+            return "/images/banner-default.jpg";
 
 
         }

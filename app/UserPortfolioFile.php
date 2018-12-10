@@ -13,10 +13,10 @@ class UserPortfolioFile extends Model
     }
 
     public function getUrl(){
-        return "https://space-innocreation.ams3.cdn.digitaloceanspaces.com/users/" . $this->portfolio->user->slug . "/portfolios/$this->dirname/" . $this->getFilename() ;
+        return env("DO_SPACES_URL") . "/users/" . $this->portfolio->user->slug . "/portfolios/$this->dirname/" . $this->getFilename() ;
     }
 
     public function getFilename(){
-        return $this->filename . $this->extension;
+        return $this->filename;
     }
 }

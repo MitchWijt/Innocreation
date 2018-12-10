@@ -93,16 +93,22 @@ Route::post("/filterFavExpertises", "UserController@filterFavExpertises");
 
 Route::post("/my-account/saveUserProfilePicture", "UserController@saveUserProfilePictureAction");
 
+Route::post("/user/editBannerImage", "UserController@editBannerImageAction");
+
+
 // User Portfolio
 Route::get("/my-account/portfolio", "UserController@userAccountPortfolio");
 
-Route::post("/my-account/saveUserPortfolio", "UserController@saveUseraccountPortfolio");
+Route::post("/user/addUserAccountPortfolio", "UserController@addUserAccountPortfolio");
 
 Route::post("/my-account/editUserPortfolio", "UserController@editUserPortfolio");
 
 Route::post("/user/savePortfolioAsUserWork", "UserController@savePortfolioAsUserWorkAction");
 
 Route::post("/deleteUserPortfolio", "UserController@deleteUserPortfolio");
+
+Route::get("/my-account/portfolio/{slug}", "UserController@userPortfolioDetail");
+
 // User chats
 Route::get("/my-account/chats", "UserController@userAccountChats");
 

@@ -3,7 +3,6 @@ $(".openPortfolioModal").on("click",function () {
 });
 
 $(".read-more").on("click",function () {
-   console.log("gfdsa");
     var id = $(this).data("toggle");
     $("#collapse-" + id).collapse('toggle');
 });
@@ -16,17 +15,12 @@ new floatingCarousel('.carousel-default', {
     enableTouchEvents : false,
     touchOverflowHidden : false,
     reverseOnTouch : false
-
 });
 
-$(".contentPortfolio").on("mouseover",function () {
-    var id = $(this).data("id");
-    $("#portfolioFileCont-" + id).fadeIn();
+$(".editBannerImage").on("click",function () {
+   $(".bannerImgInput").click();
 });
-//
-// $(".contentPortfolio").on("mouseleave",function () {
-//     var id = $(this).data("id");
-//     setTimeout(function(){
-//     $(".cont-" + id).addClass("hidden");
-//     }, 800);
-// });
+
+$('.bannerImgInput').on("change", function () {
+    $(".bannerImgForm").submit();
+});
