@@ -71,14 +71,10 @@
                                                         <i class="zmdi zmdi-circle f-15 c-green p-absolute onlineDot" data-user-id="<?= $userChat->creator->id?>" style="left: 95px; top: 10px;"></i>
                                                     <? } ?>
                                                     <div class="card-block chat-card d-flex js-around m-t-10" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
-                                                        <img class="circle circleImage m-0" src="<?=$userChat->creator->getProfilePicture()?>" alt="">
+                                                        <a href="/user/<?= $userChat->receiver->slug?>">
+                                                            <div class="avatar" style="background: url('<?=$userChat->receiver->getProfilePicture()?>')"></div>
+                                                        </a>
                                                         <p class="f-22 m-t-15 m-b-5 p-0"><?=$userChat->creator->firstname?></p>
-                                                        <? if($userChat->creator->team_id != null) { ?>
-                                                        <div class="d-flex fd-column">
-                                                            <p class="f-20 m-t-15 m-b-0"><?= $userChat->creator->team->team_name?></p>
-                                                            <span class="f-13 c-orange"><?if($userChat->creator->team->ceo_user_id == $userChat->creator->id) echo "Team leader"?></span>
-                                                        </div>
-                                                        <? } ?>
                                                     </div>
                                                 <? } else { ?>
                                                     <? if($userChat->receiver) { ?>
@@ -86,14 +82,10 @@
                                                         <i class="zmdi zmdi-circle f-15 c-green p-absolute onlineDot" data-user-id="<?= $userChat->receiver->id?>" style="left: 95px; top: 10px;"></i>
                                                     <? } ?>
                                                         <div class="card-block chat-card d-flex js-around m-t-10" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
-                                                            <img class="circle circleImage m-0" src="<?=$userChat->receiver->getProfilePicture()?>" alt="">
+                                                            <a href="/user/<?= $userChat->receiver->slug?>">
+                                                                <div class="avatar" style="background: url('<?=$userChat->receiver->getProfilePicture()?>')"></div>
+                                                            </a>
                                                             <p class="f-22 m-t-15 m-b-5 p-0"><?=$userChat->receiver->firstname?></p>
-                                                            <? if($userChat->receiver->team_id != null) { ?>
-                                                                <div class="d-flex fd-column">
-                                                                    <p class="f-20 m-t-15 m-b-0"><?= $userChat->receiver->team->team_name?></p>
-                                                                    <span class="f-13 c-orange"><?if($userChat->receiver->team->ceo_user_id == $userChat->receiver->id) echo "Team leader"?></span>
-                                                                </div>
-                                                            <? } ?>
                                                         </div>
                                                     <? } else { ?>
                                                         <div class="card-block chat-card d-flex js-around m-t-10" data-user-id="<?= $userChat->receiver_user_id?>" data-chat-id="<?= $userChat->id?>">
