@@ -201,7 +201,7 @@
                                                     <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
                                                         <div class="@mobile contentPortfolioNoScale @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" style="background: url('<?= $file->getUrl()?>'); z-index: -1 !important">
                                                             <? if($file->title != null ) { ?>
-                                                                <div id="content" @desktop style="display: none;" @enddesktop>
+                                                                <div id="content" @notmobile style="display: none;" @endnotmobile>
                                                                     <div class="m-t-10 p-absolute cont-<?= $file->id?>" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
                                                                         <p class="c-white f-9 p-t-40" style="width: 300px !important"><?= $file->description?></p>
                                                                     </div>

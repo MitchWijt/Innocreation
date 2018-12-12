@@ -38,6 +38,12 @@
                     <div class="col-sm-3">
                         <a class="td-none" href="/my-account/portfolio/<?= $userPortfolio->slug?>">
                             <div class="card m-t-20 m-b-20 p-relative c-pointer" style="min-height: 180px">
+                                <form action="/user/deletePortfolio" class="deletePortfolio-<?= $userPortfolio->id?>" method="post">
+                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                    <input type="hidden" name="user_id" value="<? if(isset($user)) echo $user->id ?>">
+                                    <input type="hidden" name="portfolio_id" value="<?= $userPortfolio->id?>">
+                                </form>
+                                <i class="zmdi zmdi-close f-22 c-orange p-absolute deletePortfolio" data-id="<?= $userPortfolio->id?>" style="top: 2%; right: 3%;"></i>
                                 <div style="margin: 0 auto; padding-top: 20%">
                                     <p class="f-20 text-center"><?= $userPortfolio->title?></p>
                                 </div>

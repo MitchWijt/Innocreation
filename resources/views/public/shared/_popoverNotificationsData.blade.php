@@ -2,6 +2,7 @@
     <?
         $today = new DateTime(date("Y-m-d H:i:s"));
         $date = new DateTime(date("Y-m-d H:i:s",strtotime($notification['time'])));
+        $date->modify('+1 hour');
         $interval = $date->diff($today);
         if(isset($notification['receiver'])){
             $sender = ['firstname' => "Innocreation", 'profilePic' => '/images/cartwheel.png'];

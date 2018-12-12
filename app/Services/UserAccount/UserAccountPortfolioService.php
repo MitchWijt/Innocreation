@@ -124,6 +124,27 @@ class UserAccountPortfolioService
         return redirect(sprintf('/my-account/portfolio/%s', $file->portfolio->slug));
     }
 
+    public function deletePortfolio($request){
+        $userId = $request->input("user_id");
+        if($userId != Session::get("user_id")){
+            return redirect("/my-account")->withErrors("You don't have permissions to do this");
+        }
+
+        $portfolioId = $request->input("portfolio_id");
+        $userPortfolio = UserPortfolio::select("*")->where("id", $portfolioId)->first();
+        $userPortfolioFiles = UserPortfolioFile::select("*")->where("portfolio_id", $portfolioId)->get();
+
+
+        foreach($userPortfolioFiles as $userPortfolioFile){
+            if(Storage::disk('spaces')->has($userPortfolioFile->getPath())){
+                Storage::disk('spaces')->delete($userPortfolioFile->getPath());
+            }
+        }
+        $userPortfolio->delete();
+
+        return redirect('/my-account/portfolio');
+    }
+
     public function formatBytes($bytes, $precision = 2) {
         $unit = ["B", "KB", "MB", "GB"];
         $exp = floor(log($bytes, 1024)) | 0;
