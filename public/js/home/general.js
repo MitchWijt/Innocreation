@@ -140,3 +140,8 @@ $(document).on("click", ".input-file", function () {
 $("#tagsHeader").on("keyup", function () {
     $(".ui-menu-item-wrapper").addClass("autocomplete-black");
 });
+
+$(document).on("click", ".acceptConnectionNotification", function () {
+    var id = $(this).data("id");
+    $(".acceptConnection-" + id).submit();
+});

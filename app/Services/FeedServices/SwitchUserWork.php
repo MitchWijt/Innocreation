@@ -58,6 +58,15 @@ class SwitchUserWork
         return $connections;
     }
 
+    public function listConnectionRequests($id){
+        $connections = ConnectRequestLinktable::select("*")
+            ->where("receiver_user_id", $id)
+            ->where("sender_user_id", "!=", $id)
+            ->where("accepted", 0)
+            ->get();
+        return $connections;
+    }
+
     public function acceptConnection($request, $mailgun)
     {
         $connectRequest = ConnectRequestLinktable::select("*")
