@@ -22,6 +22,14 @@ class Team extends Model {
         }
     }
 
+    public function getBanner(){
+        if($this->banner != "banner-default.jpg") {
+            echo env("DO_SPACES_URL") . "/teams/$this->slug/banner/$this->banner";
+        } else {
+            return "/images/banner-default.jpg";
+        }
+    }
+
     public function getMembers(){
         // gets all the members in the current team
         $users = User::select("*")->where("team_id", $this->id)->get();

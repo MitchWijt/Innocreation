@@ -60,7 +60,7 @@
                                             <textarea data-id="<?= $file->id?>" class="input-transparant col-sm-12 f-9 hidden descPortImg desc-<?= $file->id?>" placeholder="Description" style="width: 300px !important" name="file_desc"><? if(isset($file->title)) echo $file->description?></textarea>
                                         </div>
                                         <div class="cont-<?= $file->id?>">
-                                            <input data-id="<?= $file->id?>" type="text" name="file_title" placeholder="Title" class="p-absolute input-transparant f-9 p-t-30 p-b-30 hidden title-<?= $file->id?> titlePortImg" value="<? if(isset($file->title)) echo $file->title?>" style="top: 5%; left: 55%; width: 100%; transform: translate(-50%, -50%);">
+                                            <input data-id="<?= $file->id?>" type="text" name="file_title" placeholder="Title" class="p-absolute input-transparant f-9 p-t-30 p-b-30 hidden title-<?= $file->id?> titlePortImg" value="<? if(isset($file->title)) echo $file->title?>" style="top: 10%; left: 55%; width: 100%; transform: translate(-50%, -50%);">
                                         </div>
                                         <div class="p-absolute cont-<?= $file->id?>" style="top: 18%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
                                             <hr class="col-8 hr-<?= $file->id?> hidden hrPortImg">
