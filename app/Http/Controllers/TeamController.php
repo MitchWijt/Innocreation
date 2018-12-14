@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Storage;
 use Session;
 use App\Services\TeamServices\CredentialService as CredentialService;
 use App\Services\AppServices\MailgunService as MailgunService;
+use App\Services\TeamServices\EditPageImage as EditPageImageService;
 use App\Http\Requests;
 
 class TeamController extends Controller
@@ -66,6 +67,10 @@ class TeamController extends Controller
         } else {
             return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
         }
+    }
+
+    public function editBannerImage(Request $request, EditPageImageService $editPageImage){
+        return $editPageImage->editBannerImage($request);
     }
 
     /**

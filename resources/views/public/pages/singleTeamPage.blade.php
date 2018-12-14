@@ -1,4 +1,5 @@
 @extends("layouts.app")
+<link rel="stylesheet" href="/css/responsiveness/singleTeamPage.css">
 @section("content")
     <div class="d-flex grey-background">
         <div class="container">
@@ -12,13 +13,13 @@
                 </div>
             </div>
             <div class="banner p-relative " style="background: url('<?= $team->getBanner()?>');">
-                <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
-                <form action="/user/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
+                <? if($user && $user->id == $team->ceo_user_id) { ?>
+                <form action="/my-team/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                    <input type="hidden" name="team_id" value="<?= $user->id?>">
+                    <input type="hidden" name="team_id" value="<?= $team->id?>">
                     <input type="file" name="bannerImg" class="bannerImgInput">
                 </form>
-                <i class="zmdi zmdi-edit editBtn editBannerImage @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
+                <i class="zmdi zmdi-edit editBtn editBannerImage c-black @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
                 <? } ?>
                 <div class="avatar-med absolutePF p-absolute" style="background: url('<?= $team->getProfilePicture()?>');"></div>
             </div>
@@ -27,14 +28,14 @@
                 <div class="col-sm-4">
                     <div class="row d-flex fd-column userName" style="margin-top: 60px !important">
                         <p class="f-25 m-b-0" style="margin-left: 10%"><?= $team->team_name?></p>
-                        <div class="favoriteIcons" style="margin-left: 25% !important">
+                        <div class="favoriteIcons" style="margin-left: 25%">
                             <? if(isset($favoriteTeam)) { ?>
-                            <i style="font-size: 40px" class="favoriteIcon hidden zmdi zmdi-favorite-outline"></i>
-                            <i style="font-size: 40px" class="favoriteIconLiked c-orange triggerLike hidden zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
-                            <i style="font-size: 40px" class="triggerLike favAfterLike c-orange zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
+                                <i style="font-size: 40px" class="favoriteIcon hidden zmdi zmdi-favorite-outline"></i>
+                                <i style="font-size: 40px" class="favoriteIconLiked c-orange triggerLike hidden zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
+                                <i style="font-size: 40px" class="triggerLike favAfterLike c-orange zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
                             <? } else { ?>
-                            <i style="font-size: 40px" class="favoriteIcon zmdi zmdi-favorite-outline"></i>
-                            <i style="font-size: 40px" class="favoriteIconLiked triggerLike c-orange hidden zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
+                                <i style="font-size: 40px" class="favoriteIcon zmdi zmdi-favorite-outline"></i>
+                                <i style="font-size: 40px" class="favoriteIconLiked triggerLike c-orange hidden zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
                             <? } ?>
                         </div>
                     </div>
@@ -70,7 +71,8 @@
                                         <? } ?>
                                     </div>
                                     <div class="col-sm-4 text-center m-t-20">
-                                      <p class="m-b-0 pull-right m-r-5 regular-link collapseExpertise" data-user-id="<?= $member->id?>" data-toggle="collapse" data-target="#collapseExpertise-<?= $member->id?>" aria-expanded="false" aria-controls="collapseExpertise-<?= $member->id?>">Show expertises <i class="zmdi zmdi-chevron-left m-t-5 m-l-10 c-orange"></i></p>
+                                        <p class="m-b-0 pull-right m-r-5 regular-link collapseExpertise collapseExpertiseResponsive" style="display: none;" data-user-id="<?= $member->id?>" data-toggle="collapse" data-target="#collapseExpertise-<?= $member->id?>" aria-expanded="false" aria-controls="collapseExpertise-<?= $member->id?>">Expertises <i class="zmdi zmdi-chevron-left m-t-5 m-l-10 c-orange"></i></p>
+                                        <p class="m-b-0 pull-right m-r-5 regular-link collapseExpertise" data-user-id="<?= $member->id?>" data-toggle="collapse" data-target="#collapseExpertise-<?= $member->id?>" aria-expanded="false" aria-controls="collapseExpertise-<?= $member->id?>">Show expertises <i class="zmdi zmdi-chevron-left m-t-5 m-l-10 c-orange"></i></p>
                                     </div>
                                 </div>
                                 <div class="row p-l-15 p-r-15 collapse" id="collapseExpertise-<?= $member->id?>">
@@ -109,7 +111,7 @@
                                     <h3>Needed expertises</h3>
                                 </div>
                             </div>
-                            <div class="d-flex fd-column singleTeamNeededExpertises">
+                            <div class="singleTeamNeededExpertises">
                                 <? foreach($team->getNeededExpertises() as $neededExpertise) { ?>
                                 <?if($neededExpertise->amount > 0) { ?>
                                         <? $requiredArray = []?>
