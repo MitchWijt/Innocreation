@@ -7,27 +7,32 @@ $(".read-more").on("click",function () {
     $("#collapse-" + id).collapse('toggle');
 });
 
+$(".carousel").each(function () {
+    var counter = $(this).data("counter");
+    if ($(window).width() < 400) {
+        var carousel = new floatingCarousel('#carousel-default-' + counter, {
+            autoScroll: true,
+            autoScrollDirection: 'right',
+            autoScrollSpeed: 10000,
+            enableTouchEvents: false,
+            touchOverflowHidden: false,
+            reverseOnTouch: false
 
-if ($(window).width() < 400) {
-    new floatingCarousel('.carousel-default', {
-        autoScroll: true,
-        autoScrollDirection: 'right',
-        autoScrollSpeed: 10000,
-        enableTouchEvents: false,
-        touchOverflowHidden: false,
-        reverseOnTouch: false
+        });
+    } else {
+        var carousel = new floatingCarousel('#carousel-default-' + counter, {
+            autoScroll : true,
+            autoScrollDirection : 'right',
+            autoScrollSpeed : 70000,
+            enableTouchEvents : false,
+            touchOverflowHidden : false,
+            reverseOnTouch : false
+        });
 
-    });
-} else {
-    new floatingCarousel('.carousel-default', {
-        autoScroll : true,
-        autoScrollDirection : 'right',
-        autoScrollSpeed : 70000,
-        enableTouchEvents : false,
-        touchOverflowHidden : false,
-        reverseOnTouch : false
-    });
-}
+
+    }
+});
+
 
 
 $(".editBannerImage").on("click",function () {
@@ -36,4 +41,63 @@ $(".editBannerImage").on("click",function () {
 
 $('.bannerImgInput').on("change", function () {
     $(".bannerImgForm").submit();
+});
+
+function play(id){
+    document.getElementById('player-' + id).play();
+    $(".playSong").addClass("hidden");
+    $(".pauseSong").removeClass("hidden");
+    $("#carousel-default-1").destroy();
+}
+
+function pause(id){
+    document.getElementById('player-' + id).pause();
+    $(".playSong").removeClass("hidden");
+    $(".pauseSong").addClass("hidden");
+}
+
+$(document).on("click", ".pauseSong", function () {
+    var id = $(this).data("id");
+    pause(id);
+});
+
+$(document).on("click", ".playSong", function () {
+    var id = $(this).data("id");
+    play(id);
+});
+
+function getCurrentTime(event, id) {
+    $(".cur-" + id).text(formatTime(event.currentTime));
+    var percentage = Math.floor(event.currentTime / event.duration * 100);
+    $('.musicBar-' + id).val(percentage);
+    // $(".progress-bar-custom").width(percentage + "%");
+}
+
+function formatTime(seconds) {
+    minutes = Math.floor(seconds / 60);
+    minutes = (minutes >= 10) ? minutes : "0" + minutes;
+    seconds = Math.floor(seconds % 60);
+    seconds = (seconds >= 10) ? seconds : "0" + seconds;
+    return minutes + ":" + seconds;
+}
+
+$(document).ready(function () {
+    $(".duration").each(function () {
+        var id = $(this).data("id");
+        setTimeout(function(){
+            var time = document.getElementById('player-' + id);
+            $(".dur-" + id).text(formatTime(time.duration));
+        }, 500);
+    });
+    $(".currentTime").text("00:00");
+});
+
+$(document).on("change", ".music-progress-bar", function () {
+    var id = $(this).data("id");
+    var player =  document.getElementById('player-' + id);
+    var percentage = $(this).val();
+    var duration = player.duration;
+    var newTime = (duration / 100) * percentage;
+    player.currentTime = newTime;
+    play(id);
 });

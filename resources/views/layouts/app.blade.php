@@ -47,6 +47,8 @@
         <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
         <link rel="stylesheet" href="/css/jquery-ui-min.css">
         <link rel="stylesheet" href="/css/jquery.timepicker.css">
+        <link rel="stylesheet" href="/css/musicPlayer.css">
+
     {{------------------------}}
     {{--BOOTSTRAP SWITCH/TOGGLE--}}
         <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -71,6 +73,8 @@
         <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
         <script src="/assets/innocreation-animation.js"></script>
         <script src="/assets/animation.js"></script>
+        <script src="/js/assets/musicPlayer.js"></script>
+
     {{--==============--}}
         <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=i4hrh8gzmh7fted3hqpgatcuwma8kl075x378rgkki09j852"></script>
     {{------------------------------}}

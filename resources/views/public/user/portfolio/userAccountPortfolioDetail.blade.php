@@ -1,4 +1,5 @@
 @extends("layouts.app")
+{{--<link rel="stylesheet" href="/css/musicPlayer.css">--}}
 @section("content")
     <div class="d-flex grey-background vh85">
         @notmobile
@@ -24,7 +25,7 @@
                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                         <input type="hidden" name="user_id" value="<?= $user->id?>">
                         <input type="hidden" name="portfolio_id" value="<?= $userPortfolio->id?>">
-                        <input type="file" name="files[]" accept="image/*" multiple id="fileBox" class="hidden">
+                        <input type="file" name="files[]" multiple id="fileBox" class="hidden">
                     </form>
                 </div>
             </div>
@@ -82,4 +83,5 @@
 @endsection
 @section('pagescript')
     <script src="/js/user/userAccountPortfolio.js"></script>
+    <script src="/js/assets/musicPlayer.js"></script>
 @endsection
