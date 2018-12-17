@@ -266,7 +266,7 @@ class RegisterProcessController extends Controller {
                     $userMessage->sender_user_id = 1;
                     $userMessage->user_chat_id = $userChat->id;
                     $userMessage->time_sent = $this->getTimeSent();
-                    $userMessage->message = sprintf('We have good news for you and your team! </br> </br> A new %s has joined Innocreation, since your team is in need of a %s you can invite him or chat with him straight away at the account of <a href="https://secret.innocreation.net%s">%s</a>', $neededExpertise->expertises->First()->title, $neededExpertise->expertises->First()->title, $user->getUrl(), $user->firstname);
+                    $userMessage->message = sprintf('We have good news for you and your team! </br> </br> A new %s has joined Innocreation, since your team is in need of a %s you can invite him or chat with him straight away at the account of <a href="https://innocreation.net%s">%s</a>', $neededExpertise->expertises->First()->title, $neededExpertise->expertises->First()->title, $user->getUrl(), $user->firstname);
                     $userMessage->created_at = date("Y-m-d H:i:s");
                     $userMessage->save();
                 }
