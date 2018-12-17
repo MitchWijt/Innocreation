@@ -74,6 +74,7 @@ class UserAccountPortfolioService
 
         $files = $request->file("files");
         foreach($files as $file){
+            dd($file->getMimetype());
             $size = $this->formatBytes($file->getSize());
             if($size < 8) {
                 $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());

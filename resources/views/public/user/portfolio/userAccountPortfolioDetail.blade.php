@@ -25,7 +25,7 @@
                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                         <input type="hidden" name="user_id" value="<?= $user->id?>">
                         <input type="hidden" name="portfolio_id" value="<?= $userPortfolio->id?>">
-                        <input type="file" name="files[]" multiple id="fileBox" class="hidden">
+                        <input type="file" accept="audio/mpeg3, image/jpeg" name="files[]" multiple id="fileBox" class="hidden">
                     </form>
                 </div>
             </div>

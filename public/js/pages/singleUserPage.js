@@ -7,10 +7,11 @@ $(".read-more").on("click",function () {
     $("#collapse-" + id).collapse('toggle');
 });
 
+var vars = {};
 $(".carousel").each(function () {
     var counter = $(this).data("counter");
     if ($(window).width() < 400) {
-        var carousel = new floatingCarousel('#carousel-default-' + counter, {
+        vars[counter + 'newCarousel'] = new floatingCarousel('#carousel-default-' + counter, {
             autoScroll: true,
             autoScrollDirection: 'right',
             autoScrollSpeed: 10000,
@@ -20,7 +21,7 @@ $(".carousel").each(function () {
 
         });
     } else {
-        var carousel = new floatingCarousel('#carousel-default-' + counter, {
+        vars[counter + 'newCarousel'] = new floatingCarousel('#carousel-default-' + counter, {
             autoScroll : true,
             autoScrollDirection : 'right',
             autoScrollSpeed : 70000,
@@ -28,10 +29,10 @@ $(".carousel").each(function () {
             touchOverflowHidden : false,
             reverseOnTouch : false
         });
-
-
     }
 });
+
+
 
 
 
@@ -43,27 +44,30 @@ $('.bannerImgInput').on("change", function () {
     $(".bannerImgForm").submit();
 });
 
-function play(id){
+function play(id, counter){
     document.getElementById('player-' + id).play();
     $(".playSong").addClass("hidden");
     $(".pauseSong").removeClass("hidden");
-    $("#carousel-default-1").destroy();
+    vars[counter + 'newCarousel'].pause();
 }
 
-function pause(id){
+function pause(id, counter){
     document.getElementById('player-' + id).pause();
     $(".playSong").removeClass("hidden");
     $(".pauseSong").addClass("hidden");
+    vars[counter + 'newCarousel'].play();
 }
 
 $(document).on("click", ".pauseSong", function () {
     var id = $(this).data("id");
-    pause(id);
+    var counter = $(this).data("counter");
+    pause(id, counter);
 });
 
 $(document).on("click", ".playSong", function () {
     var id = $(this).data("id");
-    play(id);
+    var counter = $(this).data("counter");
+    play(id, counter);
 });
 
 function getCurrentTime(event, id) {
@@ -94,10 +98,11 @@ $(document).ready(function () {
 
 $(document).on("change", ".music-progress-bar", function () {
     var id = $(this).data("id");
+    var counter = $(this).data("counter");
     var player =  document.getElementById('player-' + id);
     var percentage = $(this).val();
     var duration = player.duration;
     var newTime = (duration / 100) * percentage;
     player.currentTime = newTime;
-    play(id);
+    play(id, counter);
 });

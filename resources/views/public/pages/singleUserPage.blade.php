@@ -212,27 +212,29 @@
                                                                     <div class="p-absolute cont-<?= $file->id?>" style="top: 18%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
                                                                         <hr class="col-8">
                                                                     </div>
-                                                                    <div class="p-absolute" style="top: 80%; right: -1%; transform: translate(-50%, -50%);">
-                                                                        <i class="zmdi zmdi-play editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 playSong" data-id="<?= $file->id?>"></i>
-                                                                        <i class="zmdi zmdi-pause editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 pauseSong hidden" data-id="<?= $file->id?>"></i>
-                                                                    </div>
-                                                                    <div class="p-absolute" style="top: 80%; left: 13%; transform: translate(-50%, -50%);">
-                                                                        <span class="currentTime f-12 cur-<?= $file->id?>"></span><span class="f-12">/</span><span class="duration f-12 dur-<?= $file->id?>" data-id="<?= $file->id?>"></span>
-                                                                    </div>
-                                                                    <div class="p-absolute p-l-5 p-r-5" style="top: 90%; left: 50%; width: 100%; transform: translate(-50%, -50%);">
-                                                                        <input type="range" class=" p-l-0 p-r-0 music-progress-bar musicBar-<?= $file->id?>" data-id="<?= $file->id?>" value="0" name="" id="">
-                                                                    </div>
-                                                                    <audio id="player-<?= $file->id?>" ontimeupdate="getCurrentTime(this, $(this).data('id'))" data-id="<?= $file->id?>" src="/images/rejecta.mp3"></audio>
+                                                                    <? if($file->mimetype == "application/octet-stream") { ?>
+                                                                        <div class="p-absolute" style="top: 80%; right: -1%; transform: translate(-50%, -50%);">
+                                                                            <i class="zmdi zmdi-play editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 playSong" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
+                                                                            <i class="zmdi zmdi-pause editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 pauseSong hidden" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
+                                                                        </div>
+                                                                        <div class="p-absolute" style="top: 80%; left: 13%; transform: translate(-50%, -50%);">
+                                                                            <span class="currentTime f-12 cur-<?= $file->id?>"></span><span class="f-12">/</span><span class="duration f-12 dur-<?= $file->id?>" data-id="<?= $file->id?>"></span>
+                                                                        </div>
+                                                                        <div class="p-absolute p-l-5 p-r-5" style="top: 90%; left: 50%; width: 100%; transform: translate(-50%, -50%);">
+                                                                            <input type="range" class=" p-l-0 p-r-0 music-progress-bar musicBar-<?= $file->id?>" data-counter="<?= $counter?>" data-id="<?= $file->id?>" value="0" name="" id="">
+                                                                        </div>
+                                                                        <audio id="player-<?= $file->id?>" ontimeupdate="getCurrentTime(this, $(this).data('id'))" data-id="<?= $file->id?>" src="<?= $file->getUrl()?>"></audio>
+                                                                    <? } ?>
                                                                 </div>
                                                             <? } ?>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </li>
-                                            <? $counter++?>
                                         <? } ?>
                                     </ul>
                                 </div>
+                                <? $counter++?>
                             <? } ?>
                         </div>
                     </div>
