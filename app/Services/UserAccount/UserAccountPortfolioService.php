@@ -74,20 +74,37 @@ class UserAccountPortfolioService
 
         $files = $request->file("files");
         foreach($files as $file){
-            dd($file->getMimetype());
+            if($file->getMimetype() == "application/octet-stream"){
+                $dirNameAudio = preg_replace('/[^a-zA-Z0-9-_\.]/','', str_replace("." . $file->getClientOriginalExtension(), "", $file->getClientOriginalName()));
+            }
             $size = $this->formatBytes($file->getSize());
             if($size < 8) {
                 $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
-                if(!Storage::disk('spaces')->has("users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/','', $singleFile->dir) . "/" . $filename)) {
-                    Storage::disk('spaces')->put("users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $singleFile->dir) . "/" . $filename, file_get_contents($file->getRealPath()), "public");
-                    $userPortfolioFile = new UserPortfolioFile();
-                    $userPortfolioFile->portfolio_id = $userPortfolio->id;
-                    $userPortfolioFile->dirname = preg_replace('/[^a-zA-Z0-9-_\.]/', '', $userPortfolio->title);
-                    $userPortfolioFile->filename = $filename;
-                    $userPortfolioFile->extension = $file->getClientOriginalExtension();
-                    $userPortfolioFile->mimetype = $file->getMimetype();
-                    $userPortfolioFile->created_at = date("Y-m-d H:i:s");
-                    $userPortfolioFile->save();
+                if($file->getMimetype() == "application/octet-stream") {
+                    if (!Storage::disk('spaces')->has("users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $singleFile->dirname) . "/" . $dirNameAudio . "/" . $filename)) {
+                        Storage::disk('spaces')->put("users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $singleFile->dirname) . "/" . $dirNameAudio . "/" . $filename, file_get_contents($file->getRealPath()), "public");
+                        $userPortfolioFile = new UserPortfolioFile();
+                        $userPortfolioFile->portfolio_id = $userPortfolio->id;
+                        $userPortfolioFile->dirname = preg_replace('/[^a-zA-Z0-9-_\.]/', '', $userPortfolio->title);
+                        $userPortfolioFile->dirname_audio = $dirNameAudio;
+                        $userPortfolioFile->audio = $filename;
+                        $userPortfolioFile->extension = $file->getClientOriginalExtension();
+                        $userPortfolioFile->mimetype = $file->getMimetype();
+                        $userPortfolioFile->created_at = date("Y-m-d H:i:s");
+                        $userPortfolioFile->save();
+                    }
+                } else {
+                    if (!Storage::disk('spaces')->has("users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $singleFile->dirname) . "/" . $filename)) {
+                        Storage::disk('spaces')->put("users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $singleFile->dirname) . "/" . $filename, file_get_contents($file->getRealPath()), "public");
+                        $userPortfolioFile = new UserPortfolioFile();
+                        $userPortfolioFile->portfolio_id = $userPortfolio->id;
+                        $userPortfolioFile->dirname = preg_replace('/[^a-zA-Z0-9-_\.]/', '', $userPortfolio->title);
+                        $userPortfolioFile->filename = $filename;
+                        $userPortfolioFile->extension = $file->getClientOriginalExtension();
+                        $userPortfolioFile->mimetype = $file->getMimetype();
+                        $userPortfolioFile->created_at = date("Y-m-d H:i:s");
+                        $userPortfolioFile->save();
+                    }
                 }
             } else {
                 return redirect("/account")->withErrors("Image is too large. The max upload size per image is 8MB");
@@ -120,9 +137,51 @@ class UserAccountPortfolioService
         $user = User::select("*")->where("id", $request->input("user_id"))->first();
 
         $file = UserPortfolioFile::select("*")->where("id", $fileId)->first();
-        Storage::disk('spaces')->delete("users/$user->slug/portfolios/$file->dirname/" . $file->filename);
+        if($file->audio != null){
+            Storage::disk('spaces')->delete("users/$user->slug/portfolios/$file->dirname/$file->dirname_audio/" . $file->audio);
+        }
+        if($file->dirname_audio != null && $file->audio != null && $file->filename != null){
+            Storage::disk('spaces')->delete("users/$user->slug/portfolios/$file->dirname/$file->dirname_audio/" . $file->filename);
+        }
+        if($file->mimetype != "application/octet-stream") {
+            Storage::disk('spaces')->delete("users/$user->slug/portfolios/$file->dirname/" . $file->filename);
+        }
         $file->delete();
         return redirect(sprintf('/my-account/portfolio/%s', $file->portfolio->slug));
+    }
+
+    public function addImageToAudio($request){
+        $fileId = $request->input("portfolio_file_id");
+        $userId = $request->input("user_id");
+        if(Session::get("user_id") != $userId){
+            return redirect("/my-account");
+        }
+        $user = User::select("*")->where("id", $userId)->first();
+        $file = $request->file("file");
+        $size = $this->formatBytes($file->getSize());
+        if($size < 8) {
+            $filename = preg_replace('/[^a-zA-Z0-9-_\.]/', '', $file->getClientOriginalName());
+
+            $userPortfolioFile = UserPortfolioFile::select("*")->where("id", $fileId)->first();
+            $dirname = $userPortfolioFile->dirname;
+            $dirname_audio = $userPortfolioFile->dirname_audio;
+
+            if (!Storage::disk('spaces')->has("users/$user->slug/portfolios/" . $dirname . "/" . $dirname_audio . "/" . $filename)) {
+                if($userPortfolioFile->filename != null) {
+                    Storage::disk('spaces')->delete("users/$user->slug/portfolios/" . $dirname . "/" . $dirname_audio . "/" . $userPortfolioFile->filename);
+                }
+                Storage::disk('spaces')->put("users/$user->slug/portfolios/" . $dirname . "/" . $dirname_audio . "/" . $filename, file_get_contents($file->getRealPath()), "public");
+                $userPortfolioFile->filename = $filename;
+                $userPortfolioFile->save();
+            }
+
+
+        } else {
+            return redirect("/account")->withErrors("Image is too large. The max upload size per image is 8MB");
+        }
+
+        return redirect(sprintf('/my-account/portfolio/%s', $userPortfolioFile->portfolio->slug));
+
     }
 
     public function formatBytes($bytes, $precision = 2) {

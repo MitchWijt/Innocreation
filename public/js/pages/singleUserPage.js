@@ -106,3 +106,25 @@ $(document).on("change", ".music-progress-bar", function () {
     player.currentTime = newTime;
     play(id, counter);
 });
+
+$(document).on("mouseover", ".contentPortfolio", function () {
+    var id = $(this).data("id");
+    document.getElementById('video-' + id).play();
+});
+
+$(document).on("touchstart", ".noScale", function () {
+    var id = $(this).data("id");
+    document.getElementById('video-' + id).play();
+});
+
+$(".contentPortfolio").on('mouseover',function () {
+    var id = $(this).data("id");
+    document.getElementById('video-' + id).play();
+});
+
+$(".contentPortfolio").on('mouseleave',function () {
+    var id = $(this).data("id");
+    var video =  document.getElementById('video-' + id);
+    video.currentTime = 0;
+    video.pause();
+});

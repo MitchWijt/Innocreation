@@ -159,3 +159,12 @@ $(".removeImage").on("click",function () {
     $(".removeImageForm-" + id).submit();
 });
 
+$(".addMusicImage").on("click",function () {
+    var id = $(this).data("file-id");
+    $("#imageAudio-" + id).click();
+});
+
+$(".imageForAudio").on("change",function () {
+    var id = $(this).data("file-id");
+    $(".addImageToAudio-" + id).submit();
+});

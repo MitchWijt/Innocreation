@@ -34,7 +34,11 @@
                     <div class="td-none portfolioFileItem p-r-10 p-l-10 col-sm-4">
                         <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
                             <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
-                                <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" style="background: url('<?= $file->getUrl()?>'); z-index: -1 !important">
+                                <? if($file->mimetype == "application/octet-stream" && $file->filename != null) { ?>
+                                    <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" style="background: url('<?= $file->getAudioCover()?>'); z-index: -1 !important">
+                                <? } else { ?>
+                                    <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" style="background: url('<?= $file->getUrl()?>'); z-index: -1 !important">
+                                <? } ?>
                                     <? if($file->title != null ) { ?>
                                         <div id="content" class="contentFixed" @desktop style="display: none;" @enddesktop>
                                             <div class="p-absolute cont-<?= $file->id?>" style="top: 42%; left: 50%; !important; transform: translate(-50%, -50%);">
@@ -68,6 +72,17 @@
                                         </div>
                                     </div>
                                     <div id="content">
+                                        <? if($file->mimetype == "application/octet-stream") { ?>
+                                            <div class="p-t-40 p-absolute" style="top: 75%; left: 83%; transform: translate(-50%, -50%);">
+                                                <form action="/user/addImageToAudio" method="post" enctype="multipart/form-data" class="addImageToAudio-<?= $file->id?>">
+                                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                    <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                                    <input type="hidden" name="portfolio_file_id" value="<?= $file->id?>">
+                                                    <input type="file" accept="image/jpeg" name="file" data-file-id="<?= $file->id?>" id="imageAudio-<?= $file->id?>" class="hidden imageForAudio">
+                                                </form>
+                                                <i data-file-id="<?= $file->id?>" class="zmdi zmdi-camera-add editBtnDark f-20 addMusicImage"></i>
+                                            </div>
+                                        <? } ?>
                                         <div class="p-t-40 p-absolute" style="top: 75%; left: 94%; transform: translate(-50%, -50%);">
                                             <i data-file-id="<?= $file->id?>" class="zmdi zmdi-edit editBtnDark f-20 editPortfolioImage"></i>
                                         </div>
@@ -78,6 +93,7 @@
                     </div>
                 <? } ?>
             </div>
+                    <video src="/images/Interstellar.mp4" class="video" id="video" muted></video>
         </div>
     </div>
 @endsection

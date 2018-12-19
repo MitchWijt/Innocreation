@@ -339,6 +339,10 @@ class UserController extends Controller
         return $userPortfolioService->removeImage($request);
     }
 
+    public function addImageToAudio(Request $request, UserAccountPortfolioService $userPortfolioService){
+        return $userPortfolioService->addImageToAudio($request);
+    }
+
     public function editUserPortfolio(Request $request){
         $portfolio_id = $request->input("portfolio_id");
         $file = $request->file("portfolio_image");
