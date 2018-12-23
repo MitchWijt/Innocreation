@@ -44,7 +44,7 @@ $(document).ready(function () {
         setTimeout(function(){
             var time = document.getElementById('player-' + id);
             $(".dur-" + id).text(formatTime(time.duration));
-        }, 1000);
+        }, 1500);
     });
     $(".currentTime").text("00:00");
 
