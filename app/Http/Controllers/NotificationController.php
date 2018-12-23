@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AssistanceTicket;
+use App\Services\FeedServices\SwitchUserWork;
 use App\SupportTicket;
 use App\SupportTicketMessage;
 use App\TeamProduct;
@@ -20,8 +21,8 @@ use App\Http\Requests;
 
 class NotificationController extends Controller
 {
-    public function getNotificationsAction(userNotifications $userNotifications){
+    public function getNotificationsAction(userNotifications $userNotifications, SwitchUserWork $switchUserWork){
         $userId = Session::get("user_id");
-        return $userNotifications->getStreamDataFromUser($userId);
+        return $userNotifications->getStreamDataFromUser($userId, $switchUserWork);
     }
 }

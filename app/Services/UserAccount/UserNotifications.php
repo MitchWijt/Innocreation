@@ -11,16 +11,18 @@ use App\Expertises_linktable;
 use App\Favorite_expertises_linktable;
 use GetStream;
 use Illuminate\Support\Facades\Session;
+use App\Services\FeedServices\SwitchUserWork as SwitchUserWork;
 
 class UserNotifications
 {
-    public function getStreamDataFromUser($userId){
+    public function getStreamDataFromUser($userId, $switchUserWork){
         $client = new GetStream\Stream\Client(env("STREAM_API"), env("STREAM_SECRET"));
         $messageFeed = $client->feed('user', $userId);
-        return $this->returnViewWithData($messageFeed->getActivities(0,20)['results']);
+        return $this->returnViewWithData($messageFeed->getActivities(0,20)['results'], $userId, $switchUserWork);
     }
 
-    public function returnViewWithData($notifications){
-        return view("/public/shared/_popoverNotificationsData", compact('notifications'));
+    public function returnViewWithData($notifications, $userId, $switchUserWork){
+        $connections = $switchUserWork->listConnectionRequests($userId);
+        return view("/public/shared/_popoverNotificationsData", compact('notifications', 'connections'));
     }
 }
