@@ -25,7 +25,7 @@ class FfmpegService
 
     public function extractThumbnailSaveToCdn($videoFile, $cdnDir, $filename){
         $video = $this->ffmpeg->open($videoFile);
-        $frame = $video->frame(TimeCode::fromSeconds(40));
+        $frame = $video->frame(TimeCode::fromSeconds(5));
         $tmpfname = tempnam(sys_get_temp_dir(), "thumbnail");
         $frame->save('/var/www/secret/public/images/thumbnail.jpg');
 

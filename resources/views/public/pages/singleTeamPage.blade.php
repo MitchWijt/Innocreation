@@ -12,7 +12,7 @@
                     <? } ?>
                 </div>
             </div>
-            <div class="banner p-relative " style="background: url('<?= $team->getBanner()?>');">
+            <div class="banner p-relative" style="background: url('<?= $team->getBanner()?>');">
                 <? if($user && $user->id == $team->ceo_user_id) { ?>
                 <form action="/my-team/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
