@@ -14,14 +14,14 @@
             </div>
             <div class="banner p-relative " style="background: url('<?= $user->getBanner()?>');">
                 <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
-                    <form action="/user/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
-                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                        <input type="hidden" name="user_id" value="<?= $user->id?>">
-                        <input type="file" name="bannerImg" class="bannerImgInput">
-                    </form>
-                    <i class="zmdi zmdi-edit editBtn editBannerImage @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
+                <form action="/user/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
+                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                    <input type="hidden" name="user_id" value="<?= $user->id?>">
+                    <input type="file" name="bannerImg" class="bannerImgInput">
+                </form>
+                <i class="zmdi zmdi-edit editBtn editBannerImage @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
                 <? } ?>
-                <div class="avatar-med userProfilePic p-absolute" style="background: url('<?= $user->getProfilePicture()?>');"></div>
+                <div class="avatar-med absolutePF p-absolute" style="background: url('<?= $user->getProfilePicture()?>');"></div>
             </div>
             <div class="row">
                 <div class="col-sm-4">
@@ -182,6 +182,7 @@
                                 </div>
                             </div>
                             <hr class="m-b-20">
+                            <? $counter = 0?>
                             <? foreach($portfolios as $portfolio) { ?>
                                 <div class="row" id="test">
                                     <div class="col-12 m-l-20">
@@ -193,82 +194,65 @@
                                         </div>
                                     <? } ?>
                                 </div>
-                                <div class="carousel carousel-default m-b-30 carousel-default carousel-portfolio">
+                                <div class="carousel m-b-30 carousel-portfolio" id="carousel-default-<?= $counter?>" data-counter="<?= $counter?>">
                                     <ul class="p-l-0">
                                         <? foreach($portfolio->getFiles() as $file) { ?>
                                             <li class="td-none portfolioFileItem p-r-10 p-l-10" style="list-style-type: none; min-width: 350px !important; z-index: -1 !important">
-                                                <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
-                                                    <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
-                                                        <div class="@mobile contentPortfolioNoScale @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" style="background: url('<?= $file->getUrl()?>'); z-index: -1 !important">
-                                                            <? if($file->title != null ) { ?>
-                                                                <div id="content" @desktop style="display: none;" @enddesktop>
+                                                <? if($file->mimetype != "video/mp4") { ?>
+                                                    <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
+                                                        <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
+                                                            <? if($file->mimetype == "application/octet-stream" && $file->filename != null) { ?>
+                                                                <? $backgroundImg = $file->getAudioCover() ?>
+                                                            <? } else { ?>
+                                                                 <? $backgroundImg = $file->getUrl() ?>
+                                                            <? } ?>
+                                                                <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" style="background: url('<?= $backgroundImg?>'); z-index: -1 !important">
+                                                                <div id="content" @notmobile style="display: none;" @endnotmobile>
                                                                     <div class="m-t-10 p-absolute cont-<?= $file->id?>" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
                                                                         <p class="c-white f-9 p-t-40" style="width: 300px !important"><?= $file->description?></p>
                                                                     </div>
                                                                     <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 5%; left: 56%; width: 100%; transform: translate(-50%, -50%);">
                                                                         <p class="c-white f-12"><?= $file->title?></p>
                                                                     </div>
-                                                                    <div class="p-absolute cont-<?= $file->id?>" style="top: 18%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
-                                                                        <hr class="col-8">
-                                                                    </div>
+                                                                    <? if($file->title != null) { ?>
+                                                                        <div class="p-absolute cont-<?= $file->id?>" style="top: 18%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
+                                                                            <hr class="col-8">
+                                                                        </div>
+                                                                    <? } ?>
+                                                                    <? if($file->mimetype == "application/octet-stream") { ?>
+                                                                        <div class="p-absolute" style="top: 80%; right: -1%; transform: translate(-50%, -50%);">
+                                                                            <i class="zmdi zmdi-play editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 playSong" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
+                                                                            <i class="zmdi zmdi-pause editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 pauseSong hidden" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
+                                                                        </div>
+                                                                        <div class="p-absolute" style="top: 80%; left: 13%; transform: translate(-50%, -50%);">
+                                                                            <span class="currentTime f-12 cur-<?= $file->id?>"></span><span class="f-12">/</span><span class="duration f-12 dur-<?= $file->id?>" data-id="<?= $file->id?>"></span>
+                                                                        </div>
+                                                                        <div class="p-absolute p-l-5 p-r-5" style="top: 90%; left: 50%; width: 100%; transform: translate(-50%, -50%);">
+                                                                            <input type="range" class=" p-l-0 p-r-0 music-progress-bar musicBar-<?= $file->id?>" data-counter="<?= $counter?>" data-id="<?= $file->id?>" value="0" name="" id="">
+                                                                        </div>
+                                                                        <audio id="player-<?= $file->id?>" ontimeupdate="getCurrentTime(this, $(this).data('id'))" data-id="<?= $file->id?>" src="<?= $file->getAudio()?>"></audio>
+                                                                    <? } ?>
                                                                 </div>
-                                                            <? } ?>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                <? } else { ?>
+                                                    <div class="card m-t-20 m-b-20 p-0 portfolioItemCard p-relative">
+                                                        <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
+                                                            <div class="@handheld @mobile contentPortfolioNoScale noScale videoContentMobile @elsetablet videoContentTablet contentPortfolio @endmobile @elsedesktop contentPortfolio videoContent videoContent-<?= $file->id?> @endhandheld" data-id="<?= $file->id?>" data-counter="<?= $counter?>"  style="z-index: 2 !important;">
+                                                                <div class="m-t-10 p-absolute" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
+                                                                    <i class="zmdi zmdi-play playButtonVideo shadow play-<?= $file->id?>"></i>
+                                                                </div>
+                                                                <video poster="<?= $file->getThumbnail()?>"  id="video-<?= $file->id?>" data-id="<?= $file->id?>" class="video video-<?= $file->id?>" style="min-width: 100% !important; max-width: 350px !important; min-height: 180px !important; max-height: 180px !important; z-index: 99;" src="<?= $file->getVideo()?>" muted></video>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <? } ?>
                                             </li>
                                         <? } ?>
                                     </ul>
                                 </div>
-                                <div class="portfolio">
-                                    {{--===========MODAL=========--}}
-                                    <div class="modal fade portfolioModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header d-flex js-center">
-                                                    <h4 class="modal-title text-center c-black" id="modalLabel"><?=$portfolio->title?></h4>
-                                                </div>
-                                                <div class="modal-body p-t-0">
-                                                    <div class="row modal-header">
-                                                        <div class="col-sm-12 d-flex js-center">
-                                                            <img class="h-100 radius" style="width: 50%;" src="<?=$portfolio->getUrl()?>" alt="<?= $portfolio->title?>">
-                                                        </div>
-                                                    </div>
-                                                    <div class="row d-flex js-center">
-                                                        <div class="col-sm-9 m-t-20">
-                                                            <p class="c-black"><?= $portfolio->description?></p>
-                                                        </div>
-                                                    </div>
-                                                    <? if($portfolio->link != null) { ?>
-                                                        <div class="row d-flex js-center">
-                                                            <div class="col-sm-9 m-t-20 text-center">
-                                                                <p class="c-black f-18 m-b-0">Check it out here:</p>
-                                                                <? if(strpos($portfolio->link, "https://") !== false) { ?>
-                                                                    <a target="_blank" class="regular-link" href="<?=$portfolio->link?>">Demo</a>
-                                                                <? } else { ?>
-                                                                    <a target="_blank" class="regular-link" href="https://<?=$portfolio->link?>">Demo</a>
-                                                                <? } ?>
-                                                            </div>
-                                                        </div>
-                                                    <? } ?>
-                                                    <? if($loggedIn) { ?>
-                                                        <div class="row">
-                                                            <div class="col-sm-12 text-center m-t-20">
-                                                                <form action="/selectChatUser" method="post">
-                                                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                                                    <input type="hidden" name="receiver_user_id" value="<?= $user->id?>">
-                                                                    <input type="hidden" name="creator_user_id" value="<?= $loggedIn->id?>">
-                                                                    <button class="btn btn-sm btn-inno">Send chat message</button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    <? } ?>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{--==============--}}
+                                <? $counter++?>
                             <? } ?>
                         </div>
                     </div>

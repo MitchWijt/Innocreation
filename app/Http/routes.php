@@ -119,6 +119,10 @@ Route::post("/user/editDescPortfolioImage", "UserController@editDescPortfolioIma
 
 Route::post("/user/removePortfolioImage", "UserController@removePortfolioImage");
 
+Route::post("/user/deletePortfolio", "UserController@deletePortfolio");
+
+Route::post("/user/addImageToAudio", "UserController@addImageToAudio");
+
 // User chats
 Route::get("/my-account/chats", "UserController@userAccountChats");
 
@@ -274,6 +278,8 @@ Route::post("/my-team/deleteTeamProduct", "TeamController@deleteTeamProductActio
 Route::post("/my-team/generateInviteLink", "TeamController@generateInviteLinkAction");
 
 Route::post("/my-team/saveNewName", "TeamController@saveTeamNameAction");
+
+Route::post("/my-team/editBannerImage", "TeamController@editBannerImage");
 
 //Payment
 Route::get("/my-team/payment-details", "TeamController@teamPaymentDetailsAction");

@@ -1,10 +1,8 @@
 @extends("layouts.app")
+<link rel="stylesheet" href="/css/responsiveness/singleTeamPage.css">
 @section("content")
     <div class="d-flex grey-background">
         <div class="container">
-            <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black @mobile f-20 @endmobile"><?=$team->team_name?></h1>
-            </div>
             <div class="row">
                 <div class="col-sm-12 text-center">
                     <? if(count($errors) > 0){ ?>
@@ -14,40 +12,44 @@
                     <? } ?>
                 </div>
             </div>
-            <hr class="m-b-20">
-            <div class="row">
-                <div class="col-sm-12 text-center">
-                    <div class="d-flex js-center">
-                        <div class="avatar-lg" style="background: url('<?=$team->getProfilePicture()?>')"></div>
-                    </div>
-                </div>
+            <div class="banner p-relative" style="background: url('<?= $team->getBanner()?>');">
+                <? if($user && $user->id == $team->ceo_user_id) { ?>
+                <form action="/my-team/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
+                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                    <input type="hidden" name="team_id" value="<?= $team->id?>">
+                    <input type="file" name="bannerImg" class="bannerImgInput">
+                </form>
+                <i class="zmdi zmdi-edit editBtn editBannerImage c-black @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
+                <? } ?>
+                <div class="avatar-med absolutePF p-absolute" style="background: url('<?= $team->getProfilePicture()?>');"></div>
             </div>
             <? if($user) { ?>
-                <div class="row">
-                    <div class="col-sm-12 text-center favoriteIcons">
-                        <? if(isset($favoriteTeam)) { ?>
-                            <i style="font-size: 40px" class="favoriteIcon hidden zmdi zmdi-favorite-outline m-t-20"></i>
-                            <i style="font-size: 40px" class="favoriteIconLiked c-orange triggerLike hidden zmdi zmdi-favorite m-t-20" data-team-id="<?=$team->id?>"></i>
-                            <i style="font-size: 40px" class="triggerLike favAfterLike c-orange zmdi zmdi-favorite m-t-20 " data-team-id="<?=$team->id?>"></i>
-                        <? } else { ?>
-                            <i style="font-size: 40px" class="favoriteIcon zmdi zmdi-favorite-outline m-t-20"></i>
-                            <i style="font-size: 40px" class="favoriteIconLiked triggerLike c-orange hidden zmdi zmdi-favorite m-t-20" data-team-id="<?=$team->id?>"></i>
-                        <? } ?>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="row d-flex fd-column userName" style="margin-top: 60px !important">
+                        <p class="f-25 m-b-0" style="margin-left: 10%"><?= $team->team_name?></p>
+                        <div class="favoriteIcons" style="margin-left: 25%">
+                            <? if(isset($favoriteTeam)) { ?>
+                                <i style="font-size: 40px" class="favoriteIcon hidden zmdi zmdi-favorite-outline"></i>
+                                <i style="font-size: 40px" class="favoriteIconLiked c-orange triggerLike hidden zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
+                                <i style="font-size: 40px" class="triggerLike favAfterLike c-orange zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
+                            <? } else { ?>
+                                <i style="font-size: 40px" class="favoriteIcon zmdi zmdi-favorite-outline"></i>
+                                <i style="font-size: 40px" class="favoriteIconLiked triggerLike c-orange hidden zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
+                            <? } ?>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12 text-center m-t-20">
-                        <form action="/selectChatUser" method="post">
-                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                            <input type="hidden" name="creator_user_id" value="<?=$user->id?>">
-                            <input type="hidden" name="receiver_user_id" value="<?= $team->ceo_user_id?>">
-                            <button class="btn btn-inno">Send chat message</button>
-                        </form>
-                    </div>
+                <div class="col-sm-8 m-t-10">
+                    <h3>Introduction:</h3>
+                    <p class="m-l-10 c-dark-grey"><?= $team->team_introduction?></p>
+                    <h3>Motivation:</h3>
+                    <p class="m-l-10 c-dark-grey"><?= $team->team_motivation?></p>
                 </div>
+            </div>
             <? } ?>
             <div class="row d-flex js-center">
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="card card-lg m-t-20 m-b-20">
                         <div class="card-block m-t-10">
                             <div class="row">
@@ -55,42 +57,53 @@
                                     <h3>Members</h3>
                                 </div>
                             </div>
-                            <div class="d-flex fd-column">
-                                <? foreach($team->getMembers() as $member) { ?>
-                                    <div class="col-sm-12 m-b-20 d-flex">
-                                        <div class="col-sm-4">
-                                            <a target="_blank" href="<?= $member->getUrl()?>">
-                                                <div class="avatar" style="background: url('<?=$member->getProfilePicture()?>')"></div>
-                                            </a>
-                                        </div>
-                                        <div class="col-sm-4 text-center">
-                                            <p class="m-t-15 <? if($team->ceo_user_id == $member->id) echo "m-b-0"; ?>"><?= $member->getName()?></p>
-                                            <? if($team->ceo_user_id == $member->id) { ?>
-                                                <p class="c-orange text f-12">Team leader</p>
-                                            <? } ?>
-                                        </div>
-                                        <div class="col-sm-4" style="display: flex; justify-content: flex-end;">
-                                            <div class="d-flex fd-column">
-                                                <? if($team->ceo_user_id == $member->id) { ?>
-                                                    <? foreach($member->getExpertises() as $memberExpertise) { ?>
-                                                        <div class="d-flex" style="justify-content: flex-end">
-                                                            <p><?= $memberExpertise->title?></p>
-                                                        </div>
-                                                    <? } ?>
-                                                <? } else { ?>
-                                                   <p class="m-t-15"><?= $member->getJoinedExpertise()->expertises->First()->title?></p>
-                                                <? } ?>
+                            <? foreach($team->getMembers() as $member) { ?>
+                                <div class="col-sm-12 m-b-20 d-flex moreLink">
+                                    <div class="col-sm-4 m-t-10">
+                                        <a target="_blank" href="<?= $member->getUrl()?>">
+                                            <div class="avatar" style="background: url('<?=$member->getProfilePicture()?>')"></div>
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-4 text-center">
+                                        <p class="m-t-15 <? if($team->ceo_user_id == $member->id) echo "m-b-0"; ?>"><?= $member->getName()?></p>
+                                        <? if($team->ceo_user_id == $member->id) { ?>
+                                            <p class="c-orange text f-12">Team leader</p>
+                                        <? } ?>
+                                    </div>
+                                    <div class="col-sm-4 text-center m-t-20">
+                                        <p class="m-b-0 pull-right m-r-5 regular-link collapseExpertise collapseExpertiseResponsive" style="display: none;" data-user-id="<?= $member->id?>" data-toggle="collapse" data-target="#collapseExpertise-<?= $member->id?>" aria-expanded="false" aria-controls="collapseExpertise-<?= $member->id?>">Expertises <i class="zmdi zmdi-chevron-left m-t-5 m-l-10 c-orange"></i></p>
+                                        <p class="m-b-0 pull-right m-r-5 regular-link collapseExpertise" data-user-id="<?= $member->id?>" data-toggle="collapse" data-target="#collapseExpertise-<?= $member->id?>" aria-expanded="false" aria-controls="collapseExpertise-<?= $member->id?>">Show expertises <i class="zmdi zmdi-chevron-left m-t-5 m-l-10 c-orange"></i></p>
+                                    </div>
+                                </div>
+                                <div class="row p-l-15 p-r-15 collapse" id="collapseExpertise-<?= $member->id?>">
+                                    <? foreach($member->getExpertiseLinktable() as $expertiseLinktable) { ?>
+                                        <div class="<? if(count($user->getExpertiseLinktable()) > 1) echo "col-sm-6"; else echo "col-sm-12"?> p-0">
+                                            <div class="card" >
+                                                <div class="card-block expertiseCard p-relative " style="max-height: 150px !important">
+                                                    <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
+                                                        <a class="c-gray f-9 c-pointer" target="_blank" href="<?= $expertiseLinktable->image_link?>">Photo</a> <span class="f-9 c-gray"> by </span> <a class="c-gray f-9 c-pointer" target="_blank" href="<?= $expertiseLinktable->photographer_link?>"><?= $expertiseLinktable->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer"  href="https://unsplash.com" target="_blank">Unsplash</a>
+                                                    </div>
+                                                    <div class="p-t-40 p-absolute" style="z-index: 100; top: 35%; left: 50%; transform: translate(-50%, -50%);">
+                                                        <div class="hr-sm"></div>
+                                                    </div>
+                                                    <div class="p-t-40 p-absolute" style="z-index: 99; top: 25%; left: 50%; transform: translate(-50%, -50%);">
+                                                        <p class="c-white f-20"><?= $expertiseLinktable->expertises->First()->title?></p>
+                                                    </div>
+                                                    <div class="overlay-users">
+                                                        <div class="contentExpertiseUsers" style="background: url('<?= $expertiseLinktable->image?>');"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                <? } ?>
-                            </div>
+                                    <? } ?>
+                                </div>
+                            <? } ?>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row d-flex js-center">
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="card card-lg m-t-20 m-b-20">
                         <div class="card-block m-t-10">
                             <div class="row">
@@ -98,7 +111,7 @@
                                     <h3>Needed expertises</h3>
                                 </div>
                             </div>
-                            <div class="d-flex fd-column singleTeamNeededExpertises">
+                            <div class="singleTeamNeededExpertises">
                                 <? foreach($team->getNeededExpertises() as $neededExpertise) { ?>
                                 <?if($neededExpertise->amount > 0) { ?>
                                         <? $requiredArray = []?>
@@ -108,63 +121,71 @@
                                             <? $counter++;?>
                                             <? array_push($requiredArray, $requirement)?>
                                         <? } ?>
-                                        <div class="col-sm-12 m-b-20 d-flex">
-                                            <? if($user && $user->team_id == null) { ?>
-                                               <div class="col-sm-3">
-                                                   <p class="m-t-10"><?= $neededExpertise->Expertises->First()->title?></p>
-                                               </div>
-                                                <div class="col-sm-4 text-center">
-                                                    <p class="pull-right m-t-10">Amount needed: <?= $neededExpertise->amount?></p>
-                                                </div>
-                                            <? } else { ?>
-                                                <div class="col-sm-5 m-b-10 border-inno text-center d-flex js-center">
-                                                    <p class="m-t-10"><?= $neededExpertise->Expertises->First()->title?></p>
-                                                </div>
-                                                <div class="col-sm-7">
-                                                    <p class="pull-right m-t-10">Amount needed: <?= $neededExpertise->amount?></p>
-                                                </div>
-                                            <? } ?>
-                                            <? if($user) { ?>
-                                                <? if($user->team_id == null) { ?>
-                                                    <? if($user->isActiveInExpertise($neededExpertise->expertise_id)) { ?>
-                                                        <? if($user->checkJoinRequests($neededExpertise->expertise_id, $team->id) == false) { ?>
-                                                            <div class="col-sm-5">
-                                                                <? if(!$team->packageDetails() || !$team->hasPaid()) { ?>
-                                                                    <? if(count($team->getMembers()) >= 2) { ?>
-                                                                        <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                        <div class="col-sm-12 m-b-20">
+                                            <div class="card">
+                                                <div class="card-block expertiseCard p-relative " style="max-height: 150px !important">
+                                                    <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
+                                                        <a class="c-gray f-9 c-pointer" target="_blank" href="<?= $neededExpertise->expertises->First()->image_link?>">Photo</a> <span class="f-9 c-gray"> by </span> <a class="c-gray f-9 c-pointer" target="_blank" href="<?= $neededExpertise->expertises->First()->photographer_link?>"><?= $neededExpertise->expertises->First()->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer"  href="https://unsplash.com" target="_blank">Unsplash</a>
+                                                    </div>
+                                                    <div class="p-t-40 p-absolute" style="z-index: 102; top: 66%; left: 50%; transform: translate(-50%, -50%);">
+                                                        <? if($user) { ?>
+                                                            <? if($user->team_id == null) { ?>
+                                                                <? if($user->isActiveInExpertise($neededExpertise->expertise_id)) { ?>
+                                                                    <? if($user->checkJoinRequests($neededExpertise->expertise_id, $team->id) == false) { ?>
+                                                                        <div class="col-sm-5">
+                                                                            <? if(!$team->packageDetails() || !$team->hasPaid()) { ?>
+                                                                                <? if(count($team->getMembers()) >= 2) { ?>
+                                                                                    <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal btn-sm" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                                <? } else { ?>
+                                                                                    <button class="btn btn-inno openApplyModal btn-sm" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                                <? } ?>
+                                                                            <? } else { ?>
+                                                                                <? if($team->hasPaid()) { ?>
+                                                                                    <? if($team->packageDetails()->custom_team_package_id == null) { ?>
+                                                                                        <? if($team->packageDetails()->membershipPackage->id == 3) { ?>
+                                                                                            <button class="btn btn-inno openApplyModal pull-right btn-sm" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                                        <? } else if(count($team->getMembers()) >= $team->packageDetails()->membershipPackage->members) { ?>
+                                                                                            <button data-toggle="modal" data-target="#teamLimitNotification btn-sm" class="btn btn-inno openUpgradeModal" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                                        <? } else { ?>
+                                                                                            <button class="btn btn-inno openApplyModal btn-sm" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                                        <? } ?>
+                                                                                    <? } else { ?>
+                                                                                        <? if(count($team->getMembers()) >= $team->packageDetails()->customTeamPackage->members && $team->packageDetails()->customTeamPackage->members != "unlimited") { ?>
+                                                                                            <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal btn-sm" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                                        <? } else { ?>
+                                                                                            <button class="btn btn-inno openApplyModal btn-sm" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                                        <? } ?>
+                                                                                    <? } ?>
+                                                                                <? } else { ?>
+                                                                                    <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal btn-sm" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                                <? } ?>
+                                                                            <? } ?>
+                                                                        </div>
                                                                     <? } else { ?>
-                                                                        <button class="btn btn-inno openApplyModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                        <div class="col-sm-5">
+                                                                            <p class="c-orange pull-right m-t-10">Applied</p>
+                                                                        </div>
                                                                     <? } ?>
-                                                                <? } else { ?>
-                                                                   <? if($team->hasPaid()) { ?>
-                                                                        <? if($team->packageDetails()->custom_team_package_id == null) { ?>
-                                                                           <? if($team->packageDetails()->membershipPackage->id == 3) { ?>
-                                                                            <button class="btn btn-inno openApplyModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
-                                                                            <? } else if(count($team->getMembers()) >= $team->packageDetails()->membershipPackage->members) { ?>
-                                                                                <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
-                                                                            <? } else { ?>
-                                                                                <button class="btn btn-inno openApplyModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
-                                                                            <? } ?>
-                                                                        <? } else { ?>
-                                                                            <? if(count($team->getMembers()) >= $team->packageDetails()->customTeamPackage->members && $team->packageDetails()->customTeamPackage->members != "unlimited") { ?>
-                                                                                <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
-                                                                            <? } else { ?>
-                                                                                <button class="btn btn-inno openApplyModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
-                                                                            <? } ?>
-                                                                        <? } ?>
-                                                                   <? } else { ?>
-                                                                        <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal pull-right" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
-                                                                    <? } ?>
-                                                               <? } ?>
-                                                            </div>
-                                                        <? } else { ?>
-                                                            <div class="col-sm-5">
-                                                                <p class="c-orange pull-right m-t-10">Applied</p>
-                                                            </div>
+                                                                <? } ?>
+                                                            <? } ?>
                                                         <? } ?>
-                                                    <? } ?>
-                                                <? } ?>
-                                            <? } ?>
+                                                    </div>
+                                                    <div class="p-t-40 p-absolute" style="z-index: 102; top: 44%; left: 50%; transform: translate(-50%, -50%);">
+                                                        <p class="c-white @tablet f-14 @elsedesktop f-20 @endtablet">Amount needed: <?= $neededExpertise->amount?></p>
+                                                    </div>
+                                                    <div class="p-t-40 p-absolute" style="z-index: 100; top: 25%; left: 50%; transform: translate(-50%, -50%);">
+                                                        <div class="hr-sm"></div>
+                                                    </div>
+                                                    <div class="p-t-40 p-absolute" style="z-index: 99; top: 15%; left: 50%; transform: translate(-50%, -50%);">
+                                                        <p class="c-white f-20"><?= $neededExpertise->expertises->First()->title?></p>
+                                                    </div>
+                                                    <div class="overlay-users">
+                                                        <div class="contentExpertiseUsers" style="background: url('<?= $neededExpertise->expertises->First()->image?>');"></div>
+                                                    </div>
+                                                    <? if($user && $user->team_id == null) { ?>
+                                                    <?}?>
+                                                </div>
+                                            </div>
                                         </div>
                                         <? if($user) { ?>
                                             <div class="modal applyForExpertise fade" data-expertise-id="<?=$neededExpertise->expertise_id?>" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
@@ -204,128 +225,6 @@
                                     <? } ?>
                                 <? } ?>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row d-flex js-center">
-               <div class="col-md-9">
-                    <div class="card card-lg m-t-20 m-b-20">
-                        <div class="card-block m-t-10">
-                            <div class="row m-l-20">
-                                <h3>Team information</h3>
-                            </div>
-                            <div class="d-flex fd-column">
-                                <div class="row d-flex js-center @mobile p-15 @endmobile">
-                                    <div class="col-md-11">
-                                        <p class="f-21 m-0">Our motivation</p>
-                                        <hr>
-                                        <p><?=$team->team_motivation?></p>
-                                    </div>
-                                </div>
-                                <div class="row d-flex js-center @mobile p-15 @endmobile">
-                                    <div class="col-sm-11">
-                                        <p class="f-21 m-0">Our introduction</p>
-                                        <hr>
-                                        <p><?=$team->team_introduction?></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-               </div>
-            </div>
-            <div class="row d-flex js-center">
-                <div class="col-md-9">
-                    <div class="card card-lg m-t-20 m-b-20">
-                        <div class="card-block m-t-10">
-                            <div class="row m-l-20">
-                                <h3>Team reviews</h3>
-                            </div>
-                            <? foreach($reviews as $review) { ?>
-                                <div class="row d-flex js-center m-l-25">
-                                    <div class="col-sm-12 d-flex fd-row">
-                                        <div class="c-orange m-r-30">
-                                            <? if($review->stars == 5) { ?>
-                                                <i class="zmdi zmdi-star"></i>
-                                                <i class="zmdi zmdi-star"></i>
-                                                <i class="zmdi zmdi-star"></i>
-                                                <i class="zmdi zmdi-star"></i>
-                                                <i class="zmdi zmdi-star"></i>
-                                            <? } else if($review->stars == 4) { ?>
-                                                <i class="zmdi zmdi-star"></i>
-                                                <i class="zmdi zmdi-star"></i>
-                                                <i class="zmdi zmdi-star"></i>
-                                                <i class="zmdi zmdi-star"></i>
-                                                <i class="zmdi zmdi-star-outline"></i>
-                                            <? } else if($review->stars == 3) { ?>
-                                                <i class="zmdi zmdi-star"></i>
-                                                <i class="zmdi zmdi-star"></i>
-                                                <i class="zmdi zmdi-star"></i>
-                                                <i class="zmdi zmdi-star-outline"></i>
-                                                <i class="zmdi zmdi-star-outline"></i>
-                                            <? } else if($review->stars == 2) { ?>
-                                                <i class="zmdi zmdi-star"></i>
-                                                <i class="zmdi zmdi-star"></i>
-                                                <i class="zmdi zmdi-star-outline"></i>
-                                                <i class="zmdi zmdi-star-outline"></i>
-                                                <i class="zmdi zmdi-star-outline"></i>
-                                            <? } else if($review->stars == 1) { ?>
-                                                <i class="zmdi zmdi-star"></i>
-                                                <i class="zmdi zmdi-star-outline"></i>
-                                                <i class="zmdi zmdi-star-outline"></i>
-                                                <i class="zmdi zmdi-star-outline"></i>
-                                                <i class="zmdi zmdi-star-outline"></i>
-                                            <? } ?>
-                                        </div>
-                                        <p class="f-17"><?= $review->title?></p>
-                                    </div>
-                                </div>
-                                <div class="row d-flex js-center m-l-25">
-                                    <div class="col-md-12">
-                                        <a class="c-gray" href="<?= $review->users->First()->getUrl()?>">
-                                            <p class="f-18"><?= $review->users->First()->getName()?></p>
-                                        </a>
-                                        <p class="m-b-0"><?= $review->review?></p>
-                                    </div>
-                                </div>
-                                <div class="row d-flex js-center m-b-20 ">
-                                    <div class="col-sm-10 m-r-10">
-                                       <span class="pull-right f-13 c-dark-grey"><?= date("d-m-Y", strtotime($review->created_at))?></span>
-                                    </div>
-                                </div>
-                            <? } ?>
-                            <? if($user) { ?>
-                                <hr>
-                                <form action="/postTeamReview" method="post">
-                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                    <input type="hidden" name="user_id" value="<?= $user->id?>">
-                                    <input type="hidden" name="team_id" value="<?= $team->id?>">
-                                    <input type="hidden" name="star_value" class="star_value" value="">
-                                    <div class="row m-t-15 col-sm-12">
-                                        <div class="col-sm-6">
-                                            <input type="text" name="review_title" class="input" placeholder="Title">
-                                        </div>
-                                        <div class="col-sm-6 c-orange f-20 stars c-pointer">
-                                            <i class="zmdi zmdi-star-outline star" data-star-value="1"></i>
-                                            <i class="zmdi zmdi-star-outline star" data-star-value="2"></i>
-                                            <i class="zmdi zmdi-star-outline star" data-star-value="3"></i>
-                                            <i class="zmdi zmdi-star-outline star" data-star-value="4"></i>
-                                            <i class="zmdi zmdi-star-outline star" data-star-value="5"></i>
-                                        </div>
-                                    </div>
-                                    <div class="row d-flex js-center m-t-15 @handheld p-10 @endhandheld">
-                                        <div class="col-sm-11 @notmobile p-0 @endnotmobile">
-                                            <textarea placeholder="Write your review" name="review" rows="6" class="input col-sm-12"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="row m-t-20">
-                                        <div class="col-sm-12 m-b-20">
-                                            <button class="btn btn-inno pull-right m-r-30">Post review</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            <? } ?>
                         </div>
                     </div>
                 </div>

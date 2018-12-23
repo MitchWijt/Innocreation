@@ -41,6 +41,8 @@ use App\Services\UserAccount\UserExpertises as UserExpertises;
 use App\Services\UserAccount\UserPrivacySettingsService as UserPrivacySettings;
 use App\Services\UserAccount\EditProfileImage as EditProfileImage;
 use App\Services\UserAccount\UserAccountPortfolioService as UserPortfolioService;
+use App\Services\AppServices\FfmpegService as FfmpegService;
+use App\Services\AppServices\FfprobeService as FfprobeService;
 
 
 use App\Http\Requests;
@@ -323,8 +325,8 @@ class UserController extends Controller
         return $userPortfolioService->portfolioDetailPage($slug);
     }
 
-    public function addImagesPortfolio(Request $request, UserAccountPortfolioService $userPortfolioService){
-        return $userPortfolioService->addImagesPortfolio($request);
+    public function addImagesPortfolio(Request $request, UserAccountPortfolioService $userPortfolioService, FfmpegService $ffmpegService, FfprobeService $ffprobeService){
+        return $userPortfolioService->addImagesPortfolio($request, $ffmpegService, $ffprobeService);
     }
 
     public function editTitlePortfolioImage(Request $request, UserAccountPortfolioService $userPortfolioService){
@@ -339,48 +341,12 @@ class UserController extends Controller
         return $userPortfolioService->removeImage($request);
     }
 
-    public function editUserPortfolio(Request $request){
-        $portfolio_id = $request->input("portfolio_id");
-        $file = $request->file("portfolio_image");
-        $title = $request->input("portfolio_title");
-        $description = $request->input("description_portfolio");
-        $link = $request->input("portfolio_link");
-
-        $userPortfolio = UserPortfolio::select("*")->where("id",$portfolio_id)->first();
-        $userPortfolio->title = $title;
-        $userPortfolio->description = $description;
-        if($link != null){
-            $userPortfolio->link = $link;
-        }
-        $userSlug = $userPortfolio->user->slug;
-        if($file != null) {
-            $size = $this->formatBytes($file->getSize());
-            if ($size < 8) {
-                $filename = strtolower(str_replace(" ", "-", $userPortfolio->title)) . "." . $file->getClientOriginalExtension();
-                $exists = Storage::disk('spaces')->exists("users/" . $userSlug . "/portfolios/" . $filename);
-                if ($exists) {
-                    Storage::disk('spaces')->delete("users/" . $userSlug . "/portfolios/" . $filename);
-                }
-                Storage::disk('spaces')->put("users/$userSlug/portfolios/" . $filename, file_get_contents($file->getRealPath()), "public");
-                $userPortfolio->image = $filename;
-                $userPortfolio->save();
-                return redirect($_SERVER["HTTP_REFERER"]);
-            } else {
-                return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
-            }
-        }
-        return redirect($_SERVER["HTTP_REFERER"]);
+    public function deletePortfolio(Request $request, UserAccountPortfolioService $userPortfolioService){
+        return $userPortfolioService->deletePortfolio($request);
     }
-
-    public function deleteUserPortfolio(Request $request){
-        $portfolio_id = $request->input("portfolio_id");
-        $userPortfolio = UserPortfolio::select("*")->where("id", $portfolio_id)->first();
-        $exists = Storage::disk('spaces')->exists("users/" . $userPortfolio->user->slug . "/portfolios/" . $userPortfolio->image);
-        if($exists) {
-            Storage::disk('spaces')->delete("users/" . $userPortfolio->user->slug . "/portfolios/" . $userPortfolio->image);
-        }
-        $userPortfolio->delete();
-        return 1;
+    
+    public function addImageToAudio(Request $request, UserAccountPortfolioService $userPortfolioService){
+        return $userPortfolioService->addImageToAudio($request);
     }
 
     public function userAccountChats(Request $request){

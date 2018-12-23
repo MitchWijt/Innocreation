@@ -11,6 +11,8 @@ use App\UserMessage;
 use App\UserPortfolioFile;
 use App\UserWork;
 use App\WorkspaceShortTermPlannerBoard;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\FFMpeg;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
@@ -41,7 +43,7 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
-
+        mail('mitchel@wijt.net', 'gfdsa', 'gfdswq');
         die('test');
     }
 }

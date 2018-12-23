@@ -8,7 +8,7 @@
     background-position: center center !important;
 }
 
-.userProfilePic{
+.absolutePF{
     top: 65%;
     left: 2%;
 }
@@ -63,6 +63,7 @@
     min-height: 180px;
     border: none !important;
     box-shadow: 0 0 200px rgba(0,0,0,0.9) inset;
+    /*margin-left: 100px !important;*/
 }
 
 .contentPortfolioNoScale{
@@ -127,4 +128,15 @@
 
 .editBtn:hover{
     border: 1px solid #FF6100;
+}
+
+.playButtonVideo{
+    font-size: 30px !important;
+    background: #77787a;
+    color: #C9CCCF;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-right: 20px;
+    padding-left: 20px;
+    border-radius: 50%;
 }
