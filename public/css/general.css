@@ -457,6 +457,9 @@ hr{
 .bcg-black{
     background: #000;
 }
+.bcg-dark-grey{
+    background: #77787a;
+}
 .bcg-orange{
     background: #FF6100 !important;
 }

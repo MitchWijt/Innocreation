@@ -41,6 +41,8 @@ use App\Services\UserAccount\UserExpertises as UserExpertises;
 use App\Services\UserAccount\UserPrivacySettingsService as UserPrivacySettings;
 use App\Services\UserAccount\EditProfileImage as EditProfileImage;
 use App\Services\UserAccount\UserAccountPortfolioService as UserPortfolioService;
+use App\Services\AppServices\FfmpegService as FfmpegService;
+use App\Services\AppServices\FfprobeService as FfprobeService;
 
 
 use App\Http\Requests;
@@ -323,8 +325,8 @@ class UserController extends Controller
         return $userPortfolioService->portfolioDetailPage($slug);
     }
 
-    public function addImagesPortfolio(Request $request, UserAccountPortfolioService $userPortfolioService){
-        return $userPortfolioService->addImagesPortfolio($request);
+    public function addImagesPortfolio(Request $request, UserAccountPortfolioService $userPortfolioService, FfmpegService $ffmpegService, FfprobeService $ffprobeService){
+        return $userPortfolioService->addImagesPortfolio($request, $ffmpegService, $ffprobeService);
     }
 
     public function editTitlePortfolioImage(Request $request, UserAccountPortfolioService $userPortfolioService){

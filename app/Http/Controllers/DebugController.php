@@ -11,6 +11,8 @@ use App\UserMessage;
 use App\UserPortfolioFile;
 use App\UserWork;
 use App\WorkspaceShortTermPlannerBoard;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\FFMpeg;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
@@ -41,7 +43,23 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
+        $ffmpeg = FFMpeg::create([
+                'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+                'ffprobe.binaries' => '/usr/bin/ffprobe'
+        ]);
+        $video = $ffmpeg->open("/var/www/secret/public/images/Interstellar.mp4");
+        $frame = $video->frame(TimeCode::fromSeconds(42));
+        $tmpfname = tempnam(sys_get_temp_dir(), "thumbnail");
+        $frame->save('/var/www/secret/public/images/thumbnail.jpg');
 
+        $img = file_get_contents("/var/www/secret/public/images/thumbnail.jpg");
+        $handle = fopen($tmpfname, "w");
+        fwrite($handle, $img);
+        fclose($handle);
+
+//        Storage::disk('spaces')->put("users/mitchelwijt/profilepicture/thumbnailTest.jpg", file_get_contents($tmpfname), "public");
+
+        unlink($tmpfname);
         die('test');
     }
 }

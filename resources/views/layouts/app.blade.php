@@ -74,6 +74,7 @@
         <script src="/assets/innocreation-animation.js"></script>
         <script src="/assets/animation.js"></script>
         <script src="/js/assets/musicPlayer.js"></script>
+        <script src="/js/assets/videoPlayer.js"></script>
 
     {{--==============--}}
         <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=i4hrh8gzmh7fted3hqpgatcuwma8kl075x378rgkki09j852"></script>

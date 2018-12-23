@@ -27,4 +27,13 @@ class UserPortfolioFile extends Model
     public function getAudio(){
         return env("DO_SPACES_URL") . "/users/" . $this->portfolio->user->slug . "/portfolios/$this->dirname/$this->dirname_audio/" . $this->audio ;
     }
+
+    public function getVideo(){
+        return env("DO_SPACES_URL") . "/users/" . $this->portfolio->user->slug . "/portfolios/$this->dirname/$this->dirname_video/" . $this->video ;
+    }
+
+    public function getThumbnail(){
+        return env("DO_SPACES_URL") . "/users/" . $this->portfolio->user->slug . "/portfolios/$this->dirname/$this->dirname_video/" . $this->video . "-thumbnail" ;
+
+    }
 }

@@ -198,53 +198,58 @@
                                     <ul class="p-l-0">
                                         <? foreach($portfolio->getFiles() as $file) { ?>
                                             <li class="td-none portfolioFileItem p-r-10 p-l-10" style="list-style-type: none; min-width: 350px !important; z-index: -1 !important">
-                                                <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
-                                                    <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
-                                                        <? if($file->mimetype == "application/octet-stream" && $file->filename != null) { ?>
-                                                            <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" style="background: url('<?= $file->getAudioCover()?>'); z-index: -1 !important">
-                                                        <? } else { ?>
-                                                            <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" style="background: url('<?= $file->getUrl()?>'); z-index: -1 !important">
-                                                        <? } ?>
-                                                            <div id="content" @desktop style="display: none;" @enddesktop>
-                                                                <div class="m-t-10 p-absolute cont-<?= $file->id?>" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
-                                                                    <p class="c-white f-9 p-t-40" style="width: 300px !important"><?= $file->description?></p>
+                                                <? if($file->mimetype != "video/mp4") { ?>
+                                                    <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
+                                                        <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
+                                                            <? if($file->mimetype == "application/octet-stream" && $file->filename != null) { ?>
+                                                                <? $backgroundImg = $file->getAudioCover() ?>
+                                                            <? } else { ?>
+                                                                 <? $backgroundImg = $file->getUrl() ?>
+                                                            <? } ?>
+                                                                <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" style="background: url('<?= $backgroundImg?>'); z-index: -1 !important">
+                                                                <div id="content" @notmobile style="display: none;" @endnotmobile>
+                                                                    <div class="m-t-10 p-absolute cont-<?= $file->id?>" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
+                                                                        <p class="c-white f-9 p-t-40" style="width: 300px !important"><?= $file->description?></p>
+                                                                    </div>
+                                                                    <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 5%; left: 56%; width: 100%; transform: translate(-50%, -50%);">
+                                                                        <p class="c-white f-12"><?= $file->title?></p>
+                                                                    </div>
+                                                                    <? if($file->title != null) { ?>
+                                                                        <div class="p-absolute cont-<?= $file->id?>" style="top: 18%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
+                                                                            <hr class="col-8">
+                                                                        </div>
+                                                                    <? } ?>
+                                                                    <? if($file->mimetype == "application/octet-stream") { ?>
+                                                                        <div class="p-absolute" style="top: 80%; right: -1%; transform: translate(-50%, -50%);">
+                                                                            <i class="zmdi zmdi-play editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 playSong" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
+                                                                            <i class="zmdi zmdi-pause editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 pauseSong hidden" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
+                                                                        </div>
+                                                                        <div class="p-absolute" style="top: 80%; left: 13%; transform: translate(-50%, -50%);">
+                                                                            <span class="currentTime f-12 cur-<?= $file->id?>"></span><span class="f-12">/</span><span class="duration f-12 dur-<?= $file->id?>" data-id="<?= $file->id?>"></span>
+                                                                        </div>
+                                                                        <div class="p-absolute p-l-5 p-r-5" style="top: 90%; left: 50%; width: 100%; transform: translate(-50%, -50%);">
+                                                                            <input type="range" class=" p-l-0 p-r-0 music-progress-bar musicBar-<?= $file->id?>" data-counter="<?= $counter?>" data-id="<?= $file->id?>" value="0" name="" id="">
+                                                                        </div>
+                                                                        <audio id="player-<?= $file->id?>" ontimeupdate="getCurrentTime(this, $(this).data('id'))" data-id="<?= $file->id?>" src="<?= $file->getAudio()?>"></audio>
+                                                                    <? } ?>
                                                                 </div>
-                                                                <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 5%; left: 56%; width: 100%; transform: translate(-50%, -50%);">
-                                                                    <p class="c-white f-12"><?= $file->title?></p>
-                                                                </div>
-                                                                <? if($file->title != null) { ?>
-                                                                    <div class="p-absolute cont-<?= $file->id?>" style="top: 18%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
-                                                                        <hr class="col-8">
-                                                                    </div>
-                                                                <? } ?>
-                                                                <? if($file->mimetype == "application/octet-stream") { ?>
-                                                                    <div class="p-absolute" style="top: 80%; right: -1%; transform: translate(-50%, -50%);">
-                                                                        <i class="zmdi zmdi-play editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 playSong" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
-                                                                        <i class="zmdi zmdi-pause editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 pauseSong hidden" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
-                                                                    </div>
-                                                                    <div class="p-absolute" style="top: 80%; left: 13%; transform: translate(-50%, -50%);">
-                                                                        <span class="currentTime f-12 cur-<?= $file->id?>"></span><span class="f-12">/</span><span class="duration f-12 dur-<?= $file->id?>" data-id="<?= $file->id?>"></span>
-                                                                    </div>
-                                                                    <div class="p-absolute p-l-5 p-r-5" style="top: 90%; left: 50%; width: 100%; transform: translate(-50%, -50%);">
-                                                                        <input type="range" class=" p-l-0 p-r-0 music-progress-bar musicBar-<?= $file->id?>" data-counter="<?= $counter?>" data-id="<?= $file->id?>" value="0" name="" id="">
-                                                                    </div>
-                                                                    <audio id="player-<?= $file->id?>" ontimeupdate="getCurrentTime(this, $(this).data('id'))" data-id="<?= $file->id?>" src="<?= $file->getAudio()?>"></audio>
-                                                                <? } ?>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                <? } else { ?>
+                                                    <div class="card m-t-20 m-b-20 p-0 portfolioItemCard p-relative">
+                                                        <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
+                                                            <div class="@handheld @mobile contentPortfolioNoScale noScale videoContentMobile @elsetablet videoContentTablet contentPortfolio @endmobile @elsedesktop contentPortfolio videoContent videoContent-<?= $file->id?> @endhandheld" data-id="<?= $file->id?>" data-counter="<?= $counter?>"  style="z-index: 2 !important;">
+                                                                <div class="m-t-10 p-absolute" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
+                                                                    <i class="zmdi zmdi-play playButtonVideo shadow play-<?= $file->id?>"></i>
+                                                                </div>
+                                                                <video poster="<?= $file->getThumbnail()?>"  id="video-<?= $file->id?>" data-id="<?= $file->id?>" class="video video-<?= $file->id?>" style="min-width: 100% !important; max-width: 350px !important; min-height: 180px !important; max-height: 180px !important; z-index: 99;" src="<?= $file->getVideo()?>" muted></video>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <? } ?>
                                             </li>
                                         <? } ?>
-                                            <li class="td-none portfolioFileItem p-r-10 p-l-10" style="list-style-type: none; min-width: 350px !important; z-index: -1 !important">
-                                                <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
-                                                    <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
-                                                            <div class="@mobile contentPortfolioNoScale noScale @elsedesktop contentPortfolio @enddesktop" data-id="<?= $portfolio->id?>"  style="z-index: -1 !important">
-                                                                <video id="video-<?= $portfolio->id?>" style="max-width: 350px !important; max-height: 180px !important" src="/images/Interstellar.mp4" muted></video>
-                                                            </div>
-                                                    </div>
-                                                </div>
-                                            </li>
                                     </ul>
                                 </div>
                                 <? $counter++?>
