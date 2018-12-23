@@ -41,7 +41,7 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
-
+        mail('mitchel@wijt.net', 'gfdsa', 'gfdswq');
         die('test');
     }
 }

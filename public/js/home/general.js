@@ -81,6 +81,17 @@ $('.popoverNotifications').on('hide.bs.popover', function () {
     _this.addClass("popover-black");
 });
 
+$('.popoverNotificationsMob').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'})
+    .on("click", function () {
+        var _this = $('.popover');
+        _this.addClass("popover-notification-mob");
+    });
+
+$('.popoverNotificationsMob').on('hide.bs.popover', function () {
+    var _this = $('.popover');
+    _this.addClass("popover-black");
+});
+
 $(document).on("click", ".popoverNotifications", function () {
     $.ajax({
         method: "POST",
@@ -98,6 +109,25 @@ $(document).on("click", ".popoverNotifications", function () {
         }
     });
 });
+
+$(document).on("click", ".popoverNotificationsMob", function () {
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/notification/getNotifications",
+        data: "",
+        success: function (data) {
+            $(".notificationsContent").html(data);
+        }
+    });
+});
+
 
 $(document).on("click", ".ui-menu-item-wrapper", function () {
     var title = $(this).text();

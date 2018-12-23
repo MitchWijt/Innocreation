@@ -159,3 +159,12 @@ $(".removeImage").on("click",function () {
     $(".removeImageForm-" + id).submit();
 });
 
+$(".deletePortfolio").on("click",function (e) {
+    if(confirm("Are you sure you, want to delete this portfolio and all contents of it?")) {
+        var id = $(this).data("id");
+        $(".deletePortfolio-" + id).submit();
+        e.stopPropagation();
+        e.preventDefault();
+    }
+});
+
