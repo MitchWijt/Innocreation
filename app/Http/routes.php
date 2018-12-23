@@ -121,6 +121,8 @@ Route::post("/user/removePortfolioImage", "UserController@removePortfolioImage")
 
 Route::post("/user/deletePortfolio", "UserController@deletePortfolio");
 
+Route::post("/user/addImageToAudio", "UserController@addImageToAudio");
+
 // User chats
 Route::get("/my-account/chats", "UserController@userAccountChats");
 

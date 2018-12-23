@@ -129,3 +129,14 @@
 .editBtn:hover{
     border: 1px solid #FF6100;
 }
+
+.playButtonVideo{
+    font-size: 30px !important;
+    background: #77787a;
+    color: #C9CCCF;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-right: 20px;
+    padding-left: 20px;
+    border-radius: 50%;
+}

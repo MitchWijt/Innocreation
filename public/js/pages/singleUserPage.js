@@ -7,28 +7,30 @@ $(".read-more").on("click",function () {
     $("#collapse-" + id).collapse('toggle');
 });
 
+var vars = {};
+$(".carousel").each(function () {
+    var counter = $(this).data("counter");
+    if ($(window).width() < 400) {
+        vars[counter + 'newCarousel'] = new floatingCarousel('#carousel-default-' + counter, {
+            autoScroll: true,
+            autoScrollDirection: 'right',
+            autoScrollSpeed: 10000,
+            enableTouchEvents: false,
+            touchOverflowHidden: false,
+            reverseOnTouch: false
 
-if ($(window).width() < 400) {
-    new floatingCarousel('.carousel-default', {
-        autoScroll: true,
-        autoScrollDirection: 'right',
-        autoScrollSpeed: 10000,
-        enableTouchEvents: false,
-        touchOverflowHidden: false,
-        reverseOnTouch: false
-
-    });
-} else {
-    new floatingCarousel('.carousel-default', {
-        autoScroll : true,
-        autoScrollDirection : 'right',
-        autoScrollSpeed : 70000,
-        enableTouchEvents : false,
-        touchOverflowHidden : false,
-        reverseOnTouch : false
-    });
-}
-
+        });
+    } else {
+        vars[counter + 'newCarousel'] = new floatingCarousel('#carousel-default-' + counter, {
+            autoScroll : true,
+            autoScrollDirection : 'right',
+            autoScrollSpeed : 70000,
+            enableTouchEvents : false,
+            touchOverflowHidden : false,
+            reverseOnTouch : false
+        });
+    }
+});
 
 $(".editBannerImage").on("click",function () {
    $(".bannerImgInput").click();
@@ -37,3 +39,9 @@ $(".editBannerImage").on("click",function () {
 $('.bannerImgInput').on("change", function () {
     $(".bannerImgForm").submit();
 });
+
+
+
+
+
+

@@ -159,6 +159,10 @@ $(".removeImage").on("click",function () {
     $(".removeImageForm-" + id).submit();
 });
 
+$(".addMusicImage").on("click",function () {
+    var id = $(this).data("file-id");
+    $("#imageAudio-" + id).click();
+});
 $(".deletePortfolio").on("click",function (e) {
     if(confirm("Are you sure you, want to delete this portfolio and all contents of it?")) {
         var id = $(this).data("id");
@@ -168,3 +172,7 @@ $(".deletePortfolio").on("click",function (e) {
     }
 });
 
+$(".imageForAudio").on("change",function () {
+    var id = $(this).data("file-id");
+    $(".addImageToAudio-" + id).submit();
+});

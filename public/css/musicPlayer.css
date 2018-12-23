@@ -1,0 +1,45 @@
+.progressBar{
+    border: 1px solid #000000;
+    height: 10px !important;
+    border-radius: 10px !important;
+}
+
+.progress-bar-custom{
+    background: #77787a !important;
+    text-align: right !important;
+    overflow: visible !important;
+    border-radius: 5px !important;
+    transition: width .6s !important;
+
+}
+
+.token-label{
+    color: #000 !important;
+}
+
+.progress-custom{
+    overflow: visible !important;
+}
+
+.progressIcon{
+    top: -7px;
+    right: -8px;
+}
+
+.music-progress-bar{
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px !important;
+    border-radius: 5px;
+    background-color: #77787a;
+}
+
+.music-progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: #FF6100;
+    overflow: visible !important;
+    width: 15px;
+    height: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+}
