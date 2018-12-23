@@ -279,6 +279,8 @@ Route::post("/my-team/generateInviteLink", "TeamController@generateInviteLinkAct
 
 Route::post("/my-team/saveNewName", "TeamController@saveTeamNameAction");
 
+Route::post("/my-team/editBannerImage", "TeamController@editBannerImage");
+
 //Payment
 Route::get("/my-team/payment-details", "TeamController@teamPaymentDetailsAction");
 

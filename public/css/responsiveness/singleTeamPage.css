@@ -15,6 +15,11 @@
         text-align: center !important;
     }
 
+    .favoriteIcons{
+       text-align: center;
+        margin-left: 0 !important;
+    }
+
     .switchDiv{
         display: flex;
         justify-content: center;
@@ -41,5 +46,13 @@
 
     .teamLinkDiv .col-6 .zmdi-accounts-alt{
         margin-left: 0 !important;
+    }
+
+    .collapseExpertiseResponsive{
+        display: block !important;
+    }
+
+    .collapseExpertise{
+        display: none;
     }
 }
