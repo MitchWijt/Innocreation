@@ -33,10 +33,10 @@
                 <? $counter = 0?>
                 <? foreach($userPortfolioFiles as $file) { ?>
                     <div class="td-none portfolioFileItem p-r-10 p-l-10 col-sm-4">
-                        <? if($file->mimetype != "video/mp4" ) { ?>
+                        <? if($file->mimetype !=  \App\Services\Paths\PublicPaths::mimeType(false, true, false)) { ?>
                             <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
                                 <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
-                                    <? if($file->mimetype == "application/octet-stream") { ?>
+                                    <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(true, false, false)) { ?>
                                         <? if($file->filename != null) { ?>
                                             <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" style="background: url('<?= $file->getAudioCover()?>'); z-index: -1 !important">
                                         <? } else { ?>
@@ -76,7 +76,7 @@
                                             <div class="p-absolute cont-<?= $file->id?>" style="top: 18%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
                                                 <hr class="col-8 hr-<?= $file->id?> hidden hrPortImg">
                                             </div>
-                                            <? if($file->mimetype == "application/octet-stream") { ?>
+                                            <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(true, false, false)) { ?>
                                                 <div class="p-absolute" style="top: 80%; right: -1%; transform: translate(-50%, -50%);">
                                                     <i class="zmdi zmdi-play editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 playSong" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
                                                     <i class="zmdi zmdi-pause editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 pauseSong hidden" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
@@ -91,7 +91,7 @@
                                             <? } ?>
                                         </div>
                                         <div id="content">
-                                            <? if($file->mimetype == "application/octet-stream") { ?>
+                                            <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(true, false, false)) { ?>
                                                 <div class="p-t-40 p-absolute" style="top: 5%; left: 83%; transform: translate(-50%, -50%);">
                                                     <form action="/user/addImageToAudio" method="post" enctype="multipart/form-data" class="addImageToAudio-<?= $file->id?>">
                                                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
@@ -102,7 +102,7 @@
                                                     <i data-file-id="<?= $file->id?>" class="zmdi zmdi-camera-add editBtnDark f-20 addMusicImage"></i>
                                                 </div>
                                             <? } ?>
-                                            <? if($file->mimetype == "application/octet-stream") { ?>
+                                            <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(true, false, false)) { ?>
                                                 <div class="p-t-40 p-absolute" style="top: 5%; left: 94%; transform: translate(-50%, -50%);">
                                             <? } else { ?>
                                                 <div class="p-t-40 p-absolute" style="top: 75%; left: 94%; transform: translate(-50%, -50%);">

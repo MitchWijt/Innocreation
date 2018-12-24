@@ -198,10 +198,10 @@
                                     <ul class="p-l-0">
                                         <? foreach($portfolio->getFiles() as $file) { ?>
                                             <li class="td-none portfolioFileItem p-r-10 p-l-10" style="list-style-type: none; min-width: 350px !important; z-index: -1 !important">
-                                                <? if($file->mimetype != "video/mp4") { ?>
+                                                <? if($file->mimetype != \App\Services\Paths\PublicPaths::mimeType(false, true, false)) { ?>
                                                     <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
                                                         <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
-                                                            <? if($file->mimetype == "application/octet-stream" && $file->filename != null) { ?>
+                                                            <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(true, false, false) && $file->filename != null) { ?>
                                                                 <? $backgroundImg = $file->getAudioCover() ?>
                                                             <? } else { ?>
                                                                  <? $backgroundImg = $file->getUrl() ?>
@@ -219,7 +219,7 @@
                                                                             <hr class="col-8">
                                                                         </div>
                                                                     <? } ?>
-                                                                    <? if($file->mimetype == "application/octet-stream") { ?>
+                                                                    <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(true, false, false)) { ?>
                                                                         <div class="p-absolute" style="top: 80%; right: -1%; transform: translate(-50%, -50%);">
                                                                             <i class="zmdi zmdi-play editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 playSong" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
                                                                             <i class="zmdi zmdi-pause editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 pauseSong hidden" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
