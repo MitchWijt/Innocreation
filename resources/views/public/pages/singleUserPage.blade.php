@@ -243,6 +243,10 @@
                                                                 <div class="m-t-10 p-absolute" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
                                                                     <i class="zmdi zmdi-play playButtonVideo shadow play-<?= $file->id?>"></i>
                                                                 </div>
+                                                                <div class="p-absolute cont-<?= $file->id?>" style="bottom: 4%; left: 3%">
+                                                                    <i class="zmdi zmdi-volume-off f-25 unmuteVideo unmute-<?=$file->id?>" data-id="<?= $file->id?>"></i>
+                                                                    <i class="zmdi zmdi-volume-up f-25 muteVideo mute-<?= $file->id?> hidden" data-id="<?= $file->id?>"></i>
+                                                                </div>
                                                                 <video poster="<?= $file->getThumbnail()?>"  id="video-<?= $file->id?>" data-id="<?= $file->id?>" class="video video-<?= $file->id?>" style="min-width: 100% !important; max-width: 350px !important; min-height: 180px !important; max-height: 180px !important; z-index: 99;" src="<?= $file->getVideo()?>" muted></video>
                                                             </div>
                                                         </div>

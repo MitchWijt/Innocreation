@@ -43,3 +43,18 @@ function pauseVid(id, counter){
     }, 500);
     vars[counter + 'newCarousel'].play();
 }
+
+$(document).on("click", ".unmuteVideo", function () {
+    var id = $(this).data("id");
+    $(".video-" + id).prop("muted", false);
+    $('.mute-' + id).removeClass("hidden");
+    $(this).addClass("hidden");
+});
+
+
+$(document).on("click", ".muteVideo", function () {
+    var id = $(this).data("id");
+    $(".video-" + id).prop("muted", true);
+    $('.unmute-' + id).removeClass("hidden");
+    $(this).addClass("hidden");
+});

@@ -135,7 +135,7 @@
                     <div class="hr col-md-8"></div>
                     <div class="row">
                         <div class="col-sm-12 d-flex js-center m-t-20">
-                            <img class="img-responsive" src="/images/icons/network_black.png" alt="">
+                            <img class="img-responsive" src="/images/icons/network_black_small.png" alt="">
                         </div>
                     </div>
                     <div class="row d-flex js-center m-t-40 m-b-20">
