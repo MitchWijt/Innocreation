@@ -23,7 +23,7 @@ use App\Services\AppServices\FfmpegService as FfmpegService;
 
 class UserAccountPortfolioService
 {
-    public function saveNewPortfolio($request){
+    public function saveNewPortfolio($request, $ffmpegService, $ffprobeService){
         $user_id = $request->input("user_id");
         $portfolio_title = $request->input("portfolio_title");
         $files = $request->file("files");
@@ -36,25 +36,10 @@ class UserAccountPortfolioService
         $userPortfolio->slug = preg_replace('/[^a-zA-Z0-9-_\.]/','', $portfolio_title);
         $userPortfolio->save();
 
-        foreach($files as $file){
-            $mimetype = $_FILES['files']['type'][0];
-            $size = $this->formatBytes($file->getSize());
-            if($size < 8) {
-                $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
-                Storage::disk('spaces')->put("users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/','', $portfolio_title) . "/" . $filename, file_get_contents($file->getRealPath()), "public");
+        $dirname = preg_replace('/[^a-zA-Z0-9-_\.]/','', $portfolio_title);
+        $uniqueId = uniqid();
+        $this->addFileToPortoflio($files, $ffprobeService, $ffmpegService, $user, $dirname, $uniqueId, $userPortfolio);
 
-                $userPortfolioFile = new UserPortfolioFile();
-                $userPortfolioFile->portfolio_id = $userPortfolio->id;
-                $userPortfolioFile->dirname = preg_replace('/[^a-zA-Z0-9-_\.]/','', $portfolio_title);
-                $userPortfolioFile->filename = $filename;
-                $userPortfolioFile->extension = $file->getClientOriginalExtension();
-                $userPortfolioFile->mimetype = $mimetype;
-                $userPortfolioFile->created_at = date("Y-m-d H:i:s");
-                $userPortfolioFile->save();
-            } else {
-                return redirect("/account")->withErrors("Image is too large. The max upload size per image is 8MB");
-            }
-        }
         return redirect(sprintf('/my-account/portfolio/%s', $userPortfolio->slug));
     }
 
@@ -81,6 +66,12 @@ class UserAccountPortfolioService
         $user = User::select("*")->where("id", $request->input("user_id"))->first();
 
         $files = $request->file("files");
+        $this->addFileToPortoflio($files, $ffprobeService, $ffmpegService, $user, $singleFile->dirname, $uniqueId, $userPortfolio);
+        return redirect(sprintf('/my-account/portfolio/%s', $userPortfolio->slug));
+
+    }
+
+    public function addFileToPortoflio($files, $ffprobeService, $ffmpegService, $user, $singleFileDirName, $uniqueId, $userPortfolio){
         foreach($files as $file){
             $mimetype = $_FILES['files']['type'][0];
             if($mimetype == PublicPaths::mimeType(false, true, false)) {
@@ -93,17 +84,17 @@ class UserAccountPortfolioService
             if($size < $condition) {
                 $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
                 if($mimetype == PublicPaths::mimeType(true, false, false)) {
-                    $path = PublicPaths::userPortfolioPath($user, $singleFile->dirname, $filename, $file, $uniqueId,true, false);
+                    $path = PublicPaths::userPortfolioPath($user, $singleFileDirName, $filename, $file, $uniqueId,true, false);
                     if (!Storage::disk('spaces')->has($path)) {
                         Storage::disk('spaces')->put($path, file_get_contents($file->getRealPath()), "public");
                     }
                 } else if($mimetype == PublicPaths::mimeType(false, true, false)) {
-                    $path = PublicPaths::userPortfolioPath($user, $singleFile->dirname, $filename, $file, $uniqueId,false, true);
+                    $path = PublicPaths::userPortfolioPath($user, $singleFileDirName, $filename, $file, $uniqueId,false, true);
                     if (!Storage::disk('spaces')->has($path)) {
                         Storage::disk('spaces')->put($path, file_get_contents($file->getRealPath()), "public");
                     }
                 } else {
-                    $path = PublicPaths::userPortfolioPath($user, $singleFile->dirname, $filename, $file, $uniqueId,false, false);
+                    $path = PublicPaths::userPortfolioPath($user, $singleFileDirName, $filename, $file, $uniqueId,false, false);
                     if (!Storage::disk('spaces')->has($path)) {
                         Storage::disk('spaces')->put($path, file_get_contents($file->getRealPath()), "public");
                     }
@@ -134,7 +125,7 @@ class UserAccountPortfolioService
                 $userPortfolioFile->save();
 
                 if($mimetype == PublicPaths::mimeType(false, true, false)){
-                    $cdnDir = "users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $singleFile->dirname) . "/" . PublicPaths::getUserPortfolioFileDir($file,$uniqueId, false, true);
+                    $cdnDir = "users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $singleFileDirName) . "/" . PublicPaths::getUserPortfolioFileDir($file,$uniqueId, false, true);
                     $ffmpegService->extractThumbnailSaveToCdn($userPortfolioFile->getVideo(), $cdnDir, $filename . "-thumbnail");
                 }
 
@@ -145,8 +136,6 @@ class UserAccountPortfolioService
                 return redirect("/account")->withErrors("File is too large. The max upload size per image is 8MB");
             }
         }
-        return redirect(sprintf('/my-account/portfolio/%s', $userPortfolio->slug));
-
     }
 
     public function editTitleImage($request){
@@ -229,10 +218,12 @@ class UserAccountPortfolioService
         $userPortfolio = UserPortfolio::select("*")->where("id", $portfolioId)->first();
         $userPortfolioFiles = UserPortfolioFile::select("*")->where("portfolio_id", $portfolioId)->get();
 
-
-        foreach($userPortfolioFiles as $userPortfolioFile){
-            if(Storage::disk('spaces')->has($userPortfolioFile->getPath())){
-                Storage::disk('spaces')->delete($userPortfolioFile->getPath());
+        if($userPortfolioFiles) {
+            foreach ($userPortfolioFiles as $userPortfolioFile) {
+                if (Storage::disk('spaces')->has($userPortfolioFile->getPath())) {
+                    Storage::disk('spaces')->delete($userPortfolioFile->getPath());
+                    $userPortfolioFile->delete();
+                }
             }
         }
         $userPortfolio->delete();
