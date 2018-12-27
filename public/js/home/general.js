@@ -175,3 +175,17 @@ $(document).on("click", ".acceptConnectionNotification", function () {
     var id = $(this).data("id");
     $(".acceptConnection-" + id).submit();
 });
+
+//IMAGES LAZY LOADING
+$(function() {
+    $('.lazyLoad').Lazy({
+        // your configuration goes here
+        scrollDirection: 'vertical',
+        effect: 'fadeIn',
+        threshold: -50,
+        visibleOnly: true,
+        onError: function(element) {
+            console.log('error loading ' + element.data('src'));
+        }
+    });
+});

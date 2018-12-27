@@ -55,7 +55,7 @@
                 </div>
                 <div class="row d-flex js-center">
                     <div class="col-md-5 d-flex js-center">
-                        <a id="collaborateNow" href="/what-is-innocreation" class="btn btn-inno startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</a>
+                        <a id="collaborateNow" href="/what-is-innocreation" class="btn btn-inno startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop I want to connect! @endtablet</a>
                     </div>
                 </div>
             <? } ?>
@@ -85,7 +85,7 @@
                                         </a>
                                         <div class="overlay">
                                             <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
-                                                <div class="contentExpertise" style="background: url('<?= $expertise->image?>');"></div>
+                                                <div class="contentExpertise lazyLoad" data-src="<?= $expertise->image?>"></div>
                                             </a>
                                         </div>
                                     </div>
@@ -115,7 +115,7 @@
                                     </a>
                                     <div class="overlay">
                                         <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
-                                            <div class="contentExpertise" style="background: url('<?= $expertise->image?>');"></div>
+                                            <div class="contentExpertise lazyLoad" data-src="<?= $expertise->image?>"></div>
                                         </a>
                                     </div>
                                 </div>
