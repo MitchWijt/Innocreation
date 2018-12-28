@@ -1,6 +1,5 @@
 @extends("layouts.app")
 <link rel="stylesheet" href="/css/home/home.css">
-<script src="/js/floatingcarousel.min.js"></script>
 @section("content")
 <div class="home-background-wrapper vh80">
     <div class="container p-relative">
@@ -201,5 +200,5 @@
 </script>
 @endsection
 @section('pagescript')
-    <script src="/js/home/home.js"></script>
+    <script defer async src="/js/home/home.js"></script>
 @endsection
