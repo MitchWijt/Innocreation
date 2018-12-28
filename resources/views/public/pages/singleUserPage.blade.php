@@ -311,5 +311,5 @@
     </script>
 @endsection
 @section('pagescript')
-    <script defer src="/js/pages/singleUserPage.js"></script>
+    <script defer async src="/js/pages/singleUserPage.js"></script>
 @endsection

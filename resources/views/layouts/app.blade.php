@@ -24,8 +24,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     {{--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>--}}
         {{--<script defer src="/js/popover.min.js"></script>--}}
-        <script defer src="/js/jquery.easing.min.js"></script>
-        <script defer src="/js/jquery.mobile.custom.js"></script>
+        <script defer async src="/js/jquery.easing.min.js"></script>
+        <script defer async src="/js/jquery.mobile.custom.js"></script>
     {{--<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>--}}
     {{--CSS--}}
 
@@ -52,41 +52,41 @@
     {{------------------------}}
     {{--BOOTSTRAP SWITCH/TOGGLE--}}
         <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-        <script defer src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+        <script defer async src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     {{--=========================--}}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script async src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     {{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">--}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     {{--<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>--}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     {{--JS PLUGINS--}}
-        <script defer src="/assets/build/content-tools.js"></script>
-        <script defer src="/assets/build/editor.js"></script>
-        <script defer src="/js/bootstrap-tokenfield.min.js"></script>
-        <script defer src="/js/jquery-ui.min.js"></script>
-        <script defer src="/js/fontawesome-all.js"></script>
-        <script defer src="/js/jquery.timepicker.min.js"></script>
-        <script defer src="/js/floatingcarousel.min.js"></script>
-        <script defer src="/js/assets/jquery-lazy.min.js"></script>
+        <script defer async src="/assets/build/content-tools.js"></script>
+        <script defer async src="/assets/build/editor.js"></script>
+        <script defer async src="/js/bootstrap-tokenfield.min.js"></script>
+        <script defer async src="/js/jquery-ui.min.js"></script>
+        <script defer async src="/js/fontawesome-all.js"></script>
+        <script defer async src="/js/jquery.timepicker.min.js"></script>
+        <script defer async src="/js/floatingcarousel.min.js"></script>
+        <script defer async src="/js/assets/jquery-lazy.min.js"></script>
     {{--ANIMATION--}}
-        <script defer src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
-        <script defer src="/assets/innocreation-animation.js"></script>
-        <script defer src="/assets/animation.js"></script>
-        <script defer src="/js/assets/musicPlayer.js"></script>
-        <script defer src="/js/assets/videoPlayer.js"></script>
+        <script defer async src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+        <script defer async src="/assets/innocreation-animation.js"></script>
+        <script defer async src="/assets/animation.js"></script>
+        <script defer async src="/js/assets/musicPlayer.js"></script>
+        <script defer async src="/js/assets/videoPlayer.js"></script>
 
     {{--==============--}}
-        <script defer src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=i4hrh8gzmh7fted3hqpgatcuwma8kl075x378rgkki09j852"></script>
+        <script defer async src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=i4hrh8gzmh7fted3hqpgatcuwma8kl075x378rgkki09j852"></script>
     {{------------------------------}}
     {{--FACEBOOK--}}
     <div id="fb-root"></div>
     {{--================--}}
 
     {{--RECAPTCHA--}}
-        <script defer src='https://www.google.com/recaptcha/api.js?hl=en'></script>
+        <script defer async src='https://www.google.com/recaptcha/api.js?hl=en'></script>
     {{--==============--}}
 </head>
 <body>
