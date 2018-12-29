@@ -84,7 +84,7 @@
                                                     <p class="c-white f-20"><?= $expertiseLinktable->expertises->First()->title?></p>
                                                 </div>
                                                 <div class="overlay-users">
-                                                    <div class="contentExpertiseUsers" style="background: url('<?= $expertiseLinktable->image?>');"></div>
+                                                    <div class="contentExpertiseUsers lazyLoad" data-src="<?= $expertiseLinktable->image?>"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -111,7 +111,7 @@
                                                         <p class="c-white f-20"><?= $expertiseLinktable->expertises->First()->title?></p>
                                                     </div>
                                                     <div class="overlay-users">
-                                                        <div class="contentExpertiseUsers" style="background: url('<?= $expertiseLinktable->image?>');"></div>
+                                                        <div class="contentExpertiseUsers lazyLoad" data-src="<?= $expertiseLinktable->image?>"></div>
                                                     </div>
                                                 </div>
                                             </div>

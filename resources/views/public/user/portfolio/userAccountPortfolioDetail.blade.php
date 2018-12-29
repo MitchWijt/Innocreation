@@ -20,7 +20,13 @@
             <div class="hr col-md-12"></div>
             <div class="row m-t-20">
                 <div class="col-sm-12 text-center">
-                    <i class="editBtnDark zmdi zmdi-camera-add f-25 p-l-20 p-r-20 input-file"></i>
+                    <div class="row d-flex js-center">
+                        <div class="col-sm-4">
+                            <div class="editBtnDark input-file">
+                                <i class="zmdi zmdi-plus f-20 p-r-10"></i><span>Video, audio or image</span>
+                            </div>
+                        </div>
+                    </div>
                     <form action="/user/addImagesPortfolio" method="post" enctype="multipart/form-data" class="addImagesPortfolio">
                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                         <input type="hidden" name="user_id" value="<?= $user->id?>">
@@ -33,10 +39,10 @@
                 <? $counter = 0?>
                 <? foreach($userPortfolioFiles as $file) { ?>
                     <div class="td-none portfolioFileItem p-r-10 p-l-10 col-sm-4">
-                        <? if($file->mimetype != "video/mp4" ) { ?>
+                        <? if($file->mimetype !=  \App\Services\Paths\PublicPaths::mimeType(false, true, false)) { ?>
                             <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
                                 <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
-                                    <? if($file->mimetype == "application/octet-stream") { ?>
+                                    <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(true, false, false)) { ?>
                                         <? if($file->filename != null) { ?>
                                             <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" style="background: url('<?= $file->getAudioCover()?>'); z-index: -1 !important">
                                         <? } else { ?>
@@ -45,17 +51,19 @@
                                     <? } else { ?>
                                         <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" style="background: url('<?= $file->getUrl()?>'); z-index: -1 !important">
                                     <? } ?>
-                                        <? if($file->title != null ) { ?>
-                                            <div id="content" class="contentFixed" @desktop style="display: none;" @enddesktop>
-                                                <div class="p-absolute cont-<?= $file->id?>" style="top: 42%; left: 50%; !important; transform: translate(-50%, -50%);">
-                                                    <p class="c-white f-9 p-t-40 descPortFixed-<?=$file->id?>" style="width: 310px !important;"><?= $file->description?></p>
-                                                </div>
-                                                <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 5%; left: 48%; width: 80%; transform: translate(-50%, -50%);">
-                                                    <p class="c-white f-12 titlePortFixed-<?= $file->id?>"><?= $file->title?></p>
-                                                </div>
+                                        <div id="content" class="contentFixed" @desktop style="display: none;" @enddesktop>
+                                            <div class="p-absolute cont-<?= $file->id?>" style="top: 42%; left: 50%; !important; transform: translate(-50%, -50%);">
+                                                <p class="c-white f-9 p-t-40 descPortFixed-<?=$file->id?>" style="width: 310px !important;"><?= $file->description?></p>
+                                            </div>
+                                            <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 5%; left: 48%; width: 80%; transform: translate(-50%, -50%);">
+                                                <p class="c-white f-12 titlePortFixed-<?= $file->id?>"><?= $file->title?></p>
+                                            </div>
+                                            <? if($file->title != null ) { ?>
                                                 <div class="p-absolute cont-<?= $file->id?>" style="top: 18%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
                                                     <hr class="col-8">
                                                 </div>
+                                            <? } ?>
+                                            <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(false, false, true)) { ?>
                                                 <div class="p-absolute cont-<?= $file->id?>" style="top: 1%; right: 5%">
                                                     <form action="/user/removePortfolioImage" method="post" class="removeImageForm-<?= $file->id?> hidden">
                                                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
@@ -64,8 +72,8 @@
                                                     </form>
                                                     <i class="zmdi zmdi-close f-20 c-orange p-absolute removeImage" data-id="<?= $file->id?>"></i>
                                                 </div>
-                                            </div>
-                                        <? } ?>
+                                            <? } ?>
+                                        </div>
                                         <div id="content inputs" class="contentInputs">
                                             <div class="p-absolute" style="top: 42%; left: 45%; !important; transform: translate(-50%, -50%);">
                                                 <textarea data-id="<?= $file->id?>" class="input-transparant col-sm-12 f-9 hidden descPortImg desc-<?= $file->id?>" placeholder="Description" style="width: 300px !important" name="file_desc"><? if(isset($file->title)) echo $file->description?></textarea>
@@ -76,7 +84,15 @@
                                             <div class="p-absolute cont-<?= $file->id?>" style="top: 18%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
                                                 <hr class="col-8 hr-<?= $file->id?> hidden hrPortImg">
                                             </div>
-                                            <? if($file->mimetype == "application/octet-stream") { ?>
+                                            <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(true, false, false)) { ?>
+                                                <div class="p-absolute cont-<?= $file->id?>" style="top: 1%; left: 3%">
+                                                    <form action="/user/removePortfolioImage" method="post" class="removeImageForm-<?= $file->id?> hidden">
+                                                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                        <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                                        <input type="hidden" name="file_id" value="<?= $file->id?>">
+                                                    </form>
+                                                    <i class="zmdi zmdi-close f-20 c-orange p-absolute removeImage" data-id="<?= $file->id?>"></i>
+                                                </div>
                                                 <div class="p-absolute" style="top: 80%; right: -1%; transform: translate(-50%, -50%);">
                                                     <i class="zmdi zmdi-play editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 playSong" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
                                                     <i class="zmdi zmdi-pause editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 pauseSong hidden" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
@@ -91,7 +107,7 @@
                                             <? } ?>
                                         </div>
                                         <div id="content">
-                                            <? if($file->mimetype == "application/octet-stream") { ?>
+                                            <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(true, false, false)) { ?>
                                                 <div class="p-t-40 p-absolute" style="top: 5%; left: 83%; transform: translate(-50%, -50%);">
                                                     <form action="/user/addImageToAudio" method="post" enctype="multipart/form-data" class="addImageToAudio-<?= $file->id?>">
                                                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
@@ -102,7 +118,7 @@
                                                     <i data-file-id="<?= $file->id?>" class="zmdi zmdi-camera-add editBtnDark f-20 addMusicImage"></i>
                                                 </div>
                                             <? } ?>
-                                            <? if($file->mimetype == "application/octet-stream") { ?>
+                                            <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(true, false, false)) { ?>
                                                 <div class="p-t-40 p-absolute" style="top: 5%; left: 94%; transform: translate(-50%, -50%);">
                                             <? } else { ?>
                                                 <div class="p-t-40 p-absolute" style="top: 75%; left: 94%; transform: translate(-50%, -50%);">
@@ -119,6 +135,18 @@
                                         <div class="p-relative @mobile contentPortfolioNoScale noScale videoContentMobile @elsedesktop contentPortfolio videoContent @enddesktop" data-id="<?= $file->id?>"  style="z-index: 2 !important;">
                                             <div class="m-t-10 p-absolute" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
                                                 <i class="zmdi zmdi-play playButtonVideo shadow play-<?= $file->id?>"></i>
+                                            </div>
+                                            <div class="p-absolute cont-<?= $file->id?>" style="top: 1%; right: 5%">
+                                                <form action="/user/removePortfolioImage" method="post" class="removeImageForm-<?= $file->id?> hidden">
+                                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                    <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                                    <input type="hidden" name="file_id" value="<?= $file->id?>">
+                                                </form>
+                                                <i class="zmdi zmdi-close f-20 c-orange p-absolute removeImage" data-id="<?= $file->id?>"></i>
+                                            </div>
+                                            <div class="p-absolute cont-<?= $file->id?>" style="bottom: 4%; left: 3%">
+                                                <i class="zmdi zmdi-volume-off f-25 unmuteVideo unmute-<?=$file->id?>" data-id="<?= $file->id?>"></i>
+                                                <i class="zmdi zmdi-volume-up f-25 muteVideo mute-<?= $file->id?> hidden" data-id="<?= $file->id?>"></i>
                                             </div>
                                             <video poster="<?= $file->getThumbnail()?>"  id="video-<?= $file->id?>" data-id="<?= $file->id?>" class="video video-<?= $file->id?>" style="min-width: 100% !important; max-width: 350px !important; max-height: 180px !important; min-height: 180px !important; z-index: -1;" src="<?= $file->getVideo()?>" muted></video>
                                         </div>

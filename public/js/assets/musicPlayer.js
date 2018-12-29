@@ -61,3 +61,4 @@ $(document).on("change", ".music-progress-bar", function () {
     player.currentTime = newTime;
     play(id, counter);
 });
+

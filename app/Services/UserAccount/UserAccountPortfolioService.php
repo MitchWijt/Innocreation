@@ -13,6 +13,7 @@ use App\Services\Paths\PublicPaths;
 use App\User;
 use App\UserPortfolio;
 use App\UserPortfolioFile;
+use Faker\Provider\File;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
@@ -22,7 +23,7 @@ use App\Services\AppServices\FfmpegService as FfmpegService;
 
 class UserAccountPortfolioService
 {
-    public function saveNewPortfolio($request){
+    public function saveNewPortfolio($request, $ffmpegService, $ffprobeService){
         $user_id = $request->input("user_id");
         $portfolio_title = $request->input("portfolio_title");
         $files = $request->file("files");
@@ -35,24 +36,10 @@ class UserAccountPortfolioService
         $userPortfolio->slug = preg_replace('/[^a-zA-Z0-9-_\.]/','', $portfolio_title);
         $userPortfolio->save();
 
-        foreach($files as $file){
-            $size = $this->formatBytes($file->getSize());
-            if($size < 8) {
-                $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
-                Storage::disk('spaces')->put("users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/','', $portfolio_title) . "/" . $filename, file_get_contents($file->getRealPath()), "public");
+        $dirname = preg_replace('/[^a-zA-Z0-9-_\.]/','', $portfolio_title);
+        $uniqueId = uniqid();
+        $this->addFileToPortoflio($files, $ffprobeService, $ffmpegService, $user, $dirname, $uniqueId, $userPortfolio);
 
-                $userPortfolioFile = new UserPortfolioFile();
-                $userPortfolioFile->portfolio_id = $userPortfolio->id;
-                $userPortfolioFile->dirname = preg_replace('/[^a-zA-Z0-9-_\.]/','', $portfolio_title);
-                $userPortfolioFile->filename = $filename;
-                $userPortfolioFile->extension = $file->getClientOriginalExtension();
-                $userPortfolioFile->mimetype = $file->getMimetype();
-                $userPortfolioFile->created_at = date("Y-m-d H:i:s");
-                $userPortfolioFile->save();
-            } else {
-                return redirect("/account")->withErrors("Image is too large. The max upload size per image is 8MB");
-            }
-        }
         return redirect(sprintf('/my-account/portfolio/%s', $userPortfolio->slug));
     }
 
@@ -79,8 +66,15 @@ class UserAccountPortfolioService
         $user = User::select("*")->where("id", $request->input("user_id"))->first();
 
         $files = $request->file("files");
+        $this->addFileToPortoflio($files, $ffprobeService, $ffmpegService, $user, $singleFile->dirname, $uniqueId, $userPortfolio);
+        return redirect(sprintf('/my-account/portfolio/%s', $userPortfolio->slug));
+
+    }
+
+    public function addFileToPortoflio($files, $ffprobeService, $ffmpegService, $user, $singleFileDirName, $uniqueId, $userPortfolio){
         foreach($files as $file){
-            if($file->getMimetype() == "video/mp4") {
+            $mimetype = $_FILES['files']['type'][0];
+            if($mimetype == PublicPaths::mimeType(false, true, false)) {
                 $size = $ffprobeService->getDuration($file);
                 $condition = 30;
             } else {
@@ -89,18 +83,18 @@ class UserAccountPortfolioService
             }
             if($size < $condition) {
                 $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
-                if($file->getMimetype() == "application/octet-stream") {
-                    $path = PublicPaths::userPortfolioPath($user, $singleFile->dirname, $filename, $file, $uniqueId,true, false);
+                if($mimetype == PublicPaths::mimeType(true, false, false)) {
+                    $path = PublicPaths::userPortfolioPath($user, $singleFileDirName, $filename, $file, $uniqueId,true, false);
                     if (!Storage::disk('spaces')->has($path)) {
                         Storage::disk('spaces')->put($path, file_get_contents($file->getRealPath()), "public");
                     }
-                } else if($file->getMimetype() == "video/mp4") {
-                    $path = PublicPaths::userPortfolioPath($user, $singleFile->dirname, $filename, $file, $uniqueId,false, true);
+                } else if($mimetype == PublicPaths::mimeType(false, true, false)) {
+                    $path = PublicPaths::userPortfolioPath($user, $singleFileDirName, $filename, $file, $uniqueId,false, true);
                     if (!Storage::disk('spaces')->has($path)) {
                         Storage::disk('spaces')->put($path, file_get_contents($file->getRealPath()), "public");
                     }
                 } else {
-                    $path = PublicPaths::userPortfolioPath($user, $singleFile->dirname, $filename, $file, $uniqueId,false, false);
+                    $path = PublicPaths::userPortfolioPath($user, $singleFileDirName, $filename, $file, $uniqueId,false, false);
                     if (!Storage::disk('spaces')->has($path)) {
                         Storage::disk('spaces')->put($path, file_get_contents($file->getRealPath()), "public");
                     }
@@ -113,37 +107,35 @@ class UserAccountPortfolioService
 
                 $userPortfolioFile = new UserPortfolioFile();
                 $userPortfolioFile->portfolio_id = $userPortfolio->id;
-                if($file->getMimetype() == "application/octet-stream") {
+                if($mimetype == PublicPaths::mimeType(true, false, false)) {
                     $userPortfolioFile->dirname_audio = PublicPaths::getUserPortfolioFileDir($file, $uniqueId, true, false);
                     $userPortfolioFile->audio = $filename;
                 }
-                if($file->getMimetype() == "video/mp4") {
+                if($mimetype == PublicPaths::mimeType(false, true, false)) {
                     $userPortfolioFile->dirname_video = PublicPaths::getUserPortfolioFileDir($file, $uniqueId, false, true);
                     $userPortfolioFile->video = $filename;
                 }
                 $userPortfolioFile->dirname = preg_replace('/[^a-zA-Z0-9-_\.]/', '', $userPortfolio->title);
-                if($file->getMimetype() != "video/mp4" && $file->getMimetype() != "application/octet-stream") {
+                if($mimetype != PublicPaths::mimeType(false, true, false) && $mimetype != PublicPaths::mimeType(true, false, false)) {
                     $userPortfolioFile->filename = $filename;
                 }
                 $userPortfolioFile->extension = $file->getClientOriginalExtension();
-                $userPortfolioFile->mimetype = $file->getMimetype();
+                $userPortfolioFile->mimetype = $mimetype;
                 $userPortfolioFile->created_at = date("Y-m-d H:i:s");
                 $userPortfolioFile->save();
 
-                if($file->getMimetype() == "video/mp4"){
-                    $cdnDir = "users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $singleFile->dirname) . "/" . PublicPaths::getUserPortfolioFileDir($file,$uniqueId, false, true);
+                if($mimetype == PublicPaths::mimeType(false, true, false)){
+                    $cdnDir = "users/$user->slug/portfolios/" . preg_replace('/[^a-zA-Z0-9-_\.]/', '', $singleFileDirName) . "/" . PublicPaths::getUserPortfolioFileDir($file,$uniqueId, false, true);
                     $ffmpegService->extractThumbnailSaveToCdn($userPortfolioFile->getVideo(), $cdnDir, $filename . "-thumbnail");
                 }
 
             } else {
-                if($file->getMimetype() == "video/mp4") {
+                if($mimetype == PublicPaths::mimeType(false, true, false)) {
                     return redirect("/account")->withErrors("File is too large. The max upload duration per video is 20 seconds");
                 }
                 return redirect("/account")->withErrors("File is too large. The max upload size per image is 8MB");
             }
         }
-        return redirect(sprintf('/my-account/portfolio/%s', $userPortfolio->slug));
-
     }
 
     public function editTitleImage($request){
@@ -175,7 +167,7 @@ class UserAccountPortfolioService
         if($file->dirname_audio != null && $file->audio != null && $file->filename != null){
             Storage::disk('spaces')->delete("users/$user->slug/portfolios/$file->dirname/$file->dirname_audio/" . $file->filename);
         }
-        if($file->mimetype != "application/octet-stream") {
+        if($file->mimetype != PublicPaths::mimeType(true, false, false)) {
             Storage::disk('spaces')->delete("users/$user->slug/portfolios/$file->dirname/" . $file->filename);
         }
         $file->delete();
@@ -226,10 +218,12 @@ class UserAccountPortfolioService
         $userPortfolio = UserPortfolio::select("*")->where("id", $portfolioId)->first();
         $userPortfolioFiles = UserPortfolioFile::select("*")->where("portfolio_id", $portfolioId)->get();
 
-
-        foreach($userPortfolioFiles as $userPortfolioFile){
-            if(Storage::disk('spaces')->has($userPortfolioFile->getPath())){
-                Storage::disk('spaces')->delete($userPortfolioFile->getPath());
+        if($userPortfolioFiles) {
+            foreach ($userPortfolioFiles as $userPortfolioFile) {
+                if (Storage::disk('spaces')->has($userPortfolioFile->getPath())) {
+                    Storage::disk('spaces')->delete($userPortfolioFile->getPath());
+                    $userPortfolioFile->delete();
+                }
             }
         }
         $userPortfolio->delete();

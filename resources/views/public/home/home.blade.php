@@ -1,6 +1,5 @@
 @extends("layouts.app")
 <link rel="stylesheet" href="/css/home/home.css">
-<script src="/js/floatingcarousel.min.js"></script>
 @section("content")
 <div class="home-background-wrapper vh80">
     <div class="container p-relative">
@@ -55,7 +54,7 @@
                 </div>
                 <div class="row d-flex js-center">
                     <div class="col-md-5 d-flex js-center">
-                        <a id="collaborateNow" href="/what-is-innocreation" class="btn btn-inno startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop Start collaborating! @endtablet</a>
+                        <a id="collaborateNow" href="/what-is-innocreation" class="btn btn-inno startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop I want to connect! @endtablet</a>
                     </div>
                 </div>
             <? } ?>
@@ -85,7 +84,7 @@
                                         </a>
                                         <div class="overlay">
                                             <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
-                                                <div class="contentExpertise" style="background: url('<?= $expertise->image?>');"></div>
+                                                <div class="contentExpertise lazyLoad" data-src="<?= $expertise->image?>"></div>
                                             </a>
                                         </div>
                                     </div>
@@ -115,7 +114,7 @@
                                     </a>
                                     <div class="overlay">
                                         <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
-                                            <div class="contentExpertise" style="background: url('<?= $expertise->image?>');"></div>
+                                            <div class="contentExpertise lazyLoad" data-src="<?= $expertise->image?>"></div>
                                         </a>
                                     </div>
                                 </div>
@@ -135,7 +134,7 @@
                     <div class="hr col-md-8"></div>
                     <div class="row">
                         <div class="col-sm-12 d-flex js-center m-t-20">
-                            <img class="img-responsive" src="/images/icons/network_black.png" alt="">
+                            <img class="img-responsive" src="/images/icons/network_black_small.png" alt="">
                         </div>
                     </div>
                     <div class="row d-flex js-center m-t-40 m-b-20">
@@ -201,5 +200,5 @@
 </script>
 @endsection
 @section('pagescript')
-    <script src="/js/home/home.js"></script>
+    <script defer async src="/js/home/home.js"></script>
 @endsection
