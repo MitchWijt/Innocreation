@@ -33,7 +33,7 @@
                                 </a>
                                 <div class="overlay">
                                     <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
-                                        <div class="contentExpertise" style="background: url('<?= $expertise->image?>');"></div>
+                                        <div class="contentExpertise lazyLoad" data-src="<?= $expertise->image?>"></div>
                                     </a>
                                 </div>
                             </div>

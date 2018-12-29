@@ -317,8 +317,8 @@ class UserController extends Controller
         }
     }
 
-    public function addUserAccountPortfolio(Request $request, UserPortfolioService $userPortfolioService){
-        return $userPortfolioService->saveNewPortfolio($request);
+    public function addUserAccountPortfolio(Request $request, UserPortfolioService $userPortfolioService, FfmpegService $ffmpegService, FfprobeService $ffprobeService){
+        return $userPortfolioService->saveNewPortfolio($request, $ffmpegService, $ffprobeService);
     }
 
     public function userPortfolioDetail($slug, UserAccountPortfolioService $userPortfolioService){

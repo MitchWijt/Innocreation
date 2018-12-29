@@ -198,15 +198,15 @@
                                     <ul class="p-l-0">
                                         <? foreach($portfolio->getFiles() as $file) { ?>
                                             <li class="td-none portfolioFileItem p-r-10 p-l-10" style="list-style-type: none; min-width: 350px !important; z-index: -1 !important">
-                                                <? if($file->mimetype != "video/mp4") { ?>
+                                                <? if($file->mimetype != \App\Services\Paths\PublicPaths::mimeType(false, true, false)) { ?>
                                                     <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
                                                         <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
-                                                            <? if($file->mimetype == "application/octet-stream" && $file->filename != null) { ?>
+                                                            <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(true, false, false) && $file->filename != null) { ?>
                                                                 <? $backgroundImg = $file->getAudioCover() ?>
                                                             <? } else { ?>
                                                                  <? $backgroundImg = $file->getUrl() ?>
                                                             <? } ?>
-                                                                <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" style="background: url('<?= $backgroundImg?>'); z-index: -1 !important">
+                                                                <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop lazyLoad" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" data-src="<?= $backgroundImg?>" style="z-index: -1 !important">
                                                                 <div id="content" @notmobile style="display: none;" @endnotmobile>
                                                                     <div class="m-t-10 p-absolute cont-<?= $file->id?>" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
                                                                         <p class="c-white f-9 p-t-40" style="width: 300px !important"><?= $file->description?></p>
@@ -219,7 +219,7 @@
                                                                             <hr class="col-8">
                                                                         </div>
                                                                     <? } ?>
-                                                                    <? if($file->mimetype == "application/octet-stream") { ?>
+                                                                    <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(true, false, false)) { ?>
                                                                         <div class="p-absolute" style="top: 80%; right: -1%; transform: translate(-50%, -50%);">
                                                                             <i class="zmdi zmdi-play editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 playSong" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
                                                                             <i class="zmdi zmdi-pause editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 pauseSong hidden" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
@@ -242,6 +242,10 @@
                                                             <div class="@handheld @mobile contentPortfolioNoScale noScale videoContentMobile @elsetablet videoContentTablet contentPortfolio @endmobile @elsedesktop contentPortfolio videoContent videoContent-<?= $file->id?> @endhandheld" data-id="<?= $file->id?>" data-counter="<?= $counter?>"  style="z-index: 2 !important;">
                                                                 <div class="m-t-10 p-absolute" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
                                                                     <i class="zmdi zmdi-play playButtonVideo shadow play-<?= $file->id?>"></i>
+                                                                </div>
+                                                                <div class="p-absolute cont-<?= $file->id?>" style="bottom: 4%; left: 5%">
+                                                                    <i class="zmdi zmdi-volume-off f-20 unmuteVideo unmute-<?=$file->id?>" data-id="<?= $file->id?>"></i>
+                                                                    <i class="zmdi zmdi-volume-up f-20 muteVideo mute-<?= $file->id?> hidden" data-id="<?= $file->id?>"></i>
                                                                 </div>
                                                                 <video poster="<?= $file->getThumbnail()?>"  id="video-<?= $file->id?>" data-id="<?= $file->id?>" class="video video-<?= $file->id?>" style="min-width: 100% !important; max-width: 350px !important; min-height: 180px !important; max-height: 180px !important; z-index: 99;" src="<?= $file->getVideo()?>" muted></video>
                                                             </div>
@@ -307,5 +311,5 @@
     </script>
 @endsection
 @section('pagescript')
-    <script src="/js/pages/singleUserPage.js"></script>
+    <script defer async src="/js/pages/singleUserPage.js"></script>
 @endsection

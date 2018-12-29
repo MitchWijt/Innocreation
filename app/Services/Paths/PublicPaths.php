@@ -46,4 +46,16 @@ class PublicPaths
     public static function createUniqueid(){
         return uniqid();
     }
+
+    public static function mimeType($audio = false, $video = false, $img = false){
+        if($audio){
+            return "audio/mpeg";
+        }
+        if($video){
+            return "video/mp4";
+        }
+        if($img){
+            return "image/jpeg";
+        }
+    }
 }
