@@ -6,9 +6,8 @@ $(".read-more").on("click",function () {
     var id = $(this).data("toggle");
     $("#collapse-" + id).collapse('toggle');
 });
-
+var vars = {};
 $(document).ready(function () {
-    var vars = {};
     $(".carousel").each(function () {
         var counter = $(this).data("counter");
         if ($(window).width() < 400) {
@@ -33,6 +32,8 @@ $(document).ready(function () {
         }
     });
 });
+
+
 
 $(".editBannerImage").on("click",function () {
    $(".bannerImgInput").click();

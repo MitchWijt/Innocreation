@@ -29,7 +29,7 @@
     {{--<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>--}}
     {{--CSS--}}
 
-        <link rel="stylesheet" href="/css/home/home.css">
+        <link  rel="stylesheet" href="/css/home/home.css" media="none" onload="if(media!=='all')media='all'">
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="/css/general.css">
         <link rel="stylesheet" href="/css/user/user.css">
@@ -45,18 +45,17 @@
     {{--CSS PLUGINS--}}
         <link rel="stylesheet" href="/assets/build/content-tools.min.css">
         <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
-        <link rel="stylesheet" href="/css/jquery-ui-min.css">
+        <link rel="stylesheet" href="/css/jquery-ui.min.css">
         <link rel="stylesheet" href="/css/jquery.timepicker.css">
         <link rel="stylesheet" href="/css/musicPlayer.css">
-
     {{------------------------}}
     {{--BOOTSTRAP SWITCH/TOGGLE--}}
         <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
         <script defer async src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     {{--=========================--}}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script async src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script async src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script  src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     {{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">--}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -66,11 +65,11 @@
         <script defer async src="/assets/build/content-tools.js"></script>
         <script defer async src="/assets/build/editor.js"></script>
         <script defer async src="/js/bootstrap-tokenfield.min.js"></script>
-        <script defer async src="/js/jquery-ui.min.js"></script>
         <script defer async src="/js/fontawesome-all.js"></script>
         <script defer async src="/js/jquery.timepicker.min.js"></script>
         <script defer async src="/js/floatingcarousel.min.js"></script>
-        <script defer async src="/js/assets/jquery-lazy.min.js"></script>
+        <script src="/js/jquery-ui.min.js"></script>
+        <script  src="/js/assets/jquery-lazy.min.js"></script>
     {{--ANIMATION--}}
         <script defer async src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
         <script defer async src="/assets/innocreation-animation.js"></script>
@@ -116,6 +115,6 @@
         @include('includes/footer')
     <? } ?>
 <? } ?>
-<script defer src="/js/home/general.js"></script>
+<script defer async src="/js/home/general.js"></script>
 </body>
 </html>
