@@ -389,3 +389,30 @@ $(document).on("click", ".emojiComment", function () {
 
     $("#messageInput-" + id).val(val + code)
 });
+$(document).on("click", ".activeContent", function (e) {
+    e.stopPropagation();
+});
+
+$(document).on("click touchstart", "body", function () {
+    $(".overlayContent").removeClass("has-overlay");
+    $(".contentActive").removeClass("activeContent");
+    $(".contentActiveIcons").removeClass("activeIcons");
+    $(".descDesktop").blur();
+    $('.extraOptions').addClass("hidden");
+});
+
+$(".descDesktop").on("focus",function () {
+    $(".overlayContent").addClass("has-overlay");
+    $(".contentActive").addClass("activeContent");
+    $(".contentActiveIcons").addClass("activeIcons");
+    $('.extraOptions').removeClass("hidden");
+});
+
+$('.triggerSlider, .closeSlider').click(function() {
+    $('.sliderUpDown').toggleClass('close');
+    $(".sliderContent").toggleClass('hidden');
+});
+
+$(".postInnocreativePost").on("click",function () {
+    $(".userWorkForm").submit();
+});

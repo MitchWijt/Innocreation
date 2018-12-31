@@ -43,6 +43,10 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
+        $expertises = Expertises::select("*")->get();
+        foreach($expertises as $expertise){
+            dd(file_get_contents($expertise->image));
+        }
         die('test');
     }
 }

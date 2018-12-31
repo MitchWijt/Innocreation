@@ -45,7 +45,6 @@
     {{--CSS PLUGINS--}}
         <link rel="stylesheet" href="/assets/build/content-tools.min.css">
         <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
-        <link rel="stylesheet" href="/css/jquery-ui.min.css">
         <link rel="stylesheet" href="/css/jquery.timepicker.css">
         <link rel="stylesheet" href="/css/musicPlayer.css">
     {{------------------------}}
@@ -62,6 +61,7 @@
     {{--<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>--}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     {{--JS PLUGINS--}}
+        <script src="/js/assets/jquery-lazy.min.js"></script>
         <script defer async src="/assets/build/content-tools.js"></script>
         <script defer async src="/assets/build/editor.js"></script>
         <script defer async src="/js/bootstrap-tokenfield.min.js"></script>
@@ -69,7 +69,6 @@
         <script defer async src="/js/jquery.timepicker.min.js"></script>
         <script defer async src="/js/floatingcarousel.min.js"></script>
         <script src="/js/jquery-ui.min.js"></script>
-        <script  src="/js/assets/jquery-lazy.min.js"></script>
     {{--ANIMATION--}}
         <script defer async src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
         <script defer async src="/assets/innocreation-animation.js"></script>
@@ -89,6 +88,7 @@
     {{--==============--}}
 </head>
 <body>
+<div class="overlayContent ">
 <? if(\Illuminate\Support\Facades\Session::has("user_id")) {
     $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
     $userChats = \App\UserChat::select("*")->where("creator_user_id", $user->id)->orWhere("receiver_user_id", $user->id)->get();
@@ -116,5 +116,6 @@
     <? } ?>
 <? } ?>
 <script defer async src="/js/home/general.js"></script>
+</div>
 </body>
 </html>

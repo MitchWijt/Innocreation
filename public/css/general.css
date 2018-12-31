@@ -422,6 +422,12 @@ hr{
     margin-top: 5px !important;
 }
 
+.hr-dark{
+    border-top: 1px solid #77787a !important;
+    margin-bottom: 5px !important;
+    margin-top: 5px !important;
+}
+
 .c-pointer{
     cursor: pointer;
 }
