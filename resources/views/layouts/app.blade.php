@@ -64,7 +64,7 @@
         <script src="/js/assets/jquery-lazy.min.js"></script>
         <script defer async src="/assets/build/content-tools.js"></script>
         <script defer async src="/assets/build/editor.js"></script>
-        <script defer async src="/js/bootstrap-tokenfield.min.js"></script>
+        <script src="/js/bootstrap-tokenfield.min.js"></script>
         <script defer async src="/js/fontawesome-all.js"></script>
         <script defer async src="/js/jquery.timepicker.min.js"></script>
         <script defer async src="/js/floatingcarousel.min.js"></script>

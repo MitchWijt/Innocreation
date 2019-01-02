@@ -33,7 +33,7 @@
                         <div class="row switchDiv">
                             <div class="col-6">
                                 <label class="switch switch_type2 m-t-10" style="margin-left: 9%" role="switch">
-                                    <input data-toggle="popover" <? if(isset($loggedIn) && $loggedIn->hasSwitched()) echo "checked disabled"; ?> data-content='<?= view("/public/shared/switch/_popoverSwitch", compact("loggedIn", "user"))?>' type="checkbox" class="switch__toggle popoverSwitch">
+                                    <input data-toggle="popover" <? if(isset($loggedIn) && $loggedIn->hasSwitched()) echo "checked disabled"; ?> data-content='<?= view("/public/shared/switch/_popoverSwitch", compact("loggedIn", "user", "validator"))?>' type="checkbox" class="switch__toggle popoverSwitch">
                                     <span class="switch__label"></span>
                                 </label>
                             </div>

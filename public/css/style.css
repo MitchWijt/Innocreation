@@ -281,6 +281,11 @@ footer{
 .modal-body{
     background: #C9CCCF !important;
 }
+
+.modal-content{
+    border: 1px solid black !important;
+
+}
 /*=======================================JQUERY UI===========================*/
 .ui-menu{
     margin-top: 0px !important;

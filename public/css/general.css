@@ -604,3 +604,22 @@ hr{
 .autocomplete-black{
     color: #000 !important;
 }
+
+
+.modal-backdrop.show{
+    opacity: 0.8 !important;
+    display: block !important;
+}
+
+.fade-scale {
+    transform: scale(0) !important;
+    -webkit-transition: all .25s linear !important ;
+    -o-transition: all .25s linear !important ;
+    transition: all .25s ease-out !important;
+}
+
+
+
+.fade.show {
+    transform: scale(1) !important ;
+}

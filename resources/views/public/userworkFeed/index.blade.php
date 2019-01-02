@@ -20,7 +20,7 @@
                             <input type="hidden" name="user_id" value="<?= $user->id?>">
                             <div class="m-b-5 d-flex js-center">
                                 <div class="col-md-8 d-flex js-center m-t-5">
-                                    <textarea placeholder="Share your idea, project or story" id="description_id" class="col-sm-12 input" rows="2" name="newUserWorkDescription"></textarea>
+                                    <textarea placeholder="Share your idea, project or story" id="description_id" class="col-sm-12 input" rows="4" name="newUserWorkDescription"></textarea>
                                 </div>
                             </div>
                             <div class="m-b-5 d-flex js-center">
