@@ -13,7 +13,7 @@
     <? if($item['category'] == 'message') { ?>
         <?
             $today = new DateTime(date("Y-m-d H:i:s"));
-            $date = new DateTime(date("Y-m-d H:i:s",strtotime($item['time'])));
+            $date = new DateTime(date("Y-m-d H:i:s",strtotime($item['time']. "+1 hours")));
             $interval = $date->diff($today);
             if(isset($item['object']['receiver'])){
                 $sender = ['firstname' => "Innocreation", 'profilePic' => '/images/cartwheel.png'];

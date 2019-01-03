@@ -422,6 +422,12 @@ hr{
     margin-top: 5px !important;
 }
 
+.hr-dark{
+    border-top: 1px solid #77787a !important;
+    margin-bottom: 5px !important;
+    margin-top: 5px !important;
+}
+
 .c-pointer{
     cursor: pointer;
 }
@@ -597,4 +603,23 @@ hr{
 
 .autocomplete-black{
     color: #000 !important;
+}
+
+
+.modal-backdrop.show{
+    opacity: 0.8 !important;
+    display: block !important;
+}
+
+.fade-scale {
+    transform: scale(0) !important;
+    -webkit-transition: all .25s linear !important ;
+    -o-transition: all .25s linear !important ;
+    transition: all .25s ease-out !important;
+}
+
+
+
+.fade.show {
+    transform: scale(1) !important ;
 }

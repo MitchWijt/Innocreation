@@ -4,7 +4,7 @@
     @endmobile
     <div class="col-sm-12">
         <? if(isset($user)) { ?>
-            <? if($user->hasContent()) { ?>
+            <? if($user->hasContent() || $validator = false) { ?>
                 <form class="m-b-10" action="/user/sendConnectRequest" method="post">
                     <input type="hidden" name="_token" value="<?= csrf_token()?>">
                     <input type="hidden" name="receiver_user_id" value="<?= $user->id?>">
