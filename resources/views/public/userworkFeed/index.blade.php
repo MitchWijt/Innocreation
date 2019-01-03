@@ -112,9 +112,9 @@
                                             <div class="fileUpload p-relative contentActiveIcons">
                                                 <input type="file" class="userwork_image hidden" name="image">
                                                 <i class="zmdi zmdi-camera-add iconCTA addPicture c-pointer"></i>
-                                                <span class="fileName pull-right m-r-10"></span>
                                                 <i class="zmdi zmdi-link iconCTA c-pointer popoverAttachment " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverAttachment")?>'></i>
                                                 <i class="zmdi zmdi-mood iconCTA c-pointer popoverEmojis " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverEmojis", compact("emojis"))?>'></i>
+                                                <span class="fileName"></span>
                                             </div>
                                             <input type="hidden" placeholder="Your link" name="imageLink" class="input col-sm-12 attachmentLinkDB">
                                         </div>
