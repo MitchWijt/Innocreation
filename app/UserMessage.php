@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use GetStream;
 
 class UserMessage extends Model{
+
     public $table = "user_message";
 
     public static function boot(){
+        date_default_timezone_set("Europe/Amsterdam");
         parent::boot();
-
         self::created(function($model) {
             if($model->sender_user_id == 1){
                 $client = new GetStream\Stream\Client(env("STREAM_API"), env("STREAM_SECRET"));

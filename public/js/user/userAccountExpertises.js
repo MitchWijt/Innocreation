@@ -110,7 +110,18 @@ $(document).on("click", ".userExpImg", function () {
 });
 
 $(document).on("click", ".closeModal" ,function () {
-    console.log("fdsa");
     $(".editImageModal").modal().toggle();
 });
 
+$('#tokenfield')
+    .on('tokenfield:createdtoken', function (e) {
+        var tokens = $('#tokenfield').tokenfield('getTokens');
+        if(tokens.length >= 1){
+            $(".textWarning").text("You can add a max. of 1 expertise at the same time");
+        }
+    })
+    .tokenfield({
+        showAutocompleteOnFocus: true,
+        createTokensOnBlur: true,
+        limit: 1
+    });

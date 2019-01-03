@@ -26,7 +26,7 @@
                         <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
                                 <div class="m-t-20 pull-right m-r-30 c-gray p-relative">
                                     <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications c-gray f-25 c-pointer moreChev p-absolute" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>' style="top: 23% !important; left: -10%"></i>
-                                    <i class="zmdi zmdi-circle c-orange f-13 p-absolute <? if($counterMessages < 1) echo "hidden";?> notificationIdicator" style="top: 10%; left: 3%;"></i>
+                                    <i class="zmdi zmdi-circle c-orange f-13 p-absolute <? if($counterMessages < 1) echo "hidden";?> notificationIdicator" style="top: 20%; left: -6.5%;"></i>
                                     <a class="btn btn-inno btn-sm" href="/expertises">Collaborate</a>
                                     <? if($user->team_id != null) { ?>
                                         <a class="btn btn-inno btn-sm" href="/my-team">Team</a>
@@ -103,7 +103,7 @@
                     </div>
                     <div class="col-3 text-center p-relative">
                         <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications c-gray f-30 m-r-10 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>'></i>
-                        <i class="zmdi zmdi-circle c-orange f-13 p-absolute <? if($counterMessages < 1) echo "hidden";?> notificationIdicator" style="top: 8%; left: 50%;"></i>
+                        <i class="zmdi zmdi-circle c-orange f-13 p-absolute <? if($counterMessages < 1) echo "hidden";?> notificationIdicator" style="top: 2%; left: 48%;"></i>
                     </div>
                     <div class="col-3 text-center">
                         <a href="/innocreatives">

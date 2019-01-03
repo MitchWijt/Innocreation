@@ -33,7 +33,7 @@
                         <div class="row switchDiv">
                             <div class="col-6">
                                 <label class="switch switch_type2 m-t-10" style="margin-left: 9%" role="switch">
-                                    <input data-toggle="popover" <? if(isset($loggedIn) && $loggedIn->hasSwitched()) echo "checked disabled"; ?> data-content='<?= view("/public/shared/switch/_popoverSwitch", compact("loggedIn", "user"))?>' type="checkbox" class="switch__toggle popoverSwitch">
+                                    <input data-toggle="popover" <? if(isset($loggedIn) && $loggedIn->hasSwitched()) echo "checked disabled"; ?> data-content='<?= view("/public/shared/switch/_popoverSwitch", compact("loggedIn", "user", "validator"))?>' type="checkbox" class="switch__toggle popoverSwitch">
                                     <span class="switch__label"></span>
                                 </label>
                             </div>
@@ -206,7 +206,7 @@
                                                             <? } else { ?>
                                                                  <? $backgroundImg = $file->getUrl() ?>
                                                             <? } ?>
-                                                                <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop lazyLoad" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" data-src="<?= $backgroundImg?>" style="z-index: -1 !important">
+                                                                <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" style="background: url('<?= $backgroundImg?>');z-index: -1 !important">
                                                                 <div id="content" @notmobile style="display: none;" @endnotmobile>
                                                                     <div class="m-t-10 p-absolute cont-<?= $file->id?>" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
                                                                         <p class="c-white f-9 p-t-40" style="width: 300px !important"><?= $file->description?></p>

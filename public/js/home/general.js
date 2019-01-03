@@ -179,9 +179,9 @@ $(document).on("click", ".acceptConnectionNotification", function () {
 //IMAGES LAZY LOADING
 $(function() {
     $('.lazyLoad').Lazy({
-        // your configuration goes here
         scrollDirection: 'vertical',
         effect: 'fadeIn',
+        effectTime: 2000,
         threshold: -50,
         visibleOnly: true,
         onError: function(element) {

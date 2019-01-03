@@ -25,6 +25,7 @@ class GenericService
         $minutes = $interval->i;
         $seconds = $interval->s;
 
+
         if($seconds != 0 && $minutes == 0 && $hours == 0 && $days == 0 && $months == 0 && $years == 0){
             $string = sprintf('%d seconds ago', $seconds);
         } else if($minutes != 0 && $hours == 0 && $days == 0 && $months == 0 && $years == 0){

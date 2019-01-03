@@ -477,13 +477,13 @@ class UserController extends Controller
                 $timeSent = $this->getTimeSent();
 
                 // Add the activity to the feed
-                $data = ["actor" => "$receiverId", "receiver" => "$sender_user_id", "userChat" => "$user_chat_id", "message" => "$message", "timeSent" => "$timeSent", "verb" => "userMessage", "object" => "3",];
+                $data = ["actor" => $receiverId, "receiver" => $sender_user_id, "userChat" => $user_chat_id, "message" => "$message", "timeSent" => "$timeSent", "verb" => "userMessage", "object" => "3",];
                 $messageFeed->addActivity($data);
 
                 if ($receiverId != 1) {
                     $user = User::select("*")->where("id", $receiverId)->first();
 
-                    $this->saveAndSendEmail($user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+                    $this->saveAndSendEmail($user, "You have gotten a message!", view("/templates/sendChatNotification", compact("user")));
                 }
 
             }

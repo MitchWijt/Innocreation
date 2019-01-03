@@ -32,7 +32,7 @@
                         <div class="col-md-7">
                             <div class="card m-t-20 m-b-20 ">
                                 <div class="card-block expertiseCard p-relative " style="max-height: 150px !important">
-                                    <i class="zmdi zmdi-close c-orange f-25 p-absolute deleteCross" data-expertise-id="<?= $userExpertises->id?>" style="top: 5px !important; right: 10px !important; z-index: 201;"></i>
+                                    <i class="zmdi zmdi-close c-orange f-25 p-absolute deleteCross c-pointer" data-expertise-id="<?= $userExpertises->id?>" style="top: 5px !important; right: 10px !important; z-index: 201;"></i>
                                     <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
                                         <a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $userExpertises->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $userExpertises->photographer_link?>"><?= $userExpertises->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                                     </div>
@@ -76,8 +76,8 @@
                     </div>
                 </div>
             <? } ?>
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
+            <div class="modal fade fade-scale expertiseModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header d-flex js-center p-relative">
                             @mobile
@@ -146,18 +146,7 @@
         </div>
     </div>
     <script>
-        $('#tokenfield')
-            .on('tokenfield:createdtoken', function (e) {
-                var tokens = $('#tokenfield').tokenfield('getTokens');
-                if(tokens.length >= 1){
-                    $(".textWarning").text("You can add a max. of 1 expertise at the same time");
-                }
-            })
-            .tokenfield({
-            showAutocompleteOnFocus: true,
-            createTokensOnBlur: true,
-            limit: 1
-        });
+
     </script>
 @endsection
 @section('pagescript')

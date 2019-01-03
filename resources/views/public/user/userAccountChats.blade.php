@@ -143,7 +143,7 @@
         </div>
     </div>
     <script src="/js/stream/stream.min.js"></script>
-    <script type="text/javascript">
+    <script defer async type="text/javascript">
         var client = stream.connect('ujpcaxtcmvav', null, '40873');
         var user1 = client.feed('user', '<?= $user_id?>', '<?= $streamToken?>');
 
