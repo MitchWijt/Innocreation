@@ -25,4 +25,9 @@ class NotificationController extends Controller
         $userId = Session::get("user_id");
         return $userNotifications->getStreamDataFromUser($userId, $switchUserWork);
     }
+
+    public function getMessageNotificationsAction(userNotifications $userNotifications){
+        $userId = Session::get("user_id");
+        return $userNotifications->getRecentUserchats($userId);
+    }
 }

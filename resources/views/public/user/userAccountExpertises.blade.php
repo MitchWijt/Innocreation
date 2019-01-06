@@ -78,14 +78,14 @@
             <? } ?>
             <div class="modal fade fade-scale expertiseModal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header d-flex js-center p-relative">
+                    <div class="modal-content modal-content-border">
+                        <div class="modal-header d-flex js-center p-relative modal-header-border">
                             @mobile
-                            <i class="zmdi zmdi-close p-absolute c-orange" data-dismiss="modal" style="top: 4px; right: 7px"></i>
+                            <i class="zmdi zmdi-close p-absolute c-orange f-20" data-dismiss="modal" style="top: 5%; right: 5%"></i>
                             @endmobile
                             <h2 class="modal-title text-center" id="modalLabel">Add your expertise</h2>
                         </div>
-                        <div class="modal-body ">
+                        <div class="modal-body modal-body-border">
                             <form action="/my-account/addUserExpertise" method="post">
                                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                 <input type="hidden" name="user_id" value="<?= $user_id?>">

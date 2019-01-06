@@ -290,7 +290,7 @@
     color: #C9CCCF !important;
 }
 .c-dark-grey{
-    color: #77787a;
+    color: #77787a !important;
 }
 .c-dark-grey:hover{
     color: #77787a;
@@ -378,6 +378,7 @@
 
 .o-scroll{
     overflow: scroll;
+    -webkit-overflow-scrolling: touch !important;
 }
 
 .o-scroll-with{
@@ -598,7 +599,7 @@ hr{
 }
 
 .notificationHover:hover{
-    background: #77787a;
+    background: #b2b6ba;
 }
 
 .autocomplete-black{
@@ -616,6 +617,21 @@ hr{
     -webkit-transition: all .25s linear !important ;
     -o-transition: all .25s linear !important ;
     transition: all .25s ease-out !important;
+}
+.modal-content-border{
+    -webkit-border-radius: 40px !important;
+    -moz-border-radius: 40px !important;
+    border-radius: 40px !important;
+}
+
+.modal-header-border{
+    border-top-left-radius: 40px !important;
+    border-top-right-radius: 40px !important;
+}
+
+.modal-body-border{
+    border-bottom-left-radius: 40px !important;
+    border-bottom-right-radius: 40px !important;
 }
 
 

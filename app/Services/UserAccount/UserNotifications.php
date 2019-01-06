@@ -9,6 +9,7 @@ namespace App\Services\UserAccount;
 use App\Expertises;
 use App\Expertises_linktable;
 use App\Favorite_expertises_linktable;
+use App\UserChat;
 use GetStream;
 use Illuminate\Support\Facades\Session;
 use App\Services\FeedServices\SwitchUserWork as SwitchUserWork;
@@ -24,5 +25,10 @@ class UserNotifications
     public function returnViewWithData($notifications, $userId, $switchUserWork){
         $connections = $switchUserWork->listConnectionRequests($userId);
         return view("/public/shared/_popoverNotificationsData", compact('notifications', 'connections'));
+    }
+
+    public function getRecentUserchats($userId){
+        $userChats = UserChat::select("*")->where("creator_user_id", $userId)->orWhere("receiver_user_id", $userId)->get();
+        return view("/public/shared/messagesHeaderBox/_popoverData", compact("userChats", "userId"));
     }
 }

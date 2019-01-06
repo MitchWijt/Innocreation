@@ -115,7 +115,7 @@
         @include('includes/footer')
     <? } ?>
 <? } ?>
-<script defer async src="/js/home/general.js"></script>
+<script src="/js/home/general.js"></script>
 </div>
 </body>
 </html>

@@ -105,13 +105,13 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade planNewMeeting" id="planNewMeeting" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" >
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header d-flex js-center">
+            <div class="modal fade planNewMeeting fade-scale" id="planNewMeeting" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" >
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content modal-content-border">
+                        <div class="modal-header d-flex js-center modal-header-border">
                             <h4 class="modal-title text-center" id="modalLabel">Plan new meeting</h4>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body modal-body-border">
                             <form action="/workspace/addNewMeeting" method="post" class="meetingForm">
                                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                 <input type="hidden" name="team_id" value="<?= $team->id?>">

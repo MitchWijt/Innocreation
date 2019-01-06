@@ -244,11 +244,21 @@ $(document).on('click', '.addPicture', function() {
     $(this).parents(".fileUpload").find(".userwork_image").click();
 });
 
-$(document).on("change", ".userwork_image",function () {
-    var _this = $(this);
-    var filename = $(this).val().split('\\').pop();
-    _this.parents(".fileUpload").find(".fileName").text(filename);
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
 
+        reader.onload = function (e) {
+            $('#previewUpload').attr('src', e.target.result);
+            $(".previewBox").removeClass("hidden");
+            $("#removePreview").removeClass("hidden");
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+$(document).on("change", ".userwork_image",function () {
+    readURL(this);
 });
 
 $(".submitPost").on("click",function () {
@@ -260,6 +270,21 @@ $(".submitPost").on("click",function () {
     if(bool) {
         $(".userWorkForm").submit();
     }
+});
+
+$(document).on("mouseover", ".previewBox", function () {
+    $("#removePreview").removeClass("hidden");
+});
+
+$(document).on("mouseleave", ".previewBox", function () {
+    $("#removePreview").addClass("hidden");
+});
+
+$(document).on("click", "#removePreview", function () {
+   $("#previewUpload").attr("src", "");
+   $(".previewBox").addClass("hidden");
+   $(this).addClass("hidden");
+   $(".userwork_image").val("");
 });
 
 $(document).on("click", ".toggleComments", function () {
@@ -393,7 +418,25 @@ $(document).on("click", ".activeContent", function (e) {
     e.stopPropagation();
 });
 
-$(document).on("click touchstart", "body", function () {
+$(document).on("click", "body", function () {
+    $(".overlayContent").removeClass("has-overlay");
+    $(".contentActive").removeClass("activeContent");
+    $(".contentActiveIcons").removeClass("activeIcons");
+    $(".descDesktop").blur();
+    $('.extraOptions').addClass("hidden");
+});
+// $(document).on("click", ".input", function (e) {
+//     e.preventDefault();
+//     e.stopPropagation();
+// });
+//
+//
+// $(document).on("click", ".iconCTA", function (e) {
+//     e.preventDefault();
+//     e.stopPropagation();
+// });
+
+$(document).on("touchstart", ".has-overlay", function () {
     $(".overlayContent").removeClass("has-overlay");
     $(".contentActive").removeClass("activeContent");
     $(".contentActiveIcons").removeClass("activeIcons");

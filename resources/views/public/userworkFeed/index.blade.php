@@ -52,6 +52,12 @@
                                             <input type="hidden" placeholder="Your link" name="imageLink" class="input col-sm-12 attachmentLinkDB">
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="@mobile col-4 @elsedesktop col-sm-4 @endmobile p-relative previewBox hidden">
+                                            <i class="zmdi zmdi-close c-orange f-25 p-absolute c-pointer" id="removePreview" style="top: 2%; right: -63%;"></i>
+                                            <img style="width: 200px; height: 200px;" id="previewUpload" src="#" alt="PreviewUpload"/>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -92,7 +98,7 @@
                             </div>
                             <div class="m-b-5 d-flex js-center extraOptions hidden">
                                 <div class="col-md-8 m-t-5 @notmobile contentActive @endnotmobile">
-                                    <div class="row">
+                                    <div class="row contentClick">
                                         <div class="@handheld col-6 @elsedesktop col-sm-4 @endhandheld">
                                             <select name="percentageProgress" class="input @handheld m-b-10 @endhandheld">
                                                 <option value="" selected disabled>% @desktop Progress @enddesktop on project</option>
@@ -114,7 +120,6 @@
                                                 <i class="zmdi zmdi-camera-add iconCTA addPicture c-pointer"></i>
                                                 <i class="zmdi zmdi-link iconCTA c-pointer popoverAttachment " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverAttachment")?>'></i>
                                                 <i class="zmdi zmdi-mood iconCTA c-pointer popoverEmojis " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverEmojis", compact("emojis"))?>'></i>
-                                                <span class="fileName"></span>
                                             </div>
                                             <input type="hidden" placeholder="Your link" name="imageLink" class="input col-sm-12 attachmentLinkDB">
                                         </div>
@@ -122,6 +127,21 @@
                                            <button type="button" class="btn btn-inno btn-sm pull-right submitPost">Post!</button>
                                         </div>
                                     </div>
+                                    @tablet
+                                        <div class="row">
+                                            <div class="col-sm-4 p-relative previewBox hidden">
+                                                <i class="zmdi zmdi-close c-orange f-20 p-absolute c-pointer hidden" id="removePreview" style="top: 3%; right: 28% !important;"></i>
+                                                <img style="width: 100px; height: 100px;" id="previewUpload" src="#" alt="PreviewUpload"/>
+                                            </div>
+                                        </div>
+                                    @elsedesktop
+                                        <div class="row">
+                                            <div class="col-sm-4 p-relative previewBox hidden">
+                                                <i class="zmdi zmdi-close c-orange f-25 p-absolute c-pointer hidden" id="removePreview" style="top: 3%; right: 15% !important;"></i>
+                                                <img style="width: 200px; height: 200px;" id="previewUpload" src="#" alt="PreviewUpload"/>
+                                            </div>
+                                        </div>
+                                    @endtablet
                                 </div>
                             </div>
                         </form>

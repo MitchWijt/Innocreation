@@ -281,11 +281,6 @@ footer{
 .modal-body{
     background: #C9CCCF !important;
 }
-
-.modal-content{
-    border: 1px solid black !important;
-
-}
 /*=======================================JQUERY UI===========================*/
 .ui-menu{
     margin-top: 0px !important;
@@ -923,6 +918,23 @@ footer{
 .avatar-not{
     width: 30px;
     height: 30px;
+    border: 2px solid #C9CCCF;
+    -webkit-border-radius: 60px !important;
+    -webkit-background-clip: padding-box !important;
+    -moz-border-radius: 60px !important;
+    -moz-background-clip: padding !important;
+    border-radius: 60px !important;
+    background-clip: padding-box !important;
+    float: left !important;
+    background-size: cover !important;
+    background-repeat:no-repeat !important;
+    /*background-attachment:fixed !important;*/
+    background-position:center,center !important;
+}
+
+.avatar-msg-seen{
+    width: 15px;
+    height: 15px;
     border: 2px solid #C9CCCF;
     -webkit-border-radius: 60px !important;
     -webkit-background-clip: padding-box !important;
