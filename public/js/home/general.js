@@ -161,6 +161,36 @@ $(document).on("click", ".popoverMessages", function () {
     });
 });
 
+$('.popoverMessagesMob').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'})
+    .on("click", function () {
+        var _this = $('.popover');
+        _this.addClass("popover-notification-mob");
+        _this.find(".popover-body").addClass("p-0");
+    });
+
+$('.popoverMessagesMob').on('hide.bs.popover', function () {
+    var _this = $('.popover');
+    _this.addClass("popover-black");
+});
+
+$(document).on("click", ".popoverMessagesMob", function () {
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/notification/getMessageNotifications",
+        data: "",
+        success: function (data) {
+            $(".messagesBoxContent").html(data);
+        }
+    });
+});
+
 $(document).on("click", ".ui-menu-item-wrapper", function () {
     var title = $(this).text();
     $.ajax({

@@ -6,7 +6,6 @@
 header{
     font-family: Corbert;
     background: #000000;
-    min-height: 100px;
 }
 
 footer{
@@ -37,6 +36,12 @@ footer{
 
 .container{
     /*width: 1200px !important;*/
+    font-family: Corbert;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.container-fluid{
     font-family: Corbert;
     margin: 0 auto;
     padding: 0;

@@ -118,6 +118,15 @@
         display: block !important;
     }
 
+    .headerShow{
+        position: fixed;
+        z-index: 130;
+        width: 100%;
+    }
+    .grey-background, .home-background-wrapper{
+        padding-top: 70px !important;
+    }
+
     .registerBtnsMobile{
         display: flex !important;
     }

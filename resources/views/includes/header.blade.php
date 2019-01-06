@@ -96,28 +96,35 @@
                     </div>
                 </div>
             <? } else { ?>
-                <div class="row m-t-30 navMobile m-r-0 m-l-0">
-                    <div class="col-3 text-center">
-                        <a href="/">
+                <div class="row m-t-10 navMobile m-r-0 m-l-0 p-l-10">
+
+                        <a href="/" style="width: 16% !important;">
                             <img class="cartwheelLogo" src="/images/cartwheel.png" alt="" style="width: 30px !important; height: 30px !important;">
                         </a>
-                    </div>
-                    <div class="col-3 text-center p-relative">
-                        <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications c-gray f-30 m-r-10 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>'></i>
-                        <i class="zmdi zmdi-circle c-orange f-13 p-absolute <? if($counterMessages < 1) echo "hidden";?> notificationIdicator" style="top: 2%; left: 48%;"></i>
-                    </div>
-                    <div class="col-3 text-center">
-                        <a href="/innocreatives">
-                            <i class="zmdi zmdi-share c-gray f-30"></i>
-                        </a>
-                    </div>
-                    <div class="col-3 text-center d-flex">
-                        <a href="/my-account" class="m-r-10">
-                            <div class="avatar-header img m-t-0 p-t-0 m-l-15" style="background: url('<?= $user->getProfilePicture()?>')"></div>
-                        </a>
-                        <i class="popoverHeader zmdi zmdi-chevron-down c-gray f-20 c-pointer m-t-10" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
 
-                    </div>
+
+                        <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications c-gray f-22 m-r-5 c-pointer moreChev m-t-5" style="width: 16% !important;" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>'></i>
+                        <i class="zmdi zmdi-circle c-orange f-13 p-absolute <? if($counterMessages < 1) echo "hidden";?> notificationIdicator" style="top: 2%; left: 48%;"></i>
+
+
+                        <i class="zmdi zmdi-comment-text f-22 c-pointer @mobile popoverMessagesMob @elsenotmobile popoverMessages @endmobile c-gray m-t-5"  data-toggle="popover" data-content='<?= view("/public/shared/messagesHeaderBox/_popoverBox")?>' style="width: 16%"></i>
+
+
+                        <a href="/innocreatives" style="width: 16% !important;">
+                            <i class="zmdi zmdi-share c-gray f-22 m-t-5"></i>
+                        </a>
+
+
+                        <a href="/innocreatives" style="width: 16% !important;">
+                            <i class="zmdi zmdi-share c-gray f-22 m-t-5"></i>
+                        </a>
+
+                        <div class="d-flex" style="width: 16% !important;">
+                            <a href="/my-account" class="m-r-5">
+                                <div class="avatar-header img m-b-10 p-t-0" style="background: url('<?= $user->getProfilePicture()?>')"></div>
+                            </a>
+                            <i class="popoverHeader zmdi zmdi-chevron-down c-gray f-20 c-pointer m-t-10" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
+                        </div>
                 </div>
                 <div class="m-t-5 searchBarBox hidden p-15" id="expertisesHeaderMob" style="min-width: 100px !important;">
                     <i class="zmdi zmdi-long-arrow-left c-orange f-22 pull-right m-r-5 closeSearchBar"></i>

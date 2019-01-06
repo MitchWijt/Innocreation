@@ -16,6 +16,7 @@ use App\MembershipPackage;
 use App\Page;
 use App\ServiceReview;
 use App\Services\UserAccount\UserAccountPortfolioService;
+use App\Services\UserAccount\UserChatsService;
 use App\SplitTheBillLinktable;
 use App\SupportTicket;
 use App\SupportTicketMessage;
@@ -107,98 +108,22 @@ class UserController extends Controller
         return $editProfileImage->editBannerImage($request);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function userAccountExpertises(){
+    public function userAccountExpertises(Request $request, UserExpertises $userExpertises){
         if($this->authorized()) {
-            $user_id = Session::get("user_id");
-            $expertises_linktable = expertises_linktable::select("*")->where("user_id", $user_id)->with("Users")->with("Expertises")->get();
-            $expertises = Expertises::select("*")->get();
-            return view("/public/user/userAccountExpertises", compact("expertises_linktable", "user_id", "expertises"));
+           return $userExpertises->userAccountExpertisesIndex();
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function saveUserExpertiseDescription(Request $request)
-    {
-        $user_id = $request->input("user_id");
-        $expertise_id = $request->input("expertise_id");
-        $description = $request->input("userExpertiseDescription");
-
-        $expertises = expertises_linktable::select("*")->where("user_id", $user_id)->where("expertise_id", $expertise_id)->first();
-        $expertises->description = $description;
-        $expertises->save();
-        return redirect($_SERVER["HTTP_REFERER"]);
+    public function saveUserExpertiseDescription(Request $request, UserExpertises $userExpertises) {
+        return $userExpertises->saveUserExpertiseDescription($request);
     }
 
-    public function deleteUserExpertiseAction(Request $request){
-        $expertise_id = $request->input("expertise_id");
-        $expertise_linktable = Expertises_linktable::select("*")->where("id", $expertise_id)->first();
-        $expertise_linktable->delete();
-        return 1;
+    public function deleteUserExpertiseAction(Request $request, UserExpertises $userExpertises){
+        return $userExpertises->deleteUserExpertiseAction($request);
     }
 
-    public function addUserExpertiseAction(Request $request, Unsplash $unsplash){
-        $user_id = $request->input("user_id");
-        $expertise_id = $request->input("expertise");
-        $experience = $request->input("expertise_description");
-        $newExpertise = ucfirst($request->input("newExpertises"));
-
-
-
-        if(!$newExpertise) {
-            $expertise_linktable = new expertises_linktable();
-            $expertise_linktable->user_id = $user_id;
-            $expertise_linktable->expertise_id = $expertise_id;
-            $expertise_linktable->description = $experience;
-            $expertise_linktable->save();
-
-            $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertise_linktable->expertises->First()->title));
-            $expertise_linktable->image = $imageObject->image;
-            $expertise_linktable->photographer_name = $imageObject->photographer->name;
-            $expertise_linktable->photographer_link = $imageObject->photographer->url;
-            $expertise_linktable->image_link = $imageObject->image_link;
-            $expertise_linktable->save();
-        } else {
-            $existingExpertise = Expertises::select("*")->where("title", $newExpertise)->first();
-            if(count($existingExpertise) > 0){
-                return redirect($_SERVER["HTTP_REFERER"])->withErrors("This expertise already seems to exist");
-            } else {
-                $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($newExpertise));
-                $expertise = new Expertises();
-                $expertise->title = $newExpertise;
-                $expertise->image = $imageObject->image;
-                $expertise->photographer_name = $imageObject->photographer->name;
-                $expertise->photographer_link = $imageObject->photographer->url;
-                $expertise->image_link = $imageObject->image_link;
-                $expertise->slug = str_replace(" ", "-", strtolower($newExpertise));
-                $expertise->save();
-
-                $expertise_linktable = new expertises_linktable();
-                $expertise_linktable->user_id = $user_id;
-                $expertise_linktable->expertise_id = $expertise->id;
-                $expertise_linktable->description = $experience;
-                $expertise_linktable->save();
-
-                $imageObject = json_decode($unsplash->searchAndGetImageByKeyword($expertise_linktable->expertises->First()->title));
-                $expertise_linktable->image = $imageObject->image;
-                $expertise_linktable->photographer_name = $imageObject->photographer->name;
-                $expertise_linktable->photographer_link = $imageObject->photographer->url;
-                $expertise_linktable->image_link = $imageObject->image_link;
-                $expertise_linktable->save();
-                return redirect($_SERVER["HTTP_REFERER"])->withSuccess("Succesfully added $newExpertise as your expertise!");
-            }
-        }
-        return redirect($_SERVER["HTTP_REFERER"]);
+    public function addUserExpertiseAction(Request $request, Unsplash $unsplash, UserExpertises $userExpertises){
+        return $userExpertises->addUserExpertiseAction($request, $unsplash);
     }
 
     public function getEditUserExpertiseModalAction(Request $request, UserExpertises $userExpertises, Unsplash $unsplash){
@@ -360,10 +285,10 @@ class UserController extends Controller
                 Session::set("userChatId", $urlParameterChat);
             }
             $innocreationChat = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", 1)->first();
-            $userChats = UserChat::select("*")->where("creator_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->get();
             $user = User::select("*")->where("id", $user_id)->first();
             $streamToken = $user->stream_token;
             $emojis = Emoji::select("*")->get();
+            $userChats = UserChatsService::getRecentChats($user_id);
             if (count($userChats) != 0) {
                 return view("/public/user/userAccountChats", compact("userChats", "user_id", "urlParameter", "urlParameterChat", "innocreationChat", "streamToken", "emojis"));
             }
