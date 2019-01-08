@@ -55,10 +55,9 @@ $(document).on("click touchstart", "body",function (e) {
 });
 
 $(document).on("click", ".emojiGen", function () {
-   var id = $(this).data('id');
    var emoji = $(this).data('code');
 
-   var textarea = $(".input-" + id);
+   var textarea = $("#emojiArea");
    var val = textarea.val();
    textarea.val(val + emoji);
 });

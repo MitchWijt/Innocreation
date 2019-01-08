@@ -1,3 +1,10 @@
 .chatItem:hover{
     background: #b7bbbf;
 }
+.userMessageInput{
+    resize: none;
+}
+
+.userMessageInput::placeholder{
+    color: #77787a;
+}

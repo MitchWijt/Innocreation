@@ -309,7 +309,7 @@
 }
 
 .c-black{
- color: #000000;
+ color: #000000 !important;
 }
 
 .c-transparant{
@@ -475,8 +475,8 @@ hr{
 }
 
 .input-transparant{
-    background: transparent;
-    border: none;
+    background: transparent !important;
+    border: none !important;
     color: #C9CCCF;
 }
 

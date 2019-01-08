@@ -10,16 +10,16 @@
                 @include("includes.userAccount_sidebar")
             @endmobile
                 <div class="row m-r-0">
-                    <div class="col-sm-3 p-0 text-center m-l-15" style="border-right: 1px solid #77787a">
+                    <div class="col-sm-3 p-0 text-center" style="border-right: 1px solid #77787a">
                         <h1 class="f-25 p-t-10">My chats</h1>
                     </div>
-                    <div class="col-sm-8 chatContentHeader">
+                    <div class="col-sm-9 chatContentHeader">
 
                     </div>
                 </div>
             <div class="hr col-md-12"></div>
             <div class="row m-r-0">
-                <div class="col-sm-3 m-l-15 p-0" style="border-right: 1px solid #77787a;">
+                <div class="col-sm-3 p-l-15 p-r-0" style="border-right: 1px solid #77787a;">
                     <? if(\Illuminate\Support\Facades\Session::has("userChatId")) { ?>
                         <input type="hidden" class="userChatId" value="<?= \Illuminate\Support\Facades\Session::get("userChatId")?>">
                     <? } else { ?>
@@ -72,9 +72,25 @@
                         <? } ?>
                     </div>
                 </div>
-                <div class="col-sm-8">
-                    <div class="chatContent o-scroll" style="max-height: 70vh">
+                <div class="col-sm-9">
+                    <div class="chatContent o-scroll" style="max-height: 85vh; height: 85vh;">
 
+                    </div>
+                    <div class="row" style="border-top: 1px solid #77787a; min-height: 50px">
+                        <div class="col-sm-10">
+                            <textarea name="userMessage" class="input userMessageInput m-t-10  input-transparant c-black col-sm-12" id="emojiArea" placeholder="Type your message..."></textarea>
+                        </div>
+                        <div class="col-sm-2 m-t-10">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <i class="zmdi zmdi-mood iconCTA c-pointer popoverEmojis" data-toggle="popover" data-content='<?= view("/public/shared/_popoverEmojiGeneric", compact("emojis", 'userChat'))?>'></i>
+                                </div>
+                                <div class="col-sm-7 p-l-0 p-r-10 sendBtn hidden">
+                                    <input type="hidden" class="sender_user_id" value="<?= $user_id?>">
+                                    <button class="btn btn-inno btn-sm  btn-block sendUserMessage" data-chat-id="">Send</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -103,8 +119,6 @@
                     }
                 });
             }
-
-
         }
 
         function successCallback() {
