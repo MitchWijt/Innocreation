@@ -1,6 +1,6 @@
-<? foreach($userChat->getMessages() as $message) { ?>
+<? foreach($userMessages as $message) { ?>
     <? if($admin == 0) { ?>
-        <? if($userChat->creator_user_id == 1) { ?>
+        <? if($message->userChat->creator_user_id == 1) { ?>
             <? if($message->sender_user_id == $user_id) { ?>
                 <div class="row m-t-20 sendedMessageAjax">
                     <div class="col-sm-12">
@@ -25,8 +25,8 @@
                 <div class="row m-t-20 sendedMessageAjax">
                     <div class="col-sm-12">
                         <div class="@mobile col-10 @elsedesktop col-sm-5 @endmobile messageSent pull-right m-b-10">
-                            <p class="message"><?= $message->message?></p>
-                            <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
+                            <p class="message c-white"><?= $message->message?></p>
+                            <span class="f-12 pull-right timeSent c-gray"><?=$message->time_sent?></span>
                         </div>
                     </div>
                 </div>
@@ -34,8 +34,8 @@
                 <div class="row m-t-20 messageReceivedAjax">
                     <div class="col-sm-12 ">
                         <div class="@mobile col-10 @elsedesktop col-sm-5 @endmobile pull-left m-b-10 messageReceived">
-                            <p class="message"><?= $message->message?></p>
-                            <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
+                            <p class="message c-white"><?= $message->message?></p>
+                            <span class="f-12 pull-right timeSent c-gray"><?=$message->time_sent?></span>
                         </div>
                     </div>
                 </div>

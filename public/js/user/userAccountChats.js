@@ -12,7 +12,6 @@ $('.searchChatUsers').keyup(function(){
 
 $(document).ready(function () {
    var userChatId = $(".userChatId").val();
-   console.log(userChatId);
    if(userChatId != 0){
        $(".chat-card").each(function () {
           if($(this).data("chat-id") == userChatId){
@@ -48,78 +47,87 @@ $(".userCircle").on("click",function () {
 
 
 
-$(".chat-card").on("click",function () {
+$(".chatItem").on("click",function () {
     var user_id = $(this).data("user-id");
     var streamToken = $(".streamToken").val();
     var userId = $(".userId").val();
     var user_chat_id = $(this).data("chat-id");
+    var receiver_user_id = $(this).data("receiver-user-id");
     var admin = 0;
-   $(".collapse").each(function () {
-       if($(this).data("chat-id") == user_chat_id){
-           function getUserChatMessages() {
-               $.ajax({
-                   method: "POST",
-                   beforeSend: function (xhr) {
-                       var token = $('meta[name="csrf_token"]').attr('content');
+       function getUserChatMessages() {
+           $.ajax({
+               method: "POST",
+               beforeSend: function (xhr) {
+                   var token = $('meta[name="csrf_token"]').attr('content');
 
-                       if (token) {
-                           return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-                       }
-                   },
-                   url: "/message/getUserChatMessages",
-                   data: {'user_chat_id': user_chat_id, 'admin' : admin},
-                   success: function (data) {
-                       $(".collapse").each(function () {
-                           if($(this).data("chat-id") == user_chat_id){
-                               $(this).find(".userChatMessages").html(data);
-                               $(this).parents(".chat").find(".unreadNotification").remove();
-                           }
-                       });
+                   if (token) {
+                       return xhr.setRequestHeader('X-CSRF-TOKEN', token);
                    }
-               });
-           }
-           setTimeout(function(){
-               getUserChatMessages();
-           }, 500);
-           setTimeout(function(){
-               $(".userChatMessages").each(function () {
-                   if($(this).data("chat-id") == user_chat_id) {
-                       var objDiv = $(this);
-                       if (objDiv.length > 0) {
-                           objDiv[0].scrollTop = objDiv[0].scrollHeight;
-                       }
-                   }
-               });
-           }, 1000);
-
-           var client = stream.connect('ujpcaxtcmvav', null, '40873');
-           var user1 = client.feed('user', userId, streamToken);
-
-           function callback(data) {
-               $(".userChatMessages").each(function () {
-                   var userChatId = $(this).data("chat-id");
-                   if(userChatId == data["new"][0]["userChat"]){
-                       var message = $('.messageReceivedAjax').first().clone();
-                       var allMessages = $(this);
-                       $(message).appendTo(allMessages);
-                       message.find(".messageReceived").find(".message").text(data["new"][0]["message"]);
-                       message.find(".messageReceived").find(".timeSent").text(data["new"][0]["timeSent"]);
-                       $(this).parents(".userChatTextarea").find(".messageInput").val("");
-                   }
-               });
-
-           }
-
-           function successCallback() {
-           }
-
-           function failCallback(data) {
-               alert('something went wrong, check the console logs');
-           }
-           user1.subscribe(callback).then(successCallback, failCallback);
-           $(this).collapse('toggle');
+               },
+               url: "/message/getUserChatMessages",
+               data: {'user_chat_id': user_chat_id, 'admin' : admin, 'receiverUserId': receiver_user_id},
+               success: function (data) {
+                   $(".chatContent").html(data);
+                   // $(this).parents(".chat").find(".unreadNotification").remove();
+               }
+           });
        }
-   });
+
+       function getUserChatReceiver(){
+           $.ajax({
+               method: "POST",
+               beforeSend: function (xhr) {
+                   var token = $('meta[name="csrf_token"]').attr('content');
+
+                   if (token) {
+                       return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                   }
+               },
+               url: "/message/getUserChatReceiver",
+               data: {'receiverUserId': receiver_user_id},
+               success: function (data) {
+                   console.log(data);
+                   $(".chatContentHeader").html(data);
+               }
+           });
+       }
+       setTimeout(function(){
+           getUserChatMessages();
+           getUserChatReceiver()
+       }, 500);
+       setTimeout(function(){
+           var objDiv = $(".chatContent");
+           if (objDiv.length > 0) {
+               objDiv[0].scrollTop = objDiv[0].scrollHeight;
+           }
+       }, 1000);
+
+       var client = stream.connect('ujpcaxtcmvav', null, '40873');
+       var user1 = client.feed('user', userId, streamToken);
+
+       function callback(data) {
+           $(".userChatMessages").each(function () {
+               var userChatId = $(this).data("chat-id");
+               if(userChatId == data["new"][0]["userChat"]){
+                   var message = $('.messageReceivedAjax').first().clone();
+                   var allMessages = $(this);
+                   $(message).appendTo(allMessages);
+                   message.find(".messageReceived").find(".message").text(data["new"][0]["message"]);
+                   message.find(".messageReceived").find(".timeSent").text(data["new"][0]["timeSent"]);
+                   $(this).parents(".userChatTextarea").find(".messageInput").val("");
+               }
+           });
+
+       }
+
+       function successCallback() {
+       }
+
+       function failCallback(data) {
+           alert('something went wrong, check the console logs');
+       }
+       user1.subscribe(callback).then(successCallback, failCallback);
+
 });
 
 $(".sendUserMessage").on("click",function () {

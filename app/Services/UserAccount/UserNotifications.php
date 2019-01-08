@@ -28,7 +28,7 @@ class UserNotifications
     }
 
     public function getRecentUserchats($userId){
-        $userChats = UserChat::select("*")->where("creator_user_id", $userId)->orWhere("receiver_user_id", $userId)->get();
+        $userChats = UserChatsService::getRecentChats($userId);
         return view("/public/shared/messagesHeaderBox/_popoverData", compact("userChats", "userId"));
     }
 }

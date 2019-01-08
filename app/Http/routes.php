@@ -444,6 +444,8 @@ Route::post("/message/getTeamGroupChatMessages", "MessageController@teamGroupCha
 
 Route::post("/message/getUserChatMessages", "MessageController@userChatMessagesAction");
 
+Route::post("/message/getUserChatReceiver", "MessageController@getUserChatReceiver");
+
 Route::post("/message/getSupportTicketMessages", "MessageController@getSupportTicketMessagesAction");
 
 Route::post("/message/getAssistanceTicketMessages", "MessageController@getAssistanceTicketMessagesAction");

@@ -1,28 +1,5 @@
-<? $userchats = []?>
-<? foreach($userChats as $userChat) {
-     if($userChat->creator_user_id == $userId) {
-         $user = $userChat->receiver;
-         $receiver = $userChat->creator;
-     } else {
-         $user = $userChat->creator;
-         $receiver = $userChat->receiver;
-     }
-     if(isset($user)) { ?>
-        <? $recentChat = $userChat->getMostRecentMessage($userChat->id); ?>
-        <? if(isset($recentChat->message) && strlen($recentChat->message) != 0) { ?>
-            <? array_push($userchats, array('userchat' => $userChat, 'timeSentLast' => date("Y-m-d", strtotime($recentChat->created_at)), "recentChat" => $recentChat, 'user' => $user))?>
-        <? } ?>
-    <? } ?>
- <? } ?>
-<?
-usort($userchats, function($a, $b) {
-    return ($a['timeSentLast'] > $b['timeSentLast']) ? -1 : 1;
-});
-?>
-
-<? foreach($userchats as $userchat) {
-    $userChat = $userchat['userchat']; ?>
-    <div class="row p-t-10 notificationHover" style="border-bottom: 1px solid #77787a">
+<? foreach($userChats as $userchat) { ?>
+    <div class="row p-t-10 notificationHover c-pointer" style="border-bottom: 1px solid #77787a">
         <div class="col-3 p-l-10 d-flex js-center">
             <div class="avatar-header img m-t-0 p-t-0 m-l-15 m-b-10" style="background: url('<?= $userchat['user']->getProfilePicture()?>'); border-color: #000 !important"></div>
         </div>

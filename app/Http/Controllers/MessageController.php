@@ -11,9 +11,11 @@ use App\Team;
 use App\UserChat;
 use App\UserMessage;
 use App\UserWork;
+use function GuzzleHttp\json_encode;
 use Session;
 use App\TeamGroupChatLinktable;
 use Illuminate\Http\Request;
+use App\Services\UserAccount\UserChatsService;
 
 use App\Http\Requests;
 
@@ -52,22 +54,11 @@ class MessageController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function userChatMessagesAction(Request $request) {
-        $admin = $request->input("admin");
-        $userChatId = $request->input("user_chat_id");
-        $user_id = Session::get("user_id");
-        $userChat = UserChat::select("*")->where("id", $userChatId)->first();
-        if($admin == 1){
-            $userMessages = UserMessage::select("*")->where("user_chat_id", $userChat->id)->where("sender_user_id", "!=", 1)->where("seen_at", null)->get();
-        } else {
-            $userMessages = UserMessage::select("*")->where("user_chat_id", $userChat->id)->where("sender_user_id", "!=", $user_id)->where("seen_at", null)->get();
-        }
-        if(count($userMessages) > 0) {
-            foreach ($userMessages as $userMessage) {
-                $userMessage->seen_at = date("Y-m-d H:i:s");
-                $userMessage->save();
-            }
-        }
-        return view("/public/shared/_messagesUserChat", compact("user_id", "userChat", "admin"));
+        return UserChatsService::getUserChatMessages($request->input("user_chat_id"), Session::get("user_id") , $request->input("admin"));
+    }
+
+    public function getUserChatReceiver(Request $request){
+        return UserChatsService::getUserChatReceiver($request->input("receiverUserId"));
     }
 
     /**
