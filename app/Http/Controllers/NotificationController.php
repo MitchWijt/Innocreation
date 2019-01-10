@@ -30,4 +30,8 @@ class NotificationController extends Controller
         $userId = Session::get("user_id");
         return $userNotifications->getRecentUserchats($userId);
     }
+
+    public function toChatAction(Request $request, userNotifications $userNotifications){
+        return $userNotifications->toChat($request->input("userChatId"));
+    }
 }

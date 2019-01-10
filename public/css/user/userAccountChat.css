@@ -1,6 +1,9 @@
 .chatItem:hover{
     background: #b7bbbf;
 }
+.activeChat{
+    background: #b7bbbf;
+}
 .userMessageInput{
     resize: none;
 }

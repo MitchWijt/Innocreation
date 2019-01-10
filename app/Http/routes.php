@@ -50,6 +50,8 @@ Route::get("/faq", "PageController@faqAction");
 Route::post("/notification/getNotifications", "NotificationController@getNotificationsAction");
 
 Route::post("/notification/getMessageNotifications", "NotificationController@getMessageNotificationsAction");
+
+Route::post("/notification/toChat", "NotificationController@toChatAction");
 //========================USERACCOUNT================================
 
 Route::get("/account", "UserController@userAccount");

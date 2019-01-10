@@ -31,4 +31,9 @@ class UserNotifications
         $userChats = UserChatsService::getRecentChats($userId);
         return view("/public/shared/messagesHeaderBox/_popoverData", compact("userChats", "userId"));
     }
+
+    public function toChat($userChatId){
+        Session::set("userChatId", $userChatId);
+        return redirect("/my-account/chats");
+    }
 }

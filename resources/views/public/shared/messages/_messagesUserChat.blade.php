@@ -4,18 +4,18 @@
             <? if($message->sender_user_id == $user_id) { ?>
                 <div class="row m-t-20 sendedMessageAjax">
                     <div class="col-sm-12">
-                        <div class="col-sm-5 messageSent pull-right m-b-10">
-                            <p class="message"><?= $message->message?></p>
-                            <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
+                        <div class="col-sm-5 messageSent pull-right m-b-10" style="word-break: break-all">
+                            <p class="message c-white"><?= $message->message?></p>
+                            <span class="f-12 pull-right timeSent c-gray"><?=$message->time_sent?></span>
                         </div>
                     </div>
                 </div>
             <? } else { ?>
                 <div class="row m-t-20">
                     <div class="col-sm-12">
-                        <div class="col-sm-5 messageReceivedInnocreation messageReceived pull-left m-b-10">
-                            <p class="message"><?= $message->message?></p>
-                            <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
+                        <div class="col-sm-5 messageReceivedInnocreation messageReceived pull-left m-b-10" style="word-break: break-all">
+                            <p class="message c-white"><?= $message->message?></p>
+                            <span class="f-12 pull-right timeSent c-gray"><?=$message->time_sent?></span>
                         </div>
                     </div>
                 </div>
@@ -24,7 +24,7 @@
             <? if($message->sender_user_id == $user_id) { ?>
                 <div class="row m-t-20 sendedMessageAjax">
                     <div class="col-sm-12 ">
-                        <div class="@mobile col-10 @elsedesktop col-sm-5 @endmobile messageSent pull-right m-b-10">
+                        <div class="@mobile col-10 @elsedesktop col-sm-5 @endmobile messageSent pull-right m-b-10" style="word-break: break-all">
                             <p class="message c-white"><?= $message->message?></p>
                             <span class="f-12 pull-right timeSent c-gray"><?=$message->time_sent?></span>
                         </div>
@@ -33,7 +33,7 @@
             <? } else { ?>
                 <div class="row m-t-20 messageReceivedAjax">
                     <div class="col-sm-12 ">
-                        <div class="@mobile col-10 @elsedesktop col-sm-5 @endmobile pull-left m-b-10 messageReceived">
+                        <div class="@mobile col-10 @elsedesktop col-sm-5 @endmobile pull-left m-b-10 messageReceived" style="word-break: break-all">
                             <p class="message c-white"><?= $message->message?></p>
                             <span class="f-12 pull-right timeSent c-gray"><?=$message->time_sent?></span>
                         </div>
@@ -45,7 +45,7 @@
         <? if($message->sender_user_id == 1) { ?>
             <div class="row m-t-20">
                 <div class="col-sm-12">
-                    <div class="col-sm-5 messageReceivedInnocreation messageSent pull-right m-b-10">
+                    <div class="col-sm-5 messageReceivedInnocreation messageSent pull-right m-b-10" style="word-break: break-all">
                         <p class="message"><?= $message->message?></p>
                         <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
                     </div>
@@ -54,7 +54,7 @@
         <? } else { ?>
             <div class="row m-t-20 messageReceivedAjax">
                 <div class="col-sm-12 ">
-                    <div class="col-sm-5 pull-left m-b-10 messageReceived">
+                    <div class="col-sm-5 pull-left m-b-10 messageReceived" style="word-break: break-all">
                         <p class="message"><?= $message->message?></p>
                         <span class="f-12 pull-right timeSent"><?=$message->time_sent?></span>
                     </div>

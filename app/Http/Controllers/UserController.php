@@ -15,6 +15,7 @@ use App\JoinRequestLinktable;
 use App\MembershipPackage;
 use App\Page;
 use App\ServiceReview;
+use App\Services\AppServices\MailgunService;
 use App\Services\UserAccount\UserAccountPortfolioService;
 use App\Services\UserAccount\UserChatsService;
 use App\SplitTheBillLinktable;
@@ -44,6 +45,7 @@ use App\Services\UserAccount\EditProfileImage as EditProfileImage;
 use App\Services\UserAccount\UserAccountPortfolioService as UserPortfolioService;
 use App\Services\AppServices\FfmpegService as FfmpegService;
 use App\Services\AppServices\FfprobeService as FfprobeService;
+use App\Services\AppServices\StreamService as StreamService;
 
 
 use App\Http\Requests;
@@ -274,144 +276,31 @@ class UserController extends Controller
         return $userPortfolioService->addImageToAudio($request);
     }
 
-    public function userAccountChats(Request $request){
+    public function userAccountChats(UserChatsService $userChatsService){
         if($this->authorized()) {
-            $user_id = Session::get("user_id");
-            if (request()->has('user_id')) {
-                $urlParameter = request()->user_id;
-            }
-            if (request()->has('user_chat_id')) {
-                $urlParameterChat = request()->user_chat_id;
-                Session::set("userChatId", $urlParameterChat);
-            }
-            $innocreationChat = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", 1)->first();
-            $user = User::select("*")->where("id", $user_id)->first();
-            $streamToken = $user->stream_token;
-            $emojis = Emoji::select("*")->get();
-            $userChats = UserChatsService::getRecentChats($user_id);
-            if (count($userChats) != 0) {
-                return view("/public/user/userAccountChats", compact("userChats", "user_id", "urlParameter", "urlParameterChat", "innocreationChat", "streamToken", "emojis"));
-            }
-            return view("/public/user/userAccountChats", compact("user_id", "inn", "streamToken", "emojis"));
+            return $userChatsService->userAccountChatsIndex();
         }
     }
 
-    public function deleteUserChatAction(Request $request){
-        $userChatId = $request->input("user_chat_id");
-
-        $userMessages = UserMessage::select("*")->where("user_chat_id", $userChatId)->get();
-        if(count($userMessages) > 0) {
-            foreach ($userMessages as $userMessage) {
-                $userMessage->delete();
-            }
-        }
-        $userChat = UserChat::select("*")->where("id", $userChatId)->first();
-        $userChat->delete();
+    public function deleteUserChatAction(Request $request, UserChatsService $userChatsService){
+        return $userChatsService->deleteChat($request);
     }
 
-    public function searchChatUsers(Request $request){
+    public function searchChatUsers(Request $request, UserChatsService $userChatsService){
         if($this->authorized()) {
-            // gets all the users where user searched on to chat with
-
-            $user_id = Session::get("user_id");
-            $searchInput = $request->input("searchChatUsers");
-            $emojis = Emoji::select("*")->get();
-
-            $userChats = UserChat::select("*")->where("creator_user_id", $user_id)->orWhere("receiver_user_id", $user_id)->get();
-            if (strlen($searchInput) > 0) {
-                $idArray = [];
-                foreach ($userChats as $userChat) {
-                    if($userChat->creator_user_id == $user_id){
-                        $name = $userChat->receiver->getName();
-                    } else if($userChat->creator_user_id == 1) {
-                        $name = "Innocreation";
-                    } else {
-                        $name = $userChat->creator->getName();
-                    }
-                    if (strpos($name, ucfirst($searchInput)) !== false) {
-                        array_push($idArray, $userChat->id);
-                    }
-                }
-                $searchedUserChats = UserChat::select("*")->whereIn("id", $idArray)->get();
-            } else {
-                $searchInput = false;
-            }
-            $user = User::select("*")->where("id", $user_id)->first();
-            $streamToken = $user->stream_token;
-            if(strlen($searchInput) < 1){
-                return redirect("/my-account/chats");
-            }
-            return view("/public/user/userAccountChats", compact("searchedUserChats", "user_id", "streamToken", "emojis"));
+            return $userChatsService->searchChats($request);
         }
     }
 
-    public function selectChatUser(Request $request){
+    public function selectChatUser(Request $request, UserChatsService $userChatsService){
         if($this->authorized()) {
-            // selects the user. The user wants to chat with and adds it to the database
-
-            $receiver_user_id = $request->input("receiver_user_id");
-            $creator_user_id = $request->input("creator_user_id");
-
-            $existingUserChat = UserChat::select("*")->where("receiver_user_id", $receiver_user_id)->where("creator_user_id", $creator_user_id)->orWhere("receiver_user_id", $creator_user_id)->where("creator_user_id", $receiver_user_id)->get();
-            if (count($existingUserChat) == 0) {
-                $userChat = new UserChat();
-                $userChat->creator_user_id = $creator_user_id;
-                $userChat->receiver_user_id = $receiver_user_id;
-                $userChat->created_at = date("Y-m-d H:i:s");
-                $userChat->save();
-                return redirect("/my-account/chats?user_chat_id=$userChat->id");
-            }
-            $id = $existingUserChat->First()->id;
-            return redirect("/my-account/chats?user_chat_id=$id");
-
+            return $userChatsService->selectChat($request);
         }
     }
 
-    public function sendMessageUserAction(Request $request){
+    public function sendMessageUserAction(Request $request, StreamService $streamService, UserChatsService $userChatsService, MailgunService $mailgunService){
         if($this->authorized()) {
-            // sends a message to the user. The user selected. with the sended time and return to the page with id.
-            // so the collapse stays open from the user you are chatting with
-
-            $user_chat_id = $request->input("user_chat_id");
-            $sender_user_id = $request->input("sender_user_id");
-            $message = $request->input("message");
-
-            $messageArray = ["message" => $message, "timeSent" => $this->getTimeSent()];
-            echo json_encode($messageArray);
-
-            $userChat = UserChat::select("*")->where("id", $user_chat_id)->first();
-
-            if(strlen($message) > 0 && $message != "") {
-                $userMessage = new UserMessage();
-                $userMessage->sender_user_id = $sender_user_id;
-                $userMessage->user_chat_id = $user_chat_id;
-                $userMessage->time_sent = $this->getTimeSent();
-                $userMessage->message = $request->input("message");
-                $userMessage->created_at = date("Y-m-d H:i:s");
-                $userMessage->save();
-
-
-                if ($userChat->receiver_user_id == $sender_user_id) {
-                    $receiverId = $userChat->creator_user_id;
-                } else {
-                    $receiverId = $userChat->receiver_user_id;
-                }
-
-                $client = $this->getService("stream");
-                $messageFeed = $client->feed('user', $receiverId);
-                $timeSent = $this->getTimeSent();
-
-                // Add the activity to the feed
-                $data = ["actor" => $receiverId, "receiver" => $sender_user_id, "userChat" => $user_chat_id, "message" => "$message", "timeSent" => "$timeSent", "verb" => "userMessage", "object" => "3",];
-                $messageFeed->addActivity($data);
-
-                if ($receiverId != 1) {
-                    $user = User::select("*")->where("id", $receiverId)->first();
-
-                    $this->saveAndSendEmail($user, "You have gotten a message!", view("/templates/sendChatNotification", compact("user")));
-                }
-
-            }
+            return $userChatsService->sendMessage($request, $streamService, $mailgunService);
         }
     }
 

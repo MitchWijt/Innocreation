@@ -58,7 +58,7 @@ class MessageController extends Controller
     }
 
     public function getUserChatReceiver(Request $request){
-        return UserChatsService::getUserChatReceiver($request->input("receiverUserId"));
+        return UserChatsService::getUserChatReceiver($request->input("receiverUserId"), $request->input("userChatId"));
     }
 
     /**

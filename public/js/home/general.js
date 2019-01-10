@@ -249,3 +249,9 @@ $(function() {
         }
     });
 });
+
+$(document).on("click", ".toChat", function () {
+    console.log('gfdsa');
+   var id = $(this).data("chat-id");
+   $(".toChat-" + id).submit();
+});

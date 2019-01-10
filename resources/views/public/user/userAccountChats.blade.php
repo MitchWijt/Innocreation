@@ -1,5 +1,6 @@
 @extends("layouts.app")
 <link rel="stylesheet" href="/css/user/userAccountChat.css">
+<link rel="stylesheet" href="/css/responsiveness/userChats/userAccountChats.css">
 @section("content")
     <div class="d-flex grey-background vh85">
         @notmobile
@@ -44,27 +45,30 @@
                     <div class="o-scroll" style="height: 80vh; position: relative;">
                         <? foreach($eachValue as $userChat) { ?>
                             <div class="row m-t-10 p-t-10 p-b-10 c-pointer chatItem chat-<?= $userChat['userchat']->id?>" data-chat-id="<?= $userChat['userchat']->id?>" data-receiver-user-id="<?=$userChat['user']->id?>">
-                                <div class="col-sm-3 p-r-0 p-l-20">
+                                <div class="col-sm-3 p-r-0 p-l-20 p-relative">
+                                    <? if($userChat['user']->active_status == "online") { ?>
+                                        <i class="zmdi zmdi-circle f-15 c-green p-absolute onlineDot" data-user-id="<?= $userChat['user']->id?>" style="top:5%; right: 13%"></i>
+                                    <? } ?>
                                     <div class="avatar" style="background: url('<?= $userChat['user']->getProfilePicture()?>')"></div>
                                 </div>
-                                <div class="col-sm-9 p-r-0">
+                                <div class="col-sm-9 p-r-0 userDetails">
                                     <div class="d-flex js-between">
-                                        <p class="f-16 m-b-0"><?= $userChat['user']->getName()?></p>
-                                        <span class="c-dark-grey f-12 m-r-20 pull-right"><?= $userChat['recentChat']->time_sent?></span>
+                                        <p class="f-16 m-b-0"><?= $userChat['user']->getName()?> <i class="zmdi zmdi-circle f-13 c-orange unreadNotification unseen-<?= $userChat['userchat']->id?> <? if($userChat['userchat']->getUnreadMessages($user_id) < 1 ) echo "hidden";?>" data-user-chat-id="<?= $userChat['userchat']->id?>"></i></p>
+                                        <span class="c-dark-grey f-12 m-r-20 pull-right timesent"><?= $userChat['recentChat']->time_sent?></span>
                                     </div>
-                                    <div class="d-flex m-r-10 p-r-10">
+                                    <div class="d-flex m-r-20 p-r-10">
                                         <div class="recentMessage o-hidden" style="white-space: nowrap; text-overflow: ellipsis">
                                             <? if($userChat['recentChat']->sender_user_id == $user_id) { ?>
-                                            <span class="f-12 p-0 m-b-0" style="color: #77787a !important"><?= $userChat['recentChat']->message?></span>
+                                                <span class="f-12 p-0 m-b-0" style="color: #77787a !important"><?= $userChat['recentChat']->message?></span>
                                             <? } else { ?>
-                                            <span class="f-12 p-0 m-b-0" style="color: #77787a !important;"><?= strip_tags($userChat['recentChat']->message)?></span>
+                                                <span class="f-12 p-0 m-b-0" style="color: #77787a !important;"><?= strip_tags($userChat['recentChat']->message)?></span>
                                             <? } ?>
                                         </div>
                                         <? if($userChat['recentChat']->sender_user_id != $user_id) { ?>
                                             <i class="zmdi zmdi-check-all c-dark-grey f-12 m-l-5 m-t-5"></i>
                                         <? } ?>
                                         <? if($userChat['recentChat']->seen_at != null && $userChat['recentChat']->sender_user_id == $user_id) { ?>
-                                            <div class="avatar-msg-seen img p-t-0" style="background: url('<?= $userChat['user']->getProfilePicture()?>'); margin-top: 5px !important"></div>
+                                            <div class="avatar-msg-seen img p-t-0 p-r-5 p-l-5" style="background: url('<?= $userChat['user']->getProfilePicture()?>'); margin-top: 5px !important"></div>
                                         <? } ?>
                                     </div>
                                 </div>
@@ -80,7 +84,7 @@
                         <div class="col-sm-10">
                             <textarea name="userMessage" class="input userMessageInput m-t-10  input-transparant c-black col-sm-12" id="emojiArea" placeholder="Type your message..."></textarea>
                         </div>
-                        <div class="col-sm-2 m-t-10">
+                        <div class="col-sm-2 m-t-10 hidden actions">
                             <div class="row">
                                 <div class="col-sm-5">
                                     <i class="zmdi zmdi-mood iconCTA c-pointer popoverEmojis" data-toggle="popover" data-content='<?= view("/public/shared/_popoverEmojiGeneric", compact("emojis", 'userChat'))?>'></i>
@@ -104,8 +108,10 @@
         function callback(data) {
             $(".unreadNotification").each(function () {
                var userChatId = $(this).data("user-chat-id");
-               if(userChatId == data["new"][0]["userChat"]){
-                   $(this).removeClass("hidden");
+               if(!$(".chat-" + userChatId).hasClass("activeChat")) {
+                   if (userChatId == data["new"][0]["userChat"]) {
+                       $(this).removeClass("hidden");
+                   }
                }
             });
 
@@ -127,6 +133,7 @@
         function failCallback(data) {
             alert('something went wrong, check the console logs');
         }
+
         user1.subscribe(callback).then(successCallback, failCallback);
     </script>
 @endsection

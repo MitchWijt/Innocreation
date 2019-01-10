@@ -13,27 +13,7 @@ $('.searchChatUsers').keyup(function(){
 $(document).ready(function () {
    var userChatId = $(".userChatId").val();
    if(userChatId != 0){
-       $(".chat-card").each(function () {
-          if($(this).data("chat-id") == userChatId){
-              $(this).click();
-          }
-       });
-       $.ajax({
-           method: "POST",
-           beforeSend: function (xhr) {
-               var token = $('meta[name="csrf_token"]').attr('content');
-
-               if (token) {
-                   return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-               }
-           },
-           url: "/user/removeChatSession",
-           data: "",
-           success: function (data) {
-
-           }
-       });
-       sessionStorage.removeItem('userChatId');
+       $(".chat-" + userChatId).click();
    }
 });
 //user is "finished typing," do something
@@ -48,6 +28,8 @@ $(".userCircle").on("click",function () {
 
 
 $(".chatItem").on("click",function () {
+    $(".chatItem").removeClass("activeChat");
+    $(this).addClass("activeChat");
     var user_id = $(this).data("user-id");
     var streamToken = $(".streamToken").val();
     var userId = $(".userId").val();
@@ -85,7 +67,7 @@ $(".chatItem").on("click",function () {
                    }
                },
                url: "/message/getUserChatReceiver",
-               data: {'receiverUserId': receiver_user_id},
+               data: {'receiverUserId': receiver_user_id, 'userChatId': user_chat_id},
                success: function (data) {
                    $(".chatContentHeader").html(data);
                }
@@ -95,6 +77,8 @@ $(".chatItem").on("click",function () {
            getUserChatMessages();
            getUserChatReceiver();
            $(".sendUserMessage").attr("data-chat-id", user_chat_id);
+           $(".unseen-" + user_chat_id).addClass("hidden");
+           $(".actions").removeClass("hidden");
        }, 500);
        setTimeout(function(){
            var objDiv = $(".chatContent");
@@ -107,18 +91,11 @@ $(".chatItem").on("click",function () {
        var user1 = client.feed('user', userId, streamToken);
 
        function callback(data) {
-           $(".userChatMessages").each(function () {
-               var userChatId = $(this).data("chat-id");
-               if(userChatId == data["new"][0]["userChat"]){
-                   var message = $('.messageReceivedAjax').first().clone();
-                   var allMessages = $(this);
-                   $(message).appendTo(allMessages);
-                   message.find(".messageReceived").find(".message").text(data["new"][0]["message"]);
-                   message.find(".messageReceived").find(".timeSent").text(data["new"][0]["timeSent"]);
-                   $(this).parents(".userChatTextarea").find(".messageInput").val("");
-               }
-           });
-
+           var message = $('.messageReceivedAjax').first().clone();
+           var allMessages = $(".chatContent");
+           $(message).appendTo(allMessages);
+           message.find(".messageReceived").find(".message").text(data["new"][0]["message"]);
+           message.find(".messageReceived").find(".timeSent").text(data["new"][0]["timeSent"]);
        }
 
        function successCallback() {
@@ -210,3 +187,7 @@ function autosize() {
         $(".sendBtn").addClass("hidden");
     }
 }
+
+$(document).on("click", ".emojiGen", function () {
+    $(".sendBtn").removeClass("hidden");
+});
