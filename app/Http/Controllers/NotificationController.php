@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AssistanceTicket;
+use App\Services\AppServices\StreamService;
 use App\Services\FeedServices\SwitchUserWork;
 use App\SupportTicket;
 use App\SupportTicketMessage;
@@ -21,9 +22,9 @@ use App\Http\Requests;
 
 class NotificationController extends Controller
 {
-    public function getNotificationsAction(userNotifications $userNotifications, SwitchUserWork $switchUserWork){
+    public function getNotificationsAction(userNotifications $userNotifications, SwitchUserWork $switchUserWork, StreamService $streamService){
         $userId = Session::get("user_id");
-        return $userNotifications->getStreamDataFromUser($userId, $switchUserWork);
+        return $userNotifications->getStreamDataFromUser($userId, $switchUserWork, $streamService);
     }
 
     public function getMessageNotificationsAction(userNotifications $userNotifications){
@@ -33,5 +34,9 @@ class NotificationController extends Controller
 
     public function toChatAction(Request $request, userNotifications $userNotifications){
         return $userNotifications->toChat($request->input("userChatId"));
+    }
+
+    public function getTeamInvitesAction(Request $request,userNotifications $userNotifications){
+        return $userNotifications->getTeamInvites($request->input("user_id"));
     }
 }

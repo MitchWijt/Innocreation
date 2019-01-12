@@ -52,6 +52,8 @@ Route::post("/notification/getNotifications", "NotificationController@getNotific
 Route::post("/notification/getMessageNotifications", "NotificationController@getMessageNotificationsAction");
 
 Route::post("/notification/toChat", "NotificationController@toChatAction");
+
+Route::post("/notification/getTeamInvites", "NotificationController@getTeamInvitesAction");
 //========================USERACCOUNT================================
 
 Route::get("/account", "UserController@userAccount");

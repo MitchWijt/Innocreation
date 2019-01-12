@@ -8,6 +8,7 @@ use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
 use App\MailMessage;
 use App\NeededExpertiseLinktable;
+use App\Services\TimeSent;
 use App\SplitTheBillLinktable;
 use App\Team;
 use App\TeamGroupChat;
@@ -24,6 +25,7 @@ use Session;
 use App\Services\TeamServices\CredentialService as CredentialService;
 use App\Services\AppServices\MailgunService as MailgunService;
 use App\Services\TeamServices\EditPageImage as EditPageImageService;
+use App\Services\AppServices\StreamService as StreamService;
 use App\Http\Requests;
 
 class TeamController extends Controller
@@ -306,7 +308,7 @@ class TeamController extends Controller
 
     }
 
-    public function inviteUserForTeamAction(Request $request){
+    public function inviteUserForTeamAction(Request $request, StreamService $streamService){
         $team_id = $request->input("team_id");
         $user_id = $request->input("user_id");
         $expertise_id = $request->input("expertise_id");
@@ -348,9 +350,12 @@ class TeamController extends Controller
             $message->save();
 
             $receiver = User::select("*")->where("id", $user_id)->first();
+            $notificationMessage = sprintf("%s has sent you an invite to join their team!", $team->team_name);
+            $timeSent = new TimeSent();
+            $data = ["actor" => $user_id, "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time", "verb" => "notification", "object" => "3",];
+            $streamService->addActivityToFeed($user_id, $data);
 
             $this->saveAndSendEmail($receiver, "Team invite from $team->team_name!", view("/templates/sendInviteToUserMail", compact("receiver", "team")));
-
             return redirect($_SERVER["HTTP_REFERER"]);
         } else {
             return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already sent an invite to this user");

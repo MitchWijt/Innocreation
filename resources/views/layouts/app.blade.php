@@ -39,6 +39,7 @@
         <link rel="stylesheet" href="/css/registerProcess/index.css">
         <link rel="stylesheet" href="/css/userworkFeed/index.css">
         <link rel="stylesheet" href="/css/popovers.css">
+        <link rel="stylesheet" href="/css/responsiveness/sidebar.css">
     {{--CSS MEDIA QUERIES--}}
         <link rel="stylesheet" href="/css/responsiveness/home.css">
     {{------------------------}}
@@ -107,7 +108,6 @@
 <? } else { ?>
     @include('includes.headerCheckout')
 <? } ?>
-{{--@include('includes/flash')--}}
 @yield('content')
 @yield('pagescript')
 <? if(!isset($pageType) || $pageType != "checkout") { ?>

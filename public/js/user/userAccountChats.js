@@ -79,6 +79,10 @@ $(".chatItem").on("click",function () {
            $(".sendUserMessage").attr("data-chat-id", user_chat_id);
            $(".unseen-" + user_chat_id).addClass("hidden");
            $(".actions").removeClass("hidden");
+           if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+               $(".slideMessagesMobile").removeClass("hidden");
+               $(".slideMessagesMobile").toggleClass("slideMessagesMobileTransistion");
+           }
        }, 500);
        setTimeout(function(){
            var objDiv = $(".chatContent");
@@ -190,4 +194,11 @@ function autosize() {
 
 $(document).on("click", ".emojiGen", function () {
     $(".sendBtn").removeClass("hidden");
+});
+
+$(".backToUserChats").on("click", function () {
+    $(".slideMessagesMobile").toggleClass("slideMessagesMobileTransistion");
+    setTimeout(function () {
+        $(".slideMessagesMobile").addClass("hidden");
+    }, 1000);
 });

@@ -10,6 +10,7 @@ namespace App\Services\UserAccount;
 
 
 use App\Emoji;
+use App\Services\TimeSent;
 use App\User;
 use App\UserChat;
 use App\UserMessage;
@@ -109,6 +110,8 @@ class UserChatsService
         $sender_user_id = $request->input("sender_user_id");
         $message = $request->input("message");
 
+        $timeSent = new TimeSent();
+
         $messageArray = ["message" => $message, "timeSent" => $this->getTimeSent()];
 
         $userChat = UserChat::select("*")->where("id", $user_chat_id)->first();
@@ -117,7 +120,7 @@ class UserChatsService
             $userMessage = new UserMessage();
             $userMessage->sender_user_id = $sender_user_id;
             $userMessage->user_chat_id = $user_chat_id;
-            $userMessage->time_sent = $this->getTimeSent();
+            $userMessage->time_sent = $timeSent->time;
             $userMessage->message = $request->input("message");
             $userMessage->created_at = date("Y-m-d H:i:s");
             $userMessage->save();
@@ -128,10 +131,8 @@ class UserChatsService
             } else {
                 $receiverId = $userChat->receiver_user_id;
             }
-            $timeSent = self::getTimeSent();
-
             // Add the activity to the feed
-            $data = ["actor" => $receiverId, "receiver" => $sender_user_id, "userChat" => $user_chat_id, "message" => "$message", "timeSent" => "$timeSent", "verb" => "userMessage", "object" => "3",];
+            $data = ["actor" => $receiverId, "receiver" => $sender_user_id, "userChat" => $user_chat_id, "message" => "$message", "timeSent" => "$timeSent->time", "verb" => "userMessage", "object" => "3",];
             $stream->addActivityToFeed($receiverId, $data);
 
             if ($receiverId != 1) {
@@ -222,39 +223,8 @@ class UserChatsService
         }
     }
 
-    private static function getTimeSent(){
-        $timeNow = date("H:i:s");
-        $time = (date("g:i a", strtotime($timeNow)));
-        return $time;
-    }
-
     private static function createInnoClass(){
-        $user = new class{
-            public $id;
-            public $name;
-            public $profile_pic;
-            public $active_status;
-
-            public function __construct(){
-                $this->id = 1;
-                $this->name = "Innocreation";
-                $this->profile_pic = "/images/cartwheel.png";
-                $this->active_status = null;
-            }
-
-            public function getProfilePicture(){
-                return $this->profile_pic;
-            }
-
-            public function getName(){
-                return $this->name;
-            }
-
-            public function getUrl(){
-                return "/";
-            }
-
-        };
+        $user = new InnoClass();
         return $user;
     }
 }

@@ -36,6 +36,7 @@ use App\UserWork;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Http\Middleware\RolesMiddleware;
+
 use App\Services\FeedServices\SwitchUserWork as SwitchUserWork;
 use App\Services\AppServices\MailgunService as Mailgun;
 use App\Services\AppServices\UnsplashService as Unsplash;
@@ -46,6 +47,7 @@ use App\Services\UserAccount\UserAccountPortfolioService as UserPortfolioService
 use App\Services\AppServices\FfmpegService as FfmpegService;
 use App\Services\AppServices\FfprobeService as FfprobeService;
 use App\Services\AppServices\StreamService as StreamService;
+use App\Services\UserAccount\UserRequestsService as UserRequestsService;
 
 
 use App\Http\Requests;
@@ -244,6 +246,7 @@ class UserController extends Controller
         }
     }
 
+    //portfolio
     public function addUserAccountPortfolio(Request $request, UserPortfolioService $userPortfolioService, FfmpegService $ffmpegService, FfprobeService $ffprobeService){
         return $userPortfolioService->saveNewPortfolio($request, $ffmpegService, $ffprobeService);
     }
@@ -276,6 +279,7 @@ class UserController extends Controller
         return $userPortfolioService->addImageToAudio($request);
     }
 
+    //UserChats
     public function userAccountChats(UserChatsService $userChatsService){
         if($this->authorized()) {
             return $userChatsService->userAccountChatsIndex();
@@ -436,97 +440,20 @@ class UserController extends Controller
                 }
                 return redirect($_SERVER["HTTP_REFERER"]);
             } else {
-                return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already wrote a review or you are the CEO of this team");
+                return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already wrote a review or you are the leader of this team");
             }
         }
     }
 
-    public function acceptTeamInviteAction(Request $request){
+    public function acceptTeamInviteAction(Request $request, UserRequestsService $userRequestsService, Mailgun $mailgunService){
         if($this->authorized()) {
-            // user accepts the team invite
-            // Sends a message to the team.
-            // Rejects any other invite sent to the user
-            $user_id = $request->input("user_id");
-            $invite_id = $request->input("invite_id");
-            $expertise_id = $request->input("expertise_id");
-            $team_id = $request->input("team_id");
-            $invite = InviteRequestLinktable::select("*")->where("id", $invite_id)->first();
-            $invite->accepted = 1;
-            $invite->save();
-
-            $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
-            $neededExpertise->amount = $neededExpertise->amount - 1;
-            $neededExpertise->save();
-
-            $otherInvites = InviteRequestLinktable::select("*")->where("user_id", $user_id)->where("accepted", 0)->get();
-            if (count($otherInvites) > 0) {
-                foreach ($otherInvites as $otherInvite) {
-                    $otherInvite->accepted = 2;
-                    $otherInvite->save();
-                }
-            }
-
-            $teamCreateRequests = TeamCreateRequest::select("*")->where("receiver_user_id", $user_id)->where("accepted", 0)->get();
-            if(count($teamCreateRequests)){
-                foreach($teamCreateRequests as $teamCreateRequest){
-                    $teamCreateRequest->accepted = 2;
-                    $teamCreateRequest->save();
-                }
-            }
-
-            $teamName = $invite->teams->First()->team_name;
-
-            $user = User::select("*")->where("id", $invite->users->First()->id)->first();
-            $user->team_id = $invite->team_id;
-            $user->save();
-            Session::set('team_id', $user->team_id);
-            Session::set('team_name', $user->team->team_name);
-
-
-            $message = new UserMessage();
-            $message->sender_user_id = $user->id;
-            $message->team_id = $team_id;
-            $message->message = "Hey $teamName i am happy to say, that i accepted your invite to join this team.";
-            $message->time_sent = $this->getTimeSent();
-            $message->created_at = date("Y-m-d H:i:s");
-            $message->save();
-
-            $team = Team::select("*")->where("id", $team_id)->first();
-
-            $this->saveAndSendEmail($team->users,  "Accepted invitation!", view("/templates/sendInviteAcceptionTeam", compact("user", "team")));
-
-            return redirect($_SERVER["HTTP_REFERER"]);
+            return $userRequestsService->acceptInvite($request, $mailgunService);
         }
     }
 
-    public function rejectTeamInviteAction(Request $request){
+    public function rejectTeamInviteAction(Request $request, UserRequestsService $userRequestsService){
         if($this->authorized()) {
-            //rejects the team invite sent to the user + sends a message to the CEO of the team.
-            $invite_id = $request->input("invite_id");
-            $invite = InviteRequestLinktable::select("*")->where("id", $invite_id)->first();
-            $invite->accepted = 2;
-            $invite->save();
-
-            $ceo = User::select("*")->where("id", $invite->team->First()->ceo_user_id)->First();
-            $timeNow = date("H:i:s");
-            $time = (date("g:i a", strtotime($timeNow)));
-
-            $message = new UserMessage();
-            $message->sender_user_id = $invite->users->first()->id;
-            $message->receiver_user_id = $invite->teams->first()->ceo_user_id;
-            $message->message = "Hey $ceo I decided to reject your invite";
-            $message->time_sent = $time;
-            $message->created_at = date("Y-m-d H:i:s");
-            $message->save();
-
-            $message = new UserMessage();
-            $message->sender_user_id = $invite->teams->first()->ceo_user_id;
-            $message->receiver_user_id = $invite->users->first()->id;
-            $message->message = null;
-            $message->time_sent = null;
-            $message->created_at = date("Y-m-d H:i:s");
-            $message->save();
-            return redirect($_SERVER["HTTP_REFERER"]);
+            return $userRequestsService->declineInvite($request);
         }
     }
 
