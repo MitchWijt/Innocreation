@@ -384,9 +384,7 @@ $(document).on("click", ".switch__toggle", function () {
             _this.prop("checked", false);
             _this.parents(".userSwitch").find(".popoverSwitch").popover("show");
         }, 500);
-
     }
-
 });
 
 $(document).on("keyup", ".attachmentLink", function () {

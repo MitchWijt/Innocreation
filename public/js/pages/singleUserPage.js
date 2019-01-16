@@ -43,8 +43,12 @@ $('.bannerImgInput').on("change", function () {
     $(".bannerImgForm").submit();
 });
 
+$('#editProfilePicture').on("click", function () {
+    $(".profile_picture").click();
+});
 
-
-
+$('.profile_picture').on("change", function () {
+    $(".profileImageForm").submit();
+});
 
 

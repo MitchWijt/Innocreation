@@ -9,6 +9,7 @@ use App\FaqType;
 use App\FavoriteTeamLinktable;
 use App\NeededExpertiseLinktable;
 use App\ServiceReview;
+use App\Services\FeedServices\SwitchUserWork;
 use App\Team;
 use App\TeamReview;
 use App\User;
@@ -51,7 +52,7 @@ class PageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function singleUserPageIndex($slug = null){
+    public function singleUserPageIndex($slug = null, SwitchUserWork $switchUserWork){
         if($slug){
             $user  = User::select("*")->where("slug", $slug)->first();
         }
@@ -73,7 +74,8 @@ class PageController extends Controller
         $activeAs = strtolower($user->getSeoExpertises());
         $validator = false;
         $og_description = "This is $user->firstname who is active as a $activeAs. Start working with each other! Create a team or join a team";
-        return view("public/pages/singleUserPage", compact("user","expertise_linktable", "loggedIn", "portfolios","team", "neededExpertisesArray", "title", "og_description", "validator"));
+        $connections = $switchUserWork->listAcceptedConnections($user->id);
+        return view("public/pages/singleUserPage", compact("user","expertise_linktable", "loggedIn", "portfolios","team", "neededExpertisesArray", "title", "og_description", "validator", "connections"));
     }
 
 

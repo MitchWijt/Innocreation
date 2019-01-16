@@ -8,6 +8,7 @@ use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
 use App\MailMessage;
 use App\NeededExpertiseLinktable;
+use App\Services\TeamServices\JoinRequests;
 use App\Services\TimeSent;
 use App\SplitTheBillLinktable;
 use App\Team;
@@ -19,6 +20,7 @@ use App\User;
 use App\UserChat;
 use App\UserMessage;
 use App\UserRole;
+use GuzzleHttp\Psr7\Stream;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Session;
@@ -26,6 +28,7 @@ use App\Services\TeamServices\CredentialService as CredentialService;
 use App\Services\AppServices\MailgunService as MailgunService;
 use App\Services\TeamServices\EditPageImage as EditPageImageService;
 use App\Services\AppServices\StreamService as StreamService;
+use App\Services\TeamServices\JoinRequests as JoinRequestsService;
 use App\Http\Requests;
 
 class TeamController extends Controller
@@ -217,149 +220,20 @@ class TeamController extends Controller
         return 1;
     }
 
-    public function teamUserJoinRequestsAction(){
-        // gets all the join requests for the team
-        $user_id = Session::get("user_id");
-        $team_id = Session::get("team_id");
-        $userJoinRequests = JoinRequestLinktable::select("*")->where("team_id", $team_id)->get();
-        $invites = InviteRequestLinktable::select("*")->where("team_id", $team_id)->get();
-        return view("/public/team/teamUserJoinRequests", compact("userJoinRequests", "user_id", "invites"));
+    public function teamUserJoinRequestsAction(JoinRequestsService $joinRequests){
+        return $joinRequests->joinRequestsIndex();
     }
 
-    public function rejectUserFromTeamAction(Request $request){
-        // Rejects user from team
-        // sends user a message for rejection
-        $request_id = $request->input("request_id");
-        $request = JoinRequestLinktable::select("*")->where("id", $request_id)->first();
-        $request->accepted = 2;
-        $request->save();
-
-        $userName = $request->users->First()->getName();
-        $timeNow = date("H:i:s");
-        $time = (date("g:i a", strtotime($timeNow)));
-
-        $userChat = UserChat::select("*")->where("creator_user_id", $request->user_id)->first();
-        $message = new UserMessage();
-        $message->sender_user_id = $request->teams->first()->ceo_user_id;
-        $message->user_chat_id = $userChat->id;
-        $message->message = "Hey $userName unfortunately we decided to reject you from our team";
-        $message->time_sent = $time;
-        $message->created_at = date("Y-m-d H:i:s");
-        $message->save();
-        return redirect($_SERVER["HTTP_REFERER"]);
-
+    public function rejectUserFromTeamAction(Request $request, JoinRequestsService $joinRequests, StreamService $streamService){
+        return $joinRequests->rejectUser($request, $streamService);
     }
 
-    public function acceptUserInteamAction(Request $request){
-        // accepts user into team
-        // sends user message that he is welcome in team
-        // checks if user is requested for any other team. and rejects the user at that team
-
-            $user_id = $request->input("user_id");
-            $request_id = $request->input("request_id");
-            $expertise_id = $request->input("expertise_id");
-            $team_id = $request->input("team_id");
-            $joinRequest = JoinRequestLinktable::select("*")->where("id", $request_id)->first();
-            $joinRequest->accepted = 1;
-            $joinRequest->save();
-
-            $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
-            $neededExpertise->amount = $neededExpertise->amount - 1;
-            $neededExpertise->save();
-
-            $otherRequests = JoinRequestLinktable::select("*")->where("user_id", $user_id)->where("accepted", 0)->get();
-            if (count($otherRequests) > 0) {
-                foreach ($otherRequests as $otherRequest) {
-                    $otherRequest->accepted = 2;
-                    $otherRequest->save();
-                }
-            }
-
-            $userName = $joinRequest->user->getName();
-            $timeNow = date("H:i:s");
-            $time = (date("g:i a", strtotime($timeNow)));
-
-            $user = User::select("*")->where("id", $joinRequest->user->id)->first();
-            $user->team_id = $joinRequest->team_id;
-            $user->subscription_canceled = 0;
-            $user->save();
-
-            $existingUserChat = UserChat::select("*")->where("creator_user_id", $user->id)->where("receiver_user_id",  $joinRequest->team->ceo_user_id)->orWhere("creator_user_id",  $joinRequest->team->ceo_user_id)->where("receiver_user_id", $user->id)->first();
-            if(count($existingUserChat) < 1){
-                $userChat = new UserChat();
-                $userChat->creator_user_id = $joinRequest->team->ceo_user_id;
-                $userChat->receiver_user_id = $user->id;
-                $userChat->created_at = date("Y-m-d H:i:s");
-                $userChat->save();
-
-                $userChatId = $userChat->id;
-            } else {
-                $userChatId = $existingUserChat->id;
-            }
-            $message = new UserMessage();
-            $message->sender_user_id = $joinRequest->team->ceo_user_id;
-            $message->user_chat_id = $userChatId;
-            $message->message = "Hey $userName we are happy to say, that we accepted you in our team. Welcome!";
-            $message->time_sent = $time;
-            $message->created_at = date("Y-m-d H:i:s");
-            $message->save();
-
-            return redirect($_SERVER["HTTP_REFERER"]);
-
+    public function acceptUserInteamAction(Request $request, JoinRequestsService $joinRequests, StreamService $streamService){
+        return $joinRequests->acceptUser($request, $streamService);
     }
 
-    public function inviteUserForTeamAction(Request $request, StreamService $streamService){
-        $team_id = $request->input("team_id");
-        $user_id = $request->input("user_id");
-        $expertise_id = $request->input("expertise_id");
-
-        $checkJoinInvites = InviteRequestLinktable::select("*")->where("team_id",$team_id)->where("user_id", $user_id)->where("accepted", 0)->get();
-        if(count($checkJoinInvites) == 0) {
-            $team = Team::select("*")->where("id", $team_id)->first();
-
-            $invite = new InviteRequestLinktable();
-            $invite->team_id = $team_id;
-            $invite->user_id = $user_id;
-            $invite->expertise_id = $expertise_id;
-            $invite->accepted = 0;
-            $invite->created_at = date("Y-m-d");
-            $invite->save();
-
-            $userFirstName = $invite->users->First()->firstname;
-            $timeNow = date("H:i:s");
-            $time = (date("g:i a", strtotime($timeNow)));
-
-            $existingUserChat = UserChat::select("*")->where("creator_user_id", $user_id)->where("receiver_user_id",  $invite->teams->ceo_user_id)->orWhere("creator_user_id",  $invite->teams->ceo_user_id)->where("receiver_user_id", $user_id)->get();
-            if(count($existingUserChat) < 1){
-                $userChat = new UserChat();
-                $userChat->creator_user_id = $invite->teams->ceo_user_id;
-                $userChat->receiver_user_id = $user_id;
-                $userChat->created_at = date("Y-m-d H:i:s");
-                $userChat->save();
-
-                $userChatId = $userChat->id;
-            } else {
-                $userChatId = $existingUserChat->First()->id;
-            }
-            $message = new UserMessage();
-            $message->sender_user_id = $invite->teams->ceo_user_id;
-            $message->user_chat_id = $userChatId;
-            $message->message = "Hey $userFirstName I have done an invite to you to join my team!";
-            $message->time_sent = $time;
-            $message->created_at = date("Y-m-d H:i:s");
-            $message->save();
-
-            $receiver = User::select("*")->where("id", $user_id)->first();
-            $notificationMessage = sprintf("%s has sent you an invite to join their team!", $team->team_name);
-            $timeSent = new TimeSent();
-            $data = ["actor" => $user_id, "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time", "verb" => "notification", "object" => "3",];
-            $streamService->addActivityToFeed($user_id, $data);
-
-            $this->saveAndSendEmail($receiver, "Team invite from $team->team_name!", view("/templates/sendInviteToUserMail", compact("receiver", "team")));
-            return redirect($_SERVER["HTTP_REFERER"]);
-        } else {
-            return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already sent an invite to this user");
-        }
+    public function inviteUserForTeamAction(Request $request, MailgunService $mailgunService, JoinRequestsService $joinRequests){
+        return $joinRequests->inviteUser($request, $mailgunService);
     }
 
     public function teamMembersPage(){

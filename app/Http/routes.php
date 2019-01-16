@@ -38,6 +38,8 @@ Route::post("/home/getModalCarouselUser", "HomeController@getModalCarouselUserAc
 
 Route::post("/home/searchExpertise", "HomeController@searchExpertiseAction");
 
+Route::post("/openConnectionModal", "UserConnectionController@connectionsModalAction");
+
 // CONTACT US
 Route::get("/contact-us", "HomeController@contactAction");
 
@@ -99,7 +101,7 @@ Route::post("/deleteFavoriteExpertisesUser", "UserController@deleteFavoriteExper
 Route::post("/filterFavExpertises", "UserController@filterFavExpertises");
 // User Profile Picture
 
-Route::post("/my-account/saveUserProfilePicture", "UserController@saveUserProfilePictureAction");
+Route::post("/user/saveUserProfilePicture", "UserController@saveUserProfilePictureAction");
 
 Route::post("/user/editBannerImage", "UserController@editBannerImageAction");
 

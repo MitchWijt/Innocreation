@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Services\UserConnections\ConnectionService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 
@@ -30,18 +31,6 @@ class UserWork extends Model
     public function getPopoverMenu(){
         $userWork = $this;
         return view("/public/userworkFeed/shared/_popoverMenu", compact("userWork"));
-
-    }
-
-    public function getPopoverSwitchView(){
-        $userWork = $this;
-
-        if(!Session::has("user_id")){
-            return view("/public/userworkFeed/shared/_popoverSwitch", compact("userWork"));
-        }
-
-        $user = User::select("*")->where("id", Session::get("user_id"))->first();
-        return view("/public/userworkFeed/shared/_popoverSwitch", compact("userWork", "user"));
 
     }
 

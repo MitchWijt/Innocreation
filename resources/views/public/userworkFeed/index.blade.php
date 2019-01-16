@@ -99,7 +99,7 @@
                             <div class="m-b-5 d-flex js-center extraOptions hidden">
                                 <div class="col-md-8 m-t-5 @notmobile contentActive @endnotmobile">
                                     <div class="row contentClick">
-                                        <div class="@handheld col-6 @elsedesktop col-sm-4 @endhandheld">
+                                        <div class="@handheld col-6 @elsedesktop col-6 @endhandheld">
                                             <select name="percentageProgress" class="input @handheld m-b-10 @endhandheld">
                                                 <option value="" selected disabled>% @desktop Progress @enddesktop on project</option>
                                                 <option value="10%">10% finished</option>
@@ -114,8 +114,8 @@
                                                 <option value="100%">100% finished</option>
                                             </select>
                                         </div>
-                                        <div class="@handheld col-6 m-b-10 @elsedesktop col-sm-4 @endhandheld contentActive">
-                                            <div class="fileUpload p-relative contentActiveIcons">
+                                        <div class="@handheld col-6 m-b-10 @elsedesktop col-4 @endhandheld contentActive">
+                                            <div class="fileUpload p-relative contentActiveIcons d-flex">
                                                 <input type="file" class="userwork_image hidden" name="image">
                                                 <i class="zmdi zmdi-camera-add iconCTA addPicture c-pointer"></i>
                                                 <i class="zmdi zmdi-link iconCTA c-pointer popoverAttachment " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverAttachment")?>'></i>
@@ -123,22 +123,22 @@
                                             </div>
                                             <input type="hidden" placeholder="Your link" name="imageLink" class="input col-sm-12 attachmentLinkDB">
                                         </div>
-                                        <div class="@handheld col-12 m-b-10 @elsedesktop col-sm-4 @endhandheld">
+                                        <div class="@handheld col-12 m-b-10 @elsedesktop col-2 @endhandheld">
                                            <button type="button" class="btn btn-inno btn-sm pull-right submitPost">Post!</button>
                                         </div>
                                     </div>
                                     @tablet
                                         <div class="row">
-                                            <div class="col-sm-4 p-relative previewBox hidden">
+                                            <div class="col-sm-4 previewBox hidden">
+                                                <img style="width: 100px; height: 100px;" id="previewUpload" src="#" alt="PreviewUpload" class="p-relative"/>
                                                 <i class="zmdi zmdi-close c-orange f-20 p-absolute c-pointer hidden" id="removePreview" style="top: 3%; right: 28% !important;"></i>
-                                                <img style="width: 100px; height: 100px;" id="previewUpload" src="#" alt="PreviewUpload"/>
                                             </div>
                                         </div>
                                     @elsedesktop
                                         <div class="row">
-                                            <div class="col-sm-4 p-relative previewBox hidden">
+                                            <div class="col-sm-4 previewBox hidden">
+                                                <img style="width: 200px; height: 200px;" id="previewUpload" class="p-relative" src="#" alt="PreviewUpload"/>
                                                 <i class="zmdi zmdi-close c-orange f-25 p-absolute c-pointer hidden" id="removePreview" style="top: 3%; right: 15% !important;"></i>
-                                                <img style="width: 200px; height: 200px;" id="previewUpload" src="#" alt="PreviewUpload"/>
                                             </div>
                                         </div>
                                     @endtablet

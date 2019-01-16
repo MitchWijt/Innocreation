@@ -43,6 +43,11 @@ class PublicPaths
         }
     }
 
+    public static function getUserProfilePicturePath($filename, $user){
+        $path = sprintf("users/%s/profilepicture/%s", $user->slug, $filename);
+        return $path;
+    }
+
     public static function createUniqueid(){
         return uniqid();
     }

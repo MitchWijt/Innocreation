@@ -6,7 +6,7 @@
  * Time: 11:11
  */
 
-namespace App\Services\UserAccount;
+namespace App\Services;
 
 
 class InnoClass

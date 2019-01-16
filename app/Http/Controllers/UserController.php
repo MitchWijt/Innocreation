@@ -51,6 +51,7 @@ use App\Services\UserAccount\UserRequestsService as UserRequestsService;
 
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Session;
@@ -214,26 +215,8 @@ class UserController extends Controller
         return $userExpertisesService->deleteFavoriteExpertisesUser($request);
     }
 
-    public function saveUserProfilePictureAction(Request $request){
-        $user_id = $request->input("user_id");
-        $file = $request->file("profile_picture");
-        $size = $this->formatBytes($file->getSize());
-        if($size < 8) {
-            $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
-
-            $user = User::select("*")->where("id", $user_id)->first();
-            $exists = Storage::disk('spaces')->exists("users/" . $user->slug . "/profilepicture/" . $filename);
-            if (!$exists) {
-                Storage::disk('spaces')->delete("users/" . $user->slug . "/profilepicture/" . $user->profile_picture);
-                $image = $request->file('profile_picture');
-                Storage::disk('spaces')->put("users/" . $user->slug . "/profilepicture/" . $filename, file_get_contents($image->getRealPath()), "public");
-            }
-            $user->profile_picture = $filename;
-            $user->save();
-            return redirect($_SERVER["HTTP_REFERER"]);
-        } else {
-            return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
-        }
+    public function saveUserProfilePictureAction(Request $request, EditProfileImage $editProfileImage){
+        return $editProfileImage->editProfilePicture($request);
     }
 
     public function userAccountPortfolio(){
@@ -327,63 +310,9 @@ class UserController extends Controller
         }
     }
 
-    public function applyForTeamAction(Request $request){
+    public function applyForTeamAction(Request $request, MailgunService $mailgun, UserRequestsService $userRequestsService){
         if($this->authorized()) {
-            // sends a join request to the team.
-            // users applies for the team.
-            $team_id = $request->input("team_id");
-            $user_id = $request->input("user_id");
-            $expertise_id = $request->input("expertise_id");
-
-            $checkJoinRequests = JoinRequestLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->where("accepted", 0)->get();
-            if (count($checkJoinRequests) == 0) {
-                $team = Team::select("*")->where("id", $team_id)->first();
-
-                $joinRequest = new JoinRequestLinktable();
-                $joinRequest->team_id = $team_id;
-                $joinRequest->user_id = $user_id;
-                $joinRequest->expertise_id = $expertise_id;
-                $joinRequest->accepted = 0;
-                $joinRequest->created_at = date("Y-m-d");
-                $joinRequest->save();
-
-                $ceoFirstname = $team->users->firstname;
-
-                $existingUserChat = UserChat::select("*")->where("creator_user_id", $user_id)->where("receiver_user_id",  $joinRequest->team->ceo_user_id)->orWhere("creator_user_id",  $joinRequest->team->ceo_user_id)->where("receiver_user_id", $user_id)->first();
-                if(count($existingUserChat) < 1){
-                    $userChat = new UserChat();
-                    $userChat->creator_user_id = $user_id;
-                    $userChat->receiver_user_id = $joinRequest->team->ceo_user_id;
-                    $userChat->created_at = date("Y-m-d H:i:s");
-                    $userChat->save();
-
-                    $userChatId = $userChat->id;
-                } else {
-                    $userChatId = $existingUserChat->id;
-                }
-                $message = new UserMessage();
-                $message->sender_user_id = $user_id;
-                $message->user_chat_id = $userChatId;
-                $message->message = "Hey $ceoFirstname I have done a request to join your team!";
-                $message->time_sent = $this->getTimeSent();
-                $message->created_at = date("Y-m-d H:i:s");
-                $message->save();
-
-                $user = User::select("*")->where("id", $user_id)->first();
-                $this->saveAndSendEmail($joinRequest->team->users, "Team join request from $user->firstname!", view("/templates/sendJoinRequestToTeam", compact("user", "team")));
-
-                if($request->input("register")){
-                    return redirect("/my-account/team-join-requests");
-                } else {
-                    return redirect($_SERVER["HTTP_REFERER"]);
-                }
-            } else {
-                if($request->input("register")){
-                    return redirect("/account")->withErrors("You already applied for this team");
-                } else {
-                    return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already applied for this team");
-                }
-            }
+            return $userRequestsService->applyForTeam($request, $mailgun);
         }
     }
 

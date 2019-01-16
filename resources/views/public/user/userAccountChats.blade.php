@@ -56,7 +56,7 @@
                                     <div class="d-flex m-r-20 p-r-10">
                                         <div class="recentMessage o-hidden" style="white-space: nowrap; text-overflow: ellipsis">
                                             <? if($userChat['recentChat']->sender_user_id == $user_id) { ?>
-                                                <span class="f-12 p-0 m-b-0" style="color: #77787a !important"><?= $userChat['recentChat']->message?></span>
+                                                <span class="f-12 p-0 m-b-0" style="color: #77787a !important"><?= strip_tags($userChat['recentChat']->message)?></span>
                                             <? } else { ?>
                                                 <span class="f-12 p-0 m-b-0" style="color: #77787a !important;"><?= strip_tags($userChat['recentChat']->message)?></span>
                                             <? } ?>

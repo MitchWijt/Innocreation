@@ -34,6 +34,10 @@ footer{
     box-shadow: 0px 7px 24px 1px rgba(201,204,207,1);
 }
 
+*{
+    font-family: Corbert;
+}
+
 .container{
     /*width: 1200px !important;*/
     font-family: Corbert;
@@ -1095,7 +1099,7 @@ ul.dashed > li:before {
     -webkit-user-select: none;
     -ms-user-select:none;
     user-select:none;
-    -o-user-select:none;
+    -o-user-select: none;
 }
 
 .no-focus:focus{

@@ -15,6 +15,7 @@ use App\User;
 use App\UserChat;
 use App\UserMessage;
 use Illuminate\Support\Facades\Session;
+use App\Services\InnoClass;
 
 class UserChatsService
 {

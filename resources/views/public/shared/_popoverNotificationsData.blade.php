@@ -41,8 +41,8 @@
             </div>
     <? } else if($item['category'] == "notification") { ?>
         <div class="row p-b-10 notificationHover" style="border-bottom: 1px solid #FF6100 !important">
-            <div class="col-10 text-center m-t-15">
-                <p class="m-0"><?= $item['object']['message']?></p>
+            <div class="col-12 text-center m-t-15">
+                <p class="m-l-10"><?= $item['object']['message']?></p>
             </div>
             <div class="col-12">
                 <div class="pull-right m-r-10">

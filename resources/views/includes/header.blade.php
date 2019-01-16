@@ -26,7 +26,7 @@
                         <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
                                 <div class="m-t-20 pull-right m-r-30 c-gray p-relative">
                                     <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications c-gray f-25 c-pointer moreChev p-absolute" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>' style="top: 23% !important; left: -32%"></i>
-                                    <i class="zmdi zmdi-circle c-orange f-13 p-absolute z-index <? if($counterMessages < 1) echo "hidden";?> notificationIdicator" style="top: 22%; left: -6.5%;"></i>
+                                    <i class="zmdi zmdi-circle c-orange f-13 p-absolute z-index <? if($counterMessages < 1) echo "hidden";?> notificationIdicator" style="top: 22%; left: -18.5%;"></i>
                                     <i class="zmdi zmdi-comment-text f-20 c-pointer p-absolute popoverMessages" data-toggle="popover" data-content='<?= view("/public/shared/messagesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -22%"></i>
                                     <i class="zmdi zmdi-accounts-add f-20 c-pointer popoverRequests c-gray p-absolute" data-user-id="<?= $user->id?>" data-toggle="popover" data-content='<?= view("/public/shared/teamInvitesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -12%"></i>
 
@@ -98,7 +98,7 @@
                     </div>
                 </div>
             <? } else { ?>
-                <div class="row m-t-10 navMobile m-r-0 m-l-0 p-l-10">
+                <div class="row m-t-10 navMobile m-r-0 m-l-0 p-l-30">
 
                         <a href="/" style="width: 16% !important;">
                             <img class="cartwheelLogo" src="/images/cartwheel.png" alt="" style="width: 30px !important; height: 30px !important;">
@@ -106,15 +106,15 @@
 
 
                         <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications c-gray f-22 m-r-5 c-pointer moreChev m-t-5" style="width: 16% !important;" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>'></i>
-                        <i class="zmdi zmdi-circle c-orange f-13 p-absolute <? if($counterMessages < 1) echo "hidden";?> notificationIdicator" style="top: 2%; left: 48%;"></i>
+
+                        <div style="width: 16%;">
+                            <i class="zmdi zmdi-comment-text f-22 c-pointer popoverMessagesMob c-gray m-t-5 p-relative"  data-toggle="popover" data-content='<?= view("/public/shared/messagesHeaderBox/_popoverBox")?>'>
+                                <i class="zmdi zmdi-circle c-orange f-13 p-absolute <? if($counterMessages < 1) echo "hidden";?> notificationIdicator" style="top: -20%; left: 70%;"></i>
+                            </i>
+                        </div>
 
 
-                        <i class="zmdi zmdi-comment-text f-22 c-pointer @mobile popoverMessagesMob @elsenotmobile popoverMessages @endmobile c-gray m-t-5"  data-toggle="popover" data-content='<?= view("/public/shared/messagesHeaderBox/_popoverBox")?>' style="width: 16%"></i>
-
-                        <a href="/innocreatives" style="width: 16% !important;">
-                            <i class="zmdi zmdi-share c-gray f-22 m-t-5"></i>
-                        </a>
-
+                        <i class="zmdi zmdi-accounts-add f-22 m-t-5 c-pointer popoverRequestsMob c-gray" data-user-id="<?= \Illuminate\Support\Facades\Session::get("user_id")?>" data-toggle="popover" data-content='<?= view("/public/shared/teamInvitesHeaderBox/_popoverBox")?>' style="width: 16%;"></i>
 
                         <a href="/innocreatives" style="width: 16% !important;">
                             <i class="zmdi zmdi-share c-gray f-22 m-t-5"></i>

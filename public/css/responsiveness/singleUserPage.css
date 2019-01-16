@@ -34,12 +34,19 @@
         justify-content: center;
     }
 
-    .teamLinkDiv .col-6{
+    .teamName,.connectionsAmount{
         text-align: center;
-        margin-right: 15px !important;
+    }
+
+    .openConnectionsModal{
+       margin: 0 !important;
     }
 
     .teamLinkDiv .col-6 .zmdi-accounts-alt{
+        margin-left: 0 !important;
+    }
+
+    .zmdi-accounts-alt{
         margin-left: 0 !important;
     }
 }

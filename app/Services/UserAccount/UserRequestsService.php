@@ -11,16 +11,88 @@ namespace App\Services\UserAccount;
 
 use App\Http\Requests\Request;
 use App\InviteRequestLinktable;
+use App\JoinRequestLinktable;
 use App\NeededExpertiseLinktable;
 use App\Services\TimeSent;
 use App\Team;
 use App\TeamCreateRequest;
 use App\User;
+use App\UserChat;
 use App\UserMessage;
 use Illuminate\Support\Facades\Session;
 
 class UserRequestsService
 {
+    public function applyForTeam($request, $mailgun){
+        // sends a join request to the team.
+        // users applies for the team.
+        $team_id = $request->input("team_id");
+        $user_id = $request->input("user_id");
+        $expertise_id = $request->input("expertise_id");
+        $timeSent = new TimeSent();
+
+        $user = User::select("*")->where("id", $user_id)->first();
+
+        $checkJoinRequests = JoinRequestLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->where("accepted", 0)->get();
+        if (count($checkJoinRequests) == 0) {
+            $team = Team::select("*")->where("id", $team_id)->first();
+
+            $joinRequest = new JoinRequestLinktable();
+            $joinRequest->team_id = $team_id;
+            $joinRequest->user_id = $user_id;
+            $joinRequest->expertise_id = $expertise_id;
+            $joinRequest->accepted = 0;
+            $joinRequest->created_at = date("Y-m-d");
+            $joinRequest->save();
+
+            $ceoFirstname = $team->users->firstname;
+
+            $existingUserChat = UserChat::select("*")->where("creator_user_id", $user_id)->where("receiver_user_id",  $joinRequest->team->ceo_user_id)->orWhere("creator_user_id",  $joinRequest->team->ceo_user_id)->where("receiver_user_id", $user_id)->first();
+            if(count($existingUserChat) < 1){
+                $userChat = new UserChat();
+                $userChat->creator_user_id = $user_id;
+                $userChat->receiver_user_id = $joinRequest->team->ceo_user_id;
+                $userChat->created_at = date("Y-m-d H:i:s");
+                $userChat->save();
+
+                $userChatId = $userChat->id;
+            } else {
+                $userChatId = $existingUserChat->id;
+            }
+            $message = new UserMessage();
+            $message->sender_user_id = $user_id;
+            $message->user_chat_id = $userChatId;
+            $message->message = "Hey $ceoFirstname I have done a request to join your team!";
+            $message->time_sent = $timeSent->time;
+            $message->created_at = date("Y-m-d H:i:s");
+            $message->save();
+
+            $userChatInno = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", $user_id)->first();
+            $message = new UserMessage();
+            $message->sender_user_id = 1;
+            $message->user_chat_id = $userChatInno->id;
+            $message->message = sprintf("Hello %s, <br> You've recently requested to join the team %s. <br> Amazing step forward!<br> You will be notified when the team alters the status of your request. <br><br> Goodluck!", $user->getName(), $team->team_name);
+            $message->time_sent = $timeSent->time;
+            $message->created_at = date("Y-m-d H:i:s");
+            $message->save();
+
+            $user = User::select("*")->where("id", $user_id)->first();
+            $mailgun->saveAndSendEmail($joinRequest->team->users, "Team join request from $user->firstname!", view("/templates/sendJoinRequestToTeam", compact("user", "team")));
+
+            if($request->input("register")){
+                return redirect("/my-account/team-join-requests");
+            } else {
+                return redirect($_SERVER["HTTP_REFERER"]);
+            }
+        } else {
+            if($request->input("register")){
+                return redirect("/account")->withErrors("You already applied for this team");
+            } else {
+                return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already applied for this team");
+            }
+        }
+    }
+
     public function acceptInvite($request, $mailgun){
         // user accepts the team invite
         // Sends a message to the team.

@@ -93,25 +93,7 @@ $('.popoverNotificationsMob').on('hide.bs.popover', function () {
     _this.addClass("popover-black");
 });
 
-$(document).on("click", ".popoverNotifications", function () {
-    $.ajax({
-        method: "POST",
-        beforeSend: function (xhr) {
-            var token = $('meta[name="csrf_token"]').attr('content');
-
-            if (token) {
-                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-            }
-        },
-        url: "/notification/getNotifications",
-        data: "",
-        success: function (data) {
-            $(".notificationsContent").html(data);
-        }
-    });
-});
-
-$(document).on("click", ".popoverNotificationsMob", function () {
+$(document).on("click", ".popoverNotifications, .popoverNotificationsMob", function () {
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -142,7 +124,7 @@ $('.popoverMessages').on('hide.bs.popover', function () {
     _this.addClass("popover-black");
 });
 
-$(document).on("click", ".popoverMessages", function () {
+$(document).on("click", ".popoverMessages, .popoverMessagesMob", function () {
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -172,24 +154,6 @@ $('.popoverMessagesMob').on('hide.bs.popover', function () {
     _this.addClass("popover-black");
 });
 
-$(document).on("click", ".popoverMessagesMob", function () {
-    $.ajax({
-        method: "POST",
-        beforeSend: function (xhr) {
-            var token = $('meta[name="csrf_token"]').attr('content');
-
-            if (token) {
-                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-            }
-        },
-        url: "/notification/getMessageNotifications",
-        data: "",
-        success: function (data) {
-            $(".messagesBoxContent").html(data);
-        }
-    });
-});
-
 //Join requests box
 $('.popoverRequests').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'})
     .on("click", function () {
@@ -203,7 +167,7 @@ $('.popoverRequests').on('hide.bs.popover', function () {
     _this.addClass("popover-black");
 });
 
-$(document).on("click", ".popoverRequests", function () {
+$(document).on("click", ".popoverRequests, .popoverRequestsMob", function () {
     var id = $(this).data("user-id");
     $.ajax({
         method: "POST",
@@ -217,7 +181,6 @@ $(document).on("click", ".popoverRequests", function () {
         url: "/notification/getTeamInvites",
         data: {"user_id": id},
         success: function (data) {
-            console.log(data);
             $(".teamInvitesBox").html(data);
         }
     });
@@ -235,23 +198,6 @@ $('.popoverRequestsMob').on('hide.bs.popover', function () {
     _this.addClass("popover-black");
 });
 
-$(document).on("click", ".popoverRequestsMob", function () {
-    $.ajax({
-        method: "POST",
-        beforeSend: function (xhr) {
-            var token = $('meta[name="csrf_token"]').attr('content');
-
-            if (token) {
-                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-            }
-        },
-        url: "/notification/getJoinRequestsNotifications",
-        data: "",
-        success: function (data) {
-            $(".messagesBoxContent").html(data);
-        }
-    });
-});
 
 $(document).on("click", ".ui-menu-item-wrapper", function () {
     var title = $(this).text();
@@ -321,3 +267,36 @@ $(document).on("click", ".toChat", function () {
 $(document).on("click", ".declineInvite .acceptInvite", function (e) {
    e.preventDefault();
 });
+$(document).on("click", ".openConnectionsModal", function () {
+    var userId = $(this).data("id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/openConnectionModal",
+        data: {'userId': userId},
+        success: function (data) {
+            $("body").append(data);
+            $("#connectionsModal").modal("toggle");
+        }
+    });
+});
+
+$(document).on("hidden.bs.modal", ".connectionsModal", function () {
+    $(".connectionsModal").remove();
+});
+$(document).on("click", ".switch__toggle", function () {
+    if (!$(this).is(":checked")) {
+        $(this).popover("hide");
+        $(".popoverSwitch").popover('hide');
+    }
+});
+// $(document).on('click', ".divLink", function () {
+//     const src = $(this).data("src");
+//     window.location = src;
+// });

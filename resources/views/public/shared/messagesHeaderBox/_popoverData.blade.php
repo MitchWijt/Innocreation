@@ -8,7 +8,7 @@
             </div>
             <div class="col-9 p-r-0">
                 <p class="f-16 m-b-0"><?= $userchat['user']->getName()?> <i class="zmdi zmdi-circle f-13 c-orange unreadNotification unseen-<?= $userchat['userchat']->id?> <? if($userchat['userchat']->getUnreadMessages($userId) < 1 ) echo "hidden";?>" data-user-chat-id="<?= $userchat['userchat']->id?>"></i></p>
-            <? if($userchat['recentChat']->sender_user_id == $userId) { ?>
+                <? if($userchat['recentChat']->sender_user_id == $userId) { ?>
                     <div class="d-flex">
                         <p class="f-12 p-0 m-b-0" style="color: #77787a !important"><?= $userchat['recentChat']->message?></p>
                         <? if($userchat['recentChat']->seen_at != null) { ?>

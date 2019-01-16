@@ -14,14 +14,23 @@
             </div>
             <div class="banner p-relative " style="background: url('<?= $user->getBanner()?>');">
                 <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
-                <form action="/user/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
-                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                    <input type="hidden" name="user_id" value="<?= $user->id?>">
-                    <input type="file" name="bannerImg" class="bannerImgInput">
-                </form>
-                <i class="zmdi zmdi-edit editBtn editBannerImage @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
+                    <form action="/user/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
+                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                        <input type="hidden" name="user_id" value="<?= $user->id?>">
+                        <input type="file" name="bannerImg" class="bannerImgInput">
+                    </form>
+                    <i class="zmdi zmdi-edit editBtn editBannerImage @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
                 <? } ?>
-                <div class="avatar-med absolutePF p-absolute" style="background: url('<?= $user->getProfilePicture()?>');"></div>
+                <div class="avatar-med absolutePF p-absolute" style="background: url('<?= $user->getProfilePicture()?>'); z-index: 100 !important">
+                    <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
+                        <form action="/user/saveUserProfilePicture" method="post" class="hidden profileImageForm" enctype="multipart/form-data">
+                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                            <input type="hidden" name="user_id" value="<?= $user->id?>">
+                            <input type="file" name="profile_picture" class="profile_picture">
+                        </form>
+                        <i class="zmdi zmdi-edit editBtn shadow @handheld no-hover @endhandheld" id="editProfilePicture"></i>
+                    <? } ?>
+                </div>
             </div>
             <div class="row">
                 <div class="col-sm-4">
@@ -33,16 +42,21 @@
                         <div class="row switchDiv">
                             <div class="col-6">
                                 <label class="switch switch_type2 m-t-10" style="margin-left: 9%" role="switch">
-                                    <input data-toggle="popover" <? if(isset($loggedIn) && $loggedIn->hasSwitched()) echo "checked disabled"; ?> data-content='<?= view("/public/shared/switch/_popoverSwitch", compact("loggedIn", "user", "validator"))?>' type="checkbox" class="switch__toggle popoverSwitch">
+                                    <input data-toggle="popover" <? if(isset($loggedIn) && $user->hasSwitched()) echo "checked disabled"; ?> data-content='<?= \App\Services\UserConnections\ConnectionService::getPopoverSwitchView($user)?>' type="checkbox" class="switch__toggle popoverSwitch">
                                     <span class="switch__label"></span>
                                 </label>
                             </div>
                         </div>
                     <? } ?>
+                    <div class="row teamLinkDiv">
+                        <div class="col-12 p-0 m-0 connectionsAmount">
+                            <span><a class="regular-link c-dark-grey f-12 openConnectionsModal" data-id="<?= $user->id?>" style="margin-left: 9%" href="#"><?= count($connections)?> Connections</a></span>
+                        </div>
+                    </div>
                     <? if($user->team_id != null) { ?>
                         <div class="row teamLinkDiv">
-                            <div class="col-6">
-                                <span><i class="zmdi zmdi-accounts-alt" style="margin-left: 9% !important"></i> <a class="regular-link" target="_blank" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
+                            <div class="col-12 p-0 m-0 teamName">
+                                <span><i class="zmdi zmdi-accounts-alt" style="margin-left: 9%"></i> <a class="regular-link" target="_blank" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
                             </div>
                         </div>
                     <? } ?>
@@ -54,7 +68,7 @@
                     <p class="m-l-10 c-dark-grey"><?= $user->motivation?></p>
                 </div>
             </div>
-            <div class="row d-flex js-center">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="card card-lg m-t-20 m-b-20">
                         <div class="card-block m-t-10">
@@ -206,7 +220,7 @@
                                                             <? } else { ?>
                                                                  <? $backgroundImg = $file->getUrl() ?>
                                                             <? } ?>
-                                                                <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" style="background: url('<?= $backgroundImg?>');z-index: -1 !important">
+                                                                <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio lazyLoad @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" data-src="<?= $backgroundImg?>" style="z-index: -1 !important">
                                                                 <div id="content" @notmobile style="display: none;" @endnotmobile>
                                                                     <div class="m-t-10 p-absolute cont-<?= $file->id?>" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
                                                                         <p class="c-white f-9 p-t-40" style="width: 300px !important"><?= $file->description?></p>
@@ -230,7 +244,7 @@
                                                                         <div class="p-absolute p-l-5 p-r-5" style="top: 90%; left: 50%; width: 100%; transform: translate(-50%, -50%);">
                                                                             <input type="range" class=" p-l-0 p-r-0 music-progress-bar musicBar-<?= $file->id?>" data-counter="<?= $counter?>" data-id="<?= $file->id?>" value="0" name="" id="">
                                                                         </div>
-                                                                        <audio id="player-<?= $file->id?>" ontimeupdate="getCurrentTime(this, $(this).data('id'))" data-id="<?= $file->id?>" src="<?= $file->getAudio()?>"></audio>
+                                                                        <audio id="player-<?= $file->id?>" ontimeupdate="getCurrentTime(this, $(this).data('id'))" class="lazyLoad" data-src="<?= $file->getAudio()?>" data-id="<?= $file->id?>"></audio>
                                                                     <? } ?>
                                                                 </div>
                                                             </div>
@@ -247,7 +261,7 @@
                                                                     <i class="zmdi zmdi-volume-off f-20 unmuteVideo unmute-<?=$file->id?>" data-id="<?= $file->id?>"></i>
                                                                     <i class="zmdi zmdi-volume-up f-20 muteVideo mute-<?= $file->id?> hidden" data-id="<?= $file->id?>"></i>
                                                                 </div>
-                                                                <video poster="<?= $file->getThumbnail()?>"  id="video-<?= $file->id?>" data-id="<?= $file->id?>" class="video video-<?= $file->id?>" style="min-width: 100% !important; max-width: 350px !important; min-height: 180px !important; max-height: 180px !important; z-index: 99;" src="<?= $file->getVideo()?>" muted></video>
+                                                                <video poster="<?= $file->getThumbnail()?>"  id="video-<?= $file->id?>" data-id="<?= $file->id?>" class="video video-<?= $file->id?> lazyLoad" data-src="<?= $file->getVideo()?>" style="min-width: 100% !important; max-width: 350px !important; min-height: 180px !important; max-height: 180px !important; z-index: 99;" muted></video>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -299,15 +313,6 @@
     </div>
     <script>
         $('.popoverSingleUser').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'});
-        $('.popoverSwitch').popover({ trigger: "click" , html: true, animation:false, placement: 'top'});
-
-        $(document).on("click", ".switch__toggle", function () {
-            if (!$(this).is(":checked")) {
-                $(".popoverSwitch").popover('hide');
-            }
-
-        });
-
     </script>
 @endsection
 @section('pagescript')
