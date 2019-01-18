@@ -21,7 +21,10 @@ class ConnectionService
     public static function getPopoverSwitchView($receiver, $user = false){
         if(Session::has("user_id")){
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            return view("/public/shared/switch/_popoverSwitch", compact("user", "receiver"));
+        } else {
+            return view("/public/shared/switch/_popoverSwitch", compact( "receiver"));
         }
-        return view("/public/shared/switch/_popoverSwitch", compact("user", "receiver"));
+
     }
 }

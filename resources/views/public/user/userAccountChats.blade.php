@@ -34,12 +34,17 @@
                         $eachValue = $searchedUserChats;
                     } else {
                         $eachValue = $userChats;
-                    } ?>
+                    }
+                    ?>
+
                     <? if(count($eachValue) < 1) { ?>
                         <p class="text-center">No users found</p>
                     <? } ?>
                     <div class="o-scroll" style="height: 72vh; position: relative;">
                         <? foreach($eachValue as $userChat) { ?>
+                            <?
+
+                            ?>
                             <div class="row m-t-10 p-t-10 p-b-10 m-r-0 c-pointer chatItem chat-<?= $userChat['userchat']->id?>" data-chat-id="<?= $userChat['userchat']->id?>" data-receiver-user-id="<?=$userChat['user']->id?>">
                                 <div class="col-3 p-r-0 p-l-20">
                                     <div class="avatar p-relative" style="background: url('<?= $userChat['user']->getProfilePicture()?>')">

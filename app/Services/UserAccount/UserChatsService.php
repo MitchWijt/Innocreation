@@ -10,6 +10,7 @@ namespace App\Services\UserAccount;
 
 
 use App\Emoji;
+use App\Services\emptyRecentChat;
 use App\Services\TimeSent;
 use App\User;
 use App\UserChat;
@@ -92,16 +93,19 @@ class UserChatsService
         $creator_user_id = $request->input("creator_user_id");
 
         $existingUserChat = UserChat::select("*")->where("receiver_user_id", $receiver_user_id)->where("creator_user_id", $creator_user_id)->orWhere("receiver_user_id", $creator_user_id)->where("creator_user_id", $receiver_user_id)->get();
-        if (count($existingUserChat) == 0) {
+        if (count($existingUserChat) < 1) {
             $userChat = new UserChat();
             $userChat->creator_user_id = $creator_user_id;
             $userChat->receiver_user_id = $receiver_user_id;
             $userChat->created_at = date("Y-m-d H:i:s");
             $userChat->save();
-            return redirect("/my-account/chats?user_chat_id=$userChat->id");
+
+            Session::set("userChatId", $userChat->id);
+            return redirect("/my-account/chats");
         }
         $id = $existingUserChat->First()->id;
-        return redirect("/my-account/chats?user_chat_id=$id");
+        Session::set("userChatId", $id);
+        return redirect("/my-account/chats");
     }
 
     public function sendMessage($request, $stream, $mailgun){
@@ -113,7 +117,7 @@ class UserChatsService
 
         $timeSent = new TimeSent();
 
-        $messageArray = ["message" => $message, "timeSent" => $this->getTimeSent()];
+        $messageArray = ["message" => $message, "timeSent" => $timeSent->time];
 
         $userChat = UserChat::select("*")->where("id", $user_chat_id)->first();
 
@@ -176,8 +180,11 @@ class UserChatsService
             }
 
             $recentChat = $userChat->getMostRecentMessage();
+            $emptyRecentChat = new emptyRecentChat($user->id);
             if(isset($recentChat->message) && strlen($recentChat->message) != 0) {
                 array_push($userchats, array('userchat' => $userChat, 'timeSentLast' => date("Y-m-d H:i:s", strtotime($recentChat->created_at)), "recentChat" => $recentChat, 'user' => $user));
+            } else {
+                array_push($userchats, array('userchat' => $userChat, 'timeSentLast' => date("Y-m-d H:i:s"), "recentChat" => $emptyRecentChat, 'user' => $user));
             }
         }
 
