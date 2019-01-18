@@ -23,21 +23,22 @@
                 <? } ?>
                 <div class="avatar-med absolutePF p-absolute" style="background: url('<?= $team->getProfilePicture()?>');"></div>
             </div>
-            <? if($user) { ?>
             <div class="row">
                 <div class="col-sm-4">
                     <div class="row d-flex fd-column userName" style="margin-top: 60px !important">
                         <p class="f-25 m-b-0" style="margin-left: 10%"><?= $team->team_name?></p>
-                        <div class="favoriteIcons" style="margin-left: 25%">
-                            <? if(isset($favoriteTeam)) { ?>
-                                <i style="font-size: 40px" class="favoriteIcon hidden zmdi zmdi-favorite-outline"></i>
-                                <i style="font-size: 40px" class="favoriteIconLiked c-orange triggerLike hidden zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
-                                <i style="font-size: 40px" class="triggerLike favAfterLike c-orange zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
-                            <? } else { ?>
-                                <i style="font-size: 40px" class="favoriteIcon zmdi zmdi-favorite-outline"></i>
-                                <i style="font-size: 40px" class="favoriteIconLiked triggerLike c-orange hidden zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
-                            <? } ?>
-                        </div>
+                        <? if($user) { ?>
+                            <div class="favoriteIcons" style="margin-left: 25%">
+                                <? if(isset($favoriteTeam)) { ?>
+                                    <i style="font-size: 40px" class="favoriteIcon hidden zmdi zmdi-favorite-outline"></i>
+                                    <i style="font-size: 40px" class="favoriteIconLiked c-orange triggerLike hidden zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
+                                    <i style="font-size: 40px" class="triggerLike favAfterLike c-orange zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
+                                <? } else { ?>
+                                    <i style="font-size: 40px" class="favoriteIcon zmdi zmdi-favorite-outline"></i>
+                                    <i style="font-size: 40px" class="favoriteIconLiked triggerLike c-orange hidden zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
+                                <? } ?>
+                            </div>
+                        <? } ?>
                     </div>
                 </div>
                 <div class="col-sm-8 m-t-10">
@@ -47,7 +48,6 @@
                     <p class="m-l-10 c-dark-grey"><?= $team->team_motivation?></p>
                 </div>
             </div>
-            <? } ?>
             <div class="row d-flex js-center">
                 <div class="col-md-12">
                     <div class="card card-lg m-t-20 m-b-20">
@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="row p-l-15 p-r-15 collapse" id="collapseExpertise-<?= $member->id?>">
                                     <? foreach($member->getExpertiseLinktable() as $expertiseLinktable) { ?>
-                                        <div class="<? if(count($user->getExpertiseLinktable()) > 1) echo "col-sm-6"; else echo "col-sm-12"?> p-0">
+                                        <div class="<? if(count($member->getExpertiseLinktable()) > 1) echo "col-sm-6"; else echo "col-sm-12"?> p-0">
                                             <div class="card" >
                                                 <div class="card-block expertiseCard p-relative " style="max-height: 150px !important">
                                                     <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
