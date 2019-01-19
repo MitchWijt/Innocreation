@@ -44,7 +44,6 @@ class JoinRequests
             $invite->user_id = $user_id;
             $invite->expertise_id = $expertise_id;
             $invite->accepted = 0;
-            $invite->created_at = date("Y-m-d");
             $invite->save();
 
             $userFirstName = $invite->users->First()->firstname;
@@ -68,7 +67,6 @@ class JoinRequests
             $message->user_chat_id = $userChatId;
             $message->message = "Hey $userFirstName I have done an invite to you to join my team!";
             $message->time_sent = $time;
-            $message->created_at = date("Y-m-d H:i:s");
             $message->save();
 
             $receiver = User::select("*")->where("id", $user_id)->first();
@@ -164,7 +162,7 @@ class JoinRequests
         $message->created_at = date("Y-m-d H:i:s");
         $message->save();
 
-        $notificationMessage = sprintf("%s has declined your request to join their team", $joinRequest->team->team_name);
+        $notificationMessage = sprintf("%s has accepted your request to join their team", $joinRequest->team->team_name);
         $timeSent = new TimeSent();
         $data = ["actor" => $joinRequest->user_id, "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time", "verb" => "notification", "object" => "3"];
         $streamService->addActivityToFeed($joinRequest->user_id, $data);

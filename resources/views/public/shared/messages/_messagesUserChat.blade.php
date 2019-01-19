@@ -1,3 +1,11 @@
+<div class="row m-t-20 newChatMessage m-r-0 hidden">
+    <div class="col-sm-12">
+        <div class="col-sm-5 messageSent pull-right m-b-10 messageStyle">
+            <p class="message c-white"></p>
+            <span class="f-12 pull-right timeSent c-gray"></span>
+        </div>
+    </div>
+</div>
 <? foreach($userMessages as $message) { ?>
     <? if($admin == 0) { ?>
         <? if($message->userChat->creator_user_id == 1) { ?>

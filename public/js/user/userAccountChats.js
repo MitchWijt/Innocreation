@@ -130,18 +130,25 @@ $(".sendUserMessage").on("click",function () {
         data: {'user_chat_id': user_chat_id, 'sender_user_id' : sender_user_id, 'message' : message},
         dataType: "JSON",
         success: function (data) {
-            var message = $('.sendedMessageAjax').first().clone();
+            var message = $('.newChatMessage').first().clone();
+            function Generator() {}
+
+            Generator.prototype.rand =  Math.floor(Math.random() * 26) + Date.now();
+
+            Generator.prototype.getId = function() {
+                return this.rand++;
+            };
+            var idGen =new Generator();
+            var newId = idGen.getId();
+            message.attr("id", newId);
             var allMessages = $(".chatContent");
             $(message).appendTo(allMessages);
             message.find(".message").text(data['message']);
             message.find(".timeSent").text(data['timeSent']);
-
-
-                var objDiv = $(".chatContent");
-                if (objDiv.length > 0) {
-                    objDiv[0].scrollTop = objDiv[0].scrollHeight;
-                }
-
+            $("#" + newId).removeClass("hidden");
+            if (allMessages.length > 0) {
+                allMessages[0].scrollTop = allMessages[0].scrollHeight;
+            }
         }
     });
 });
