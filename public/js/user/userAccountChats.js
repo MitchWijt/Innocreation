@@ -153,31 +153,6 @@ $(".sendUserMessage").on("click",function () {
     });
 });
 
-$(".deleteChat").on("click",function () {
-    if(confirm("Are you sure you want to delete this chat?")) {
-        var user_chat_id = $(this).data("chat-id");
-        $.ajax({
-            method: "POST",
-            beforeSend: function (xhr) {
-                var token = $('meta[name="csrf_token"]').attr('content');
-
-                if (token) {
-                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-                }
-            },
-            url: "/user/deleteUserChat",
-            data: {'user_chat_id': user_chat_id},
-            success: function (data) {
-                $(".userChat").each(function () {
-                    if ($(this).data("chat-id") == user_chat_id) {
-                        $(this).remove();
-                    }
-                });
-            }
-        });
-    }
-});
-
 var textarea = document.querySelector('textarea');
 
 textarea.addEventListener('keyup', autosize);

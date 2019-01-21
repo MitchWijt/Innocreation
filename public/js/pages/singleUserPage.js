@@ -51,4 +51,25 @@ $('.profile_picture').on("change", function () {
     $(".profileImageForm").submit();
 });
 
+$(document).on("click", ".userPrivacySettings", function () {
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
 
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/user/openPrivacySettingsModal",
+        data: "",
+        success: function (data) {
+            $("body").append(data);
+            $(".privacySettingsModal").modal("toggle");
+        }
+    });
+});
+
+$(document).on("hidden.bs.modal", ".privacySettingsModal", function () {
+    $(".privacySettingsModal").remove();
+});

@@ -1,3 +1,4 @@
+<? $expertises = \App\Expertises::select("*")->get();?>
 <header class="headerShow no-select">
         @handheld
             <div class="p-t-10 container">
@@ -140,7 +141,6 @@
         </div>
     </div>
 </header>
-<? $expertises = \App\Expertises::select("*")->get();?>
 <script>
     $( function() {
         var availableTags = [

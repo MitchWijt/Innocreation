@@ -61,10 +61,20 @@
                         </div>
                     <? } ?>
                 </div>
-                <div class="col-sm-8 m-t-10">
-                    <h3>Introduction:</h3>
+                <div class="col-sm-8">
+                    <div class="row">
+                        <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
+                        <div class="col-sm-12 m-t-5 m-b-20">
+                            <div class="navbar-user">
+                                <span><i class="zmdi zmdi-more f-25 c-pointer c-black pull-right popoverUserMenu" data-toggle="popover" data-content='<?= view("/includes/popovers/userAccountMenu", compact("user", "loggedIn"))?>'></i></span>
+                                <span class="iconCTA pull-right m-r-10 userPrivacySettings" data-id="<?= $user->id?>">Privacy settings</span>
+                                <span class="iconCTA pull-right m-r-10"><a href="/my-account/favorite-expertises" class="c-black td-none" target="_blank">Favorite expertises</a></span>
+                                <span class="iconCTA pull-right m-r-10"><a href="/my-account/favorite-teams" class="c-black td-none" target="_blank">Favorite teams</a></span>
+                            </div>
+                        </div>
+                        <? } ?>
+                    </div>
                     <p class="m-l-10 c-dark-grey"><?= $user->introduction?></p>
-                    <h3>Motivation:</h3>
                     <p class="m-l-10 c-dark-grey"><?= $user->motivation?></p>
                 </div>
             </div>
@@ -74,68 +84,58 @@
                         <div class="card-block m-t-10">
                             <div class="row">
                                 <div class="col-sm-12 m-l-20">
-                                    <h3>Expertises of <?= $user->firstname?></h3>
+
                                 </div>
                             </div>
                             <? foreach($expertise_linktable as $expertise) { ?>
-                                <div class="row d-flex js-center @mobile p-l-30 p-r-30 @endmobile">
-                                    <div class="col-sm-11">
-                                        <div class="d-flex js-between">
-                                            <div class="col-md-12">
-                                                <div class="card m-t-20 m-b-20 ">
-                                                    <div class="card-block expertiseCard p-relative c-pointer" style="max-height: 150px !important">
-                                                        <div class="p-absolute" style="z-index: 200; bottom: 0; right: 5px">
-                                                            <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
-                                                        </div>
-                                                        <? if($expertise->description) { ?>
-                                                            <div class="p-t-40 p-absolute" style="z-index: 100; top: 65%; left: 50%; transform: translate(-50%, -50%);">
-                                                                <a role="button" class="collapsed read-more no-select c-orange" data-toggle="<?= $expertise->id?>" aria-expanded="false" aria-controls="collapseExample"><button class="btn btn-inno btn-sm">Read experience <i class="zmdi zmdi-chevron-down f-16"></i></button></a>
-                                                            </div>
-                                                        <? } ?>
-                                                        <div class="p-t-40 p-absolute" style="z-index: 100; top: 45%; left: 50%; transform: translate(-50%, -50%);">
-                                                            <div class="hr-sm"></div>
-                                                        </div>
-                                                        <div class="p-t-40 p-absolute" style="z-index: 99; top: 35%; left: 50%; transform: translate(-50%, -50%);">
-                                                            <p class="c-white f-20"><?= $expertise->expertises->First()->title?></p>
-                                                        </div>
-                                                        <div class="overlay">
-                                                            <div class="contentExpertiseUsers" style="background: url('<?= $expertise->image?>');"></div>
-                                                        </div>
-                                                    </div>
+                                <div class="row p-l-30 p-r-30 m-b-30 m-t-10">
+                                    <div class="col-3">
+                                        <div class="card">
+                                            <div class="card-block expertiseCard p-relative c-pointer" style="max-height: 150px !important">
+                                                <div class="p-absolute" style="z-index: 200; bottom: 0; right: 5px">
+                                                    <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
+                                                </div>
+                                                <div class="overlay">
+                                                    <div class="contentExpertiseUsers" style="background: url('<?= $expertise->image?>');"></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row pull-right m-r-15">
-                                            <? if($user->team_id == null) { ?>
-                                                <? if($loggedIn) { ?>
-                                                    <? if($team) { ?>
-                                                        <? if($team->checkInvite($expertise->expertise_id, $team->id, $user->id) == false) { ?>
-                                                            <? if(\App\Services\TeamServices\TeamPackage::checkPackageAndPayment($team->id, $expertise)) { ?>
-                                                                <form action="/my-team/inviteUserForTeam" method="post">
-                                                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                                                    <input type="hidden" name="invite" value="1">
-                                                                    <input type="hidden" name="team_id" value="<?= $team->id?>">
-                                                                    <input type="hidden" name="expertise_id" value="<?= $expertise->expertise_id?>">
-                                                                    <input type="hidden" name="user_id" value="<?= $user->id?>">
-                                                                    <button class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
-                                                                </form>
-                                                            <? } else { ?>
-                                                                <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
-                                                            <? } ?>
-                                                        <? } else { ?>
-                                                            <p class="c-orange">User invited</p>
-                                                        <? } ?>
-                                                    <? } ?>
-                                                <? } ?>
-                                            <? } ?>
-                                        </div>
-                                        <div class="row d-flex js-center">
-                                            <div class="col-11">
-                                                <p class="collapse" id="collapse-<?= $expertise->id?>" aria-expanded="false"><?= $expertise->description?></p>
-                                            </div>
-                                        </div>
+                                    </div>
+                                    <div class="col-9">
+                                        <h3><?= $expertise->expertises->First()->title?></h3>
+                                        <hr>
+                                        <? if($expertise->description) { ?>
+                                            <p><?= $expertise->description?></p>
+                                        <? } else { ?>
+                                            <i class="c-dark-grey f-12 text-center">No experience given yet</i>
+                                        <? } ?>
                                     </div>
                                 </div>
+
+                            <div class="row pull-right m-r-15">
+                                <? if($user->team_id == null) { ?>
+                                <? if($loggedIn) { ?>
+                                <? if($team) { ?>
+                                <? if($team->checkInvite($expertise->expertise_id, $team->id, $user->id) == false) { ?>
+                                <? if(\App\Services\TeamServices\TeamPackage::checkPackageAndPayment($team->id, $expertise)) { ?>
+                                <form action="/my-team/inviteUserForTeam" method="post">
+                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                    <input type="hidden" name="invite" value="1">
+                                    <input type="hidden" name="team_id" value="<?= $team->id?>">
+                                    <input type="hidden" name="expertise_id" value="<?= $expertise->expertise_id?>">
+                                    <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                    <button class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
+                                </form>
+                                <? } else { ?>
+                                <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
+                                <? } ?>
+                                <? } else { ?>
+                                <p class="c-orange">User invited</p>
+                                <? } ?>
+                                <? } ?>
+                                <? } ?>
+                                <? } ?>
+                            </div>
                             <? } ?>
                         </div>
                     </div>
@@ -268,6 +268,7 @@
     </div>
     <script>
         $('.popoverSingleUser').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'});
+        $('.popoverUserMenu').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'});
     </script>
 @endsection
 @section('pagescript')

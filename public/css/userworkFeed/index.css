@@ -131,6 +131,7 @@
     padding-bottom: 5px;
     border: 1px solid #77787a;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .iconCTA:hover{

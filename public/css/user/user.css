@@ -151,3 +151,8 @@
     background: #abadb2;
     transition: all 0.5s;
 }
+
+.navbar-item{
+    border: 1px solid #77787a;
+    padding: 10px
+}

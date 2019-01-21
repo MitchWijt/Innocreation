@@ -1047,29 +1047,6 @@ class UserController extends Controller
         return redirect($_SERVER["HTTP_REFERER"]);
     }
 
-    public function followUserAction(Request $request){
-        if($this->authorized()){
-            $userId = $request->input("user_id");
-            $userFollow = new UserFollowLinktable();
-            $userFollow->user_id = Session::get("user_id");
-            $userFollow->followed_user_id = $userId;
-            $userFollow->created_at = date("Y-m-d H:i:s");
-            $userFollow->save();
-
-            return redirect($_SERVER["HTTP_REFERER"]);
-        }
-    }
-
-    public function unfollowUserAction(Request $request){
-        if($this->authorized()){
-            $userId = $request->input("user_id");
-            $userFollow = UserFollowLinktable::select("*")->where("user_id", Session::get("user_id"))->where("followed_user_id", $userId)->first();
-            $userFollow->delete();
-
-            return redirect($_SERVER["HTTP_REFERER"]);
-        }
-    }
-
     public function savePortfolioAsUserWorkAction(Request $request){
         if($this->authorized()){
             $portfolioId = $request->input("portfolio_id");
@@ -1116,8 +1093,8 @@ class UserController extends Controller
         Session::remove("userChatId");
     }
 
-    public function userAccountPrivacySettingsAction(UserPrivacySettings $userPrivacySettings){
-        return $userPrivacySettings->userAccountPrivacySettingsIndex();
+    public function openPrivacySettingsModalAction(Request $request, UserPrivacySettings $userPrivacySettingsService){
+        return $userPrivacySettingsService->openSettingsModal();
     }
 
     public function sendConnectRequestAction(Request $request, SwitchUserWork $switch){

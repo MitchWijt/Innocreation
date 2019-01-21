@@ -80,6 +80,3 @@ $teamCreateCounter = count($teamCreateRequests);
     </div>
 </div>
 @endmobile
-<div class="sidebar-tab m-b-5">
-    <a class="regular-link c-gray m-r-10" href="/my-account/privacy-settings">Privacy settings </a>
-</div>

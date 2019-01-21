@@ -10,15 +10,19 @@
                 <p class="f-16 m-b-0"><?= $userchat['user']->getName()?> <i class="zmdi zmdi-circle f-13 c-orange unreadNotification unseen-<?= $userchat['userchat']->id?> <? if($userchat['userchat']->getUnreadMessages($userId) < 1 ) echo "hidden";?>" data-user-chat-id="<?= $userchat['userchat']->id?>"></i></p>
                 <? if($userchat['recentChat']->sender_user_id == $userId) { ?>
                     <div class="d-flex">
-                        <p class="f-12 p-0 m-b-0" style="color: #77787a !important"><?= $userchat['recentChat']->message?></p>
+                        <div class="p-l-0 text-overflow o-hidden p-r-5" style="max-width: 280px !important">
+                            <span class="f-12 p-0 m-b-0 wp-no-wrap" style="color: #77787a !important"><?= strip_tags($userchat['recentChat']->message)?></span>
+                        </div>
                         <? if($userchat['recentChat']->seen_at != null) { ?>
                             <div class="avatar-msg-seen img p-t-0" style="background: url('<?= $userchat['user']->getProfilePicture()?>'); margin-top: 2px !important"></div>
                         <? } ?>
                     </div>
                 <? } else { ?>
-                    <p class="f-12 p-0 m-b-0" style="color: #77787a !important"><?= $userchat['recentChat']->message?><i class="zmdi zmdi-check-all c-dark-grey f-12 m-l-5"></i></p>
+                    <div class="col-sm-10 p-l-0 text-overflow o-hidden">
+                        <span class="f-12 p-0 m-b-0 wp-no-wrap" style="color: #77787a !important"><?= $userchat['recentChat']->message?><i class="zmdi zmdi-check-all c-dark-grey f-12 m-l-5"></i></span>
+                    </div>
                 <? } ?>
-                <span class="c-dark-grey f-12 pull-right m-r-20"><?= $userchat['recentChat']->time_sent?></span>
+                <span class="c-dark-grey f-12 pull-right m-r-20"><?= strip_tags($userchat['recentChat']->time_sent)?></span>
             </div>
         </div>
     </form>

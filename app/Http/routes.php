@@ -145,7 +145,7 @@ Route::post("/user/deleteUserChat", "UserController@deleteUserChatAction");
 Route::post("/user/removeChatSession", "UserController@removeChatSessionAction");
 
 //Settings
-Route::get("/my-account/privacy-settings", "UserController@userAccountPrivacySettingsAction");
+Route::post("/user/openPrivacySettingsModal", "UserController@openPrivacySettingsModalAction");
 
 
 
@@ -187,10 +187,6 @@ Route::post("/user/joinTeamFromHelper","UserController@joinTeamFromHelperAction"
 
 Route::post("/user/finishHelper","UserController@finishHelperAction");
 
-// follow user
-Route::post("/user/followUser","UserController@followUserAction");
-
-Route::post("/user/unfollowUser","UserController@unfollowUserAction");
 
 //connections
 Route::post("/user/acceptConnection","UserController@acceptConnectionAction");
