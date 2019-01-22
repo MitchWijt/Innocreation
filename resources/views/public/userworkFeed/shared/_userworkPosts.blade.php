@@ -40,10 +40,10 @@
                     <? if($userWorkPost->content != null) { ?>
                         <? if($userWorkPost->link != null) { ?>
                             <a target="_blank" href="<?= $userWorkPost->link?>">
-                                <img style="width: 100% !important;" src="<?= $userWorkPost->getImage()?>" alt="<?= $userWorkPost->user->firstname?>">
+                                <img class="lazyLoad" data-src="<?= $userWorkPost->getImage()?>" style="width: 100% !important;" alt="<?= $userWorkPost->user->firstname?>">
                             </a>
                         <? } else { ?>
-                            <img style="width: 100% !important;" src="<?= $userWorkPost->getImage()?>" alt="<?= $userWorkPost->user->firstname?>">
+                            <img class="lazyLoad" data-src="<?= $userWorkPost->getImage()?>" style="width: 100% !important;" alt="<?= $userWorkPost->user->firstname?>">
                         <? } ?>
                     <? } ?>
                 </div>
@@ -101,6 +101,7 @@
         <img class="hidden loadingGear" src="/images/icons/loadingGear.gif" style="width: 30px !important; height: 30px !important" alt="">
     </div>
 <? } ?>
+<script defer async src="/js/lazyLoader.js"></script>
 <script>
 
     $('.popoverSwitch').popover({ trigger: "manual" , html: true, animation:false, placement: 'top'})

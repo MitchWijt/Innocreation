@@ -8,9 +8,6 @@ $(document).ready(function () {
     $(".main-navMenu-mobile").hide();
 });
 
-// $(".toggleSidebar").off("click").on("click", function() {
-//    $(".sidebarModal").modal().toggle();
-// });
 
 $(document).on("click touchstart", ".closePopover", function () {
     var _this = $('[data-toggle="popover"]');
@@ -18,7 +15,6 @@ $(document).on("click touchstart", ".closePopover", function () {
 });
 
 //sidebar
-
 $('.userAccountPopover').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'})
     .on("click", function () {
         var _this = $('.popover');
@@ -245,19 +241,7 @@ $(document).on("click", ".acceptConnectionNotification", function () {
     $(".acceptConnection-" + id).submit();
 });
 
-//IMAGES LAZY LOADING
-$(function() {
-    $('.lazyLoad').Lazy({
-        scrollDirection: 'vertical',
-        effect: 'fadeIn',
-        effectTime: 2000,
-        threshold: -50,
-        visibleOnly: true,
-        onError: function(element) {
-            console.log('error loading ' + element.data('src'));
-        }
-    });
-});
+
 
 $(document).on("click", ".toChat", function () {
    var id = $(this).data("chat-id");
@@ -296,7 +280,3 @@ $(document).on("click", ".switch__toggle", function () {
         $(".popoverSwitch").popover('hide');
     }
 });
-// $(document).on('click', ".divLink", function () {
-//     const src = $(this).data("src");
-//     window.location = src;
-// });
