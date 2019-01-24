@@ -9,6 +9,7 @@ namespace App\Services\UserAccount;
 use App\Expertises;
 use App\Expertises_linktable;
 use App\Favorite_expertises_linktable;
+use App\User;
 use Illuminate\Support\Facades\Session;
 
 class UserExpertises
@@ -21,14 +22,20 @@ class UserExpertises
         return view("/public/user/userAccountExpertises", compact("expertises_linktable", "user_id", "expertises"));
     }
 
-    public function saveUserExpertiseDescription($request){
+    public function saveUserExpertise($request){
         $user_id = $request->input("user_id");
-        $expertise_id = $request->input("expertise_id");
         $description = $request->input("userExpertiseDescription");
-
-        $expertises = expertises_linktable::select("*")->where("user_id", $user_id)->where("expertise_id", $expertise_id)->first();
-        $expertises->description = $description;
-        $expertises->save();
+        $skillLevelId = $request->input("skill_level_id");
+        $expertise_id = $request->input("expertise_id");
+        if(isset($expertise_id)){
+            $expertise = Expertises_linktable::select("*")->where("user_id", $user_id)->where("expertise_id", $expertise_id)->first();
+        } else {
+            $expertise = new Expertises_linktable();
+            $expertise->user_id = $user_id;
+        }
+        $expertise->description = $description;
+        $expertise->skill_level_id = $skillLevelId;
+        $expertise->save();
         return redirect($_SERVER["HTTP_REFERER"]);
     }
 
@@ -143,6 +150,35 @@ class UserExpertises
                 return "max";
             }
             return $favoriteExpertise->expertise_id;
+        }
+    }
+
+    public function getEditExpertiseModal($request){
+        $userId = Session::get("user_id");
+        $user = User::select("*")->where("id", $userId)->first();
+        $id = $request->input("expertiseLinktableId");
+        $expertiseLinktable = Expertises_linktable::select("*")->where("id", $id)->first();
+        if($expertiseLinktable){
+            return view("/public/user/expertises/shared/_editExpertiseModal", compact("expertiseLinktable", "user"));
+        } else {
+            return view("/public/user/expertises/shared/_editExpertiseModal", compact("user"));
+        }
+    }
+
+    public static function skillLevels(){
+        return array(
+            array("id" => 1, 'color' => '#00C5DE', "level" => "beginner"),
+            array("id" => 2, 'color' => '#FF6100', "level" => "intermediate"),
+            array("id" => 3, 'color' => '#FF0000', "level" => "master")
+        );
+    }
+
+    public static function getSkillLevel($skillId){
+        $skills = self::skillLevels();
+        foreach($skills as $skill){
+            if($skill['id'] == $skillId){
+                return $skill;
+            }
         }
     }
 }

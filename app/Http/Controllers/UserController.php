@@ -119,8 +119,8 @@ class UserController extends Controller
         }
     }
 
-    public function saveUserExpertiseDescription(Request $request, UserExpertises $userExpertises) {
-        return $userExpertises->saveUserExpertiseDescription($request);
+    public function saveUserExpertiseAction(Request $request, UserExpertises $userExpertises) {
+        return $userExpertises->saveUserExpertise($request);
     }
 
     public function deleteUserExpertiseAction(Request $request, UserExpertises $userExpertises){
@@ -137,6 +137,10 @@ class UserController extends Controller
 
     public function editUserExpertiseImage(Request $request, UserExpertises $userExpertises, Unsplash $unsplash){
         $userExpertises->editUserExpertiseImage($request, $unsplash);
+    }
+
+    public function getEditExpertiseModalAction(Request $request, UserExpertises $userExpertises){
+       return $userExpertises->getEditExpertiseModal($request);
     }
 
     /**

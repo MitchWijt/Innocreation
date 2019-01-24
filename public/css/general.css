@@ -345,6 +345,10 @@
     display: flex;
 }
 
+.align-start{
+    align-items: flex-start;
+}
+
 .vertically-center{
     display: flex;
     justify-content:center;
@@ -631,6 +635,9 @@ hr{
     -o-transition: all .25s linear !important ;
     transition: all .25s ease-out !important;
 }
+.modal-content{
+    background: #C9CCCF !important;
+}
 .modal-content-border{
     -webkit-border-radius: 40px !important;
     -moz-border-radius: 40px !important;
@@ -663,4 +670,8 @@ hr{
 
 .wp-no-wrap{
     white-space: nowrap !important;
+}
+
+.wp-pre-wrap{
+    white-space: pre-wrap;
 }

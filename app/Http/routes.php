@@ -76,7 +76,7 @@ Route::post("/user/sendConnectRequest", "UserController@sendConnectRequestAction
 
 Route::get("/my-account/expertises", "UserController@userAccountExpertises");
 
-Route::post("/saveUserExpertiseDescription", "UserController@saveUserExpertiseDescription");
+Route::post("/user/saveUserExpertise", "UserController@saveUserExpertiseAction");
 
 Route::post("/deleteUserExpertise","UserController@deleteUserExpertiseAction");
 
@@ -85,6 +85,8 @@ Route::post("/my-account/addUserExpertise","UserController@addUserExpertiseActio
 Route::post("/user/getEditUserExpertiseModal","UserController@getEditUserExpertiseModalAction");
 
 Route::post("/user/editUserExpertiseImage","UserController@editUserExpertiseImage");
+
+Route::post("/user/getEditExpertiseModal","UserController@getEditExpertiseModalAction");
 
 // Team info (benefits)
 

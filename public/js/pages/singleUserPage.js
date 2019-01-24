@@ -73,3 +73,28 @@ $(document).on("click", ".userPrivacySettings", function () {
 $(document).on("hidden.bs.modal", ".privacySettingsModal", function () {
     $(".privacySettingsModal").remove();
 });
+
+// Get expertise edit modal + append and toggle
+$(document).on("click", ".editExpertise", function () {
+    var expertiseLinktableId = $(this).data("expertise-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/user/getEditExpertiseModal",
+        data: {'expertiseLinktableId': expertiseLinktableId},
+        success: function (data) {
+            $("body").append(data);
+            $(".editExpertiseModal").modal("toggle");
+        }
+    });
+});
+
+$(document).on("hidden.bs.modal", ".editExpertiseModal", function () {
+    $(".editExpertiseModal").remove();
+});
