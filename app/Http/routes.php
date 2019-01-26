@@ -62,8 +62,6 @@ Route::get("/account", "UserController@userAccount");
 
 Route::post("/my-account/saveUserAccount", "UserController@saveUserAccount");
 
-Route::get("/my-account", "UserController@userAccount");
-
 Route::post("/user/sendPasswordResetLink", "UserController@sendPasswordResetLinkAction");
 
 Route::get("/resetPassword/{hash}", "UserController@resetPasswordIndexAction");
@@ -74,13 +72,9 @@ Route::post("/user/sendConnectRequest", "UserController@sendConnectRequestAction
 
 //User Expertises
 
-Route::get("/my-account/expertises", "UserController@userAccountExpertises");
-
 Route::post("/user/saveUserExpertise", "UserController@saveUserExpertiseAction");
 
-Route::post("/deleteUserExpertise","UserController@deleteUserExpertiseAction");
-
-Route::post("/my-account/addUserExpertise","UserController@addUserExpertiseAction");
+Route::post("/user/deleteUserExpertise","UserController@deleteUserExpertiseAction");
 
 Route::post("/user/getEditUserExpertiseModal","UserController@getEditUserExpertiseModalAction");
 
@@ -166,21 +160,6 @@ Route::get("/my-account/team-join-requests","UserController@userTeamJoinRequests
 Route::post("/my-account/acceptTeamInvite","UserController@acceptTeamInviteAction");
 
 Route::post("/my-account/rejectTeamInvite","UserController@rejectTeamInviteAction");
-
-Route::get("/my-account/team-create-requests","UserController@TeamCreateRequestsAction");
-
-Route::post("/my-account/acceptCreateTeamRequest","UserController@acceptCreateTeamRequestAction");
-
-Route::post("/my-account/rejectCreateTeamRequest","UserController@rejectCreateTeamRequestAction");
-
-//Support tickets
-Route::get("/my-account/support-tickets","UserController@userSupportTickets");
-
-Route::post("/user/sendSupportTicketMessage","UserController@sendSupportTicketMessageAction");
-
-Route::post("/user/rateSupportTicket","UserController@rateSupportTicketAction");
-
-Route::post("/user/addSupportTicket","UserController@addSupportTicketAction");
 
 //favorite teams
 Route::get("/my-account/favorite-teams","UserController@favoriteTeamsAction");

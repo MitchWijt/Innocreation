@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/css/user/userAccountChat.css">
 <link rel="stylesheet" href="/css/responsiveness/userChats/userAccountChats.css">
 @section("content")
-    <div class="d-flex grey-background vh85">
+    <div class="d-flex grey-background vh90">
         <div class="container-fluid p-0">
             <div class="row m-r-0">
                 <div class="col-sm-3 p-0 text-center" style="border-right: 1px solid #77787a">
@@ -80,10 +80,10 @@
                 </div>
                 @notmobile
                     <div class="col-sm-9">
-                        <div class="chatContent o-scroll" style="max-height: 72vh; height: 72vh;">
+                        <div class="chatContent o-scroll" style="max-height: 78vh; height: 78vh;">
 
                         </div>
-                        <div class="row" style="border-top: 1px solid #77787a; min-height: 50px">
+                        <div class="row" style="border-top: 1px solid #77787a;">
                             <div class="col-sm-10">
                                 <textarea name="userMessage" class="input userMessageInput m-t-10  input-transparant c-black col-sm-12" id="emojiArea" placeholder="Type your message..."></textarea>
                             </div>

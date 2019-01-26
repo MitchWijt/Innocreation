@@ -55,8 +55,8 @@
                     </div>
                     <? if($user->team_id != null) { ?>
                         <div class="row teamLinkDiv">
-                            <div class="col-12 p-0 m-0 teamName">
-                                <span><i class="zmdi zmdi-accounts-alt" style="margin-left: 9%"></i> <a class="regular-link" target="_blank" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
+                            <div class="p-0 m-0 teamName o-hidden text-overflow" style="width: 100%">
+                                <span class="wp-no-wrap"><i class="zmdi zmdi-accounts-alt" style="margin-left: 9%"></i> <a class="regular-link" target="_blank" href="<?= $user->team->getUrl()?>"><?= $user->team->team_name?></a></span>
                             </div>
                         </div>
                     <? } ?>
@@ -64,14 +64,20 @@
                 <div class="col-sm-8">
                     <div class="row">
                         <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
-                        <div class="col-sm-12 m-t-5 m-b-20">
-                            <div class="navbar-user">
-                                <span><i class="zmdi zmdi-more f-25 c-pointer c-black pull-right popoverUserMenu" data-toggle="popover" data-content='<?= view("/includes/popovers/userAccountMenu", compact("user", "loggedIn"))?>'></i></span>
-                                <span class="iconCTA pull-right m-r-10 userPrivacySettings" data-id="<?= $user->id?>">Privacy settings</span>
-                                <span class="iconCTA pull-right m-r-10"><a href="/my-account/favorite-expertises" class="c-black td-none" target="_blank">Favorite expertises</a></span>
-                                <span class="iconCTA pull-right m-r-10"><a href="/my-account/favorite-teams" class="c-black td-none" target="_blank">Favorite teams</a></span>
+                            <div class="col-sm-12 m-b-20 navbarBox">
+                                <div class="navbar-user-desktop">
+                                    <span><i class="zmdi zmdi-more f-25 c-pointer c-black pull-right popoverUserMenu" data-toggle="popover" data-content='<?= view("/includes/popovers/userAccountMenu", compact("user", "loggedIn"))?>'></i></span>
+                                    <span class="iconCTA pull-right m-r-10 userPrivacySettings" data-id="<?= $user->id?>">Privacy settings</span>
+                                    <span class="iconCTA pull-right m-r-10"><a href="/my-account/favorite-expertises" class="c-black td-none" target="_blank">Favorite expertises</a></span>
+                                    <span class="iconCTA pull-right m-r-10"><a href="/my-account/favorite-teams" class="c-black td-none" target="_blank">Favorite teams</a></span>
+                                </div>
+                                <div class="navbar-user-mobile" style="display: none">
+                                    <span><i class="zmdi zmdi-more f-25 c-pointer c-black pull-right popoverUserMenu" data-toggle="popover" data-content='<?= view("/includes/popovers/userAccountMenu", compact("user", "loggedIn"))?>'></i></span>
+                                    <span class="iconCTA pull-right m-r-10 userPrivacySettings" data-id="<?= $user->id?>"><i class="zmdi zmdi-settings"></i></span>
+                                    <span class="iconCTA pull-right m-r-10"><a href="/my-account/favorite-expertises" class="c-black td-none" target="_blank"><i class="zmdi zmdi-ticket-star"></i> Expertises</a></span>
+                                    <span class="iconCTA pull-right m-r-10"><a href="/my-account/favorite-teams" class="c-black td-none" target="_blank"><i class="zmdi zmdi-ticket-star"></i> Teams</a></span>
+                                </div>
                             </div>
-                        </div>
                         <? } ?>
                     </div>
                     <p class="m-l-10 c-dark-grey"><?= $user->introduction?></p>
@@ -85,26 +91,33 @@
                             <div class="col-sm-12">
                                 <div class="d-flex js-between">
                                     <h3>Expertises</h3>
-                                    <i class="editBtn zmdi zmdi-plus f-20 p-r-15 p-l-15 p-b-10 p-t-10 editExpertise"></i>
+                                    <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
+                                        <i class="editBtn zmdi zmdi-plus f-20 p-r-15 p-l-15 p-b-10 p-t-10 editExpertise @handheld no-hover @endhandheld"></i>
+                                    <? } ?>
                                 </div>
                             </div>
                             <? foreach($expertise_linktable as $expertise) { ?>
-                                <div class="row p-l-30 p-r-30 m-b-30 m-t-10">
-                                    <div class="col-3">
+                                <div class="row p-l-30 p-r-30 m-b-30 m-t-10 expertise-<?= $expertise->id?>">
+                                    <div class="col-xl-3">
                                         <div class="card">
                                             <div class="card-block expertiseCard p-relative c-pointer" style="max-height: 150px !important">
                                                 <div class="p-absolute" style="z-index: 200; bottom: 0; right: 5px">
                                                     <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                                                 </div>
+                                                <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
+                                                    <div class="p-absolute" style="z-index: 200; top: 5px; right: 5px">
+                                                        <i data-expertise-id="<?= $expertise->expertise_id?>" class="zmdi zmdi-camera f-20 editBtn editImage"></i>
+                                                    </div>
+                                                <? } ?>
                                                 <div class="overlay">
                                                     <div class="contentExpertiseUsers" style="background: url('<?= $expertise->image?>');"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-9">
+                                    <div class="col-xl-9 m-t-10">
                                         <div class="d-flex js-between align-start">
-                                            <div class="d-flex">
+                                            <div class="d-flex align-start">
                                                 <div class="d-flex fd-column">
                                                     <h3 class="m-r-10 m-b-0"><?= $expertise->expertises->First()->title?></h3>
                                                     <i class="c-dark-grey f-12">Skill level: <span style="color: <?= \App\Services\UserAccount\UserExpertises::getSkillLevel($expertise->skill_level_id)['color']?>"><?= ucfirst(\App\Services\UserAccount\UserExpertises::getSkillLevel($expertise->skill_level_id)['level'])?></span></i>
@@ -120,10 +133,10 @@
                                                                         <input type="hidden" name="team_id" value="<?= $team->id?>">
                                                                         <input type="hidden" name="expertise_id" value="<?= $expertise->expertise_id?>">
                                                                         <input type="hidden" name="user_id" value="<?= $user->id?>">
-                                                                        <button class="btn btn-inno btn-sm m-0">Invite user to my team</button>
+                                                                        <button class="btn btn-inno btn-sm m-t-10">Invite user to my team</button>
                                                                     </form>
                                                                 <? } else { ?>
-                                                                    <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-b-5">Invite user to my team</button>
+                                                                    <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-t-10">Invite user to my team</button>
                                                                 <? } ?>
                                                             <? } else { ?>
                                                                 <p class="c-orange m-b-0 vertically-center">User invited</p>
@@ -132,7 +145,12 @@
                                                     <? } ?>
                                                 <? } ?>
                                             </div>
-                                           <i class="editBtn zmdi zmdi-edit m-t-15 editExpertise" data-expertise-id="<?= $expertise->id?>"></i>
+                                            <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
+                                                <div>
+                                                    <i class="editBtn zmdi zmdi-edit m-t-15 editExpertise @handheld no-hover @endhandheld" data-expertise-id="<?= $expertise->id?>"></i>
+                                                    <i class="editBtn zmdi zmdi-close m-t-15 removeExpertise @handheld no-hover @endhandheld" data-expertise-id="<?= $expertise->id?>"></i>
+                                                </div>
+                                            <? } ?>
                                         </div>
                                         <hr>
                                         <? if($expertise->description) { ?>
@@ -273,8 +291,7 @@
         </div>
     </div>
     <script>
-        $('.popoverSingleUser').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'});
-        $('.popoverUserMenu').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'});
+
     </script>
 @endsection
 @section('pagescript')

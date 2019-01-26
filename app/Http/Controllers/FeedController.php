@@ -197,7 +197,7 @@ class FeedController extends Controller
     public function workFeedIndexAction($id = null){
         $title = "Share your work/story and connect!";
         $og_description = "Connect with fellow innocreators and start executing on your ideas!";
-        $pageType = "innoCreatives";
+        $pageType = "noFooter";
         $totalAmount = UserWork::select("id")->count();
         $emojis = Emoji::select("*")->get();
         if(Session::has("user_id")){

@@ -58,42 +58,7 @@ use Session;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function userAccount(SwitchUserWork $switch){
-        if($this->authorized()) {
-            if (Session::has("user_name")) {
-                $user = User::select("*")->where("id", Session::get("user_id"))->first();
-                if($user->country_id == null){
-                    return redirect("/create-my-account");
-                } else if($user->country_id != null && $user->getExpertises(true) == ""){
-                    return redirect("/create-my-account");
-                }
-                $id = Session::get("user_id");
-                $user = User::select("*")->where("id", $id)->first();
 
-                $connections = $switch->listConnections($id);
-                return view("/public/user/userAccount", compact("user", "connections"));
-            } else {
-                return view("/public/home/home");
-            }
-        }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function saveUserAccount(Request $request){
         $user_id = $request->input("user_id");
         $user = User::select("*")->where("id", $user_id)->first();
@@ -113,23 +78,20 @@ class UserController extends Controller
         return $editProfileImage->editBannerImage($request);
     }
 
-    public function userAccountExpertises(Request $request, UserExpertises $userExpertises){
+    public function userAccountExpertises(UserExpertises $userExpertises){
         if($this->authorized()) {
            return $userExpertises->userAccountExpertisesIndex();
         }
     }
 
-    public function saveUserExpertiseAction(Request $request, UserExpertises $userExpertises) {
-        return $userExpertises->saveUserExpertise($request);
+    public function saveUserExpertiseAction(Request $request, UserExpertises $userExpertises, Unsplash $unsplash) {
+        return $userExpertises->saveUserExpertise($request, $unsplash);
     }
 
     public function deleteUserExpertiseAction(Request $request, UserExpertises $userExpertises){
         return $userExpertises->deleteUserExpertiseAction($request);
     }
 
-    public function addUserExpertiseAction(Request $request, Unsplash $unsplash, UserExpertises $userExpertises){
-        return $userExpertises->addUserExpertiseAction($request, $unsplash);
-    }
 
     public function getEditUserExpertiseModalAction(Request $request, UserExpertises $userExpertises, Unsplash $unsplash){
         return $userExpertises->getEditUserExpertiseModalImage($request, $unsplash);
@@ -387,84 +349,6 @@ class UserController extends Controller
     public function rejectTeamInviteAction(Request $request, UserRequestsService $userRequestsService){
         if($this->authorized()) {
             return $userRequestsService->declineInvite($request);
-        }
-    }
-
-    public function userSupportTickets(){
-        if($this->authorized()) {
-            $user = User::select("*")->where("id", Session::get("user_id"))->first();
-            $supportTickets = SupportTicket::select("*")->where("user_id", $user->id)->get();
-            return view("/public/user/userSupportTickets", compact("user", "supportTickets"));
-        }
-    }
-
-    public function sendSupportTicketMessageAction(Request $request){
-        if($this->authorized()) {
-            $ticket_id = $request->input("ticket_id");
-            $sender_user_id = $request->input("sender_user_id");
-            $message = $request->input("message");
-
-
-            if (strlen($message) > 0) {
-                $time = $this->getTimeSent();
-                $supportTicketMessage = new SupportTicketMessage();
-                $supportTicketMessage->support_ticket_id = $ticket_id;
-                $supportTicketMessage->sender_user_id = $sender_user_id;
-                $supportTicketMessage->message = $message;
-                $supportTicketMessage->time_sent = $time;
-                $supportTicketMessage->created_at = date("Y-m-d H:i:s");
-                $supportTicketMessage->save();
-
-                $messageArray = ["message" => $message, "timeSent" => $time];
-
-                echo json_encode($messageArray);
-            }
-        }
-    }
-
-    public function rateSupportTicketAction(Request $request){
-        if($this->authorized()) {
-            $userId = $request->input("user_id");
-            $ticketId = $request->input("ticket_id");
-            $review = $request->input("review");
-            $reviewDescription = $request->input("reviewDetails");
-            $rating = $request->input("rating");
-
-            $serviceReview = new ServiceReview();
-            $serviceReview->user_id = $userId;
-            $serviceReview->ticket_id = $ticketId;
-            $serviceReview->review = $review;
-            $serviceReview->review_description = $reviewDescription;
-            $serviceReview->rating = $rating;
-            $serviceReview->service_review_type_id = 1;
-            $serviceReview->created_at = date("Y-m-d H:i:s");
-            $serviceReview->save();
-            return redirect($_SERVER["HTTP_REFERER"])->with("success", "Thank your for your rating!");
-        }
-    }
-
-    public function addSupportTicketAction(Request $request){
-        if($this->authorized()) {
-            $user_id = $request->input("user_id");
-            $title = $request->input("supportTicketTitle");
-            $question = $request->input("supportTicketQuestion");
-
-            $supportTicket = new SupportTicket();
-            $supportTicket->user_id = $user_id;
-            $supportTicket->support_ticket_status_id = 2;
-            $supportTicket->title = $title;
-            $supportTicket->created_at = date("Y-m-d H:i:s");
-            $supportTicket->save();
-
-            $supportTicketMessage = new SupportTicketMessage();
-            $supportTicketMessage->support_ticket_id = $supportTicket->id;
-            $supportTicketMessage->sender_user_id = $user_id;
-            $supportTicketMessage->message = $question;
-            $supportTicketMessage->time_sent = $this->getTimeSent();
-            $supportTicketMessage->created_at = date("Y-m-d H:i:s");
-            $supportTicketMessage->save();
-
-            return redirect($_SERVER["HTTP_REFERER"]);
         }
     }
 
@@ -929,126 +813,6 @@ class UserController extends Controller
         } else {
             return redirect($_SERVER["HTTP_REFERER"])->withErrors("Passwords don't match");
         }
-    }
-
-    public function TeamCreateRequestsAction(){
-        $user = User::select("*")->where("id", Session::get("user_id"))->first();
-        $teamCreateRequests = TeamCreateRequest::select("*")->where("receiver_user_id", $user->id)->get();
-
-        return view("/public/user/teamCreateRequests", compact("user", "teamCreateRequests"));
-    }
-
-    public function acceptCreateTeamRequestAction(Request $request){
-        $teamRequestId = $request->input("teamCreateRequestId");
-        $teamCreateRequest = TeamCreateRequest::select("*")->where("id", $teamRequestId)->first();
-        $teamCreateRequest->accepted = 1;
-        $teamCreateRequest->save();
-
-        $team_name = $teamCreateRequest->sender->firstname . " and " . $teamCreateRequest->receiver->firstname . " " . "team";
-        $team = new Team;
-        $team->team_name = ucfirst($team_name);
-        $team->slug = str_replace(" ", "-", strtolower($team_name));
-        $team->ceo_user_id = $teamCreateRequest->sender_user_id;
-        $team->created_at = date("Y-m-d H:i:s");
-        $team->team_profile_picture = "defaultProfilePicture.png";
-        $team->save();
-
-        $joinRequest = new JoinRequestLinktable();
-        $joinRequest->team_id = $team->id;
-        $joinRequest->user_id = $teamCreateRequest->receiver_user_id;
-        $joinRequest->expertise_id = $teamCreateRequest->receiver->getExpertises()->First()->id;
-        $joinRequest->accepted = 1;
-        $joinRequest->created_at = date("Y-m-d");
-        $joinRequest->save();
-
-
-        Session::set("team_id", $team->id);
-        Session::set("team_name", $team->team_name);
-
-        $sender = User::select("*")->where("id", $teamCreateRequest->sender_user_id)->first();
-        $receiver = User::select("*")->where("id", $teamCreateRequest->receiver_user_id)->first();
-
-        $allJoinRequestsSender = JoinRequestLinktable::select("*")->where("user_id", $sender->id)->where("accepted", 0)->get();
-        if(count($allJoinRequestsSender) > 0){
-            foreach($allJoinRequestsSender as $item){
-                $item->accepted = 2;
-                $item->save();
-            }
-        }
-
-        $allJoinRequestsReceiver = JoinRequestLinktable::select("*")->where("user_id", $receiver->id)->where("accepted", 0)->get();
-        if(count($allJoinRequestsReceiver) > 0){
-            foreach($allJoinRequestsReceiver as $item){
-                $item->accepted = 2;
-                $item->save();
-            }
-        }
-
-        $allInvitesSender = InviteRequestLinktable::select("*")->where("user_id", $sender->id)->where("accepted", 0)->get();
-        if(count($allInvitesSender) > 0){
-            foreach($allInvitesSender as $item){
-                $item->accepted = 2;
-                $item->save();
-            }
-        }
-
-        $allInvitesReceiver = InviteRequestLinktable::select("*")->where("user_id", $receiver->id)->where("accepted", 0)->get();
-        if(count($allInvitesReceiver) > 0){
-            foreach($allInvitesReceiver as $item){
-                $item->accepted = 2;
-                $item->save();
-            }
-        }
-
-
-        $sender->team_id = $team->id;
-        $sender->save();
-
-        $receiver->team_id = $team->id;
-        $receiver->save();
-
-        $UserChat = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", $sender->id)->first();
-
-        $message = new UserMessage();
-        $message->sender_user_id = 1;
-        $message->message = "$sender->firstname has accepted to create a team with you! start chatting and with each other and start creating! goodluck!";
-        $message->user_chat_id = $UserChat->id;
-        $message->time_sent = $this->getTimeSent();
-        $message->created_at = date("Y-m-d H:i:s");
-        $message->save();
-
-        $user = User::select("*")->where("id", $teamCreateRequest->sender_user_id)->first();
-        $this->saveAndSendEmail($sender, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
-
-
-        return redirect("/my-team");
-
-    }
-
-    public function rejectCreateTeamRequestAction(Request $request){
-        $teamRequestId = $request->input("teamCreateRequestId");
-        $teamCreateRequest = TeamCreateRequest::select("*")->where("id", $teamRequestId)->first();
-        $teamCreateRequest->accepted = 2;
-        $teamCreateRequest->save();
-
-        $sender = User::select("*")->where("id", $teamCreateRequest->sender_user_id)->first();
-
-
-        $UserChat = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", $sender->id)->first();
-
-        $message = new UserMessage();
-        $message->sender_user_id = 1;
-        $message->message = "$sender->firstname has declined your request to create a team together. But don't worry there more chances! have a look again at all the InnoCreatives!";
-        $message->user_chat_id = $UserChat->id;
-        $message->time_sent = $this->getTimeSent();
-        $message->created_at = date("Y-m-d H:i:s");
-        $message->save();
-
-
-        $user = User::select("*")->where("id", $teamCreateRequest->sender_user_id)->first();
-        $this->saveAndSendEmail($sender, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
-
-        return redirect($_SERVER["HTTP_REFERER"]);
     }
 
     public function savePortfolioAsUserWorkAction(Request $request){

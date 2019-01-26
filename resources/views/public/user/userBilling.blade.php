@@ -1,13 +1,7 @@
 @extends("layouts.app")
 @section("content")
     <div class="d-flex grey-background vh85">
-        @notmobile
-        @include("includes.userAccount_sidebar")
-        @endnotmobile
         <div class="container">
-            @mobile
-            @include("includes.userAccount_sidebar")
-            @endmobile
             <div class="row m-b-20">
                 <div class="col-sm-12 d-flex js-center">
                     @include("includes.flash")

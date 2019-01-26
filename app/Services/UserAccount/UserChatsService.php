@@ -22,6 +22,7 @@ class UserChatsService
 {
 
     public function userAccountChatsIndex(){
+        $pageType = "noFooter";
         $user_id = Session::get("user_id");
         $innocreationChat = UserChat::select("*")->where("creator_user_id", 1)->where("receiver_user_id", 1)->first();
         $user = User::select("*")->where("id", $user_id)->first();
@@ -30,9 +31,9 @@ class UserChatsService
 
         $streamToken = $user->stream_token;
         if (count($userChats) != 0) {
-            return view("/public/user/userAccountChats", compact("userChats", "user_id", "innocreationChat", "streamToken", "emojis"));
+            return view("/public/user/userAccountChats", compact("userChats", "user_id", "innocreationChat", "streamToken", "emojis", 'pageType'));
         }
-        return view("/public/user/userAccountChats", compact("user_id", "inn", "streamToken", "emojis"));
+        return view("/public/user/userAccountChats", compact("user_id", "inn", "streamToken", "emojis", 'pageType'));
     }
 
     public function deleteChat($request){

@@ -2,18 +2,12 @@
 @section("content")
     <script type="text/javascript" src="https://test.adyen.com/hpp/cse/js/8215323598983147.shtml"></script>
     <div class="d-flex grey-background vh85">
-        @notmobile
-            @include("includes.userAccount_sidebar")
-        @endnotmobile
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 d-flex js-center">
                     @include("includes.flash")
                 </div>
             </div>
-            @mobile
-                @include("includes.userAccount_sidebar")
-            @endmobile
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">Package details</h1>
             </div>
