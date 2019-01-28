@@ -34,7 +34,7 @@
                             <? } else if(isset($user) && $user->country_id != null && $expertisesUser != "" && $user->introduction != null) { ?>
                                 <p class="innoText">You're doing a great job! <br> Here you can join a team of like-minded and ceative people to participate in a new idea/dream! <br> Or you can create your own team and invite like-minded people to help you with your idea/dream!</p>
                             <? } else { ?>
-                                <p class="innoText">Welcome! <br> Follow the steps below to start creating!</p>
+                                <p class="innoText">Welcome! <br> Follow the steps below to start collaborating!</p>
                             <? } ?>
                         </div>
                     </div>
@@ -70,22 +70,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{--<div class="row d-flex js-center">--}}
-                                    {{--<div class="col-md-9">--}}
-                                        {{--<div class="row m-t-10">--}}
-                                            {{--<div class="col-sm-4">--}}
-                                                {{--<input type="radio" name="gender" class="gender" value="male" id="male">--}}
-                                                {{--<label for="male" class="m-r-10">Male</label>--}}
-
-                                                {{--<input type="radio" name="gender" class="gender" value="female" id="female">--}}
-                                                {{--<label for="female" class="m-r-10">Female</label>--}}
-
-                                                {{--<input type="radio" name="gender" class="gender" value="private" id="private">--}}
-                                                {{--<label for="private">Private</label>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
                                 <? if(!isset($user)) { ?>
                                     <div class="row d-flex js-center">
                                         <div class="col-md-9">
@@ -392,7 +376,12 @@
         </div>
     </div>
     <script>
-        $('#tokenfield').tokenfield({
+        $('#tokenfield')
+            .on('tokenfield:createdtoken', function (e) {
+                $(".expertisesInput").blur();
+                $("#tokenfield-tokenfield").blur();
+            })
+            .tokenfield({
             autocomplete: {
                 source: [
                     <? foreach($expertises as $expertise) { ?>

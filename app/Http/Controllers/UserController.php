@@ -848,8 +848,7 @@ class UserController extends Controller
     }
 
     public function declineConnectionAction(Request $request, SwitchUserWork $switch, Mailgun $mailgun){
-        $switch->declineConnection($request, $mailgun);
-        return redirect ("/account");
+        return $switch->declineConnection($request, $mailgun);
     }
 
     public function acceptConnectionAction(Request $request, SwitchUserWork $switch, Mailgun $mailgun){

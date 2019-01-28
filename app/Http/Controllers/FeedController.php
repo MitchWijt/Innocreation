@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Emoji;
+use App\Services\Paths\PublicPaths;
 use App\Team;
 use App\TeamProduct;
 use App\TeamProductComment;
@@ -240,23 +241,6 @@ class FeedController extends Controller
         return view("/public/userworkFeed/shared/_userworkPosts", compact("userWorkPosts", "emojis"));
     }
 
-    public function upvoteUserWorkAction(Request $request){
-        $userWorkId = $request->input("userWorkId");
-        if(Session::has("user_id")) {
-            $userUpvote = new UserUpvoteLinktable();
-            $userUpvote->user_id = Session::get("user_id");
-            $userUpvote->user_work_id = $userWorkId;
-            $userUpvote->save();
-
-            $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
-            $userWork->upvotes = $userWork->upvotes + 1;
-            $userWork->save();
-            return 1;
-        } else {
-            return 2;
-        }
-    }
-
     public function postUserWorkAction(Request $request){
         if($this->authorized()){
             $userId = $request->input("user_id");
@@ -279,10 +263,11 @@ class FeedController extends Controller
             if($file) {
                 $size = $this->formatBytes($file->getSize());
                 if ($size < 8) {
-                    $filename = preg_replace('/[^a-zA-Z0-9-_\.]/', '', $file->getClientOriginalName());
+                    $filename = PublicPaths::getFileName($file);
 
                     $user = User::select("*")->where("id", $userId)->first();
-                    Storage::disk('spaces')->put("users/$user->slug/userworks/$userWork->id/$filename", file_get_contents($file->getRealPath()), "public");
+                    $path = PublicPaths::getUserWorkDir($user, $userWork, $file);
+                    Storage::disk('spaces')->put($path, file_get_contents($file->getRealPath()), "public");
 
                     $userWork->content = $filename;
                     $userWork->created_at = date("Y-m-d H:i:s");
@@ -290,7 +275,7 @@ class FeedController extends Controller
                     return redirect($_SERVER["HTTP_REFERER"]);
                 } else {
                     $userWork->delete();
-                    return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
+                    return redirect("/innocreatives")->withErrors("Image is too large. The max upload size is 8MB");
                 }
             } else {
                 $userWork->created_at = date("Y-m-d H:i:s");

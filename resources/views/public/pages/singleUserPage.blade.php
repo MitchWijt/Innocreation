@@ -12,6 +12,11 @@
                     <? } ?>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-sm-12 d-flex js-center">
+                    @include("includes.flash")
+                </div>
+            </div>
             <div class="banner p-relative " style="background: url('<?= $user->getBanner()?>');">
                 <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
                     <form action="/user/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">

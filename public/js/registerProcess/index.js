@@ -258,7 +258,7 @@ $(".backToStep2").on("click",function () {
 $(".backToStep3").on("click",function () {
     $(".expertises").removeClass("hidden");
     $(".introText").addClass("hidden");
-    $(".innoText").html("Welcome! <br> Follow the steps below to start creating!");
+    $(".innoText").html("Welcome! <br> Follow the steps below to start collaborating!");
     $(".progress-bar").attr("style", "width: 60% !important");
     $(".progress-bar").text("60% complete");
 });

@@ -86,7 +86,7 @@ class UserRequestsService
             }
         } else {
             if($request->input("register")){
-                return redirect("/account")->withErrors("You already applied for this team");
+                return redirect($user->getUrl())->withErrors("You already applied for this team");
             } else {
                 return redirect($_SERVER["HTTP_REFERER"])->withErrors("You already applied for this team");
             }

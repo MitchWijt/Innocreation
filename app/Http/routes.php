@@ -58,8 +58,6 @@ Route::post("/notification/toChat", "NotificationController@toChatAction");
 Route::post("/notification/getTeamInvites", "NotificationController@getTeamInvitesAction");
 //========================USERACCOUNT================================
 
-Route::get("/account", "UserController@userAccount");
-
 Route::post("/my-account/saveUserAccount", "UserController@saveUserAccount");
 
 Route::post("/user/sendPasswordResetLink", "UserController@sendPasswordResetLinkAction");

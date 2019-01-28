@@ -19,7 +19,12 @@
                     </div>
                 <? } else { ?>
                     <div class="col-sm-10 p-l-0 text-overflow o-hidden">
-                        <span class="f-12 p-0 m-b-0 wp-no-wrap" style="color: #77787a !important"><?= $userchat['recentChat']->message?><i class="zmdi zmdi-check-all c-dark-grey f-12 m-l-5"></i></span>
+                        <div class="d-flex">
+                            <div class="p-l-0 text-overflow o-hidden">
+                                <span class="f-12 p-0 m-b-0 wp-no-wrap" style="color: #77787a !important"><?= strip_tags($userchat['recentChat']->message)?></span>
+                            </div>
+                            <i class="zmdi zmdi-check-all c-dark-grey f-12 m-l-5 m-t-5"></i>
+                        </div>
                     </div>
                 <? } ?>
                 <span class="c-dark-grey f-12 pull-right m-r-20"><?= strip_tags($userchat['recentChat']->time_sent)?></span>

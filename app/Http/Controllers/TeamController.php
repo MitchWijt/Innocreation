@@ -70,7 +70,7 @@ class TeamController extends Controller
             $team->save();
             return redirect($_SERVER["HTTP_REFERER"]);
         } else {
-            return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
+            return redirect("/my-team")->withErrors("Image is too large. The max upload size is 8MB");
         }
     }
 
@@ -469,7 +469,7 @@ class TeamController extends Controller
             $groupChat->save();
             return redirect($_SERVER["HTTP_REFERER"]);
         } else {
-            return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
+            return redirect("/my-team")->withErrors("Image is too large. The max upload size is 8MB");
         }
     }
 
@@ -542,7 +542,7 @@ class TeamController extends Controller
                 $team->team_profile_picture = $filename;
                 $team->save();
             } else {
-                return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
+                return redirect("/my-team")->withErrors("Image is too large. The max upload size is 8MB");
             }
             $teamProduct->image = $filename;
         } else {

@@ -9,6 +9,16 @@ namespace App\Services\Paths;
 
 class PublicPaths
 {
+    /**
+     * Returns the filename without spaces and weird characters based on the uploaded filename
+     */
+    public static function getFileName($file){
+        return preg_replace('/[^a-zA-Z0-9-_\.]/', '', $file->getClientOriginalName());
+    }
+
+    /**
+     * Returns the directory for the userPortfolio for the Space
+     */
     public static function userPortfolioPath($user, $portfolioDirName, $filename, $file, $uniqueId, $audio = false, $video = false){
         $portfolioDir = preg_replace('/[^a-zA-Z0-9-_\.]/', '', $portfolioDirName);
         if($audio){
@@ -32,6 +42,9 @@ class PublicPaths
         return $path;
     }
 
+    /**
+     * Returns the directory for the userPortfolio for the Space
+     */
     public static function getUserPortfolioFileDir($file, $uniqueId, $audio = false, $video = false){
         if($audio){
             $audioDir = preg_replace('/[^a-zA-Z0-9-_\.]/','', str_replace("." . $file->getClientOriginalExtension(), "", $file->getClientOriginalName())) . $uniqueId . "-audio";
@@ -43,15 +56,38 @@ class PublicPaths
         }
     }
 
+    /**
+     * Returns the directory for the userProfilePicture for the Space
+     */
     public static function getUserProfilePicturePath($filename, $user){
         $path = sprintf("users/%s/profilepicture/%s", $user->slug, $filename);
         return $path;
     }
 
+    /**
+     * Returns a unique generated ID
+     */
     public static function createUniqueid(){
         return uniqid();
     }
 
+    /**
+     * Returns directory for the Space of the userwork (innocreatives feed)
+     */
+    public static function getUserWorkDir($user, $userWork, $file){
+        $path = sprintf(
+            'users/%s/userworks/%d/%s',
+            $user->slug, $userWork->id, self::getFileName($file)
+            );
+
+        return $path;
+
+    }
+
+    /**
+     * Returns the mimetype of given parameters
+     *
+     */
     public static function mimeType($audio = false, $video = false, $img = false){
         if($audio){
             return "audio/mpeg";

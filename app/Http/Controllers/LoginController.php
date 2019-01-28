@@ -218,7 +218,7 @@ class LoginController extends Controller
                 if($request->input("pageType") && $request->input("pageType") == "checkout"){
                     return redirect($request->input("backlink"));
                 } else {
-                    return redirect("/account");
+                    return redirect($user->getUrl());
                 }
             } else {
                 return redirect($_SERVER["HTTP_REFERER"])->with('success', 'Account created');
@@ -274,7 +274,7 @@ class LoginController extends Controller
                 if ($request->input("pageType") && $request->input("pageType") == "checkout") {
                     return redirect($request->input("backlink"));
                 } else {
-                    return redirect("/account");
+                    return redirect($user->getUrl());
                 }
             } else {
                 $user->access_token = $token;

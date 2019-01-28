@@ -44,11 +44,9 @@ class EditProfileImage
         $user_id = $request->input("user_id");
         $file = $request->file("profile_picture");
         $size = $this->formatBytes($file->getSize());
+        $user = User::select("*")->where("id", $user_id)->first();
         if($size < 8) {
             $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
-
-            $user = User::select("*")->where("id", $user_id)->first();
-
 
             $pathPicture = PublicPaths::getUserProfilePicturePath($filename, $user);
             $exists = Storage::disk('spaces')->exists($pathPicture);
@@ -62,7 +60,7 @@ class EditProfileImage
             $user->save();
             return redirect($_SERVER["HTTP_REFERER"]);
         } else {
-            return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
+            return redirect($user->getUrl())->withErrors("Image is too large. The max upload size is 8MB");
         }
     }
 

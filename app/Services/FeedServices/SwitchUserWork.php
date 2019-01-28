@@ -126,5 +126,7 @@ class SwitchUserWork
         $user = $connectRequest->sender;
 
         $mailgun->saveAndSendEmail($connectRequest->sender, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+
+        return redirect($user->getUrl());
     }
 }

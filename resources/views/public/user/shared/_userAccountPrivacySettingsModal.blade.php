@@ -1,6 +1,7 @@
 <div class="modal privacySettingsModal fade fade-scale" id="privacySettingsModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content modal-content-border">
+            <i class="zmdi zmdi-close c-orange f-22 p-absolute" data-dismiss="modal" style="top: 3%; right: 3%; z-index: 1"></i>
             <form action="/my-account/saveUserAccount" method="post">
                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                 <input type="hidden" name="user_id" value="<? if(isset($user)) echo $user->id ?>">

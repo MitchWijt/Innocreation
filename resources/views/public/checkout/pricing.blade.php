@@ -39,7 +39,7 @@
                             <div class="col-sm-12 m-b-20">
                                 <div class="text-center">
                                     <? if(isset($user)) { ?>
-                                        <a href="/account" class="btn btn-inno @tablet btn-sm @endtablet m-t-10">Join for free!</a>
+                                        <a href="<?= $user->getUrl()?>" class="btn btn-inno @tablet btn-sm @endtablet m-t-10">Join for free!</a>
                                     <? } else { ?>
                                         <a href="/create-my-account" class="btn btn-inno @tablet btn-sm @endtablet m-t-10">Join for free!</a>
                                     <? } ?>

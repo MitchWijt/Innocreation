@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    $('#toggle-demo').bootstrapToggle();
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {

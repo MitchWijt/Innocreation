@@ -44,19 +44,26 @@
 </div>
 
 <script>
-    $('#tokenfield')
-        .on('tokenfield:createdtoken', function (e) {
-            var tokens = $('#tokenfield').tokenfield('getTokens');
-            if(tokens.length >= 1){
-                $(".textWarning").text("You can add a max. of 1 expertise at the same time");
-            }
-        })
-        .on('tokenfield:removedtoken', function (e) {
-            $(".textWarning").text("");
-        })
-        .tokenfield({
-            showAutocompleteOnFocus: true,
-            createTokensOnBlur: true,
-            limit: 1
-        });
+$('#tokenfield')
+    .on('tokenfield:createdtoken', function (e) {
+        var tokens = $('#tokenfield').tokenfield('getTokens');
+        if(tokens.length >= 1){
+            $(".textWarning").text("You can add a max. of 1 expertise at the same time");
+        }
+    })
+    .on('tokenfield:removedtoken', function (e) {
+        $(".textWarning").text("");
+    })
+    .tokenfield({
+        showAutocompleteOnFocus: true,
+        createTokensOnBlur: true,
+        limit: 1
+    });
+
+    $(document).ready(function () {
+        $(".token-input").attr("style", "");
+
+        $(".tokenfield").removeClass("form-control");
+        $(".tokenfield").addClass("col-sm-12");
+    });
 </script>
