@@ -1,28 +1,14 @@
 <? foreach($userWorkPosts as $userWorkPost) { ?>
-    <div class="col-md-7 m-b-20">
-        <div class="card-lg userWorkPost" data-id="<?= $userWorkPost->id?>">
-            <div class="card-block row">
-                <div class="col-sm-12 m-t-15">
-                    <div class="row">
-                        <div class="@mobile col-6 @elsedesktop col-sm-6 @endmobile">
-                            <div class="avatar-sm m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>')"></div>
-                            <p class="popoverUser col-sm-6" style="margin-top: 3px !important" data-toggle="popover" data-content='<?= $userWorkPost->user->getPopoverViewUserWork()?>'><?= $userWorkPost->user->firstname?></p>
-                        </div>
-                        <div class="@mobile col-6 @elsedesktop col-sm-6 @endmobile p-r-25">
-                            <? if($userWorkPost->progress != null) { ?>
-                                <div class="progress" style="margin-top: 3px !important">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="70"
-                                         aria-valuemin="0" aria-valuemax="100" style="width:<?= $userWorkPost->progress?>;"><?= $userWorkPost->progress?> finished
-                                    </div>
-                                </div>
-                            <? } ?>
-                        </div>
-                    </div>
+        <div class="card-lg no-shadow no-shadow userWorkPost m-b-20" style="display: inline-block;" data-id="<?= $userWorkPost->id?>">
+            <div class="card-block">
+                <div class="col-sm-12 p-0">
+                    <div class="avatar-sm m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>')"></div>
+                    <p class="popoverUser col-sm-4 m-b-5" style="margin-top: 3px !important" data-toggle="popover" data-content='<?= $userWorkPost->user->getPopoverViewUserWork()?>'><?= $userWorkPost->user->firstname?></p>
                     <div class="hr col-sm-12 p-l-0"></div>
                 </div>
-                <div class="col-sm-12 text-center p-relative desc">
+                <div class="col-sm-12 p-relative desc p-0" style="min-height: 200px">
                     <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
-                        <i class="zmdi zmdi-more p-absolute f-20 c-pointer popoverMenu" data-toggle="popover" data-content='<?= $userWorkPost->getPopoverMenu()?>' style="top: 2px; right: 25px;"></i>
+                        <i class="zmdi zmdi-more p-absolute f-20 c-pointer popoverMenu" data-toggle="popover" data-content='<?= $userWorkPost->getPopoverMenu()?>' style="top: -12px; right: 10px;"></i>
                     <? } ?>
                     <p class="f-17 m-t-15 m-b-5 descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: break-all"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
                     <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
@@ -37,32 +23,22 @@
                             </form>
                         </div>
                     <? } ?>
-                    <? if($userWorkPost->content != null) { ?>
-                        <? if($userWorkPost->link != null) { ?>
-                            <a target="_blank" href="<?= $userWorkPost->link?>">
-                                <img class="lazyLoad" data-src="<?= $userWorkPost->getImage()?>" style="width: 100% !important;" alt="<?= $userWorkPost->user->firstname?>">
-                            </a>
-                        <? } else { ?>
-                            <img class="lazyLoad" data-src="<?= $userWorkPost->getImage()?>" style="width: 100% !important;" alt="<?= $userWorkPost->user->firstname?>">
+                    <div class="image p-relative">
+                        <? if($userWorkPost->content != null) { ?>
+                            <img class="lazyLoad"  data-src="<?= $userWorkPost->getImage()?>" style="width: 100%;">
                         <? } ?>
-                    <? } ?>
-                </div>
-                <div class="col-sm-12">
-                    <div class="row">
-                        <div class="@mobile col-6 @elsedesktop col-sm-6 @endmobile p-l-25 userSwitch">
+                        <div class="userSwitch p-absolute" style="left: -5px; bottom: -10px">
                             <? if((isset($user) && $user->id != $userWorkPost->user_id) || !isset($user)) { ?>
-                                <label class="switch switch_type2 m-t-10  m-l-15" role="switch">
-                                    <input data-toggle="popover" <? if(isset($user) && $userWorkPost->user->hasSwitched()) echo "checked disabled"; ?> data-content='<?= \App\Services\UserConnections\ConnectionService::getPopoverSwitchView($userWorkPost->user)?>' type="checkbox" class="switch__toggle popoverSwitch">
-                                    <span class="switch__label"></span>
-                                </label>
+                            <label class="switch switch_type2 m-t-10  m-l-15" role="switch">
+                                <input data-toggle="popover" <? if(isset($user) && $userWorkPost->user->hasSwitched()) echo "checked disabled"; ?> data-content='<?= \App\Services\UserConnections\ConnectionService::getPopoverSwitchView($userWorkPost->user)?>' type="checkbox" class="switch__toggle popoverSwitch">
+                                <span class="switch__label"></span>
+                            </label>
                             <? } ?>
                         </div>
-                        <div class="@mobile col-6 @elsedesktop col-sm-6 @endmobile m-t-5 p-r-25">
+                        <div class="m-t-5 p-absolute shadow" style="right: 5px; bottom: 0">
                             <a class="regular-link pull-right f-14 m-0 toggleComments" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Comments</a>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-12">
                 </div>
             </div>
         </div>
@@ -94,10 +70,9 @@
                 </div>
             </div>
         </div>
-    </div>
 <? } ?>
 <? if(count($userWorkPosts) > 1) { ?>
-    <div class="col-sm-12 d-flex js-center m-b-20">
+    <div class=" d-flex js-center ">
         <img class="hidden loadingGear" src="/images/icons/loadingGear.gif" style="width: 30px !important; height: 30px !important" alt="">
     </div>
 <? } ?>

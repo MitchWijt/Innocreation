@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="/css/user/userAccountChat.css">
 <link rel="stylesheet" href="/css/responsiveness/userChats/userAccountChats.css">
 @section("content")
-    <div class="d-flex grey-background vh90">
+    <div class="d-flex grey-background">
         <div class="container-fluid p-0">
             <div class="row m-r-0">
                 <div class="col-sm-3 p-0 text-center" style="border-right: 1px solid #77787a">
@@ -80,7 +80,7 @@
                 </div>
                 @notmobile
                     <div class="col-sm-9">
-                        <div class="chatContent o-scroll" style="max-height: 78vh; height: 78vh;">
+                        <div class="chatContent o-scroll" style="height: calc(100vh - 230px);">
 
                         </div>
                         <div class="row" style="border-top: 1px solid #77787a;">

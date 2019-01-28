@@ -79,7 +79,6 @@ class PublicPaths
             'users/%s/userworks/%d/%s',
             $user->slug, $userWork->id, self::getFileName($file)
             );
-
         return $path;
 
     }

@@ -123,7 +123,7 @@
                                     <div class="col-xl-9 m-t-10">
                                         <div class="d-flex js-between align-start">
                                             <div class="d-flex align-start">
-                                                <div class="d-flex fd-column">
+                                                <div class="d-flex fd-column" style="min-width: 140px">
                                                     <h3 class="m-r-10 m-b-0"><?= $expertise->expertises->First()->title?></h3>
                                                     <i class="c-dark-grey f-12">Skill level: <span style="color: <?= \App\Services\UserAccount\UserExpertises::getSkillLevel($expertise->skill_level_id)['color']?>"><?= ucfirst(\App\Services\UserAccount\UserExpertises::getSkillLevel($expertise->skill_level_id)['level'])?></span></i>
                                                 </div>

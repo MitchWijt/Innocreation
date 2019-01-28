@@ -231,3 +231,8 @@
     top: 100vh;
     height: 0;
 }
+
+.grid-container {
+    column-count: 3 !important;
+    column-gap: 10px !important;
+}

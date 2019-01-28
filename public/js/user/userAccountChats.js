@@ -154,25 +154,33 @@ $(".sendUserMessage").on("click",function () {
 });
 
 var textarea = document.querySelector('textarea');
+document.addEventListener('input', function (event) {
+    if (event.target.tagName.toLowerCase() !== 'textarea') return;
+    autoExpand(event.target);
+}, false);
+var autoExpand = function (field) {
+    // Reset field height
+    field.style.height = 'inherit';
 
-textarea.addEventListener('keyup', autosize);
-textarea.addEventListener('change', autosize);
-textarea.addEventListener('paste', autosize);
+    // Get the computed styles for the element
+    var computed = window.getComputedStyle(field);
 
-function autosize() {
-    var el = this;
-    setTimeout(function () {
-        el.style.cssText = 'height:auto;';
-        el.style.cssText = 'color: #000 !important; height:' + el.scrollHeight +'px !important';
-    }, 200);
+    // Calculate the height
+    var height = parseInt(computed.getPropertyValue('border-top-width'), 10)
+        + parseInt(computed.getPropertyValue('padding-top'), 10)
+        + field.scrollHeight
+        + parseInt(computed.getPropertyValue('padding-bottom'), 10)
+        + parseInt(computed.getPropertyValue('border-bottom-width'), 10);
 
+    field.style.height = height + 'px';
 
     if($(".userMessageInput").val().length > 0){
         $(".sendBtn").removeClass("hidden");
     } else {
         $(".sendBtn").addClass("hidden");
     }
-}
+
+};
 
 $(document).on("click", ".emojiGen", function () {
     $(".sendBtn").removeClass("hidden");

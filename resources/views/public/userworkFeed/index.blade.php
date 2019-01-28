@@ -73,7 +73,7 @@
     <? } else { ?>
         <input type="hidden" class="userId" value="0">
     <? } ?>
-    <div class="d-flex grey-background vh85">
+    <div class="d-flex grey-background">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 d-flex js-center">
@@ -159,7 +159,7 @@
                     <p class="@mobile f-14 @elsedesktop f-20 @endmobile text-center"><a class="regular-link" href="/create-my-account">Create an account</a> or <a class="regular-link" href="/login">login</a> to post your work!</p>
                 </div>
             <? } ?>
-            <div class="row d-flex js-center userworkData m-t-20">
+            <div class="userworkData m-t-20 grid-container">
 
             </div>
         </div>
