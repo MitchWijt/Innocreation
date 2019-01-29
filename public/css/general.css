@@ -633,8 +633,11 @@ hr{
 
 
 .modal-backdrop.show{
-    opacity: 0.8 !important;
-    /*display: block !important;*/
+    opacity: 0.8;
+}
+
+.modal-backdrop-light{
+    opacity: 0.5;
 }
 
 .fade-scale {

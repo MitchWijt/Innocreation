@@ -6,6 +6,7 @@
  * Time: 21:25
  */
 namespace App\Services\UserConnections;
+use App\ConnectRequestLinktable;
 use App\User;
 use Illuminate\Support\Facades\Session;
 
@@ -26,5 +27,14 @@ class ConnectionService
             return view("/public/shared/switch/_popoverSwitch", compact( "receiver"));
         }
 
+    }
+
+    public static function acceptedConnections($userId){
+        $connections = ConnectRequestLinktable::select("*")
+                      ->where("receiver_user_id", $userId)
+                      ->orWhere("sender_user_id", $userId)
+                      ->where("accepted", 1)
+                      ->get();
+        return $connections;
     }
 }

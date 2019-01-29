@@ -1120,3 +1120,7 @@ ul.dashed > li:before {
     opacity: 0.5 !important;
     transition: opacity .3s
 }
+
+.zoom:hover{
+    cursor: zoom-in;
+}

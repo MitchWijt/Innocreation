@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Emoji;
+use App\Services\FeedServices\UserworkPost;
 use App\Services\Paths\PublicPaths;
 use App\Team;
 use App\TeamProduct;
@@ -343,5 +344,9 @@ class FeedController extends Controller
             return redirect($_SERVER["HTTP_REFERER"])->withErrors("Failed to edit the post");
         }
 
+    }
+
+    public function getUserworkPostModal(Request $request, UserworkPost $userworkPost){
+        return $userworkPost->getPostModal($request);
     }
 }

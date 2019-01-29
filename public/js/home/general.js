@@ -274,6 +274,7 @@ $(document).on("click", ".openConnectionsModal", function () {
 $(document).on("hidden.bs.modal", ".connectionsModal", function () {
     $(".connectionsModal").remove();
 });
+
 $(document).on("click", ".switch__toggle", function () {
     if (!$(this).is(":checked")) {
         $(this).popover("hide");

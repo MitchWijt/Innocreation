@@ -456,3 +456,28 @@ $('.triggerSlider, .closeSlider').click(function() {
 $(".postInnocreativePost").on("click",function () {
     $(".userWorkForm").submit();
 });
+
+$(document).on("click", ".zoom", function () {
+    var userworkId = $(this).data("id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/getUserworkPostModal",
+        data: {"userworkId" : userworkId},
+        success: function (data) {
+            $("body").append(data);
+            $(".userWorkPostModal").modal("toggle");
+            $(".modal-backdrop").attr("style", "opacity: 0.5 !important");
+        }
+    });
+});
+
+$(document).on("hidden.bs.modal", ".userWorkPostModal", function () {
+    $(".userWorkPostModal").remove();
+});

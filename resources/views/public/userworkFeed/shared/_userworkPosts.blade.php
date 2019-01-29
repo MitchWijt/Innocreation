@@ -1,16 +1,22 @@
 <? foreach($userWorkPosts as $userWorkPost) { ?>
         <div class="card-lg no-shadow no-shadow userWorkPost m-b-20" style="display: inline-block;" data-id="<?= $userWorkPost->id?>">
             <div class="card-block">
-                <div class="col-sm-12 p-0">
-                    <div class="avatar-sm m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>')"></div>
-                    <p class="popoverUser col-sm-4 m-b-5" style="margin-top: 3px !important" data-toggle="popover" data-content='<?= $userWorkPost->user->getPopoverViewUserWork()?>'><?= $userWorkPost->user->firstname?></p>
-                    <div class="hr col-sm-12 p-l-0"></div>
-                </div>
-                <div class="col-sm-12 p-relative desc p-0" style="min-height: 200px">
+                <div class="col-sm-12  m-t-10 p-0 p-absolute d-flex js-between align-start">
+                    <div class="d-flex">
+                        <a href="<?= $userWorkPost->user->getUrl()?>" target="_blank">
+                            <div class="avatar-header m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>')"></div>
+                        </a>
+                        <div class="d-flex fd-column">
+                            <p class="m-b-0"><a href="<?= $userWorkPost->user->getUrl()?>" target="_blank" class="c-gray"><?= $userWorkPost->user->getName()?></a></p>
+                            <span class="f-12 c-dark-grey"><?= count(\App\Services\UserConnections\ConnectionService::acceptedConnections($userWorkPost->user_id))?> connections</span>
+                        </div>
+                    </div>
                     <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
-                        <i class="zmdi zmdi-more p-absolute f-20 c-pointer popoverMenu" data-toggle="popover" data-content='<?= $userWorkPost->getPopoverMenu()?>' style="top: -12px; right: 10px;"></i>
+                        <i class="zmdi zmdi-more f-22 m-r-10 c-pointer popoverMenu" data-toggle="popover" data-content='<?= $userWorkPost->getPopoverMenu()?>'></i>
                     <? } ?>
-                    <p class="f-17 m-t-15 m-b-5 descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: break-all"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
+                </div>
+                <div class="col-sm-12 p-relative desc p-0">
+                    <p class="f-17 m-t-15 m-b-5 descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: normal"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
                     <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
                         <div class="m-t-15 m-b-5 editUserWork-<?= $userWorkPost->id?> hidden">
                             <form action="/feed/editUserWorkPost" method="post">
@@ -25,18 +31,12 @@
                     <? } ?>
                     <div class="image p-relative">
                         <? if($userWorkPost->content != null) { ?>
-                            <img class="lazyLoad"  data-src="<?= $userWorkPost->getImage()?>" style="width: 100%;">
+                            <img class="lazyLoad zoom" data-id="<?= $userWorkPost->id?>"  data-src="<?= $userWorkPost->getImage()?>" style="width: 100%;">
                         <? } ?>
-                        <div class="userSwitch p-absolute" style="left: -5px; bottom: -10px">
-                            <? if((isset($user) && $user->id != $userWorkPost->user_id) || !isset($user)) { ?>
-                            <label class="switch switch_type2 m-t-10  m-l-15" role="switch">
-                                <input data-toggle="popover" <? if(isset($user) && $userWorkPost->user->hasSwitched()) echo "checked disabled"; ?> data-content='<?= \App\Services\UserConnections\ConnectionService::getPopoverSwitchView($userWorkPost->user)?>' type="checkbox" class="switch__toggle popoverSwitch">
-                                <span class="switch__label"></span>
-                            </label>
-                            <? } ?>
-                        </div>
-                        <div class="m-t-5 p-absolute shadow" style="right: 5px; bottom: 0">
-                            <a class="regular-link pull-right f-14 m-0 toggleComments" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Comments</a>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="m-t-5 m-b-5">
+                            <a class="regular-link f-14 c-dark-grey m-0 toggleComments" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Comments</a>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
 
                         </div>
                         <? if(isset($user)) { ?>
-                        <div class="hr col-sm-12 p-l-0"></div>
+                            <div class="hr col-sm-12 p-l-0"></div>
                             <form class="postCommentForm" action="/feed/postUserWorkComment" method="post">
                                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                 <input type="hidden" name="sender_user_id" class="sender_user_id" value="<?= $user->id?>">

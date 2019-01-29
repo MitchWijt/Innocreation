@@ -641,6 +641,8 @@ Route::post("/feed/deleteUserWorkPost", "FeedController@deleteUserWorkPostAction
 
 Route::post("/feed/editUserWorkPost", "FeedController@editUserWorkPostAction");
 
+Route::post("/getUserworkPostModal", "FeedController@getUserworkPostModal");
+
 //========================CHECKOUT/PACKAGES========================
 
 Route::get("/pricing", "CheckoutController@pricingAction");
