@@ -287,38 +287,7 @@ $(document).on("click", "#removePreview", function () {
 });
 
 $(document).on("click", ".toggleComments", function () {
-    var user_work_id = $(this).data("id");
 
-    $.ajax({
-        method: "POST",
-        beforeSend: function (xhr) {
-            var token = $('meta[name="csrf_token"]').attr('content');
-
-            if (token) {
-                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-            }
-        },
-        url: "/message/getUserWorkComments",
-        data: {'user_work_id': user_work_id},
-        success: function (data) {
-            $(".comments").each(function () {
-                if($(this).data("id") == user_work_id){
-                    $(this).find(".userWorkComments").html(data);
-                    $("#commentCollapse-" + user_work_id).toggle();
-                }
-            });
-        }
-    });
-    setTimeout(function(){
-        $(".userWorkComments").each(function () {
-            if($(this).data("id") == user_work_id) {
-                var objDiv = $(this);
-                if (objDiv.length > 0) {
-                    objDiv[0].scrollTop = objDiv[0].scrollHeight;
-                }
-            }
-        });
-    }, 1000);
 });
 
 $(document).on("click", ".postComment", function () {
@@ -339,27 +308,30 @@ $(document).on("click", ".postComment", function () {
         dataType: "JSON",
         success: function (data) {
             var message = $('.emptyMessage').first().clone();
-            $(".userWorkComments").each(function () {
-                if($(this).data("id") == user_work_id){
-                    var allMessages = $(this);
-                    $(message).appendTo(allMessages);
-                    message.removeClass("hidden");
-                    message.find(".message").text(data['message']);
-                    message.find(".timeSent").text(data['timeSent']);
-                    $(".comment").val("");
-                }
-            });
+            function Generator() {}
+
+            Generator.prototype.rand =  Math.floor(Math.random() * 26) + Date.now();
+
+            Generator.prototype.getId = function() {
+                return this.rand++;
+            };
+            var idGen = new Generator();
+            var newId = idGen.getId();
+            message.attr("id", newId);
+            var allMessages = $(".userWorkComments");
+            $(message).appendTo(allMessages);
+            message.removeClass("hidden");
+            message.find(".message").text(data['message']);
+            message.find(".timeSent").text(data['timeSent']);
+            $("#" + newId).removeClass("hidden");
+            $(".comment").val("");
         }
     });
     setTimeout(function(){
-        $(".userWorkComments").each(function () {
-            if($(this).data("id") == user_work_id) {
-                var objDiv = $(this);
-                if (objDiv.length > 0) {
-                    objDiv[0].scrollTop = objDiv[0].scrollHeight;
-                }
-            }
-        });
+        var objDiv = $(".userWorkComments");
+        if (objDiv.length > 0) {
+            objDiv[0].scrollTop = objDiv[0].scrollHeight;
+        }
     }, 1000);
 });
 
@@ -468,7 +440,7 @@ $(document).on("click", ".zoom", function () {
                 return xhr.setRequestHeader('X-CSRF-TOKEN', token);
             }
         },
-        url: "/getUserworkPostModal",
+        url: "/getUserWorkPostModal",
         data: {"userworkId" : userworkId},
         success: function (data) {
             $("body").append(data);
@@ -476,6 +448,30 @@ $(document).on("click", ".zoom", function () {
             $(".modal-backdrop").attr("style", "opacity: 0.5 !important");
         }
     });
+
+    setTimeout(function(){
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/message/getUserWorkComments",
+            data: {'user_work_id': userworkId},
+            success: function (data) {
+                $(".userWorkComments").html(data);
+            }
+        });
+        setTimeout(function(){
+            var objDiv = $(".userWorkComments");
+            if (objDiv.length > 0) {
+                objDiv[0].scrollTop = objDiv[0].scrollHeight;
+            }
+        }, 1000);
+    }, 10);
 });
 
 $(document).on("hidden.bs.modal", ".userWorkPostModal", function () {

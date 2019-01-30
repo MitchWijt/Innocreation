@@ -12,8 +12,15 @@ class PublicPaths
     /**
      * Returns the filename without spaces and weird characters based on the uploaded filename
      */
-    public static function getFileName($file){
-        return preg_replace('/[^a-zA-Z0-9-_\.]/', '', $file->getClientOriginalName());
+    public static function getFileName($uniqueId, $file, $placeholder = false){
+
+        if($placeholder){
+            $name = sprintf('%s-%s.%s', preg_replace('/[^a-zA-Z0-9-_\.]/', '', $uniqueId), "placeholder", $file->getClientOriginalExtension());
+        } else {
+            $name = sprintf('%s.%s', preg_replace('/[^a-zA-Z0-9-_\.]/', '', $uniqueId), $file->getClientOriginalExtension());
+        }
+        return $name;
+
     }
 
     /**
@@ -74,10 +81,10 @@ class PublicPaths
     /**
      * Returns directory for the Space of the userwork (innocreatives feed)
      */
-    public static function getUserWorkDir($user, $userWork, $file){
+    public static function getUserWorkDir($user, $userWork, $filename){
         $path = sprintf(
             'users/%s/userworks/%d/%s',
-            $user->slug, $userWork->id, self::getFileName($file)
+            $user->slug, $userWork->id, $filename
             );
         return $path;
 

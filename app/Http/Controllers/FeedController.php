@@ -18,6 +18,7 @@ use App\UserWork;
 use App\UserWorkComment;
 use Illuminate\Http\Request;
 use App\Services\FeedServices\SwitchUserWork as SwitchUserWork;
+use App\Services\Images\ImageProcessor as ImageProcessor;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Session;
@@ -264,12 +265,21 @@ class FeedController extends Controller
             if($file) {
                 $size = $this->formatBytes($file->getSize());
                 if ($size < 8) {
-                    $filename = PublicPaths::getFileName($file);
-
+                    $imageProcessor = new ImageProcessor();
                     $user = User::select("*")->where("id", $userId)->first();
-                    $path = PublicPaths::getUserWorkDir($user, $userWork, $file);
-                    Storage::disk('spaces')->put($path, file_get_contents($file->getRealPath()), "public");
+                    $uniqueId = uniqid($userWork->id);
 
+                    //Creates and uploads Original image
+                    $filename = PublicPaths::getFileName($uniqueId, $file);
+                    $path = PublicPaths::getUserWorkDir($user, $userWork, $filename);
+                    $imageProcessor->upload($file->getRealPath(), $path, false, $file->getRealPath());
+
+                    //Creates and uploads placeholder of Original image
+                    $filenamePlaceholder = PublicPaths::getFileName($uniqueId, $file, true);
+                    $path = PublicPaths::getUserWorkDir($user, $userWork, $filenamePlaceholder);
+                    $imageProcessor->createPlaceholder($file, $file->getRealPath(), $path);
+
+                    //Saves new userwork feed post with image
                     $userWork->content = $filename;
                     $userWork->created_at = date("Y-m-d H:i:s");
                     $userWork->save();
@@ -296,24 +306,9 @@ class FeedController extends Controller
         }
     }
 
-    public function postUserWorkCommentAction(Request $request){
+    public function postUserWorkCommentAction(Request $request, UserworkPost $userworkPost){
         if($this->authorized()){
-            $senderUserId = $request->input("sender_user_id");
-            $user_work_id = $request->input("user_work_id");
-            $comment = $request->input("comment");
-
-            $userWorkComment = new UserWorkComment();
-            $userWorkComment->sender_user_id = $senderUserId;
-            $userWorkComment->user_work_id = $user_work_id;
-            $userWorkComment->time_sent = $this->getTimeSent();
-            $userWorkComment->description = $comment;
-            $userWorkComment->created_at = date("Y-m-d H:i:s");
-            $userWorkComment->save();
-
-
-            $messageArray = ["message" => $comment, "timeSent" => $this->getTimeSent()];
-            echo json_encode($messageArray);
-
+            return $userworkPost->postComment($request);
         }
     }
 
@@ -346,7 +341,7 @@ class FeedController extends Controller
 
     }
 
-    public function getUserworkPostModal(Request $request, UserworkPost $userworkPost){
+    public function getUserWorkPostModal(Request $request, UserworkPost $userworkPost){
         return $userworkPost->getPostModal($request);
     }
 }
