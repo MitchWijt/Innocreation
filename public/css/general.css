@@ -527,6 +527,15 @@ hr{
 
 
 /*=============================FONTS======================*/
+.f-5{
+    font-size: 5px !important;
+}
+.f-6{
+    font-size: 6px !important;
+}
+.f-7{
+    font-size: 7px !important;
+}
 .f-8{
     font-size: 8px !important;
 }
@@ -673,6 +682,13 @@ hr{
 
 .fixed-modal{
     min-width: 80vw !important;
+    max-width: 500px !important;
+}
+
+.custom-dialog{
+    position:relative;
+    width:auto;
+    margin:10px
 }
 
 .fade.show {

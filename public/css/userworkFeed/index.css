@@ -233,6 +233,6 @@
 }
 
 .grid-container {
-    column-count: 2 !important;
-    column-gap: 10px !important;
+    column-count: 3;
+    column-gap: 10px;
 }

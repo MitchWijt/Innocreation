@@ -35,28 +35,34 @@
                         <? } ?>
                     </div>
                     <div class="col-sm-12">
-                        <div class="m-t-5 m-b-5">
-                            <a class="regular-link f-14 c-dark-grey m-0" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Comments</a>
+                        <div class="m-t-5 m-b-5 d-flex align-start">
+                            <a class="regular-link f-14 c-dark-grey m-0 zoom" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Comments</a>
+                            <i class="zmdi zmdi-circle f-5 vertically-center c-dark-grey m-l-5 m-t-8 m-r-5"></i>
+                            <a class="regular-link f-14 c-dark-grey m-0" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Likes</a>
                         </div>
                     </div>
                     <? if(count($userWorkPost->getComments()) > 0) { ?>
-                        <div class="col-sm-12 gradientToTransparant">
+                        <div class="col-sm-12 gradientToTransparant zoom" data-id="<?= $userWorkPost->id?>" >
                             <? foreach(\App\Services\FeedServices\UserworkPost::getRecentComments($userWorkPost->id) as $comment) { ?>
                                 <? if(isset($user) && $comment->sender_user_id == $user->id) { ?>
-                                    <div class="row m-t-20 m-r-0">
-                                        <div class="col-sm-12 ">
-                                            <div class="@mobile col-10 @elsedesktop col-sm-5 @endmobile messageSent pull-right m-b-10 messageStyle">
-                                                <p class="message c-white"><?= $comment->message?></p>
-                                                <span class="f-12 pull-right timeSent c-gray"><?=$comment->time_sent?></span>
+                                    <div class="row sendedMessageAjax">
+                                        <div class="col-sm-12">
+                                            <div class="@mobile col-10 @elsedesktop col-sm-8 @endmobile messageSent pull-right m-b-10 messageStyle">
+                                                <p class="message break-word c-gray m-b-0"><?= $comment->message?></p>
+                                                <span class="f-12 pull-right timeSent c-"><?=$comment->time_sent?></span>
                                             </div>
                                         </div>
                                     </div>
                                 <? } else { ?>
-                                    <div class="row messageReceivedAjax m-r-0">
+                                    <div class="row messageReceivedAjax">
                                         <div class="col-sm-12 ">
-                                            <div class="@mobile col-10 @elsedesktop col-sm-5 @endmobile pull-left m-b-10 messageReceived messageStyle">
-                                                <p class="message c-white"><?= $comment->message?></p>
-                                                <span class="f-12 pull-right timeSent c-gray"><?=$comment->time_sent?></span>
+                                            <div class="@mobile col-10 @elsedesktop col-sm-8 @endmobile pull-left m-b-10 messageReceived messageStyle">
+                                                <div class="d-flex m-b-10 m-t-5">
+                                                    <img src="<?= $comment->user->getProfilePicture()?>" alt="<?= $comment->user->firstname?>" class="circle circleSmall m-r-5">
+                                                    <p class="c-orange m-0"><?= $comment->user->getName()?></p>
+                                                </div>
+                                                <p class="break-word c-gray m-b-0"><?= $comment->message?></p>
+                                                <span class="f-12 pull-right c-gray"><?=$comment->time_sent?></span>
                                             </div>
                                         </div>
                                     </div>

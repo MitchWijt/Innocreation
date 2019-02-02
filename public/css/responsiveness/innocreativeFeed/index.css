@@ -1,0 +1,33 @@
+@media screen and (max-width: 770px) {
+    .grid-container{
+        column-count: 1 !important;
+        column-gap: 10px !important;
+    }
+}
+
+@media screen and (max-width: 770px) {
+    .messageReceived{
+        flex: 0 0 70% !important;
+        max-width: 70% !important;
+    }
+
+    .messageSent{
+        flex: 0 0 70% !important;
+        max-width: 70% !important;
+    }
+}
+
+@media screen and (max-width: 515px) {
+    .modal .modal-dialog{
+        margin: .20rem 20px !important;
+    }
+    .modal-content{
+        margin-top: 50px !important;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .modal-dialog{
+        margin: 1.75rem auto !important;
+    }
+}

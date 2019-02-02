@@ -1,4 +1,5 @@
 @extends("layouts.app")
+<link rel="stylesheet" href="/css/responsiveness//innocreativeFeed/index.css">
 @section("content")
     @mobile
     <? if(isset($user)) { ?>

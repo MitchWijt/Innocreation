@@ -471,7 +471,7 @@ $(document).on("click", ".zoom", function () {
                 objDiv[0].scrollTop = objDiv[0].scrollHeight;
             }
         }, 1000);
-    }, 10);
+    }, 500);
 });
 $(document).on("shown.bs.modal", ".userWorkPostModal", function () {
     const comments = document.querySelector(".userWorkComments");

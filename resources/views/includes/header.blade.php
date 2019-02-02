@@ -31,13 +31,13 @@
                                     <i class="zmdi zmdi-comment-text f-20 c-pointer p-absolute popoverMessages" data-toggle="popover" data-content='<?= view("/public/shared/messagesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -22%"></i>
                                     <i class="zmdi zmdi-accounts-add f-20 c-pointer popoverRequests c-gray p-absolute" data-user-id="<?= $user->id?>" data-toggle="popover" data-content='<?= view("/public/shared/teamInvitesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -12%"></i>
 
-                                    <a class="btn btn-inno btn-sm" href="/expertises">Community</a>
+                                    <a class="btn btn-inno btn-sm" href="/expertises">Expertises</a>
                                     <? if($user->team_id != null) { ?>
                                         <a class="btn btn-inno btn-sm" href="/my-team">Team</a>
                                     <? } else { ?>
                                         <a class="btn btn-inno btn-sm" href="/my-account/teamInfo">Create team</a>
                                     <? } ?>
-                                    <a class="btn btn-inno btn-sm" href="/innocreatives">Share</a>
+                                    <a class="btn btn-inno btn-sm" href="/innocreatives">Community</a>
                                     <i class="popoverHeader zmdi zmdi-chevron-down c-gray f-25 m-l-15 m-t-5 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
                                     <div class="pull-right">
                                         <a href="<?= $user->getUrl()?>">
@@ -47,8 +47,8 @@
                                 </div>
                             <? } else { ?>
                                 <div class="m-t-20 pull-right m-r-30 c-gray" style="width: 100%">
-                                    <a class="btn btn-inno btn-sm m-r-5 usersHeader" href="/expertises">Community</a>
-                                    <a class="btn btn-inno btn-sm feedHeader" href="/innocreatives">Feed</a>
+                                    <a class="btn btn-inno btn-sm m-r-5 usersHeader" href="/expertises">Expertises</a>
+                                    <a class="btn btn-inno btn-sm feedHeader" href="/innocreatives">Community</a>
                                     <i class="popoverHeader zmdi zmdi-chevron-down c-gray f-20 m-l-15 m-t-5 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
                                     <span class="btn-seperator m-l-15 m-r-10"></span>
                                     <a class="td-none m-l-10 m-r-10 loginBtn" href="/login"><span class="c-gray">Login</span></a>

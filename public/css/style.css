@@ -1143,5 +1143,5 @@ ul.dashed > li:before {
     left:0;
     top:0;
     z-index: 999;
-    background:linear-gradient(rgba(0,0,0,0) 100px, #000);
+    background:linear-gradient(rgba(0,0,0,0) 50px, #000);
 }
