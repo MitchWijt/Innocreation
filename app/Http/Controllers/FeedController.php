@@ -21,6 +21,7 @@ use App\Services\FeedServices\SwitchUserWork as SwitchUserWork;
 use App\Services\Images\ImageProcessor as ImageProcessor;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
@@ -279,8 +280,10 @@ class FeedController extends Controller
                     $path = PublicPaths::getUserWorkDir($user, $userWork, $filenamePlaceholder);
                     $imageProcessor->createPlaceholder($file, $file->getRealPath(), $path);
 
-                    //Saves new userwork feed post with image
-                    $userWork->content = $filename;
+                    //Saves new userwork feed post with image. Filename and extension seperate
+                    $filenameWithoutExtension = PublicPaths::getFileName($uniqueId, $file, false, false);
+                    $userWork->content = $filenameWithoutExtension;
+                    $userWork->extension = $file->getClientOriginalExtension();
                     $userWork->created_at = date("Y-m-d H:i:s");
                     $userWork->save();
                     return redirect($_SERVER["HTTP_REFERER"]);

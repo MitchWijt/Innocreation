@@ -281,3 +281,23 @@ $(document).on("click", ".switch__toggle", function () {
         $(".popoverSwitch").popover('hide');
     }
 });
+
+
+$(document).on("shown.bs.modal", ".modal", function () {
+    const targetElement = document.querySelector(".modal");
+    bodyScrollLock.disableBodyScroll(targetElement);
+});
+
+$(document).on("hidden.bs.modal", ".modal", function () {
+    bodyScrollLock.clearAllBodyScrollLocks();
+});
+
+//
+// $(document).on("mouseover", ".o-scroll", function () {
+//     const targetElement = document.querySelector(".o-scroll");
+//     bodyScrollLock.disableBodyScroll(targetElement);
+// });
+//
+// $(document).on("mouseover", "body", function () {
+//     bodyScrollLock.clearAllBodyScrollLocks();
+// });

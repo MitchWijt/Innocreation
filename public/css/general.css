@@ -671,6 +671,10 @@ hr{
     border-radius: 40px !important;
 }
 
+.fixed-modal{
+    min-width: 80vw !important;
+}
+
 .fade.show {
     transform: scale(1) !important ;
 }

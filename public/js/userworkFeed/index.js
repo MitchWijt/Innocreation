@@ -473,7 +473,12 @@ $(document).on("click", ".zoom", function () {
         }, 1000);
     }, 10);
 });
+$(document).on("shown.bs.modal", ".userWorkPostModal", function () {
+    const comments = document.querySelector(".userWorkComments");
+    bodyScrollLock.disableBodyScroll(comments);
+});
 
 $(document).on("hidden.bs.modal", ".userWorkPostModal", function () {
     $(".userWorkPostModal").remove();
 });
+

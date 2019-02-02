@@ -63,6 +63,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     {{--JS PLUGINS--}}
         <script src="/js/assets/jquery-lazy.min.js"></script>
+        <script src="/js/assets/lazyr.min.js"></script>
+        <script src="/js/assets/bodyLockScroll.min.js"></script>
         <script defer async src="/assets/build/content-tools.js"></script>
         <script defer async src="/assets/build/editor.js"></script>
         <script src="/js/bootstrap-tokenfield.min.js"></script>
@@ -114,6 +116,12 @@
     <? if(!isset($pageType) || $pageType != "noFooter") { ?>
         @include('includes/footer')
     <? } ?>
+<? }
+if(\Illuminate\Support\Facades\Session::has("user_id")){
+    $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
+    $user->online_timestamp = date("Y-m-d H:i:s");
+    $user->active_status = "online";
+    $user->save(); ?>
 <? } ?>
 <script src="/js/home/general.js"></script>
 </div>

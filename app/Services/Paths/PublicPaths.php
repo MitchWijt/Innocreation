@@ -12,15 +12,22 @@ class PublicPaths
     /**
      * Returns the filename without spaces and weird characters based on the uploaded filename
      */
-    public static function getFileName($uniqueId, $file, $placeholder = false){
+    public static function getFileName($uniqueId, $file, $placeholder = false, $extension = true){
 
         if($placeholder){
-            $name = sprintf('%s-%s.%s', preg_replace('/[^a-zA-Z0-9-_\.]/', '', $uniqueId), "placeholder", $file->getClientOriginalExtension());
+            if($extension){
+                $name = sprintf('%s-%s.%s', preg_replace('/[^a-zA-Z0-9-_\.]/', '', $uniqueId), "placeholder", $file->getClientOriginalExtension());
+            } else {
+                $name = sprintf('%s-%s', preg_replace('/[^a-zA-Z0-9-_\.]/', '', $uniqueId), "placeholder");
+            }
         } else {
-            $name = sprintf('%s.%s', preg_replace('/[^a-zA-Z0-9-_\.]/', '', $uniqueId), $file->getClientOriginalExtension());
+            if($extension){
+                $name = sprintf('%s.%s', preg_replace('/[^a-zA-Z0-9-_\.]/', '', $uniqueId), $file->getClientOriginalExtension());
+            } else {
+                $name = sprintf('%s', preg_replace('/[^a-zA-Z0-9-_\.]/', '', $uniqueId));
+            }
         }
         return $name;
-
     }
 
     /**

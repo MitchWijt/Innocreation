@@ -31,7 +31,7 @@
                     <? } ?>
                     <div class="image p-relative">
                         <? if($userWorkPost->content != null) { ?>
-                            <img class="lazyLoad zoom" data-id="<?= $userWorkPost->id?>"  data-src="<?= $userWorkPost->getImage()?>" style="width: 100%;">
+                            <img class="zoom" data-id="<?= $userWorkPost->id?>" src="<?= $userWorkPost->getPlaceholder()?>" data-layzr="<?= $userWorkPost->getImage()?>" style="width: 100%;">
                         <? } ?>
                     </div>
                     <div class="col-sm-12">

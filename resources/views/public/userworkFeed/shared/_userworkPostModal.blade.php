@@ -1,14 +1,16 @@
-<div class="modal userWorkPostModal" id="userWorkPostModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+<div class="modal userWorkPostModal o-scroll" id="userWorkPostModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <i class="zmdi zmdi-close c-pointer c-orange f-30" data-dismiss="modal" @desktop style="top: 1%; right: 1%; z-index: 1; position: fixed !important" @elsemobile style="top: 5%; right: 5%; z-index: 1; position: fixed !important" @enddesktop></i>
+    <div class="modal-dialog modal-lg fixed-modal modal-dialog-centered" role="document">
         <div class="modal-content modal-content-border">
-            <i class="zmdi zmdi-close c-orange f-22 p-absolute" data-dismiss="modal" style="top: 3%; right: 3%; z-index: 1"></i>
             <div class="col-sm-12 p-0 d-flex m-l-10 align-start m-t-5 m-b-5">
-                    <a href="<?= $userWorkPost->user->getUrl()?>" target="_blank">
-                        <div class="avatar-header m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>')"></div>
-                    </a>
-                    <p class="m-b-0 m-t-5"><a href="<?= $userWorkPost->user->getUrl()?>" target="_blank" class="c-black"><?= $userWorkPost->user->getName()?></a></p>
+                <a href="<?= $userWorkPost->user->getUrl()?>" target="_blank">
+                    <div class="avatar-header m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>')"></div>
+                </a>
+                <p class="m-b-0 m-t-5"><a href="<?= $userWorkPost->user->getUrl()?>" target="_blank" class="c-black"><?= $userWorkPost->user->getName()?></a></p>
             </div>
-            <img src="<?= $userWorkPost->getImage()?>" style="width: 100%">
+            <div class="p-20 text-center">
+                <img src="<?= $userWorkPost->getPlaceholder()?>" data-layzr="<?= $userWorkPost->getImage()?>" style="max-width: 80vw; max-height: 85vh">
+            </div>
             <div class="col-sm-12 comments" data-id="<?= $userWorkPost->id?>">
                 <div class="o-scroll userWorkComments p-10" data-id="<?= $userWorkPost->id?>" style="height: 350px;">
 
@@ -34,6 +36,7 @@
         </div>
     </div>
 </div>
+<script defer async src="/js/lazyLoader.js"></script>
 <script>
     $('.popoverEmojis').popover({ trigger: "click" , html: true, animation:false, placement: 'auto'});
 </script>

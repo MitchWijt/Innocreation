@@ -53,4 +53,8 @@
             echo json_encode($messageArray);
             die();
         }
+
+        public function postNewUserWorkPost(){
+
+        }
     }

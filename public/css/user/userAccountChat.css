@@ -30,3 +30,7 @@
     min-width: 180px;
     width: auto!important
 }
+
+.onlineDot{
+   z-index: 90;
+}

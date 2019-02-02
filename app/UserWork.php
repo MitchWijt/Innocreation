@@ -21,7 +21,16 @@ class UserWork extends Model
 
     public function getImage(){
         $userslug = $this->user->slug;
-        return sprintf('https://space-innocreation.ams3.cdn.digitaloceanspaces.com/users/%s/userworks/%d/%s', $userslug, $this->id, $this->content);
+        $filename = $this->content;
+        $extension = $this->extension;
+        return sprintf('https://space-innocreation.ams3.cdn.digitaloceanspaces.com/users/%s/userworks/%d/%s.%s', $userslug, $this->id, $filename, $extension);
+    }
+
+    public function getPlaceholder(){
+        $userslug = $this->user->slug;
+        $filename = $this->content;
+        $extension = $this->extension;
+        return sprintf('https://space-innocreation.ams3.cdn.digitaloceanspaces.com/users/%s/userworks/%d/%s-placeholder.%s', $userslug, $this->id, $filename, $extension);
     }
 
     public function getComments(){

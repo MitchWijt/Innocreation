@@ -1,4 +1,5 @@
 //IMAGES LAZY LOADING
+
 $(function() {
     $('.lazyLoad').Lazy({
         scrollDirection: 'vertical',
@@ -11,3 +12,5 @@ $(function() {
         }
     });
 });
+
+var lazy = new Layzr();

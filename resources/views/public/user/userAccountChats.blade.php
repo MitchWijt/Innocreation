@@ -49,7 +49,7 @@
                                 <div class="col-3 p-r-0 p-l-20">
                                     <div class="avatar p-relative" style="background: url('<?= $userChat['user']->getProfilePicture()?>')">
                                         <? if($userChat['user']->active_status == "online") { ?>
-                                            <i class="zmdi zmdi-circle f-15 c-green p-absolute onlineDot" data-user-id="<?= $userChat['user']->id?>" style="top:4%; right: 5%"></i>
+                                            <i class="zmdi zmdi-circle f-15 c-green p-absolute onlineDot" data-user-id="<?= $userChat['user']->id?>" style="top:4%; right: 1%;"></i>
                                         <? } ?>
                                     </div>
                                 </div>

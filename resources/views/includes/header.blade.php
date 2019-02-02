@@ -31,7 +31,7 @@
                                     <i class="zmdi zmdi-comment-text f-20 c-pointer p-absolute popoverMessages" data-toggle="popover" data-content='<?= view("/public/shared/messagesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -22%"></i>
                                     <i class="zmdi zmdi-accounts-add f-20 c-pointer popoverRequests c-gray p-absolute" data-user-id="<?= $user->id?>" data-toggle="popover" data-content='<?= view("/public/shared/teamInvitesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -12%"></i>
 
-                                    <a class="btn btn-inno btn-sm" href="/expertises">Collaborate</a>
+                                    <a class="btn btn-inno btn-sm" href="/expertises">Community</a>
                                     <? if($user->team_id != null) { ?>
                                         <a class="btn btn-inno btn-sm" href="/my-team">Team</a>
                                     <? } else { ?>
@@ -47,7 +47,7 @@
                                 </div>
                             <? } else { ?>
                                 <div class="m-t-20 pull-right m-r-30 c-gray" style="width: 100%">
-                                    <a class="btn btn-inno btn-sm m-r-5 usersHeader" href="/expertises">Users</a>
+                                    <a class="btn btn-inno btn-sm m-r-5 usersHeader" href="/expertises">Community</a>
                                     <a class="btn btn-inno btn-sm feedHeader" href="/innocreatives">Feed</a>
                                     <i class="popoverHeader zmdi zmdi-chevron-down c-gray f-20 m-l-15 m-t-5 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
                                     <span class="btn-seperator m-l-15 m-r-10"></span>
