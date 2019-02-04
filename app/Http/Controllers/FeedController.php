@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Emoji;
+use App\Services\AppServices\StreamService;
 use App\Services\FeedServices\UserworkPost;
 use App\Services\Paths\PublicPaths;
 use App\Team;
@@ -244,74 +245,15 @@ class FeedController extends Controller
         return view("/public/userworkFeed/shared/_userworkPosts", compact("userWorkPosts", "emojis"));
     }
 
-    public function postUserWorkAction(Request $request){
+    public function postUserWorkAction(Request $request, UserworkPost $userworkPost){
         if($this->authorized()){
-            $userId = $request->input("user_id");
-            $file = $request->file("image");
-            $percentage = $request->input("percentageProgress");
-            $link = $request->input("imageLink");
-            $description = htmlspecialchars($request->input("newUserWorkDescription"));
-
-            $userWork = new UserWork();
-            $userWork->description = $description;
-            $userWork->user_id = $userId;
-            if($percentage){
-                $userWork->progress = $percentage;
-            }
-            $userWork->save();
-
-            if($link){
-                $userWork->link = $link;
-            }
-            if($file) {
-                $size = $this->formatBytes($file->getSize());
-                if ($size < 8) {
-                    $imageProcessor = new ImageProcessor();
-                    $user = User::select("*")->where("id", $userId)->first();
-                    $uniqueId = uniqid($userWork->id);
-
-                    //Creates and uploads Original image
-                    $filename = PublicPaths::getFileName($uniqueId, $file);
-                    $path = PublicPaths::getUserWorkDir($user, $userWork, $filename);
-                    $imageProcessor->upload($file->getRealPath(), $path, false, $file->getRealPath());
-
-                    //Creates and uploads placeholder of Original image
-                    $filenamePlaceholder = PublicPaths::getFileName($uniqueId, $file, true);
-                    $path = PublicPaths::getUserWorkDir($user, $userWork, $filenamePlaceholder);
-                    $imageProcessor->createPlaceholder($file, $file->getRealPath(), $path);
-
-                    //Saves new userwork feed post with image. Filename and extension seperate
-                    $filenameWithoutExtension = PublicPaths::getFileName($uniqueId, $file, false, false);
-                    $userWork->content = $filenameWithoutExtension;
-                    $userWork->extension = $file->getClientOriginalExtension();
-                    $userWork->created_at = date("Y-m-d H:i:s");
-                    $userWork->save();
-                    return redirect($_SERVER["HTTP_REFERER"]);
-                } else {
-                    $userWork->delete();
-                    return redirect("/innocreatives")->withErrors("Image is too large. The max upload size is 8MB");
-                }
-            } else {
-                $userWork->created_at = date("Y-m-d H:i:s");
-                $userWork->save();
-
-                $followers = UserFollowLinktable::select("*")->where("followed_user_id", $userWork->user_id)->get();
-                if($followers){
-                    foreach($followers as $follower){
-                        $poster = User::select("*")->where("id", $userWork->user_id)->first();
-                        $user = User::select("*")->where("id", $follower->user_id)->first();
-                        $this->saveAndSendEmail($user, "$poster->firstname has posted a new post!", view("/templates/sendInnocreativeNotification", compact("user", "poster")));
-                    }
-                }
-
-                return redirect($_SERVER["HTTP_REFERER"]);
-            }
+            return $userworkPost->postNewUserWorkPost($request);
         }
     }
 
-    public function postUserWorkCommentAction(Request $request, UserworkPost $userworkPost){
+    public function postUserWorkCommentAction(Request $request, UserworkPost $userworkPost, StreamService $streamService){
         if($this->authorized()){
-            return $userworkPost->postComment($request);
+            return $userworkPost->postComment($request, $streamService);
         }
     }
 

@@ -325,6 +325,15 @@ class User extends Authenticatable
         }
     }
 
+    public function isAcceptedConnection($receiverId){
+        $connectRequest = ConnectRequestLinktable::select("*")->where("receiver_user_id", $this->id)->where("sender_user_id", Session::get("user_id"))->where("accepted", 1)->Orwhere("receiver_user_id", Session::get("user_id"))->where("sender_user_id", $this->id)->where("accepted", 1)->first();
+        if(count($connectRequest) > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * The attributes that are mass assignable.
      *

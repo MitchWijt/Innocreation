@@ -43,15 +43,22 @@
                         <p class="f-25 m-b-0" style="margin-left: 9%"><?= $user->getName()?> <? if(isset($loggedIn) && $loggedIn->id != $user->id) { ?> <i class="zmdi zmdi-chevron-down f-18 popoverSingleUser c-pointer" data-toggle="popover" data-content='<?= view("/public/shared/_popoverSendMessage", compact("user", "loggedIn"))?>'></i> <? } ?></p>
                         <p class="m-t-0 f-12 m-b-0 c-dark-grey" style="margin-left: 9%"><?= $user->country->country?></p>
                     </div>
-                    <? if(isset($loggedIn) && $loggedIn->id != $user->id) { ?>
-                        <div class="row switchDiv">
-                            <div class="col-6">
-                                <label class="switch switch_type2 m-t-10" style="margin-left: 9%" role="switch">
-                                    <input data-toggle="popover" <? if(isset($loggedIn) && $user->hasSwitched()) echo "checked disabled"; ?> data-content='<?= \App\Services\UserConnections\ConnectionService::getPopoverSwitchView($user)?>' type="checkbox" class="switch__toggle popoverSwitch">
-                                    <span class="switch__label"></span>
+                    <? if(isset($user) && $user->id != $loggedIn->id) { ?>
+                        <? if(!$user->hasSwitched()) {?>
+                            <div class="switcher m-t-10">
+                                <label class="switch switch_type2 m-t-0" style="margin-left: 3%" role="switch">
+                                    <input type="checkbox" data-sender-id="<?= $loggedIn->id?>" data-receiver-id="<?= $user->id?>" class="switch__toggle popoverSwitch">
+                                    <span class="switch__label" style="margin-left: 3%"></span>
                                 </label>
+                                <i class="c-orange hidden connectionSent">Connection request sent</i>
                             </div>
-                        </div>
+                        <? } else { ?>
+                            <? if($user->isAcceptedConnection($user->id)) { ?>
+                                <i class="c-orange m-t-25 m-b-25" style="margin-left: 4%;">Connected</i>
+                            <? } else { ?>
+                                <i class="c-orange m-t-10" style="margin-left: 4%;">Connection request sent</i>
+                            <? } ?>
+                        <? } ?>
                     <? } ?>
                     <div class="row teamLinkDiv">
                         <div class="col-12 p-0 m-0 connectionsAmount">

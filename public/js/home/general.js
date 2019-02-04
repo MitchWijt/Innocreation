@@ -103,6 +103,7 @@ $(document).on("click", ".popoverNotifications, .popoverNotificationsMob", funct
         data: "",
         success: function (data) {
             $(".notificationsContent").html(data);
+            $(".notificationIndicator").addClass("hidden");
         }
     });
 });
@@ -134,6 +135,7 @@ $(document).on("click", ".popoverMessages, .popoverMessagesMob", function () {
         data: "",
         success: function (data) {
             $(".messagesBoxContent").html(data);
+            $(".messageIndicator").addClass("hidden");
         }
     });
 });
@@ -276,9 +278,27 @@ $(document).on("hidden.bs.modal", ".connectionsModal", function () {
 });
 
 $(document).on("click", ".switch__toggle", function () {
-    if (!$(this).is(":checked")) {
-        $(this).popover("hide");
-        $(".popoverSwitch").popover('hide');
+    var _this = $(this);
+    if($(this).is(":checked")) {
+        var senderUserId = $(this).data("sender-id");
+        var recieverId = $(this).data("receiver-id");
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/user/sendConnectRequest",
+            data: {'senderId': senderUserId, "receiverId": recieverId},
+            success: function (data) {
+                $(".notificationIndicator").removeClass("hidden");
+                _this.parents(".switcher").find(".connectionSent").removeClass("hidden");
+                _this.parents(".switcher").find(".switch").addClass("hidden");
+            }
+        });
     }
 });
 

@@ -40,6 +40,9 @@
                 </div>
             </div>
     <? } else if($item['category'] == "notification") { ?>
+        <? if(isset($item['object']['link'])) { ?>
+            <a href="<?= $item['object']['link']?>">
+        <? } ?>
         <div class="row p-b-10 notificationHover" style="border-bottom: 1px solid #FF6100 !important">
             <div class="col-12 text-center m-t-15">
                 <p class="m-l-10"><?= $item['object']['message']?></p>
@@ -50,6 +53,9 @@
                 </div>
             </div>
         </div>
+        <? if(isset($item['object']['link'])) { ?>
+            </a>
+        <? } ?>
     <? } ?>
 <? } ?>
 <? if($counter < 1) { ?>

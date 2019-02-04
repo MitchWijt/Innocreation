@@ -27,7 +27,8 @@
                         <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
                                 <div class="m-t-20 pull-right m-r-30 c-gray p-relative">
                                     <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications c-gray f-25 c-pointer moreChev p-absolute" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>' style="top: 23% !important; left: -32%"></i>
-                                    <i class="zmdi zmdi-circle c-orange f-13 p-absolute z-index <? if($counterMessages < 1) echo "hidden";?> notificationIdicator" style="top: 22%; left: -18.5%;"></i>
+                                    <i class="zmdi zmdi-circle c-orange f-13 p-absolute z-index notificationIndicator hidden" style="top: 22%; left: -29%;"></i>
+                                    <i class="zmdi zmdi-circle c-orange f-13 p-absolute z-index <? if($counterMessages < 1) echo "hidden";?> messageIndicator" style="top: 22%; left: -18.5%;"></i>
                                     <i class="zmdi zmdi-comment-text f-20 c-pointer p-absolute popoverMessages" data-toggle="popover" data-content='<?= view("/public/shared/messagesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -22%"></i>
                                     <i class="zmdi zmdi-accounts-add f-20 c-pointer popoverRequests c-gray p-absolute" data-user-id="<?= $user->id?>" data-toggle="popover" data-content='<?= view("/public/shared/teamInvitesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -12%"></i>
 

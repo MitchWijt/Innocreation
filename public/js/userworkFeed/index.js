@@ -341,22 +341,6 @@ $(document).on("click", ".editPostBtn",function () {
     $(".editUserWork-" + id).removeClass("hidden");
 });
 
-$(document).on("click", ".switch__toggle", function () {
-    var _this = $(this);
-    if($(".userId").val() != 0) {
-        if (!$(this).is(":checked")) {
-            $(this).parents(".userSwitch").find(".popoverSwitch").popover.toggle();
-        }
-
-        $(this).parents(".userSwitch").find(".popoverSwitch").popover("show");
-    } else {
-        _this.prop("checked", true);
-        setTimeout(function(){
-            _this.prop("checked", false);
-            _this.parents(".userSwitch").find(".popoverSwitch").popover("show");
-        }, 500);
-    }
-});
 
 $(document).on("keyup", ".attachmentLink", function () {
    var val = $(this).val();

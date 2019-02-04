@@ -43,4 +43,16 @@
             $tempfile = tempnam(sys_get_temp_dir(), "");
             return $tempfile;
         }
+
+        public static function formatBytes($bytes, $precision = 2){
+            $unit = ["B", "KB", "MB", "GB"];
+            $exp = floor(log($bytes, 1024)) | 0;
+            if($unit[$exp] == "MB") {
+                return round($bytes / (pow(1024, $exp)), $precision);
+            } else if($unit[$exp] == "KB"){
+                return 6;
+            } else if($unit[$exp] == "GB"){
+                return 9;
+            }
+        }
     }

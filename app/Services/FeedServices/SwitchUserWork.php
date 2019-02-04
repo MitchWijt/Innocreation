@@ -9,6 +9,7 @@
 namespace App\Services\FeedServices;
 
 use App\ConnectRequestLinktable;
+use App\Services\TimeSent;
 use App\User;
 use App\UserChat;
 use App\UserMessage;
@@ -18,26 +19,21 @@ use Illuminate\Support\Facades\Session;
 
 class SwitchUserWork
 {
-    private $modal;
-    private $requestModal;
-
-    public function __construct(UserWork $userWork, ConnectRequestLinktable $connectRequest)
+    public function createNewConnectRequest($request, $streamService)
     {
-        $this->modal = $userWork;
-        $this->requestModal = $connectRequest;
-    }
-
-    public function createNewConnectRequest($request)
-    {
-        $connectRequest = new $this->requestModal;
-        $connectRequest->receiver_user_id = $request->input("receiver_user_id");
-        $connectRequest->sender_user_id = $request->input("sender_user_id");
-        $connectRequest->message = $request->input("connectMessage");
+        $connectRequest = new ConnectRequestLinktable();
+        $connectRequest->receiver_user_id = $request->input("receiverId");
+        $connectRequest->sender_user_id = $request->input("senderId");
         $connectRequest->accepted = 0;
         $connectRequest->created_at = date("Y-m-d H:i:s");
         $connectRequest->save();
 
-        return json_encode($connectRequest);
+        $receiver = User::select("*")->where("id", $connectRequest->receiver_user_id)->first();
+        $notificationMessage = sprintf("A connection request has been sent to %s", $receiver->firstname);
+        $timeSent = new TimeSent();
+        $data = ["actor" => $connectRequest->sender_user_id , "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time", "verb" => "notification", "object" => "3"];
+        $streamService->addActivityToFeed($connectRequest->sender_user_id, $data);
+        return 1;
     }
 
     public function listConnections($id)
@@ -67,7 +63,7 @@ class SwitchUserWork
         return $connections;
     }
 
-    public function acceptConnection($request, $mailgun)
+    public function acceptConnection($request, $mailgun, $streamService)
     {
         $connectRequest = ConnectRequestLinktable::select("*")
             ->where("id", $request->input("connection_id"))->first();
@@ -104,10 +100,15 @@ class SwitchUserWork
         $mailgun->saveAndSendEmail($connectRequest->user, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
 
 
+        $notificationMessage = sprintf("Your connection request to %s has been accepted!", $connectRequest->user->firstname);
+        $timeSent = new TimeSent();
+        $data = ["actor" => $connectRequest->sender_user_id , "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time", "verb" => "notification", "object" => "3"];
+        $streamService->addActivityToFeed($connectRequest->sender_user_id, $data);
+
         Session::set("userChatId", $userChat->id);
     }
 
-    public function declineConnection($request, $mailgun)
+    public function declineConnection($request, $mailgun, $streamService)
     {
         $connectRequest = ConnectRequestLinktable::select("*")->where("id", $request->input("connection_id"))->first();
         $connectRequest->accepted = 2;
@@ -126,6 +127,11 @@ class SwitchUserWork
         $user = $connectRequest->sender;
 
         $mailgun->saveAndSendEmail($connectRequest->sender, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+
+        $notificationMessage = sprintf("Your connection request to %s has been accepted!", $connectRequest->user->firstname);
+        $timeSent = new TimeSent();
+        $data = ["actor" => $connectRequest->sender_user_id , "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time", "verb" => "notification", "object" => "3"];
+        $streamService->addActivityToFeed($connectRequest->sender_user_id, $data);
 
         return redirect($user->getUrl());
     }

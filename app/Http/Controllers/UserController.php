@@ -847,12 +847,12 @@ class UserController extends Controller
         }
     }
 
-    public function declineConnectionAction(Request $request, SwitchUserWork $switch, Mailgun $mailgun){
-        return $switch->declineConnection($request, $mailgun);
+    public function declineConnectionAction(Request $request, SwitchUserWork $switch, Mailgun $mailgun, StreamService $streamService){
+        return $switch->declineConnection($request, $mailgun, $streamService);
     }
 
-    public function acceptConnectionAction(Request $request, SwitchUserWork $switch, Mailgun $mailgun){
-        $switch->acceptConnection($request, $mailgun);
+    public function acceptConnectionAction(Request $request, SwitchUserWork $switch, Mailgun $mailgun, StreamService $streamService){
+        $switch->acceptConnection($request, $mailgun, $streamService);
         return redirect("/my-account/chats");
     }
 
@@ -864,8 +864,7 @@ class UserController extends Controller
         return $userPrivacySettingsService->openSettingsModal();
     }
 
-    public function sendConnectRequestAction(Request $request, SwitchUserWork $switch){
-        $switch->createNewConnectRequest($request);
-        return redirect('/my-account');
+    public function sendConnectRequestAction(Request $request, SwitchUserWork $switch, StreamService $streamService){
+        return $switch->createNewConnectRequest($request, $streamService);
     }
 }
