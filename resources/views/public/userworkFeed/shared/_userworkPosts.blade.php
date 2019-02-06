@@ -19,19 +19,19 @@
                     <p class="f-17 m-t-15 m-b-5 descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: normal"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
                     <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
                         <div class="m-t-15 m-b-5 editUserWork-<?= $userWorkPost->id?> hidden">
-                            <form action="/feed/editUserWorkPost" method="post">
+                            <form action="/feed/editUserWorkPost" class="m-0" method="post">
                                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                 <input type="hidden" name="userWorkId" value="<?= $userWorkPost->id?>">
-                                <textarea id="description_id" class="col-sm-11 input" rows="6" name="newUserWorkDescription"><? if($userWorkPost->description != null) echo htmlspecialchars_decode($userWorkPost->description);?></textarea>
+                                <textarea id="description_id" class="col-sm-12 input" rows="6" name="newUserWorkDescription"><? if($userWorkPost->description != null) echo htmlspecialchars_decode($userWorkPost->description);?></textarea>
                                 <div class="col-sm-12">
-                                    <button class="pull-right btn btn-sm btn-inno m-r-15 m-b-10">Save</button>
+                                    <button class="pull-right btn btn-sm btn-inno m-b-10" style="z-index: 10">Save</button>
                                 </div>
                             </form>
                         </div>
                     <? } ?>
-                    <div class="image p-relative">
+                    <div class="image p-relative m-t-20">
                         <? if($userWorkPost->content != null) { ?>
-                            <img class="zoom" data-id="<?= $userWorkPost->id?>" src="<?= $userWorkPost->getPlaceholder()?>" data-layzr="<?= $userWorkPost->getImage()?>" style="width: 100%;">
+                            <img class="zoom zoom-<?= $userWorkPost->id?>" data-id="<?= $userWorkPost->id?>" src="<?= $userWorkPost->getPlaceholder()?>" data-layzr="<?= $userWorkPost->getImage()?>" style="width: 100%;">
                         <? } ?>
                     </div>
                     <div class="col-sm-12">

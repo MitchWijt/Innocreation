@@ -225,6 +225,10 @@ class FeedController extends Controller
 
     }
 
+    public function unhashId(Request $request, UserworkPost $userworkPost){
+        return $userworkPost->encrypt_decrypt("decrypt", $request->input("hash"));
+    }
+
     public function getUserworkPostsAction(Request $request, FeedService $feedService){
         return $feedService->getUserworkPosts($request);
     }

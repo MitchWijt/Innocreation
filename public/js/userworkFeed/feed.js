@@ -16,6 +16,27 @@ $(document).ready(function () {
             $(".userworkData").html(data);
         }
     });
+    setTimeout(function () {
+        if($(".sharedLinkId").val()){
+            var hash = $(".sharedLinkId").val();
+            $.ajax({
+                method: "POST",
+                beforeSend: function (xhr) {
+                    var token = $('meta[name="csrf_token"]').attr('content');
+
+                    if (token) {
+                        return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                    }
+                },
+                url: "/feed/unhashId",
+                data: {"hash" : hash},
+                success: function (data) {
+                    var _this = $(".zoom-" + data);
+                    zoom(_this);
+                }
+            });
+        }
+    }, 500);
 });
 
 var counterScroll = 0;
@@ -62,11 +83,8 @@ $(window).scroll(function () {
     }
 });
 
-
-
-
-$(document).on("click", ".zoom", function () {
-    var userworkId = $(this).data("id");
+function zoom(_this){
+    var userworkId = _this.data("id");
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -77,11 +95,13 @@ $(document).on("click", ".zoom", function () {
             }
         },
         url: "/getUserWorkPostModal",
+        dataType: "JSON",
         data: {"userworkId" : userworkId},
         success: function (data) {
-            $("body").append(data);
+            $("body").append(data['view']);
             $(".userWorkPostModal").modal("toggle");
             $(".modal-backdrop").attr("style", "opacity: 0.5 !important");
+            history.replaceState("userWorkPostModal", "userWorkPostModal", '/innocreatives/' + data['hash']);
         }
     });
 
@@ -108,6 +128,11 @@ $(document).on("click", ".zoom", function () {
             }
         }, 1000);
     }, 500);
+}
+
+
+$(document).on("click", ".zoom", function () {
+    zoom($(this));
 });
 $(document).on("shown.bs.modal", ".userWorkPostModal", function () {
     const comments = document.querySelector(".userWorkComments");
@@ -116,6 +141,7 @@ $(document).on("shown.bs.modal", ".userWorkPostModal", function () {
 
 $(document).on("hidden.bs.modal", ".userWorkPostModal", function () {
     $(".userWorkPostModal").remove();
+    history.replaceState("innocreatives", "innocreatives", '/innocreatives');
 });
 
 $(document).on("click", ".emojiComment", function () {

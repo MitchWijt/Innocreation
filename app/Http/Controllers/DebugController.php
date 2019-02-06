@@ -45,7 +45,6 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService, UserNotifications $userNotifications) {
-        return UserExpertises::getSkillLevel(2);
         die('test');
     }
 }

@@ -74,6 +74,9 @@
     <? } else { ?>
         <input type="hidden" class="userId" value="0">
     <? } ?>
+    <? if(isset($sharedUserWorkId)) { ?>
+        <input type="hidden" class="sharedLinkId" value="<?= $sharedUserWorkId?>">
+    <? } ?>
     <div class="d-flex grey-background">
         <div class="container">
             <div class="row">

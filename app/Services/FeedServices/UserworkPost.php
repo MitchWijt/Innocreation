@@ -15,21 +15,59 @@
     use App\UserFollowLinktable;
     use App\UserWork;
     use App\UserWorkComment;
+    use function GuzzleHttp\json_encode;
     use Illuminate\Support\Facades\Session;
+    use Illuminate\View\View;
 
     class UserworkPost {
-        public function getPostModal($request){
-            $userWorkId = $request->input("userworkId");
-            $userWorkPost = UserWork::select("*")->where("id", $userWorkId)->first();
-            $emojis = Emoji::select("*")->get();
+        private static function generateHash($id){
+            return base64_encode($id);
+        }
 
-            if(Session::has("user_id")) {
-                $user = User::select("*")->where("id", Session::get("user_id"))->first();
-                return view("public/userworkFeed/shared/_userworkPostModal", compact("userWorkPost", "emojis", "user"));
+        public function unhashId($request){
+            $hash = $request->input("hash");
+            $id = base64_decode($hash);
+            return $id;
+        }
+
+        public function encrypt_decrypt($action, $input){
+            $output = false;
+
+            $encrypt_method = "AES-256-CBC";
+            $secret_key = 'This is my secret key';
+            $secret_iv = 'This is my secret iv';
+
+            // hash
+            $key = hash('sha256', $secret_key);
+
+            // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
+            $iv = substr(hash('sha256', $secret_iv), 0, 16);
+
+            if( $action == 'encrypt' ) {
+                $output = openssl_encrypt($input, $encrypt_method, $key, 0, $iv);
+                $output = base64_encode($output);
+            }
+            else if( $action == 'decrypt' ){
+                $output = openssl_decrypt(base64_decode($input), $encrypt_method, $key, 0, $iv);
             }
 
-            return view("public/userworkFeed/shared/_userworkPostModal", compact("userWorkPost", "emojis"));
+            return $output;
+        }
 
+        public function getPostModal($request){
+            $userWorkId = $request->input("userworkId");
+            $hash = $this->encrypt_decrypt("encrypt", $userWorkId);
+            $userWorkPost = UserWork::select("*")->where("id", $userWorkId)->first();
+            $emojis = Emoji::select("*")->get();
+            if(Session::has("user_id")) {
+                $user = User::select("*")->where("id", Session::get("user_id"))->first();
+                $view = view("public/userworkFeed/shared/_userworkPostModal", compact("userWorkPost", "emojis", "user"));
+                $contents = $view->render();
+                return json_encode(["view" => $contents, 'hash' => $hash]);
+            }
+            $view = view("public/userworkFeed/shared/_userworkPostModal", compact("userWorkPost", "emojis"));
+            $contents = $view->render();
+            return json_encode(["view" => $contents, 'hash' => $hash]);
         }
 
         public static function getRecentComments($id){

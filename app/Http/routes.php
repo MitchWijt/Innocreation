@@ -629,8 +629,6 @@ Route::post("/feed/getUserworkPosts", "FeedController@getUserworkPostsAction");
 
 Route::post("/feed/getMoreUserworkPosts", "FeedController@getMoreUserworkPostsAction");
 
-Route::post("/feed/upvoteUserWork", "FeedController@upvoteUserWorkAction");
-
 Route::get("/innocreatives/{id?}", "FeedController@workFeedIndexAction");
 
 Route::post("/feed/postUserWork", "FeedController@postUserWorkAction");
@@ -642,6 +640,8 @@ Route::post("/feed/deleteUserWorkPost", "FeedController@deleteUserWorkPostAction
 Route::post("/feed/editUserWorkPost", "FeedController@editUserWorkPostAction");
 
 Route::post("/getUserWorkPostModal", "FeedController@getUserWorkPostModal");
+
+Route::post("/feed/unhashId", "FeedController@unhashId");
 
 //========================CHECKOUT/PACKAGES========================
 
