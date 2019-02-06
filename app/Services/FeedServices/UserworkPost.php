@@ -82,7 +82,6 @@
                 $userWork->link = $link;
             }
             if($file) {
-
                 $size = ImageProcessor::formatBytes($file->getSize());
                 if ($size < 8) {
                     $imageProcessor = new ImageProcessor();

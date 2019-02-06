@@ -160,7 +160,7 @@
                     <p class="@mobile f-14 @elsedesktop f-20 @endmobile text-center"><a class="regular-link" href="/create-my-account">Create an account</a> or <a class="regular-link" href="/login">login</a> to post your work!</p>
                 </div>
             <? } ?>
-            <div class="userworkData m-t-20 grid-container">
+            <div class="userworkData m-t-20 grid-container" data-page="feedPage">
 
             </div>
         </div>
@@ -180,4 +180,5 @@
 @endsection
 @section('pagescript')
     <script src="/js/userworkFeed/index.js"></script>
+    <script src="/js/userworkFeed/feed.js"></script>
 @endsection

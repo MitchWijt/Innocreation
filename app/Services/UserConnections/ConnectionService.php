@@ -29,6 +29,11 @@ class ConnectionService
 
     }
 
+    public static function getSwitch($receiverUserId){
+        $receiver = User::select("*")->where("id", $receiverUserId)->first();
+        return view("/public/shared/connections/_switch", compact("receiver"));
+    }
+
     public static function acceptedConnections($userId){
         $connections = ConnectRequestLinktable::select("*")
                       ->where("receiver_user_id", $userId)

@@ -9,23 +9,7 @@
                     </a>
                     <p class="m-b-0 m-t-5"><a href="<?= $userWorkPost->user->getUrl()?>" target="_blank" class="c-black"><?= $userWorkPost->user->getName()?></a></p>
                 </div>
-                <? if(isset($user) && $user->id != $userWorkPost->user_id) { ?>
-                    <? if(!$userWorkPost->user->hasSwitched()) {?>
-                        <div class="switcher m-t-10 m-r-20">
-                            <label class="switch switch_type2 m-0" role="switch">
-                                <input type="checkbox" data-sender-id="<?= $user->id?>" data-receiver-id="<?= $userWorkPost->user_id?>" class="switch__toggle popoverSwitch">
-                                <span class="switch__label"></span>
-                            </label>
-                            <i class="c-orange hidden connectionSent">Connection request sent</i>
-                        </div>
-                    <? } else { ?>
-                        <? if($userWorkPost->user->isAcceptedConnection($userWorkPost->user_id)) { ?>
-                            <i class="c-orange m-r-20 m-t-10">Connected</i>
-                        <? } else { ?>
-                            <i class="c-orange m-r-20 m-t-10">Connection request sent</i>
-                        <? } ?>
-                    <? } ?>
-                <? } ?>
+                <?= \App\Services\UserConnections\ConnectionService::getSwitch($userWorkPost->user->id)?>
             </div>
             <div class="p-20 text-center no-select">
                 <img class="no-select" src="<?= $userWorkPost->getPlaceholder()?>" data-layzr="<?= $userWorkPost->getImage()?>" style="max-width: 75vw; max-height: 85vh">

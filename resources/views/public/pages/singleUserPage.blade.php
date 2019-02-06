@@ -43,26 +43,12 @@
                         <p class="f-25 m-b-0" style="margin-left: 9%"><?= $user->getName()?> <? if(isset($loggedIn) && $loggedIn->id != $user->id) { ?> <i class="zmdi zmdi-chevron-down f-18 popoverSingleUser c-pointer" data-toggle="popover" data-content='<?= view("/public/shared/_popoverSendMessage", compact("user", "loggedIn"))?>'></i> <? } ?></p>
                         <p class="m-t-0 f-12 m-b-0 c-dark-grey" style="margin-left: 9%"><?= $user->country->country?></p>
                     </div>
-                    <? if(isset($user) && $user->id != $loggedIn->id) { ?>
-                        <? if(!$user->hasSwitched()) {?>
-                            <div class="switcher m-t-10">
-                                <label class="switch switch_type2 m-t-0" style="margin-left: 3%" role="switch">
-                                    <input type="checkbox" data-sender-id="<?= $loggedIn->id?>" data-receiver-id="<?= $user->id?>" class="switch__toggle popoverSwitch">
-                                    <span class="switch__label" style="margin-left: 3%"></span>
-                                </label>
-                                <i class="c-orange hidden connectionSent">Connection request sent</i>
-                            </div>
-                        <? } else { ?>
-                            <? if($user->isAcceptedConnection($user->id)) { ?>
-                                <i class="c-orange m-t-25 m-b-25" style="margin-left: 4%;">Connected</i>
-                            <? } else { ?>
-                                <i class="c-orange m-t-10" style="margin-left: 4%;">Connection request sent</i>
-                            <? } ?>
-                        <? } ?>
-                    <? } ?>
+                    <div class="m-l-15 m-b-5">
+                        <?= \App\Services\UserConnections\ConnectionService::getSwitch($user->id)?>
+                    </div>
                     <div class="row teamLinkDiv">
                         <div class="col-12 p-0 m-0 connectionsAmount">
-                            <span><a class="regular-link c-dark-grey f-12 openConnectionsModal" data-id="<?= $user->id?>" style="margin-left: 9%" href="#"><?= count($connections)?> Connections</a></span>
+                            <span><a class="regular-link c-dark-grey f-12 <? if(count($connections) > 0) echo "openConnectionsModal";?>" data-id="<?= $user->id?>" style="margin-left: 9%" ><?= count($connections)?> Connections</a></span>
                         </div>
                     </div>
                     <? if($user->team_id != null) { ?>
@@ -73,7 +59,7 @@
                         </div>
                     <? } ?>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-8 <? if(!isset($loggedIn)) echo "m-t-65";?>">
                     <div class="row">
                         <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
                             <div class="col-sm-12 m-b-20 navbarBox">
@@ -112,7 +98,7 @@
                                 <div class="row p-l-30 p-r-30 m-b-30 m-t-10 expertise-<?= $expertise->id?>">
                                     <div class="col-xl-3">
                                         <div class="card">
-                                            <div class="card-block expertiseCard p-relative c-pointer" style="max-height: 150px !important">
+                                            <div class="card-block expertiseCard p-relative" style="max-height: 150px !important">
                                                 <div class="p-absolute" style="z-index: 200; bottom: 0; right: 5px">
                                                     <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                                                 </div>
@@ -177,120 +163,9 @@
                     </div>
                 </div>
             </div>
-            <div class="row d-flex js-center">
-                <div class="col-md-12">
-                    <div class="card card-lg m-t-20 m-b-20">
-                        <div class="card-block m-t-10" style="overflow: hidden !important">
-                            <div class="row">
-                                <div class="col-sm-12 m-l-20 m-b-5">
-                                    <h3>My portfolio</h3>
-                                </div>
-                            </div>
-                            <hr class="m-b-20">
-                            <? $counter = 0?>
-                            <? foreach($portfolios as $portfolio) { ?>
-                                <div class="row" id="test">
-                                    <div class="col-12 m-l-20">
-                                        <h3 class="m-b-0 p-b-0"><?= $portfolio->title?></h3>
-                                    </div>
-                                    <? if(isset($portfolio->link)) { ?>
-                                        <div class="col-12 m-l-20 p-t-0 ">
-                                            <i class="c-dark-grey f-11"><a class="c-orange" href="<?= $portfolio->link?>">Referal link</a></i>
-                                        </div>
-                                    <? } ?>
-                                </div>
-                                <div class="carousel m-b-30 carousel-portfolio" id="carousel-default-<?= $counter?>" data-counter="<?= $counter?>">
-                                    <ul class="p-l-0">
-                                        <? foreach($portfolio->getFiles() as $file) { ?>
-                                            <li class="td-none portfolioFileItem p-r-10 p-l-10" style="list-style-type: none; min-width: 350px !important; z-index: -1 !important">
-                                                <? if($file->mimetype != \App\Services\Paths\PublicPaths::mimeType(false, true, false)) { ?>
-                                                    <div class="card m-t-20 m-b-20 portfolioItemCard p-relative">
-                                                        <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
-                                                            <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(true, false, false) && $file->filename != null) { ?>
-                                                                <? $backgroundImg = $file->getAudioCover() ?>
-                                                            <? } else { ?>
-                                                                 <? $backgroundImg = $file->getUrl() ?>
-                                                            <? } ?>
-                                                                <div class="@mobile contentPortfolioNoScale noScale-<?= $file->id?> @elsedesktop contentPortfolio lazyLoad @enddesktop" data-id="<?= $file->id?>" data-url="<?= $file->getUrl()?>" data-src="<?= $backgroundImg?>" style="z-index: -1 !important">
-                                                                <div id="content" @notmobile style="display: none;" @endnotmobile>
-                                                                    <div class="m-t-10 p-absolute cont-<?= $file->id?>" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
-                                                                        <p class="c-white f-9 p-t-40" style="width: 300px !important"><?= $file->description?></p>
-                                                                    </div>
-                                                                    <div class="p-t-40 p-absolute cont-<?= $file->id?>" style="top: 5%; left: 56%; width: 100%; transform: translate(-50%, -50%);">
-                                                                        <p class="c-white f-12"><?= $file->title?></p>
-                                                                    </div>
-                                                                    <? if($file->title != null) { ?>
-                                                                        <div class="p-absolute cont-<?= $file->id?>" style="top: 18%; left: 44%; width: 100%; transform: translate(-50%, -50%);">
-                                                                            <hr class="col-8">
-                                                                        </div>
-                                                                    <? } ?>
-                                                                    <? if($file->mimetype ==  \App\Services\Paths\PublicPaths::mimeType(true, false, false)) { ?>
-                                                                        <div class="p-absolute" style="top: 80%; right: -1%; transform: translate(-50%, -50%);">
-                                                                            <i class="zmdi zmdi-play editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 playSong" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
-                                                                            <i class="zmdi zmdi-pause editBtnDark f-15 p-b-0 p-t-0 p-r-10 p-l-10 pauseSong hidden" data-counter="<?= $counter?>" data-id="<?= $file->id?>"></i>
-                                                                        </div>
-                                                                        <div class="p-absolute" style="top: 80%; left: 13%; transform: translate(-50%, -50%);">
-                                                                            <span class="currentTime f-12 cur-<?= $file->id?>"></span><span class="f-12">/</span><span class="duration f-12 dur-<?= $file->id?>" data-id="<?= $file->id?>"></span>
-                                                                        </div>
-                                                                        <div class="p-absolute p-l-5 p-r-5" style="top: 90%; left: 50%; width: 100%; transform: translate(-50%, -50%);">
-                                                                            <input type="range" class=" p-l-0 p-r-0 music-progress-bar musicBar-<?= $file->id?>" data-counter="<?= $counter?>" data-id="<?= $file->id?>" value="0" name="" id="">
-                                                                        </div>
-                                                                        <audio id="player-<?= $file->id?>" ontimeupdate="getCurrentTime(this, $(this).data('id'))" class="lazyLoad" data-src="<?= $file->getAudio()?>" data-id="<?= $file->id?>"></audio>
-                                                                    <? } ?>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                <? } else { ?>
-                                                    <div class="card m-t-20 m-b-20 p-0 portfolioItemCard p-relative">
-                                                        <div class="p-relative c-pointer contentContainerPortfolio" data-url="/" style="max-height: 180px">
-                                                            <div class="@handheld @mobile contentPortfolioNoScale noScale videoContentMobile @elsetablet videoContentTablet contentPortfolio @endmobile @elsedesktop contentPortfolio videoContent videoContent-<?= $file->id?> @endhandheld" data-id="<?= $file->id?>" data-counter="<?= $counter?>"  style="z-index: 2 !important;">
-                                                                <div class="m-t-10 p-absolute" style="top: 40%; left: 52%; !important; transform: translate(-50%, -50%);">
-                                                                    <i class="zmdi zmdi-play playButtonVideo shadow play-<?= $file->id?>"></i>
-                                                                </div>
-                                                                <div class="p-absolute cont-<?= $file->id?>" style="bottom: 4%; left: 5%">
-                                                                    <i class="zmdi zmdi-volume-off f-20 unmuteVideo unmute-<?=$file->id?>" data-id="<?= $file->id?>"></i>
-                                                                    <i class="zmdi zmdi-volume-up f-20 muteVideo mute-<?= $file->id?> hidden" data-id="<?= $file->id?>"></i>
-                                                                </div>
-                                                                <video poster="<?= $file->getThumbnail()?>"  id="video-<?= $file->id?>" data-id="<?= $file->id?>" class="video video-<?= $file->id?> lazyLoad" data-src="<?= $file->getVideo()?>" style="min-width: 100% !important; max-width: 350px !important; min-height: 180px !important; max-height: 180px !important; z-index: 99;" muted></video>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                <? } ?>
-                                            </li>
-                                        <? } ?>
-                                    </ul>
-                                </div>
-                                <? $counter++?>
-                            <? } ?>
-                        </div>
-                    </div>
-                </div>
+            <div class="userworkData m-t-20 grid-container" data-page="userPage" data-user-id="<?= $user->id?>">
+
             </div>
-            <? if($user->team_id != null) { ?>
-                <div class="row d-flex js-center">
-                    <div class="col-md-12 col-xs-12">
-                        <div class="card card-lg m-t-20 m-b-20">
-                            <div class="card-block m-t-10 ">
-                                <div class="row">
-                                    <div class="col-sm-12 m-l-20">
-                                        <h3>My team - <a href="/team/<?= $user->team->slug?>" class="regular-link"><?= $user->team->team_name?></a></h3>
-                                    </div>
-                                </div>
-                                <div class="d-flex fd-column">
-                                    <div class="row d-flex js-center @mobile p-l-30 p-r-30 @endmobile">
-                                        <div class="col-sm-11">
-                                            <p class="f-21 m-0">Team introduction</p>
-                                            <hr>
-                                            <p><?= $user->team->team_introduction?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <? } ?>
             <div class="modal teamLimitNotification fade" id="teamLimitNotification" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
@@ -308,4 +183,5 @@
 @endsection
 @section('pagescript')
     <script defer async src="/js/pages/singleUserPage.js"></script>
+    <script defer async src="/js/userworkFeed/feed.js"></script>
 @endsection
