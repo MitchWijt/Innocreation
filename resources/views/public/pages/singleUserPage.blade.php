@@ -1,5 +1,6 @@
 @extends("layouts.app")
 <link rel="stylesheet" href="/css/responsiveness/singleUserPage.css">
+<link rel="stylesheet" href="/css/responsiveness//innocreativeFeed/index.css">
 @section("content")
     <div class="d-flex grey-background">
         <div class="container">
@@ -163,9 +164,18 @@
                     </div>
                 </div>
             </div>
-            <div class="userworkData m-t-20 grid-container" data-page="userPage" data-user-id="<?= $user->id?>">
+            <? if($amountUserWorkPosts > 0) { ?>
+                <div class="userworkData m-t-20 grid-container" data-page="userPage" data-user-id="<?= $user->id?>">
 
-            </div>
+                </div>
+            <? } else { ?>
+                <div class="d-flex js-center m-t-20 m-b-20">
+                    <div class="p-relative">
+                        <p class="p-absolute f-20" style="top: 5%; left: 23%">No posts have been posted yet...</p>
+                        <img src="/images/placeholder.png" alt="">
+                    </div>
+                </div>
+            <? } ?>
             <div class="modal teamLimitNotification fade" id="teamLimitNotification" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">

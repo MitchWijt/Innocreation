@@ -156,3 +156,12 @@
     border: 1px solid #77787a;
     padding: 10px
 }
+
+.placeholderUserWorks{
+    background: url('/images/placeholder.png');
+    height: 40%;
+    width: 100%;
+    background-size:     cover !important;                      /* <------ */
+    background-repeat:   no-repeat !important;
+    background-position: center center !important;
+}

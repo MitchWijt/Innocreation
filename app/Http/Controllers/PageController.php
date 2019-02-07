@@ -17,6 +17,7 @@ use App\JoinRequestLinktable;
 use App\Page;
 use App\UserPortfolio;
 use App\UserPortfolioFile;
+use App\UserWork;
 use Illuminate\Http\Request;
 use Session;
 
@@ -68,7 +69,9 @@ class PageController extends Controller
         $validator = false;
         $og_description = "This is $user->firstname who is active as a $activeAs. Start working with each other! Create a team or join a team";
         $connections = $switchUserWork->listAcceptedConnections($user->id);
-        return view("public/pages/singleUserPage", compact("user","expertise_linktable", "loggedIn", "portfolios","team", "neededExpertisesArray", "title", "og_description", "validator", "connections"));
+
+        $amountUserWorkPosts = UserWork::select("*")->where("user_id", $user->id)->count();
+        return view("public/pages/singleUserPage", compact("user","expertise_linktable", "loggedIn", "portfolios","team", "neededExpertisesArray", "title", "og_description", "validator", "connections", "amountUserWorkPosts"));
     }
 
 
