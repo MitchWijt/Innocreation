@@ -1,5 +1,5 @@
 <? foreach($userWorkPosts as $userWorkPost) { ?>
-        <div class="card-lg no-shadow no-shadow userWorkPost m-b-20" style="display: inline-block;" data-id="<?= $userWorkPost->id?>">
+        <div class="card-lg no-shadow no-shadow userWorkPost m-b-20 p-relative" style="display: inline-block;" data-id="<?= $userWorkPost->id?>">
             <div class="card-block">
                 <div class="col-sm-12  m-t-10 p-0 p-absolute d-flex js-between align-start">
                     <div class="d-flex">
@@ -16,7 +16,9 @@
                     <? } ?>
                 </div>
                 <div class="col-sm-12 p-relative desc p-0">
-                    <p class="f-17 m-t-15 m-b-5 descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: normal"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
+                    <div style="max-width: 340px;">
+                        <p class="f-17 m-t-15 m-b-5 descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: normal"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
+                    </div>
                     <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
                         <div class="m-t-15 m-b-5 editUserWork-<?= $userWorkPost->id?> hidden">
                             <form action="/feed/editUserWorkPost" class="m-0" method="post">
@@ -34,12 +36,13 @@
                             <img class="zoom zoom-<?= $userWorkPost->id?>" data-id="<?= $userWorkPost->id?>" src="<?= $userWorkPost->getPlaceholder()?>" data-layzr="<?= $userWorkPost->getImage()?>" style="width: 100%;">
                         <? } ?>
                     </div>
-                    <div class="col-sm-12">
-                        <div class="m-t-5 m-b-5 d-flex align-start">
+                    <div class="col-sm-12 d-flex js-between">
+                        <div class="m-t-10 m-b-5 d-flex align-start">
                             <a class="regular-link f-14 c-dark-grey m-0 zoom" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Comments</a>
                             <i class="zmdi zmdi-circle f-5 vertically-center c-dark-grey m-l-5 m-t-8 m-r-5"></i>
-                            <a class="regular-link f-14 c-dark-grey m-0" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Likes</a>
+                            <a class="regular-link f-14 c-dark-grey m-0" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Points</a>
                         </div>
+                        <span class="editBtn p-b-0 p-l-15 p-r-15 m-t-5 m-b-10" style="padding-top: 3px !important;"><i class="zmdi zmdi-plus"></i>1</span>
                     </div>
                     <? if(count($userWorkPost->getComments()) > 0) { ?>
                         <div class="col-sm-12 gradientToTransparant zoom" data-id="<?= $userWorkPost->id?>" >
