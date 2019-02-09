@@ -16,9 +16,9 @@
     </div>
     <? } else { ?>
         <? if($receiver->isAcceptedConnection($receiver->id)) { ?>
-            <i class="c-orange m-r-20 m-t-10">Connected</i>
+            <i class="c-orange m-r-20 m-t-15">Connected</i>
         <? } else { ?>
-            <i class="c-orange m-r-20 m-t-10">Connection request sent</i>
+            <i class="c-orange m-r-20 m-t-15">Connection request sent</i>
         <? } ?>
     <? } ?>
 <? } ?>

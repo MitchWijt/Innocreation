@@ -202,3 +202,36 @@ $(document).on("click", ".postComment", function () {
         }
     }, 1000);
 });
+
+function plus_minus_post(formUrl, _this){
+    var userWorkId = _this.data("id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: formUrl,
+        data: {'user_work_id': userWorkId},
+        success: function (data) {
+            $(".amountOfPoints-" + userWorkId).text(data);
+        }
+    });
+}
+
+$(document).on("click", ".plusPointPost", function () {
+    plus_minus_post("/feed/plusPointPost", $(this));
+    var userWorkId = $(this).data("id");
+    $(".icon-" + userWorkId).removeClass("zmdi-plus").addClass("zmdi-minus");
+    $(".plusMinusBtn-" + userWorkId).attr("style", "padding-top: 3px !important; border: 1px solid #FF6100").removeClass("plusPointPost").addClass("minusPointPost");
+});
+
+$(document).on("click", ".minusPointPost", function () {
+    plus_minus_post("/feed/minusPointPost", $(this));
+    var userWorkId = $(this).data("id");
+    $(".icon-" + userWorkId).removeClass("zmdi-minus").addClass("zmdi-plus");
+    $(".plusMinusBtn-" + userWorkId).attr("style", "padding-top: 3px !important;").removeClass("minusPointPost").addClass("plusPointPost");
+});

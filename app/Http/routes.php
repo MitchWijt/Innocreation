@@ -625,6 +625,10 @@ Route::get("/team-product/{slug?}", "FeedController@TeamProductsAction");
 //=======================WORKFEED=============================
 Route::get("/innocreatives", "FeedController@workFeedIndexAction");
 
+Route::post("/feed/plusPointPost", "FeedController@plusPointPostAction");
+
+Route::post("/feed/minusPointPost", "FeedController@minusPointPostAction");
+
 Route::post("/feed/getUserworkPosts", "FeedController@getUserworkPostsAction");
 
 Route::post("/feed/getMoreUserworkPosts", "FeedController@getMoreUserworkPostsAction");

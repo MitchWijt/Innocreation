@@ -288,9 +288,9 @@ class User extends Authenticatable
         }
     }
 
-    public function hasUpvote($userWorkId){
-        $userUpvote = UserUpvoteLinktable::select("*")->where("user_id", $this->id)->where("user_work_id", $userWorkId)->get();
-        if(count($userUpvote) > 0){
+    public function hasPlusPointed($userWorkId){
+        $userPlusPoint = UserworkPointLinktable::select("*")->where("user_id", $this->id)->where("user_work_id", $userWorkId)->get();
+        if(count($userPlusPoint) > 0){
             return true;
         } else {
             return false;

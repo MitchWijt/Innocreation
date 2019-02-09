@@ -15,6 +15,7 @@
     use App\UserFollowLinktable;
     use App\UserWork;
     use App\UserWorkComment;
+    use App\UserworkPointLinktable;
     use function GuzzleHttp\json_encode;
     use Illuminate\Support\Facades\Session;
     use Illuminate\View\View;
@@ -148,18 +149,39 @@
                     return redirect("/innocreatives")->withErrors("Image is too large. The max upload size is 8MB");
                 }
             } else {
-                $userWork->created_at = date("Y-m-d H:i:s");
-                $userWork->save();
-                $followers = UserFollowLinktable::select("*")->where("followed_user_id", $userWork->user_id)->get();
-                if($followers){
-                    foreach($followers as $follower){
-                        $poster = User::select("*")->where("id", $userWork->user_id)->first();
-                        $user = User::select("*")->where("id", $follower->user_id)->first();
-                        $this->saveAndSendEmail($user, "$poster->firstname has posted a new post!", view("/templates/sendInnocreativeNotification", compact("user", "poster")));
-                    }
-                }
-
-                return redirect($_SERVER["HTTP_REFERER"]);
+                return redirect("/innocreatives")->withErrors("Oops. Something went wrong. Please try again");
             }
+        }
+
+        public function plusPointPost($request){
+            $userWorkId = $request->input("user_work_id");
+
+            $userId = Session::get("user_id");
+            $user = User::select("*")->where("id", $userId)->first();
+
+            $existingPoint = UserworkPointLinktable::select("*")->where("user_work_id", $userWorkId)->where("user_id", $user->id)->count();
+            if($existingPoint < 1 ) {
+                $userworkPointLinktable = new UserworkPointLinktable();
+                $userworkPointLinktable->user_work_id = $userWorkId;
+                $userworkPointLinktable->user_id = $user->id;
+                $userworkPointLinktable->save();
+            }
+            $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
+
+            return count($userWork->getPoints());
+        }
+
+        public function minusPointPost($request){
+            $userWorkId = $request->input("user_work_id");
+
+            $userId = Session::get("user_id");
+            $user = User::select("*")->where("id", $userId)->first();
+
+            $existingPoint = UserworkPointLinktable::select("*")->where("user_work_id", $userWorkId)->where("user_id", $user->id)->first();
+            if(count($existingPoint) > 0 ) {
+                $existingPoint->delete();
+            }
+            $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
+            return count($userWork->getPoints());
         }
     }

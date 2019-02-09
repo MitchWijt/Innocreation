@@ -249,6 +249,14 @@ class FeedController extends Controller
         }
     }
 
+    public function plusPointPostAction(Request $request, UserworkPost $userworkPost){
+        return $userworkPost->plusPointPost($request);
+    }
+
+    public function minusPointPostAction(Request $request, UserworkPost $userworkPost){
+        return $userworkPost->minusPointPost($request);
+    }
+
     public function deleteUserWorkPostAction(Request $request){
         $userWorkId = $request->input("userWorkId");
         $userId = Session::get("user_id");

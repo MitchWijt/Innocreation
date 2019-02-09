@@ -40,9 +40,15 @@
                         <div class="m-t-10 m-b-5 d-flex align-start">
                             <a class="regular-link f-14 c-dark-grey m-0 zoom" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Comments</a>
                             <i class="zmdi zmdi-circle f-5 vertically-center c-dark-grey m-l-5 m-t-8 m-r-5"></i>
-                            <a class="regular-link f-14 c-dark-grey m-0" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Points</a>
+                            <a class="regular-link f-14 c-dark-grey m-0" data-id="<?= $userWorkPost->id?>"><span class="amountOfPoints-<?= $userWorkPost->id?>"><?= count($userWorkPost->getPoints())?></span> Points</a>
                         </div>
-                        <span class="editBtn p-b-0 p-l-15 p-r-15 m-t-5 m-b-10" style="padding-top: 3px !important;"><i class="zmdi zmdi-plus"></i>1</span>
+                        <? if(isset($user)) { ?>
+                            <? if($user->hasPlusPointed($userWorkPost->id)) { ?>
+                                <span class="editBtn p-b-0 p-l-15 p-r-15 m-t-5 m-b-10 c-orange minusPointPost plusMinusBtn-<?= $userWorkPost->id?>" data-id="<?= $userWorkPost->id?>" style="padding-top: 3px !important; border: 1px solid #FF6100"><i class="icon-<?= $userWorkPost->id?> zmdi zmdi-minus" style="margin-right: 3px"></i><span></span>1</span>
+                            <? } else { ?>
+                                <span class="editBtn p-b-0 p-l-15 p-r-15 m-t-5 m-b-10 c-orange plusPointPost plusMinusBtn-<?= $userWorkPost->id?>" data-id="<?= $userWorkPost->id?>" style="padding-top: 3px !important;"><i class="icon-<?= $userWorkPost->id?> zmdi zmdi-plus" style="margin-right: 3px"></i><span></span>1</span>
+                            <? } ?>
+                        <? } ?>
                     </div>
                     <? if(count($userWorkPost->getComments()) > 0) { ?>
                         <div class="col-sm-12 gradientToTransparant zoom" data-id="<?= $userWorkPost->id?>" >

@@ -37,6 +37,10 @@ class UserWork extends Model
         return UserWorkComment::select("*")->where("user_work_id", $this->id)->orderBy("created_at")->get();
     }
 
+    public function getPoints(){
+        return UserworkPointLinktable::select("*")->where("user_work_id", $this->id)->orderBy("created_at")->get();
+    }
+
     public function getPopoverMenu(){
         $userWork = $this;
         return view("/public/userworkFeed/shared/_popoverMenu", compact("userWork"));
