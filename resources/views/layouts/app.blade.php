@@ -105,15 +105,17 @@
     $sessionUserId = \Illuminate\Support\Facades\Session::get("user_id");
     $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
 } ?>
-<? if(!isset($pageType) || $pageType != "checkout") { ?>
-    @include('includes.header')
-<? } else { ?>
-    @include('includes.headerCheckout')
+<? if(!isset($pageType) || $pageType != "clean") { ?>
+    <? if(!isset($pageType) || $pageType != "checkout") { ?>
+        @include('includes.header')
+    <? } else { ?>
+        @include('includes.headerCheckout')
+    <? } ?>
 <? } ?>
 @yield('content')
 @yield('pagescript')
 <? if(!isset($pageType) || $pageType != "checkout") { ?>
-    <? if(!isset($pageType) || $pageType != "noFooter") { ?>
+    <? if(!isset($pageType) || ($pageType != "noFooter" && $pageType != "clean")) { ?>
         @include('includes/footer')
     <? } ?>
 <? }

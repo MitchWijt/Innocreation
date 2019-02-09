@@ -235,3 +235,7 @@ $(document).on("click", ".minusPointPost", function () {
     $(".icon-" + userWorkId).removeClass("zmdi-minus").addClass("zmdi-plus");
     $(".plusMinusBtn-" + userWorkId).attr("style", "padding-top: 3px !important;").removeClass("minusPointPost").addClass("plusPointPost");
 });
+
+$(document).on("click", ".fave", function () {
+    $(this).addClass("fave-active");
+});

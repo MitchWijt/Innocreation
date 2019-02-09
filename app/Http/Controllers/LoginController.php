@@ -35,7 +35,7 @@ class LoginController extends Controller
         }
         $countries = Country::select("*")->orderBy("country")->get();
         $expertises = Expertises::select("*")->get();
-        $pageType = "default";
+        $pageType = "clean";
         if($hash != null && $teamName != null){
             $team = Team::select("*")->where("hash", $hash)->where("slug", $teamName)->first();
             $today2 = date("Y-m-d H:i:s", strtotime("+1 hour"));

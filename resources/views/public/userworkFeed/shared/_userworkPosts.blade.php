@@ -42,6 +42,7 @@
                             <i class="zmdi zmdi-circle f-5 vertically-center c-dark-grey m-l-5 m-t-8 m-r-5"></i>
                             <a class="regular-link f-14 c-dark-grey m-0" data-id="<?= $userWorkPost->id?>"><span class="amountOfPoints-<?= $userWorkPost->id?>"><?= count($userWorkPost->getPoints())?></span> Points</a>
                         </div>
+                        <section class="fave"></section>
                         <? if(isset($user)) { ?>
                             <? if($user->hasPlusPointed($userWorkPost->id)) { ?>
                                 <span class="editBtn p-b-0 p-l-15 p-r-15 m-t-5 m-b-10 c-orange minusPointPost plusMinusBtn-<?= $userWorkPost->id?>" data-id="<?= $userWorkPost->id?>" style="padding-top: 3px !important; border: 1px solid #FF6100"><i class="icon-<?= $userWorkPost->id?> zmdi zmdi-minus" style="margin-right: 3px"></i><span></span>1</span>

@@ -161,7 +161,20 @@
     background: url('/images/placeholder.png');
     height: 40%;
     width: 100%;
-    background-size:     cover !important;                      /* <------ */
+    background-size:     cover !important;
     background-repeat:   no-repeat !important;
     background-position: center center !important;
+}
+
+.fave {
+    width: 70px;
+    height: 50px;
+    background: url(/images/twitter_fave.png) no-repeat;
+    background-position: 0 0;
+}
+
+.fave-active{
+    background-position: -3519px 0;
+    transition: background 1s steps(55);
+    background-color: #000;
 }
