@@ -236,6 +236,28 @@ $(document).on("click", ".minusPointPost", function () {
     $(".plusMinusBtn-" + userWorkId).attr("style", "padding-top: 3px !important;").removeClass("minusPointPost").addClass("plusPointPost");
 });
 
-$(document).on("click", ".fave", function () {
-    $(this).addClass("fave-active");
+if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    var eventTrigger = "touchstart";
+} else {
+    var eventTrigger = "click";
+}
+$(document).on(eventTrigger, ".fave", function () {
+    if ($(this).hasClass("normal-fave")) {
+        $(this).addClass("fave-animation");
+        plus_minus_post("/feed/plusPointPost", $(this));
+    } else {
+        $(this).addClass("fave-revert");
+        plus_minus_post("/feed/minusPointPost", $(this));
+    }
+
+    var _this = $(this);
+    setTimeout(function () {
+        if (_this.hasClass("normal-fave")) {
+            _this.removeClass("fave-animation");
+            _this.removeClass("normal-fave").addClass("active-fave");
+        } else {
+            _this.removeClass("fave-revert");
+            _this.removeClass("active-fave").addClass("normal-fave");
+        }
+    }, 1000);
 });

@@ -166,15 +166,26 @@
     background-position: center center !important;
 }
 
-.fave {
-    width: 70px;
+.normal-fave {
+    width: 55px;
     height: 50px;
-    background: url(/images/twitter_fave.png) no-repeat;
+    background: url(/images/star_fave.png) no-repeat;
     background-position: 0 0;
 }
 
-.fave-active{
+.active-fave{
+    width: 55px;
+    height: 50px;
+    background: url(/images/star_fave.png) no-repeat;
+    background-position: -3519px 0;
+}
+
+.fave-animation{
     background-position: -3519px 0;
     transition: background 1s steps(55);
-    background-color: #000;
+}
+
+.fave-revert{
+    background-position: 0 0;
+    transition: background 1s steps(55);
 }

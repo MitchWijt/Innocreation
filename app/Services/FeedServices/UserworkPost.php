@@ -15,7 +15,7 @@
     use App\UserFollowLinktable;
     use App\UserWork;
     use App\UserWorkComment;
-    use App\UserworkPointLinktable;
+    use App\UserWorkInterestsLinktable;
     use function GuzzleHttp\json_encode;
     use Illuminate\Support\Facades\Session;
     use Illuminate\View\View;
@@ -159,16 +159,16 @@
             $userId = Session::get("user_id");
             $user = User::select("*")->where("id", $userId)->first();
 
-            $existingPoint = UserworkPointLinktable::select("*")->where("user_work_id", $userWorkId)->where("user_id", $user->id)->count();
+            $existingPoint = UserWorkInterestsLinktable::select("*")->where("user_work_id", $userWorkId)->where("user_id", $user->id)->count();
             if($existingPoint < 1 ) {
-                $userworkPointLinktable = new UserworkPointLinktable();
-                $userworkPointLinktable->user_work_id = $userWorkId;
-                $userworkPointLinktable->user_id = $user->id;
-                $userworkPointLinktable->save();
+                $userWorkInterestsLinktable = new UserWorkInterestsLinktable();
+                $userWorkInterestsLinktable->user_work_id = $userWorkId;
+                $userWorkInterestsLinktable->user_id = $user->id;
+                $userWorkInterestsLinktable->save();
             }
             $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
 
-            return count($userWork->getPoints());
+            return count($userWork->getInterests());
         }
 
         public function minusPointPost($request){
@@ -177,11 +177,11 @@
             $userId = Session::get("user_id");
             $user = User::select("*")->where("id", $userId)->first();
 
-            $existingPoint = UserworkPointLinktable::select("*")->where("user_work_id", $userWorkId)->where("user_id", $user->id)->first();
+            $existingPoint = UserWorkInterestsLinktable::select("*")->where("user_work_id", $userWorkId)->where("user_id", $user->id)->first();
             if(count($existingPoint) > 0 ) {
                 $existingPoint->delete();
             }
             $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
-            return count($userWork->getPoints());
+            return count($userWork->getInterests());
         }
     }

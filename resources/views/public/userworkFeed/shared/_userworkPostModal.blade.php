@@ -10,13 +10,13 @@
                     <p class="m-b-0 m-t-10 vertically-center"><a href="<?= $userWorkPost->user->getUrl()?>" target="_blank" class="c-black"><?= $userWorkPost->user->getName()?></a></p>
                 </div>
                 <div class="d-flex align-start">
-                    <div class="m-r-10 m-t-15">
+                    <div class="m-t-5">
                         <? if(isset($user)) { ?>
-                            <? if($user->hasPlusPointed($userWorkPost->id)) { ?>
-                                <span class="editBtn p-b-0 p-l-15 p-r-15  m-b-10 c-orange minusPointPost plusMinusBtn-<?= $userWorkPost->id?>" data-id="<?= $userWorkPost->id?>" style="padding-top: 3px !important; border: 1px solid #FF6100"><i class="icon-<?= $userWorkPost->id?> zmdi zmdi-minus" style="margin-right: 3px"></i><span></span>1</span>
-                            <? } else { ?>
-                                <span class="editBtnDark p-b-0 p-l-15 p-r-15 m-b-10 c-black plusPointPost plusMinusBtn-<?= $userWorkPost->id?>" data-id="<?= $userWorkPost->id?>" style="padding-top: 3px !important;"><i class="icon-<?= $userWorkPost->id?> zmdi zmdi-plus" style="margin-right: 3px"></i><span></span>1</span>
-                            <? } ?>
+                        <? if($user->hasPlusPointed($userWorkPost->id)) { ?>
+                            <section class="fave active-fave" data-id="<?= $userWorkPost->id?>"></section>
+                        <? } else { ?>
+                            <section class="fave normal-fave" data-id="<?= $userWorkPost->id?>"></section>
+                        <? } ?>
                         <? } ?>
                     </div>
                     <?= \App\Services\UserConnections\ConnectionService::getSwitch($userWorkPost->user->id)?>

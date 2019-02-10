@@ -1,5 +1,5 @@
 @extends("layouts.app")
-<link rel="stylesheet" href="/css/responsiveness//innocreativeFeed/index.css">
+<link rel="stylesheet" href="/css/responsiveness/innocreativeFeed/index.css">
 @section("content")
     @mobile
     <? if(isset($user)) { ?>
@@ -27,30 +27,13 @@
                             <div class="m-b-5 d-flex js-center">
                                 <div class="col-md-8 m-t-5">
                                     <div class="row">
-                                        <div class="@handheld col-6 @elsedesktop col-sm-4 @endhandheld">
-                                            <select name="percentageProgress" class="input @handheld m-b-10 @endhandheld">
-                                                <option value="" selected disabled>% @desktop Progress @enddesktop on project</option>
-                                                <option value="10%">10% finished</option>
-                                                <option value="20%">20% finished</option>
-                                                <option value="30%">30% finished</option>
-                                                <option value="40%">40% finished</option>
-                                                <option value="50%">50% finished</option>
-                                                <option value="60%">60% finished</option>
-                                                <option value="70%">70% finished</option>
-                                                <option value="80%">80% finished</option>
-                                                <option value="90%">90% finished</option>
-                                                <option value="100%">100% finished</option>
-                                            </select>
-                                        </div>
                                         <div class="@handheld col-6 m-b-10 @elsedesktop col-sm-4 @endhandheld">
                                             <div class="fileUpload p-relative">
                                                 <input type="file" class="userwork_image hidden" name="image">
                                                 <i class="zmdi zmdi-camera-add iconCTA addPicture c-pointer"></i>
                                                 <span class="fileName pull-right m-r-10"></span>
-                                                <i class="zmdi zmdi-link iconCTA c-pointer popoverAttachment " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverAttachment")?>'></i>
                                                 <i class="zmdi zmdi-mood iconCTA c-pointer popoverEmojis " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverEmojis", compact("emojis"))?>'></i>
                                             </div>
-                                            <input type="hidden" placeholder="Your link" name="imageLink" class="input col-sm-12 attachmentLinkDB">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -103,31 +86,14 @@
                             <div class="m-b-5 d-flex js-center extraOptions hidden">
                                 <div class="col-md-8 m-t-5 @notmobile contentActive @endnotmobile">
                                     <div class="row contentClick">
-                                        <div class="@handheld col-6 @elsedesktop col-6 @endhandheld">
-                                            <select name="percentageProgress" class="input @handheld m-b-10 @endhandheld">
-                                                <option value="" selected disabled>% @desktop Progress @enddesktop on project</option>
-                                                <option value="10%">10% finished</option>
-                                                <option value="20%">20% finished</option>
-                                                <option value="30%">30% finished</option>
-                                                <option value="40%">40% finished</option>
-                                                <option value="50%">50% finished</option>
-                                                <option value="60%">60% finished</option>
-                                                <option value="70%">70% finished</option>
-                                                <option value="80%">80% finished</option>
-                                                <option value="90%">90% finished</option>
-                                                <option value="100%">100% finished</option>
-                                            </select>
-                                        </div>
-                                        <div class="@handheld col-6 m-b-10 @elsedesktop col-4 @endhandheld contentActive">
+                                        <div class="@handheld col-6 m-b-10 @elsedesktop col-6 @endhandheld contentActive">
                                             <div class="fileUpload p-relative contentActiveIcons d-flex">
                                                 <input type="file" class="userwork_image hidden" name="image">
-                                                <i class="zmdi zmdi-camera-add iconCTA addPicture c-pointer"></i>
-                                                <i class="zmdi zmdi-link iconCTA c-pointer popoverAttachment " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverAttachment")?>'></i>
+                                                <i class="zmdi zmdi-camera-add iconCTA addPicture c-pointer m-r-5"></i>
                                                 <i class="zmdi zmdi-mood iconCTA c-pointer popoverEmojis " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverEmojis", compact("emojis"))?>'></i>
                                             </div>
-                                            <input type="hidden" placeholder="Your link" name="imageLink" class="input col-sm-12 attachmentLinkDB">
                                         </div>
-                                        <div class="@handheld col-12 m-b-10 @elsedesktop col-2 @endhandheld">
+                                        <div class="@handheld col-12 m-b-10 @elsedesktop col-6 @endhandheld">
                                            <button type="button" class="btn btn-inno btn-sm pull-right submitPost">Post!</button>
                                         </div>
                                     </div>

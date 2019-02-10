@@ -289,7 +289,7 @@ class User extends Authenticatable
     }
 
     public function hasPlusPointed($userWorkId){
-        $userPlusPoint = UserworkPointLinktable::select("*")->where("user_id", $this->id)->where("user_work_id", $userWorkId)->get();
+        $userPlusPoint = UserWorkInterestsLinktable::select("*")->where("user_id", $this->id)->where("user_work_id", $userWorkId)->get();
         if(count($userPlusPoint) > 0){
             return true;
         } else {

@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserworkPointLinktable extends Model
+class UserWorkInterestsLinktable extends Model
 {
-    public $table = "userwork_point_linktable";
+    public $table = "userwork_interests_linktable";
 
     public static function boot(){
         parent::boot();

@@ -59,18 +59,6 @@ $(document).on("click", "#removePreview", function () {
    $(".userwork_image").val("");
 });
 
-$(document).on("keyup", ".attachmentLink", function () {
-   var val = $(this).val();
-   $(".attachmentLinkDB").val(val);
-});
-
-$(document).on("click", ".popoverAttachment", function () {
-    if($(".attachmentLinkDB").val().length > 0){
-        var val = $(".attachmentLinkDB").val();
-        $(".attachmentLink").val(val);
-    }
-});
-
 $(document).on("click", ".emoji", function () {
    var code = $(this).data("code");
    var val = $("#description_id").val();
@@ -107,6 +95,12 @@ $(".descDesktop").on("focus",function () {
 $('.triggerSlider, .closeSlider').click(function() {
     $('.sliderUpDown').toggleClass('close');
     $(".sliderContent").toggleClass('hidden');
+    if($(".sliderUpDown").hasClass("close")){
+        bodyScrollLock.clearAllBodyScrollLocks();
+    } else {
+        const slider = document.querySelector(".sliderUpDown");
+        bodyScrollLock.disableBodyScroll(slider);
+    }
 });
 
 $(".postInnocreativePost").on("click",function () {
