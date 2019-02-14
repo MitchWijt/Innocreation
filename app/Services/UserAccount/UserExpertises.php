@@ -9,6 +9,7 @@ namespace App\Services\UserAccount;
 use App\Expertises;
 use App\Expertises_linktable;
 use App\Favorite_expertises_linktable;
+use App\Team;
 use App\User;
 use Illuminate\Support\Facades\Session;
 
@@ -151,6 +152,24 @@ class UserExpertises
             $expertises = Expertises::select("*")->get();
             return view("/public/user/expertises/shared/_editExpertiseModal", compact("user", "expertises"));
         }
+    }
+
+    public function loadMoreExpertises($request){
+        $userId = $request->input("user_id");
+        $user = User::select("*")->where("id", $userId)->first();
+
+        $shownIds = [];
+        $shownExpertises = Expertises_linktable::select("*")->where("user_id", $userId)->orderBy("created_at", "DESC")->limit(3)->get();
+        foreach ($shownExpertises as $shownExpertise) {
+            array_push($shownIds, $shownExpertise->id);
+        }
+        $loggedIn= UserAccount::isLoggedIn();
+        if($loggedIn) {
+            $team = Team::select("*")->where("ceo_user_id", $loggedIn)->first();
+        }
+        $expertise_linktable = Expertises_linktable::select("*")->where("user_id", $userId)->whereNotIn("id", $shownIds)->orderBy("created_at", "DESC")->get();
+        return view("/public/user/expertises/shared/_moreExpertises", compact("expertise_linktable", "user", "loggedIn", "team"));
+
     }
 
     public static function skillLevels(){

@@ -40,7 +40,7 @@
                     <? if(count($eachValue) < 1) { ?>
                         <p class="text-center">No users found</p>
                     <? } ?>
-                    <div class="o-scroll" style="height: 72vh; position: relative;">
+                    <div class="o-scroll chats" style="height: 72vh; position: relative;">
                         <? foreach($eachValue as $userChat) { ?>
                             <?
 

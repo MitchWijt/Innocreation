@@ -80,6 +80,8 @@ Route::post("/user/editUserExpertiseImage","UserController@editUserExpertiseImag
 
 Route::post("/user/getEditExpertiseModal","UserController@getEditExpertiseModalAction");
 
+Route::post("/user/loadMoreExpertises","UserController@loadMoreExpertises");
+
 // Team info (benefits)
 
 Route::get("/my-account/teamInfo", "UserController@teamBenefits");
@@ -263,6 +265,10 @@ Route::post("/my-team/generateInviteLink", "TeamController@generateInviteLinkAct
 Route::post("/my-team/saveNewName", "TeamController@saveTeamNameAction");
 
 Route::post("/my-team/editBannerImage", "TeamController@editBannerImage");
+
+Route::post("/team/getTeamLimitModal", "TeamController@getTeamLimitModal");
+
+
 
 //Payment
 Route::get("/my-team/payment-details", "TeamController@teamPaymentDetailsAction");
@@ -644,6 +650,8 @@ Route::post("/feed/deleteUserWorkPost", "FeedController@deleteUserWorkPostAction
 Route::post("/feed/editUserWorkPost", "FeedController@editUserWorkPostAction");
 
 Route::post("/getUserWorkPostModal", "FeedController@getUserWorkPostModal");
+
+Route::post("/openInterestsModal", "FeedController@openInterestsModal");
 
 Route::post("/feed/unhashId", "FeedController@unhashId");
 

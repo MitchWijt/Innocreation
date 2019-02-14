@@ -40,13 +40,13 @@
                         <div class="m-t-10 m-b-5 d-flex align-start">
                             <a class="regular-link f-14 c-dark-grey m-0 zoom" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Comments</a>
                             <i class="zmdi zmdi-circle f-5 vertically-center c-dark-grey m-l-5 m-t-8 m-r-5"></i>
-                            <a class="regular-link f-14 c-dark-grey m-0" data-id="<?= $userWorkPost->id?>"><span class="amountOfPoints-<?= $userWorkPost->id?>"><?= count($userWorkPost->getInterests())?></span> Interests</a>
+                            <a class="regular-link f-14 c-dark-grey m-0 openInterestsModal" data-id="<?= $userWorkPost->id?>"><span class="amountOfPoints-<?= $userWorkPost->id?>"><?= count($userWorkPost->getInterests())?></span> Interests</a>
                         </div>
                         <? if(isset($user)) { ?>
                             <? if($user->hasPlusPointed($userWorkPost->id)) { ?>
-                                <section class="fave active-fave" data-id="<?= $userWorkPost->id?>"></section>
+                                <section class="fave active-fave c-pointer" data-id="<?= $userWorkPost->id?>"></section>
                             <? } else { ?>
-                                <section class="fave normal-fave" data-id="<?= $userWorkPost->id?>"></section>
+                                <section class="fave normal-fave c-pointer" data-id="<?= $userWorkPost->id?>"></section>
                             <? } ?>
                         <? } ?>
                     </div>

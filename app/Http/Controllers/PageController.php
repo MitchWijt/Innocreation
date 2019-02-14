@@ -10,6 +10,7 @@ use App\FavoriteTeamLinktable;
 use App\NeededExpertiseLinktable;
 use App\ServiceReview;
 use App\Services\FeedServices\SwitchUserWork;
+use App\Services\UserAccount\UserAccount;
 use App\Team;
 use App\TeamReview;
 use App\User;
@@ -57,11 +58,11 @@ class PageController extends Controller
         if($slug){
             $user  = User::select("*")->where("slug", $slug)->first();
         }
-        $loggedIn = User::select("*")->where("id", Session::get("user_id"))->first();
-        $expertise_linktable = Expertises_linktable::select("*")->where("user_id", $user->id)->get();
+        $loggedIn = UserAccount::isLoggedIn();
+        $expertise_linktable = Expertises_linktable::select("*")->where("user_id", $user->id)->orderBy("created_at", "DESC")->limit(3)->get();
         $portfolios = UserPortfolio::select("*")->where("user_id", $user->id)->get();
         if($loggedIn) {
-            $team = Team::select("*")->where("ceo_user_id", $loggedIn->id)->first();
+            $team = Team::select("*")->where("ceo_user_id", $loggedIn)->first();
         }
 
         $title = $user->firstname . " active as " . strtolower($user->getSeoExpertises());

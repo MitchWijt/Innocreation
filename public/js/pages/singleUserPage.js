@@ -167,3 +167,61 @@ $(document).on("click", ".userExpImg", function () {
         }
     });
 });
+
+$(document).on("click", ".openTeamLimitModal", function () {
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/team/getTeamLimitModal",
+        data: "",
+        success: function (data) {
+            $("body").append(data);
+            $(".teamLimitModal").modal('toggle');
+        }
+    });
+});
+
+$(document).on("hidden.bs.modal", ".teamLimitModal", function () {
+    $(".teamLimitModal").remove();
+});
+
+$(document).on("click", ".loadMoreExpertises", function () {
+    var userId = $(this).data("user-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/user/loadMoreExpertises",
+        data: {"user_id" : userId},
+        success: function (data) {
+            console.log(data);
+           $(".loadMoreExpertisesContent").append(data);
+           setTimeout(function () {
+            $(".loadMoreExpertisesContent").collapse("toggle");
+           }, 100);
+           $(".lessExpertisesDiv").removeClass("hidden");
+           $(".loadMoreExpertisesDiv").addClass("hidden");
+        }
+    });
+});
+
+$(document).on("click", ".lessExpertises", function () {
+    $(".loadMoreExpertisesContent").collapse("toggle");
+});
+
+$('.loadMoreExpertisesContent').on('hidden.bs.collapse', function () {
+    $(".loadMoreExpertisesContent").html("");
+    $(".loadMoreExpertisesDiv").removeClass("hidden");
+    $(".lessExpertisesDiv").addClass("hidden");
+});

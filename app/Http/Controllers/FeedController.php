@@ -18,6 +18,8 @@ use App\UserMessage;
 use App\UserUpvoteLinktable;
 use App\UserWork;
 use App\UserWorkComment;
+use GetStream\Stream\Feed;
+use GuzzleHttp\Psr7\Stream;
 use Illuminate\Http\Request;
 use App\Services\FeedServices\SwitchUserWork as SwitchUserWork;
 use App\Services\Images\ImageProcessor as ImageProcessor;
@@ -26,6 +28,7 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Psy\Util\Str;
 
 class FeedController extends Controller
 {
@@ -237,24 +240,28 @@ class FeedController extends Controller
         return $feedService->getMoreUserworkPosts($request);
     }
 
-    public function postUserWorkAction(Request $request, UserworkPost $userworkPost){
+    public function postUserWorkAction(Request $request, FeedService $feedService, StreamService $streamService){
         if($this->authorized()){
-            return $userworkPost->postNewUserWorkPost($request);
+            return $feedService->postNewUserWorkPost($request, $streamService);
         }
     }
 
-    public function postUserWorkCommentAction(Request $request, UserworkPost $userworkPost, StreamService $streamService){
+    public function postUserWorkCommentAction(Request $request, FeedService $userworkPost, StreamService $streamService){
         if($this->authorized()){
             return $userworkPost->postComment($request, $streamService);
         }
     }
 
-    public function plusPointPostAction(Request $request, UserworkPost $userworkPost){
-        return $userworkPost->plusPointPost($request);
+    public function plusPointPostAction(Request $request, UserworkPost $userworkPost, StreamService $streamService){
+        return $userworkPost->plusPointPost($request, $streamService);
     }
 
     public function minusPointPostAction(Request $request, UserworkPost $userworkPost){
         return $userworkPost->minusPointPost($request);
+    }
+
+    public function openInterestsModal(Request $request, UserworkPost $userworkPost){
+        return $userworkPost->interestModal($request);
     }
 
     public function deleteUserWorkPostAction(Request $request){

@@ -105,6 +105,10 @@ class UserController extends Controller
        return $userExpertises->getEditExpertiseModal($request);
     }
 
+    public function loadMoreExpertises(Request $request, UserExpertises $userExpertises){
+        return $userExpertises->loadMoreExpertises($request);
+    }
+
     /**
      * Update the specified resource in storage.
      *

@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="banner p-relative " style="background: url('<?= $user->getBanner()?>');">
-                <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
+                <? if(isset($loggedIn) && $loggedIn == $user->id) { ?>
                     <form action="/user/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                         <input type="hidden" name="user_id" value="<?= $user->id?>">
@@ -28,7 +28,7 @@
                     <i class="zmdi zmdi-edit editBtn editBannerImage @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
                 <? } ?>
                 <div class="avatar-med absolutePF p-absolute" style="background: url('<?= $user->getProfilePicture()?>'); z-index: 100 !important">
-                    <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
+                    <? if(isset($loggedIn) && $loggedIn == $user->id) { ?>
                         <form action="/user/saveUserProfilePicture" method="post" class="hidden profileImageForm" enctype="multipart/form-data">
                             <input type="hidden" name="_token" value="<?= csrf_token()?>">
                             <input type="hidden" name="user_id" value="<?= $user->id?>">
@@ -41,7 +41,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="row d-flex fd-column userName" style="margin-top: 60px !important">
-                        <p class="f-25 m-b-0" style="margin-left: 9%"><?= $user->getName()?> <? if(isset($loggedIn) && $loggedIn->id != $user->id) { ?> <i class="zmdi zmdi-chevron-down f-18 popoverSingleUser c-pointer" data-toggle="popover" data-content='<?= view("/public/shared/_popoverSendMessage", compact("user", "loggedIn"))?>'></i> <? } ?></p>
+                        <p class="f-25 m-b-0" style="margin-left: 9%"><?= $user->getName()?> <? if(isset($loggedIn) && $loggedIn != $user->id) { ?> <i class="zmdi zmdi-chevron-down f-18 popoverSingleUser c-pointer" data-toggle="popover" data-content='<?= view("/public/shared/_popoverSendMessage", compact("user", "loggedIn"))?>'></i> <? } ?></p>
                         <p class="m-t-0 f-12 m-b-0 c-dark-grey" style="margin-left: 9%"><?= $user->country->country?></p>
                     </div>
                     <div class="m-l-15 m-b-5">
@@ -62,7 +62,7 @@
                 </div>
                 <div class="col-sm-8 <? if(!isset($loggedIn)) echo "m-t-65";?>">
                     <div class="row">
-                        <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
+                        <? if(isset($loggedIn) && $loggedIn == $user->id) { ?>
                             <div class="col-sm-12 m-b-20 navbarBox">
                                 <div class="navbar-user-desktop">
                                     <span><i class="zmdi zmdi-more f-25 c-pointer c-black pull-right popoverUserMenu" data-toggle="popover" data-content='<?= view("/includes/popovers/userAccountMenu", compact("user", "loggedIn"))?>'></i></span>
@@ -86,12 +86,12 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-lg m-t-20 m-b-20">
-                        <div class="card-block m-t-10">
+                        <div class="card-block m-t-10 <? if(count($expertise_linktable) > 3) echo "gradientToTransparantFull" ?>">
                             <div class="col-sm-12">
                                 <div class="d-flex js-between">
                                     <h3>Expertises</h3>
-                                    <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
-                                        <i class="editBtn zmdi zmdi-plus f-20 p-r-15 p-l-15 p-b-10 p-t-10 editExpertise @handheld no-hover @endhandheld"></i>
+                                    <? if(isset($loggedIn) && $loggedIn == $user->id) { ?>
+                                        <i  style="z-index: 2;" class="editBtn zmdi zmdi-plus f-20 p-r-15 p-l-15 p-b-10 p-t-10 editExpertise @handheld no-hover @endhandheld"></i>
                                     <? } ?>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                                                 <div class="p-absolute" style="z-index: 200; bottom: 0; right: 5px">
                                                     <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                                                 </div>
-                                                <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
+                                                <? if(isset($loggedIn) && $loggedIn == $user->id) { ?>
                                                     <div class="p-absolute" style="z-index: 200; top: 5px; right: 5px">
                                                         <i data-expertise-id="<?= $expertise->expertise_id?>" class="zmdi zmdi-camera f-20 editBtn editImage"></i>
                                                     </div>
@@ -135,7 +135,7 @@
                                                                         <button class="btn btn-inno btn-sm m-t-10">Invite user to my team</button>
                                                                     </form>
                                                                 <? } else { ?>
-                                                                    <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno btn-sm m-t-10">Invite user to my team</button>
+                                                                    <button class="btn btn-inno btn-sm m-t-10 openTeamLimitModal">Invite user to my team</button>
                                                                 <? } ?>
                                                             <? } else { ?>
                                                                 <p class="c-orange m-b-0 vertically-center">User invited</p>
@@ -144,8 +144,8 @@
                                                     <? } ?>
                                                 <? } ?>
                                             </div>
-                                            <? if(isset($loggedIn) && $loggedIn->id == $user->id) { ?>
-                                                <div>
+                                            <? if(isset($loggedIn) && $loggedIn == $user->id) { ?>
+                                                <div style="z-index: 2;">
                                                     <i class="editBtn zmdi zmdi-edit m-t-15 editExpertise @handheld no-hover @endhandheld" data-expertise-id="<?= $expertise->id?>"></i>
                                                     <i class="editBtn zmdi zmdi-close m-t-15 removeExpertise @handheld no-hover @endhandheld" data-expertise-id="<?= $expertise->id?>"></i>
                                                 </div>
@@ -161,6 +161,19 @@
                                 </div>
                             <? } ?>
                         </div>
+                        <? if(count($expertise_linktable) > 3) { ?>
+                            <div class="d-flex js-center c-white loadMoreExpertisesDiv" style="z-index: 2">
+                                <p class="c-white text-center c-pointer loadMoreExpertises" data-user-id="<?= $user->id?>">More expertises</p>
+                                <i class="zmdi zmdi-chevron-down f-22 m-l-5"></i></p>
+                            </div>
+                            <div class="collapse loadMoreExpertisesContent" style="z-index: 2;">
+
+                            </div>
+                            <div class="d-flex js-center c-white hidden lessExpertisesDiv" style="z-index: 2">
+                                <p class="c-white text-center c-pointer lessExpertises" data-user-id="<?= $user->id?>">Less expertises</p>
+                                <i class="zmdi zmdi-chevron-up f-22 m-l-5"></i></p>
+                            </div>
+                        <? } ?>
                     </div>
                 </div>
             </div>
@@ -176,15 +189,6 @@
                     </div>
                 </div>
             <? } ?>
-            <div class="modal teamLimitNotification fade" id="teamLimitNotification" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body ">
-                            <p>Your current team package has reached its max member capacity. If you wanna keep inviting users and make sure users are able to join your team. Than take a look at the available team package upgrades.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <script>

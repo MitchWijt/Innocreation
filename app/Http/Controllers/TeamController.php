@@ -630,4 +630,8 @@ class TeamController extends Controller
 
         return $link;
     }
+
+    public function getTeamLimitModal(){
+        return view("/public/packages/shared/_teamLimitModal");
+    }
 }

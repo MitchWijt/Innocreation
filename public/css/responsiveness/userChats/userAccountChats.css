@@ -15,6 +15,11 @@
         padding-left: 40px !important;
     }
 }
+@media screen and (max-width: 991px) {
+    .chats{
+        height: 78vh !important;
+    }
+}
 
 @media screen and (max-width: 980px) {
     .userDetails{

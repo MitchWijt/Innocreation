@@ -134,10 +134,10 @@ function zoom(_this){
 $(document).on("click", ".zoom", function () {
     zoom($(this));
 });
-$(document).on("shown.bs.modal", ".userWorkPostModal", function () {
-    const comments = document.querySelector(".userWorkComments");
-    bodyScrollLock.disableBodyScroll(comments);
-});
+// $(document).on("shown.bs.modal", ".userWorkPostModal", function () {
+//     const comments = document.querySelector(".userWorkComments");
+//     bodyScrollLock.disableBodyScroll(comments);
+// });
 
 $(document).on("hidden.bs.modal", ".userWorkPostModal", function () {
     $(".userWorkPostModal").remove();

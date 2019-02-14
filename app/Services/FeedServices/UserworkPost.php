@@ -11,6 +11,7 @@
     use App\Services\Images\ImageProcessor;
     use App\Services\Paths\PublicPaths;
     use App\Services\TimeSent;
+    use App\Services\UserAccount\UserAccount;
     use App\User;
     use App\UserFollowLinktable;
     use App\UserWork;
@@ -93,7 +94,7 @@
 
             $notificationMessage = sprintf("A comment has been placed on your feed post by %s!", $userWorkComment->user->firstname);
             $timeSent = new TimeSent();
-            $data = ["actor" => $userWorkComment->userWork->user_id , "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time", "verb" => "notification", "object" => "3", "link" => "/innocreatives"];
+            $data = ["actor" => $userWorkComment->userWork->user_id , "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time", "verb" => "notification", "object" => "3", "link" => "innocreatives/" . self::encrypt_decrypt("encrypt", $user_work_id)];
             $streamService->addActivityToFeed($userWorkComment->userWork->user_id, $data);
 
 
@@ -102,58 +103,7 @@
             die();
         }
 
-        public function postNewUserWorkPost($request){
-            $userId = $request->input("user_id");
-            $file = $request->file("image");
-            $percentage = $request->input("percentageProgress");
-            $link = $request->input("imageLink");
-            $description = htmlspecialchars($request->input("newUserWorkDescription"));
-
-            $userWork = new UserWork();
-            $userWork->description = $description;
-            $userWork->user_id = $userId;
-            if($percentage){
-                $userWork->progress = $percentage;
-            }
-            $userWork->save();
-
-            if($link){
-                $userWork->link = $link;
-            }
-            if($file) {
-                $size = ImageProcessor::formatBytes($file->getSize());
-                if ($size < 8) {
-                    $imageProcessor = new ImageProcessor();
-                    $user = User::select("*")->where("id", $userId)->first();
-                    $uniqueId = uniqid($userWork->id);
-
-                    //Creates and uploads Original image
-                    $filename = PublicPaths::getFileName($uniqueId, $file);
-                    $path = PublicPaths::getUserWorkDir($user, $userWork, $filename);
-                    $imageProcessor->upload($file->getRealPath(), $path, false, $file->getRealPath());
-
-                    //Creates and uploads placeholder of Original image
-                    $filenamePlaceholder = PublicPaths::getFileName($uniqueId, $file, true);
-                    $path = PublicPaths::getUserWorkDir($user, $userWork, $filenamePlaceholder);
-                    $imageProcessor->createPlaceholder($file, $file->getRealPath(), $path);
-
-                    //Saves new userwork feed post with image. Filename and extension seperate
-                    $filenameWithoutExtension = PublicPaths::getFileName($uniqueId, $file, false, false);
-                    $userWork->content = $filenameWithoutExtension;
-                    $userWork->extension = $file->getClientOriginalExtension();
-                    $userWork->created_at = date("Y-m-d H:i:s");
-                    $userWork->save();
-                    return redirect($_SERVER["HTTP_REFERER"]);
-                } else {
-                    $userWork->delete();
-                    return redirect("/innocreatives")->withErrors("Image is too large. The max upload size is 8MB");
-                }
-            } else {
-                return redirect("/innocreatives")->withErrors("Oops. Something went wrong. Please try again");
-            }
-        }
-
-        public function plusPointPost($request){
+        public function plusPointPost($request, $streamService){
             $userWorkId = $request->input("user_work_id");
 
             $userId = Session::get("user_id");
@@ -167,6 +117,11 @@
                 $userWorkInterestsLinktable->save();
             }
             $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
+
+            $notificationMessage = sprintf("%s is interested in your post!", $user->firstname);
+                    $timeSent = new TimeSent();
+                    $data = ["actor" => $userWork->user_id , "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time", "verb" => "notification", "object" => "3", "link" => "innocreatives/" . self::encrypt_decrypt("encrypt", $userWork->id)];
+                    $streamService->addActivityToFeed($userWork->user_id, $data);
 
             return count($userWork->getInterests());
         }
@@ -183,5 +138,18 @@
             }
             $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
             return count($userWork->getInterests());
+        }
+
+        public function interestModal($request){
+            $loggedIn = UserAccount::isLoggedIn();
+            $userWork = UserWork::select("*")->where("id", $request->input("userWorkId"))->first();
+
+            $users = [];
+            $interests = $userWork->getInterests();
+            foreach($interests as $interest){
+                array_push($users, $interest->user);
+            }
+
+            return view("/public/userworkFeed/shared/_interestModal", compact("users", "loggedIn"));
         }
     }

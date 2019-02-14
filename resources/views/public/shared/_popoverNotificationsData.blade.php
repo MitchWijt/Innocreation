@@ -41,7 +41,7 @@
             </div>
     <? } else if($item['category'] == "notification") { ?>
         <? if(isset($item['object']['link'])) { ?>
-            <a href="<?= $item['object']['link']?>">
+            <a class="td-none" href="<?= $item['object']['link']?>">
         <? } ?>
         <div class="row p-b-10 notificationHover" style="border-bottom: 1px solid #FF6100 !important">
             <div class="col-12 text-center m-t-15">

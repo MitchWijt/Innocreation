@@ -277,6 +277,30 @@ $(document).on("hidden.bs.modal", ".connectionsModal", function () {
     $(".connectionsModal").remove();
 });
 
+$(document).on("click", ".openInterestsModal", function () {
+    var userWorkId = $(this).data("id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/openInterestsModal",
+        data: {'userWorkId': userWorkId},
+        success: function (data) {
+            $("body").append(data);
+            $(".interestsListModal").modal("toggle");
+        }
+    });
+});
+
+$(document).on("hidden.bs.modal", ".interestsListModal", function () {
+    $(".interestsListModal").remove();
+});
+
 $(document).on("click", ".switch__toggle", function () {
     var _this = $(this);
     if($(this).is(":checked")) {
@@ -311,13 +335,3 @@ $(document).on("shown.bs.modal", ".modal", function () {
 $(document).on("hidden.bs.modal", ".modal", function () {
     bodyScrollLock.clearAllBodyScrollLocks();
 });
-
-//
-// $(document).on("mouseover", ".o-scroll", function () {
-//     const targetElement = document.querySelector(".o-scroll");
-//     bodyScrollLock.disableBodyScroll(targetElement);
-// });
-//
-// $(document).on("mouseover", "body", function () {
-//     bodyScrollLock.clearAllBodyScrollLocks();
-// });

@@ -1145,3 +1145,24 @@ ul.dashed > li:before {
     z-index: 999;
     background:linear-gradient(rgba(0,0,0,0) 50px, #000);
 }
+
+.gradientToTransparantFull{
+    max-height: 100%;
+    overflow:hidden;
+    z-index: -1;
+}
+
+.gradientToTransparantFull:before {
+    content:'';
+    width:100%;
+    height:100%;
+    position:absolute;
+    left:0;
+    top:0;
+    z-index: 1;
+    background:linear-gradient(rgba(0,0,0,0) 400px, #000);
+}
+
+.editBtn{
+
+}

@@ -88,7 +88,7 @@
                                     <div class="row contentClick">
                                         <div class="@handheld col-6 m-b-10 @elsedesktop col-6 @endhandheld contentActive">
                                             <div class="fileUpload p-relative contentActiveIcons d-flex">
-                                                <input type="file" class="userwork_image hidden" name="image">
+                                                <input type="file" class="userwork_image hidden" accept=".jpg, .jpeg" name="image">
                                                 <i class="zmdi zmdi-camera-add iconCTA addPicture c-pointer m-r-5"></i>
                                                 <i class="zmdi zmdi-mood iconCTA c-pointer popoverEmojis " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverEmojis", compact("emojis"))?>'></i>
                                             </div>

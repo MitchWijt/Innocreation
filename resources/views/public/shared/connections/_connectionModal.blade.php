@@ -25,12 +25,7 @@
                         </div>
                         </div>
                         <? if(isset($loggedIn) && !$user->hasSwitched()) { ?>
-                            <div class="switchDiv m-t-30">
-                                <label class="switch switch_type2 m-t-10" role="switch">
-                                    <input data-toggle="popover" data-content='<?= \App\Services\UserConnections\ConnectionService::getPopoverSwitchView($user)?>' type="checkbox" class="switch__toggle popoverSwitch">
-                                    <span class="switch__label"></span>
-                                </label>
-                            </div>
+                            <?= \App\Services\UserConnections\ConnectionService::getSwitch($user->id)?>
                         <? } else { ?>
                             <div class="text-center vertically-center">
                                 <span class="c-orange">Connected</span>
