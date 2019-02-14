@@ -246,7 +246,7 @@ class FeedController extends Controller
         }
     }
 
-    public function postUserWorkCommentAction(Request $request, FeedService $userworkPost, StreamService $streamService){
+    public function postUserWorkCommentAction(Request $request, UserworkPost $userworkPost, StreamService $streamService){
         if($this->authorized()){
             return $userworkPost->postComment($request, $streamService);
         }
