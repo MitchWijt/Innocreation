@@ -8,6 +8,7 @@ use App\Expertises_linktable;
 use App\MailMessage;
 use App\NeededExpertiseLinktable;
 use App\Services\AppServices\MailgunService;
+use App\Services\TimeSent;
 use App\Team;
 use App\User;
 use App\UserChat;
@@ -30,7 +31,7 @@ class RegisterProcessController extends Controller {
             $userId = Session::get("user_id");
             $user = User::select("*")->where("id", $userId)->first();
             if($user->country_id != null && $user->getExpertises(true) != "" && $user->team_id != null){
-                return redirect("/account")->withSuccess("You have already completed the process. Good luck!");
+                return redirect($user->getUrl())->withSuccess("You have already completed the process. Good luck!");
             }
             if($user->getExpertises(true) != ""){
                 $teamIdArray = [];
@@ -129,11 +130,13 @@ class RegisterProcessController extends Controller {
                 $userChat->created_at = date("Y-m-d H:i:s");
                 $userChat->save();
 
+                $timeSent = new TimeSent();
+
                 $message = "Hey $user->firstname!<br><br> Welcome to Innocreation! <br> We're very excited to see you taking the step to take action on your dreams and ideas! <br> Here are some tips for you to be noticed even quiker: <br><br> 1. Fill in your motivation and introduction <br> 2. Fill in your work experience with your expertises why are you the best in what you do? <br> 3. Network and connect fellow Innocreatives to perhaps help you create your dream! <br> 4. Reach out to people and teams via the chat system <br> 5. Have fun and be creative! <br><br> If you have any more questions, feel free to ask them! <br><br> Best regards - Innocreation";
                 $userMessage = new UserMessage();
                 $userMessage->sender_user_id = 1;
                 $userMessage->user_chat_id = $userChat->id;
-                $userMessage->time_sent = $this->getTimeSent();
+                $userMessage->time_sent = $timeSent->time;
                 $userMessage->message = $message;
                 $userMessage->created_at = date("Y-m-d H:i:s");
                 $userMessage->save();
@@ -260,12 +263,13 @@ class RegisterProcessController extends Controller {
         if(isset($neededExpertises)) {
             foreach ($neededExpertises as $neededExpertise) {
                 $team = $neededExpertise->teams;
+                $timeSent = new TimeSent();
                 if ($team->First()->users->notifications == 1) {
                     $userChat = UserChat::select("*")->where("receiver_user_id", $team->First()->ceo_user_id)->where("creator_user_id", 1)->first();
                     $userMessage = new UserMessage();
                     $userMessage->sender_user_id = 1;
                     $userMessage->user_chat_id = $userChat->id;
-                    $userMessage->time_sent = $this->getTimeSent();
+                    $userMessage->time_sent = $timeSent->time;
                     $userMessage->message = sprintf('We have good news for you and your team! </br> </br> A new %s has joined Innocreation, since your team is in need of a %s you can invite him or chat with him straight away at the account of <a href="https://innocreation.net%s">%s</a>', $neededExpertise->expertises->First()->title, $neededExpertise->expertises->First()->title, $user->getUrl(), $user->firstname);
                     $userMessage->created_at = date("Y-m-d H:i:s");
                     $userMessage->save();

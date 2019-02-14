@@ -39,6 +39,7 @@
         <link rel="stylesheet" href="/css/registerProcess/index.css">
         <link rel="stylesheet" href="/css/userworkFeed/index.css">
         <link rel="stylesheet" href="/css/popovers.css">
+        <link rel="stylesheet" href="/css/responsiveness/sidebar.css">
     {{--CSS MEDIA QUERIES--}}
         <link rel="stylesheet" href="/css/responsiveness/home.css">
     {{------------------------}}
@@ -62,6 +63,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     {{--JS PLUGINS--}}
         <script src="/js/assets/jquery-lazy.min.js"></script>
+        <script src="/js/assets/lazyr.min.js"></script>
+        <script src="/js/assets/bodyLockScroll.min.js"></script>
         <script defer async src="/assets/build/content-tools.js"></script>
         <script defer async src="/assets/build/editor.js"></script>
         <script src="/js/bootstrap-tokenfield.min.js"></script>
@@ -102,20 +105,27 @@
     $sessionUserId = \Illuminate\Support\Facades\Session::get("user_id");
     $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
 } ?>
-<? if(!isset($pageType) || $pageType != "checkout") { ?>
-    @include('includes.header')
-<? } else { ?>
-    @include('includes.headerCheckout')
+<? if(!isset($pageType) || $pageType != "clean") { ?>
+    <? if(!isset($pageType) || $pageType != "checkout") { ?>
+        @include('includes.header')
+    <? } else { ?>
+        @include('includes.headerCheckout')
+    <? } ?>
 <? } ?>
-{{--@include('includes/flash')--}}
 @yield('content')
 @yield('pagescript')
 <? if(!isset($pageType) || $pageType != "checkout") { ?>
-    <? if(!isset($pageType) || $pageType != "innoCreatives") { ?>
+    <? if(!isset($pageType) || ($pageType != "noFooter" && $pageType != "clean")) { ?>
         @include('includes/footer')
     <? } ?>
+<? }
+if(\Illuminate\Support\Facades\Session::has("user_id")){
+    $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
+    $user->online_timestamp = date("Y-m-d H:i:s");
+    $user->active_status = "online";
+    $user->save(); ?>
 <? } ?>
-<script defer async src="/js/home/general.js"></script>
+<script src="/js/home/general.js"></script>
 </div>
 </body>
 </html>

@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Emoji;
+use App\Services\AppServices\StreamService;
+use App\Services\FeedServices\FeedService;
+use App\Services\FeedServices\UserworkPost;
+use App\Services\Paths\PublicPaths;
 use App\Team;
 use App\TeamProduct;
 use App\TeamProductComment;
@@ -14,12 +18,17 @@ use App\UserMessage;
 use App\UserUpvoteLinktable;
 use App\UserWork;
 use App\UserWorkComment;
+use GetStream\Stream\Feed;
+use GuzzleHttp\Psr7\Stream;
 use Illuminate\Http\Request;
 use App\Services\FeedServices\SwitchUserWork as SwitchUserWork;
+use App\Services\Images\ImageProcessor as ImageProcessor;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Psy\Util\Str;
 
 class FeedController extends Controller
 {
@@ -197,7 +206,7 @@ class FeedController extends Controller
     public function workFeedIndexAction($id = null){
         $title = "Share your work/story and connect!";
         $og_description = "Connect with fellow innocreators and start executing on your ideas!";
-        $pageType = "innoCreatives";
+        $pageType = "noFooter";
         $totalAmount = UserWork::select("id")->count();
         $emojis = Emoji::select("*")->get();
         if(Session::has("user_id")){
@@ -219,116 +228,40 @@ class FeedController extends Controller
 
     }
 
-    public function getUserworkPostsAction(){
-        $userWorkPosts = UserWork::select("*")->orderBy("created_at", "DESC")->limit(15)->get();
-        $emojis = Emoji::select("*")->get();
-        if(Session::has("user_id")) {
-            $user = User::select("*")->where("id", Session::get("user_id"))->first();
-            return view("/public/userworkFeed/shared/_userworkPosts", compact("user", "userWorkPosts", "emojis"));
-        }
-        return view("/public/userworkFeed/shared/_userworkPosts", compact("userWorkPosts", "emojis"));
+    public function unhashId(Request $request, UserworkPost $userworkPost){
+        return $userworkPost->encrypt_decrypt("decrypt", $request->input("hash"));
     }
 
-    public function getMoreUserworkPostsAction(Request $request){
-        $userworkArray = $request->input("userworkArray");
-        $emojis = Emoji::select("*")->get();
-        $userWorkPosts = UserWork::select("*")->whereNotIn("id", $userworkArray)->orderBy("created_at", "DESC")->limit(15)->get();
-        if(Session::has("user_id")) {
-            $user = User::select("*")->where("id", Session::get("user_id"))->first();
-            return view("/public/userworkFeed/shared/_userworkPosts", compact("user", "userWorkPosts", "emojis"));
-        }
-        return view("/public/userworkFeed/shared/_userworkPosts", compact("userWorkPosts", "emojis"));
+    public function getUserworkPostsAction(Request $request, FeedService $feedService){
+        return $feedService->getUserworkPosts($request);
     }
 
-    public function upvoteUserWorkAction(Request $request){
-        $userWorkId = $request->input("userWorkId");
-        if(Session::has("user_id")) {
-            $userUpvote = new UserUpvoteLinktable();
-            $userUpvote->user_id = Session::get("user_id");
-            $userUpvote->user_work_id = $userWorkId;
-            $userUpvote->save();
-
-            $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
-            $userWork->upvotes = $userWork->upvotes + 1;
-            $userWork->save();
-            return 1;
-        } else {
-            return 2;
-        }
+    public function getMoreUserworkPostsAction(Request $request, FeedService $feedService){
+        return $feedService->getMoreUserworkPosts($request);
     }
 
-    public function postUserWorkAction(Request $request){
+    public function postUserWorkAction(Request $request, FeedService $feedService, StreamService $streamService){
         if($this->authorized()){
-            $userId = $request->input("user_id");
-            $file = $request->file("image");
-            $percentage = $request->input("percentageProgress");
-            $link = $request->input("imageLink");
-            $description = htmlspecialchars($request->input("newUserWorkDescription"));
-
-            $userWork = new UserWork();
-            $userWork->description = $description;
-            $userWork->user_id = $userId;
-            if($percentage){
-                $userWork->progress = $percentage;
-            }
-            $userWork->save();
-
-            if($link){
-                $userWork->link = $link;
-            }
-            if($file) {
-                $size = $this->formatBytes($file->getSize());
-                if ($size < 8) {
-                    $filename = preg_replace('/[^a-zA-Z0-9-_\.]/', '', $file->getClientOriginalName());
-
-                    $user = User::select("*")->where("id", $userId)->first();
-                    Storage::disk('spaces')->put("users/$user->slug/userworks/$userWork->id/$filename", file_get_contents($file->getRealPath()), "public");
-
-                    $userWork->content = $filename;
-                    $userWork->created_at = date("Y-m-d H:i:s");
-                    $userWork->save();
-                    return redirect($_SERVER["HTTP_REFERER"]);
-                } else {
-                    $userWork->delete();
-                    return redirect("/account")->withErrors("Image is too large. The max upload size is 8MB");
-                }
-            } else {
-                $userWork->created_at = date("Y-m-d H:i:s");
-                $userWork->save();
-
-                $followers = UserFollowLinktable::select("*")->where("followed_user_id", $userWork->user_id)->get();
-                if($followers){
-                    foreach($followers as $follower){
-                        $poster = User::select("*")->where("id", $userWork->user_id)->first();
-                        $user = User::select("*")->where("id", $follower->user_id)->first();
-                        $this->saveAndSendEmail($user, "$poster->firstname has posted a new post!", view("/templates/sendInnocreativeNotification", compact("user", "poster")));
-                    }
-                }
-
-                return redirect($_SERVER["HTTP_REFERER"]);
-            }
+            return $feedService->postNewUserWorkPost($request, $streamService);
         }
     }
 
-    public function postUserWorkCommentAction(Request $request){
+    public function postUserWorkCommentAction(Request $request, UserworkPost $userworkPost, StreamService $streamService){
         if($this->authorized()){
-            $senderUserId = $request->input("sender_user_id");
-            $user_work_id = $request->input("user_work_id");
-            $comment = $request->input("comment");
-
-            $userWorkComment = new UserWorkComment();
-            $userWorkComment->sender_user_id = $senderUserId;
-            $userWorkComment->user_work_id = $user_work_id;
-            $userWorkComment->time_sent = $this->getTimeSent();
-            $userWorkComment->description = $comment;
-            $userWorkComment->created_at = date("Y-m-d H:i:s");
-            $userWorkComment->save();
-
-
-            $messageArray = ["message" => $comment, "timeSent" => $this->getTimeSent()];
-            echo json_encode($messageArray);
-
+            return $userworkPost->postComment($request, $streamService);
         }
+    }
+
+    public function plusPointPostAction(Request $request, UserworkPost $userworkPost, StreamService $streamService){
+        return $userworkPost->plusPointPost($request, $streamService);
+    }
+
+    public function minusPointPostAction(Request $request, UserworkPost $userworkPost){
+        return $userworkPost->minusPointPost($request);
+    }
+
+    public function openInterestsModal(Request $request, UserworkPost $userworkPost){
+        return $userworkPost->interestModal($request);
     }
 
     public function deleteUserWorkPostAction(Request $request){
@@ -358,5 +291,9 @@ class FeedController extends Controller
             return redirect($_SERVER["HTTP_REFERER"])->withErrors("Failed to edit the post");
         }
 
+    }
+
+    public function getUserWorkPostModal(Request $request, UserworkPost $userworkPost){
+        return $userworkPost->getPostModal($request);
     }
 }

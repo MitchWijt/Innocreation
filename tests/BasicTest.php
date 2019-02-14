@@ -13,19 +13,8 @@ class BasicTest extends TestCase
      *
      * @return void
      */
-    public function testUserGetName()
-    {
-        $user = User::select("*")->where("id", 10)->first();
-        $user->firstname = "Mitchel";
-        $user->lastname = "Wijt";
-        $user->save();
-        $this->assertEquals('Mitchel Wijt', $user->getName());
-
-    }
-
     public function testCheckHomepage(){
         $this->visit('/')
-            ->click('collaborateNow');
-
+            ->see('idea?');
     }
 }

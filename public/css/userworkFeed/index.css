@@ -75,7 +75,7 @@
     --uiSwitchBorderRadius: var(--switchBorderRadius, 60px);
 
     width: calc((var(--uiSwitchSize) * 3));
-    height: calc((var(--uiSwitchSize) / 2));
+    height: 30px; !important;
     border-radius: var(--uiSwitchBorderRadius);
     background-color: var(--uiSwitchBgColorActive);
     padding-bottom: 30px!important;
@@ -99,7 +99,7 @@
 
 .switch_type2 .switch__toggle ~ .switch__label:after{
     width: calc((var(--uiSwitchSize) / 2) - calc(var(--uiSwitchIndent) * 0.1 - 3));
-    height: calc((var(--uiSwitchSize) / 2) - calc(var(--uiSwitchIndent) * 1 - 0.1));
+    height: calc((var(--uiSwitchSize) / 2) - calc(var(--uiSwitchIndent) * 1 - 0.2));
     transform: translate3d(var(--uiSwitchIndent), -50%, 0);
     padding-left: 10px !important;
     padding-right: 10px !important;
@@ -131,6 +131,7 @@
     padding-bottom: 5px;
     border: 1px solid #77787a;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .iconCTA:hover{
@@ -229,4 +230,9 @@
 .sliderUpDown.close {
     top: 100vh;
     height: 0;
+}
+
+.grid-container {
+    column-count: 3;
+    column-gap: 10px;
 }

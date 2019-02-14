@@ -8,9 +8,6 @@ $(document).ready(function () {
     $(".main-navMenu-mobile").hide();
 });
 
-// $(".toggleSidebar").off("click").on("click", function() {
-//    $(".sidebarModal").modal().toggle();
-// });
 
 $(document).on("click touchstart", ".closePopover", function () {
     var _this = $('[data-toggle="popover"]');
@@ -18,7 +15,6 @@ $(document).on("click touchstart", ".closePopover", function () {
 });
 
 //sidebar
-
 $('.userAccountPopover').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'})
     .on("click", function () {
         var _this = $('.popover');
@@ -55,10 +51,9 @@ $(document).on("click touchstart", "body",function (e) {
 });
 
 $(document).on("click", ".emojiGen", function () {
-   var id = $(this).data('id');
    var emoji = $(this).data('code');
 
-   var textarea = $(".input-" + id);
+   var textarea = $("#emojiArea");
    var val = textarea.val();
    textarea.val(val + emoji);
 });
@@ -74,6 +69,7 @@ $('.popoverNotifications').popover({ trigger: "click" , html: true, animation:fa
     .on("click", function () {
         var _this = $('.popover');
         _this.addClass("popover-notification");
+        _this.find(".popover-body").addClass("p-0");
     });
 
 $('.popoverNotifications').on('hide.bs.popover', function () {
@@ -85,6 +81,7 @@ $('.popoverNotificationsMob').popover({ trigger: "click" , html: true, animation
     .on("click", function () {
         var _this = $('.popover');
         _this.addClass("popover-notification-mob");
+        _this.find(".popover-body").addClass("p-0");
     });
 
 $('.popoverNotificationsMob').on('hide.bs.popover', function () {
@@ -92,7 +89,7 @@ $('.popoverNotificationsMob').on('hide.bs.popover', function () {
     _this.addClass("popover-black");
 });
 
-$(document).on("click", ".popoverNotifications", function () {
+$(document).on("click", ".popoverNotifications, .popoverNotificationsMob", function () {
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -106,11 +103,25 @@ $(document).on("click", ".popoverNotifications", function () {
         data: "",
         success: function (data) {
             $(".notificationsContent").html(data);
+            $(".notificationIndicator").addClass("hidden");
         }
     });
 });
 
-$(document).on("click", ".popoverNotificationsMob", function () {
+// MESSAGESBOX
+$('.popoverMessages').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'})
+    .on("click", function () {
+        var _this = $('.popover');
+        _this.addClass("popover-notification");
+        _this.find(".popover-body").addClass("p-0");
+    });
+
+$('.popoverMessages').on('hide.bs.popover', function () {
+    var _this = $('.popover');
+    _this.addClass("popover-black");
+});
+
+$(document).on("click", ".popoverMessages, .popoverMessagesMob", function () {
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -120,12 +131,69 @@ $(document).on("click", ".popoverNotificationsMob", function () {
                 return xhr.setRequestHeader('X-CSRF-TOKEN', token);
             }
         },
-        url: "/notification/getNotifications",
+        url: "/notification/getMessageNotifications",
         data: "",
         success: function (data) {
-            $(".notificationsContent").html(data);
+            $(".messagesBoxContent").html(data);
+            $(".messageIndicator").addClass("hidden");
         }
     });
+});
+
+$('.popoverMessagesMob').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'})
+    .on("click", function () {
+        var _this = $('.popover');
+        _this.addClass("popover-notification-mob");
+        _this.find(".popover-body").addClass("p-0");
+    });
+
+$('.popoverMessagesMob').on('hide.bs.popover', function () {
+    var _this = $('.popover');
+    _this.addClass("popover-black");
+});
+
+//Join requests box
+$('.popoverRequests').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'})
+    .on("click", function () {
+        var _this = $('.popover');
+        _this.addClass("popover-notification");
+        _this.find(".popover-body").addClass("p-0");
+    });
+
+$('.popoverRequests').on('hide.bs.popover', function () {
+    var _this = $('.popover');
+    _this.addClass("popover-black");
+});
+
+$(document).on("click", ".popoverRequests, .popoverRequestsMob", function () {
+    var id = $(this).data("user-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/notification/getTeamInvites",
+        data: {"user_id": id},
+        success: function (data) {
+            $(".teamInvitesBox").html(data);
+        }
+    });
+});
+
+$('.popoverRequestsMob').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'})
+    .on("click", function () {
+        var _this = $('.popover');
+        _this.addClass("popover-notification-mob");
+        _this.find(".popover-body").addClass("p-0");
+    });
+
+$('.popoverRequestsMob').on('hide.bs.popover', function () {
+    var _this = $('.popover');
+    _this.addClass("popover-black");
 });
 
 
@@ -143,7 +211,6 @@ $(document).on("click", ".ui-menu-item-wrapper", function () {
         url: "/home/searchExpertise",
         data: {'title': title},
         success: function (data) {
-            console.log(data);
             window.location.href = data;
         }
     });
@@ -176,16 +243,95 @@ $(document).on("click", ".acceptConnectionNotification", function () {
     $(".acceptConnection-" + id).submit();
 });
 
-//IMAGES LAZY LOADING
-$(function() {
-    $('.lazyLoad').Lazy({
-        scrollDirection: 'vertical',
-        effect: 'fadeIn',
-        effectTime: 2000,
-        threshold: -50,
-        visibleOnly: true,
-        onError: function(element) {
-            console.log('error loading ' + element.data('src'));
+
+
+$(document).on("click", ".toChat", function () {
+   var id = $(this).data("chat-id");
+   $(".toChat-" + id).submit();
+});
+
+$(document).on("click", ".declineInvite .acceptInvite", function (e) {
+   e.preventDefault();
+});
+$(document).on("click", ".openConnectionsModal", function () {
+    var userId = $(this).data("id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/openConnectionModal",
+        data: {'userId': userId},
+        success: function (data) {
+            $("body").append(data);
+            $("#connectionsModal").modal("toggle");
         }
     });
+});
+
+$(document).on("hidden.bs.modal", ".connectionsModal", function () {
+    $(".connectionsModal").remove();
+});
+
+$(document).on("click", ".openInterestsModal", function () {
+    var userWorkId = $(this).data("id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/openInterestsModal",
+        data: {'userWorkId': userWorkId},
+        success: function (data) {
+            $("body").append(data);
+            $(".interestsListModal").modal("toggle");
+        }
+    });
+});
+
+$(document).on("hidden.bs.modal", ".interestsListModal", function () {
+    $(".interestsListModal").remove();
+});
+
+$(document).on("click", ".switch__toggle", function () {
+    var _this = $(this);
+    if($(this).is(":checked")) {
+        var senderUserId = $(this).data("sender-id");
+        var recieverId = $(this).data("receiver-id");
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/user/sendConnectRequest",
+            data: {'senderId': senderUserId, "receiverId": recieverId},
+            success: function (data) {
+                $(".notificationIndicator").removeClass("hidden");
+                _this.parents(".switcher").find(".connectionSent").removeClass("hidden");
+                _this.parents(".switcher").find(".switch").addClass("hidden");
+            }
+        });
+    }
+});
+
+
+$(document).on("shown.bs.modal", ".modal", function () {
+    const targetElement = document.querySelector(".modal");
+    bodyScrollLock.disableBodyScroll(targetElement);
+});
+
+$(document).on("hidden.bs.modal", ".modal", function () {
+    bodyScrollLock.clearAllBodyScrollLocks();
 });

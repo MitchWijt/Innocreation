@@ -1,4 +1,4 @@
-@media screen and (max-width: 545px) {
+@media screen and (max-width: 575px) {
     .absolutePF{
         left: 0;
         right: 0;
@@ -34,12 +34,56 @@
         justify-content: center;
     }
 
-    .teamLinkDiv .col-6{
+    .teamName,.connectionsAmount{
         text-align: center;
-        margin-right: 15px !important;
+    }
+
+    .teamName{
+        width: 50% !important;
+    }
+
+    .openConnectionsModal{
+       margin: 0 !important;
     }
 
     .teamLinkDiv .col-6 .zmdi-accounts-alt{
         margin-left: 0 !important;
+    }
+
+    .zmdi-accounts-alt{
+        margin-left: 0 !important;
+    }
+
+    .navbarBox{
+        display: flex !important;
+        justify-content: center !important;
+        margin-top: 20px !important;
+        margin-bottom: 20px !important;
+    }
+}
+
+.navbarBox{
+    margin-top: 5px;
+}
+
+@media screen and (max-width: 995px) {
+    .navbar-user-desktop span{
+        font-size: 12px !important;
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+    }
+}
+@media screen and (max-width: 770px) {
+    .navbar-user-mobile span{
+        font-size: 12px !important;
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+    }
+    .navbar-user-desktop{
+        display: none;
+    }
+
+    .navbar-user-mobile{
+        display: block !important;
     }
 }

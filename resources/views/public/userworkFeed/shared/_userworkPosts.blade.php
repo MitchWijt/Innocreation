@@ -1,106 +1,94 @@
 <? foreach($userWorkPosts as $userWorkPost) { ?>
-    <div class="col-md-7 m-b-20">
-        <div class="card-lg userWorkPost" data-id="<?= $userWorkPost->id?>">
-            <div class="card-block row">
-                <div class="col-sm-12 m-t-15">
-                    <div class="row">
-                        <div class="@mobile col-6 @elsedesktop col-sm-6 @endmobile">
-                            <div class="avatar-sm m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>')"></div>
-                            <p class="popoverUser col-sm-6" style="margin-top: 3px !important" data-toggle="popover" data-content='<?= $userWorkPost->user->getPopoverViewUserWork()?>'><?= $userWorkPost->user->firstname?></p>
-                        </div>
-                        <div class="@mobile col-6 @elsedesktop col-sm-6 @endmobile p-r-25">
-                            <? if($userWorkPost->progress != null) { ?>
-                                <div class="progress" style="margin-top: 3px !important">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="70"
-                                         aria-valuemin="0" aria-valuemax="100" style="width:<?= $userWorkPost->progress?>;"><?= $userWorkPost->progress?> finished
-                                    </div>
-                                </div>
-                            <? } ?>
+        <div class="card-lg no-shadow no-shadow userWorkPost m-b-20 p-relative" style="display: inline-block;" data-id="<?= $userWorkPost->id?>">
+            <div class="card-block">
+                <div class="col-sm-12  m-t-10 p-0 p-absolute d-flex js-between align-start">
+                    <div class="d-flex">
+                        <a href="<?= $userWorkPost->user->getUrl()?>" target="_blank">
+                            <div class="avatar-header m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>')"></div>
+                        </a>
+                        <div class="d-flex fd-column">
+                            <p class="m-b-0"><a href="<?= $userWorkPost->user->getUrl()?>" target="_blank" class="c-gray"><?= $userWorkPost->user->getName()?></a></p>
+                            <span class="f-12 c-dark-grey"><?= count(\App\Services\UserConnections\ConnectionService::acceptedConnections($userWorkPost->user_id))?> connections</span>
                         </div>
                     </div>
-                    <div class="hr col-sm-12 p-l-0"></div>
-                </div>
-                <div class="col-sm-12 text-center p-relative desc">
                     <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
-                        <i class="zmdi zmdi-more p-absolute f-20 c-pointer popoverMenu" data-toggle="popover" data-content='<?= $userWorkPost->getPopoverMenu()?>' style="top: 2px; right: 25px;"></i>
+                        <i class="zmdi zmdi-more f-22 m-r-10 c-pointer popoverMenu" data-toggle="popover" data-content='<?= $userWorkPost->getPopoverMenu()?>'></i>
                     <? } ?>
-                    <p class="f-17 m-t-15 m-b-5 descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: break-all"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
+                </div>
+                <div class="col-sm-12 p-relative desc p-0">
+                    <div style="max-width: 340px;">
+                        <p class="f-17 m-t-15 m-b-5 descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: normal"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
+                    </div>
                     <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
                         <div class="m-t-15 m-b-5 editUserWork-<?= $userWorkPost->id?> hidden">
-                            <form action="/feed/editUserWorkPost" method="post">
+                            <form action="/feed/editUserWorkPost" class="m-0" method="post">
                                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                 <input type="hidden" name="userWorkId" value="<?= $userWorkPost->id?>">
-                                <textarea id="description_id" class="col-sm-11 input" rows="6" name="newUserWorkDescription"><? if($userWorkPost->description != null) echo htmlspecialchars_decode($userWorkPost->description);?></textarea>
+                                <textarea id="description_id" class="col-sm-12 input" rows="6" name="newUserWorkDescription"><? if($userWorkPost->description != null) echo htmlspecialchars_decode($userWorkPost->description);?></textarea>
                                 <div class="col-sm-12">
-                                    <button class="pull-right btn btn-sm btn-inno m-r-15 m-b-10">Save</button>
+                                    <button class="pull-right btn btn-sm btn-inno m-b-10" style="z-index: 10">Save</button>
                                 </div>
                             </form>
                         </div>
                     <? } ?>
-                    <? if($userWorkPost->content != null) { ?>
-                        <? if($userWorkPost->link != null) { ?>
-                            <a target="_blank" href="<?= $userWorkPost->link?>">
-                                <img style="width: 100% !important;" src="<?= $userWorkPost->getImage()?>" alt="<?= $userWorkPost->user->firstname?>">
-                            </a>
-                        <? } else { ?>
-                            <img style="width: 100% !important;" src="<?= $userWorkPost->getImage()?>" alt="<?= $userWorkPost->user->firstname?>">
+                    <div class="image p-relative m-t-20">
+                        <? if($userWorkPost->content != null) { ?>
+                            <img class="zoom zoom-<?= $userWorkPost->id?>" data-id="<?= $userWorkPost->id?>" src="<?= $userWorkPost->getPlaceholder()?>" data-layzr="<?= $userWorkPost->getImage()?>" style="width: 100%;">
                         <? } ?>
-                    <? } ?>
-                </div>
-                <div class="col-sm-12">
-                    <div class="row">
-                        <div class="@mobile col-6 @elsedesktop col-sm-6 @endmobile p-l-25 userSwitch">
-                            <? if((isset($user) && $user->id != $userWorkPost->user_id) || !isset($user)) { ?>
-                                <label class="switch switch_type2 m-t-10  m-l-15" role="switch">
-                                    <input data-toggle="popover" <? if(isset($user) && $userWorkPost->user->hasSwitched()) echo "checked disabled"; ?> data-content='<?= $userWorkPost->getPopoverSwitchView()?>' type="checkbox" class="switch__toggle popoverSwitch">
-                                    <span class="switch__label"></span>
-                                </label>
-                            <? } ?>
-                        </div>
-                        <div class="@mobile col-6 @elsedesktop col-sm-6 @endmobile m-t-5 p-r-25">
-                            <a class="regular-link pull-right f-14 m-0 toggleComments" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Comments</a>
-                        </div>
                     </div>
-                </div>
-                <div class="col-sm-12">
-                </div>
-            </div>
-        </div>
-        <div class="collapse" id="commentCollapse-<?= $userWorkPost->id?>">
-            <div class="card-lg" data-id="<?= $userWorkPost->id?>">
-                <div class="card-block row">
-                    <div class="col-sm-12 comments" data-id="<?= $userWorkPost->id?>">
-                        <div class="o-scroll userWorkComments p-10" data-id="<?= $userWorkPost->id?>" style="height: 350px;">
-
+                    <div class="col-sm-12 d-flex js-between">
+                        <div class="m-t-10 m-b-5 d-flex align-start">
+                            <a class="regular-link f-14 c-dark-grey m-0 zoom" data-id="<?= $userWorkPost->id?>"><?= count($userWorkPost->getComments())?> Comments</a>
+                            <i class="zmdi zmdi-circle f-5 vertically-center c-dark-grey m-l-5 m-t-8 m-r-5"></i>
+                            <a class="regular-link f-14 c-dark-grey m-0 openInterestsModal" data-id="<?= $userWorkPost->id?>"><span class="amountOfPoints-<?= $userWorkPost->id?>"><?= count($userWorkPost->getInterests())?></span> Interests</a>
                         </div>
                         <? if(isset($user)) { ?>
-                        <div class="hr col-sm-12 p-l-0"></div>
-                            <form class="postCommentForm" action="/feed/postUserWorkComment" method="post">
-                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                <input type="hidden" name="sender_user_id" class="sender_user_id" value="<?= $user->id?>">
-                                <input type="hidden" name="user_work_id" class="user_work_id" value="<?= $userWorkPost->id?>">
-                                <div class="text-center m-t-10 @mobile p-10 @endmobile">
-                                    <textarea name="comment" placeholder="Write your comment..." class="comment input col-sm-11 messageInputDynamic" id="messageInput-<?= $userWorkPost->id?>" rows="1"></textarea>
-                                </div>
-                                <div class="d-flex js-center @mobile m-r-20 @endmobile">
-                                    <div class="col-sm-11 p-r-0 m-b-10">
-                                        <button type="button" class="btn btn-inno btn-sm pull-right postComment">Comment</button>
-                                        <i class="iconCTAComments zmdi zmdi-mood c-pointer popoverEmojis pull-right m-r-10" data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverEmojiComments", compact("emojis", "userWorkPost"))?>'></i>
-                                    </div>
-                                </div>
-                            </form>
+                            <? if($user->hasPlusPointed($userWorkPost->id)) { ?>
+                                <section class="fave active-fave c-pointer" data-id="<?= $userWorkPost->id?>"></section>
+                            <? } else { ?>
+                                <section class="fave normal-fave c-pointer" data-id="<?= $userWorkPost->id?>"></section>
+                            <? } ?>
                         <? } ?>
                     </div>
+                    <? if(count($userWorkPost->getComments()) > 0) { ?>
+                        <div class="col-sm-12 gradientToTransparant zoom" data-id="<?= $userWorkPost->id?>" >
+                            <? foreach(\App\Services\FeedServices\UserworkPost::getRecentComments($userWorkPost->id) as $comment) { ?>
+                                <? if(isset($user) && $comment->sender_user_id == $user->id) { ?>
+                                    <div class="row sendedMessageAjax">
+                                        <div class="col-sm-12">
+                                            <div class="@mobile col-10 @elsedesktop col-sm-8 @endmobile messageSent pull-right m-b-10 messageStyle">
+                                                <p class="message break-word c-gray m-b-0"><?= $comment->message?></p>
+                                                <span class="f-12 pull-right timeSent c-"><?=$comment->time_sent?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <? } else { ?>
+                                    <div class="row messageReceivedAjax">
+                                        <div class="col-sm-12 ">
+                                            <div class="@mobile col-10 @elsedesktop col-sm-8 @endmobile pull-left m-b-10 messageReceived messageStyle">
+                                                <div class="d-flex m-b-10 m-t-5">
+                                                    <img src="<?= $comment->user->getProfilePicture()?>" alt="<?= $comment->user->firstname?>" class="circle circleSmall m-r-5">
+                                                    <p class="c-orange m-0"><?= $comment->user->getName()?></p>
+                                                </div>
+                                                <p class="break-word c-gray m-b-0"><?= $comment->message?></p>
+                                                <span class="f-12 pull-right c-gray"><?=$comment->time_sent?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <? } ?>
+                            <? } ?>
+                        </div>
+                    <? } ?>
                 </div>
             </div>
         </div>
-    </div>
 <? } ?>
 <? if(count($userWorkPosts) > 1) { ?>
-    <div class="col-sm-12 d-flex js-center m-b-20">
+    <div class=" d-flex js-center ">
         <img class="hidden loadingGear" src="/images/icons/loadingGear.gif" style="width: 30px !important; height: 30px !important" alt="">
     </div>
 <? } ?>
+<script defer async src="/js/lazyLoader.js"></script>
 <script>
 
     $('.popoverSwitch').popover({ trigger: "manual" , html: true, animation:false, placement: 'top'})

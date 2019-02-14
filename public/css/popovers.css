@@ -35,6 +35,7 @@
     min-width: 450px !important;
     max-height: 250px !important;
     overflow: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
 }
 
 .popover-notification .popover-body p{
@@ -50,13 +51,14 @@
 }
 
 .popover-notification-mob{
-    margin-top: 20px !important;
+    margin-top: 5px !important;
     background-color: #C9CCCF !important;
     border-color: #FF6100 !important;
     color: #C9CCCF !important;
     min-width: 320px !important;
     max-height: 250px !important;
     overflow: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
 }
 
 .popover-notification-mob .popover-body p{

@@ -188,13 +188,13 @@
                                             </div>
                                         </div>
                                         <? if($user) { ?>
-                                            <div class="modal applyForExpertise fade" data-expertise-id="<?=$neededExpertise->expertise_id?>" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header d-flex js-center">
+                                            <div class="modal applyForExpertise fade fade-scale" data-expertise-id="<?=$neededExpertise->expertise_id?>" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                                    <div class="modal-content modal-content-border">
+                                                        <div class="modal-header d-flex js-center modal-header-border">
                                                             <h4 class="text-center c-black" id="modalLabel"><?=$neededExpertise->Expertises->First()->title?></h4>
                                                         </div>
-                                                        <div class="modal-body ">
+                                                        <div class="modal-body modal-body-border">
                                                             <div class="c-black">
                                                                 <p><?= $neededExpertise->description?></p>
                                                             </div>

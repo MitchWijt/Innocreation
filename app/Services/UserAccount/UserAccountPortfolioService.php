@@ -102,7 +102,7 @@ class UserAccountPortfolioService
 
                 sleep(4);
                 if (!Storage::disk('spaces')->has($path)) {
-                    return redirect("/account")->withErrors("Something went wrong with your upload, please try again");
+                    return redirect($user->getUrl())->withErrors("Something went wrong with your upload, please try again");
                 }
 
                 $userPortfolioFile = new UserPortfolioFile();
@@ -131,9 +131,9 @@ class UserAccountPortfolioService
 
             } else {
                 if($mimetype == PublicPaths::mimeType(false, true, false)) {
-                    return redirect("/account")->withErrors("File is too large. The max upload duration per video is 20 seconds");
+                    return redirect($user->getUrl())->withErrors("File is too large. The max upload duration per video is 20 seconds");
                 }
-                return redirect("/account")->withErrors("File is too large. The max upload size per image is 8MB");
+                return redirect($user->getUrl())->withErrors("File is too large. The max upload size per image is 8MB");
             }
         }
     }
@@ -201,7 +201,7 @@ class UserAccountPortfolioService
 
 
         } else {
-            return redirect("/account")->withErrors("Image is too large. The max upload size per image is 8MB");
+            return redirect($user->getUrl())->withErrors("Image is too large. The max upload size per image is 8MB");
         }
 
         return redirect(sprintf('/my-account/portfolio/%s', $userPortfolioFile->portfolio->slug));

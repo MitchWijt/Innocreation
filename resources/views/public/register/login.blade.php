@@ -1,7 +1,12 @@
 @extends("layouts.app")
 @section("content")
-<div class="grey-background" style="min-height: 80vh;">
-    <div class="container">
+<div class="grey-background vh100" >
+    <div class="container" style="position: absolute; top: 35%; left: 50%; transform: translateX(-50%) translateY(-50%);">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <img style="width: 40%" src="/images/placeholder.png" alt="">
+            </div>
+        </div>
         <div class="sub-title-container p-t-20">
             <h1 class="sub-title-black" id="titleLogin"><? if(isset($urlParameter)) echo "Register"; else echo "Login"?></h1>
         </div>
@@ -14,7 +19,6 @@
                 <i class="f-11 m-b-15">* required fields</i>
             </div>
         <? } ?>
-        <div class="hr col-md-8"></div>
         <? if(isset($error)) { ?>
             <p class="c-orange text-center"><?=$error?></p>
         <? } ?>
