@@ -138,7 +138,7 @@
                                                                     <button class="btn btn-inno btn-sm m-t-10 openTeamLimitModal">Invite user to my team</button>
                                                                 <? } ?>
                                                             <? } else { ?>
-                                                                <p class="c-orange m-b-0 vertically-center">User invited</p>
+                                                                <p class="c-orange m-b-0 m-t-25 vertically-center">User invited</p>
                                                             <? } ?>
                                                         <? } ?>
                                                     <? } ?>

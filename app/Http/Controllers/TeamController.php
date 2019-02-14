@@ -153,7 +153,7 @@ class TeamController extends Controller
                             $userMessage->sender_user_id = 1;
                             $userMessage->user_chat_id = $userChat->id;
                             $userMessage->time_sent = $this->getTimeSent();
-                            $userMessage->message = sprintf('%s is now looking for a %s. <br><br> You can be the first one to join their team at <a href="https://secret.innocreation.net%s">https://secret.innocreation.net%s</a>', $team->team_name, $expertiseObject->title, $team->getUrl(), $team->getUrl());
+                            $userMessage->message = sprintf('%s is now looking for a %s. <br><br> You can be the first one to join their team at <a href="https://innocreation.net%s">https://innocreation.net%s</a>', $team->team_name, $expertiseObject->title, $team->getUrl(), $team->getUrl());
                             $userMessage->created_at = date("Y-m-d H:i:s");
                             $userMessage->save();
 
