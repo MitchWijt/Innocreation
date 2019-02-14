@@ -9,18 +9,21 @@
         <input type="hidden" name="backlink" value="<?= $backlink?>">
     <? } ?>
     <div class="form-group d-flex js-center m-b-0 p-b-20">
-        <div class="d-flex fd-column <? if($pageType == "default") echo "col-sm-5"; else echo "col-sm-9"?> m-t-20">
+        <div class="d-flex fd-column <? if($pageType == "clean") echo "col-sm-9"; else echo "col-sm-9"?> m-t-20">
             <label class="m-0">Email</label>
-            <input type="email" name="email" class="email input" placeholder="Your e-mail address...">
-            <label class="m-0">Password</label>
-            <input type="password" name="password" class="password input" placeholder="password">
+            <input type="email" name="email" class="email input m-b-15">
+            <label class="m-0">Password <a href="/password-forgotten" class="regular-link">Forgot?</a></label>
+            <input type="password" name="password" class="password input">
             <div class="row m-t-20">
                 <div class="col-sm-12">
-                    <button class="btn btn-inno pull-right">Log in</button>
-                    <? if($pageType == "default") { ?>
+                    <button class="btn btn-inno pull-right btn-block">Log in</button>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-sm-12">
+                    <? if($pageType == "clean") { ?>
                         <p class="m-t-10 m-b-0">Don't have an account? <a class="regular-link toRegister" href="#">Sign up here!</a></p>
                     <? } ?>
-                    <a href="/password-forgotten" class="regular-link">I forgot my password</a>
                 </div>
             </div>
         </div>
@@ -33,7 +36,7 @@
         <input type="hidden" name="backlink" value="<?= $backlink?>">
     <? } ?>
     <div class="form-group d-flex js-center m-b-10">
-        <div class="row d-flex js-center <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?>">
+        <div class="row d-flex js-center <? if($pageType == "clean") echo "col-sm-9"; else echo "col-sm-12"?>">
             <div class="col-sm-3 @desktop p-l-0 @elsemobile p-0 @enddesktop">
                 <label class="m-0">First name *</label>
                 <input type="text" name="firstname" placeholder="First name" class="firstname input col-sm-12" value="<? if(isset($user->firstname)) echo $user->firstname?>">
@@ -63,22 +66,22 @@
     <? if(!isset($user)) { ?>
         <div class="form-group m-b-10 d-flex js-center">
             <div class="row d-flex js-center col-sm-9">
-                <label class="m-0  <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?> p-0">Password *</label>
-                <input type="password" name="password" placeholder="Create your password" class="password input <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?>">
+                <label class="m-0  <? if($pageType == "clean") echo "col-sm-9"; else echo "col-sm-12"?> p-0">Password *</label>
+                <input type="password" name="password" placeholder="Create your password" class="password input <? if($pageType == "clean") echo "col-sm-9"; else echo "col-sm-12"?>">
             </div>
         </div>
     <? } ?>
     <div class="form-group m-b-10 d-flex js-center">
         <div class="row d-flex js-center col-sm-9">
-            <label class="m-0 <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?> p-0">Email *</label>
-            <input type="email" name="email" placeholder="E-mail address" class="email input <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?>" value="<? if(isset($user->email)) echo $user->email?>">
+            <label class="m-0 <? if($pageType == "clean") echo "col-sm-9"; else echo "col-sm-12"?> p-0">Email *</label>
+            <input type="email" name="email" placeholder="E-mail address" class="email input <? if($pageType == "clean") echo "col-sm-9"; else echo "col-sm-12"?>" value="<? if(isset($user->email)) echo $user->email?>">
         </div>
     </div>
     <? if(!isset($user)) { ?>
         <div class="form-group m-b-0 d-flex js-center p-relative expertises">
             <div class="row d-flex js-center col-sm-9">
-                <label class="m-0 <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?> p-0">Expertises *</label>
-                <input type="text" class="input p-b-10 <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?>" name="expertises" id="tokenfield" value=""/>
+                <label class="m-0 <? if($pageType == "clean") echo "col-sm-9"; else echo "col-sm-12"?> p-0">Expertises *</label>
+                <input type="text" class="input p-b-10 <? if($pageType == "clean") echo "col-sm-9"; else echo "col-sm-12"?>" name="expertises" id="tokenfield" value=""/>
             </div>
         </div>
         <div class="row d-flex js-center m-b-5">
@@ -88,7 +91,7 @@
         </div>
     <? } ?>
     <div class="form-group d-flex js-center m-b-10 ">
-        <div class="row d-flex js-center <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?>">
+        <div class="row d-flex js-center <? if($pageType == "clean") echo "col-sm-9"; else echo "col-sm-12"?>">
             <div class="col-sm-3 @desktop p-l-0 @elsemobile p-0 @enddesktop">
                 <label class="m-0">City *</label>
                 <input type="text" name="city" placeholder="Your city" class="city input col-sm-12" value="<? if(isset($user->city)) echo $user->city?>">
@@ -105,8 +108,8 @@
     </div>
     <div class="form-group m-b-0 d-flex js-center m-b-10">
         <div class="row d-flex js-center col-sm-9">
-            <label class="m-0 <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?> p-0">Country *</label>
-            <select name="country" class="input <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?>">
+            <label class="m-0 <? if($pageType == "clean") echo "col-sm-9"; else echo "col-sm-12"?> p-0">Country *</label>
+            <select name="country" class="input <? if($pageType == "clean") echo "col-sm-9"; else echo "col-sm-12"?>">
                 <option selected disabled>Which country do you live?</option>
                 <? foreach($countries as $country) { ?>
                     <option <? if(isset($user->country) && $user->country == $country->country) echo "selected"?> data-country-code="<?= $country->country_code?>" value="<?= $country->id?>"><?= $country->country?></option>
@@ -116,8 +119,8 @@
     </div>
     <div class="form-group m-b-0 d-flex js-center m-b-20">
         <div class="row d-flex js-center col-sm-9">
-            <label class="m-0 <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?> p-0">Phonenumber</label>
-            <input type="text" name="phonenumber" placeholder="Your phonenumber" class="phonenumber input <? if($pageType == "default") echo "col-sm-9"; else echo "col-sm-12"?>" value="<? if(isset($user->phonenumber)) echo $user->phonenumber?>">
+            <label class="m-0 <? if($pageType == "clean") echo "col-sm-9"; else echo "col-sm-12"?> p-0">Phonenumber</label>
+            <input type="text" name="phonenumber" placeholder="Your phonenumber" class="phonenumber input <? if($pageType == "clean") echo "col-sm-9"; else echo "col-sm-12"?>" value="<? if(isset($user->phonenumber)) echo $user->phonenumber?>">
         </div>
     </div>
     <div class="form-group m-b-0 d-flex js-center">
@@ -135,7 +138,7 @@
     <div class="row m-t-20 d-flex js-center">
         <div class="col-sm-7">
             <button type="button" class="btn btn-inno pull-right submitRegister">Register</button>
-            <? if($pageType == "default") { ?>
+            <? if($pageType == "clean") { ?>
                 <p class="m-t-10">Already have an account? <a class="regular-link toLogin" href="#">Sign in here!</a></p>
             <? } ?>
         </div>

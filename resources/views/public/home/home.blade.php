@@ -201,4 +201,5 @@
 @endsection
 @section('pagescript')
     <script defer async src="/js/home/home.js"></script>
+    <script defer async src="/js/lazyLoader.js"></script>
 @endsection

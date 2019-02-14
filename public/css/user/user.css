@@ -107,6 +107,12 @@
     display: block !important;
 }
 
+#editProfilePicture{
+    position: absolute;
+    bottom: 7%;
+    right: 7%;
+}
+
 .editBtn{
     border: 1px solid #C9CCCF;
     border-radius: 10px;
@@ -139,4 +145,47 @@
     padding-right: 20px;
     padding-left: 20px;
     border-radius: 50%;
+}
+
+.hover-animation:hover{
+    background: #abadb2;
+    transition: all 0.5s;
+}
+
+.navbar-item{
+    border: 1px solid #77787a;
+    padding: 10px
+}
+
+.placeholderUserWorks{
+    background: url('/images/placeholder.png');
+    height: 40%;
+    width: 100%;
+    background-size:     cover !important;
+    background-repeat:   no-repeat !important;
+    background-position: center center !important;
+}
+
+.normal-fave {
+    width: 55px;
+    height: 50px;
+    background: url(/images/star_fave.png) no-repeat;
+    background-position: 0 0;
+}
+
+.active-fave{
+    width: 55px;
+    height: 50px;
+    background: url(/images/star_fave.png) no-repeat;
+    background-position: -3519px 0;
+}
+
+.fave-animation{
+    background-position: -3519px 0;
+    transition: background 1s steps(55);
+}
+
+.fave-revert{
+    background-position: 0 0;
+    transition: background 1s steps(55);
 }

@@ -7,7 +7,7 @@
 @notmobile
 <div class="sidebar">
     <div class="text-center">
-        <a href="/account" class="td-none">
+        <a href="<?= $user->getUrl()?>" class="td-none">
             <i class="c-dark-grey f-10"><i class="zmdi zmdi-long-arrow-left"> </i>Back to account</i>
         </a>
         <p class="c-gray f-20 text-center m-0"><?= $user->team->team_name?></p>
@@ -88,7 +88,7 @@
                 @endmobile
                 <div class="sidebar">
                     <div class="text-center">
-                        <a href="/account" class="td-none">
+                        <a href="<?= $user->getUrl()?>" class="td-none">
                             <i class="c-dark-grey f-10"><i class="zmdi zmdi-long-arrow-left"> </i>Back to account</i>
                         </a>
                         <p class="c-gray f-20 text-center m-0"><?= $user->team->team_name?></p>

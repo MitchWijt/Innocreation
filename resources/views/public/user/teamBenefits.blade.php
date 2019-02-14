@@ -1,18 +1,12 @@
 @extends("layouts.app")
 @section("content")
     <div class="d-flex grey-background vh85">
-        @notmobile
-            @include("includes.userAccount_sidebar")
-        @endnotmobile
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 d-flex js-center">
                     @include("includes.flash")
                 </div>
             </div>
-            @mobile
-                @include("includes.userAccount_sidebar")
-            @endmobile
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">Teams</h1>
             </div>
@@ -38,14 +32,11 @@
                            <li class="instructions-list-item">
                                <p class="instructions-text f-19 m-0 p-b-10">Getting your ideas or products out there</p>
                            </li>
-                           <li class="instructions-list-item">
-                               <p class="instructions-text f-19 m-0 p-b-10">Sell your own team products in the shop</p>
-                           </li>
+                            <li class="instructions-list-item">
+                                <p class="instructions-text f-19 m-0 p-b-10">Share your team products on the feed</p>
+                            </li>
                            <li class="instructions-list-item">
                                <p class="instructions-text f-19 m-0 p-b-10">Be a team leader of your own team</p>
-                           </li>
-                           <li class="instructions-list-item">
-                               <p class="instructions-text f-19 m-0 p-b-10">Pay out your members easily</p>
                            </li>
                         </ul>
                     </div>
@@ -53,13 +44,13 @@
             </div>
 
             <!-- MODAL CREATE A TEAM -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header d-flex js-center">
+            <div class="modal fade fade-scale" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content modal-content-border">
+                        <div class="modal-header modal-header-border d-flex js-center">
                             <h4 class="modal-title text-center" id="modalLabel">Create your team!</h4>
                         </div>
-                        <div class="modal-body ">
+                        <div class="modal-body modal-body-border">
                             <form action="/createTeam" method="post">
                                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                 <input type="hidden" name="user_id" value="<?= $user->id?>">

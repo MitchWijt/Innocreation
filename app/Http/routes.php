@@ -38,6 +38,8 @@ Route::post("/home/getModalCarouselUser", "HomeController@getModalCarouselUserAc
 
 Route::post("/home/searchExpertise", "HomeController@searchExpertiseAction");
 
+Route::post("/openConnectionModal", "UserConnectionController@connectionsModalAction");
+
 // CONTACT US
 Route::get("/contact-us", "HomeController@contactAction");
 
@@ -48,13 +50,15 @@ Route::get("/faq", "PageController@faqAction");
 
 //========================NOTIFICATIONS================================
 Route::post("/notification/getNotifications", "NotificationController@getNotificationsAction");
+
+Route::post("/notification/getMessageNotifications", "NotificationController@getMessageNotificationsAction");
+
+Route::post("/notification/toChat", "NotificationController@toChatAction");
+
+Route::post("/notification/getTeamInvites", "NotificationController@getTeamInvitesAction");
 //========================USERACCOUNT================================
 
-Route::get("/account", "UserController@userAccount");
-
 Route::post("/my-account/saveUserAccount", "UserController@saveUserAccount");
-
-Route::get("/my-account", "UserController@userAccount");
 
 Route::post("/user/sendPasswordResetLink", "UserController@sendPasswordResetLinkAction");
 
@@ -66,17 +70,17 @@ Route::post("/user/sendConnectRequest", "UserController@sendConnectRequestAction
 
 //User Expertises
 
-Route::get("/my-account/expertises", "UserController@userAccountExpertises");
+Route::post("/user/saveUserExpertise", "UserController@saveUserExpertiseAction");
 
-Route::post("/saveUserExpertiseDescription", "UserController@saveUserExpertiseDescription");
-
-Route::post("/deleteUserExpertise","UserController@deleteUserExpertiseAction");
-
-Route::post("/my-account/addUserExpertise","UserController@addUserExpertiseAction");
+Route::post("/user/deleteUserExpertise","UserController@deleteUserExpertiseAction");
 
 Route::post("/user/getEditUserExpertiseModal","UserController@getEditUserExpertiseModalAction");
 
 Route::post("/user/editUserExpertiseImage","UserController@editUserExpertiseImage");
+
+Route::post("/user/getEditExpertiseModal","UserController@getEditExpertiseModalAction");
+
+Route::post("/user/loadMoreExpertises","UserController@loadMoreExpertises");
 
 // Team info (benefits)
 
@@ -93,7 +97,7 @@ Route::post("/deleteFavoriteExpertisesUser", "UserController@deleteFavoriteExper
 Route::post("/filterFavExpertises", "UserController@filterFavExpertises");
 // User Profile Picture
 
-Route::post("/my-account/saveUserProfilePicture", "UserController@saveUserProfilePictureAction");
+Route::post("/user/saveUserProfilePicture", "UserController@saveUserProfilePictureAction");
 
 Route::post("/user/editBannerImage", "UserController@editBannerImageAction");
 
@@ -137,7 +141,7 @@ Route::post("/user/deleteUserChat", "UserController@deleteUserChatAction");
 Route::post("/user/removeChatSession", "UserController@removeChatSessionAction");
 
 //Settings
-Route::get("/my-account/privacy-settings", "UserController@userAccountPrivacySettingsAction");
+Route::post("/user/openPrivacySettingsModal", "UserController@openPrivacySettingsModalAction");
 
 
 
@@ -157,21 +161,6 @@ Route::post("/my-account/acceptTeamInvite","UserController@acceptTeamInviteActio
 
 Route::post("/my-account/rejectTeamInvite","UserController@rejectTeamInviteAction");
 
-Route::get("/my-account/team-create-requests","UserController@TeamCreateRequestsAction");
-
-Route::post("/my-account/acceptCreateTeamRequest","UserController@acceptCreateTeamRequestAction");
-
-Route::post("/my-account/rejectCreateTeamRequest","UserController@rejectCreateTeamRequestAction");
-
-//Support tickets
-Route::get("/my-account/support-tickets","UserController@userSupportTickets");
-
-Route::post("/user/sendSupportTicketMessage","UserController@sendSupportTicketMessageAction");
-
-Route::post("/user/rateSupportTicket","UserController@rateSupportTicketAction");
-
-Route::post("/user/addSupportTicket","UserController@addSupportTicketAction");
-
 //favorite teams
 Route::get("/my-account/favorite-teams","UserController@favoriteTeamsAction");
 
@@ -179,10 +168,6 @@ Route::post("/user/joinTeamFromHelper","UserController@joinTeamFromHelperAction"
 
 Route::post("/user/finishHelper","UserController@finishHelperAction");
 
-// follow user
-Route::post("/user/followUser","UserController@followUserAction");
-
-Route::post("/user/unfollowUser","UserController@unfollowUserAction");
 
 //connections
 Route::post("/user/acceptConnection","UserController@acceptConnectionAction");
@@ -280,6 +265,10 @@ Route::post("/my-team/generateInviteLink", "TeamController@generateInviteLinkAct
 Route::post("/my-team/saveNewName", "TeamController@saveTeamNameAction");
 
 Route::post("/my-team/editBannerImage", "TeamController@editBannerImage");
+
+Route::post("/team/getTeamLimitModal", "TeamController@getTeamLimitModal");
+
+
 
 //Payment
 Route::get("/my-team/payment-details", "TeamController@teamPaymentDetailsAction");
@@ -441,6 +430,8 @@ Route::post("/message/getTeamChatMessages", "MessageController@teamChatMessagesA
 Route::post("/message/getTeamGroupChatMessages", "MessageController@teamGroupChatMessagesAction");
 
 Route::post("/message/getUserChatMessages", "MessageController@userChatMessagesAction");
+
+Route::post("/message/getUserChatReceiver", "MessageController@getUserChatReceiver");
 
 Route::post("/message/getSupportTicketMessages", "MessageController@getSupportTicketMessagesAction");
 
@@ -640,11 +631,13 @@ Route::get("/team-product/{slug?}", "FeedController@TeamProductsAction");
 //=======================WORKFEED=============================
 Route::get("/innocreatives", "FeedController@workFeedIndexAction");
 
+Route::post("/feed/plusPointPost", "FeedController@plusPointPostAction");
+
+Route::post("/feed/minusPointPost", "FeedController@minusPointPostAction");
+
 Route::post("/feed/getUserworkPosts", "FeedController@getUserworkPostsAction");
 
 Route::post("/feed/getMoreUserworkPosts", "FeedController@getMoreUserworkPostsAction");
-
-Route::post("/feed/upvoteUserWork", "FeedController@upvoteUserWorkAction");
 
 Route::get("/innocreatives/{id?}", "FeedController@workFeedIndexAction");
 
@@ -655,6 +648,12 @@ Route::post("/feed/postUserWorkComment", "FeedController@postUserWorkCommentActi
 Route::post("/feed/deleteUserWorkPost", "FeedController@deleteUserWorkPostAction");
 
 Route::post("/feed/editUserWorkPost", "FeedController@editUserWorkPostAction");
+
+Route::post("/getUserWorkPostModal", "FeedController@getUserWorkPostModal");
+
+Route::post("/openInterestsModal", "FeedController@openInterestsModal");
+
+Route::post("/feed/unhashId", "FeedController@unhashId");
 
 //========================CHECKOUT/PACKAGES========================
 

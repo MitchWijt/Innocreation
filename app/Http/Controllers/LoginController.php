@@ -35,7 +35,7 @@ class LoginController extends Controller
         }
         $countries = Country::select("*")->orderBy("country")->get();
         $expertises = Expertises::select("*")->get();
-        $pageType = "default";
+        $pageType = "clean";
         if($hash != null && $teamName != null){
             $team = Team::select("*")->where("hash", $hash)->where("slug", $teamName)->first();
             $today2 = date("Y-m-d H:i:s", strtotime("+1 hour"));
@@ -218,7 +218,7 @@ class LoginController extends Controller
                 if($request->input("pageType") && $request->input("pageType") == "checkout"){
                     return redirect($request->input("backlink"));
                 } else {
-                    return redirect("/account");
+                    return redirect($user->getUrl());
                 }
             } else {
                 return redirect($_SERVER["HTTP_REFERER"])->with('success', 'Account created');
@@ -274,7 +274,7 @@ class LoginController extends Controller
                 if ($request->input("pageType") && $request->input("pageType") == "checkout") {
                     return redirect($request->input("backlink"));
                 } else {
-                    return redirect("/account");
+                    return redirect($user->getUrl());
                 }
             } else {
                 $user->access_token = $token;

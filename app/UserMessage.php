@@ -24,6 +24,8 @@ class UserMessage extends Model{
                 $data = ["actor" => $model->userChat->receiver->id, "receiver" => 1, "userChat" => $model->user_chat_id, "message" => $model->message, "timeSent" => "$timeSent", "verb" => "userMessage", "object" => "3",];
                 $messageFeed->addActivity($data);
             }
+            $model->created_at = date("Y-m-d H:i:s");
+            $model->save();
         });
     }
 

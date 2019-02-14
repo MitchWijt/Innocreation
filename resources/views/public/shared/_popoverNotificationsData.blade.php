@@ -1,6 +1,6 @@
 <? $array = [];?>
 <? foreach($notifications as $notification) { ?>
-    <? array_push($array, ['object' => $notification, 'category' => 'message', 'time' => date("Y-m-d H:i:s",strtotime($notification['time']))]); ?>
+    <? array_push($array, ['object' => $notification, 'category' => 'notification', 'time' => date("Y-m-d H:i:s",strtotime($notification['time']))]); ?>
 <? } ?>
 <? foreach($connections as $connection) { ?>
     <? array_push($array, ['object' => $connection, 'category' => 'connection', 'time' => date("Y-m-d H:i:s", strtotime($connection->created_at))]); ?>
@@ -9,53 +9,15 @@
         return ($a['time'] > $b['time']) ? -1 : 1;
     });
 ?>
+<? $counter = 0;?>
 <? foreach($array as $item) { ?>
-    <? if($item['category'] == 'message') { ?>
-        <?
-            $today = new DateTime(date("Y-m-d H:i:s"));
-            $date = new DateTime(date("Y-m-d H:i:s",strtotime($item['time']. "+1 hours")));
-            $interval = $date->diff($today);
-            if(isset($item['object']['receiver'])){
-                $sender = ['firstname' => "Innocreation", 'profilePic' => '/images/cartwheel.png'];
-                if($item['object']['receiver'] != 1){
-                    $sender = \App\User::select("*")->where("id", $item['object']['receiver'])->first();
-            } ?>
-            <a class="td-none notificationLink" href="/my-account/chats?user_chat_id=<?= $item['object']['userChat']?>">
-                <div class="row p-b-10 notificationHover" style="border-bottom: 1px solid #FF6100 !important">
-                    <div class="col-2 m-b-5 m-t-15">
-                        <? if($item['object']['receiver'] != 1) { ?>
-                            <div class="avatar-header img m-t-0 p-t-0 m-l-15" style="background: url('<?= $sender->getProfilePicture()?>'); border-color: #000 !important"></div>
-                        <? } else { ?>
-                            <div class="avatar-header img m-t-0 p-t-0 m-l-15" style="background: url('<?= $sender['profilePic']?>'); border-color: #000 !important"></div>
-                        <? } ?>
-                    </div>
-                    <div class="col-10 text-center m-t-15">
-                        <? if($item['object']['verb'] == "userMessage") { ?>
-                            <? if($item['object']['receiver'] != 1) { ?>
-                                <p><?= $sender->firstname?> has sent you a message!</p>
-                            <? } else { ?>
-                                <p><?= $sender['firstname']?> has sent you a message!</p>
-                            <? } ?>
-                        <? } else { ?>
-                            <? if($item['object']['receiver'] != 1) { ?>
-                                <p>New notification from <?= $sender->firstname?> </p>
-                            <? } else { ?>
-                                <p>New notification from <?= $sender['firstname']?> </p>
-                            <? } ?>
-                        <? } ?>
-                        <div class="pull-right">
-                            <i class="c-dark-grey f-12"><?= \App\Services\GenericService::dateDiffToString($interval)?></i>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        <? } ?>
-    <? } else if ($item['category'] == 'connection') { ?>
-        <?
-        $today = new DateTime(date("Y-m-d H:i:s"));
-        $date = new DateTime(date("Y-m-d H:i:s",strtotime($item['time'])));
-        $interval = $date->diff($today);
-        ?>
+    <?
+    $counter++;
+    $today = new DateTime(date("Y-m-d H:i:s"));
+    $date = new DateTime(date("Y-m-d H:i:s",strtotime($item['time'] . "+1 hour")));
+    $interval = $date->diff($today);
+    ?>
+    <? if ($item['category'] == 'connection') { ?>
             <div class="row p-b-10 notificationHover" style="border-bottom: 1px solid #FF6100 !important">
                 <div class="col-2 m-b-5 m-t-15">
                     <div class="avatar-header img m-t-0 p-t-0 m-l-15" style="background: url('<?= $item['object']->sender->getProfilePicture()?>'); border-color: #000 !important"></div>
@@ -72,11 +34,33 @@
                     <input type="hidden" name="connection_id" value="<?= $item['object']->id?>">
                 </form>
                 <div class="col-12">
-                    <div class="pull-right">
+                    <div class="pull-right m-r-10">
                         <i class="c-dark-grey f-12 pull-right"><?= \App\Services\GenericService::dateDiffToString($interval)?></i>
                     </div>
                 </div>
             </div>
+    <? } else if($item['category'] == "notification") { ?>
+        <? if(isset($item['object']['link'])) { ?>
+            <a class="td-none" href="<?= $item['object']['link']?>">
+        <? } ?>
+        <div class="row p-b-10 notificationHover" style="border-bottom: 1px solid #FF6100 !important">
+            <div class="col-12 text-center m-t-15">
+                <p class="m-l-10"><?= $item['object']['message']?></p>
+            </div>
+            <div class="col-12">
+                <div class="pull-right m-r-10">
+                    <i class="c-dark-grey f-12 pull-right"><?= \App\Services\GenericService::dateDiffToString($interval)?></i>
+                </div>
+            </div>
+        </div>
+        <? if(isset($item['object']['link'])) { ?>
+            </a>
+        <? } ?>
     <? } ?>
+<? } ?>
+<? if($counter < 1) { ?>
+<div class="row d-flex js-center m-t-10">
+    <p>No notifications to show</p>
+</div>
 <? } ?>
 

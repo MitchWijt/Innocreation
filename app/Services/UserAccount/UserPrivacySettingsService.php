@@ -21,8 +21,8 @@ class UserPrivacySettingsService
         $this->user = $user;
     }
 
-    public function userAccountPrivacySettingsIndex(){
+    public function openSettingsModal(){
         $user = $this->user;
-        return view("/public/user/userAccountPrivacySettings", compact("user"));
+        return view("/public/user/shared/_userAccountPrivacySettingsModal", compact("user"));
     }
 }

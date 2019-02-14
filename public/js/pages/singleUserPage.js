@@ -2,10 +2,7 @@ $(".openPortfolioModal").on("click",function () {
    $(this).parents(".portfolio").find(".portfolioModal").modal().toggle();
 });
 
-$(".read-more").on("click",function () {
-    var id = $(this).data("toggle");
-    $("#collapse-" + id).collapse('toggle');
-});
+
 var vars = {};
 $(document).ready(function () {
     $(".carousel").each(function () {
@@ -43,8 +40,188 @@ $('.bannerImgInput').on("change", function () {
     $(".bannerImgForm").submit();
 });
 
+$('#editProfilePicture').on("click", function () {
+    $(".profile_picture").click();
+});
+
+$('.profile_picture').on("change", function () {
+    $(".profileImageForm").submit();
+});
+
+$(document).on("click", ".userPrivacySettings", function () {
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/user/openPrivacySettingsModal",
+        data: "",
+        success: function (data) {
+            $("body").append(data);
+            $(".privacySettingsModal").modal("toggle");
+        }
+    });
+});
+
+$(document).on("hidden.bs.modal", ".privacySettingsModal", function () {
+    $(".privacySettingsModal").remove();
+});
+
+// Get expertise edit modal + append and toggle
+$(document).on("click", ".editExpertise", function () {
+    var expertiseLinktableId = $(this).data("expertise-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/user/getEditExpertiseModal",
+        data: {'expertiseLinktableId': expertiseLinktableId},
+        success: function (data) {
+            $("body").append(data);
+            $(".editExpertiseModal").modal("toggle");
+        }
+    });
+});
+
+$(document).on("hidden.bs.modal", ".editExpertiseModal", function () {
+    $(".editExpertiseModal").remove();
+});
+
+$(document).on("click", ".removeExpertise", function () {
+    if(confirm("Are you sure you want to delete this expertise and its contents?")) {
+        var expertiseLinktableId = $(this).data("expertise-id");
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/user/deleteUserExpertise",
+            data: {'expertiseLinktableId': expertiseLinktableId},
+            success: function (data) {
+                $(".expertise-" + expertiseLinktableId).fadeOut();
+            }
+        });
+    }
+});
 
 
+$('.popoverSingleUser').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'});
+$('.popoverUserMenu').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'});
 
+$(".editImage").on("click",function () {
+    var expertise_id = $(this).data("expertise-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
 
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/user/getEditUserExpertiseModal",
+        data: {'expertise_id': expertise_id},
+        success: function (data) {
+            $("body").append(data);
+            $(".editImageModal").modal('toggle');
+        }
+    });
+});
 
+$(document).on("hidden.bs.modal", ".editImageModal", function () {
+    $(".editImageModal").remove();
+});
+
+$(document).on("click", ".userExpImg", function () {
+    var expertise_id = $(this).data("expertise-id");
+    var image = $(this).data("img");
+    var photographerLink = $(this).data("pl");
+    var photographerName = $(this).data("pn");
+    var id = $(this).data("id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/user/editUserExpertiseImage",
+        data: {'expertise_id': expertise_id, 'photographerLink' : photographerLink, 'image' : image, 'photographerName' : photographerName, "imgId" : id},
+        success: function (data) {
+            window.location.reload();
+        }
+    });
+});
+
+$(document).on("click", ".openTeamLimitModal", function () {
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/team/getTeamLimitModal",
+        data: "",
+        success: function (data) {
+            $("body").append(data);
+            $(".teamLimitModal").modal('toggle');
+        }
+    });
+});
+
+$(document).on("hidden.bs.modal", ".teamLimitModal", function () {
+    $(".teamLimitModal").remove();
+});
+
+$(document).on("click", ".loadMoreExpertises", function () {
+    var userId = $(this).data("user-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/user/loadMoreExpertises",
+        data: {"user_id" : userId},
+        success: function (data) {
+            console.log(data);
+           $(".loadMoreExpertisesContent").append(data);
+           setTimeout(function () {
+            $(".loadMoreExpertisesContent").collapse("toggle");
+           }, 100);
+           $(".lessExpertisesDiv").removeClass("hidden");
+           $(".loadMoreExpertisesDiv").addClass("hidden");
+        }
+    });
+});
+
+$(document).on("click", ".lessExpertises", function () {
+    $(".loadMoreExpertisesContent").collapse("toggle");
+});
+
+$('.loadMoreExpertisesContent').on('hidden.bs.collapse', function () {
+    $(".loadMoreExpertisesContent").html("");
+    $(".loadMoreExpertisesDiv").removeClass("hidden");
+    $(".lessExpertisesDiv").addClass("hidden");
+});

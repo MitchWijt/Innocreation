@@ -8,6 +8,15 @@ class InviteRequestLinktable extends Model
 {
     public $table = "invite_request_linktable";
 
+    public static function boot(){
+        parent::boot();
+        self::created(function($model) {
+            $model->created_at = date("Y-m-d H:i:s");
+            $model->save();
+        });
+    }
+
+
     public function expertises(){
         return $this->hasMany("\App\Expertises", "id","expertise_id");
     }

@@ -8,11 +8,11 @@
                 </div>
             </div>
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">Contact us</h1>
+                <h1 class="sub-title-black m-b-0">Contact us</h1>
             </div>
             <div class="row">
-                <div class="col-sm-12 text-center">
-                    <small>Best reachable times are between 17:00 and 22:00 (UTC +2)</small>
+                <div class="col-sm-12 text-center m-b-10">
+                    <small>You can also send a message in your account to the chat "Innocreation"!</small>
                 </div>
             </div>
             <div class="hr col-sm-12"></div>
@@ -24,7 +24,7 @@
             <form action="/home/sendContactForm" enctype="multipart/form-data" class="contactUsForm" method="post">
                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                 <div class="row d-flex js-center m-t-20">
-                    <div class="col-sm-8 d-flex">
+                    <div class="col-sm-12 d-flex">
                         <div class="col-sm-4 p-0">
                             <input type="text" name="firstname" placeholder="First name" class="input col-sm-11 firstname" value="<? if(isset($user)) echo $user->firstname?>">
                         </div>
@@ -37,14 +37,14 @@
                     </div>
                 </div>
                 <div class="row m-t-20 d-flex js-center">
-                    <div class="col-sm-8 d-flex js-center p-0">
+                    <div class="col-sm-12 d-flex js-center p-0">
                         <div class="col-sm-12 text-center">
                             <input type="email" name="email" placeholder="Email" class="input col-sm-12 email" value="<? if(isset($user)) echo $user->email?>">
                         </div>
                     </div>
                 </div>
                 <div class="row m-t-20 d-flex js-center">
-                    <div class="col-sm-8 d-flex js-center p-0">
+                    <div class="col-sm-12 d-flex js-center p-0">
                         <div class="col-sm-12 text-center">
                             <textarea name="contactMessage" placeholder="Your message..." class="input col-sm-12 message" cols="30" rows="10"></textarea>
                         </div>
@@ -54,16 +54,12 @@
                     <div class="col-sm-8 p-l-15">
                         <div class="g-recaptcha" data-sitekey="6LfW7G4UAAAAAOJvDkQiKgOONaSkHIE4vEjuWJg3"></div>
                     </div>
+                    <div class="col-sm-4">
+                        <button class="btn btn-inno submitContactForm pull-right" type="button">Send</button>
+                    </div>
                 </div>
-                {{--<div class="row d-flex js-center">--}}
-                    {{--<div class="col-sm-8">--}}
-                      {{--<ul class="fileName">--}}
-
-                      {{--</ul>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
                 <div class="row d-flex js-center fileUpload">
-                    <div class="col-sm-8">
+                    <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-8">
                                 <div class="row">
@@ -75,14 +71,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <button class="btn btn-inno submitContactForm pull-right" type="button">Send</button>
-                            </div>
                         </div>
-                        {{--<input type="file" name="files" multiple class="hidden files">--}}
-                        {{--<button class="btn btn-inno addFiles" type="button"><i class="zmdi zmdi-file-plus"></i> Add files</button>--}}
                     </div>
-                    <div class="col-sm-8">
+                    <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-8">
                                 <div class="row">

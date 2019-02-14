@@ -52,12 +52,6 @@ class Controller extends BaseController
         }
     }
 
-    public function getTimeSent(){
-        $timeNow = date("H:i:s");
-        $time = (date("g:i a", strtotime($timeNow)));
-        return $time;
-    }
-
     public function getService($service){
         if($service == "mailgun") {
             $mailgun = [

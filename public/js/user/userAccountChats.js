@@ -12,29 +12,8 @@ $('.searchChatUsers').keyup(function(){
 
 $(document).ready(function () {
    var userChatId = $(".userChatId").val();
-   console.log(userChatId);
    if(userChatId != 0){
-       $(".chat-card").each(function () {
-          if($(this).data("chat-id") == userChatId){
-              $(this).click();
-          }
-       });
-       $.ajax({
-           method: "POST",
-           beforeSend: function (xhr) {
-               var token = $('meta[name="csrf_token"]').attr('content');
-
-               if (token) {
-                   return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-               }
-           },
-           url: "/user/removeChatSession",
-           data: "",
-           success: function (data) {
-
-           }
-       });
-       sessionStorage.removeItem('userChatId');
+       $(".chat-" + userChatId).click();
    }
 });
 //user is "finished typing," do something
@@ -48,85 +27,96 @@ $(".userCircle").on("click",function () {
 
 
 
-$(".chat-card").on("click",function () {
+$(".chatItem").on("click",function () {
+    $(".chatItem").removeClass("activeChat");
+    $(this).addClass("activeChat");
     var user_id = $(this).data("user-id");
     var streamToken = $(".streamToken").val();
     var userId = $(".userId").val();
     var user_chat_id = $(this).data("chat-id");
+    var receiver_user_id = $(this).data("receiver-user-id");
     var admin = 0;
-   $(".collapse").each(function () {
-       if($(this).data("chat-id") == user_chat_id){
-           function getUserChatMessages() {
-               $.ajax({
-                   method: "POST",
-                   beforeSend: function (xhr) {
-                       var token = $('meta[name="csrf_token"]').attr('content');
+       function getUserChatMessages() {
+           $.ajax({
+               method: "POST",
+               beforeSend: function (xhr) {
+                   var token = $('meta[name="csrf_token"]').attr('content');
 
-                       if (token) {
-                           return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-                       }
-                   },
-                   url: "/message/getUserChatMessages",
-                   data: {'user_chat_id': user_chat_id, 'admin' : admin},
-                   success: function (data) {
-                       $(".collapse").each(function () {
-                           if($(this).data("chat-id") == user_chat_id){
-                               $(this).find(".userChatMessages").html(data);
-                               $(this).parents(".chat").find(".unreadNotification").remove();
-                           }
-                       });
+                   if (token) {
+                       return xhr.setRequestHeader('X-CSRF-TOKEN', token);
                    }
-               });
-           }
-           setTimeout(function(){
-               getUserChatMessages();
-           }, 500);
-           setTimeout(function(){
-               $(".userChatMessages").each(function () {
-                   if($(this).data("chat-id") == user_chat_id) {
-                       var objDiv = $(this);
-                       if (objDiv.length > 0) {
-                           objDiv[0].scrollTop = objDiv[0].scrollHeight;
-                       }
-                   }
-               });
-           }, 1000);
-
-           var client = stream.connect('ujpcaxtcmvav', null, '40873');
-           var user1 = client.feed('user', userId, streamToken);
-
-           function callback(data) {
-               $(".userChatMessages").each(function () {
-                   var userChatId = $(this).data("chat-id");
-                   if(userChatId == data["new"][0]["userChat"]){
-                       var message = $('.messageReceivedAjax').first().clone();
-                       var allMessages = $(this);
-                       $(message).appendTo(allMessages);
-                       message.find(".messageReceived").find(".message").text(data["new"][0]["message"]);
-                       message.find(".messageReceived").find(".timeSent").text(data["new"][0]["timeSent"]);
-                       $(this).parents(".userChatTextarea").find(".messageInput").val("");
-                   }
-               });
-
-           }
-
-           function successCallback() {
-           }
-
-           function failCallback(data) {
-               alert('something went wrong, check the console logs');
-           }
-           user1.subscribe(callback).then(successCallback, failCallback);
-           $(this).collapse('toggle');
+               },
+               url: "/message/getUserChatMessages",
+               data: {'user_chat_id': user_chat_id, 'admin' : admin, 'receiverUserId': receiver_user_id},
+               success: function (data) {
+                   $(".chatContent").html(data);
+                   $(".userMessageInput").removeClass("hidden");
+                   // $(this).parents(".chat").find(".unreadNotification").remove();
+               }
+           });
        }
-   });
+
+       function getUserChatReceiver(){
+           $.ajax({
+               method: "POST",
+               beforeSend: function (xhr) {
+                   var token = $('meta[name="csrf_token"]').attr('content');
+
+                   if (token) {
+                       return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                   }
+               },
+               url: "/message/getUserChatReceiver",
+               data: {'receiverUserId': receiver_user_id, 'userChatId': user_chat_id},
+               success: function (data) {
+                   $(".chatContentHeader").html(data);
+               }
+           });
+       }
+       setTimeout(function(){
+           getUserChatMessages();
+           getUserChatReceiver();
+           $(".sendUserMessage").attr("data-chat-id", user_chat_id);
+           $(".unseen-" + user_chat_id).addClass("hidden");
+           $(".actions").removeClass("hidden");
+           if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+               $(".slideMessagesMobile").removeClass("hidden");
+               $(".slideMessagesMobile").toggleClass("slideMessagesMobileTransistion");
+           }
+       }, 500);
+       setTimeout(function(){
+           var objDiv = $(".chatContent");
+           if (objDiv.length > 0) {
+               objDiv[0].scrollTop = objDiv[0].scrollHeight;
+           }
+       }, 1000);
+
+       var client = stream.connect('ujpcaxtcmvav', null, '40873');
+       var user1 = client.feed('user', userId, streamToken);
+
+       function callback(data) {
+           var message = $('.messageReceivedAjax').first().clone();
+           var allMessages = $(".chatContent");
+           $(message).appendTo(allMessages);
+           message.find(".messageReceived").find(".message").text(data["new"][0]["message"]);
+           message.find(".messageReceived").find(".timeSent").text(data["new"][0]["timeSent"]);
+       }
+
+       function successCallback() {
+       }
+
+       function failCallback(data) {
+           alert('something went wrong, check the console logs');
+       }
+       user1.subscribe(callback).then(successCallback, failCallback);
+
 });
 
 $(".sendUserMessage").on("click",function () {
-    var user_chat_id = $(this).parents(".userChatTextarea").find(".user_chat_id").val();
-    var sender_user_id = $(this).parents(".userChatTextarea").find(".sender_user_id").val();
-    var message = $(this).parents(".userChatTextarea").find(".messageInput").val();
-
+    var user_chat_id = $(this).data("chat-id");
+    var sender_user_id = $(".sender_user_id").val();
+    var message = $(".userMessageInput").val();
+    $(".userMessageInput").val("");
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -140,51 +130,65 @@ $(".sendUserMessage").on("click",function () {
         data: {'user_chat_id': user_chat_id, 'sender_user_id' : sender_user_id, 'message' : message},
         dataType: "JSON",
         success: function (data) {
-            var message = $('.sendedMessageAjax').first().clone();
-            $(".userChatMessages").each(function () {
-                if($(this).data("chat-id") == user_chat_id){
-                    var allMessages = $(this);
-                    $(message).appendTo(allMessages);
-                    message.find(".message").text(data['message']);
-                    message.find(".timeSent").text(data['timeSent']);
-                    $(this).parents(".userChatTextarea").find(".messageInput").val("");
-                }
-            });
+            var message = $('.newChatMessage').first().clone();
+            function Generator() {}
+
+            Generator.prototype.rand =  Math.floor(Math.random() * 26) + Date.now();
+
+            Generator.prototype.getId = function() {
+                return this.rand++;
+            };
+            var idGen =new Generator();
+            var newId = idGen.getId();
+            message.attr("id", newId);
+            var allMessages = $(".chatContent");
+            $(message).appendTo(allMessages);
+            message.find(".message").text(data['message']);
+            message.find(".timeSent").text(data['timeSent']);
+            $("#" + newId).removeClass("hidden");
+            if (allMessages.length > 0) {
+                allMessages[0].scrollTop = allMessages[0].scrollHeight;
+            }
         }
     });
-    setTimeout(function(){
-        $(".userChatMessages").each(function () {
-            if($(this).data("chat-id") == user_chat_id) {
-                var objDiv = $(this);
-                if (objDiv.length > 0) {
-                    objDiv[0].scrollTop = objDiv[0].scrollHeight;
-                }
-            }
-        });
-    }, 500);
 });
 
-$(".deleteChat").on("click",function () {
-    if(confirm("Are you sure you want to delete this chat?")) {
-        var user_chat_id = $(this).data("chat-id");
-        $.ajax({
-            method: "POST",
-            beforeSend: function (xhr) {
-                var token = $('meta[name="csrf_token"]').attr('content');
+var textarea = document.querySelector('textarea');
+document.addEventListener('input', function (event) {
+    if (event.target.tagName.toLowerCase() !== 'textarea') return;
+    autoExpand(event.target);
+}, false);
+var autoExpand = function (field) {
+    // Reset field height
+    field.style.height = 'inherit';
 
-                if (token) {
-                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-                }
-            },
-            url: "/user/deleteUserChat",
-            data: {'user_chat_id': user_chat_id},
-            success: function (data) {
-                $(".userChat").each(function () {
-                    if ($(this).data("chat-id") == user_chat_id) {
-                        $(this).remove();
-                    }
-                });
-            }
-        });
+    // Get the computed styles for the element
+    var computed = window.getComputedStyle(field);
+
+    // Calculate the height
+    var height = parseInt(computed.getPropertyValue('border-top-width'), 10)
+        + parseInt(computed.getPropertyValue('padding-top'), 10)
+        + field.scrollHeight
+        + parseInt(computed.getPropertyValue('padding-bottom'), 10)
+        + parseInt(computed.getPropertyValue('border-bottom-width'), 10);
+
+    field.style.height = height + 'px';
+
+    if($(".userMessageInput").val().length > 0){
+        $(".sendBtn").removeClass("hidden");
+    } else {
+        $(".sendBtn").addClass("hidden");
     }
+
+};
+
+$(document).on("click", ".emojiGen", function () {
+    $(".sendBtn").removeClass("hidden");
+});
+
+$(".backToUserChats").on("click", function () {
+    $(".slideMessagesMobile").toggleClass("slideMessagesMobileTransistion");
+    setTimeout(function () {
+        $(".slideMessagesMobile").addClass("hidden");
+    }, 1000);
 });

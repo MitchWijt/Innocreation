@@ -220,7 +220,7 @@ class AdminController extends Controller
                 Session::set('team_id', $user->team_id);
                 Session::set("team_name", $user->team->first()->team_name);
             }
-            return redirect("/account");
+            return redirect($user->getUrl());
         }
     }
 

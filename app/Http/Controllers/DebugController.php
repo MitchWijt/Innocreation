@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Expertises;
 use App\Expertises_linktable;
 use App\NeededExpertiseLinktable;
+use App\Services\UserAccount\UserExpertises;
+use App\Services\UserAccount\UserNotifications;
 use App\Team;
 use App\UserChat;
 use App\UserMessage;
@@ -42,7 +44,7 @@ class DebugController extends Controller
      *
      */
 
-    public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService) {
+    public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService, UserNotifications $userNotifications) {
         die('test');
     }
 }

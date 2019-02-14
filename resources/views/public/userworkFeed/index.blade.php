@@ -1,4 +1,5 @@
 @extends("layouts.app")
+<link rel="stylesheet" href="/css/responsiveness/innocreativeFeed/index.css">
 @section("content")
     @mobile
     <? if(isset($user)) { ?>
@@ -26,30 +27,19 @@
                             <div class="m-b-5 d-flex js-center">
                                 <div class="col-md-8 m-t-5">
                                     <div class="row">
-                                        <div class="@handheld col-6 @elsedesktop col-sm-4 @endhandheld">
-                                            <select name="percentageProgress" class="input @handheld m-b-10 @endhandheld">
-                                                <option value="" selected disabled>% @desktop Progress @enddesktop on project</option>
-                                                <option value="10%">10% finished</option>
-                                                <option value="20%">20% finished</option>
-                                                <option value="30%">30% finished</option>
-                                                <option value="40%">40% finished</option>
-                                                <option value="50%">50% finished</option>
-                                                <option value="60%">60% finished</option>
-                                                <option value="70%">70% finished</option>
-                                                <option value="80%">80% finished</option>
-                                                <option value="90%">90% finished</option>
-                                                <option value="100%">100% finished</option>
-                                            </select>
-                                        </div>
                                         <div class="@handheld col-6 m-b-10 @elsedesktop col-sm-4 @endhandheld">
                                             <div class="fileUpload p-relative">
                                                 <input type="file" class="userwork_image hidden" name="image">
                                                 <i class="zmdi zmdi-camera-add iconCTA addPicture c-pointer"></i>
                                                 <span class="fileName pull-right m-r-10"></span>
-                                                <i class="zmdi zmdi-link iconCTA c-pointer popoverAttachment " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverAttachment")?>'></i>
                                                 <i class="zmdi zmdi-mood iconCTA c-pointer popoverEmojis " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverEmojis", compact("emojis"))?>'></i>
                                             </div>
-                                            <input type="hidden" placeholder="Your link" name="imageLink" class="input col-sm-12 attachmentLinkDB">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="@mobile col-4 @elsedesktop col-sm-4 @endmobile p-relative previewBox hidden">
+                                            <i class="zmdi zmdi-close c-orange f-25 p-absolute c-pointer" id="removePreview" style="top: 2%; right: -63%;"></i>
+                                            <img style="width: 200px; height: 200px;" id="previewUpload" src="#" alt="PreviewUpload"/>
                                         </div>
                                     </div>
                                 </div>
@@ -67,7 +57,10 @@
     <? } else { ?>
         <input type="hidden" class="userId" value="0">
     <? } ?>
-    <div class="d-flex grey-background vh85">
+    <? if(isset($sharedUserWorkId)) { ?>
+        <input type="hidden" class="sharedLinkId" value="<?= $sharedUserWorkId?>">
+    <? } ?>
+    <div class="d-flex grey-background">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 d-flex js-center">
@@ -92,36 +85,33 @@
                             </div>
                             <div class="m-b-5 d-flex js-center extraOptions hidden">
                                 <div class="col-md-8 m-t-5 @notmobile contentActive @endnotmobile">
-                                    <div class="row">
-                                        <div class="@handheld col-6 @elsedesktop col-sm-4 @endhandheld">
-                                            <select name="percentageProgress" class="input @handheld m-b-10 @endhandheld">
-                                                <option value="" selected disabled>% @desktop Progress @enddesktop on project</option>
-                                                <option value="10%">10% finished</option>
-                                                <option value="20%">20% finished</option>
-                                                <option value="30%">30% finished</option>
-                                                <option value="40%">40% finished</option>
-                                                <option value="50%">50% finished</option>
-                                                <option value="60%">60% finished</option>
-                                                <option value="70%">70% finished</option>
-                                                <option value="80%">80% finished</option>
-                                                <option value="90%">90% finished</option>
-                                                <option value="100%">100% finished</option>
-                                            </select>
-                                        </div>
-                                        <div class="@handheld col-6 m-b-10 @elsedesktop col-sm-4 @endhandheld contentActive">
-                                            <div class="fileUpload p-relative contentActiveIcons">
-                                                <input type="file" class="userwork_image hidden" name="image">
-                                                <i class="zmdi zmdi-camera-add iconCTA addPicture c-pointer"></i>
-                                                <i class="zmdi zmdi-link iconCTA c-pointer popoverAttachment " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverAttachment")?>'></i>
+                                    <div class="row contentClick">
+                                        <div class="@handheld col-6 m-b-10 @elsedesktop col-6 @endhandheld contentActive">
+                                            <div class="fileUpload p-relative contentActiveIcons d-flex">
+                                                <input type="file" class="userwork_image hidden" accept=".jpg, .jpeg" name="image">
+                                                <i class="zmdi zmdi-camera-add iconCTA addPicture c-pointer m-r-5"></i>
                                                 <i class="zmdi zmdi-mood iconCTA c-pointer popoverEmojis " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverEmojis", compact("emojis"))?>'></i>
-                                                <span class="fileName"></span>
                                             </div>
-                                            <input type="hidden" placeholder="Your link" name="imageLink" class="input col-sm-12 attachmentLinkDB">
                                         </div>
-                                        <div class="@handheld col-12 m-b-10 @elsedesktop col-sm-4 @endhandheld">
+                                        <div class="@handheld col-12 m-b-10 @elsedesktop col-6 @endhandheld">
                                            <button type="button" class="btn btn-inno btn-sm pull-right submitPost">Post!</button>
                                         </div>
                                     </div>
+                                    @tablet
+                                        <div class="row">
+                                            <div class="col-sm-4 previewBox hidden">
+                                                <img style="width: 100px; height: 100px;" id="previewUpload" src="#" alt="PreviewUpload" class="p-relative"/>
+                                                <i class="zmdi zmdi-close c-orange f-20 p-absolute c-pointer hidden" id="removePreview" style="top: 3%; right: 28% !important;"></i>
+                                            </div>
+                                        </div>
+                                    @elsedesktop
+                                        <div class="row">
+                                            <div class="col-sm-4 previewBox hidden">
+                                                <img style="width: 200px; height: 200px;" id="previewUpload" class="p-relative" src="#" alt="PreviewUpload"/>
+                                                <i class="zmdi zmdi-close c-orange f-25 p-absolute c-pointer hidden" id="removePreview" style="top: 3%; right: 15% !important;"></i>
+                                            </div>
+                                        </div>
+                                    @endtablet
                                 </div>
                             </div>
                         </form>
@@ -139,73 +129,10 @@
                     <p class="@mobile f-14 @elsedesktop f-20 @endmobile text-center"><a class="regular-link" href="/create-my-account">Create an account</a> or <a class="regular-link" href="/login">login</a> to post your work!</p>
                 </div>
             <? } ?>
-            <div class="row d-flex js-center userworkData m-t-20">
+            <div class="userworkData m-t-20 grid-container" data-page="feedPage">
 
             </div>
         </div>
-        <? if(isset($sharedUserWorkId)) { ?>
-            <input type="hidden" class="sharedUserWorkId" value="<?= $sharedUserWorkId?>">
-        <? } else { ?>
-            <input type="hidden" class="sharedUserWorkId" value="0">
-        <? } ?>
-        <? if(isset($user)) { ?>
-            <div class="modal fade shareUserWork" id="shareUserWork" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <? if($user->team_id != null) { ?>
-                            @desktop
-                            <div class="row d-flex js-center">
-                                <div class="col-md-12 text-center">
-                                    <input type="radio" name="radio" id="user" class="shareWithUsersRadio input"><label for="user" class="m-r-30">Share with users</label>
-                                    <input type="radio" name="radio" id="team" class="input shareWithTeam "><label for="team">Share with my team</label>
-                                </div>
-                            </div>
-                            @elsemobile
-                            <div class="row">
-                                <div class="col-md-12 text-center">
-                                    <input type="radio" name="radio" id="user" class="shareWithUsersRadio input m-r-5"><label for="user" class="m-r-30">Share with users</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 text-center">
-                                    <input type="radio" name="radio" id="team" class="input shareWithTeam m-r-5"><label for="team">Share with my team</label>
-                                </div>
-                            </div>
-                            @endmobile
-                            <? } ?>
-                            <? if($user->team_id != null) { ?>
-                                <hr class="m-b-20 col-md-10">
-                            <? } ?>
-                            <form action="/feed/shareFeedPost" class="shareTeamProductUsersForm" method="post">
-                                <input type="hidden" class="sharedLink" value="">
-                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                <div class="shareWithUsers <? if($user->team_id != null) echo "hidden" ?>">
-                                    <div class="row m-t-20">
-                                        <div class="col-sm-6">
-                                            <input type="text" name="searchUsers" placeholder="search users..." class="input m-r-5 searchUsersInput"><button type="button" class="btn btn-inno btn-sm searchUsers">Search</button>
-                                            <div class="resultList m-b-20">
-
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <p class="m-0">Selected users:</p>
-                                            <ul class="selectedUsers">
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="shareProductMessage <? if($user->team_id != null) echo "hidden" ?>">
-                                    <textarea name="shareProductMessage" class="col-sm-12 input message" rows="10"></textarea>
-                                    <button class="btn btn-inno pull-right">Share product</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <? } ?>
     </div>
     <script>
         $('body').on('click', function (e) {
@@ -218,9 +145,9 @@
         });
         $('.popoverAttachment').popover({ trigger: "click" , html: true, animation:false, placement: 'auto'});
         $('.popoverEmojis').popover({ trigger: "click" , html: true, animation:false, placement: 'auto'});
-
     </script>
 @endsection
 @section('pagescript')
     <script src="/js/userworkFeed/index.js"></script>
+    <script src="/js/userworkFeed/feed.js"></script>
 @endsection

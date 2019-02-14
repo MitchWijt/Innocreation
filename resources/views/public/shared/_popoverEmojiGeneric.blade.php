@@ -5,7 +5,7 @@
     <div class="d-flex js-center">
         <div class="col-sm-12 o-scroll emojidiv" unselectable="on" onselectstart="return false;" onmousedown="return false;" style="max-height: 80px !important; min-height: 80px !important">
             <? foreach($emojis as $emoji){ ?>
-                <span class="p-l-10 m-b-20 c-pointer emojiGen" data-id="<?= $userChat->id?>" data-code="<?= str_replace("U+", "&#x", $emoji->unicode)?>" title="<?= $emoji->description?>"><?= str_replace("U+", "&#x", $emoji->unicode)?></span>
+                <span class="p-l-10 m-b-20 c-pointer emojiGen" data-code="<?= str_replace("U+", "&#x", $emoji->unicode)?>" title="<?= $emoji->description?>"><?= str_replace("U+", "&#x", $emoji->unicode)?></span>
             <? } ?>
         </div>
     </div>

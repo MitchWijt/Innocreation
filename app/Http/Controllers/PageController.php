@@ -9,6 +9,8 @@ use App\FaqType;
 use App\FavoriteTeamLinktable;
 use App\NeededExpertiseLinktable;
 use App\ServiceReview;
+use App\Services\FeedServices\SwitchUserWork;
+use App\Services\UserAccount\UserAccount;
 use App\Team;
 use App\TeamReview;
 use App\User;
@@ -16,6 +18,7 @@ use App\JoinRequestLinktable;
 use App\Page;
 use App\UserPortfolio;
 use App\UserPortfolioFile;
+use App\UserWork;
 use Illuminate\Http\Request;
 use Session;
 
@@ -51,29 +54,25 @@ class PageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function singleUserPageIndex($slug = null){
+    public function singleUserPageIndex($slug = null, SwitchUserWork $switchUserWork){
         if($slug){
             $user  = User::select("*")->where("slug", $slug)->first();
         }
-        $loggedIn = User::select("*")->where("id", Session::get("user_id"))->first();
-        $expertise_linktable = Expertises_linktable::select("*")->where("user_id", $user->id)->get();
+        $loggedIn = UserAccount::isLoggedIn();
+        $expertise_linktable = Expertises_linktable::select("*")->where("user_id", $user->id)->orderBy("created_at", "DESC")->limit(3)->get();
         $portfolios = UserPortfolio::select("*")->where("user_id", $user->id)->get();
         if($loggedIn) {
-            $team = Team::select("*")->where("ceo_user_id", $loggedIn->id)->first();
-            if(count($team) != 0) {
-                $neededExpertisesArray = [];
-                $neededExpertises = NeededExpertiseLinktable::select("*")->where("team_id", $team->id)->where("amount", "!=", 0)->get();
-                foreach ($neededExpertises as $neededExpertise) {
-                    array_push($neededExpertisesArray, $neededExpertise->expertise_id);
-                }
-            }
+            $team = Team::select("*")->where("ceo_user_id", $loggedIn)->first();
         }
 
         $title = $user->firstname . " active as " . strtolower($user->getSeoExpertises());
         $activeAs = strtolower($user->getSeoExpertises());
         $validator = false;
         $og_description = "This is $user->firstname who is active as a $activeAs. Start working with each other! Create a team or join a team";
-        return view("public/pages/singleUserPage", compact("user","expertise_linktable", "loggedIn", "portfolios","team", "neededExpertisesArray", "title", "og_description", "validator"));
+        $connections = $switchUserWork->listAcceptedConnections($user->id);
+
+        $amountUserWorkPosts = UserWork::select("*")->where("user_id", $user->id)->count();
+        return view("public/pages/singleUserPage", compact("user","expertise_linktable", "loggedIn", "portfolios","team", "neededExpertisesArray", "title", "og_description", "validator", "connections", "amountUserWorkPosts"));
     }
 
 

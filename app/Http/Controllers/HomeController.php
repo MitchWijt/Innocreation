@@ -21,7 +21,7 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $title = "Make your dreams become a reality!";
+        $title = "Collaborate with other creatives!";
         $og_description = "Create a team with like-minded people, help each other make dreams become a reality!";
         $carouselUserWorks = UserWork::select("*")->orderBy("created_at", "DESC")->limit(6)->get();
         $expertises = Expertises::select("*")->get();

@@ -1,27 +1,12 @@
-@extends("layouts.app")
-@section("content")
-    <div class="d-flex grey-background vh80">
-        @notmobile
-        @include("includes.userAccount_sidebar")
-        @endnotmobile
-        <div class="container">
-            @mobile
-            @include("includes.userAccount_sidebar")
-            @endmobile
-            <div class="row m-b-20">
-                <div class="col-sm-12 d-flex js-center">
-                    @include("includes.flash")
-                </div>
-            </div>
-            <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">Privacy settings</h1>
-            </div>
-            <hr class="col-xs-12">
+<div class="modal privacySettingsModal fade fade-scale" id="privacySettingsModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content modal-content-border">
+            <i class="zmdi zmdi-close c-orange f-22 p-absolute" data-dismiss="modal" style="top: 3%; right: 3%; z-index: 1"></i>
             <form action="/my-account/saveUserAccount" method="post">
                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                 <input type="hidden" name="user_id" value="<? if(isset($user)) echo $user->id ?>">
-                <div class="form-group d-flex js-center m-b-0 row">
-                    <div class="m-t-20 col-md-12">
+                <div class="form-group m-b-0 row">
+                    <div class="m-t-20 col-sm-12 p-30">
                         <div class="row text-center">
                             <div class="col-sm-6">
                                 <p class="m-0">First name:</p>
@@ -74,14 +59,6 @@
                                 <p><? if(isset($user->phonenumber)) echo $user->phonenumber?></p>
                             </div>
                         </div>
-                        <div class="row text-center m-t-20">
-                            <div class="col-sm-6">
-                                <p class="m-0">Skype:</p>
-                            </div>
-                            <div class="col-sm-6">
-                                <input type="text" name="skype" class="input" value="<? if(isset($user->skype)) echo $user->skype?>">
-                            </div>
-                        </div>
                         <hr class="col-xs-12 m-t-20">
                         <div class="row text-center m-t-20">
                             <div class="col-sm-6">
@@ -124,4 +101,4 @@
             </form>
         </div>
     </div>
-@endsection
+</div>
