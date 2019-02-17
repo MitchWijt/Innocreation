@@ -9,6 +9,7 @@
 namespace App\Services\UserAccount;
 
 
+use App\Services\Images\ImageProcessor;
 use App\Services\Paths\PublicPaths;
 use App\User;
 use Illuminate\Support\Facades\Session;
@@ -46,17 +47,27 @@ class EditProfileImage
         $size = $this->formatBytes($file->getSize());
         $user = User::select("*")->where("id", $user_id)->first();
         if($size < 8) {
-            $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
+            $uniqueId = uniqid($user_id);
+            $filename = PublicPaths::getFileName($uniqueId, $file, false, false);
+            $filePath = $file->getRealPath();
+            $targets = ["extra-small", "small", "normal", "large"];
 
-            $pathPicture = PublicPaths::getUserProfilePicturePath($filename, $user);
-            $exists = Storage::disk('spaces')->exists($pathPicture);
-            if (!$exists) {
-                $pathDelete = PublicPaths::getUserProfilePicturePath($user->profile_picture, $user);
-                Storage::disk('spaces')->delete($pathDelete);
-                $image = $request->file('profile_picture');
-                Storage::disk('spaces')->put($pathPicture, file_get_contents($image->getRealPath()), "public");
+            $imageProcessor = new ImageProcessor();
+            $images = $imageProcessor->resize($file, $filePath, $targets, $uniqueId);
+            foreach($images as $image){
+                $uploadPath = PublicPaths::getUserProfilePicturePath($image['filename'], $user);
+                $exists = Storage::disk('spaces')->exists($uploadPath);
+                if (!$exists) {
+                    foreach($targets as $target){
+                        $pathDelete = $user->getProfilePicture($target, true);
+                        Storage::disk('spaces')->delete($pathDelete);
+                    }
+                }
+                $imageProcessor->upload($image['file'], $uploadPath, true);
             }
+
             $user->profile_picture = $filename;
+            $user->extension = $file->getClientOriginalExtension();
             $user->save();
             return redirect($_SERVER["HTTP_REFERER"]);
         } else {

@@ -27,7 +27,7 @@
                     </form>
                     <i class="zmdi zmdi-edit editBtn editBannerImage @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
                 <? } ?>
-                <div class="avatar-med absolutePF p-absolute" style="background: url('<?= $user->getProfilePicture()?>'); z-index: 100 !important">
+                <div class="avatar-med absolutePF p-absolute" style="background: url('<?= $user->getProfilePicture('extra-small')?>'); z-index: 100 !important">
                     <? if(isset($loggedIn) && $loggedIn == $user->id) { ?>
                         <form action="/user/saveUserProfilePicture" method="post" class="hidden profileImageForm" enctype="multipart/form-data">
                             <input type="hidden" name="_token" value="<?= csrf_token()?>">
