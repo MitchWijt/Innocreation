@@ -1,5 +1,5 @@
 @extends("layouts.app")
-<link rel="stylesheet" href="/css/responsiveness/singleUserPage.css">
+<link rel="stylesheet" href="css/responsiveness/singleUserPage.css">
 <link rel="stylesheet" href="/css/responsiveness//innocreativeFeed/index.css">
 @section("content")
     <div class="d-flex grey-background">

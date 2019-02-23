@@ -14,16 +14,16 @@
                     <div class="col-md-12 m-b-20">
                         <div class="title-home">
                             @mobile
-                            <h1 style="font-weight: bold;" class="text-center col-md-12 f-40">Innocreation</h1>
-                            <p class="text-center f-13">Have an idea? find team members, create your team and start building now!</p>
+                                <h1 style="font-weight: bold;" class="text-center col-md-12 f-40">Innocreation</h1>
+                                <p class="text-center f-13">Have an idea? find team members, create your team and start building now!</p>
                             @elsedesktop
-                            <h1 class="title-black text-center col-md-12">Innocreation</h1>
-                            <p class="text-center">Have an idea? find team members, create your team and start building now!</p>
+                                <h1 class="title-black text-center col-md-12">Innocreation</h1>
+                                <p class="text-center">Have an idea? find team members, create your team and start building now!</p>
                             @endmobile
                             @tablet
-                            <div class="hr col-md-10"></div>
+                                <div class="hr col-md-10"></div>
                             @elsedesktop
-                            <div class="hr col-md-10"></div>
+                                <div class="hr col-md-10"></div>
                             @endtablet
                         </div>
                     </div>
