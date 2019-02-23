@@ -40,16 +40,25 @@
             </div>
             <div class="row">
                 <div class="col-sm-4">
-                    <div class="row d-flex fd-column userName" style="margin-top: 60px !important">
-                        <p class="f-25 m-b-0" style="margin-left: 9%"><?= $user->getName()?> <? if(isset($loggedIn) && $loggedIn != $user->id) { ?> <i class="zmdi zmdi-chevron-down f-18 popoverSingleUser c-pointer" data-toggle="popover" data-content='<?= view("/public/shared/_popoverSendMessage", compact("user", "loggedIn"))?>'></i> <? } ?></p>
-                        <p class="m-t-0 f-12 m-b-0 c-dark-grey" style="margin-left: 9%"><?= $user->country->country?></p>
+                    <div class="row d-flex userName" style="margin-top: 60px !important">
+                        <div class="d-flex flexDivUsername" style="margin-left: 9%">
+                            <? if(isset($loggedIn) && $loggedIn != $user->id) { ?> <i class="zmdi zmdi-chevron-down f-18 popoverSingleUser c-pointer m-t-10 m-r-5" data-toggle="popover" data-content='<?= view("/public/shared/_popoverSendMessage", compact("user", "loggedIn"))?>'></i> <? } ?>
+                            <div class="p-0 o-hidden text-overflow" style="width: 100%;">
+                                <span class="wp-no-wrap f-25 m-b-0"> <?= $user->getName()?></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 p-0 m-0 countryDiv">
+                        <p class="m-t-0 f-12 m-b-0 c-dark-grey country" style="margin-left: 9%"><?= $user->country->country?></p>
+                        </div>
                     </div>
                     <div class="m-l-15 m-b-5">
                         <?= \App\Services\UserConnections\ConnectionService::getSwitch($user->id)?>
                     </div>
                     <div class="row teamLinkDiv">
                         <div class="col-12 p-0 m-0 connectionsAmount">
-                            <span><a class="regular-link c-dark-grey f-12 <? if(count($connections) > 0) echo "openConnectionsModal";?>" data-id="<?= $user->id?>" style="margin-left: 9%" ><?= count($connections)?> Connections</a></span>
+                            <span><a class="regular-link c-dark-grey f-12 <? if(count($connections) > 0) echo "openConnectionsModal"; else echo "connectionsAmountText"?>" data-id="<?= $user->id?>" style="margin-left: 9%" ><?= count($connections)?> Connections</a></span>
                         </div>
                     </div>
                     <? if($user->team_id != null) { ?>
@@ -116,7 +125,7 @@
                                     </div>
                                     <div class="col-xl-9 m-t-10">
                                         <div class="d-flex js-between align-start">
-                                            <div class="d-flex align-start">
+                                            <div class="d-flex align-start inviteDiv">
                                                 <div class="d-flex fd-column" style="min-width: 140px">
                                                     <h3 class="m-r-10 m-b-0"><?= $expertise->expertises->First()->title?></h3>
                                                     <i class="c-dark-grey f-12">Skill level: <span style="color: <?= \App\Services\UserAccount\UserExpertises::getSkillLevel($expertise->skill_level_id)['color']?>"><?= ucfirst(\App\Services\UserAccount\UserExpertises::getSkillLevel($expertise->skill_level_id)['level'])?></span></i>
@@ -183,9 +192,9 @@
                 </div>
             <? } else { ?>
                 <div class="d-flex js-center m-t-20 m-b-20">
-                    <div class="p-relative">
-                        <p class="p-absolute f-20" style="top: 5%; left: 23%">No posts have been posted yet...</p>
-                        <img src="/images/placeholder.png" alt="">
+                    <div class="p-relative text-center">
+                        {{--<p class="p-absolute f-20 textPlaceholder" style="top: 5%; left: 23%">No posts have been posted yet...</p>--}}
+                        <img style="width: 60%" class="img-responsive imgPlaceholderPosts" src="/images/placeholder_text.png" alt="">
                     </div>
                 </div>
             <? } ?>

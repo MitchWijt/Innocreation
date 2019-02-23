@@ -3,7 +3,7 @@
 @section("content")
     @mobile
     <? if(isset($user)) { ?>
-        <div class="sliderUpDown close">
+        <div class="sliderUpDown close p-relative">
             <div class="sliderContent hidden">
                 <div class="row p-l-10 p-r-10 m-t-10">
                     <div class="col-6">

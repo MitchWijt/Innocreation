@@ -10,21 +10,38 @@
         max-height: 150px !important;
     }
 
-    .userName p {
+    .userName {
+        justify-content: center !important;
         margin-left: 0 !important;
-        text-align: center !important;
     }
 
-    .switchDiv{
+    .flexDivUsername{
+        margin-left: 0 !important;
+    }
+
+    .countryDiv{
+        display: flex;
+        justify-content: center;
+    }
+    .country{
+        margin-left: 0 !important;
+    }
+
+    /*.flexDivUsername{*/
+        /*justify-content: center;*/
+        /*margin-left: 0 !important;*/
+    /*}*/
+
+    .switcher{
         display: flex;
         justify-content: center;
     }
 
-    .switchDiv .col-6 .switch_type2{
+    .switcher .col-6 .switch_type2{
         margin-left: 0 !important;
     }
 
-    .switchDiv .col-6{
+    .switcher .col-6{
         display: flex;
         justify-content: center;
     }
@@ -59,6 +76,25 @@
         justify-content: center !important;
         margin-top: 20px !important;
         margin-bottom: 20px !important;
+    }
+
+    .connectionsAmountText{
+        margin-left: 0 !important;
+    }
+
+    .openConnectionsModal{
+        margin-left: 0 !important;
+    }
+
+    /*.textPlaceholder{*/
+        /*font-size: 11px !important;*/
+        /*top: 5%;*/
+        /*left: 36% !important*/
+    /*}*/
+
+    .inviteDiv{
+        flex-direction: column !important;
+        margin-bottom: 10px;
     }
 }
 

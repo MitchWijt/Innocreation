@@ -236,3 +236,17 @@
     column-count: 3;
     column-gap: 10px;
 }
+
+@media screen and (max-width: 990px) {
+    .grid-container{
+        column-count: 2;
+        column-gap: 10px;
+    }
+}
+
+@media screen and (max-width: 770px) {
+    .grid-container{
+        column-count: 1;
+        column-gap: 10px;
+    }
+}
