@@ -436,11 +436,6 @@
 .p-absolute{
     position: absolute;
 }
-hr{
- border-top: 1px solid #FF6100 !important;
-    margin-bottom: 5px !important;
-    margin-top: 5px !important;
-}
 
 .hr-white{
     border-top: 1px solid #C9CCCF !important;

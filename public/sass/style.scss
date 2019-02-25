@@ -11,6 +11,11 @@
 
 
 .form-control-inno{
+  @include themify($themes){
+    background: themed('inputTextBackground');
+    border: themed("inputTextBorder");
+    border-radius: themed('inputTextBorderRadius');
+  }
   display:block;
   width:100%;
   height:34px;
@@ -18,10 +23,6 @@
   font-size:14px;
   line-height:1.42857143;
   color:#555 !important;
-  background-color:#C9CCCF !important;
-  background-image:none;
-  border:none !important;
-  border-radius:4px;
   -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
   box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
   -webkit-transition:border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
@@ -30,7 +31,9 @@
 }
 
 .form-control-inno:focus{
-  border-color:#C9CCCF !important;
+  @include themify($themes){
+    border: themed("inputTextBorder");
+  }
   outline:0;
   -webkit-box-shadow:none !important;
   box-shadow:none!important;
@@ -40,7 +43,7 @@
   @include themify($themes){
     background: themed('buttonBackground');
     border: themed('buttonBorder');
-    color: themed('textColor');
+    color: themed('ButtonTextColor');
   }
 }
 
@@ -49,6 +52,7 @@
     border: themed('buttonBorderColorHover');
     color: themed('buttonTextHoverColor');
     background: themed('buttonBackgroundHover');
+    transition: all 0.3s;
   }
 }
 
@@ -86,15 +90,17 @@
   padding: 0;
 }
 
-a{
+.regular-link{
   @include themify($themes){
     color: themed('linkColor');
+    text-decoration: underline;
   }
 }
 
-a:hover{
+.regular-link:hover{
   @include themify($themes){
     color: themed('linkColorHover');
+    transition: all 0.5s;
   }
 }
 
@@ -107,5 +113,62 @@ a span{
 a span:hover{
   @include themify($themes){
     color: themed('linkColorHover');
+    transition: all 0.5s;
+  }
+}
+
+//hr
+hr{
+  @include themify($themes){
+    border-top: themed('hr');
+    margin-bottom: 5px !important;
+    margin-top: 5px !important;
+  }
+}
+
+.hr{
+  @include themify($themes) {
+    border-top: themed('hr');
+  }
+  margin: 0 auto;
+  text-align: center;
+  width: 800px;
+}
+
+//=====================================CARD=====================
+
+.card{
+  @include themify($themes) {
+    background:  themed('backgroundColor');
+    //color: #C9CCCF !important;
+    border: themed('cardBorder');
+  }
+  border-radius: 20px;
+}
+
+.contentExpertise{
+  border-radius: 20px;
+  //-webkit-box-shadow: 0px 0px 82px -26px rgba(0,0,0,0.75);
+  //-moz-box-shadow: 0px 0px 82px -26px rgba(0,0,0,0.75);
+  //box-shadow: 0px 0px 82px -26px rgba(0,0,0,0.75);
+}
+.overlay{
+  border-radius: 20px;
+}
+
+.overlay {
+  background: #000 !important;
+  z-index: 1 !important;
+  opacity: 0.5 !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 210px;
+  position: absolute;
+}
+
+p{
+  @include themify($themes) {
+    color: themed('ParagraphColor');
   }
 }

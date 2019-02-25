@@ -93,7 +93,7 @@
     border: none !important
 }
 .carousel-default{
-    overflow: visible !important;
+    overflow: hidden !important;
 }
 
 .editBannerImage{

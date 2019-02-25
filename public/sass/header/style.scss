@@ -2,7 +2,11 @@
 
 header{
   @include themify($themes){
-    background: themed('backgroundColor');
+    background: themed('headerBackgroundColor');
+    //position: fixed;
+    //z-index: 999;
+    //width: 100vw;
+    //margin-bottom: 200px;
   }
 }
 

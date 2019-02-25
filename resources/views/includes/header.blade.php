@@ -48,7 +48,7 @@
                                 </div>
                             <? } else { ?>
                                 <div class="m-t-25 pull-right m-r-30 c-gray <?= \App\Services\UserAccount\UserAccount::getTheme();?>" style="width: 100%">
-                                    <a class="m-r-5 usersHeader td-none" href="/expertises">Discover</a>
+                                    <a class="m-r-5 usersHeader td-none" href="/expertises"><span>Discover</span></a>
                                     <a class="btn btn-inno btn-sm feedHeader" href="/innocreatives">Share your passion</a>
                                     <i class="popoverHeader zmdi zmdi-chevron-down c-gray f-20 m-l-15 m-t-5 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
                                     <span class="btn-seperator m-l-15 m-r-10"></span>
