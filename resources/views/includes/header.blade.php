@@ -14,7 +14,7 @@
                         </a>
                     </div>
                     <div class="m-b-20 m-t-5 searchBarBox" style="min-width: 100px !important">
-                        <div class="input-group mb-3 no-focus expertisesHeader">
+                        <div class="input-group mb-3 no-focus expertisesHeader <?= \App\Services\UserAccount\UserAccount::getTheme();?>">
                             <div class="input-group-prepend no-focus">
                                 <span class="input-group-text no-focus c-pointer" id="basic-addon1"><i class="zmdi zmdi-search f-20"></i></span>
                             </div>
@@ -25,7 +25,7 @@
                 <div class="pull-right navBtns">
                     <div class="pull-right">
                         <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
-                                <div class="m-t-20 pull-right m-r-30 c-gray p-relative">
+                                <div class="m-t-20 pull-right m-r-30 p-relative <?= \App\Services\UserAccount\UserAccount::getTheme();?>">
                                     <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications c-gray f-25 c-pointer moreChev p-absolute" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>' style="top: 23% !important; left: -32%"></i>
                                     <i class="zmdi zmdi-circle c-orange f-13 p-absolute z-index notificationIndicator hidden" style="top: 22%; left: -29%;"></i>
                                     <i class="zmdi zmdi-circle c-orange f-13 p-absolute z-index <? if($counterMessages < 1) echo "hidden";?> messageIndicator" style="top: 22%; left: -18.5%;"></i>
@@ -47,13 +47,13 @@
                                     </div>
                                 </div>
                             <? } else { ?>
-                                <div class="m-t-20 pull-right m-r-30 c-gray" style="width: 100%">
-                                    <a class="btn btn-inno btn-sm m-r-5 usersHeader" href="/expertises">Expertises</a>
-                                    <a class="btn btn-inno btn-sm feedHeader" href="/innocreatives">Community</a>
+                                <div class="m-t-25 pull-right m-r-30 c-gray <?= \App\Services\UserAccount\UserAccount::getTheme();?>" style="width: 100%">
+                                    <a class="m-r-5 usersHeader td-none" href="/expertises">Discover</a>
+                                    <a class="btn btn-inno btn-sm feedHeader" href="/innocreatives">Share your passion</a>
                                     <i class="popoverHeader zmdi zmdi-chevron-down c-gray f-20 m-l-15 m-t-5 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
                                     <span class="btn-seperator m-l-15 m-r-10"></span>
-                                    <a class="td-none m-l-10 m-r-10 loginBtn" href="/login"><span class="c-gray">Login</span></a>
-                                    <a class="btn btn-inno btn-success joinBtn" href="/create-my-account">Join for free</a>
+                                    <a class="td-none m-l-10 m-r-10 loginBtn" href="/login"><span>Login</span></a>
+                                    <a class="btn btn-inno-cta joinBtn" href="/create-my-account">Join for free</a>
                                 </div>
                             <? } ?>
                         </div>

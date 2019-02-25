@@ -31,6 +31,8 @@
 
         <link  rel="stylesheet" href="/css/home/home.css" media="none" onload="if(media!=='all')media='all'">
         <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/newStyle/style.css">
+        <link rel="stylesheet" href="/css/header/style.css">
         <link rel="stylesheet" href="/css/general.css">
         <link rel="stylesheet" href="/css/user/user.css">
         <link rel="stylesheet" href="/css/activityTimeline.css">
@@ -92,7 +94,7 @@
     {{--==============--}}
 </head>
 <body>
-<div class="overlayContent theme-light">
+<div class="overlayContent <?= \App\Services\UserAccount\UserAccount::getTheme();?>">
 <? if(\Illuminate\Support\Facades\Session::has("user_id")) {
     $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
     $userChats = \App\UserChat::select("*")->where("creator_user_id", $user->id)->orWhere("receiver_user_id", $user->id)->get();

@@ -20,4 +20,17 @@ class UserAccount {
             return false;
         }
     }
+
+    public static function getTheme(){
+        if(self::isLoggedIn()){
+            $user = User::select("*")->where("id", self::isLoggedIn())->first();
+            if($user->theme == 'light'){
+                return 'theme-light';
+            } else {
+                return 'theme-dark';
+            }
+        } else {
+            return "theme-light";
+        }
+    }
 }

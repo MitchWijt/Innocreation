@@ -1,15 +1,8 @@
 .theme-light .iconCTA:hover {
-  border: 2px solid #FF6100;
+  border: 1px solid #B4B4B4 !important;
 }
 .theme-dark .iconCTA:hover {
-  border: 1px solid blue;
-}
-
-.theme-light .iconCTA {
-  color: #fff;
-}
-.theme-dark .iconCTA {
-  color: #333;
+  border: 1px solid #B4B4B4 !important;
 }
 
 /*# sourceMappingURL=newIndex2.css.map */

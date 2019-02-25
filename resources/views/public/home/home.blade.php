@@ -28,9 +28,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="row d-flex js-center">
+                <div class="row d-flex js-center <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
                     <div class="col-md-5 d-flex js-center">
-                        <a id="collaborateNow" href="/innocreatives" class="btn btn-inno startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Connect! @elsedesktop Start connecting! @endtablet</a>
+                        <a id="collaborateNow" href="/innocreatives" class="btn btn-inno-cta startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Connect! @elsedesktop Start connecting! @endtablet</a>
                     </div>
                 </div>
             <? } else { ?>
@@ -52,9 +52,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="row d-flex js-center">
+                <div class="row d-flex js-center <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
                     <div class="col-md-5 d-flex js-center">
-                        <a id="collaborateNow" href="/what-is-innocreation" class="btn btn-inno startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop I want to connect! @endtablet</a>
+                        <a id="collaborateNow" href="/what-is-innocreation" class="btn btn-inno-cta startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Collaborate! @elsedesktop I want to connect! @endtablet</a>
                     </div>
                 </div>
             <? } ?>

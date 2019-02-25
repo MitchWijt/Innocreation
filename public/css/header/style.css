@@ -1,0 +1,49 @@
+.theme-light header {
+  background: #fff !important;
+}
+.theme-dark header {
+  background: #000 !important;
+}
+
+#tagsHeader {
+  border-left: 0 !important;
+}
+.theme-light #tagsHeader {
+  background: #F8F8F8 !important;
+  border-top: 1px solid #707070 !important;
+  border-bottom: 1px solid #707070 !important;
+  border-right: 1px solid #707070 !important;
+}
+.theme-dark #tagsHeader {
+  background: #BDC1C5 !important;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+  border-right: 0 !important;
+}
+
+#tagsHeader:focus {
+  outline: 0px !important;
+  -webkit-appearance: none;
+}
+
+.input-group-text {
+  color: black !important;
+}
+.theme-light .input-group-text {
+  background: #F8F8F8 !important;
+  border-top: 1px solid #707070 !important;
+  border-bottom: 1px solid #707070 !important;
+  border-left: 1px solid #707070 !important;
+}
+.theme-dark .input-group-text {
+  background: #BDC1C5 !important;
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+  border-left: 0 !important;
+}
+
+.input-group-text:hover {
+  color: #77787a !important;
+}
+
+/*# sourceMappingURL=style.css.map */
