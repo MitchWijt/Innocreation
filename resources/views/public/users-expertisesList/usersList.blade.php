@@ -83,9 +83,8 @@
                                                 <div class="p-t-40 p-absolute" style="z-index: 99; top: 25%; left: 50%; transform: translate(-50%, -50%);">
                                                     <p class="c-white f-20"><?= $expertiseLinktable->expertises->First()->title?></p>
                                                 </div>
-                                                <div class="overlay-users">
-                                                    <div class="contentExpertiseUsers " style="background: url('<?= $expertiseLinktable->image?>')"></div>
-                                                </div>
+                                                <div class="overlay-users"></div>
+                                                <div class="contentExpertiseUsers " style="background: url('<?= $expertiseLinktable->image?>')"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -110,9 +109,8 @@
                                                     <div class="p-t-40 p-absolute" style="z-index: 99; top: 25%; left: 50%; transform: translate(-50%, -50%);">
                                                         <p class="c-white f-20"><?= $expertiseLinktable->expertises->First()->title?></p>
                                                     </div>
-                                                    <div class="overlay-users">
-                                                        <div class="contentExpertiseUsers" style="background: url('<?= $expertiseLinktable->image?>')"></div>
-                                                    </div>
+                                                    <div class="overlay-users"></div>
+                                                    <div class="contentExpertiseUsers" style="background: url('<?= $expertiseLinktable->image?>')"></div>
                                                 </div>
                                             </div>
                                         </div>

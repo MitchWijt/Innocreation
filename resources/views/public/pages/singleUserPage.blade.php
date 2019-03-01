@@ -117,9 +117,7 @@
                                                         <i data-expertise-id="<?= $expertise->expertise_id?>" class="zmdi zmdi-camera f-20 editBtn editImage"></i>
                                                     </div>
                                                 <? } ?>
-                                                <div class="overlay">
-                                                    <div class="contentExpertiseUsers" style="background: url('<?= $expertise->image?>');"></div>
-                                                </div>
+                                                <div class="contentExpertiseUsers" style="background: url('<?= $expertise->image?>');"></div>
                                             </div>
                                         </div>
                                     </div>

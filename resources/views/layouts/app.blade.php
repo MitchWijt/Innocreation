@@ -33,6 +33,7 @@
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="/css/newStyle/style.css">
         <link rel="stylesheet" href="/css/header/style.css">
+        <link rel="stylesheet" href="/css/footer/style.css">
         <link rel="stylesheet" href="/css/general.css">
         <link rel="stylesheet" href="/css/user/user.css">
         <link rel="stylesheet" href="/css/activityTimeline.css">

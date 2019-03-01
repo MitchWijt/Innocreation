@@ -5,8 +5,13 @@ $themes: (
                 ButtonTextColor: #575757,
                 ParagraphColor: #000,
                 TitleColor: #000,
+
                 linkColor: #575757 ,
                 linkColorHover: #000 ,
+
+                navItemColor: #575757,
+                navItemColorHover: #000,
+
                 ctaTextColor: #000000 ,
                 buttonTextHoverColor: #000000 ,
                 buttonBorderColorHover: 1px solid #000000 ,
@@ -20,6 +25,8 @@ $themes: (
                 inputTextBorderRadius: 3px ,
                 hr: 1px solid #C9CCCF ,
 
+                navTitleColor: #000,
+                logoTextColor: #000,
 
                 //CARD
                 cardBorder: 1px solid #fff,
@@ -27,11 +34,19 @@ $themes: (
 
         ),
         dark: (
-                backgroundColor: #BDC1C5,
+                backgroundColor: #C9CCCF,
                 headerBackgroundColor: #000,
                 textColor: #C9CCCF,
-                linkColor: #C9CCCF,
-                linkColorHover: #C9CCCF,
+                ButtonTextColor: #C9CCCF !important,
+                ParagraphColor: #000,
+                TitleColor: #000,
+
+                linkColor: #FF6100,
+                linkColorHover: #FF6100,
+
+                navItemColor: #C9CCCF,
+                navItemColorHover: #C9CCCF,
+
                 ctaTextColor: #fff,
                 buttonTextHoverColor: #000000,
                 buttonBorderColorHover: 2px solid #FF6100,
@@ -40,10 +55,13 @@ $themes: (
                 buttonBorder: 2px solid #FF6100,
                 ctaButtonBorder: 2px solid #FF6100,
                 ctaButtonBackground: #269A35,
-                inputTextBackground: #BDC1C5,
-                inputTextBorder: 0,
+                inputTextBackground: #C9CCCF,
+                inputTextBorder: 1px solid black,
                 inputTextBorderRadius: 3px,
                 hr: 1px solid #FF6100,
+
+                navTitleColor: #FF6100,
+                logoTextColor: #C9CCCF,
 
                 //CARD
                 cardBorder: 1px solid #FF6100,

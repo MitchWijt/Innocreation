@@ -26,8 +26,8 @@
   border-radius: 3px;
 }
 .theme-dark .form-control-inno {
-  background: #BDC1C5;
-  border: 0;
+  background: #C9CCCF;
+  border: 1px solid black;
   border-radius: 3px;
 }
 
@@ -40,7 +40,7 @@
   border: 1px solid #707070;
 }
 .theme-dark .form-control-inno:focus {
-  border: 0;
+  border: 1px solid black;
 }
 
 .theme-light .btn-inno {
@@ -51,6 +51,7 @@
 .theme-dark .btn-inno {
   background: #000;
   border: 2px solid #FF6100;
+  color: #C9CCCF !important;
 }
 
 .theme-light .btn-inno:hover {
@@ -83,8 +84,8 @@
   border-radius: 3px;
 }
 .theme-dark .input {
-  background: #BDC1C5;
-  border: 0;
+  background: #C9CCCF;
+  border: 1px solid black;
   border-radius: 3px;
 }
 
@@ -92,7 +93,7 @@
   background: #fff;
 }
 .theme-dark .grey-background {
-  background: #BDC1C5;
+  background: #C9CCCF;
 }
 
 .container {
@@ -112,7 +113,7 @@
   text-decoration: underline;
 }
 .theme-dark .regular-link {
-  color: #C9CCCF;
+  color: #FF6100;
   text-decoration: underline;
 }
 
@@ -121,7 +122,7 @@
   transition: all 0.5s;
 }
 .theme-dark .regular-link:hover {
-  color: #C9CCCF;
+  color: #FF6100;
   transition: all 0.5s;
 }
 
@@ -164,23 +165,40 @@
   border-top: 1px solid #FF6100;
 }
 
+.theme-light .theme-background {
+  background: #fff;
+}
+.theme-dark .theme-background {
+  background: #000;
+}
+
 .card {
-  border-radius: 20px;
+  border-radius: 10px !important;
 }
 .theme-light .card {
   background: #fff;
-  border: 0px;
+  border: 1px solid #fff;
+  color: #000;
 }
 .theme-dark .card {
-  background: #BDC1C5;
+  background: #C9CCCF;
+  border: 1px solid #FF6100;
+  color: #000;
+}
+
+.card-block {
+  border-radius: 10px !important;
 }
 
 .contentExpertise {
-  border-radius: 20px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 9px -1px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 9px -1px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 9px -1px rgba(0, 0, 0, 0.75);
 }
 
 .overlay {
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .overlay {
@@ -195,6 +213,9 @@
 }
 
 .theme-light p {
+  color: #000;
+}
+.theme-dark p {
   color: #000;
 }
 

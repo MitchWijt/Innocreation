@@ -106,13 +106,13 @@
 
 a span{
   @include themify($themes){
-    color: themed('linkColor');
+    color: themed('navItemColor');
   }
 }
 
 a span:hover{
   @include themify($themes){
-    color: themed('linkColorHover');
+    color: themed('navItemColorHover');
     transition: all 0.5s;
   }
 }
@@ -135,6 +135,12 @@ hr{
   width: 800px;
 }
 
+.theme-background{
+  @include themify($themes) {
+    background: themed('headerBackgroundColor');
+  }
+}
+
 //=====================================CARD=====================
 
 .card{
@@ -142,18 +148,23 @@ hr{
     background:  themed('backgroundColor');
     //color: #C9CCCF !important;
     border: themed('cardBorder');
+    color: themed('ParagraphColor');
   }
-  border-radius: 20px;
+  border-radius: 10px !important;
+}
+
+.card-block{
+  border-radius: 10px !important;
 }
 
 .contentExpertise{
-  border-radius: 20px;
-  //-webkit-box-shadow: 0px 0px 82px -26px rgba(0,0,0,0.75);
-  //-moz-box-shadow: 0px 0px 82px -26px rgba(0,0,0,0.75);
-  //box-shadow: 0px 0px 82px -26px rgba(0,0,0,0.75);
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
 }
 .overlay{
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .overlay {

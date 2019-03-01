@@ -63,7 +63,7 @@
         </div>
 
         <div class="homepage-mainContent <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
-            <div class="grey-background">
+            <div class="theme-background p-b-20">
                 <div class="carousel carousel-default m-b-30" id="carousel-default">
                     <ul class="p-l-0">
                        <? $counterExp = 0;?>
