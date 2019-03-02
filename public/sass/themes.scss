@@ -2,6 +2,7 @@ $themes: (
         light: (
                 backgroundColor: #fff,
                 headerBackgroundColor: #fff,
+                textColor: #000,
                 ButtonTextColor: #575757,
                 ParagraphColor: #000,
                 TitleColor: #000,
@@ -30,6 +31,11 @@ $themes: (
 
                 //CARD
                 cardBorder: 1px solid #fff,
+
+                //icons
+                iconColor: #C9CCCF,
+                iconColorHover: #000,
+
 
 
         ),
@@ -65,5 +71,9 @@ $themes: (
 
                 //CARD
                 cardBorder: 1px solid #FF6100,
+
+                //icons
+                iconColor: #C9CCCF,
+                iconColorHover: #C9CCCF,
         ),
 );

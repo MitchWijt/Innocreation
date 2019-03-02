@@ -141,16 +141,43 @@ hr{
   }
 }
 
+i{
+  @include themify($themes) {
+    color: themed('iconColor');
+  }
+}
+
+i:hover{
+  @include themify($themes) {
+    color: themed('iconColorHover');
+    transition: all 0.5s;
+  }
+}
+
+.active{
+  color: #000 !important;
+}
+
 //=====================================CARD=====================
 
 .card{
   @include themify($themes) {
-    background:  themed('backgroundColor');
-    //color: #C9CCCF !important;
+    background:  themed('headerBackgroundColor');
     border: themed('cardBorder');
-    color: themed('ParagraphColor');
+    color: themed('textColor');
   }
   border-radius: 10px !important;
+}
+
+.card-lg{
+  @include themify($themes) {
+    background:  themed('headerBackgroundColor');
+    border: themed('cardBorder');
+    color: themed('textColor');
+  }
+  -webkit-box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
 }
 
 .card-block{
@@ -163,6 +190,36 @@ hr{
   -moz-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
   box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
 }
+
+.contentExpertise:hover{
+  box-shadow: 0 40px 100px -20px rgba(0,0,10,.15),0 30px 70px -30px rgba(0,0,0,.3);
+  transform: translateY(-2%);
+  transition: all 1s;
+
+}
+
+.userCardContent{
+  width: 100%;
+  min-height: 210px !important;
+  max-height: 210px !important;
+
+  background-size:     cover !important;
+  background-repeat:   no-repeat !important;
+  background-position: center center !important;
+  border-radius: 10px !important;
+  transition: all 0.5s;
+}
+
+.userCard{
+  transition: all 0.5s;
+}
+
+.userCard:hover{
+  box-shadow: 0 40px 100px -20px rgba(0,0,10,.15),0 30px 70px -30px rgba(0,0,0,.3);
+  transform: translateY(-2%);
+  transition: all 0.5s;
+}
+
 .overlay{
   border-radius: 10px;
 }

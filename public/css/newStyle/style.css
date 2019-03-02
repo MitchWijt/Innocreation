@@ -172,6 +172,26 @@
   background: #000;
 }
 
+.theme-light i {
+  color: #C9CCCF;
+}
+.theme-dark i {
+  color: #C9CCCF;
+}
+
+.theme-light i:hover {
+  color: #000;
+  transition: all 0.5s;
+}
+.theme-dark i:hover {
+  color: #C9CCCF;
+  transition: all 0.5s;
+}
+
+.active {
+  color: #000 !important;
+}
+
 .card {
   border-radius: 10px !important;
 }
@@ -181,9 +201,25 @@
   color: #000;
 }
 .theme-dark .card {
-  background: #C9CCCF;
+  background: #000;
   border: 1px solid #FF6100;
+  color: #C9CCCF;
+}
+
+.card-lg {
+  -webkit-box-shadow: 0px 0px 25px -7px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 25px -7px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 25px -7px rgba(0, 0, 0, 0.75);
+}
+.theme-light .card-lg {
+  background: #fff;
+  border: 1px solid #fff;
   color: #000;
+}
+.theme-dark .card-lg {
+  background: #000;
+  border: 1px solid #FF6100;
+  color: #C9CCCF;
 }
 
 .card-block {
@@ -195,6 +231,33 @@
   -webkit-box-shadow: 0px 0px 9px -1px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 0px 9px -1px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 9px -1px rgba(0, 0, 0, 0.75);
+}
+
+.contentExpertise:hover {
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 10, 0.15), 0 30px 70px -30px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2%);
+  transition: all 1s;
+}
+
+.userCardContent {
+  width: 100%;
+  min-height: 210px !important;
+  max-height: 210px !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  border-radius: 10px !important;
+  transition: all 0.5s;
+}
+
+.userCard {
+  transition: all 0.5s;
+}
+
+.userCard:hover {
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 10, 0.15), 0 30px 70px -30px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2%);
+  transition: all 0.5s;
 }
 
 .overlay {

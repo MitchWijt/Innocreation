@@ -16,7 +16,7 @@
                     <div class="m-b-20 m-t-5 searchBarBox" style="min-width: 100px !important">
                         <div class="input-group mb-3 no-focus expertisesHeader <?= \App\Services\UserAccount\UserAccount::getTheme();?>">
                             <div class="input-group-prepend no-focus">
-                                <span class="input-group-text no-focus c-pointer" id="basic-addon1"><i class="zmdi zmdi-search f-20"></i></span>
+                                <span class="input-group-text no-focus c-pointer" id="basic-addon1"><i class="zmdi zmdi-search f-20 active"></i></span>
                             </div>
                             <input style="outline: none !important; -webkit-appearance:none !important; width: 30vw !important" type="search" id="tagsHeader" class="form-control no-focus form-control-inno" placeholder="What expertise or knowledge do you need?" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
@@ -26,11 +26,11 @@
                     <div class="pull-right">
                         <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
                                 <div class="m-t-20 pull-right m-r-30 p-relative <?= \App\Services\UserAccount\UserAccount::getTheme();?>">
-                                    <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications c-gray f-25 c-pointer moreChev p-absolute" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>' style="top: 23% !important; left: -32%"></i>
+                                    <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications f-25 c-pointer moreChev p-absolute" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>' style="top: 23% !important; left: -32%"></i>
                                     <i class="zmdi zmdi-circle c-orange f-13 p-absolute z-index notificationIndicator hidden" style="top: 22%; left: -29%;"></i>
                                     <i class="zmdi zmdi-circle c-orange f-13 p-absolute z-index <? if($counterMessages < 1) echo "hidden";?> messageIndicator" style="top: 22%; left: -18.5%;"></i>
                                     <i class="zmdi zmdi-comment-text f-20 c-pointer p-absolute popoverMessages" data-toggle="popover" data-content='<?= view("/public/shared/messagesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -22%"></i>
-                                    <i class="zmdi zmdi-accounts-add f-20 c-pointer popoverRequests c-gray p-absolute" data-user-id="<?= $user->id?>" data-toggle="popover" data-content='<?= view("/public/shared/teamInvitesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -12%"></i>
+                                    <i class="zmdi zmdi-accounts-add f-20 c-pointer popoverRequests p-absolute" data-user-id="<?= $user->id?>" data-toggle="popover" data-content='<?= view("/public/shared/teamInvitesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -12%"></i>
 
                                     <a class="btn btn-inno btn-sm" href="/expertises">Expertises</a>
                                     <? if($user->team_id != null) { ?>
@@ -39,7 +39,7 @@
                                         <a class="btn btn-inno btn-sm" href="/my-account/teamInfo">Create team</a>
                                     <? } ?>
                                     <a class="btn btn-inno btn-sm" href="/innocreatives">Community</a>
-                                    <i class="popoverHeader zmdi zmdi-chevron-down c-gray f-25 m-l-15 m-t-5 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
+                                    <i class="popoverHeader zmdi zmdi-chevron-down  f-25 m-l-15 m-t-5 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
                                     <div class="pull-right">
                                         <a href="<?= $user->getUrl()?>">
                                             <div class="avatar-header img m-t-0 p-t-0 m-l-15" style="background: url('<?= $user->getProfilePicture()?>')"></div>
@@ -106,26 +106,26 @@
                     </a>
 
 
-                    <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications c-gray f-22 m-r-5 c-pointer moreChev m-t-5" style="width: 16% !important;" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>'></i>
+                    <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications f-22 m-r-5 c-pointer moreChev m-t-5" style="width: 16% !important;" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>'></i>
 
                     <div style="width: 16%;">
-                        <i class="zmdi zmdi-comment-text f-22 c-pointer popoverMessagesMob c-gray m-t-5 p-relative"  data-toggle="popover" data-content='<?= view("/public/shared/messagesHeaderBox/_popoverBox")?>'>
+                        <i class="zmdi zmdi-comment-text f-22 c-pointer popoverMessagesMob m-t-5 p-relative"  data-toggle="popover" data-content='<?= view("/public/shared/messagesHeaderBox/_popoverBox")?>'>
                             <i class="zmdi zmdi-circle c-orange f-13 p-absolute <? if($counterMessages < 1) echo "hidden";?> notificationIdicator" style="top: -20%; left: 70%;"></i>
                         </i>
                     </div>
 
 
-                    <i class="zmdi zmdi-accounts-add f-22 m-t-5 c-pointer popoverRequestsMob c-gray" data-user-id="<?= \Illuminate\Support\Facades\Session::get("user_id")?>" data-toggle="popover" data-content='<?= view("/public/shared/teamInvitesHeaderBox/_popoverBox")?>' style="width: 16%;"></i>
+                    <i class="zmdi zmdi-accounts-add f-22 m-t-5 c-pointer popoverRequestsMob" data-user-id="<?= \Illuminate\Support\Facades\Session::get("user_id")?>" data-toggle="popover" data-content='<?= view("/public/shared/teamInvitesHeaderBox/_popoverBox")?>' style="width: 16%;"></i>
 
                     <a href="/innocreatives" style="width: 16% !important;">
-                        <i class="zmdi zmdi-share c-gray f-22 m-t-5"></i>
+                        <i class="zmdi zmdi-share f-22 m-t-5"></i>
                     </a>
 
                     <div class="d-flex js-center" style="width: 16% !important;">
                         <a href="<?= $user->getUrl()?>" class="m-r-5">
                             <div class="avatar-header img m-b-10 p-t-0" style="background: url('<?= $user->getProfilePicture()?>')"></div>
                         </a>
-                        <i class="popoverHeader zmdi zmdi-chevron-down c-gray f-20 c-pointer m-t-10" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
+                        <i class="popoverHeader zmdi zmdi-chevron-down f-20 c-pointer m-t-10" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
                     </div>
                 </div>
                 <div class="m-t-5 searchBarBox hidden p-15" id="expertisesHeaderMob" style="min-width: 100px !important;">

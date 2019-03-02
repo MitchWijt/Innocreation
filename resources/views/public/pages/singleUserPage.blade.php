@@ -1,8 +1,8 @@
 @extends("layouts.app")
-<link rel="stylesheet" href="css/responsiveness/singleUserPage.css">
+<link rel="stylesheet" href="/css/responsiveness/singleUserPage.css">
 <link rel="stylesheet" href="/css/responsiveness//innocreativeFeed/index.css">
 @section("content")
-    <div class="d-flex grey-background">
+    <div class="d-flex grey-background <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 text-center">
@@ -38,7 +38,7 @@
                     <? } ?>
                 </div>
             </div>
-            <div class="row">
+            <div class="row <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
                 <div class="col-sm-4">
                     <div class="row d-flex userName" style="margin-top: 60px !important">
                         <div class="d-flex flexDivUsername" style="margin-left: 9%">
@@ -92,7 +92,7 @@
                     <p class="m-l-10 c-dark-grey"><?= $user->motivation?></p>
                 </div>
             </div>
-            <div class="row">
+            <div class="row <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
                 <div class="col-md-12">
                     <div class="card card-lg m-t-20 m-b-20">
                         <div class="card-block m-t-10 <? if(count($expertise_linktable) > 3) echo "gradientToTransparantFull" ?>">
@@ -185,7 +185,7 @@
                 </div>
             </div>
             <? if($amountUserWorkPosts > 0) { ?>
-                <div class="userworkData m-t-20 grid-container" data-page="userPage" data-user-id="<?= $user->id?>">
+                <div class="userworkData m-t-20 grid-container <?= \App\Services\UserAccount\UserAccount::getTheme()?>" data-page="userPage" data-user-id="<?= $user->id?>">
 
                 </div>
             <? } else { ?>
