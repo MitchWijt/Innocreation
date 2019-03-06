@@ -25,8 +25,8 @@
                         <div class="row" style="margin-bottom: 100px;">
                             <? foreach($expertise->getTop3ActiveUsers() as $linktable) { ?>
                                 <div class="col-sm-4 m-t-10">
-                                    <div class="card m-t-20 m-b-20">
-                                        <div class="card-block userCard p-relative c-pointer" data-url="/" style="max-height: 210px !important">
+                                    <div class="card userCard m-t-20 m-b-20">
+                                        <div class="card-block p-relative c-pointer" data-url="/" style="max-height: 210px !important">
                                             <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
                                                 <a class="c-gray f-9 photographer" target="_blank" href="<?= $linktable->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $linktable->photographer_link?>"><?= $linktable->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                                             </div>

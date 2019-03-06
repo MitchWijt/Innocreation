@@ -1,4 +1,4 @@
-<div class="modal userWorkPostModal o-scroll" id="userWorkPostModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal userWorkPostModal o-scroll <?= \App\Services\UserAccount\UserAccount::getTheme();?>" id="userWorkPostModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <i class="zmdi zmdi-close c-pointer c-orange f-30" data-dismiss="modal" @desktop style="top: 1%; right: 1%; z-index: 1; position: fixed !important" @elsemobile style="top: 5%; right: 5%; z-index: 1; position: fixed !important" @enddesktop></i>
     <div class="modal-dialog modal-lg fixed-modal modal-dialog-centered custom-dialog-margin" role="document">
         <div class="modal-content modal-content-border">
@@ -7,7 +7,7 @@
                     <a href="<?= $userWorkPost->user->getUrl()?>" target="_blank">
                         <div class="avatar-header m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>')"></div>
                     </a>
-                    <p class="m-b-0 m-t-10 vertically-center"><a href="<?= $userWorkPost->user->getUrl()?>" target="_blank" class="c-black"><?= $userWorkPost->user->getName()?></a></p>
+                    <p class="m-b-0 m-t-10 vertically-center titleGrayBlack"><a href="<?= $userWorkPost->user->getUrl()?>" target="_blank" class="c-black"><?= $userWorkPost->user->getName()?></a></p>
                 </div>
                 <div class="d-flex align-start">
                     <div class="m-t-5">
@@ -48,7 +48,7 @@
                         <div class="m-t-15 d-flex js-center @mobile m-r-20 @endmobile">
                             <div class="col-sm-11 p-r-0 m-b-10">
                                 <button type="button" class="btn btn-inno btn-sm pull-right postComment">Comment</button>
-                                <i class="iconCTAComments zmdi zmdi-mood c-pointer popoverEmojis pull-right m-r-10" data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverEmojiComments", compact("emojis", "userWorkPost"))?>'></i>
+                                <i class="iconCTA c-black zmdi zmdi-mood c-pointer popoverEmojis pull-right m-r-10" data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverEmojiComments", compact("emojis", "userWorkPost"))?>'></i>
                             </div>
                         </div>
                     </form>

@@ -1,9 +1,33 @@
 @font-face {
-  font-family: Corbert;
+  font-family: Corbert-Regular;
   src: url(../../fonts/Corbert-Regular.otf);
 }
+@font-face {
+  font-family: Corbert-Heavy;
+  src: url(../../fonts/Corbert-Heavy.otf);
+}
+@font-face {
+  font-family: Corbert-Bold;
+  src: url(../../fonts/Corbert-Bold.otf);
+}
+@font-face {
+  font-family: Corbert-Thin;
+  src: url(../../fonts/Corbert-Thin.otf);
+}
 * {
-  font-family: Corbert;
+  font-family: Corbert-Regular;
+}
+
+.heavy {
+  font-family: Corbert-Heavy;
+}
+
+.bold {
+  font-family: Corbert-Bold;
+}
+
+.thin {
+  font-family: Corbert-Thin;
 }
 
 .form-control-inno {
@@ -21,9 +45,9 @@
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 .theme-light .form-control-inno {
-  background: #EAEAEA;
-  border: 1px solid #707070;
-  border-radius: 3px;
+  background: #fff;
+  border: 1px solid #000;
+  border-radius: 2px;
 }
 .theme-dark .form-control-inno {
   background: #C9CCCF;
@@ -37,7 +61,7 @@
   box-shadow: none !important;
 }
 .theme-light .form-control-inno:focus {
-  border: 1px solid #707070;
+  border: 1px solid #000;
 }
 .theme-dark .form-control-inno:focus {
   border: 1px solid black;
@@ -51,7 +75,7 @@
 .theme-dark .btn-inno {
   background: #000;
   border: 2px solid #FF6100;
-  color: #C9CCCF !important;
+  color: #C9CCCF;
 }
 
 .theme-light .btn-inno:hover {
@@ -68,9 +92,9 @@
 }
 
 .theme-light .btn-inno-cta {
-  background: #fff;
-  border: 1px solid #FF6100;
-  color: #000000;
+  background: #000;
+  border: 2px solid #FF6100;
+  color: #fff;
 }
 .theme-dark .btn-inno-cta {
   background: #269A35;
@@ -79,9 +103,9 @@
 }
 
 .theme-light .input {
-  background: #EAEAEA;
-  border: 1px solid #707070;
-  border-radius: 3px;
+  background: #fff;
+  border: 1px solid #000;
+  border-radius: 2px;
 }
 .theme-dark .input {
   background: #C9CCCF;
@@ -89,6 +113,112 @@
   border-radius: 3px;
 }
 
+/*the container must be positioned relative:*/
+.custom-select {
+  position: relative;
+}
+.theme-light .custom-select {
+  background-color: #fff !important;
+  border-radius: 2px !important;
+  border: 1px solid #000 !important;
+}
+.theme-dark .custom-select {
+  background-color: #C9CCCF !important;
+  border-radius: 3px !important;
+  border: 1px solid black !important;
+}
+
+.custom-select select {
+  display: none !important;
+  /*hide original SELECT element:*/
+}
+
+.select-selected {
+  padding: 0 !important;
+}
+.theme-light .select-selected {
+  background-color: #fff;
+}
+.theme-dark .select-selected {
+  background-color: #C9CCCF;
+}
+
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute !important;
+  content: "" !important;
+  top: 14px !important;
+  right: 10px !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: 6px solid transparent !important;
+}
+
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/*style the items (options), including the selected item:*/
+.select-items div, .select-selected {
+  color: #000;
+  padding: 8px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/*style items (options):*/
+.select-items {
+  max-height: 300px;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch !important;
+  -webkit-transform: translate3d(0, 0, 0);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+.theme-light .select-items {
+  background-color: #fff;
+}
+.theme-dark .select-items {
+  background-color: #C9CCCF;
+}
+
+.theme-light .select-items div {
+  border-bottom: 1px solid #000 !important;
+}
+.theme-dark .select-items div {
+  border-bottom: 1px solid black !important;
+}
+
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.theme-light .tokenfield {
+  background: #fff;
+  border: 1px solid #000;
+  border-radius: 2px;
+}
+.theme-dark .tokenfield {
+  background: #C9CCCF;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+.theme-light .input-grey {
+  background: #EAEAEA;
+  border: 1px solid #707070;
+  border-radius: 3px;
+}
 .theme-light .grey-background {
   background: #fff;
 }
@@ -197,13 +327,24 @@
 }
 .theme-light .card {
   background: #fff;
-  border: 1px solid #fff;
+  border: 0;
   color: #000;
 }
 .theme-dark .card {
   background: #000;
   border: 1px solid #FF6100;
   color: #C9CCCF;
+}
+
+.theme-light .userWorkPost {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+}
+.theme-dark .userWorkPost {
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 0;
 }
 
 .card-lg {
@@ -213,7 +354,7 @@
 }
 .theme-light .card-lg {
   background: #fff;
-  border: 1px solid #fff;
+  border: 0;
   color: #000;
 }
 .theme-dark .card-lg {
@@ -222,12 +363,18 @@
   color: #C9CCCF;
 }
 
-.card-block {
-  border-radius: 10px !important;
+.theme-light .card-block {
+  -webkit-box-shadow: 0px 0px 32px -13px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 32px -13px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 32px -13px rgba(0, 0, 0, 0.75);
+}
+.theme-dark .card-block {
+  -webkit-box-shadow: 0;
+  -moz-box-shadow: 0;
+  box-shadow: 0;
 }
 
 .contentExpertise {
-  border-radius: 10px;
   -webkit-box-shadow: 0px 0px 9px -1px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 0px 9px -1px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 9px -1px rgba(0, 0, 0, 0.75);
@@ -247,7 +394,6 @@
   background-repeat: no-repeat !important;
   background-position: center center !important;
   border-radius: 10px !important;
-  transition: all 0.5s;
 }
 
 .userCard {
@@ -258,10 +404,6 @@
   box-shadow: 0 40px 100px -20px rgba(0, 0, 10, 0.15), 0 30px 70px -30px rgba(0, 0, 0, 0.3);
   transform: translateY(-2%);
   transition: all 0.5s;
-}
-
-.overlay {
-  border-radius: 10px;
 }
 
 .overlay {
@@ -280,6 +422,20 @@
 }
 .theme-dark p {
   color: #000;
+}
+
+.theme-light .descriptions {
+  color: #000;
+}
+.theme-dark .descriptions {
+  color: #C9CCCF;
+}
+
+.theme-light .titleGrayBlack {
+  color: #000;
+}
+.theme-dark .titleGrayBlack {
+  color: #C9CCCF;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -1,13 +1,13 @@
 <? foreach($userWorkPosts as $userWorkPost) { ?>
-        <div class="card userWorkPost m-b-30 p-relative p-l-20 p-r-20 p-t-20" style="display: inline-block;" data-id="<?= $userWorkPost->id?>">
-            <div class="card-block" style="  -webkit-box-shadow: 0px 0px 32px -13px rgba(0,0,0,0.75);-moz-box-shadow: 0px 0px 32px -13px rgba(0,0,0,0.75);box-shadow: 0px 0px 32px -13px rgba(0,0,0,0.75);">
+        <div class="card userWorkPost m-b-30 p-relative" style="display: inline-block;" data-id="<?= $userWorkPost->id?>">
+            <div class="card-block">
                 <div class="col-sm-12 p-0 p-absolute d-flex js-between align-start">
                     <div class="d-flex m-t-10">
                         <a href="<?= $userWorkPost->user->getUrl()?>" target="_blank">
                             <div class="avatar-header m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture("extra-small")?>')"></div>
                         </a>
                         <div class="d-flex fd-column">
-                            <p class="m-b-0"><a href="<?= $userWorkPost->user->getUrl()?>" target="_blank" class="c-black"><?= $userWorkPost->user->getName()?></a></p>
+                            <p class="m-b-0"><a class="titleGrayBlack" href="<?= $userWorkPost->user->getUrl()?>" target="_blank"><?= $userWorkPost->user->getName()?></a></p>
                             <span class="f-12 c-dark-grey"><?= count(\App\Services\UserConnections\ConnectionService::acceptedConnections($userWorkPost->user_id))?> connections</span>
                         </div>
                     </div>
@@ -17,7 +17,7 @@
                 </div>
                 <div class="col-sm-12 p-relative desc p-0">
                     <div style="max-width: 340px;" class="p-l-10 p-r-10">
-                        <p class="f-17 m-t-15 m-b-5 descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: break-word;"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
+                        <p class="f-17 m-t-15 m-b-5 descriptions descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: break-word;"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
                     </div>
                     <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
                         <div class="m-t-15 m-b-5 editUserWork-<?= $userWorkPost->id?> hidden">

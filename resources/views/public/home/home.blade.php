@@ -41,10 +41,10 @@
                                 <h1 style="font-weight: bold;" class="text-center col-md-12 f-40">Innocreation</h1>
                                 <p class="f-13 text-center">Have an idea? find team members, create your team and start building now!</p>
                             @elsedesktop
-                                <h1 class="title-black">Innocreation</h1>
+                                <h1 class="title-black bold">Innocreation</h1>
                                 <p class="m-b-0">Collaborate with creatives</p>
                                 <div class="d-flex align-start">
-                                    <p class="m-b-0">Active in various creative expertises </p> <i class="zmdi zmdi-accounts-outline f-22 m-l-10"></i>
+                                    <p class="m-b-0">Active in various creative expertises </p> <i class="zmdi zmdi-accounts-outline f-22 m-l-10 c-black"></i>
                                 </div>
                             @endmobile
                         </div>

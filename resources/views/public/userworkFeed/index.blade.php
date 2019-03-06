@@ -1,6 +1,5 @@
 @extends("layouts.app")
 <link rel="stylesheet" href="/css/responsiveness/innocreativeFeed/index.css">
-<link rel="stylesheet" href="/css/userworkFeed/newIndex2.css">
 @section("content")
     <div class="<?= \App\Services\UserAccount\UserAccount::getTheme();?>">
         @mobile
@@ -77,7 +76,7 @@
                     <input type="hidden" class="userJS" value="1">
                     <div class="userworkPostForm">
                         @notmobile
-                            <form action="/feed/postUserWork" method="post" class="userWorkForm" enctype="multipart/form-data">
+                            <form action="/feed/postUserWork" method="post" class="userWorkForm <?= \App\Services\UserAccount\UserAccount::getTheme();?>" enctype="multipart/form-data">
                                 <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                 <input type="hidden" name="user_id" value="<?= $user->id?>">
                                 <div class="m-b-5 d-flex js-center">

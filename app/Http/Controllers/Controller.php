@@ -60,13 +60,7 @@ class Controller extends BaseController
             ];
             return $mailgun;
         } else if($service == "mollie"){
-            $fullDomain = $_SERVER['HTTP_HOST'];
-            $domainExplode = explode(".", $fullDomain);
-            if($domainExplode[0] == "secret") {
-                $apiKey = env("MOLLIE_API_TEST");
-            } else {
-                $apiKey = env("MOLLIE_API_LIVE");
-            }
+            $apiKey = env("MOLLIE_API");
             $mollie = new MollieApiClient();
             $mollie->setApiKey($apiKey);
             return $mollie;

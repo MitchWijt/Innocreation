@@ -4,47 +4,45 @@ namespace App\Http\Controllers;
 
 use App\Expertises;
 use App\Expertises_linktable;
-use App\NeededExpertiseLinktable;
-use App\Services\UserAccount\UserExpertises;
-use App\Services\UserAccount\UserNotifications;
+use App\MailMessage;
 use App\Team;
 use App\UserChat;
-use App\UserMessage;
-use App\UserPortfolioFile;
-use App\UserWork;
-use App\WorkspaceShortTermPlannerBoard;
-use FFMpeg\Coordinate\TimeCode;
-use FFMpeg\FFMpeg;
-use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Foundation\Http\FormRequest;
+use Faker\Provider\Payment;
+use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use App\User;
-use App\ServiceReview;
-use App\MailMessage;
-use App\Payments;
-use App\SiteSetting;
-use App\TeamPackage;
-use App\SplitTheBillLinktable;
-use App\Http\Requests;
-use Monolog\Handler\SyslogUdp\UdpSocket;
-use Spipu\Html2Pdf\Html2Pdf;
-use App\Invoice;
-use GetStream;
-use DateTime;
-use GetStream\StreamLaravel\Facades\FeedManager;
 use App\Services\AppServices\UnsplashService as Unsplash;
-use App\Services\AppServices\MailgunService as Mailgun;
+
+use App\Http\Requests;
+use App\User;
+use App\Country;
+use Auth;
 use Session;
-use Spipu\Html2Pdf\Tag\Html\Em;
+use App\InviteRequestLinktable;
 
 class DebugController extends Controller
 {
     /**
+     * Store a newly created resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
 
-    public function test(Request $request, Unsplash $unsplash, Mailgun $mailgunService, UserNotifications $userNotifications) {
+    public function test(Request $request) {
+//        if(Auth::attempt(['email'=>"mitchel@wijt.net",'password'=>"Dazzle45"])) {
+//            $user = User::select("*")->where("email", "mitchel@wijt.net")->with("team")->first();
+//            Session::set('user_name', $user->getName());
+//            Session::set('user_role', $user->role);
+//            Session::set('user_id', $user->id);
+//            if ($user->role == 1) {
+//                Session::set('admin_user_id', $user->id);
+//            }
+//            if ($user->team_id != NULL) {
+//                Session::set('team_id', $user->team_id);
+//                Session::set("team_name", $user->team->team_name);
+//            }
+//        }
+        dd(Session::get("user_id"));
         die('test');
     }
 }

@@ -5,6 +5,7 @@ $themes: (
                 textColor: #000,
                 ButtonTextColor: #575757,
                 ParagraphColor: #000,
+                descriptionColor: #000,
                 TitleColor: #000,
 
                 linkColor: #575757 ,
@@ -13,28 +14,41 @@ $themes: (
                 navItemColor: #575757,
                 navItemColorHover: #000,
 
-                ctaTextColor: #000000 ,
+                ctaTextColor: #fff ,
                 buttonTextHoverColor: #000000 ,
                 buttonBorderColorHover: 1px solid #000000 ,
                 buttonBackground: #fff ,
                 buttonBackgroundHover: #fff ,
                 buttonBorder: 1px solid #B4B4B4,
-                ctaButtonBorder: 1px solid #FF6100 ,
-                ctaButtonBackground: #fff ,
-                inputTextBackground: #EAEAEA ,
-                inputTextBorder: 1px solid #707070 ,
-                inputTextBorderRadius: 3px ,
-                hr: 1px solid #C9CCCF ,
+                ctaButtonBorder: 2px solid #FF6100 ,
+                ctaButtonBackground: #000 ,
+
+                inputTextBackground: #fff ,
+                inputTextBorder: 1px solid #000 ,
+                inputTextBorderRadius: 2px ,
+
+                inputGreyBackground: #EAEAEA,
+                inputGreyTextBorder: 1px solid #707070 ,
+                inputGreyTextBorderRadius: 3px ,
+
+                hr: 1px solid #C9CCCF,
 
                 navTitleColor: #000,
                 logoTextColor: #000,
 
                 //CARD
-                cardBorder: 1px solid #fff,
+                cardBorder: 0,
+                paddingLeftCard: 20px,
+                paddingRightCard: 20px,
+                paddingTopCard: 20px,
+                webkitShadow: 0px 0px 32px -13px rgba(0,0,0,0.75),
+                mozBoxShadow: 0px 0px 32px -13px rgba(0,0,0,0.75),
+                boxShadow: 0px 0px 32px -13px rgba(0,0,0,0.75),
 
                 //icons
                 iconColor: #C9CCCF,
                 iconColorHover: #000,
+                activeIconsBackground: #fff,
 
 
 
@@ -43,8 +57,9 @@ $themes: (
                 backgroundColor: #C9CCCF,
                 headerBackgroundColor: #000,
                 textColor: #C9CCCF,
-                ButtonTextColor: #C9CCCF !important,
+                ButtonTextColor: #C9CCCF,
                 ParagraphColor: #000,
+                descriptionColor: #C9CCCF,
                 TitleColor: #000,
 
                 linkColor: #FF6100,
@@ -71,9 +86,16 @@ $themes: (
 
                 //CARD
                 cardBorder: 1px solid #FF6100,
+                paddingLeftCard: 0,
+                paddingRightCard: 0,
+                paddingTopCard: 0,
+                webkitShadow: 0,
+                mozBoxShadow: 0,
+                boxShadow: 0,
 
                 //icons
                 iconColor: #C9CCCF,
                 iconColorHover: #C9CCCF,
+                activeIconsBackground: #C9CCCF,
         ),
 );

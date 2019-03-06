@@ -18,7 +18,7 @@
                             <div class="input-group-prepend no-focus">
                                 <span class="input-group-text no-focus c-pointer" id="basic-addon1"><i class="zmdi zmdi-search f-20 active"></i></span>
                             </div>
-                            <input style="outline: none !important; -webkit-appearance:none !important; width: 30vw !important" type="search" id="tagsHeader" class="form-control no-focus form-control-inno" placeholder="What expertise or knowledge do you need?" aria-label="Username" aria-describedby="basic-addon1">
+                            <input style="outline: none !important; -webkit-appearance:none !important; width: 30vw !important" type="search" id="tagsHeader" class="form-control no-focus form-control-inno input-grey" placeholder="What expertise or knowledge do you need?" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                     </div>
                 </div>

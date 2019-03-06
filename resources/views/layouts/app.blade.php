@@ -41,7 +41,6 @@
         <link rel="stylesheet" href="/css/checkout/selectPackage.css">
         <link rel="stylesheet" href="/css/registerProcess/index.css">
         <link rel="stylesheet" href="/css/userworkFeed/index.css">
-        <link rel="stylesheet" href="/css/userworkFeed/newIndex2.css">
         <link rel="stylesheet" href="/css/popovers.css">
         <link rel="stylesheet" href="/css/responsiveness/sidebar.css">
     {{--CSS MEDIA QUERIES--}}

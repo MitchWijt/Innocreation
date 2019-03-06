@@ -16,7 +16,7 @@
             <input type="password" name="password" class="password input">
             <div class="row m-t-20">
                 <div class="col-sm-12">
-                    <button class="btn btn-inno pull-right btn-block">Log in</button>
+                    <button class="btn btn-inno-cta pull-right btn-block">Log in</button>
                 </div>
             </div>
             <div class="row text-center">
