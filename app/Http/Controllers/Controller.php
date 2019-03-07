@@ -24,7 +24,6 @@ class Controller extends BaseController
 {
 
     use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
-
     public function isLoggedIn(){
         $bool = false;
         if(Session::has("user_id")){

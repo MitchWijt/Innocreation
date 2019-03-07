@@ -299,7 +299,7 @@ class LoginController extends Controller
         $user->active_status = "offline";
         $user->save();
         
-//        Session::flush();
+        Session::flush();
         return redirect("/");
     }
 

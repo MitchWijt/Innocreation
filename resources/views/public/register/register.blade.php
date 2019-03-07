@@ -60,7 +60,7 @@
                                 <div class="col-sm-10">
                                     <button class="btn-inno-cta btn btn-block submitRegisterForm" type="button">Join</button>
                                 </div>
-                                <span class="f-12 c-gray m-t-20">By joining, you agree to the <a href="/page/terms-of-service" class="regular-link">Terms</a> and <a href="/page/privacy-policy" class="regular-link">Privacy Policy.</a></span>
+                                <span class="f-12 c-dark-grey m-t-20">By joining, you agree to the <a href="/page/terms-of-service" class="regular-link">Terms</a> and <a href="/page/privacy-policy" class="regular-link">Privacy Policy.</a></span>
                             </div>
                         </form>
                     </div>

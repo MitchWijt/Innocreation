@@ -7,13 +7,13 @@
         @endhandheld
         <div class="row desktopNav">
             <div class="col-sm-12">
-                <div class="pull-left d-flex m-t-20 m-l-35">
+                <div class="pull-left d-flex m-t-20 m-l-15">
                     <div class="logoDiv">
                         <a class="td-none" href="/">
                             <img class="cartwheelLogo m-r-10" src="/images/cartwheel.png" alt="" style="width: 50px !important; height: 50px !important;">
                         </a>
                     </div>
-                    <div class="m-b-20 m-t-5 searchBarBox" style="min-width: 100px !important">
+                    <div class="m-b-20 m-t-5 searchBarBox m-l-20" style="min-width: 100px !important">
                         <div class="input-group mb-3 no-focus expertisesHeader <?= \App\Services\UserAccount\UserAccount::getTheme();?>">
                             <div class="input-group-prepend no-focus">
                                 <span class="input-group-text no-focus c-pointer" id="basic-addon1"><i class="zmdi zmdi-search f-20 active"></i></span>

@@ -1,6 +1,7 @@
 $themes: (
         light: (
                 backgroundColor: #fff,
+                gradient: linear-gradient(#ededed, #fff),
                 headerBackgroundColor: #fff,
                 textColor: #000,
                 ButtonTextColor: #575757,
@@ -14,14 +15,14 @@ $themes: (
                 navItemColor: #575757,
                 navItemColorHover: #000,
 
-                ctaTextColor: #fff ,
+                ctaTextColor: #FF6100,
                 buttonTextHoverColor: #000000 ,
                 buttonBorderColorHover: 1px solid #000000 ,
                 buttonBackground: #fff ,
                 buttonBackgroundHover: #fff ,
                 buttonBorder: 1px solid #B4B4B4,
-                ctaButtonBorder: 2px solid #FF6100 ,
-                ctaButtonBackground: #000 ,
+                ctaButtonBorder:  2px solid #FF6100 !important,
+                ctaButtonBackground: #fff !important,
 
                 inputTextBackground: #fff ,
                 inputTextBorder: 1px solid #000 ,

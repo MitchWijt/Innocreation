@@ -465,7 +465,7 @@
 
 /*===========================================HOMEPAGE=============================================*/
 .home-background-wrapper{
-    background: url("/images/homepage.png");
+    background: url("/images/homepage2.jpeg");
 }
 
 .home-background-wrapper {
@@ -475,7 +475,7 @@
 
     /* Set up proportionate scaling */
     width: 100%;
-    height: 100vh;
+    height: 88vh;
     /*max-height: 85vh;*/
     /*min-height: 40vh;*/
     /*overflow: hidden;*/
@@ -487,7 +487,9 @@
 }
 
 .home-background-wrapper{
-    background-size: cover;
+    background-size:     cover !important;                      /* <------ */
+    background-repeat:   no-repeat !important;
+    background-position: top !important;
     /*background-size:100% auto;*/
 }
 

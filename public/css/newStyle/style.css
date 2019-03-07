@@ -91,10 +91,13 @@
   transition: all 0.3s;
 }
 
+.btn-inno-cta {
+  border-radius: 0 !important;
+}
 .theme-light .btn-inno-cta {
-  background: #000;
-  border: 2px solid #FF6100;
-  color: #fff;
+  background: #fff !important;
+  border: 2px solid #FF6100 !important;
+  color: #FF6100;
 }
 .theme-dark .btn-inno-cta {
   background: #269A35;
@@ -220,10 +223,10 @@
   border-radius: 3px;
 }
 .theme-light .grey-background {
-  background: #fff;
+  background-image: #fff;
 }
 .theme-dark .grey-background {
-  background: #C9CCCF;
+  background-image: #C9CCCF;
 }
 
 .container {
@@ -296,12 +299,8 @@
 }
 
 .theme-light .theme-background {
-  background: #fff;
+  background: linear-gradient(#ededed, #fff);
 }
-.theme-dark .theme-background {
-  background: #000;
-}
-
 .theme-light i {
   color: #C9CCCF;
 }
@@ -322,9 +321,6 @@
   color: #000 !important;
 }
 
-.card {
-  border-radius: 10px !important;
-}
 .theme-light .card {
   background: #fff;
   border: 0;

@@ -10,6 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+
 Route::get("/","HomeController@index");
 
 Route::get("/debug/test", "DebugController@test");
@@ -46,8 +47,6 @@ Route::get("/contact-us", "HomeController@contactAction");
 Route::post("/home/sendContactForm", "HomeController@sendContactFormAction");
 
 Route::get("/faq", "PageController@faqAction");
-
-Route::get("/hoi", "LoginController@test");
 
 
 

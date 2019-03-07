@@ -93,8 +93,7 @@
 
                 $mailgun = new MailgunService();
                 $mailgun->saveAndSendEmail($user, "Welcome to Innocreation!", view("/templates/sendWelcomeMail", compact("user")));
-                echo json_encode(['slug' => $user->slug]);
-                die();
+                return json_encode(['slug' => $user->slug]);
             } else {
                 return 0;
             }
@@ -159,38 +158,37 @@
 
                 if($new){
                     $expertiseObject = $newExpertise;
-                    array_push($expertisesArray, $expertiseObject->id);
                 } else {
                     $expertiseObject = $expertiseNewUser;
-                    array_push($expertisesArray, $expertiseObject->id);
                 }
+                array_push($expertisesArray, $expertiseObject->id);
             }
 
 
-//            $neededExpertises = NeededExpertiseLinktable::select("*")->whereIn("expertise_id", $expertisesArray)->get();
-//            if(isset($neededExpertises)) {
-//                foreach ($neededExpertises as $neededExpertise) {
-//                    $team = $neededExpertise->teams;
-//                    $timeSent = new TimeSent();
-//                    if ($team->First()->users->notifications == 1) {
-//                        $userChat = UserChat::select("*")->where("receiver_user_id", $team->First()->ceo_user_id)->where("creator_user_id", 1)->first();
-//                        $userMessage = new UserMessage();
-//                        $userMessage->sender_user_id = 1;
-//                        $userMessage->user_chat_id = $userChat->id;
-//                        $userMessage->time_sent = $timeSent->time;
-//                        $userMessage->message = sprintf('We have good news for you and your team! </br> </br> A new %s has joined Innocreation, since your team is in need of a %s you can invite him or chat with him straight away at the account of <a href="https://innocreation.net%s">%s</a>', $neededExpertise->expertises->First()->title, $neededExpertise->expertises->First()->title, $user->getUrl(), $user->firstname);
-//                        $userMessage->created_at = date("Y-m-d H:i:s");
-//                        $userMessage->save();
-//                    }
-//                }
-//                foreach ($neededExpertises as $neededExpertise) {
-//                    $team = $neededExpertise->teams;
-//                    if ($team->First()->users->notifications == 1) {
-//                        $user = $team->First()->users;
-//                        $mailgun = new MailgunService();
-//                        $mailgun->saveAndSendEmail($team->First()->users, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
-//                    }
-//                }
-//            }
+            $neededExpertises = NeededExpertiseLinktable::select("*")->whereIn("expertise_id", $expertisesArray)->get();
+            if(isset($neededExpertises)) {
+                foreach ($neededExpertises as $neededExpertise) {
+                    $team = $neededExpertise->teams;
+                    $timeSent = new TimeSent();
+                    if ($team->First()->users->notifications == 1) {
+                        $userChat = UserChat::select("*")->where("receiver_user_id", $team->First()->ceo_user_id)->where("creator_user_id", 1)->first();
+                        $userMessage = new UserMessage();
+                        $userMessage->sender_user_id = 1;
+                        $userMessage->user_chat_id = $userChat->id;
+                        $userMessage->time_sent = $timeSent->time;
+                        $userMessage->message = sprintf('We have good news for you and your team! </br> </br> A new %s has joined Innocreation, since your team is in need of a %s you can invite him or chat with him straight away at the account of <a href="https://innocreation.net%s">%s</a>', $neededExpertise->expertises->First()->title, $neededExpertise->expertises->First()->title, $user->getUrl(), $user->firstname);
+                        $userMessage->created_at = date("Y-m-d H:i:s");
+                        $userMessage->save();
+                    }
+                }
+                foreach ($neededExpertises as $neededExpertise) {
+                    $team = $neededExpertise->teams;
+                    if ($team->First()->users->notifications == 1) {
+                        $user = $team->First()->users;
+                        $mailgun = new MailgunService();
+                        $mailgun->saveAndSendEmail($team->First()->users, 'You have got a message!', view("/templates/sendChatNotification", compact("user")));
+                    }
+                }
+            }
         }
     }

@@ -73,7 +73,7 @@
         <script src="/js/bootstrap-tokenfield.min.js"></script>
         <script defer async src="/js/fontawesome-all.js"></script>
         <script defer async src="/js/jquery.timepicker.min.js"></script>
-        <script defer async src="/js/floatingcarousel.min.js"></script>
+        <script src="/js/floatingcarousel.min.js"></script>
         <script src="/js/jquery-ui.min.js"></script>
     {{--ANIMATION--}}
         <script defer async src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
