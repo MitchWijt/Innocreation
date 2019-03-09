@@ -10,23 +10,28 @@
         </div>
         <div class="main-content">
             <? if(isset($loggedIn) && $loggedIn) { ?>
-                <div class="row">
-                    <div class="col-md-12 m-b-20">
+                <div class="row d-flex js-center <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
+                    <div class="col-md-8 m-b-20 d-flex js-center">
                         <div class="title-home">
                             @mobile
                                 <h1 style="font-weight: bold;" class="text-center col-md-12 f-40">Innocreation</h1>
                                 <p class="text-center f-13">Have an idea? find team members, create your team and start building now!</p>
                             @elsedesktop
-                                <h1 class="title-black text-center col-md-12">Innocreation</h1>
-                                <p class="text-center">Have an idea? find team members, create your team and start building now!</p>
+                                <h1 class="title-black bold">Innocreation</h1>
+                                <p class="m-b-0">Collaborate with creatives</p>
+                                <div class="d-flex align-start">
+                                    <p class="m-b-0">Active in various creative expertises </p> <i class="zmdi zmdi-accounts-outline f-22 m-l-10 c-black"></i>
+                                </div>
                             @endmobile
-                            <div class="hr col-md-10"></div>
                         </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="hr col-md-6 m-b-20"></div>
                     </div>
                 </div>
                 <div class="row d-flex js-center <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
-                    <div class="col-md-5 d-flex js-center">
-                        <a id="collaborateNow" href="/innocreatives" class="btn btn-inno-cta startRegisterProcess @tablet p-l-8 @endtablet" style="border-radius: 10px;">@tablet Connect! @elsedesktop Start connecting! @endtablet</a>
+                    <div class="col-md-4 p-0">
+                        <a id="collaborateNow" href="/what-is-innocreation" class="btn btn-inno-cta startRegisterProcess @tablet p-l-8 @endtablet">@tablet Collaborate! @elsedesktop I want to connect! @endtablet</a>
                     </div>
                 </div>
             <? } else { ?>
@@ -72,10 +77,7 @@
                                         <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                                     </div>
                                     <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
-                                        <div class="p-t-40 p-absolute" style="z-index: 100; top: 45%; left: 50%; transform: translate(-50%, -50%);">
-                                            <div class="hr-sm"></div>
-                                        </div>
-                                        <div class="p-t-40 p-absolute" style="z-index: 99; top: 35%; left: 50%; transform: translate(-50%, -50%);">
+                                        <div class="p-t-40 p-absolute" style="z-index: 99; top: 40%; left: 50%; transform: translate(-50%, -50%);">
                                             <p class="c-white @tablet f-15 @elsedesktop f-20 @endtablet"><?= $expertise->title?></p>
                                         </div>
                                     </a>
@@ -101,10 +103,7 @@
                                     <a class="c-gray f-9 photographer" target="_blank" href="<?= $expertise->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $expertise->photographer_link?>"><?= $expertise->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                                 </div>
                                 <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
-                                    <div class="p-t-40 p-absolute" style="z-index: 100; top: 45%; left: 50%; transform: translate(-50%, -50%);">
-                                        <div class="hr-sm"></div>
-                                    </div>
-                                    <div class="p-t-40 p-absolute" style="z-index: 99; top: 35%; left: 50%; transform: translate(-50%, -50%);">
+                                    <div class="p-t-40 p-absolute" style="z-index: 99; top: 40%; left: 50%; transform: translate(-50%, -50%);">
                                         <p class="c-white @tablet f-15 @elsedesktop f-20 @endtablet"><?= $expertise->title?></p>
                                     </div>
                                 </a>

@@ -196,7 +196,7 @@
 
 .grey-background{
   @include themify($themes){
-    background-image: themed('backgroundColor');
+    background: themed('backgroundColor');
   }
 }
 
@@ -290,14 +290,6 @@ i:hover{
   }
 }
 
-.userWorkPost{
-  @include themify($themes) {
-    padding-left: themed('paddingLeftCard');
-    padding-right: themed('paddingRightCard');
-    padding-top: themed('paddingTopCard');
-  }
-}
-
 .card-lg{
   @include themify($themes) {
     background:  themed('headerBackgroundColor');
@@ -311,9 +303,7 @@ i:hover{
 
 .card-block{
   @include themify($themes) {
-    -webkit-box-shadow: themed('webkitShadow');
-    -moz-box-shadow: themed('mozBoxShadow');
-    box-shadow: themed('boxShadow');
+
   }
 }
 
