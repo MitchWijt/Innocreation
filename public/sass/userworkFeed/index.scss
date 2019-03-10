@@ -193,7 +193,7 @@
   pointer-events: none;
 }
 
-.postImageContent{
+.interestedButtonPost{
   background: #fff;
   border-radius: 10px;
   position: absolute;
@@ -207,11 +207,33 @@
   transition: all 0.5s;
 }
 
+.commentsButtonPost {
+  background: #fff;
+  border-radius: 10px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  opacity: 0;
+  padding-right: 40px;
+  padding-bottom: 11px;
+  padding-top: 11px;
+  display: block;
+  transition: all 0.5s;
+}
+
+.postedUser {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  opacity: 0;
+  display: block;
+  transition: all 0.5s;
+}
+
 .fadeInContent{
   opacity: 1;
   transition: all 0.5s;
 }
-
 
 @media screen and (max-width: 990px) {
   .grid-container{

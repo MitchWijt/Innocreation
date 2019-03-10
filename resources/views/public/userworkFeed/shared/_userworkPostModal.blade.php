@@ -10,22 +10,45 @@
                     <p class="m-b-0 m-t-10 vertically-center titleGrayBlack"><a href="<?= $userWorkPost->user->getUrl()?>" target="_blank" class="c-black"><?= $userWorkPost->user->getName()?></a></p>
                 </div>
                 <div class="d-flex align-start">
+                    <?= \App\Services\UserConnections\ConnectionService::getSwitch($userWorkPost->user->id)?>
                     <div class="m-t-5">
                         <? if(isset($user)) { ?>
-                        <? if($user->hasPlusPointed($userWorkPost->id)) { ?>
-                            <section class="fave active-fave" data-id="<?= $userWorkPost->id?>"></section>
-                        <? } else { ?>
-                            <section class="fave normal-fave" data-id="<?= $userWorkPost->id?>"></section>
-                        <? } ?>
+                            <? if($user->hasPlusPointed($userWorkPost->id)) { ?>
+                                <section class="fave active-fave" data-id="<?= $userWorkPost->id?>"></section>
+                            <? } else { ?>
+                                <section class="fave normal-fave" data-id="<?= $userWorkPost->id?>"></section>
+                            <? } ?>
                         <? } ?>
                     </div>
-                    <?= \App\Services\UserConnections\ConnectionService::getSwitch($userWorkPost->user->id)?>
                 </div>
 
             </div>
             <div class="p-20 text-center no-select">
                 <img class="no-select" src="<?= $userWorkPost->getPlaceholder()?>" data-layzr="<?= $userWorkPost->getImage()?>" style="max-width: 75vw; max-height: 85vh">
             </div>
+            <div class="row" style="padding-right: 40px; padding-left: 40px; margin-bottom: 150px;">
+                <div class="col-sm-10">
+                    <p class="thin f-20"><?= $userWorkPost->description?></p>
+                </div>
+                <div class="col-sm-2">
+                    <div class="pull-right d-flex">
+                        <i class="zmdi zmdi-eye f-22 c-black m-r-5"></i>
+                        <p><?= $userWorkPost->views?></p>
+                    </div>
+                </div>
+            </div>
+            <p class="f-40 bold m-b-10" style="padding-left: 40px">Related expertises</p>
+            <div class="d-flex m-l-15" style="margin-bottom: 150px;">
+                <? foreach(\App\Services\FeedServices\UserworkPost::getRelatedExpertises($userWorkPost->id) as $expertise) { ?>
+                    <div class="expertiseCircle m-l-20">
+                        <div class="half-circle-expertise-img" style="background: url('<?= $expertise->image?>')"></div>
+                        <div class="half-circle-expertise-title p-relative">
+                            <p class="p-absolute f-12 m-0" style="top: 40%; left: 50%; transform: translate(-50%, -50%);"><?= $expertise->title?></p>
+                        </div>
+                    </div>
+                <? } ?>
+            </div>
+            <p class="f-40 bold m-b-10" style="padding-left: 40px">Comments:</p>
             <div class="comments" data-id="<?= $userWorkPost->id?>">
                 <? if(count($userWorkPost->getComments()) > 0) {
                     $height = 350;
@@ -33,7 +56,7 @@
                     $height = 100;
                 }
                 ?>
-                <div class="o-scroll userWorkComments p-20" data-id="<?= $userWorkPost->id?>" style="height: <?= $height?>px; max-width: 75vw">
+                <div class="o-scroll userWorkComments p-20" data-id="<?= $userWorkPost->id?>" style="height: <?= $height?>px;">
 
                 </div>
                 <? if(isset($user)) { ?>
@@ -57,6 +80,35 @@
         </div>
     </div>
 </div>
+<style>
+
+    .half-circle-expertise-img {
+        width: 100px;
+        height: 50px;
+        border-top-left-radius: 100px;
+        border-top-right-radius: 100px;
+        border-bottom: 0;
+        background-size:     cover !important;
+        background-repeat:   no-repeat !important;
+        background-position: center center !important;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .half-circle-expertise-title {
+        width: 100px;
+        height: 50px;
+        border-bottom-left-radius: 100px;
+        border-bottom-right-radius: 100px;
+        border-bottom: 1px solid grey;
+        border-right: 1px solid grey;
+        border-left: 1px solid grey;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+</style>
 <script defer async src="/js/lazyLoader.js"></script>
 <script>
     $('.popoverEmojis').popover({ trigger: "click" , html: true, animation:false, placement: 'auto'});

@@ -126,7 +126,6 @@ class MessageController extends Controller
     public function getUserWorkCommentsAction(Request $request){
         $userWorkId = $request->input("user_work_id");
 
-
         $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
         if(Session::has("user_id")) {
             $userId = Session::get("user_id");

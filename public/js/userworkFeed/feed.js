@@ -248,12 +248,16 @@ $(document).on(eventTrigger, ".fave", function () {
     }, 1000);
 });
 
-$(document).on("mouseover", ".zoom, .postImageContent", function () {
+$(document).on("mouseover", ".zoom, .interestedButtonPost, .commentsButtonPost, .postedUser", function () {
     $(this).parents(".image").find(".imageOverlay").addClass("fadeIn");
-    $(this).parents(".image").find(".postImageContent").addClass("fadeInContent");
+    $(this).parents(".image").find(".interestedButtonPost").addClass("fadeInContent");
+    $(this).parents(".image").find(".commentsButtonPost").addClass("fadeInContent");
+    $(this).parents(".image").find(".postedUser").addClass("fadeInContent");
 });
 
-$(document).on("mouseleave", ".zoom, .postImageContent", function () {
+$(document).on("mouseleave", ".zoom, .interestedButtonPost, .commentsButtonPost, .postedUser", function () {
     $(this).parents(".image").find(".imageOverlay").removeClass("fadeIn");
-    $(this).parents(".image").find(".postImageContent").removeClass("fadeInContent");
+    $(this).parents(".image").find(".interestedButtonPost").removeClass("fadeInContent");
+    $(this).parents(".image").find(".commentsButtonPost").removeClass("fadeInContent");
+    $(this).parents(".image").find(".postedUser").removeClass("fadeInContent");
 });

@@ -8,6 +8,8 @@
 
     namespace App\Services\FeedServices;
     use App\Emoji;
+    use App\Expertises;
+    use App\Services\Frontend\ExpertiseSphere;
     use App\Services\Images\ImageProcessor;
     use App\Services\Paths\PublicPaths;
     use App\Services\TimeSent;
@@ -151,5 +153,14 @@
             }
 
             return view("/public/userworkFeed/shared/_interestModal", compact("users", "loggedIn"));
+        }
+
+        public static function getRelatedExpertises($userWorkId){
+            $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
+            $expertisesIds = explode(",", $userWork->related_expertises_ids);
+
+            $expertises = Expertises::select("*")->whereIn("id", $expertisesIds)->get();
+
+            return $expertises;
         }
     }

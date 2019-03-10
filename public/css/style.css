@@ -878,6 +878,8 @@
 
 .messageInputDynamic {
     height:40px;
+    resize: none;
+    border: 0 !important;
     transition: all 0.5s;
     -webkit-transition: all 0.5s; /* Safari */
 }

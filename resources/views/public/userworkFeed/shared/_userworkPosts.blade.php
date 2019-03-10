@@ -7,7 +7,7 @@
                             <img class="zoom zoom-<?= $userWorkPost->id?>" data-id="<?= $userWorkPost->id?>" src="<?= $userWorkPost->getPlaceholder()?>" data-layzr="<?= $userWorkPost->getImage()?>" style="width: 100%;">
                         <? } ?>
                         <div class="imageOverlay p-relative"></div>
-                        <div class="postImageContent">
+                        <div class="interestedButtonPost">
                             <? if(isset($user)) { ?>
                                 <div class="d-flex p-relative">
                                     <? if($user->hasPlusPointed($userWorkPost->id)) { ?>
@@ -17,6 +17,24 @@
                                     <? } ?>
                                     <a style="position: absolute; top: 10px; right: -5px;"><span class="amountOfPoints-<?= $userWorkPost->id?>"><?= count($userWorkPost->getInterests());?></span></a>
                                 </div>
+                            <? } ?>
+                        </div>
+                        <div class="commentsButtonPost zoom zoom-<?= $userWorkPost->id?>" data-id="<?= $userWorkPost->id?>">
+                            <? if(isset($user)) { ?>
+                                <div class="d-flex p-relative">
+                                    <i class="zmdi zmdi-comment-text f-20 m-l-10"></i>
+                                    <a style="position: absolute; top: -2px; right: -25px;"><span><?= count($userWorkPost->getComments());?></span></a>
+                                </div>
+                            <? } ?>
+                        </div>
+                        <div class="postedUser">
+                            <? if(isset($user)) { ?>
+                                <a href="<?= $userWorkPost->user->getUrl()?>" class="td-none">
+                                    <div class="d-flex p-relative">
+                                        <div class="avatar-sm img m-t-0 p-t-0" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>');"></div>
+                                        <p class="m-b-0 m-l-5 c-white"><?= $userWorkPost->user->getName()?></p>
+                                    </div>
+                                </a>
                             <? } ?>
                         </div>
                     </div>

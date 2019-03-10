@@ -32,6 +32,7 @@
         <link  rel="stylesheet" href="/css/home/home.css" media="none" onload="if(media!=='all')media='all'">
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="/css/newStyle/style.css">
+        <link rel="stylesheet" href="/css/general/modals.css">
         <link rel="stylesheet" href="/css/header/style.css">
         <link rel="stylesheet" href="/css/footer/style.css">
         <link rel="stylesheet" href="/css/general.css">
