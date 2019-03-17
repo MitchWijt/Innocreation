@@ -1,0 +1,48 @@
+@import "../themify";
+
+.bannerImage{
+  height: 650px;
+  background: url('/images/Banner_about_us2.png') repeat-x;
+  width: 11664px;
+  background-size: contain !important;
+  background-position:center,center !important;
+  animation: slide 200s linear infinite;
+}
+
+.image2{
+   background: url('/images/About_us_connections.png');
+   height: 450px;
+   width: 830px;
+   background-repeat: no-repeat;
+   background-size: contain !important;
+   background-position:center,center !important;
+ }
+
+.image_feed{
+  background: url('/images/feed_image.png');
+  height: 450px;
+  width: 830px;
+  background-repeat: no-repeat;
+  background-size: contain !important;
+  //background-position:center,center !important;
+}
+
+.overlay-expertise-user {
+  background: #000 !important;
+  z-index: 1 !important;
+  opacity: 0.7 !important;
+  top: 20%;
+  left: 0;
+  width: 100%;
+  height: 65%;
+  position: absolute;
+}
+
+@keyframes slide {
+  0%{
+    transform: translate3d(0, 0, 0);
+  }
+  100%{
+    transform: translate3d(-3888px, 0, 0); /* The image width */
+  }
+}

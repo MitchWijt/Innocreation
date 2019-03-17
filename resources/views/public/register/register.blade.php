@@ -70,14 +70,6 @@
     </div>
 
     <style>
-        .banner-expertises {
-            height: 330px;
-            width:100vw;
-            background: url('/images/testYep.png');
-            background-size: cover !important;
-            background-repeat:no-repeat !important;
-            background-position:center,center !important;
-        }
 
         .circleExpertise{
             margin: 30px !important;

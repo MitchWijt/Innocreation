@@ -9,7 +9,7 @@
 <? foreach($userWork->getComments() as $comment) { ?>
     <div class="row c-gray d-flex m-l-20">
         <div class="d-flex">
-            <img src="<?= $comment->user->getProfilePicture()?>" alt="<?= $comment->user->firstname?>" class="circle circleSmall m-r-5">
+            <div class="avatar-sm m-r-5" style="background: url('<?= $comment->user->getProfilePicture()?>')"></div>
             <p class="m-0"><?= $comment->user->getName()?></p>
         </div>
         <div class="col-md-10">

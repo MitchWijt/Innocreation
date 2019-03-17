@@ -617,6 +617,17 @@ Route::post("/admin/randomImagesExpertises", "AdminController@randomImagesExpert
 
 Route::post("/admin/randomImagesExpertiseLinktables", "AdminController@randomImagesExpertiseLinktablesAction");
 
+//feed posts
+Route::get("/admin/innocreatives-posts", "AdminFeedPostsController@indexAction");
+
+Route::post("/adminFeedPosts/approvePost", "AdminFeedPostsController@approvePostAction");
+
+Route::post("/adminFeedPosts/declinePost", "AdminFeedPostsController@declinePostAction");
+
+
+
+
+
 
 //=======================FEED=============================
 Route::get("/team-products", "FeedController@TeamProductsAction");
@@ -634,17 +645,13 @@ Route::get("/team-product/{slug?}", "FeedController@TeamProductsAction");
 //=======================WORKFEED=============================
 Route::get("/innocreatives", "FeedController@workFeedIndexAction");
 
-Route::post("/feed/plusPointPost", "FeedController@plusPointPostAction");
-
-Route::post("/feed/minusPointPost", "FeedController@minusPointPostAction");
-
 Route::post("/feed/getUserworkPosts", "FeedController@getUserworkPostsAction");
 
 Route::post("/feed/getMoreUserworkPosts", "FeedController@getMoreUserworkPostsAction");
 
 Route::get("/innocreatives/{id?}", "FeedController@workFeedIndexAction");
 
-Route::post("/feed/postUserWork", "FeedController@postUserWorkAction");
+Route::post("/feed/requestPostUserWork", "FeedController@requestPostUserWorkAction");
 
 Route::post("/feed/postUserWorkComment", "FeedController@postUserWorkCommentAction");
 

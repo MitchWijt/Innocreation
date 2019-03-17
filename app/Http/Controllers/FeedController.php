@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Emoji;
+use App\Expertises;
+use App\Expertises_linktable;
 use App\Services\AppServices\StreamService;
 use App\Services\FeedServices\FeedService;
 use App\Services\FeedServices\UserworkPost;
@@ -211,11 +213,17 @@ class FeedController extends Controller
         $emojis = Emoji::select("*")->get();
         if(Session::has("user_id")){
             $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            $expertiseIds = [];
+            $userExpertises = Expertises_linktable::select("*")->where("user_id", $user->id)->get();
+            foreach($userExpertises as $userExpertise){
+                array_push($expertiseIds, $userExpertise->expertise_id);
+            }
+            $expertises = Expertises::select("*")->whereIn("id", $expertiseIds)->get();
             if($id){
                 $sharedUserWorkId = $id;
-                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount", "sharedUserWorkId", "title", "og_description", "emojis"));
+                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount", "sharedUserWorkId", "title", "og_description", "emojis", "expertises"));
             } else {
-                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount", "title", "og_description", "emojis"));
+                return view("/public/userworkFeed/index", compact("user", "pageType", "totalAmount", "title", "og_description", "emojis", "expertises"));
             }
         } else {
             if($id){
@@ -240,9 +248,9 @@ class FeedController extends Controller
         return $feedService->getMoreUserworkPosts($request);
     }
 
-    public function postUserWorkAction(Request $request, FeedService $feedService, StreamService $streamService){
+    public function requestPostUserWorkAction(Request $request, FeedService $feedService, StreamService $streamService){
         if($this->authorized()){
-            return $feedService->postNewUserWorkPost($request, $streamService);
+            return $feedService->requestPostUserWork($request, $streamService);
         }
     }
 

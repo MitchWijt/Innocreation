@@ -25,7 +25,7 @@
             $this->upload($tempfile, $path, true);
         }
 
-        public function upload($image, $path, $placeholder = false, $imageRealPath = null){
+        public function upload($image = null, $path, $placeholder = false, $imageRealPath = null){
             if($placeholder){
                 Storage::disk('spaces')->put($path, file_get_contents($image), "public");
                 unlink($image);

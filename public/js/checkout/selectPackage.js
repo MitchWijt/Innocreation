@@ -9,13 +9,13 @@ $(".login").on("click",function () {
     $(".registerForm").addClass("hidden");
     $(".collapse").collapse("show");
 });
-$(document).ready(function () {
-    $(".ui-menu").appendTo(".expertises");
-    $(".token-input").attr("style", "");
-
-    $(".tokenfield").removeClass("form-control");
-    $(".tokenfield").addClass("col-sm-12");
-});
+// $(document).ready(function () {
+//     $(".ui-menu").appendTo(".expertises");
+//     $(".token-input").attr("style", "");
+//
+//     $(".tokenfield").removeClass("form-control");
+//     $(".tokenfield").addClass("col-sm-12");
+// });
 
 $(".paymentPreference").on("click",function () {
     var package_id = $(this).data("package-id");

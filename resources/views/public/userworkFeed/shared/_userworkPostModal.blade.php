@@ -10,6 +10,22 @@
                     <p class="m-b-0 m-t-10 vertically-center titleGrayBlack"><a href="<?= $userWorkPost->user->getUrl()?>" target="_blank" class="c-black"><?= $userWorkPost->user->getName()?></a></p>
                 </div>
                 <div class="d-flex align-start">
+                    <? if(isset($user)) { ?>
+                        <? if($user->role == 1 && $userWorkPost->approved == 0) { ?>
+                            <div class="m-t-5 d-flex">
+                                <form action="/adminFeedPosts/approvePost" class="m-r-10" method="post">
+                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                    <input type="hidden" name="userWorkId" value="<?= $userWorkPost->id?>">
+                                    <button class="btn btn-sm btn-inno-cta m-t-10">Approve post</button>
+                                </form>
+                                <form action="/adminFeedPosts/declinePost" method="post">
+                                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                    <input type="hidden" name="userWorkId" value="<?= $userWorkPost->id?>">
+                                    <button class="btn btn-sm btn-inno m-t-10">Decline post</button>
+                                </form>
+                            </div>
+                        <? } ?>
+                    <? } ?>
                     <?= \App\Services\UserConnections\ConnectionService::getSwitch($userWorkPost->user->id)?>
                     <div class="m-t-5">
                         <? if(isset($user)) { ?>

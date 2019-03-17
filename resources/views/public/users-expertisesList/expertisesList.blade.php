@@ -32,7 +32,7 @@
                                             </div>
                                             <? if($linktable->users->First()) { ?>
                                                 <a href="<?= $linktable->users->First()->getUrl()?>">
-                                                    <div class="overlay-test p-relative"></div>
+                                                    <div class="overlay-expertise-user"></div>
                                                 </a>
                                                 <a class="userCardContent" href="<?= $linktable->users->First()->getUrl()?>">
                                                     <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 39%; left: 50%; transform: translate(-50%, -50%)">
@@ -59,18 +59,6 @@
             </div>
         </div>
     </div>
-    <style>
-        .overlay-test {
-            background: #000 !important;
-            z-index: 1 !important;
-            opacity: 0.7 !important;
-            top: 20%;
-            left: 0;
-            width: 100%;
-            height: 65%;
-            position: absolute;
-        }
-    </style>
     <script>
         $( function() {
             var availableTags = [

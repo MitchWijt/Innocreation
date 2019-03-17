@@ -96,12 +96,12 @@
 }
 .theme-light .btn-inno-cta {
   background: #fff !important;
-  border: 2px solid #FF6100 !important;
+  border: 1px solid #FF6100 !important;
   color: #FF6100;
 }
 .theme-dark .btn-inno-cta {
   background: #269A35;
-  border: 2px solid #FF6100;
+  border: 1px solid #FF6100;
   color: #fff;
 }
 

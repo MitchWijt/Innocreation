@@ -15,6 +15,10 @@
         <a class="regular-link c-gray" href="/admin/teamList">Teams</a>
     </div>
     <hr>
+    <div class="sidebar-tab text-center p-relative">
+        <a class="regular-link c-gray" href="/admin/innocreatives-posts">Feed posts</a>
+    </div>
+    <hr>
     <div class="sidebar-tab text-center">
         <a data-toggle="collapse" data-target="#sidebarAdminMessages" aria-expanded="false" aria-controls="sidebarAdminMessages" class="regular-link c-gray">Messages <i class="zmdi zmdi-chevron-down "></i></a>
         <div class="collapse" id="sidebarAdminMessages">

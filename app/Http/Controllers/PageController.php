@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CustomerIdea;
+use App\Expertises;
 use App\Expertises_linktable;
 use App\Faq;
 use App\FaqType;
@@ -128,7 +129,10 @@ class PageController extends Controller
 
     public function pagesAboutUsAction(){
         $title = "what is Innocreation?";
-       return view("/public/pages/aboutUs");
+
+        $amountExpertises = Expertises::count();
+        $expertiseLinktables = Expertises_linktable::select("*")->limit(3)->inRandomOrder()->get();
+        return view("/public/pages/aboutUs", compact("title", "amountExpertises", "expertiseLinktables"));
     }
 
     /**

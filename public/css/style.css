@@ -189,7 +189,7 @@
     overflow: scroll;
     position: absolute !important;
     top: 65px;
-    z-index: 300 !important;
+    z-index: 3000 !important;
     padding-left: 0 !important;
 }
 
@@ -872,7 +872,6 @@
     float: left !important;
     background-size: cover !important;
     background-repeat:no-repeat !important;
-    /*background-attachment:fixed !important;*/
     background-position:center,center !important;
 }
 
