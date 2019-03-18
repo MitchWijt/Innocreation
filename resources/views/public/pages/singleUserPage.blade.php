@@ -94,11 +94,11 @@
             </div>
             <div class="row <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
                 <div class="col-md-12">
-                    <div class="card card-lg m-t-20 m-b-20">
-                        <div class="card-block m-t-10 <? if(count($expertise_linktable) > 3) echo "gradientToTransparantFull" ?>">
+                    <div class="m-b-20" style="margin-top: 120px;">
+                        <div class=" m-t-10 <? if(count($expertise_linktable) > 3) echo "gradientToTransparantFull" ?>">
                             <div class="col-sm-12">
                                 <div class="d-flex js-between">
-                                    <h3>Expertises</h3>
+                                    <h3 class="bold">Expertises</h3>
                                     <? if(isset($loggedIn) && $loggedIn == $user->id) { ?>
                                         <i  style="z-index: 2;" class="editBtn zmdi zmdi-plus f-20 p-r-15 p-l-15 p-b-10 p-t-10 editExpertise @handheld no-hover @endhandheld"></i>
                                     <? } ?>
