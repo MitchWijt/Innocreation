@@ -131,32 +131,34 @@ $(document).on("change", ".input_image",function () {
     }
 });
 
+if($(".user_id").val() != 0) {
 // Change color when file if being dragged over the dropcontainer + action when file is being dropped into it. 
-dropContainer.ondragover = dropContainer.ondragenter = function(evt) {
-    $("#dropContainer").attr("style", "background-color: rgba(252, 74, 9, 0.8);");
-    evt.preventDefault();
-};
+    dropContainer.ondragover = dropContainer.ondragenter = function (evt) {
+        $("#dropContainer").attr("style", "background-color: rgba(252, 74, 9, 0.8);");
+        evt.preventDefault();
+    };
 
-dropContainer.ondragleave = function(evt) {
-    $("#dropContainer").attr("style", "background: #fff; border: 1px dashed #000");
-    evt.preventDefault();
-};
+    dropContainer.ondragleave = function (evt) {
+        $("#dropContainer").attr("style", "background: #fff; border: 1px dashed #000");
+        evt.preventDefault();
+    };
 
 
-dropContainer.ondrop = function(evt) {
-    // Detects the drop container div. When file is being dropped onto it.
-    image.files = evt.dataTransfer.files;
-    var imgName = image.files[0].name;
-    var mimetype = image.files[0].type;
-    if(mimetype != "image/jpeg") {
-        $(".errorMimetype").removeClass("hidden");
-    } else {
-        $(".errorMimetype").addClass("hidden");
-        readURL(image);
-    }
-    $("#dropContainer").attr("style", "background: #fff; border: 1px dashed #000");
-    evt.preventDefault();
-};
+    dropContainer.ondrop = function (evt) {
+        // Detects the drop container div. When file is being dropped onto it.
+        image.files = evt.dataTransfer.files;
+        var imgName = image.files[0].name;
+        var mimetype = image.files[0].type;
+        if (mimetype != "image/jpeg") {
+            $(".errorMimetype").removeClass("hidden");
+        } else {
+            $(".errorMimetype").addClass("hidden");
+            readURL(image);
+        }
+        $("#dropContainer").attr("style", "background: #fff; border: 1px dashed #000");
+        evt.preventDefault();
+    };
+}
 
 
 

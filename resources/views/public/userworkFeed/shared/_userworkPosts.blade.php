@@ -1,5 +1,5 @@
 <? foreach($userWorkPosts as $userWorkPost) { ?>
-        <div class="card userWorkPost p-relative m-b-10" style="display: inline-block;" data-id="<?= $userWorkPost->id?>">
+        <div class="card userWorkPost p-relative m-b-10 o-scroll" style="display: inline-block;" data-id="<?= $userWorkPost->id?>">
             <div class="card-block">
                 <div class="col-sm-12 p-relative desc p-0 <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
                     <div class="image p-relative">
@@ -17,15 +17,18 @@
                                     <? } ?>
                                     <a style="position: absolute; top: 10px; right: -5px;"><span class="amountOfPoints-<?= $userWorkPost->id?>"><?= count($userWorkPost->getInterests());?></span></a>
                                 </div>
+                            <? } else { ?>
+                                <div class="d-flex p-relative">
+                                    <span class="active-fave c-pointer" data-id="<?= $userWorkPost->id?>"></span>
+                                    <a style="position: absolute; top: 10px; right: -5px;"><span class="amountOfPoints-<?= $userWorkPost->id?>"><?= count($userWorkPost->getInterests());?></span></a>
+                                </div>
                             <? } ?>
                         </div>
                         <div class="commentsButtonPost zoom zoom-<?= $userWorkPost->id?>" data-id="<?= $userWorkPost->id?>">
-                            <? if(isset($user)) { ?>
-                                <div class="d-flex p-relative">
-                                    <i class="zmdi zmdi-comment-text f-20 m-l-10"></i>
-                                    <a style="position: absolute; top: -2px; right: -25px;"><span><?= count($userWorkPost->getComments());?></span></a>
-                                </div>
-                            <? } ?>
+                            <div class="d-flex p-relative">
+                                <i class="zmdi zmdi-comment-text f-20 m-l-10"></i>
+                                <a style="position: absolute; top: -2px; right: -25px;"><span><?= count($userWorkPost->getComments());?></span></a>
+                            </div>
                         </div>
                         <div class="postedUser">
                             <? if(isset($user)) { ?>

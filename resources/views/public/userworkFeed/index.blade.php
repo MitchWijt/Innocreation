@@ -1,5 +1,6 @@
 @extends("layouts.app")
 <link rel="stylesheet" href="/css/responsiveness/innocreativeFeed/index.css">
+<link rel="stylesheet" href="/css/responsiveness/innocreativeFeed/feedResponsive.css">
 @section("content")
     <div class="<?= \App\Services\UserAccount\UserAccount::getTheme();?>">
         @mobile
@@ -98,6 +99,7 @@
         </div>
     </div>
     <? if(isset($user)) { ?>
+        <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
         <div class="modal postUserWorkModal  fade fade-scale o-scroll <?= \App\Services\UserAccount\UserAccount::getTheme();?>" id="postUserWorkModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
             <i class="zmdi zmdi-close c-pointer c-orange f-30" data-dismiss="modal" @desktop style="top: 1%; right: 1%; z-index: 1; position: fixed !important" @elsemobile style="top: 5%; right: 5%; z-index: 1; position: fixed !important" @enddesktop></i>
             <div class="modal-dialog modal-lg fixed-modal modal-dialog-centered custom-dialog-margin" role="document">
@@ -117,7 +119,6 @@
                         </div>
                         <p class="f-30 bold p-l-20 m-b-0 m-t-40">Write your caption</p>
                         <div class="m-t-10 p-l-15">
-                            <input type="hidden" name="user_id" class="user_id" value="<?= $user->id?>">
                             <textarea name="comment" id="description_id" placeholder="Write your comment..." class="comment input col-sm-11 messageInputDynamic no-focus" rows="1"></textarea>
                         </div>
                         <div class="m-t-15 d-flex js-center @mobile m-r-20 @endmobile">
@@ -149,6 +150,8 @@
                 </div>
             </div>
         </div>
+    <? } else { ?>
+        <input type="hidden" name="user_id" class="user_id" value="0">
     <? } ?>
 
     <? if(isset($user)) { ?>

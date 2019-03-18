@@ -1,6 +1,7 @@
 @extends("layouts.app")
 <link rel="stylesheet" href="/css/responsiveness/singleUserPage.css">
 <link rel="stylesheet" href="/css/responsiveness//innocreativeFeed/index.css">
+<link rel="stylesheet" href="/css/responsiveness/innocreativeFeed/feedResponsive.css">
 @section("content")
     <div class="<?= \App\Services\UserAccount\UserAccount::getTheme()?>">
         <div class="d-flex grey-background <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
