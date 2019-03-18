@@ -113,29 +113,6 @@
     right: 7%;
 }
 
-.editBtn{
-    border: 1px solid #C9CCCF;
-    border-radius: 10px;
-    padding: 8px;
-    cursor: pointer;
-}
-
-.editBtnDark{
-    border: 1px solid #77787a;
-    border-radius: 10px;
-    padding: 8px;
-    cursor: pointer;
-}
-
-
-.editBtnDark:hover{
-    border: 1px solid #FF6100;
-}
-
-.editBtn:hover{
-    border: 1px solid #FF6100;
-}
-
 .playButtonVideo{
     font-size: 30px !important;
     background: #77787a;

@@ -179,9 +179,9 @@
                                                     <div class="p-t-40 p-absolute" style="z-index: 99; top: 15%; left: 50%; transform: translate(-50%, -50%);">
                                                         <p class="c-white f-20"><?= $neededExpertise->expertises->First()->title?></p>
                                                     </div>
-                                                    <div class="overlay-users">
+                                                    <div class="overlay-users"> </div>
                                                         <div class="contentExpertiseUsers" style="background: url('<?= $neededExpertise->expertises->First()->image?>');"></div>
-                                                    </div>
+
                                                     <? if($user && $user->team_id == null) { ?>
                                                     <?}?>
                                                 </div>

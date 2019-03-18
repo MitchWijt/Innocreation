@@ -95,3 +95,5 @@ $(".editBannerImage").on("click",function () {
 $('.bannerImgInput').on("change", function () {
     $(".bannerImgForm").submit();
 });
+
+

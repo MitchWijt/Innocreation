@@ -184,10 +184,10 @@
   z-index: 99;
 }
 .theme-light .select-items {
-  background-color: #fff;
+  background: #fff;
 }
 .theme-dark .select-items {
-  background-color: #C9CCCF;
+  background: #C9CCCF;
 }
 
 .theme-light .select-items div {

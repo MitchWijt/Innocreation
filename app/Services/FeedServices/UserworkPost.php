@@ -105,43 +105,6 @@
             die();
         }
 
-        public function plusPointPost($request, $streamService){
-            $userWorkId = $request->input("user_work_id");
-
-            $userId = Session::get("user_id");
-            $user = User::select("*")->where("id", $userId)->first();
-
-            $existingPoint = UserWorkInterestsLinktable::select("*")->where("user_work_id", $userWorkId)->where("user_id", $user->id)->count();
-            if($existingPoint < 1 ) {
-                $userWorkInterestsLinktable = new UserWorkInterestsLinktable();
-                $userWorkInterestsLinktable->user_work_id = $userWorkId;
-                $userWorkInterestsLinktable->user_id = $user->id;
-                $userWorkInterestsLinktable->save();
-            }
-            $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
-
-            $notificationMessage = sprintf("%s is interested in your post!", $user->firstname);
-                    $timeSent = new TimeSent();
-                    $data = ["actor" => $userWork->user_id , "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time", "verb" => "notification", "object" => "3", "link" => "innocreatives/" . self::encrypt_decrypt("encrypt", $userWork->id)];
-                    $streamService->addActivityToFeed($userWork->user_id, $data);
-
-            return count($userWork->getInterests());
-        }
-
-        public function minusPointPost($request){
-            $userWorkId = $request->input("user_work_id");
-
-            $userId = Session::get("user_id");
-            $user = User::select("*")->where("id", $userId)->first();
-
-            $existingPoint = UserWorkInterestsLinktable::select("*")->where("user_work_id", $userWorkId)->where("user_id", $user->id)->first();
-            if(count($existingPoint) > 0 ) {
-                $existingPoint->delete();
-            }
-            $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
-            return count($userWork->getInterests());
-        }
-
         public function interestModal($request){
             $loggedIn = UserAccount::isLoggedIn();
             $userWork = UserWork::select("*")->where("id", $request->input("userWorkId"))->first();

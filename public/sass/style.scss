@@ -146,7 +146,7 @@
 /*style items (options):*/
 .select-items {
   @include themify($themes){
-    background-color: themed('inputTextBackground');
+    background: themed('inputTextBackground');
   }
   max-height: 300px;
   overflow: scroll;

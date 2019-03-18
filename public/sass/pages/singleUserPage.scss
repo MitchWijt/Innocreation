@@ -1,0 +1,34 @@
+@import "../themify";
+
+
+.editBtn{
+  @include themify($themes) {
+    border: themed("borderEditIcon");
+    color: themed('buttonColor');
+  }
+  border-radius: 10px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.editBtnDark{
+  border: 1px solid #77787a;
+  border-radius: 10px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+
+.editBtnDark:hover{
+  @include themify($themes) {
+    border: themed('borderHoverColor');
+  }
+  border: 1px solid #FF6100;
+}
+
+.editBtn:hover{
+  @include themify($themes) {
+    border: themed('borderHoverColor');
+    color: themed('buttonColor');
+  }
+}
