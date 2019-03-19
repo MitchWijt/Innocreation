@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/css/userworkFeed/index.css">
 <div class="modal userWorkPostModal o-scroll <?= \App\Services\UserAccount\UserAccount::getTheme();?>" id="userWorkPostModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <i class="zmdi zmdi-close c-pointer c-orange f-30" data-dismiss="modal" @desktop style="top: 1%; right: 1%; z-index: 1; position: fixed !important" @elsemobile style="top: 5%; right: 5%; z-index: 1; position: fixed !important" @enddesktop></i>
     <div class="modal-dialog modal-lg fixed-modal modal-dialog-centered custom-dialog-margin" role="document">
@@ -44,7 +45,7 @@
             </div>
             <div class="row" style="padding-right: 40px; padding-left: 40px; margin-bottom: 150px;">
                 <div class="col-sm-10">
-                    <p class="thin f-20"><?= $userWorkPost->description?></p>
+                    <p class="thin f-20" style="word-break: break-word;"><?= $userWorkPost->description?></p>
                 </div>
                 <div class="col-sm-2">
                     <div class="pull-right d-flex">
@@ -53,8 +54,8 @@
                     </div>
                 </div>
             </div>
-            <p class="f-40 bold m-b-10" style="padding-left: 40px">Related expertises</p>
-            <div class="d-flex m-l-15" style="margin-bottom: 150px;">
+            <p class="f-40 bold m-b-10 expertisesTitle" style="padding-left: 40px">Related expertises</p>
+            <div class="d-flex expertiseCirclesDiv m-l-15" style="margin-bottom: 150px;">
                 <? foreach(\App\Services\FeedServices\UserworkPost::getRelatedExpertises($userWorkPost->id) as $expertise) { ?>
                     <div class="expertiseCircle m-l-20">
                         <div class="half-circle-expertise-img" style="background: url('<?= $expertise->image?>')"></div>
@@ -124,6 +125,23 @@
         -moz-box-sizing: border-box;
         box-sizing: border-box;
     }
+
+
+    @media screen and (max-width: 440px) {
+
+        .expertiseCirclesDiv{
+            flex-direction: column !important;
+        }
+
+        .expertiseCircle{
+            margin-bottom: 20px;
+        }
+
+        .expertisesTitle{
+            font-size: 30px !important;
+        }
+    }
+
 </style>
 <script defer async src="/js/lazyLoader.js"></script>
 <script>

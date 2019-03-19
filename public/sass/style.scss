@@ -374,3 +374,17 @@ p{
     color: themed('textColor');
   }
 }
+
+h3 {
+  @include themify($themes) {
+    color: themed('textColor');
+  }
+
+  font-family: Corbert-Bold;
+}
+
+li{
+  @include themify($themes) {
+    color: themed('textColor');
+  }
+}

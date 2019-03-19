@@ -1,4 +1,5 @@
 @extends('layouts.app')
+<link rel="stylesheet" href="/css/responsiveness/aboutUs.css">
 @section('content')
 <div class="<?= \App\Services\UserAccount\UserAccount::getTheme();?>">
     <div class="grey-background vh85 o-hidden">
@@ -12,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <div class="bannerImage"></div>
+        <div class="bannerImage img-responsive"></div>
         <div class="row" style="margin-bottom: 120px; margin-top: 120px;">
             <div class="col-sm-12 text-center">
                 <h1 class="f-50 bold">What can Innocreation do for me?</h1>
@@ -20,8 +21,8 @@
         </div>
         <div class="container-fluid">
             <div class="row d-flex" style="margin-bottom: 220px;">
-                <div class="col-sm-7">
-                    <div class="col-sm-8" style="margin-left: 80px;">
+                <div class="col-xl-7">
+                    <div class="col-sm-8 textAbout" style="margin-left: 80px;">
                         <p class="f-31 bold">Put together or join that team that you were searching for so long!</p>
                         <p class="m-t-5 m-b-0">Been searching for that team of creative people
                             to help you on your project? Find them here on Innocreation.
@@ -32,12 +33,12 @@
                         <a href="/teams" class="btn btn-inno-cta p-t-15 p-b-15 p-l-10 p-r-10 m-t-10">Discover the creative teams</a>
                     </div>
                 </div>
-                <div class="col-sm-5">
-                    <div class="image2"></div>
+                <div class="col-xl-5">
+                    <div class="image2 imageAbout"></div>
                 </div>
             </div>
         </div>
-        <div class="row" style="margin-bottom: 20px;">
+        <div class="row p-10" style="margin-bottom: 20px;">
             <div class="col-sm-12 text-center">
                 <p class="f-31 bold">Collaborate and connect with other creative people.</p>
                 <p>Make connections and get to know the amazing creative community. They might be the next step of your amazing project!</p>
@@ -47,7 +48,7 @@
         <div class="container-fluid">
             <div class="row" style="margin-bottom: 220px;">
                 <? foreach($expertiseLinktables as $linktable) { ?>
-                    <div class="col-sm-4 m-t-10">
+                    <div class="col-xl-4 m-t-10">
                         <div class="card userCard m-t-20 m-b-20">
                             <div class="card-block p-relative c-pointer" data-url="/" style="max-height: 210px !important">
                                 <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
@@ -79,11 +80,11 @@
             </div>
         </div>
         <div class="row d-flex" style="margin-bottom: 390px;">
-            <div class="col-sm-5 m-t-25" style="margin-left: 120px;">
-                <div class="image_feed"></div>
+            <div class="col-sm-5 m-t-25 imageAbout" style="margin-left: 120px;">
+                <div class="image_feed m-l-20"></div>
             </div>
             <div class="col-sm-6 d-flex jc-end">
-                <div class="col-sm-8" style="margin-right: 80px;">
+                <div class="col-sm-8 sharePassionText textAbout" style="margin-right: 80px;">
                     <p class="f-31 bold">Share your passion. Help others with your passion.</p>
                     <p class="m-t-5 m-b-0">Share your passion on the creatives feed. Let others
                         see why you are good at what you do so they can

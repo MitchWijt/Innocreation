@@ -1,7 +1,7 @@
 <? $expertises = \App\Expertises::select("*")->get();?>
 <header class="headerShow no-select">
         @handheld
-            <div class="p-t-10 container">
+            <div class="p-t-10 container-fluid">
         @elsedesktop
             <div class="p-t-5 container-fluid">
         @endhandheld

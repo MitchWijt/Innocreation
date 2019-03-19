@@ -209,7 +209,7 @@
 
 .commentsButtonPost {
   background: #fff;
-  border-radius: 10px;
+  border-radius: 5px;
   position: absolute;
   bottom: 10px;
   left: 10px;
@@ -235,6 +235,7 @@
   transition: all 0.5s;
 }
 
+
 @media screen and (max-width: 990px) {
   .grid-container{
     column-count: 2;
@@ -247,4 +248,60 @@
     column-count: 1;
     column-gap: 10px;
   }
+
+  .postedUser{
+    position: relative;
+    top: 2px;
+    left: 5px;
+    opacity: 1;
+  }
+
+  .feedPostsContainer{
+    margin: 0 !important;
+    padding:0 !important;
+    max-width: none !important;
+  }
+
+  .commentsButtonPost{
+    opacity: 1;
+    border-radius: 5px;
+    border: 1px solid #B4B4B4;
+    bottom: -55px;
+    left: 10px;
+  }
+
+  .interestedButtonPost{
+    opacity: 1;
+    border-radius: 5px;
+    border: 1px solid #B4B4B4;
+    bottom: -55px;
+    right: 10px;
+  }
+
+  .userWorkPost{
+    margin-bottom: 100px !important;
+  }
+
+  .userNamePost{
+    color: #000 !important;
+    margin-top: 6px !important;
+
+  }
+
+  .usernameDiv{
+    margin-left: 10px;
+    margin-bottom: 10px;
+
+  }
+
+  .usernameDiv .avatar-sm{
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .imageOverlay{
+    display: none;
+  }
+
 }
+

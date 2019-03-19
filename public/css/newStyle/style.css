@@ -416,4 +416,21 @@
   color: #C9CCCF;
 }
 
+h3 {
+  font-family: Corbert-Bold;
+}
+.theme-light h3 {
+  color: #000;
+}
+.theme-dark h3 {
+  color: #C9CCCF;
+}
+
+.theme-light li {
+  color: #000;
+}
+.theme-dark li {
+  color: #C9CCCF;
+}
+
 /*# sourceMappingURL=style.css.map */
