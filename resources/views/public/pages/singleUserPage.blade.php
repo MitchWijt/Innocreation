@@ -97,34 +97,34 @@
                 <div class="row <?= \App\Services\UserAccount\UserAccount::getTheme()?>" style="margin-bottom: 100px;">
                     <div class="col-md-12">
                         <div class="m-b-20" style="margin-top: 100px;">
-                            <div class=" m-t-10 <? if(count($expertise_linktable) > 3) echo "gradientToTransparantFull" ?>">
+                            <div class=" m-t-10">
                                 <div class="col-sm-12">
                                     <div class="d-flex js-between ">
                                         <h3 class="bold f-31">Expertises</h3>
                                         <? if(isset($loggedIn) && $loggedIn == $user->id) { ?>
                                             <i  style="z-index: 2;" class="editBtn zmdi zmdi-plus f-20 p-r-15 p-l-15 p-b-10 p-t-10 editExpertise @handheld no-hover @endhandheld"></i>
                                         <? } else { ?>
-                                        <? if($user->team_id == null) { ?>
-                                        <? if($loggedIn) { ?>
-                                        <? if($team) { ?>
-                                        <? if($team->checkInvite($team->id, $user->id) == false) { ?>
-                                        <? if(\App\Services\TeamServices\TeamPackage::checkPackageAndPayment($team->id, $expertise_linktable->First())) { ?>
-                                        <form action="/my-team/inviteUserForTeam" method="post" class="m-0">
-                                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                            <input type="hidden" name="invite" value="1">
-                                            <input type="hidden" name="team_id" value="<?= $team->id?>">
-                                            <input type="hidden" name="user_id" value="<?= $user->id?>">
-                                            <button class="btn btn-inno btn-sm">Invite user to my team</button>
-                                        </form>
-                                        <? } else { ?>
-                                        <button class="btn btn-inno btn-sm  openTeamLimitModal">Invite user to my team</button>
-                                        <? } ?>
-                                        <? } else { ?>
-                                        <p class="c-orange m-b-0 vertically-center">User invited</p>
-                                        <? } ?>
-                                        <? } ?>
-                                        <? } ?>
-                                        <? } ?>
+                                            <? if($user->team_id == null) { ?>
+                                                <? if($loggedIn) { ?>
+                                                    <? if($team) { ?>
+                                                        <? if($team->checkInvite($team->id, $user->id) == false) { ?>
+                                                            <? if(\App\Services\TeamServices\TeamPackage::checkPackageAndPayment($team->id, $expertise_linktable->First())) { ?>
+                                                            <form action="/my-team/inviteUserForTeam" method="post" class="m-0">
+                                                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                                <input type="hidden" name="invite" value="1">
+                                                                <input type="hidden" name="team_id" value="<?= $team->id?>">
+                                                                <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                                                <button class="btn btn-inno btn-sm">Invite creator to my team</button>
+                                                            </form>
+                                                            <? } else { ?>
+                                                                <button class="btn btn-inno btn-sm  openTeamLimitModal">Invite creator to my team</button>
+                                                            <? } ?>
+                                                        <? } else { ?>
+                                                            <p class="c-orange m-b-0 vertically-center">User invited</p>
+                                                        <? } ?>
+                                                    <? } ?>
+                                                <? } ?>
+                                            <? } ?>
                                         <? } ?>
                                     </div>
                                 </div>
@@ -170,26 +170,13 @@
                                     </div>
                                 <? } ?>
                             </div>
-                            <? if(count($expertise_linktable) > 3) { ?>
-                                <div class="d-flex js-center c-white loadMoreExpertisesDiv" style="z-index: 2">
-                                    <p class="c-white text-center c-pointer loadMoreExpertises" data-user-id="<?= $user->id?>">More expertises</p>
-                                    <i class="zmdi zmdi-chevron-down f-22 m-l-5"></i></p>
-                                </div>
-                                <div class="collapse loadMoreExpertisesContent" style="z-index: 2;">
 
-                                </div>
-                                <div class="d-flex js-center c-white hidden lessExpertisesDiv" style="z-index: 2">
-                                    <p class="c-white text-center c-pointer lessExpertises" data-user-id="<?= $user->id?>">Less expertises</p>
-                                    <i class="zmdi zmdi-chevron-up f-22 m-l-5"></i></p>
-                                </div>
-                            <? } ?>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="container feedPostsContainer">
                 <? if($amountUserWorkPosts > 0) { ?>
-
                     <div class="userworkData m-t-20 grid-container <?= \App\Services\UserAccount\UserAccount::getTheme()?>" data-page="userPage" data-user-id="<?= $user->id?>">
 
                     </div>

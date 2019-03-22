@@ -48,34 +48,34 @@
         <div class="container-fluid">
             <div class="row" style="margin-bottom: 220px;">
                 <? foreach($expertiseLinktables as $linktable) { ?>
+                <? if($linktable->users->First()) { ?>
                     <div class="col-xl-4 m-t-10">
                         <div class="card userCard m-t-20 m-b-20">
                             <div class="card-block p-relative c-pointer" data-url="/" style="max-height: 210px !important">
                                 <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
                                     <a class="c-gray f-9 photographer" target="_blank" href="<?= $linktable->image_link?>">Photo</a><span class="c-gray f-9"> by </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="<?= $linktable->photographer_link?>"><?= $linktable->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer photographer" target="_blank"  href="https://unsplash.com">Unsplash</a>
                                 </div>
-                                <? if($linktable->users->First()) { ?>
-                                    <a href="<?= $linktable->users->First()->getUrl()?>">
-                                        <div class="overlay-expertise-user"></div>
-                                    </a>
-                                    <a class="userCardContent" href="<?= $linktable->users->First()->getUrl()?>">
-                                        <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 39%; left: 50%; transform: translate(-50%, -50%)">
-                                            <div class="avatar" style="background: url('<?= $linktable->users->First()->getProfilePicture()?>'); z-index: 2000000; opacity: 1 !important"></div>
-                                        </div>
-                                        <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 66%; left: 50%; transform: translate(-50%, -50%)">
-                                            <p class="c-white f-16"><?= $linktable->users->First()->getName()?></p>
-                                        </div>
-                                        <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 77%; left: 50%; transform: translate(-50%, -50%)">
-                                            <p class="c-orange f-11">@<?= $linktable->users->First()->slug?></p>
-                                        </div>
-                                    </a>
-                                    <a href="<?= $linktable->users->First()->getUrl()?>" style="z-index: 400;">
-                                        <div class="userCardContent lazyLoad" data-src="<?= $linktable->image?>"></div>
-                                    </a>
-                                <? } ?>
+                                <a href="<?= $linktable->users->First()->getUrl()?>">
+                                    <div class="overlay-expertise-user"></div>
+                                </a>
+                                <a class="userCardContent" href="<?= $linktable->users->First()->getUrl()?>">
+                                    <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 39%; left: 50%; transform: translate(-50%, -50%)">
+                                        <div class="avatar" style="background: url('<?= $linktable->users->First()->getProfilePicture()?>'); z-index: 2000000; opacity: 1 !important"></div>
+                                    </div>
+                                    <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 66%; left: 50%; transform: translate(-50%, -50%)">
+                                        <p class="c-white f-16"><?= $linktable->users->First()->getName()?></p>
+                                    </div>
+                                    <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 77%; left: 50%; transform: translate(-50%, -50%)">
+                                        <p class="c-orange f-11">@<?= $linktable->users->First()->slug?></p>
+                                    </div>
+                                </a>
+                                <a href="<?= $linktable->users->First()->getUrl()?>" style="z-index: 400;">
+                                    <div class="userCardContent lazyLoad" data-src="<?= $linktable->image?>"></div>
+                                </a>
                             </div>
                         </div>
                     </div>
+                    <? } ?>
                 <? } ?>
             </div>
         </div>

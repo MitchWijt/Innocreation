@@ -60,7 +60,7 @@ class PageController extends Controller
             $user  = User::select("*")->where("slug", $slug)->first();
         }
         $loggedIn = UserAccount::isLoggedIn();
-        $expertise_linktable = Expertises_linktable::select("*")->where("user_id", $user->id)->orderBy("created_at", "DESC")->limit(3)->get();
+        $expertise_linktable = Expertises_linktable::select("*")->where("user_id", $user->id)->orderBy("created_at", "DESC")->get();
         $portfolios = UserPortfolio::select("*")->where("user_id", $user->id)->get();
         if($loggedIn) {
             $team = Team::select("*")->where("ceo_user_id", $loggedIn)->first();
