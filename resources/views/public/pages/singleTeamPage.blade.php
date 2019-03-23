@@ -26,81 +26,51 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="row d-flex fd-column userName" style="margin-top: 60px !important">
-                        <p class="f-25 m-b-0" style="margin-left: 10%"><?= $team->team_name?></p>
-                        <? if($user) { ?>
-                            <div class="favoriteIcons" style="margin-left: 25%">
-                                <? if(isset($favoriteTeam)) { ?>
-                                    <i style="font-size: 40px" class="favoriteIcon hidden zmdi zmdi-favorite-outline"></i>
-                                    <i style="font-size: 40px" class="favoriteIconLiked c-orange triggerLike hidden zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
-                                    <i style="font-size: 40px" class="triggerLike favAfterLike c-orange zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
-                                <? } else { ?>
-                                    <i style="font-size: 40px" class="favoriteIcon zmdi zmdi-favorite-outline"></i>
-                                    <i style="font-size: 40px" class="favoriteIconLiked triggerLike c-orange hidden zmdi zmdi-favorite" data-team-id="<?=$team->id?>"></i>
-                                <? } ?>
-                            </div>
-                        <? } ?>
+                        <p class="f-30 bold m-b-0" style="margin-left: 8%"><?= $team->team_name?></p>
                     </div>
                 </div>
                 <div class="col-sm-8 m-t-10">
-                    <h3>Introduction:</h3>
-                    <p class="m-l-10 c-dark-grey"><?= $team->team_introduction?></p>
-                    <h3>Motivation:</h3>
-                    <p class="m-l-10 c-dark-grey"><?= $team->team_motivation?></p>
+                    <h3 class="bold m-b-10">Introduction</h3>
+                    <p class="m-l-10 c-dark-grey" style="margin-bottom: 30px;"><?= $team->team_introduction?></p>
+                    <h3 class="bold m-b-10">Motivation</h3>
+                    <p class="m-l-10 c-dark-grey" style="margin-bottom: 30px;"><?= $team->team_motivation?></p>
                 </div>
             </div>
-            <div class="row d-flex js-center">
+            <div class="row">
                 <div class="col-md-12">
-                    <div class="card card-lg m-t-20 m-b-20">
-                        <div class="card-block m-t-10">
-                            <div class="row">
-                                <div class="col-sm-12 m-l-20">
-                                    <h3>Members</h3>
-                                </div>
-                            </div>
-                            <? foreach($team->getMembers() as $member) { ?>
-                                <div class="col-sm-12 m-b-20 d-flex moreLink">
-                                    <div class="col-sm-4 m-t-10">
-                                        <a target="_blank" href="<?= $member->getUrl()?>">
-                                            <div class="avatar" style="background: url('<?=$member->getProfilePicture()?>')"></div>
-                                        </a>
-                                    </div>
-                                    <div class="col-sm-4 text-center">
-                                        <p class="m-t-15 <? if($team->ceo_user_id == $member->id) echo "m-b-0"; ?>"><?= $member->getName()?></p>
-                                        <? if($team->ceo_user_id == $member->id) { ?>
-                                            <p class="c-orange text f-12">Team leader</p>
-                                        <? } ?>
-                                    </div>
-                                    <div class="col-sm-4 text-center m-t-20">
-                                        <p class="m-b-0 pull-right m-r-5 regular-link collapseExpertise collapseExpertiseResponsive" style="display: none;" data-user-id="<?= $member->id?>" data-toggle="collapse" data-target="#collapseExpertise-<?= $member->id?>" aria-expanded="false" aria-controls="collapseExpertise-<?= $member->id?>">Expertises <i class="zmdi zmdi-chevron-left m-t-5 m-l-10 c-orange"></i></p>
-                                        <p class="m-b-0 pull-right m-r-5 regular-link collapseExpertise" data-user-id="<?= $member->id?>" data-toggle="collapse" data-target="#collapseExpertise-<?= $member->id?>" aria-expanded="false" aria-controls="collapseExpertise-<?= $member->id?>">Show expertises <i class="zmdi zmdi-chevron-left m-t-5 m-l-10 c-orange"></i></p>
-                                    </div>
-                                </div>
-                                <div class="row p-l-15 p-r-15 collapse" id="collapseExpertise-<?= $member->id?>">
-                                    <? foreach($member->getExpertiseLinktable() as $expertiseLinktable) { ?>
-                                        <div class="<? if(count($member->getExpertiseLinktable()) > 1) echo "col-sm-6"; else echo "col-sm-12"?> p-0">
-                                            <div class="card" >
-                                                <div class="card-block expertiseCard p-relative " style="max-height: 150px !important">
-                                                    <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">
-                                                        <a class="c-gray f-9 c-pointer" target="_blank" href="<?= $expertiseLinktable->image_link?>">Photo</a> <span class="f-9 c-gray"> by </span> <a class="c-gray f-9 c-pointer" target="_blank" href="<?= $expertiseLinktable->photographer_link?>"><?= $expertiseLinktable->photographer_name?></a><span class="c-gray f-9"> on </span><a class="c-gray f-9 c-pointer"  href="https://unsplash.com" target="_blank">Unsplash</a>
-                                                    </div>
-                                                    <div class="p-t-40 p-absolute" style="z-index: 100; top: 35%; left: 50%; transform: translate(-50%, -50%);">
-                                                        <div class="hr-sm"></div>
-                                                    </div>
-                                                    <div class="p-t-40 p-absolute" style="z-index: 99; top: 25%; left: 50%; transform: translate(-50%, -50%);">
-                                                        <p class="c-white f-20"><?= $expertiseLinktable->expertises->First()->title?></p>
-                                                    </div>
-                                                    <div class="overlay-users">
-                                                        <div class="contentExpertiseUsers" style="background: url('<?= $expertiseLinktable->image?>');"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <? } ?>
-                                </div>
-                            <? } ?>
+                    <div class="row">
+                        <div class="col-sm-12 m-l-20 m-b-10" style="margin-top: 40px">
+                            <h3 class="bold f-30">Collaborators</h3>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row" style="margin-bottom: 50px;">
+                <? foreach($team->getMembers() as $member) { ?>
+                    <div class="col-xl-4 m-t-10">
+                        <div class="card userCard m-t-20 m-b-20">
+                            <div class="card-block p-relative c-pointer" data-url="/" style="max-height: 210px !important">
+                                <a href="<?= $member->getUrl()?>">
+                                    <div class="overlay-expertise-user"></div>
+                                </a>
+                                <a class="userCardContent" href="<?= $member->getUrl()?>">
+                                    <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 39%; left: 50%; transform: translate(-50%, -50%)">
+                                        <div class="avatar" style="background: url('<?= $member->getProfilePicture()?>'); z-index: 2000000; opacity: 1 !important"></div>
+                                    </div>
+                                    <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 66%; left: 50%; transform: translate(-50%, -50%)">
+                                        <p class="c-white f-16"><?= $member->getName()?></p>
+                                    </div>
+                                    <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 77%; left: 50%; transform: translate(-50%, -50%)">
+                                        <p class="c-orange f-11">@<?= $member->slug?></p>
+                                    </div>
+                                </a>
+                                <a href="<?= $member->getUrl()?>" style="z-index: 400;">
+                                    <div class="userCardContent lazyLoad" data-src="<?= $member->getBanner()?>"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <? } ?>
             </div>
             <div class="row d-flex js-center">
                 <div class="col-md-12">
@@ -243,4 +213,5 @@
 @endsection
 @section('pagescript')
     <script src="/js/pages/singleTeamPage.js"></script>
+    <script defer async src="/js/lazyLoader.js"></script>
 @endsection

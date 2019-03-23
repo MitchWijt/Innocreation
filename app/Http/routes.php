@@ -665,6 +665,10 @@ Route::post("/openInterestsModal", "FeedController@openInterestsModal");
 
 Route::post("/feed/unhashId", "FeedController@unhashId");
 
+Route::post("/feed/interestPost", "FeedController@interestPostAction");
+
+Route::post("/feed/disInterestPost", "FeedController@disInterestPostAction");
+
 //========================CHECKOUT/PACKAGES========================
 
 Route::get("/pricing", "CheckoutController@pricingAction");

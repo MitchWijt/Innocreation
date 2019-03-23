@@ -126,4 +126,40 @@
 
             return $expertises;
         }
+
+        public function interestPost($request, $streamService){
+            $userWorkId = $request->input("user_work_id");
+            $interest = new UserWorkInterestsLinktable();
+            $interest->user_id = Session::get("user_id");
+            $interest->user_work_id = $userWorkId;
+            $interest->created_at = date("Y-m-d H:i:s");
+            $interest->save();
+
+
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
+
+            $hash = self::encrypt_decrypt('encrypt', $userWorkId);
+
+            $notificationMessage = sprintf("%s is interested in your post!", $user->firstname);
+            $timeSent = new TimeSent();
+            $data = ["actor" => $userWork->user_id , "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time",'link' => '/innocreatives/' . $hash, "verb" => "notification", "object" => "3"];
+            $streamService->addActivityToFeed($userWork->user_id, $data);
+
+            $allInterests = UserWorkInterestsLinktable::select("*")->where("user_work_id", $userWorkId)->get();
+            return count($allInterests);
+
+        }
+
+        public function disInterestPost($request){
+            $userWorkId = $request->input("user_work_id");
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+
+            $interest = UserWorkInterestsLinktable::select("*")->where("user_work_id", $userWorkId)->where("user_id", $user->id)->first();
+            $interest->delete();
+
+            $allInterests = UserWorkInterestsLinktable::select("*")->where("user_work_id", $userWorkId)->get();
+
+            return count($allInterests);
+        }
     }

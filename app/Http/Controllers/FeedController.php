@@ -260,12 +260,12 @@ class FeedController extends Controller
         }
     }
 
-    public function plusPointPostAction(Request $request, UserworkPost $userworkPost, StreamService $streamService){
-        return $userworkPost->plusPointPost($request, $streamService);
+    public function interestPostAction(Request $request, UserworkPost $userworkPost, StreamService $streamService){
+        return $userworkPost->interestPost($request, $streamService);
     }
 
-    public function minusPointPostAction(Request $request, UserworkPost $userworkPost){
-        return $userworkPost->minusPointPost($request);
+    public function disInterestPostAction(Request $request, UserworkPost $userworkPost){
+        return $userworkPost->disInterestPost($request);
     }
 
     public function openInterestsModal(Request $request, UserworkPost $userworkPost){

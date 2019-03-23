@@ -203,7 +203,7 @@ $(document).on("click", ".postComment", function () {
     }, 1000);
 });
 
-function plus_minus_post(formUrl, _this){
+function plus_minus_interest(formUrl, _this){
     var userWorkId = _this.data("id");
     $.ajax({
         method: "POST",
@@ -230,10 +230,10 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
 $(document).on(eventTrigger, ".fave", function () {
     if ($(this).hasClass("normal-fave")) {
         $(this).addClass("fave-animation");
-        plus_minus_post("/feed/plusPointPost", $(this));
+        plus_minus_interest("/feed/interestPost", $(this));
     } else {
         $(this).addClass("fave-revert");
-        plus_minus_post("/feed/minusPointPost", $(this));
+        plus_minus_interest("/feed/disInterestPost", $(this));
     }
 
     var _this = $(this);
