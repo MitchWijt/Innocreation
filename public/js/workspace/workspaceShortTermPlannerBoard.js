@@ -272,7 +272,6 @@ function clearInetervals()
     clearInterval(intBottomHandler);
 }
 function drag(e) {
-    console.log(e);
     $('.board').css({
         overflow: 'hidden'
     });
@@ -629,7 +628,6 @@ $(document).on("change", ".setShortTermTaskPriority", function () {
 
 $(document).ready(function () {
    if($(".urlParameter").val()){
-       console.log("gfds");
         $(".card-block").each(function () {
             if($(this).data("short-planner-task-id") == $(".urlParameter").val()){
                 var task_id = $(this).data("short-planner-task-id");
