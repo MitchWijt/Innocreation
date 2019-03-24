@@ -33,6 +33,7 @@ class UserNotifications
 
     public function returnViewWithData($notifications, $userId, $switchUserWork){
         $connections = $switchUserWork->listConnectionRequests($userId);
+
         return view("/public/shared/_popoverNotificationsData", compact('notifications', 'connections'));
     }
 

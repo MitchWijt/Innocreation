@@ -14,9 +14,11 @@
             <? } ?>
         <? } ?>
     </div>
-    <div class="col-4 text-right p-r-0">
-        <i class="zmdi zmdi-chevron-down c-dark-grey f-22 p-r-20 m-t-15 popoverChat" data-toggle="popover" data-content='<?= view("/public/shared/messages/_popoverSingleUserchat", compact("userChatId"))?>'></i>
-    </div>
+     <? if(isset($userChatId)) { ?>
+        <div class="col-4 text-right p-r-0">
+            <i class="zmdi zmdi-chevron-down c-dark-grey f-22 p-r-20 m-t-15 popoverChat" data-toggle="popover" data-content='<?= view("/public/shared/messages/_popoverSingleUserchat", compact("userChatId"))?>'></i>
+        </div>
+     <? } ?>
 </div>
 
 <script>

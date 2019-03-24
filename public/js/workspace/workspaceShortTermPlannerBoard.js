@@ -272,6 +272,7 @@ function clearInetervals()
     clearInterval(intBottomHandler);
 }
 function drag(e) {
+    console.log(e);
     $('.board').css({
         overflow: 'hidden'
     });

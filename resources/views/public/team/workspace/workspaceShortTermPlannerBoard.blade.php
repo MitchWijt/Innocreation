@@ -215,7 +215,7 @@
                                 <i class="zmdi zmdi-plus f-25 addShortTermTask" data-short-term-planner-category="<?=$shortTermPlannerCategory?>"></i>
                             </div>
                             <div class="shortTermtasksColumn" data-short-term-planner-category="<?=$shortTermPlannerCategory?>">
-                                <div id="div" ondrop="drop(event, this, $(this).parents('.shortTermtasksColumn').data('short-term-planner-category'))"  ondragover="allowDrop(event)" style="padding-bottom: 400px!important">
+                                <div id="div"  style="padding-bottom: 400px!important">
                                     <? foreach($shortTermPlannerTasks as $shortPlannerTask) { ?>
                                         <? if($shortPlannerTask->category == $shortTermPlannerCategory) { ?>
                                             <div class="m-b-10 shortTermTask min-248" id="drag-<?=$shortPlannerTask->id?>" draggable="true" ondrag="dragging(event)" ondragstart="drag(event)" ondrop="return false" ondragover="return false" data-short-planner-task-id="<?= $shortPlannerTask->id?>">
