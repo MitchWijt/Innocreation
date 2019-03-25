@@ -1,6 +1,7 @@
 @extends("layouts.app")
 @section("content")
-    <div class="d-flex grey-background vh100">
+    <div class="<?= \App\Services\UserAccount\UserAccount::getTheme()?>">
+    <div class="d-flex grey-background vh100 <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
         <div class="container">
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black @handheld f-25 @endhandheld">@notmobile You're team is almost a <? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo "innovator"; else echo str_replace("-", " ", lcfirst($membershipPackage->title))?> @elsemobile almost a <? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo "innovator"; else echo str_replace("-", " ", lcfirst($membershipPackage->title))?> @endnotmobile</h1>
@@ -366,6 +367,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    </div>
     </div>
     <script>
         $('#tokenfield').tokenfield({

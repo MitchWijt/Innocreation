@@ -11,6 +11,7 @@ use App\Payments;
 use App\ServiceReview;
 use App\Country;
 use App\Expertises;
+use App\Services\Packages\MembershipPackageService;
 use App\SplitTheBillLinktable;
 use App\Team;
 use App\TeamPackage;
@@ -631,7 +632,11 @@ class CheckoutController extends Controller
         } else {
             return redirect("/becoming-a-$title");
         }
+    }
 
+    public function getFunctionsModalAction(Request $request, MembershipPackageService $membershipPackageService){
+        $membershipPackage = MembershipPackage::select("*")->where("id", $request->input("membership_package_id"))->first();
+        return $membershipPackageService->getFunctionsModel($membershipPackage);
     }
 }
 

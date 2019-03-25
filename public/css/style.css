@@ -158,19 +158,6 @@
     color: #000000 !important;
 }
 /*=========================================MODAL STYLE===============================*/
-.modal-header{
-    background: #C9CCCF !important;
-    border-bottom: 1px solid #FF6100 !important;
-}
-
-.modal-footer{
-    background: #C9CCCF !important;
-    border-top: 1px solid #FF6100 !important;
-}
-
-.modal-body{
-    background: #C9CCCF !important;
-}
 /*=======================================JQUERY UI===========================*/
 .ui-menu{
     margin-top: 0px !important;

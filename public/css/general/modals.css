@@ -47,4 +47,25 @@
   max-width: 500px !important;
 }
 
+.theme-light .modal-header {
+  background: #fff;
+}
+.theme-dark .modal-header {
+  background: #C9CCCF;
+}
+
+.theme-light .modal-footer {
+  background: #fff;
+}
+.theme-dark .modal-footer {
+  background: #C9CCCF;
+}
+
+.theme-light .modal-body {
+  background: #fff;
+}
+.theme-dark .modal-body {
+  background: #C9CCCF;
+}
+
 /*# sourceMappingURL=modals.css.map */
