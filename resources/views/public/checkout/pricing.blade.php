@@ -102,5 +102,5 @@
     </div>
 @endsection
 @section('pagescript')
-    <script src="/js/checkout/pricing.js"></script>
+    <script src="/js/checkout/packages.js"></script>
 @endsection

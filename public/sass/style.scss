@@ -388,3 +388,20 @@ li{
     color: themed('textColor');
   }
 }
+
+.absolute-center{
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.bcg-cover{
+  @include themify($themes) {
+    background: themed('backgroundColor');
+  }
+}
+
+.actionBorder{
+  @include themify($themes) {
+    border: themed('actionBorder') !important;
+  }
+}

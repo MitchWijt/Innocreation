@@ -1,5 +1,4 @@
-$(".openModalChangePackage").on("click",function () {
-    var user_id = $(this).data("user-id");
+$(".openFunctionsModal").on("click", function () {
     var membership_package_id = $(this).data("membership-package-id");
     $.ajax({
         method: "POST",
@@ -10,12 +9,15 @@ $(".openModalChangePackage").on("click",function () {
                 return xhr.setRequestHeader('X-CSRF-TOKEN', token);
             }
         },
-        url: "/checkout/getChangePackageModal",
-        data: {'user_id': user_id, "membership_package_id" : membership_package_id},
+        url: "/checkout/getFunctionsModal",
+        data: {"membership_package_id" : membership_package_id},
         success: function (data) {
-            $(".changePackageModalData").html(data);
-            $('.changePackageModal').modal().toggle();
+            $("body").append(data);
+            $('.packageFunctionsModel').modal("toggle");
         }
     });
 });
 
+$(document).on("hidden.bs.modal", ".packageFunctionsModel", function () {
+    $(".packageFunctionsModel").remove();
+});

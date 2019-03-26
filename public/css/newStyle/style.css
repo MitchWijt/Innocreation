@@ -433,4 +433,24 @@ h3 {
   color: #C9CCCF;
 }
 
+.absolute-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.theme-light .bcg-cover {
+  background: #fff;
+}
+.theme-dark .bcg-cover {
+  background: #C9CCCF;
+}
+
+.theme-light .actionBorder {
+  border: 1px solid #FF6100 !important;
+}
+.theme-dark .actionBorder {
+  border: 1px solid #FF6100 !important;
+}
+
 /*# sourceMappingURL=style.css.map */

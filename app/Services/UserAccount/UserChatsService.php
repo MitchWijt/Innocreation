@@ -211,8 +211,8 @@ class UserChatsService
         }
 
         $sessionUser = User::select("*")->where("id", $userId)->first();
-        $chat = self::createTeamChatClass($sessionUser->team);
         if($sessionUser->team_id != null){
+            $chat = self::createTeamChatClass($sessionUser->team);
             $recentTeamChatMessage = UserMessage::select("*")->where("team_id", $sessionUser->team_id)->orderBy("created_at", "desc")->first();
             $emptyRecentChat = new emptyRecentChat($sessionUser->id);
 

@@ -13,121 +13,53 @@
             </div>
             <hr class="m-b-20">
             <div class="row">
-                <? if(!\Illuminate\Support\Facades\Session::has("customPackagesArray")) { ?>
-                    <div class="col-sm-5 @tablet m-15 @endtablet">
-                        <div class="row @nontablet d-flex js-center @endnontablet">
-                            <? $descriptions = explode(",",$membershipPackage->description);
-                                $counter = 0;
-                            ?>
-                            <? foreach($descriptions as $description) { ?>
-                                <? $counter++?>
-                            <? } ?>
-                            <div class="card m-t-0 p-10 @desktop <? if($membershipPackage->id == 1 || $membershipPackage->id == 3) echo "card-small-price"; else echo "card-populair-price"?> @elsehandheld  @tablet<? if($membershipPackage->id == 1 || $membershipPackage->id == 3) echo "card-small-price-tablet"; else echo "card-populair-price-tablet"?>@elsemobile <?= "m-b-20"?>@endtablet @enddesktop no-hover">
-                                <div class="card-block">
-                                    <div class="text-center">
-                                        <p class="f-20 m-t-15"><?= str_replace("-", " ", $membershipPackage->title)?></p>
-                                    </div>
-                                    <hr>
-                                    <ul class="instructions-list @tablet <? if($membershipPackage->id == 3) echo "m-b-0"?> @endtablet">
-                                        <? for($i = 0; $i < $counter; $i++) { ?>
-                                        <li class="instructions-list-item">
-                                            <p class="instructions-text f-13 m-0 p-b-10"><?= $descriptions[$i]?></p>
-                                        </li>
-                                        <? } ?>
-                                    </ul>
-                                </div>
-                                <div class="row @notmobile @desktop <? if($membershipPackage->id == 1 || $membershipPackage->id == 2) echo "m-t-70"?> @elsetablet  <? if($membershipPackage->id == 1 || $membershipPackage->id == 2) echo "m-t-50"?> @enddesktop @endnotmobile">
-                                    <div class="col-sm-12">
-                                        <? if(isset($teamPackage)) { ?>
-                                            <? if($teamPackage->payment_preference == "monthly") { ?>
-                                                <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= $membershipPackage->getPrice()?></span><span class="packagePreference">/Month</span></p>
-                                            <? } else { ?>
-                                                <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= $membershipPackage->getPrice(true)?></span><span class="packagePreference">/Year</span></p>
-                                            <? } ?>
-                                        <? } else { ?>
-                                            <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= $membershipPackage->getPrice()?></span><span class="packagePreference">/Month</span></p>
-                                        <? } ?>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 text-center m-t-50">
-                                        <i class="regular-link c-orange f-12" data-toggle="modal" data-target="#companyDetails">Details of Innocreation</i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-sm-5 m-t-20 @mobile p-l-15 @elsedesktop p-l-5 @enddesktop @tablet p-10 @endtablet">
+                    <div class="text-center">
+                        <p class="<? if($membershipPackage->id == 2) echo "f-20"; else echo "f-15"?> m-t-15 bold m-b-5"><?= str_replace("-", " ", $membershipPackage->title) ?></p>
                     </div>
-                <? } else { ?>
-                    <div class="col-sm-5">
-                        <div class="row">
-                            <div class="card card-small-price-tablet m-t-0 p-10 no-hover">
-                                <div class="card-block">
-                                    <div class="text-center">
-                                        <p class="f-20 m-t-15">Custom package</p>
-                                    </div>
-                                    <hr>
-                                    <ul class="instructions-list">
-                                        <? foreach($customPackageData as $key => $value) { ?>
-                                            <? if($key == "Create team newsletters" && $value == 1) { ?>
-                                            <li class="instructions-list-item">
-                                                <p class="instructions-text f-13 m-0 p-b-10">Create your own team newsletters</p>
-                                            </li>
-                                            <? } else if($value == '0'){ ?>
 
-                                            <? } else if($value == "Unlimited") { ?>
-                                                <li class="instructions-list-item">
-                                                    <p class="instructions-text f-13 m-0 p-b-10"><?= $key . " "?> <?= $value . " "?>  </p>
-                                                </li>
-                                            <? } else { ?>
-                                                <li class="instructions-list-item">
-                                                    <p class="instructions-text f-13 m-0 p-b-10">Max. amount of <?= $value . " "?> <?=$key . " "?> </p>
-                                                </li>
-                                            <? } ?>
-                                        <? } ?>
-                                    </ul>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= number_format(\Illuminate\Support\Facades\Session::get("customPackagesArray")["price"], 2, ".", ".") ?></span><span class="packagePreference">/Month</span></p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 text-center m-t-50">
-                                        <i class="regular-link c-orange f-12" data-toggle="modal" data-target="#companyDetails">Details of Innocreation</i>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="row ">
+                        <div class="col-sm-12">
+                            <p class="<? if($membershipPackage->id == 2) echo "f-31"; else echo "f-25"?> bold m-b-0 text-center"><?="&euro;".  $membershipPackage->getPrice()?>/Month</p>
+                        </div>
+                        <div class="col-sm-12 d-flex js-center fd-column @mobile m-t-5 m-b-20 @endmobile">
+                            <a class="text-center f-12 m-t-5"><span class="c-pointer thin openFunctionsModal" data-membership-package-id="<?= $membershipPackage->id?>">+ show functions</span></a>
                         </div>
                     </div>
-                <? } ?>
-                <div class="col-sm-6 @mobile p-30 @endmobile">
-                    <div class="row">
+                </div>
+                <div class="col-sm-6 m-t-40 p-relative @mobile p-30 @endmobile">
+                    <div class="row" style="margin-bottom: 50px;">
                         <? if(isset($teamPackage) && $team->split_the_bill == 1) { ?>
-                            <div class="col-sm-6 m-0 p-0">
-                                <p class="bcg-black <? if($step == 1) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">@tablet 1/2 @endtablet @nottablet Credentials (1/2) @endnottablet</p>
-                            </div>
-                            <div class="col-sm-6 m-0 p-0">
-                                <p class="bcg-black <? if($step == 2) echo "c-gray"; else echo "c-dark-grey"?> text-center border-sides m-b-0">@tablet 2/2 @endtablet @nottablet Payment info (2/2) @endnottablet</p>
+                            <div class="line d-flex js-between p-relative" style="border-bottom: 2px solid black; width: 100%"></div>
+                            <div class="p-absolute d-flex js-between" style="top: -12%; width: 100%; z-index: 20">
+                                <div class="circle m-r-0 p-relative bcg-cover <? if($step == 1) echo "actionBorder" ;?>" style="width: 50px; height: 50px;">
+                                    <p class="p-absolute absolute-center m-0">1</p>
+                                </div>
+                                <div class="circle m-r-0 p-relative bcg-cover <? if($step == 1) echo "actionBorder" ;?>" style="width: 50px; height: 50px;">
+                                    <p class="p-absolute absolute-center m-0">2</p>
+                                </div>
                             </div>
                         <? } else { ?>
-                            <div class="col-sm-4 m-0 p-0">
-                                <p class="bcg-black <? if($step == 1) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">@tablet 1/3 @endtablet  @nottablet Credentials (1/3) @endnottablet</p>
-                            </div>
-                            <div class="col-sm-4 m-0 p-0">
-                                <p class="bcg-black <? if($step == 2) echo "c-gray"; else echo "c-dark-grey"?> text-center border-sides m-b-0">@tablet 2/3 @endtablet @nottablet Payment info (2/3) @endnottablet</p>
-                            </div>
-                            <div class="col-sm-4 m-0 p-0">
-                                <p class="bcg-black <? if($step == 3) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">@tablet 3/3 @endtablet @nottablet Method (3/3) @endnottablet</p>
+                            <div class="line d-flex js-between p-relative" style="border-bottom: 2px solid black; width: 100%"></div>
+                            <div class="p-absolute d-flex js-between" style="top: -23px; width: 100%; z-index: 20">
+                                <div class="circle m-r-0 p-relative bcg-cover <? if($step == 1) echo "actionBorder" ;?>" style="width: 50px; height: 50px; ">
+                                    <p class="p-absolute absolute-center m-0">1</p>
+                                </div>
+                                <div class="circle m-r-0 p-relative bcg-cover <? if($step == 2) echo "actionBorder" ;?>" style="width: 50px; height: 50px;">
+                                    <p class="p-absolute absolute-center m-0">2</p>
+                                </div>
+                                <div class="circle m-r-0 p-relative bcg-cover <? if($step == 3) echo "actionBorder" ;?>" style="width: 50px; height: 50px;">
+                                    <p class="p-absolute absolute-center m-0">3</p>
+                                </div>
                             </div>
                         <? } ?>
                     </div>
                     <div class="row m-t-0">
-                        <div class="card shadow no-hover col-sm-12 m-t-0">
+                        <div class="card no-hover col-sm-12 m-t-0" style="border: 1px solid #000; border-radius: 10px;">
                             <div class="card-block">
                                 <? if($step == 1) { ?>
-                                    <div class="text-center m-t-10">
-                                        <h5>Your credentials</h5>
-                                        <hr>
+                                    <div class="m-t-10">
+                                        <p class="bold f-20">Your credentials</p>
                                     </div>
                                     <? if(!isset($user)){ ?>
                                         <div class="text-center m-t-20 m-b-20">
@@ -391,4 +323,5 @@
 @endsection
 @section('pagescript')
     <script src="/js/checkout/selectPackage.js"></script>
+    <script src="/js/checkout/packages.js"></script>
 @endsection
