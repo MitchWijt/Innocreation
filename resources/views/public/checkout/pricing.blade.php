@@ -1,7 +1,7 @@
 @extends("layouts.app")
 @section("content")
     <div class="<?= \App\Services\UserAccount\UserAccount::getTheme()?>">
-        <div class="d-flex grey-background vh85 <? \App\Services\UserAccount\UserAccount::getTheme()?>">
+        <div class="grey-background vh85 <? \App\Services\UserAccount\UserAccount::getTheme()?>">
             <div class="container">
                 <div class="sub-title-container p-t-20">
                     <h1 class="bold f-40 @mobile f-25 @endmobile">Innocreation pricing</h1>
@@ -13,9 +13,9 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row m-b-25">
                     <? foreach($membershipPackages as $membershipPackage) { ?>
-                        <div class="col-sm-4 @mobile p-l-15 @elsedesktop p-l-5 @enddesktop @tablet p-10 @endtablet">
+                        <div class="col-xl-4 @mobile p-l-15 @elsedesktop p-l-5 @enddesktop @tablet p-10 @endtablet">
                             <div class="card @desktop <? if($membershipPackage->id == 1 || $membershipPackage->id == 3) echo "card-small-price"; else echo "card-populair-price"?> @elsehandheld  @tablet<? if($membershipPackage->id == 1 || $membershipPackage->id == 3) echo "card-small-price-tablet"; else echo "card-populair-price-tablet"?>@elsemobile <?= "m-b-20"?>@endtablet @enddesktop no-hover">
                                 <div class="card-block">
                                     <div class="text-center">
@@ -49,7 +49,14 @@
                         </div>
                     <? } ?>
                 </div>
-                <div class="row m-b-25" style="margin-top: 30px;">
+            </div>
+            <div class="o-hidden">
+                <div class="slideImage">
+
+                </div>
+            </div>
+            <div class="container">
+                <div class="row" style="margin-top: 30px; margin-bottom: 50px;">
                     <div class="col-sm-12 p-l-0">
                         <div class="card no-hover">
                             <div class="card-block">

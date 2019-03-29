@@ -108,6 +108,7 @@ class LoginController extends Controller
                 return redirect("/create-my-account");
             }
 
+//            dd($request->input("backlink"));
             if(!isset($redirectUri)){
                 if ($request->input("pageType") && $request->input("pageType") == "checkout") {
                     return redirect($request->input("backlink"));

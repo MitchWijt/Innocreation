@@ -17,7 +17,7 @@
                     <? if(count($expertise->getActiveUsers()) > 0) { ?>
                         <div class="row m-t-20">
                             <div class="col-sm-12 <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
-                                <h3 class="m-b-30"><strong><?= $expertise->title?></strong></h3>
+                                <h3 class="m-b-10 bold"><?= $expertise->title?></h3>
                                 <p class="m-b-0">Collaborate and connect with <?= count($expertise->getActiveUsers())?> different creatives active in <?= $expertise->title ?> for your project! </p>
                                 <a class="regular-link" href="/<?= $expertise->slug?>/users">Discover more creatives in <?= $expertise->title?></a>
                             </div>

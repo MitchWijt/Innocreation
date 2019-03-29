@@ -1,52 +1,10 @@
-.card-populair-price{
-    /*width: 360px !important;*/
-    height: 375px !important
+.slideImage {
+  height: 450px;
+  background: url("/images/checkout/slide_image_pricing.png") repeat-x;
+  width: 11664px;
+  background-size: contain !important;
+  background-position: top, top !important;
+  animation: slide 200s linear infinite;
 }
 
-.card-small-price{
-    /*margin-top: 15px;*/
-    /*width: 360px !important;*/
-    height: 375px !important;
-}
-
-.card-populair-price-tablet{
-    /*width: 360px !important;*/
-    height: 460px !important
-}
-
-.card-small-price-tablet{
-    margin-top: 15px;
-    /*width: 360px !important;*/
-    height: 415px !important;
-}
-
-.card-small-price{
-
-}
-
-.card-populair-price{
-
-}
-.shadow{
-    -webkit-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
-    box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
-}
-.no-shadow{
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-.no-hover:hover{
-    color: #C9CCCF;
-}
-
-.absolute-price{
-    bottom: 70px;
-    left: 133px;
-}
-
-.absolute-button{
-    bottom: 20px;
-    left: 145px;
-}
+/*# sourceMappingURL=pricing.css.map */

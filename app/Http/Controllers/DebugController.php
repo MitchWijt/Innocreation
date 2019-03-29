@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Payments;
+use App\Services\AppServices\MollieService;
+use App\TeamPackage;
 use App\User;
 use Illuminate\Http\Request;
 use Auth;
@@ -17,6 +20,11 @@ class DebugController extends Controller
      */
 
     public function test(Request $request) {
+//        $paymentTable = Payments::select("*")->where("payment_id", "tr_7BzCGMKTud")->first();
+        $user = User::select("*")->where("id", 11)->first();
+        $mollie = new MollieService();
+        $mollie->cancelAllSubscriptions($user);
+
         die('test');
     }
 }

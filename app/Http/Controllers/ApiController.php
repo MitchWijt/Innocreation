@@ -23,7 +23,6 @@ class ApiController extends Controller
             $metadata = $payment->metadata->referenceAndUserId;
 
             if ($payment->isPaid() && !$payment->hasRefunds() && !$payment->hasChargebacks()) {
-
                 $paymentTable = Payments::select("*")->where("payment_id", $request->input("id"))->first();
                 $paymentTable->payment_status = "paid";
                 $paymentTable->save();
@@ -44,12 +43,10 @@ class ApiController extends Controller
                 $invoice->paid_date = date("Y-m-d", strtotime("+1 days"));
                 $invoice->created_at = date("Y-m-d H:i:s");
                 $invoice->save();
+                $paymentTable->invoice_id = $invoice->id;
+                $paymentTable->save();
 
-                if ($teamPackage->custom_team_package_id == null) {
-                    $description = $teamPackage->title . " for team " . $teamPackage->team->team_name;
-                } else {
-                    $description =  " custom package for team " . $teamPackage->team->team_name;
-                }
+                $description = $teamPackage->title . " for team " . $teamPackage->team->team_name . "-" . uniqid($user->id) . " ";
 
                 if($teamPackage->payment_preference == "monthly"){
                     $range = "1 months";

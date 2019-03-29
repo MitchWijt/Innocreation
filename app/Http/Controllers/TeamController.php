@@ -8,6 +8,9 @@ use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
 use App\MailMessage;
 use App\NeededExpertiseLinktable;
+use App\Payments;
+use App\Services\AppServices\MollieService;
+use App\Services\Checkout\AuthorisePaymentRequest;
 use App\Services\TeamServices\JoinRequests;
 use App\Services\TimeSent;
 use App\SplitTheBillLinktable;
@@ -20,6 +23,7 @@ use App\User;
 use App\UserChat;
 use App\UserMessage;
 use App\UserRole;
+use Faker\Provider\Payment;
 use GuzzleHttp\Psr7\Stream;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -590,6 +594,9 @@ class TeamController extends Controller
         $splitTheBill = $request->input("splitTheBillOnOff");
         $team = Team::select("*")->where("id", $teamId)->first();
         if ($splitTheBill == 1) {
+            $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
+            $teamPackage->changed_payment_settings = 1;
+            $teamPackage->save();
             foreach (Session::get("splitTheBillData") as $key => $value) {
                 $existingSplitTheBill = SplitTheBillLinktable::select("*")->where("user_id", $key)->where("team_id", $teamId)->first();
                 if (count($existingSplitTheBill) > 0) {
@@ -605,12 +612,32 @@ class TeamController extends Controller
                 $splitTheBillLinktable->team_id = $teamId;
                 $splitTheBillLinktable->created_at = date("Y-m-d H:i:s");
                 $splitTheBillLinktable->save();
+
+//                if(!$splitTheBillLinktable->user->getMostRecentOpenPayment()){
+//                    $description = $teamPackage->title . " for team " . $teamPackage->team->team_name . uniqid($splitTheBillLinktable->user_id);
+//                    $price = number_format($splitTheBillLinktable->amount, 2, ".", ".");
+//                    $redirectUrl = AuthorisePaymentRequest::redirectUrl(true);
+//                    $customerId = $splitTheBillLinktable->user->mollie_customer_id;
+//                    $user = $splitTheBillLinktable->user;
+//                    $reference = $team->id;
+//                    $mollie = new MollieService();
+//                    $mollieData = $mollie->createNewMolliePayment($price, $description, $redirectUrl, $customerId, $user, $reference);
+//
+//                    $payment = new Payments();
+//                    $payment->user_id = $splitTheBillLinktable->user->id;
+//                    $payment->team_id = $team->id;
+//                    $payment->payment_id = $mollieData['id'];
+//                    $payment->payment_url = $mollieData['link'];
+//                    $payment->payment_method = $mollieData['method'];
+//                    $payment->amount = $price;
+//                    $payment->reference = $reference;
+//                    $payment->payment_status = "Open";
+//                    $payment->created_at = date("Y-m-d H:i:s");
+//                    $payment->save();
+//                }
             }
             $team->split_the_bill = 1;
 
-            $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
-            $teamPackage->changed_payment_settings = 1;
-            $teamPackage->save();
         } else {
             $team->split_the_bill = 0;
         }

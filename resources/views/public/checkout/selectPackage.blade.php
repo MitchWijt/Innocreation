@@ -59,7 +59,7 @@
                             <div class="card-block">
                                 <? if($step == 1) { ?>
                                     <div class="m-t-10">
-                                        <p class="bold f-20">Your credentials</p>
+                                        <p class="bold f-25">Your credentials</p>
                                     </div>
                                     <? if(!isset($user)){ ?>
                                         <div class="text-center m-t-20 m-b-20">
@@ -67,79 +67,7 @@
                                             <p>you can <span class="regular-link accountCardToggle login">login</span> or <span class="regular-link register accountCardToggle">create an account</span> to continue</p>
                                         </div>
                                     <? } else { ?>
-                                        <form action="checkout/saveUserFromCheckout" method="POST" class="m-t-20">
-                                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                            <input type="hidden" name="user_id" value="<?= $user->id?>">
-                                            <input type="hidden" name="backlink" value="<?= $backlink?>">
-                                            <div class="form-group d-flex js-center m-b-10">
-                                                <div class="row d-flex js-center col-sm-12">
-                                                    <div class="col-sm-3 @desktop p-l-0 @elsemobile p-0 @enddesktop">
-                                                        <label class="m-0">First name</label>
-                                                        <input type="text" name="firstname" class="firstname input col-sm-12" value="<? if(isset($user->firstname)) echo $user->firstname?>">
-                                                    </div>
-                                                    <div class="col-sm-3 @desktop p-l-0 @elsemobile p-0 @enddesktop">
-                                                        <label class="m-0">Middle name</label>
-                                                        <input type="text" name="middlename" class="middlename input col-sm-12" value="<? if(isset($user->middlename)) echo $user->middlename?>">
-                                                    </div>
-                                                    <div class="col-sm-3 @desktop p-r-0 @elsemobile p-0 @enddesktop">
-                                                        <label class="m-0">Last name</label>
-                                                        <input type="text" name="lastname" class="lastname input col-sm-12" value="<? if(isset($user->lastname)) echo $user->lastname?>">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group m-b-10 d-flex js-center">
-                                                <div class="row d-flex js-center col-sm-9">
-                                                    <label class="m-0 col-sm-12 p-0">Email</label>
-                                                    <input type="email" name="email" class="email input col-sm-12" value="<? if(isset($user->email)) echo $user->email?>">
-                                                </div>
-                                            </div>
-                                            <div class="form-group d-flex js-center m-b-10 ">
-                                                <div class="row d-flex js-center col-sm-12">
-                                                    <div class="col-sm-3 @desktop p-l-0 @elsemobile p-0 @enddesktop">
-                                                        <label class="m-0">City</label>
-                                                        <input type="text" name="city" class="city input col-sm-12" value="<? if(isset($user->city)) echo $user->city?>">
-                                                    </div>
-                                                    <div class="col-sm-3 @desktop p-l-0 @elsemobile p-0 @enddesktop">
-                                                        <label class="m-0">Postcode</label>
-                                                        <input type="text" name="postcode" class="postcode input col-sm-12" value="<? if(isset($user->postalcode)) echo $user->postalcode?>">
-                                                    </div>
-                                                    <div class="col-sm-3 @desktop p-r-0 @elsemobile p-0 @enddesktop">
-                                                        <label class="m-0">State</label>
-                                                        <input type="text" name="state" class="state input col-sm-12" value="<? if(isset($user->state)) echo $user->state?>">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group m-b-0 d-flex js-center m-b-10">
-                                                <div class="row d-flex js-center col-sm-9">
-                                                    <label class="m-0 col-sm-12 p-0">Country</label>
-                                                    <select name="country" class="input col-sm-12">
-                                                        <? foreach($countries as $country) { ?>
-                                                            <option <? if(isset($user->country_id) && $user->country->country == $country->country) echo "selected"?> data-country-code="<?= $country->country_code?>" value="<?= $country->id?>"><?= $country->country?></option>
-                                                        <? } ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group m-b-0 d-flex js-center">
-                                                <div class="row d-flex js-center col-sm-9">
-                                                    <label class="m-0 col-sm-12 p-0">Phonenumber</label>
-                                                    <input type="text" name="phonenumber" class="phonenumber input col-sm-12" value="<? if(isset($user->phonenumber)) echo $user->phonenumber?>">
-                                                </div>
-                                            </div>
-                                            <? if(isset($user) && $user->team_id == null) { ?>
-                                                <div class="form-group m-b-0 d-flex js-center m-t-15">
-                                                    <div class="row d-flex js-center col-sm-9">
-                                                        <p class="m-b-10">You are not part of a team yet. <br> But luckily you can create one here!</p>
-                                                        <label class="m-0 col-sm-12 p-0">Team name</label>
-                                                        <input type="text" name="team_name" class="team_name input col-sm-12" value="">
-                                                    </div>
-                                                </div>
-                                            <? } ?>
-                                            <div class="row m-t-20 d-flex js-center">
-                                                <div class="col-sm-8 m-b-20 ">
-                                                    <button class="btn btn-inno pull-right">Next step</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                        <?= view("/public/checkout/shared/_saveUserFromCheckout", compact('countries', 'expertises', 'user', 'backlink'))?>
                                     <? } ?>
                                 <? } else if($step == 2) { ?>
                                     <form action="/checkout/savePaymentInfo" method="post" class="savePaymentInfoForm">
@@ -161,9 +89,8 @@
                                             <input type="hidden" name="membership_package_id" value="custom">
                                         <? } ?>
                                         <input type="hidden" name="backlink" value="<?= $backlink?>">
-                                        <div class="text-center m-t-10">
-                                            <h5>Payment info</h5>
-                                            <hr>
+                                        <div class="m-t-10">
+                                            <p class="bold f-25">Payment info</p>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-5">
@@ -198,7 +125,7 @@
                                         <? } ?>
                                         <div class="row">
                                             <div class="col-sm-12 m-t-10 m-b-15">
-                                                <button class="btn btn-inno btn-sm pull-right toStep3" type="button">Next step</button>
+                                                <button class="btn btn-inno-cta btn-sm pull-right toStep3" type="button">Next step</button>
                                             </div>
                                         </div>
                                     </form>
@@ -225,16 +152,15 @@
                         </div>
                         <? if(isset($team) && isset($user) && count($team->getMembers()) > 1 && $step == 2) { ?>
                             <? if(isset($teamPackage) && $step == 2 && $team->split_the_bill == 1) { ?>
-                                <div id="splitTheBillCollapse" class="collapsed collapseExample card-sm shadow no-hover col-sm-12 m-t-0 splitTheBillCard">
+                                <div id="splitTheBillCollapse" class="collapsed collapseExample card col-sm-12 m-t-0 splitTheBillCard" style="border: 1px solid #000; border-radius: 10px;">
                             <? } else { ?>
-                                <div id="splitTheBillCollapse" class="collapse collapseExample card-sm shadow no-hover col-sm-12 m-t-0 splitTheBillCard">
+                                <div id="splitTheBillCollapse" class="collapse collapseExample card col-sm-12 m-t-0 splitTheBillCard" style="border: 1px solid #000; border-radius: 10px;">
                             <? } ?>
                                 <div class="card-block">
-                                    <div class="text-center m-t-15">
-                                        <h5>Split the bill</h5>
-                                        <hr>
+                                    <div class="m-t-15">
+                                        <p class="bold f-25">Split the bill</p>
                                     </div>
-                                    <i class="c-dark-grey">Amount left to split: <i class="packagePrice totalPrice"><?if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo number_format(\Illuminate\Support\Facades\Session::get("customPackagesArray")["price"], 2,".", "."); else echo $membershipPackage->getPrice()?></i></i><br>
+                                    <i class="c-black">Amount left to split: <i class="packagePrice totalPrice c-black"><? echo $membershipPackage->getPrice()?></i></i><br>
                                     <i class="c-orange amountExceeded hidden">Amount exceeded: <i class="exceededAmount"></i></i>
                                     <button class="btn btn-sm btn-inno pull-right m-b-20 m-t-5 splitEqually">Split equally</button>
                                     <? foreach($team->getMembers() as $member) { ?>
@@ -260,13 +186,13 @@
                             </div>
                         <? } ?>
                         <? if(!isset($user) && $step == 1){ ?>
-                            <div id="accountCollapse" class="collapse collapseExample card-sm shadow no-hover col-sm-12 m-t-0 accountCard">
-                                <div class="card-block">
-                                    <div class="m-b-20">
-                                        <?= view("/public/shared/_loginRegister", compact("countries", "expertises", "pageType", "backlink"));?>
+                                <div class="<?= \App\Services\UserAccount\UserAccount::getTheme()?>">
+                                    <div id="accountCollapse" class="collapse collapseExample card shadow no-hover col-sm-12 m-t-0 accountCard">
+                                        <div class="card-block">
+
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                         <? } ?>
                     </div>
                 </div>
@@ -301,6 +227,24 @@
         </div>
     </div>
     </div>
+        <? if(!isset($user) && $step == 1){ ?>
+            <div class="modal fade fade-scale loginRegisterModal" id="loginRegisterModal" tabindex="-1" role="dialog" aria-labelledby="loginRegisterModal" aria-hidden="true">
+                <div class="modal-dialog-centered modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body ">
+                            <div class="m-b-20 <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
+                                <div class="loginForm hidden ">
+                                    <?= view("/public/shared/_loginRegister", compact("countries", "expertises", "pageType", "backlink"));?>
+                                </div>
+                                <div class="registerForm hidden">
+                                    <?= view("/public/shared/_register", compact('countries', 'expertises', 'pageType', 'backlink'))?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <? } ?>
     </div>
     <script>
         $('#tokenfield').tokenfield({
@@ -324,4 +268,5 @@
 @section('pagescript')
     <script src="/js/checkout/selectPackage.js"></script>
     <script src="/js/checkout/packages.js"></script>
+    <script src="/js/register/index.js"></script>
 @endsection

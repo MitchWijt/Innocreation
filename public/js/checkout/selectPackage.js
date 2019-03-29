@@ -1,13 +1,13 @@
 $(".register").on("click",function () {
   $(".loginForm").addClass("hidden");
   $(".registerForm").removeClass("hidden");
-  $(".collapse").collapse("show");
+  $(".loginRegisterModal").modal("toggle");
 });
 
 $(".login").on("click",function () {
     $(".loginForm").removeClass("hidden");
     $(".registerForm").addClass("hidden");
-    $(".collapse").collapse("show");
+    $(".loginRegisterModal").modal("toggle");
 });
 // $(document).ready(function () {
 //     $(".ui-menu").appendTo(".expertises");

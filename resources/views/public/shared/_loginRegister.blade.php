@@ -1,3 +1,7 @@
+<? if($pageType == "checkout") { ?>
+    <h1 class="bold text-center">Login</h1>
+<? } ?>
+
 <form action="/loginUser" method="POST" class="loginForm <? if(isset($urlParameter)) echo "hidden"?>">
     <input type="hidden" name="_token" value="<?= csrf_token()?>">
     <? if(isset($url)) { ?>
