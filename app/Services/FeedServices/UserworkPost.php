@@ -62,6 +62,9 @@
             $userWorkId = $request->input("userworkId");
             $hash = $this->encrypt_decrypt("encrypt", $userWorkId);
             $userWorkPost = UserWork::select("*")->where("id", $userWorkId)->first();
+            $userWorkPost->views = $userWorkPost->views + 1;
+            $userWorkPost->save();
+            
             $emojis = Emoji::select("*")->get();
             if(Session::has("user_id")) {
                 $user = User::select("*")->where("id", Session::get("user_id"))->first();

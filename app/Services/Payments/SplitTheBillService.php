@@ -80,7 +80,8 @@ class SplitTheBillService {
 
         // no active subscriptions
         $mollie = new MollieService();
-        $customer = $mollie->customers->get($user->mollie_customer_id);
+        $customer = $mollie->mollie->customers->get($user->mollie_customer_id);
+
         $mandates = $customer->mandates();
         if($mandates[0]->status == "valid" || !$user->hasValidSubscription()) {
             // creates new mollie subscription for user.

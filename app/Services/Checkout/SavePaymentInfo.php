@@ -10,6 +10,8 @@ namespace App\Services\Checkout;
 
 
 use App\MembershipPackage;
+use App\Services\AppServices\StreamService;
+use App\Services\TimeSent;
 use App\SplitTheBillLinktable;
 use App\Team;
 use App\TeamPackage;
@@ -133,6 +135,15 @@ class SavePaymentInfo {
             }
             $splitTheBillLinktable->created_at = date("Y-m-d H:i:s");
             $splitTheBillLinktable->save();
+
+
+            $user = User::select("*")->where("id", $key)->first();
+            $notificationMessage = "Validation for your team package is needed. Click to go to the validation.";
+            $timeSent = new TimeSent();
+            $data = ["actor" => $user->id , "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time", "verb" => "notification", "object" => "3", "link" => "/my-account/payment-details"];
+
+            $stream = new StreamService();
+            $stream->addActivityToFeed($user->id, $data);
         }
     }
 }

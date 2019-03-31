@@ -116,7 +116,7 @@
                                                 <? if($user->team_id == null) { ?>
                                                     <? if($user->checkJoinRequests($neededExpertise->expertise_id, $team->id) == false) { ?>
                                                         <div class="col-sm-5">
-                                                            <? if(\App\Services\TeamServices\TeamPackage::checkPackageAndPayment($team->id, $neededExpertise->expertise)) { ?>
+                                                            <? if(\App\Services\TeamServices\TeamPackage::checkPackageAndPayment($team->id, $neededExpertise->expertises)) { ?>
                                                                 <button class="btn btn-inno openApplyModal btn-sm" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
                                                             <? } else { ?>
                                                                 <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal btn-sm" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>

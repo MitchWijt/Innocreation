@@ -40,8 +40,12 @@
         <link rel="stylesheet" href="/css/general.css">
         <link rel="stylesheet" href="/css/user/user.css">
         <link rel="stylesheet" href="/css/activityTimeline.css">
+
+        {{--checkout--}}
         <link rel="stylesheet" href="/css/checkout/pricing.css">
         <link rel="stylesheet" href="/css/checkout/selectPackage.css">
+        <link rel="stylesheet" href="/css/checkout/donePayment.css">
+
         <link rel="stylesheet" href="/css/registerProcess/index.css">
         <link rel="stylesheet" href="/css/userworkFeed/index.css">
         <link rel="stylesheet" href="/css/popovers.css">

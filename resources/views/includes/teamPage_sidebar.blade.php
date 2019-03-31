@@ -45,17 +45,6 @@
         <hr>
     <? } ?>
     <div class="sidebar-tab text-center">
-        <div class="d-flex js-center">
-            <a class="regular-link c-gray m-r-10" href="/my-team/user-join-requests">Team join requests </a>
-            <? if($teamJoinRequestsCounter > 0) { ?>
-                <div class="circle circleNotification c-orange text-center">
-                    <span><?= $teamJoinRequestsCounter?></span>
-                </div>
-            <? } ?>
-        </div>
-    </div>
-    <hr>
-    <div class="sidebar-tab text-center">
         <a class="regular-link c-gray" href="/my-team/neededExpertises">My needed expertises</a>
     </div>
     <hr>

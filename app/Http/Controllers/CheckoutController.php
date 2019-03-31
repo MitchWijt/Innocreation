@@ -70,23 +70,10 @@ class CheckoutController extends Controller
         $user = User::select("*")->where("id", Session::get("user_id"))->first();
         $membershipPackage = MembershipPackage::select("*")->where("title", ucfirst($title))->first();
 
-        if ($user && $user->team_id != null) {
-            $team = Team::select("*")->where("id", $user->team_id)->first();
-            if($user->id != $user->team->ceo_user_id){
-                return redirect($user->getUrl())->withErrors("You are in a team but aren't a team leader. Only team leaders can purchase packages");
-            }
-        }
-
-        if($user && $user->hasValidSubscription()){
-            $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
-            if($teamPackage->change_package == 0) {
-                return redirect($user->getUrl())->withErrors("It seems your team already has a package!");
-            }
-        }
-
         if (request()->has('step')) {
             $step = request()->step;
             if ($step == 3) {
+                $team = Team::select("*")->where("id", $user->team_id)->first();
                 $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
             }
             if($step == 2){
@@ -97,6 +84,23 @@ class CheckoutController extends Controller
         } else {
             $step = 1;
         }
+
+
+        if ($user && $user->team_id != NULL) {
+            $team = Team::select("*")->where("id", $user->team_id)->first();
+            if (isset($team) && $user->id != $user->team->ceo_user_id) {
+                return redirect($user->getUrl())->withErrors("You are in a team but aren't a team leader. Only team leaders can purchase packages");
+            }
+        }
+        if($step == 1) {
+            if ($user && $user->hasValidSubscription()) {
+                $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
+                if (isset($teamPackage) && $teamPackage->change_package == 0) {
+                    return redirect($user->getUrl())->withErrors("It seems your team already has a package!");
+                }
+            }
+        }
+
 
         if ($user) {
             if ($step == 2 && $user->isMember() && count($teamPackage) > 0) {

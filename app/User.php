@@ -186,7 +186,11 @@ class User extends Authenticatable
 
     public function getMostRecentPayment(){
         $payment = Payments::select("*")->where("user_id", $this->id)->where("payment_status", "paid")->orderBy("created_at", "DESC")->first();
-        return $payment;
+        if($payment){
+            return $payment;
+        } else {
+            return false;
+        }
 
     }
 

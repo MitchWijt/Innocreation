@@ -16,7 +16,7 @@
     use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 
     class MollieService {
-        private $mollie;
+        public $mollie;
 
         public function __construct() {
             $mollie = new MollieApiClient();
