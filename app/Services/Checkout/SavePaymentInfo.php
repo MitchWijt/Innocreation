@@ -27,6 +27,9 @@ class SavePaymentInfo {
         $membershipPackage = MembershipPackage::select("*")->where("id", $membershipPackageId)->first();
         $team = Team::select("*")->where("id", $teamId)->first();
 
+        //gets the reserved id from the package they have active at the moment.
+        $reservedId = self::existingTeamPackage($team)['reservedId'];
+
         // saves the existing or new team package and checks for it
         self::saveTeamPackage($team, $membershipPackage, $paymentPreference);
 
@@ -46,11 +49,10 @@ class SavePaymentInfo {
             $splitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $teamId)->get();
             foreach($splitTheBillLinktables as $splitTheBillLinktable) {
                 $splitTheBillLinktable->accepted_change = 0;
-                $splitTheBillLinktable->reserved_membership_package_id = self::existingTeamPackage($team)['reservedId'];
+                $splitTheBillLinktable->reserved_membership_package_id = $reservedId;
                 $splitTheBillLinktable->membership_package_change_id = $membershipPackageId;
                 $splitTheBillLinktable->save();
             }
-            Session::remove("changePackageCustomNull");
             return redirect("my-team/payment-details");
         } else if($changePackage == 1 && $splitTheBill == 0){
             $teamPackage = TeamPackage::select("*")->where("team_id", $teamId)->first();

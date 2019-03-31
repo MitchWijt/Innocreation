@@ -16,7 +16,10 @@ use App\MembershipPackage;
 use App\Page;
 use App\ServiceReview;
 use App\Services\AppServices\MailgunService;
+use App\Services\AppServices\MollieService;
+use App\Services\Payments\PaymentService;
 use App\Services\Payments\SplitTheBillService;
+use App\Services\TimeSent;
 use App\Services\UserAccount\UserAccountPortfolioService;
 use App\Services\UserAccount\UserChatsService;
 use App\SplitTheBillLinktable;
@@ -415,11 +418,12 @@ class UserController extends Controller
 
             $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->where("accepted_change", 1)->get();
             if (count($allSplitTheBillLinktables) >= count($user->team->getMembers())) {
+                $timeSent = new TimeSent();
                 $userChat = UserChat::select("*")->where("receiver_user_id", $user->team->ceo_user_id)->where("creator_user_id", 1)->first();
                 $userMessage = new UserMessage();
                 $userMessage->sender_user_id = 1;
                 $userMessage->user_chat_id = $userChat->id;
-                $userMessage->time_sent = $this->getTimeSent();
+                $userMessage->time_sent = $timeSent->time;
                 if($teamPackage->changed_payment_settings == 1){
                     $userMessage->message = "The verification to change your payment settings has been succesfuly validated by all your members! everything changed automatically you don't have to do anything :)";
                 } else {
@@ -492,11 +496,12 @@ class UserController extends Controller
             $teamPackage->save();
 
             $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->get();
+            $timeSent = new TimeSent();
             $userChat = UserChat::select("*")->where("receiver_user_id", $user->team->ceo_user_id)->where("creator_user_id", 1)->first();
             $userMessage = new UserMessage();
             $userMessage->sender_user_id = 1;
             $userMessage->user_chat_id = $userChat->id;
-            $userMessage->time_sent = $this->getTimeSent();
+            $userMessage->time_sent = $timeSent->time;
             if ($teamPackage->changed_payment_settings == 1) {
                 $userMessage->message = $user->getName() . " has rejected the request to change your payment settings. Change has been aborted. still want to change the payment settings? send another request.";
             } else {
@@ -533,38 +538,14 @@ class UserController extends Controller
         }
     }
 
-    public function rejectSplitTheBillAction(Request $request){
+    public function rejectSplitTheBillAction(Request $request, MailgunService $mailgunService){
         if($this->authorized()) {
             $userId = $request->input("user_id");
             $teamId = $request->input("team_id");
             $user = User::select("*")->where("id", $userId)->first();
-            $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $teamId)->get();
-            foreach ($allSplitTheBillLinktables as $allSplitTheBillLinktable) {
-                $recentPayment = $allSplitTheBillLinktable->user->getMostRecentOpenPayment();
-                $recentPayment->payment_status = "Canceled";
-                $recentPayment->save();
-                $mollie = $this->getService("mollie");
-                $mollie->payments->delete($recentPayment->payment_id);
+            $team = Team::select("*")->where("id", $teamId)->first();
 
-                $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("id", $allSplitTheBillLinktable->id)->first();
-                $splitTheBillLinktable->accepted = 0;
-                $splitTheBillLinktable->save();
-            }
-
-            $team = $team = Team::select("*")->where("id", $user->team_id)->first();
-            $team->split_the_bill = 0;
-            $team->save();
-
-            $this->saveAndSendEmail($user, "Payment has been rejected", view("/templates/sendSplitTheBillRejected", compact("user", "team")));
-
-            $userChat = UserChat::select("*")->where("receiver_user_id", $team->ceo_user_id)->where("creator_user_id", 1)->first();
-            $userMessage = new UserMessage();
-            $userMessage->sender_user_id = 1;
-            $userMessage->user_chat_id = $userChat->id;
-            $userMessage->time_sent = $this->getTimeSent();
-            $userMessage->message = "The payment for your team has been rejected because one of your team members rejected the validation request.";
-            $userMessage->created_at = date("Y-m-d H:i:s");
-            $userMessage->save();
+            PaymentService::rejectSplitTheBillPayment($user, $team, $mailgunService);
             return redirect($_SERVER["HTTP_REFERER"]);
         }
     }

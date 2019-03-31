@@ -10,6 +10,7 @@
 
 
     use App\Services\GenericService;
+    use App\Services\Payments\PaymentService;
     use App\User;
     use Mollie\Api\MollieApiClient;
     use phpDocumentor\Reflection\DocBlock\Tags\Generic;
@@ -32,6 +33,13 @@
             return $customer;
         }
 
+        public function getCustomer($user){
+            $mollie = $this->mollie;
+            $customer = $mollie->customers->get($user->mollie_customer_id);
+            return $customer;
+
+        }
+
         public function changePackageOfCustomer($team, $price){
             $user = User::select("*")->where("id", $team->ceo_user_id)->first();
             $mollie = $this->mollie;
@@ -42,7 +50,7 @@
                 "currency" => "EUR",
                 "value" => number_format($price, 2, ".", "."),
             ];
-            $subscription->webhookUrl = GenericService::getWebhookUrlMollie(true);
+            $subscription->webhookUrl = PaymentService::getWebhookUrlMollie(true);
             $subscription->startDate = date("Y-m-d", strtotime("+1 month"));
             $subscription->update();
         }
@@ -56,12 +64,12 @@
                 ],
                 "description" => $description,
                 "redirectUrl" => $redirectUrl,
-                "webhookUrl" => GenericService::getWebhookUrlMollie(),
+                "webhookUrl" => PaymentService::getWebhookUrlMollie(),
                 "method" => "creditcard",
                 "sequenceType" => "first",
                 "customerId" => $mollieCustomerId,
                 "metadata" => [
-                    "referenceAndUserId" => $reference . "-" . $user->id,
+                    "referenceAndUserId" => $reference,
                 ],
             ]);
 
@@ -78,7 +86,19 @@
                 ],
                 "interval" => "$range",
                 "description" => $description . $reference . "recurring",
-                "webhookUrl" => GenericService::getWebhookUrlMollie(true),
+                "webhookUrl" => PaymentService::getWebhookUrlMollie(true),
+            ]);
+        }
+
+        public function refundPayment($paymentId, $price){
+            $priceString = number_format($price, 2, ".", ",");
+            $mollie = $this->mollie;
+            $payment = $mollie->payments->get($paymentId);
+            $payment->refund([
+                "amount" => [
+                    "currency" => "EUR",
+                    "value" => "$priceString" // You must send the correct number of decimals, thus we enforce the use of strings
+                ]
             ]);
         }
 

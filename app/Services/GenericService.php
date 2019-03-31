@@ -44,19 +44,4 @@ class GenericService
         return $string;
     }
 
-    public static function getWebhookUrlMollie($sub = false){
-        if($sub == false) {
-            $url = env("MOLLIE_WEBHOOK");
-        } else {
-            $url = env("MOLLIE_WEBHOOK_SUB");
-        }
-        return $url;
-    }
-
-    public static function getPaymentReference(){
-        $referenceObject = Payments::select("*")->orderBy("id", "DESC")->first();
-        $reference = $referenceObject->reference + 1;
-
-        return $reference;
-    }
 }

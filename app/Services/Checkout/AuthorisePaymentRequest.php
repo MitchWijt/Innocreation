@@ -11,6 +11,8 @@ namespace App\Services\Checkout;
 
 use App\Payments;
 use App\Services\AppServices\MollieService;
+use App\Services\GenericService;
+use App\Services\Payments\PaymentService;
 use App\Services\TimeSent;
 use App\SplitTheBillLinktable;
 use App\Team;
@@ -37,13 +39,14 @@ class AuthorisePaymentRequest {
 
 
     private static function createPaymentAndMollie($split = false, $team, $mailgunService, $teamPackage, $user){
-        $priceAndDescription = self::priceAndDescription($team, $teamPackage, $user);
+        $reference =  $reference = PaymentService::getPaymentReference($user->id);
+
+        $priceAndDescription = self::priceAndDescription($team, $teamPackage, $user, $reference);
         $loggedInUser = $user;
         $price = $priceAndDescription['price'];
         $description = $priceAndDescription['description'];
         $redirectUrl = $priceAndDescription['redirectUrl'];
 
-        $reference = self::getPaymentReference();
         if($split){
             $splitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $team->id)->get();
             foreach ($splitTheBillLinktables as $splitTheBillLinktable) {
@@ -98,7 +101,7 @@ class AuthorisePaymentRequest {
         }
     }
 
-    public static function redirectUrl($split = false){
+    public static function redirectUrl($split = false, $user){
         $fullDomain = $_SERVER['HTTP_HOST'];
         $domainExplode = explode(".", $fullDomain);
 
@@ -109,28 +112,25 @@ class AuthorisePaymentRequest {
         }
 
         if($split){
-            $url = $host . "/almost-there";
+            if($user->id == $user->team->ceo_user_id) {
+                $url = '/my-team/payment-details';
+            } else {
+                $url = "/almost-there";
+            }
         } else {
-            $url = $host . "/thank-you";
+            $url = "/thank-you";
         }
-        return $url;
+        return $host . $url;
 
     }
 
-    private static function getPaymentReference(){
-        $payment = Payments::select("*")->orderBy("id", "DESC")->first();
-        $reference = $payment->reference + 1;
-
-        return $reference;
-    }
-
-    private static function priceAndDescription($team, $teamPackage, $user){
+    private static function priceAndDescription($team, $teamPackage, $user, $reference){
         if ($team->split_the_bill == 0) {
-            $redirectUrl = self::redirectUrl();
-            $description = $teamPackage->title . " for team " . $team->team_name;
+            $redirectUrl = self::redirectUrl(false, $user);
+            $description = $teamPackage->title . " for team " . $team->team_name . "-" . $reference;
             $price = number_format($teamPackage->price, 2, ".", ".");
         } else {
-            $redirectUrl = self::redirectUrl(true);
+            $redirectUrl = self::redirectUrl(true, $user);
 
             $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("team_id", $team->id)->where("user_id", $user->id)->first();
             $splitTheBillLinktable->accepted = 1;

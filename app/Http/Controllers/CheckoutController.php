@@ -61,91 +61,54 @@ class CheckoutController extends Controller
     {
         $pageType = "checkout";
 
-        if (!Session::has("customPackagesArray")) {
-            // for register/login
-            $countries = Country::select("*")->orderBy("country")->get();
-            $expertises = Expertises::select("*")->get();
-            $backlink = "/becoming-a-" . lcfirst($title);
-            $urlParameter = 1;
+        // for register/login
+        $countries = Country::select("*")->orderBy("country")->get();
+        $expertises = Expertises::select("*")->get();
+        $backlink = "/becoming-a-" . lcfirst($title);
+        $urlParameter = 1;
 //        ==============
-            $user = User::select("*")->where("id", Session::get("user_id"))->first();
-            $membershipPackage = MembershipPackage::select("*")->where("title", ucfirst($title))->first();
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $membershipPackage = MembershipPackage::select("*")->where("title", ucfirst($title))->first();
 
-            if ($user && $user->team_id != null) {
-                $team = Team::select("*")->where("id", $user->team_id)->first();
-                if($user->id != $user->team->ceo_user_id){
-                    return redirect("/my-account")->withErrors("You are in a team but aren't a team leader. Only team leaders can purchase packages");
-                }
+        if ($user && $user->team_id != null) {
+            $team = Team::select("*")->where("id", $user->team_id)->first();
+            if($user->id != $user->team->ceo_user_id){
+                return redirect($user->getUrl())->withErrors("You are in a team but aren't a team leader. Only team leaders can purchase packages");
             }
+        }
 
-            if($user && $user->hasValidSubscription()){
-                return redirect("/my-account")->withErrors("It seems your team already has a package!");
+        if($user && $user->hasValidSubscription()){
+            $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
+            if($teamPackage->change_package == 0) {
+                return redirect($user->getUrl())->withErrors("It seems your team already has a package!");
             }
+        }
 
-            if (request()->has('step')) {
-                $step = request()->step;
-                if ($step == 3) {
-                    $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
-                }
-                if($step == 2){
-                    if($user->isMember()){
-                        $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
-                    }
-                }
-            } else {
-                $step = 1;
+        if (request()->has('step')) {
+            $step = request()->step;
+            if ($step == 3) {
+                $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
             }
-
-            if ($user) {
-                if ($step == 2 && $user->isMember() && count($teamPackage) > 0) {
-                    return view("/public/checkout/selectPackage", compact("membershipPackage", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team", "teamPackage"));
-                } else {
-                    return view("/public/checkout/selectPackage", compact("membershipPackage", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
-                }
-            } else {
-                if ($step == 3) {
-                    return view("/public/checkout/selectPackage", compact("membershipPackage", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team", "paymentMethods"));
-                } else {
-                    return view("/public/checkout/selectPackage", compact("membershipPackage", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
+            if($step == 2){
+                if($user->isMember()){
+                    $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
                 }
             }
         } else {
-            $countries = Country::select("*")->orderBy("country")->get();
-            $expertises = Expertises::select("*")->get();
-            $backlink = "/create-custom-package";
-            $urlParameter = 1;
+            $step = 1;
+        }
 
-            $user = User::select("*")->where("id", Session::get("user_id"))->first();
-            if ($user && $user->team_id != null) {
-                $team = Team::select("*")->where("id", $user->team_id)->first();
-            }
-
-            if (request()->has('step')) {
-                $step = request()->step;
-
-                if($step == 2){
-                    if($user->isMember()){
-                        $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
-                    }
-                }
-            } else {
-                $step = 1;
-            }
-
-            $values = [];
-            $options = [];
-            foreach (Session::get("customPackagesArray")["options"] as $key => $value) {
-                array_push($values, $value);
-                array_push($options, $key);
-            }
-            for ($i = 0; $i < count($values); $i++) {
-                $customMembershipType = CustomMembershipPackageType::select("*")->where("id", $options[$i])->first();
-                $customPackageData[$customMembershipType->title] = $values[$i];
-            }
+        if ($user) {
             if ($step == 2 && $user->isMember() && count($teamPackage) > 0) {
-                return view("/public/checkout/selectPackage", compact("customPackageData", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team", "teamPackage"));
+                return view("/public/checkout/selectPackage", compact("membershipPackage", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team", "teamPackage"));
             } else {
-                return view("/public/checkout/selectPackage", compact("customPackageData", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
+                return view("/public/checkout/selectPackage", compact("membershipPackage", "user", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
+            }
+        } else {
+            if ($step == 3) {
+                return view("/public/checkout/selectPackage", compact("membershipPackage", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team", "paymentMethods"));
+            } else {
+                return view("/public/checkout/selectPackage", compact("membershipPackage", "pageType", "countries", "expertises", "backlink", "urlParameter", "step", "team"));
             }
         }
     }
@@ -292,18 +255,14 @@ class CheckoutController extends Controller
     public function changePackageAction(Request $request){
         $teamId = $request->input("team_id");
         $team = Team::select("*")->where("id", $teamId)->first();
-        if($team->split_the_bill == 1) {
+//        if($team->split_the_bill == 1) {
             $teamPackage = TeamPackage::select("*")->where("team_id", $teamId)->first();
             $teamPackage->change_package = 1;
             $teamPackage->save();
-        }
+//        }
 
         $title = $request->input("title");
-        if($title == "custom"){
-            return redirect("/becoming-a-$title");
-        } else {
-            return redirect("/becoming-a-$title");
-        }
+        return redirect("/becoming-a-$title");
     }
 
     public function getFunctionsModalAction(Request $request, MembershipPackageService $membershipPackageService){

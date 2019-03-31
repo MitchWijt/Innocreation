@@ -20,7 +20,7 @@
 
                     <div class="row ">
                         <div class="col-sm-12">
-                            <p class="<? if($membershipPackage->id == 2) echo "f-31"; else echo "f-25"?> bold m-b-0 text-center"><?="&euro;".  $membershipPackage->getPrice()?>/Month</p>
+                            <p class="<? if($membershipPackage->id == 2) echo "f-31"; else echo "f-25"?> bold m-b-0 text-center"><?="&euro;"?><span class="packagePrice bold"><?= $membershipPackage->getPrice()?></span><span class="packagePreference bold">/Month</span></p>
                         </div>
                         <div class="col-sm-12 d-flex js-center fd-column @mobile m-t-5 m-b-20 @endmobile">
                             <a class="text-center f-12 m-t-5"><span class="c-pointer thin openFunctionsModal" data-membership-package-id="<?= $membershipPackage->id?>">+ show functions</span></a>
@@ -197,8 +197,8 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade splitTheBillInfoModal" id="splitTheBillInfoModal" tabindex="-1" role="dialog" aria-labelledby="splitTheBillInfoModal" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+            <div class="modal fade splitTheBillInfoModal fade-scale" id="splitTheBillInfoModal" tabindex="-1" role="dialog" aria-labelledby="splitTheBillInfoModal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-body ">
                             <p>Split the bill allows you to split the monthly/yearly recurring bill with your team members if they allow to.</p>

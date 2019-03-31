@@ -59,7 +59,7 @@
                     </div>
                 </div>
             <? } ?>
-            <? if($teamPackage->change_package == 1) { ?>
+            <? if(isset($teamPackage) && $teamPackage->change_package == 1) { ?>
                 <? if($splitTheBillDetails->First()->reserved_changed_amount != null) { ?>
                     <div class="row d-flex js-center m-t-20">
                         <div class="col-md-10">

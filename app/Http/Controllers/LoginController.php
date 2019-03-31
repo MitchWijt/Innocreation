@@ -137,8 +137,11 @@ class LoginController extends Controller
         $user = User::select("*")->where("id", $userId)->first();
         $user->active_status = "offline";
         $user->save();
-        
-        Session::flush();
+
+        do{
+            Session::flush();
+        } while(Session::has("user_id"));
+
         return redirect("/");
     }
 

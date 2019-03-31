@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Payments;
+use App\Services\AppServices\MailgunService;
+use App\Services\AppServices\MollieService;
+use App\Services\Payments\PaymentService;
+use App\Services\Payments\SplitTheBillService;
 use App\SplitTheBillLinktable;
 use App\Team;
 use App\TeamPackage;
 use App\User;
-use Faker\Provider\el_CY\Payment;
 use Illuminate\Http\Request;
 use App\Invoice;
 
@@ -16,11 +19,10 @@ use Illuminate\Support\Facades\Session;
 
 class ApiController extends Controller
 {
-    public function webhookMollieAction(Request $request){
+    public function webhookMollieAction(Request $request, MailgunService $mailgunService){
         try {
             $mollie = $this->getService("mollie");
             $payment = $mollie->payments->get($request->input("id"));
-            $metadata = $payment->metadata->referenceAndUserId;
 
             if ($payment->isPaid() && !$payment->hasRefunds() && !$payment->hasChargebacks()) {
                 $paymentTable = Payments::select("*")->where("payment_id", $request->input("id"))->first();
@@ -28,6 +30,11 @@ class ApiController extends Controller
                 $paymentTable->save();
 
                 $user = User::select("*")->where("id", $paymentTable->user_id)->first();
+
+                $team = Team::select("*")->where("id", $user->team_id)->first();
+                if($team->split_the_bill == 1){
+                    SplitTheBillService::acceptSplitTheBill($user);
+                }
 
 //                }
                 $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
@@ -48,34 +55,22 @@ class ApiController extends Controller
 
                 $description = $teamPackage->title . " for team " . $teamPackage->team->team_name . "-" . uniqid($user->id) . " ";
 
-                if($teamPackage->payment_preference == "monthly"){
-                    $range = "1 months";
-                } else {
-                    $range = "12 months";
-                }
+               $range = PaymentService::getPaymentRange($teamPackage);
 
                 // no active subscriptions
-                $mollie = $this->getService("mollie");
-                $customer = $mollie->customers->get($user->mollie_customer_id);
+                $reference = PaymentService::getPaymentReference($user->id);
+
+                $mollie = new MollieService();
+                $customer = $mollie->getCustomer($user);
                 $mandates = $customer->mandates();
                 if($mandates[0]->status == "valid" && $paymentTable->sub_id == null || !$user->hasValidSubscription()) {
-                    $customer = $mollie->customers->get($user->mollie_customer_id);
-                    $customer->createSubscription([
-                        "amount" => [
-                            "currency" => "EUR",
-                            "value" => $paymentTable->amount,
-                        ],
-                        "interval" => "$range",
-                        "description" => $description . "recurring",
-                        "startDate" => date("Y-m-d" , strtotime("+1 month")),
-                        "webhookUrl" => $this->getWebhookUrl(true),
-                    ]);
-
+                    $mollie->createNewMollieSubscription($user, $paymentTable->amount,$description, $reference, $range);
                 }
                 $subscriptions = $customer->subscriptions();
                 $paymentTable->sub_id = $subscriptions[0]->id;
                 $paymentTable->save();
 
+                //Mail to Innocreation.
                 $mgClient = $this->getService("mailgun");
                 $mgClient[0]->sendMessage($mgClient[1], array(
                     'from' => "mitchel@innocreation.net",
@@ -86,15 +81,7 @@ class ApiController extends Controller
                     'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
                 ));
 
-                $mgClient = $this->getService("mailgun");
-                $mgClient[0]->sendMessage($mgClient[1], array(
-                    'from' => "info@innocreation.net",
-                    'to' => $user->email,
-                    'subject' => "Congratulations for taking the next step towards your dreams!",
-                    'html' => view("/templates/sendPaymentConfirmationCustomer", compact("user", "teamPackage"))
-                ), array(
-                    'inline' => array($_SERVER['DOCUMENT_ROOT'] . '/images/cartwheel.png')
-                ));
+                $mailgunService->saveAndSendEmail($user, "Congratulations for taking the next step towards your dreams!", view("/templates/sendPaymentConfirmationCustomer", compact("user", "teamPackage")));
 
 
 
@@ -107,55 +94,43 @@ class ApiController extends Controller
                  * The payment is pending.
                  */
             } elseif ($payment->isFailed()) {
-                $paymentTable = Payments::select("*")->where("payment_id", $request->input("id"))->first();
-                $paymentTable->payment_status = "failed";
-                $paymentTable->save();
-
                 //Mail to leader
 
             } elseif ($payment->isExpired()) {
-                $paymentTable = Payments::select("*")->where("payment_id", $request->input("id"))->first();
-                $paymentTable->payment_status = "expired";
-                $paymentTable->save();
-            } elseif ($payment->isCanceled()) {
 
-                $paymentTable = Payments::select("*")->where("payment_id", $request->input("id"))->first();
-                $user = User::select("*")->where("id", $paymentTable->user_id)->first();
-                $mollie = $this->getService("mollie");
-                if($user->team->split_the_bill == 1){
-                    $splitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->get();
-                    foreach($splitTheBillLinktables as $splitTheBillLinktable){
-                        if($splitTheBillLinktable->user->getMostRecentPayment()){
-                            if($splitTheBillLinktable->user->getMostRecentPayment()->sub_id != null) {
-
-                                $payment = $mollie->payments->get($splitTheBillLinktable->user->getMostRecentPayment()->payment_id);
-                                $payment->refund([
-                                    "amount" => [
-                                        "currency" => "EUR",
-                                        "value" => $splitTheBillLinktable->user->getMostRecentPayment()->amount // You must send the correct number of decimals, thus we enforce the use of strings
-                                    ]
-                                ]);
-
-                                $recentPayment = $splitTheBillLinktable->user->getMostRecentPayment();
-                                $recentPayment->payment_status = "canceled/refunded";
-                                $recentPayment->sub_id = null;
-                                $recentPayment->save();
-
-                                $customer = $mollie->customers->get($splitTheBillLinktable->user->mollie_customer_id);
-                                $subscriptions = $customer->subscriptions();
-                                foreach ($subscriptions as $subscription) {
-                                    if($subscription->status != "canceled") {
-                                         $customer->cancelSubscription($subscription->id);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                } else{
+                try {
                     $paymentTable = Payments::select("*")->where("payment_id", $request->input("id"))->first();
-                    $paymentTable->payment_status = "canceled";
-                    $paymentTable->save();
+                    $user = User::select("*")->where("id", $paymentTable->user_id)->first();
+                    $team = Team::select("*")->where("id", $user->team_id)->first();
+                    if ($user->team->split_the_bill == 1) {
+                        PaymentService::rejectSplitTheBillPayment($user, $team, $mailgunService);
+
+                    } else {
+                        $paymentTable = Payments::select("*")->where("payment_id", $request->input("id"))->first();
+                        $paymentTable->payment_status = "Expired";
+                        $paymentTable->save();
+                    }
+                } catch (Exception $e) {
+                    error_log(htmlspecialchars($e->getMessage()), 3, "/var/log/mollie/error_log.txt");
+                    echo "API call failed: " . htmlspecialchars($e->getMessage());
+                }
+
+            } elseif ($payment->isCanceled()) {
+                try {
+                    $paymentTable = Payments::select("*")->where("payment_id", $request->input("id"))->first();
+                    $user = User::select("*")->where("id", $paymentTable->user_id)->first();
+                    $team = Team::select("*")->where("id", $user->team_id)->first();
+                    if ($user->team->split_the_bill == 1) {
+                        PaymentService::rejectSplitTheBillPayment($user, $team, $mailgunService);
+
+                    } else {
+                        $paymentTable = Payments::select("*")->where("payment_id", $request->input("id"))->first();
+                        $paymentTable->payment_status = "canceled";
+                        $paymentTable->save();
+                    }
+                } catch (Exception $e) {
+                    error_log(htmlspecialchars($e->getMessage()), 3, "/var/log/mollie/error_log.txt");
+                    echo "API call failed: " . htmlspecialchars($e->getMessage());
                 }
 
 
@@ -174,12 +149,10 @@ class ApiController extends Controller
                  */
             }
         } catch (\Mollie\Api\Exceptions\ApiException $e) {
+            error_log(htmlspecialchars($e->getMessage()), 3, "/var/log/mollie/error_log.txt");
             echo "API call failed: " . htmlspecialchars($e->getMessage());
         }
         return response('OK', 200);
-//        $response = file_get_contents('php://input');
-//        $json = json_decode($response);
-//        Session::set("json", $json);
     }
 
     public function webhookMolliePaymentAction(Request $request){

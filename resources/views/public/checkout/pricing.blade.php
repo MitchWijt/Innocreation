@@ -30,7 +30,7 @@
                                         <div class="d-flex js-center">
                                             <? if(isset($user)) { ?>
                                                 <? if($user->team_id != null && $user->team->packageDetails()) { ?>
-                                                        <? if($user->isMember() && $user->team->packageDetails()->membership_package_id == $membershipPackage->id && $user->team->packageDetails()->custom_team_package_id == null) { ?>
+                                                        <? if($user->isMember() && $user->team->packageDetails()->membership_package_id == $membershipPackage->id) { ?>
                                                             <button class="btn btn-inno @tablet btn-sm @endtablet" disabled>Your current package!</button>
                                                         <? } else { ?>
                                                             <button class="openModalChangePackage btn btn-inno-cta @tablet btn-sm @endtablet" data-user-id="<?= $user->id?>" data-membership-package-id="<?= $membershipPackage->id?>">Choose package</button>
@@ -110,4 +110,5 @@
 @endsection
 @section('pagescript')
     <script src="/js/checkout/packages.js"></script>
+    <script src="/js/checkout/pricing.js"></script>
 @endsection

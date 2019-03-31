@@ -578,7 +578,11 @@ class TeamController extends Controller
         $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
 
         $splitTheBillDetails = SplitTheBillLinktable::select("*")->where("team_id", $team->id)->get();
-        return view("/public/team/teamPaymentDetails", compact("splitTheBillDetails", "team", "teamPackage"));
+        if($teamPackage) {
+            return view("/public/team/teamPaymentDetails", compact("splitTheBillDetails", "team", "teamPackage"));
+        } else{
+            return view("/public/team/teamPaymentDetails", compact("splitTheBillDetails", "team"));
+        }
     }
 
     public function teamPaymentSettingsAction(){
@@ -612,29 +616,6 @@ class TeamController extends Controller
                 $splitTheBillLinktable->team_id = $teamId;
                 $splitTheBillLinktable->created_at = date("Y-m-d H:i:s");
                 $splitTheBillLinktable->save();
-
-//                if(!$splitTheBillLinktable->user->getMostRecentOpenPayment()){
-//                    $description = $teamPackage->title . " for team " . $teamPackage->team->team_name . uniqid($splitTheBillLinktable->user_id);
-//                    $price = number_format($splitTheBillLinktable->amount, 2, ".", ".");
-//                    $redirectUrl = AuthorisePaymentRequest::redirectUrl(true);
-//                    $customerId = $splitTheBillLinktable->user->mollie_customer_id;
-//                    $user = $splitTheBillLinktable->user;
-//                    $reference = $team->id;
-//                    $mollie = new MollieService();
-//                    $mollieData = $mollie->createNewMolliePayment($price, $description, $redirectUrl, $customerId, $user, $reference);
-//
-//                    $payment = new Payments();
-//                    $payment->user_id = $splitTheBillLinktable->user->id;
-//                    $payment->team_id = $team->id;
-//                    $payment->payment_id = $mollieData['id'];
-//                    $payment->payment_url = $mollieData['link'];
-//                    $payment->payment_method = $mollieData['method'];
-//                    $payment->amount = $price;
-//                    $payment->reference = $reference;
-//                    $payment->payment_status = "Open";
-//                    $payment->created_at = date("Y-m-d H:i:s");
-//                    $payment->save();
-//                }
             }
             $team->split_the_bill = 1;
 

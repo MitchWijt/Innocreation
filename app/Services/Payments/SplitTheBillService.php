@@ -12,6 +12,7 @@ use App\SplitTheBillLinktable;
 use App\TeamPackage;
 use App\User;
 use App\Payments;
+use App\Services\Payments\PaymentService;
 class SplitTheBillService {
 
     public function validateSplitTheBill($request){
@@ -22,17 +23,16 @@ class SplitTheBillService {
         $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $user->id)->where("team_id", $user->team_id)->first();
         $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
 
-        $price = number_format($splitTheBillLinktable->amount, 2, ".", ".");
-        $description = $teamPackage->title . " for team " . $teamPackage->team->team_name . " - " .  uniqid($user->id) . " ";
-
         // returns the unique reference number for the new payment
-        $reference = GenericService::getPaymentReference();
+        $reference = PaymentService::getPaymentReference($userId);
+
+        $price = number_format($splitTheBillLinktable->amount, 2, ".", ".");
+        $description = $teamPackage->title . " for team " . $teamPackage->team->team_name . " - " .  $reference . " ";
+
 
         //checks if both terms of service and terms of privacy are accepted
         if($termsPayment == 1 && $termsPrivacy == 1){
             //accepts the split the bill.
-            self::acceptSplitTheBill($user);
-
             if($user->getMostRecentPayment()){
                 self::validateWhenRecentPayment($teamPackage, $price, $description, $reference, $user);
             } else if($user->getMostRecentOpenPayment()) {
@@ -47,7 +47,7 @@ class SplitTheBillService {
     }
 
 
-    private static function acceptSplitTheBill($user){
+    public static function acceptSplitTheBill($user){
         $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $user->id)->where("team_id", $user->team_id)->first();
         $splitTheBillLinktable->accepted = 1;
         $splitTheBillLinktable->save();
@@ -95,18 +95,12 @@ class SplitTheBillService {
         return redirect($redirect);
     }
 
-    private static function validateWhenOpenPayment($linktable){
-        //returns user to open payment url to pay the open transaction.
-        $url = $linktable->getPaymentUrl();
-        return redirect("/");
-    }
-
     private static function validateWhenNewPayment($price, $description, $reference, $user){
         // return the redirect url user goes to after payment.
         $redirectUrl = self::getRedirectUrl();
 
         //Gets the payment reference number
-        GenericService::getPaymentReference();
+        PaymentService::getPaymentReference($user->id);
 
         //creates new first mollie payment
         $mollie = new MollieService();
