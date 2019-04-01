@@ -17,10 +17,6 @@
         <a class="regular-link c-gray" href="/my-team">My Team</a>
     </div>
     <hr>
-    <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-team/members">Team members</a>
-    </div>
-    <hr>
     <div class="sidebar-tab text-center p-relative">
         <?
             $team = \App\Team::select("*")->where("team_name", $user->team->team_name)->first();
@@ -28,10 +24,6 @@
         ?>
         <a class="regular-link c-gray" href="/my-team/team-chat">Team chat</a>
 
-    </div>
-    <hr>
-    <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-team/team-products">My team products</a>
     </div>
     <hr>
     <div class="sidebar-tab text-center">

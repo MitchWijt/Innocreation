@@ -108,4 +108,8 @@ class PaymentService {
         $userMessage->created_at = date("Y-m-d H:i:s");
         $userMessage->save();
     }
+
+    public static function calculateNewPrice($oldPrice, $currentPrice){
+        return $oldPrice + $currentPrice;
+    }
 }

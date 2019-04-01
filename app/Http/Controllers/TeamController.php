@@ -12,6 +12,7 @@ use App\Payments;
 use App\Services\AppServices\MollieService;
 use App\Services\Checkout\AuthorisePaymentRequest;
 use App\Services\TeamServices\JoinRequests;
+use App\Services\TeamServices\MemberService;
 use App\Services\TimeSent;
 use App\SplitTheBillLinktable;
 use App\Team;
@@ -240,82 +241,9 @@ class TeamController extends Controller
         return $joinRequests->inviteUser($request, $mailgunService);
     }
 
-    public function teamMembersPage(){
-        $title = "My team members. Join my team!";
-        $user = User::select("*")->where("id", Session::get("user_id"))->first();
-        $team = Team::select("*")->where("id", $user->team_id)->first();
-        $teamRoles = UserRole::select("*")->where("team_role", 1)->get();
-        return view("/public/team/teamPageMembers", compact("team", "user","teamRoles", "title"));
-    }
 
-    public function kickMemberFromTeamAction(Request $request){
-        $user_id = $request->input("user_id");
-        $team_id = $request->input("team_id");
-        $expertise_id = $request->input("joined_expertise_id");
-        $kickMessage = $request->input("kickMessage");
-
-        $team = Team::select("*")->where("id", $team_id)->first();
-
-        $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
-        $neededExpertise->amount = $neededExpertise->amount + 1;
-        $neededExpertise->save();
-
-        $user = User::select("*")->where("id", $user_id)->first();
-        $user->team_id = null;
-        $user->save();
-
-        $joinrequest = JoinRequestLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->where("accepted", 1)->first();
-        if(!$joinrequest){
-            $joinrequest = InviteRequestLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->where("accepted", 1)->first();
-        }
-        if($joinrequest) {
-            $joinrequest->delete();
-        }
-
-        if($team->split_the_bill == 1 && $user->getMostRecentPayment()){
-            $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $user->id)->where("team_id", $team->id)->first();
-            if($splitTheBillLinktable) {
-                $teamLeaderSplitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $team->ceo_user_id)->where("team_id", $team->id)->first();
-
-                $memberAmount = $splitTheBillLinktable->amount;
-                $leaderAmount = $teamLeaderSplitTheBillLinktable->amount;
-                $newLeaderPrice = $leaderAmount + $memberAmount;
-
-                $splitTheBillLinktable->delete();
-
-                $mollie = $this->getService("mollie");
-                $sub = $teamLeaderSplitTheBillLinktable->user->getMostRecentPayment();
-                $customer = $mollie->customers->get($teamLeaderSplitTheBillLinktable->user->mollie_customer_id);
-                $subscription = $customer->getSubscription($sub->sub_id);
-                $subscription->amount = (object) [
-                    "currency" => "EUR",
-                    "value" => number_format($newLeaderPrice, 2, ".", "."),
-                ];
-                $subscription->webhookUrl = $this->getWebhookUrl(true);
-                $subscription->update();
-
-                $teamLeaderSplitTheBillLinktable->amount = $newLeaderPrice;
-                $teamLeaderSplitTheBillLinktable->save();
-            }
-
-            $mollie = $this->getService("mollie");
-            $customer = $mollie->customers->get($user->mollie_customer_id);
-            $customer->cancelSubscription($user->getMostRecentPayment()->sub_id);
-
-            $user->subscription_canceled = 1;
-            $user->save();
-        }
-
-        $userChat = UserChat::select("*")->where("receiver_user_id", $user->id)->where("creator_user_id", 1)->first();
-        $userMessage = new UserMessage();
-        $userMessage->sender_user_id = 1;
-        $userMessage->user_chat_id = $userChat->id;
-        $userMessage->time_sent = $this->getTimeSent();
-        $userMessage->message = "We are sorry to say that $team->team_name has decided to kick you from their team. their reason is: $kickMessage";
-        $userMessage->created_at = date("Y-m-d H:i:s");
-        $userMessage->save();
-
-        return redirect($_SERVER["HTTP_REFERER"]);
+    public function kickMemberFromTeamAction(Request $request, MemberService $memberService){
+        return $memberService->kickMemberFromTeam($request);
     }
 
     public function teamChatAction(){

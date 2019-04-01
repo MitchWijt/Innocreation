@@ -227,8 +227,6 @@ Route::post("/my-team/acceptUserInteam", "TeamController@acceptUserInteamAction"
 
 Route::post("/my-team/inviteUserForTeam", "TeamController@inviteUserForTeamAction");
 
-Route::get("/my-team/members", "TeamController@teamMembersPage");
-
 Route::post("/my-team/kickMemberFromTeam", "TeamController@kickMemberFromTeamAction");
 
 Route::get("/my-team/team-chat", "TeamController@teamChatAction");
@@ -254,8 +252,6 @@ Route::post("/my-team/muteMemberFromTeamChat", "TeamController@muteMemberFromTea
 Route::post("/my-team/unmuteMemberFromTeamChat", "TeamController@unmuteMemberFromTeamChatAction");
 
 Route::post("/my-team/editMemberPermissions", "TeamController@editMemberPermissionsAction");
-
-Route::get("/my-team/team-products", "TeamController@teamProductsIndexAction");
 
 Route::post("/my-team/saveTeamProduct", "TeamController@saveTeamProductAction");
 

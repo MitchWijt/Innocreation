@@ -102,6 +102,12 @@
             ]);
         }
 
+        public function cancelSubscription($user){
+            $mollie = $this->mollie;
+            $customer = $mollie->customers->get($user->mollie_customer_id);
+            $customer->cancelSubscription($user->getMostRecentPayment()->sub_id);
+        }
+
         public function cancelAllSubscriptions($user){
             $mollie = $this->mollie;
             $customer = $mollie->customers->get($user->mollie_customer_id);

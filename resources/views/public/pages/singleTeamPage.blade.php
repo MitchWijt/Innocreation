@@ -57,10 +57,10 @@
                                     <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 39%; left: 50%; transform: translate(-50%, -50%)">
                                         <div class="avatar" style="background: url('<?= $member->getProfilePicture()?>'); z-index: 2000000; opacity: 1 !important"></div>
                                     </div>
-                                    <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 66%; left: 50%; transform: translate(-50%, -50%)">
-                                        <p class="c-white f-16"><?= $member->getName()?></p>
+                                    <div class="p-absolute memberName" style="z-index: 2000000; opacity: 1 !important; top: 66%; left: 50%; transform: translate(-50%, -50%)">
+                                        <p class="c-white f-16"><? if($user && $user->id == $team->ceo_user_id) { ?><i class="zmdi zmdi-chevron-down f-15 popoverMember" data-toggle="popover" data-content='<?= view("/public/team/shared/_memberMenuPopover", compact("team", 'member'))?>'></i> <? } ?><?= $member->getName()?></p>
                                     </div>
-                                    <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 77%; left: 50%; transform: translate(-50%, -50%)">
+                                    <div class="p-absolute" style="z-index: 20; opacity: 1 !important; top: 77%; left: 50%; transform: translate(-50%, -50%)">
                                         <p class="c-orange f-11">@<?= $member->slug?></p>
                                     </div>
                                 </a>
@@ -90,7 +90,7 @@
                                     <? array_push($requiredArray, $requirement)?>
                                 <? } ?>
                                 <div class="row">
-                                    <div class="col-sm-4 m-b-20">
+                                    <div class="col-sm-4 m-b-30">
                                         <div class="card">
                                             <div class="card-block expertiseCard p-relative ">
                                                 <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">

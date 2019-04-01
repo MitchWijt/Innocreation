@@ -19,53 +19,6 @@ $(".openApplyModal").on("click",function () {
     });
 });
 
-$(".triggerLike").on("click",function () {
-    var postData = "";
-    var team_id = $(this).data("team-id");
-    $.ajax({
-        method: "POST",
-        beforeSend: function (xhr) {
-            var token = $('meta[name="csrf_token"]').attr('content');
-
-            if (token) {
-                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-            }
-        },
-        url: "/favoriteTeam",
-        data: {'team_id': team_id},
-        success: function (data) {
-            if(data == 1) {
-                var _this = $(".favoriteIconLiked");
-                _this.unbind('mouseleave');
-                _this.removeClass("hidden");
-                $(".favoriteIcon").addClass("hidden");
-            } else if(data == 2){
-                $(".favAfterLike").addClass("hidden");
-                $(".favoriteIcon").removeClass("hidden");
-            }
-        }
-    });
-});
-
-
-
-$(".star").on('mouseover', function () {
-   $(this).addClass("zmdi-star");
-   $(this).prevAll().addClass("zmdi-star");
-});
-
-$(".star").on('mouseleave', function () {
-    $(this).removeClass("zmdi-star");
-});
-
-$(".star").on("click",function () {
-    var value = $(this).data("star-value");
-    $(".star_value").val(value);
-    $(this).addClass("zmdi-star");
-    $(this).unbind("mouseleave");
-    $(this).prevAll().unbind("mouseleave");
-});
-
 $(".collapseExpertise").on("click",function () {
     var id = $(this).data("user-id");
     var _this = $(this);
@@ -95,5 +48,19 @@ $(".editBannerImage").on("click",function () {
 $('.bannerImgInput').on("change", function () {
     $(".bannerImgForm").submit();
 });
+
+// Opens popup to kick member from team.
+$('.popoverMember').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'})
+    .on("click", function () {
+    });
+$(".popoverMember").on("click", function (e) {
+    e.preventDefault();
+});
+
+$(document).on("click", ".popoverMember, .memberName", function (e) {
+
+    e.preventDefault();
+});
+
 
 
