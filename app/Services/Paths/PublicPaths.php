@@ -90,6 +90,11 @@ class PublicPaths
         return $path;
     }
 
+    public static function getTeamProfilePicturePath($filename, $team){
+        $path = sprintf('teams/%s/profilepicture/%s', $team->slug, $filename);
+        return $path;
+    }
+
     /**
      * Returns a unique generated ID
      */

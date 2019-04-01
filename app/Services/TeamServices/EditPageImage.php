@@ -9,6 +9,8 @@
 namespace App\Services\TeamServices;
 
 
+use App\Services\Images\ImageProcessor;
+use App\Services\Paths\PublicPaths;
 use App\Team;
 use App\User;
 use Illuminate\Support\Facades\Session;
@@ -37,6 +39,40 @@ class EditPageImage
             return redirect(sprintf('/team/%s',  $team->slug));
         } else {
             return redirect(sprintf('/team/%s', $team->slug))->withErrors("Image is too large. The max upload size is 8MB");
+        }
+    }
+
+    public function editProfilePicture($request){
+        // grabs the uploaded file moves it into the correct folder and adds it to the database for the team
+        $team_id = $request->input("team_id");
+        $file = $request->file("profile_picture");
+        $size = $this->formatBytes($file->getSize());
+        if($size < 8) {
+            $uniqueId = uniqid($team_id);
+            $filename = PublicPaths::getFileName($uniqueId, $file, false, false);
+            $filePath = $file->getRealPath();
+            $targets = ["extra-small", "small", "normal", "large"];
+            $team = Team::select("*")->where("id", $team_id)->first();
+
+            $imageProcessor = new ImageProcessor();
+            $images = $imageProcessor->resize($file, $filePath, $targets, $uniqueId);
+            foreach($images as $image){
+                $uploadPath = PublicPaths::getTeamProfilePicturePath($image['filename'], $team);
+                $exists = Storage::disk('spaces')->exists($uploadPath);
+                if (!$exists) {
+                    foreach($targets as $target){
+                        $pathDelete = $team->getProfilePicture($target, true);
+                        Storage::disk('spaces')->delete($pathDelete);
+                    }
+                }
+                $imageProcessor->upload($image['file'], $uploadPath, true);
+            }
+            $team->team_profile_picture = $filename;
+            $team->extension = $file->getClientOriginalExtension();
+            $team->save();
+            return redirect($_SERVER["HTTP_REFERER"]);
+        } else {
+            return redirect("/my-team")->withErrors("Image is too large. The max upload size is 8MB");
         }
     }
 

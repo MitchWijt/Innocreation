@@ -32,7 +32,6 @@
         public function resize($file, $fileRealPath, $targets, $uniqueId){
             $images = [];
             foreach($targets as $key){
-
                 $width = self::getWidthAndHeight($key, $file)['width'];
                 $height = self::getWidthAndHeight($key, $file)['height'];
 

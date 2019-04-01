@@ -14,11 +14,18 @@ class Team extends Model {
         return "/team/$this->slug";
     }
 
-    public function getProfilePicture(){
-        if($this->team_profile_picture != "defaultProfilePicture.png") {
-            return "https://space-innocreation.ams3.cdn.digitaloceanspaces.com/teams/$this->slug/profilepicture/$this->team_profile_picture";
+    public function getProfilePicture($size = "normal", $rawPath = false){
+        if($this->profile_picture != "defaultProfilePicture.png") {
+            if($this->extension == null){
+                return env("DO_SPACES_URL") . "/teams/$this->slug/profilepicture/$this->team_profile_picture";
+            }
+            if($rawPath){
+                return "teams/$this->slug/profilepicture/$this->team_profile_picture-$size.$this->extension";
+            } else {
+                return env("DO_SPACES_URL") . "/teams/$this->slug/profilepicture/$this->team_profile_picture-$size.$this->extension";
+            }
         } else {
-            return "/images/profilePicturesTeams/defaultProfilePicture.png";
+            return "/images/profilePicturesUsers/defaultProfilePicture.png";
         }
     }
 
