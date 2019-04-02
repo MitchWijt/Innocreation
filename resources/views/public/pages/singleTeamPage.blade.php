@@ -24,12 +24,12 @@
                 <div class="avatar-med absolutePF p-absolute" style="background: url('<?= $team->getProfilePicture()?>');"></div>
             </div>
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-xl-4">
                     <div class="row d-flex fd-column userName" style="margin-top: 60px !important">
                         <p class="f-30 bold m-b-0" style="margin-left: 8%"><?= $team->team_name?></p>
                     </div>
                 </div>
-                <div class="col-sm-8 <? if(!isset($user)) echo "m-t-65";?>">
+                <div class="col-xl-8 <? if(!isset($user)) echo "m-t-65";?>">
                     <div class="row">
                         <? if($user && $user->id == $team->ceo_user_id) { ?>
                             <div class="col-sm-12 m-t-10 m-b-20 navbarBox">
@@ -66,10 +66,10 @@
                                     <div class="overlay-expertise-user"></div>
                                 </a>
                                 <a class="userCardContent" href="<?= $member->getUrl()?>">
-                                    <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 39%; left: 50%; transform: translate(-50%, -50%)">
+                                    <div class="p-absolute" style="z-index: 20; opacity: 1 !important; top: 39%; left: 50%; transform: translate(-50%, -50%)">
                                         <div class="avatar" style="background: url('<?= $member->getProfilePicture()?>'); z-index: 2000000; opacity: 1 !important"></div>
                                     </div>
-                                    <div class="p-absolute memberName" style="z-index: 2000000; opacity: 1 !important; top: 66%; left: 50%; transform: translate(-50%, -50%)">
+                                    <div class="p-absolute memberName" style="z-index: 20; opacity: 1 !important; top: 66%; left: 50%; transform: translate(-50%, -50%)">
                                         <p class="c-white f-16"><? if($user && $user->id == $team->ceo_user_id) { ?><i class="zmdi zmdi-chevron-down f-15 popoverMember" data-toggle="popover" data-content='<?= view("/public/team/shared/_memberMenuPopover", compact("team", 'member'))?>'></i> <? } ?><?= $member->getName()?></p>
                                     </div>
                                     <div class="p-absolute" style="z-index: 20; opacity: 1 !important; top: 77%; left: 50%; transform: translate(-50%, -50%)">

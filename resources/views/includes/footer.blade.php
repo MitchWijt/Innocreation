@@ -33,7 +33,7 @@
                                 <div class="d-flex list-links">
                                     <p class="td-none m-0 navTitle">General info:</p>
                                     <a class="td-none" href="/contact-us"><span>Contact</span></a>
-                                    <a class="td-none" href="/faq"><span>FAQ</span></a>
+                                    {{--<a class="td-none" href="/faq"><span>FAQ</span></a>--}}
                                     <? if(\Illuminate\Support\Facades\Session::has("user_id")) { ?>
                                     <a class="td-none" href="/platform-idea"><span>Idea? Let us know!</span></a>
                                     <? } ?>
@@ -73,7 +73,7 @@
                             <div class="d-flex list-links">
                                 <p class="td-none m-0 navTitle">General info:</p>
                                 <a class="td-none" href="/contact-us"><span>Contact</span></a>
-                                <a class="td-none" href="/faq"><span>FAQ</span></a>
+                                {{--<a class="td-none" href="/faq"><span>FAQ</span></a>--}}
                                 <? if(\Illuminate\Support\Facades\Session::has("user_id")) { ?>
                                 <a class="td-none" href="/platform-idea"><span>Idea? Let us know!</span></a>
                                 <? } ?>

@@ -1,4 +1,6 @@
 @extends("layouts.app")
+<link rel="stylesheet" href="/css/responsiveness/users-expertisesList/expertiseList.css">
+
 @section("content")
     <div class="<?= \App\Services\UserAccount\UserAccount::getTheme()?>">
         <div class="d-flex grey-background vh85">
@@ -24,7 +26,7 @@
                         </div>
                         <div class="row" style="margin-bottom: 100px;">
                             <? foreach($expertise->getTop3ActiveUsers() as $linktable) { ?>
-                                <div class="col-sm-4 m-t-10">
+                                <div class="col-sm-4 m-t-10 cardBox">
                                     <div class="card userCard m-t-20 m-b-20">
                                         <div class="card-block p-relative c-pointer" data-url="/" style="max-height: 210px !important">
                                             <div class="p-t-40 p-absolute" style="z-index: 200; bottom: 0; right: 5px">

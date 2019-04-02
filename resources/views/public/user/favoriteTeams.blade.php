@@ -1,6 +1,6 @@
 @extends("layouts.app")
 @section("content")
-    <div class="d-flex grey-background vh85">
+    <div class="d-flex grey-background vh85 <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
         <div class="container">
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black">My favorite teams</h1>
