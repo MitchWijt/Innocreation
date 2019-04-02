@@ -106,6 +106,10 @@ class TeamController extends Controller
 
     }
 
+    public function getPrivacySettingsModal(Request $request, CredentialService $credentialService){
+        return $credentialService->getPrivacySettingsModal($request);
+    }
+
     public function saveTeamNameAction(Request $request, CredentialService $credentialService){
         return $credentialService->saveTeamName($request);
     }

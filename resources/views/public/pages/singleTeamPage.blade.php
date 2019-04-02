@@ -29,7 +29,19 @@
                         <p class="f-30 bold m-b-0" style="margin-left: 8%"><?= $team->team_name?></p>
                     </div>
                 </div>
-                <div class="col-sm-8 m-t-10">
+                <div class="col-sm-8 <? if(!isset($user)) echo "m-t-65";?>">
+                    <div class="row">
+                        <? if($user && $user->id == $team->ceo_user_id) { ?>
+                            <div class="col-sm-12 m-t-10 m-b-20 navbarBox">
+                                <div class="navbar-user-desktop">
+                                    <a href="#" class="teamPrivacySettings" data-id="<?= $team->id?>"><span class="iconCTA pull-right m-r-10 " >Privacy settings</span></a>
+                                </div>
+                                <div class="navbar-user-mobile" style="display: none">
+                                    <a href="#" class="teamPrivacySettings" data-id="<?= $team->id?>"><span class="iconCTA pull-right m-r-10"><i class="zmdi zmdi-settings"></i></span></a>
+                                </div>
+                            </div>
+                        <? } ?>
+                    </div>
                     <h3 class="bold m-b-10">Introduction</h3>
                     <p class="m-l-10 c-dark-grey" style="margin-bottom: 30px;"><?= $team->team_introduction?></p>
                     <h3 class="bold m-b-10">Motivation</h3>

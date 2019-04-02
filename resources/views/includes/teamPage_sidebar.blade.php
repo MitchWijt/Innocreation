@@ -17,15 +17,6 @@
         <a class="regular-link c-gray" href="/my-team">My Team</a>
     </div>
     <hr>
-    <div class="sidebar-tab text-center p-relative">
-        <?
-            $team = \App\Team::select("*")->where("team_name", $user->team->team_name)->first();
-            $unseenMessages = \App\UserMessage::select("*")->where("team_id", $team->id)->where("seen_at" ,null)->get();
-        ?>
-        <a class="regular-link c-gray" href="/my-team/team-chat">Team chat</a>
-
-    </div>
-    <hr>
     <div class="sidebar-tab text-center">
         <a class="regular-link c-gray" href="/my-team/payment-details">Payment details</a>
     </div>

@@ -58,8 +58,31 @@ $(".popoverMember").on("click", function (e) {
 });
 
 $(document).on("click", ".popoverMember, .memberName", function (e) {
-
     e.preventDefault();
+});
+
+$(document).on("click", ".teamPrivacySettings", function () {
+    var teamId = $(this).data("id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/my-team/getPrivacySettingsModal",
+        data: {'team_id': teamId},
+        success: function (data) {
+            $("body").append(data);
+            $(".privacySettingsModalTeam").modal("toggle");
+        }
+    });
+});
+
+$(document).on("hidden.bs.modal", ".privacySettingsModalTeam", function () {
+    $(".privacySettingsModalTeam").remove();
 });
 
 

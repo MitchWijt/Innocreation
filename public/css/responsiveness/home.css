@@ -18,20 +18,7 @@
     }
 }
 
-@media screen and (max-width: 1200px) {
-    .main-title h1{
-        font-size: 25px !important;
-    }
 
-    .main-title p{
-        font-size: 9px !important;
-    }
-
-    .main-title img{
-        width: 7% !important;
-        height: 18% !important;
-    }
-}
 
 @media screen and (max-width: 841px) {
     .carousel-control-prev{
@@ -80,6 +67,20 @@
         font-size: 12px !important;
     }
 
+    .buttonConnect{
+        display: flex;
+        justify-content: center;
+    }
+
+    .hrHome{
+        flex: 0 0 50% !important;
+        max-width: 100% !important;
+    }
+
+    .main-content{
+        height: 45vh !important;
+    }
+
     /*.footer-title img{*/
         /*width: 5% !important;*/
         /*height: 5% !important;*/
@@ -89,6 +90,21 @@
         /*width: 4% !important;*/
         /*height: 4% !important;*/
     /*}*/
+}
+
+@media screen and (max-width: 725px) {
+    .main-content h1{
+        font-size: 30px !important;
+    }
+
+    .main-content p{
+        font-size: 12px !important;
+    }
+
+    .hrHome{
+        flex: 0 0 50% !important;
+        max-width: 80% !important;
+    }
 }
 
 @media screen and (max-width: 805px) {

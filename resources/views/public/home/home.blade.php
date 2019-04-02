@@ -13,24 +13,19 @@
                 <div class="row d-flex js-center <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
                     <div class="col-md-8 m-b-20 d-flex js-center">
                         <div class="title-home">
-                            @mobile
-                                <h1 style="font-weight: bold;" class="text-center col-md-12 f-40">Innocreation</h1>
-                                <p class="text-center f-13">Have an idea? find team members, create your team and start building now!</p>
-                            @elsedesktop
-                                <h1 class="title-black bold">Innocreation</h1>
-                                <p class="m-b-0">Collaborate with creatives</p>
-                                <div class="d-flex align-start">
-                                    <p class="m-b-0">Active in various creative expertises </p> <i class="zmdi zmdi-accounts-outline f-22 m-l-10 c-black"></i>
-                                </div>
-                            @endmobile
+                            <h1 class="title-black bold">Innocreation</h1>
+                            <p class="m-b-0">Collaborate with creatives</p>
+                            <div class="d-flex align-start">
+                                <p class="m-b-0">Active in various creative expertises </p> <i class="zmdi zmdi-accounts-outline f-22 m-l-10 c-black"></i>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <div class="hr col-md-6 m-b-20"></div>
+                        <div class="hr col-md-6 m-b-20 hrHome"></div>
                     </div>
                 </div>
                 <div class="row d-flex js-center <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
-                    <div class="col-md-4 p-0">
+                    <div class="col-md-4 p-0 buttonConnect">
                         <a id="collaborateNow" href="/what-is-innocreation" class="btn btn-inno-cta startRegisterProcess @tablet p-l-8 @endtablet">@tablet Collaborate! @elsedesktop I want to connect! @endtablet</a>
                     </div>
                 </div>
@@ -38,24 +33,19 @@
                 <div class="row d-flex js-center <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
                     <div class="col-md-8 m-b-20 d-flex js-center">
                         <div class="title-home">
-                            @mobile
-                                <h1 style="font-weight: bold;" class="text-center col-md-12 f-40">Innocreation</h1>
-                                <p class="f-13 text-center">Have an idea? find team members, create your team and start building now!</p>
-                            @elsedesktop
-                                <h1 class="title-black bold">Innocreation</h1>
-                                <p class="m-b-0">Collaborate with creatives</p>
-                                <div class="d-flex align-start">
-                                    <p class="m-b-0">Active in various creative expertises </p> <i class="zmdi zmdi-accounts-outline f-22 m-l-10 c-black"></i>
-                                </div>
-                            @endmobile
+                            <h1 class="title-black bold">Innocreation</h1>
+                            <p class="m-b-0">Collaborate with creatives</p>
+                            <div class="d-flex align-start">
+                                <p class="m-b-0">Active in various creative expertises </p> <i class="zmdi zmdi-accounts-outline f-22 m-l-10 c-black"></i>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <div class="hr col-md-6 m-b-20"></div>
+                        <div class="hr col-md-6 m-b-20 hrHome"></div>
                     </div>
                 </div>
                 <div class="row d-flex js-center <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
-                    <div class="col-md-4 p-0">
+                    <div class="col-md-4 p-0 buttonConnect">
                         <a id="collaborateNow" href="/what-is-innocreation" class="btn btn-inno-cta startRegisterProcess @tablet p-l-8 @endtablet">@tablet Collaborate! @elsedesktop I want to connect! @endtablet</a>
                     </div>
                 </div>

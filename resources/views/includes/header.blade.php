@@ -32,13 +32,13 @@
                                     <i class="zmdi zmdi-comment-text f-20 c-pointer p-absolute popoverMessages" data-toggle="popover" data-content='<?= view("/public/shared/messagesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -22%"></i>
                                     <i class="zmdi zmdi-accounts-add f-20 c-pointer popoverRequests p-absolute" data-user-id="<?= $user->id?>" data-toggle="popover" data-content='<?= view("/public/shared/teamInvitesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -12%"></i>
 
-                                    <a class="btn btn-inno btn-sm" href="/expertises">Expertises</a>
+                                    <a class="btn btn-inno btn-sm" href="/expertises">Discover</a>
                                     <? if($user->team_id != null) { ?>
                                         <a class="btn btn-inno btn-sm" href="/my-team">Team</a>
                                     <? } else { ?>
                                         <a class="btn btn-inno btn-sm" href="/my-account/teamInfo">Create team</a>
                                     <? } ?>
-                                    <a class="btn btn-inno btn-sm" href="/innocreatives">Community</a>
+                                    <a class="btn btn-inno btn-sm" href="/innocreatives">Share your passion</a>
                                     <i class="popoverHeader zmdi zmdi-chevron-down  f-25 m-l-15 m-t-5 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
                                     <div class="pull-right">
                                         <a href="<?= $user->getUrl()?>">
