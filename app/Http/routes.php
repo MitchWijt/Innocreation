@@ -213,6 +213,8 @@ Route::post("/my-team/saveTeamPage", "TeamController@saveTeamPageAction");
 
 Route::post("/my-team/getPrivacySettingsModal", "TeamController@getPrivacySettingsModal");
 
+Route::post("/my-team/editNeededExpertiseModal", "TeamController@editNeededExpertiseModal");
+
 Route::get("/my-team/neededExpertises", "TeamController@neededExpertisesAction");
 
 Route::post("/my-team/addNeededExpertise", "TeamController@addNeededExpertiseAction");

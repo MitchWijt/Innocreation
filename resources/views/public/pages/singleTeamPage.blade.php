@@ -14,12 +14,12 @@
             </div>
             <div class="banner p-relative" style="background: url('<?= $team->getBanner()?>');">
                 <? if($user && $user->id == $team->ceo_user_id) { ?>
-                <form action="/my-team/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
-                    <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                    <input type="hidden" name="team_id" value="<?= $team->id?>">
-                    <input type="file" name="bannerImg" class="bannerImgInput">
-                </form>
-                <i class="zmdi zmdi-edit editBtn editBannerImage c-black @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
+                    <form action="/my-team/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
+                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                        <input type="hidden" name="team_id" value="<?= $team->id?>">
+                        <input type="file" name="bannerImg" class="bannerImgInput">
+                    </form>
+                    <i class="zmdi zmdi-edit editBtn editBannerImage c-black @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
                 <? } ?>
                 <div class="avatar-med absolutePF p-absolute" style="background: url('<?= $team->getProfilePicture()?>');"></div>
             </div>
@@ -87,8 +87,11 @@
             <div class="row d-flex js-center">
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-sm-12 m-l-20 m-b-10" style="margin-top: 40px">
+                        <div class="col-sm-12 m-l-20 m-b-10 d-flex js-between" style="margin-top: 40px">
                             <h3 class="bold f-30">Needed expertises</h3>
+                            <? if($user && $user->id == $team->ceo_user_id) { ?>
+                                <i  style="z-index: 2;"  data-team-id="<?= $team->id?>"  class="editBtn zmdi zmdi-plus f-20 p-r-15 p-l-15 p-b-10 p-t-10 editNeededExpertise @handheld no-hover @endhandheld"></i>
+                            <? } ?>
                         </div>
                     </div>
                     <div class="singleTeamNeededExpertises m-t-20 <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
@@ -114,34 +117,45 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-8">
+                                    <div class="col-sm-8 p-r-0">
                                         <div class="c-black">
                                             <p><?= $neededExpertise->description?></p>
                                         </div>
-                                        <ul class="p-l-25">
-                                            <? for($i = 0; $i < $counter; $i++) { ?>
-                                                <li><?= $requiredArray[$i]?></li>
-                                            <? } ?>
-                                        </ul>
-                                        <div class="p-t-40 p-absolute" style="z-index: 102; top: 66%; left: 50%; transform: translate(-50%, -50%);">
-                                            <? if($user) { ?>
-                                                <? if($user->team_id == null) { ?>
-                                                    <? if($user->checkJoinRequests($neededExpertise->expertise_id, $team->id) == false) { ?>
-                                                        <div class="col-sm-5">
-                                                            <? if(\App\Services\TeamServices\TeamPackage::checkPackageAndPayment($team->id, $neededExpertise->expertises)) { ?>
-                                                                <button class="btn btn-inno openApplyModal btn-sm" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
-                                                            <? } else { ?>
-                                                                <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal btn-sm" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
-                                                            <? } ?>
-                                                        </div>
-                                                    <? } else { ?>
-                                                        <div class="col-sm-5">
-                                                            <p class="c-orange pull-right m-t-10">Applied</p>
-                                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-10">
+                                                <ul class="p-l-25">
+                                                    <? for($i = 0; $i < $counter; $i++) { ?>
+                                                    <li><?= $requiredArray[$i]?></li>
                                                     <? } ?>
-                                                <? } ?>
-                                            <? } ?>
+                                                </ul>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <div class="p-t-40 text-right">
+                                                    <? if($user) { ?>
+                                                        <? if($user->team_id == null) { ?>
+                                                            <? if($user->checkJoinRequests($neededExpertise->expertise_id, $team->id) == false) { ?>
+                                                                <div class="col-sm-5">
+                                                                    <? if(\App\Services\TeamServices\TeamPackage::checkPackageAndPayment($team->id, $neededExpertise->expertises)) { ?>
+                                                                        <button class="btn btn-inno openApplyModal btn-sm" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                    <? } else { ?>
+                                                                        <button data-toggle="modal" data-target="#teamLimitNotification" class="btn btn-inno openUpgradeModal btn-sm" data-expertise-id="<?=$neededExpertise->expertise_id?>">Apply for expertise</button>
+                                                                    <? } ?>
+                                                                </div>
+                                                            <? } else { ?>
+                                                                <div class="col-sm-5">
+                                                                    <p class="c-orange pull-right m-t-10">Applied</p>
+                                                                </div>
+                                                            <? } ?>
+                                                        <? } ?>
+                                                        <? if($user && $user->id == $team->ceo_user_id) { ?>
+                                                            <i  style="z-index: 2;" data-needed-expertise-id="<?= $neededExpertise->id?>" data-team-id="<?= $team->id?>" class="editBtn zmdi zmdi-edit f-20 p-r-10 p-l-10 p-b-5 p-t-5 editNeededExpertise @handheld no-hover @endhandheld"></i>
+                                                        <? } ?>
+                                                    <? } ?>
+                                                </div>
+                                            </div>
                                         </div>
+
+
                                     </div>
                                 </div>
                                 <? if($user) { ?>

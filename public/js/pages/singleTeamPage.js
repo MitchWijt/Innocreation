@@ -85,5 +85,33 @@ $(document).on("hidden.bs.modal", ".privacySettingsModalTeam", function () {
     $(".privacySettingsModalTeam").remove();
 });
 
+$(document).on("click",".editNeededExpertise", function () {
+    if($(this).data("needed-expertise-id")){
+        var neededExpertiseId = $(this).data("needed-expertise-id");
+    } else {
+        var neededExpertiseId = null;
+    }
+    var teamId = $(this).data("team-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/my-team/editNeededExpertiseModal",
+        data: {'neededExpertiseId': neededExpertiseId, "teamId": teamId},
+        success: function (data) {
+            $("body").append(data);
+            $(".editNeededExpertiseModal").modal("toggle");
+        }
+    });
+});
+
+$(document).on("hidden.bs.modal", ".editNeededExpertiseModal", function () {
+    $(".editNeededExpertiseModal").remove();
+});
 
 

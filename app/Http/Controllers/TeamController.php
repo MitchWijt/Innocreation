@@ -13,6 +13,7 @@ use App\Services\AppServices\MollieService;
 use App\Services\Checkout\AuthorisePaymentRequest;
 use App\Services\TeamServices\JoinRequests;
 use App\Services\TeamServices\MemberService;
+use App\Services\TeamServices\TeamExpertisesService;
 use App\Services\TimeSent;
 use App\SplitTheBillLinktable;
 use App\Team;
@@ -106,12 +107,31 @@ class TeamController extends Controller
 
     }
 
+    /**
+     *
+     * Gets the modal and sends it to the ajax success response to edit team information fields
+     *
+     */
     public function getPrivacySettingsModal(Request $request, CredentialService $credentialService){
         return $credentialService->getPrivacySettingsModal($request);
     }
 
+    /**
+     *
+     * Saves the team fields edited in the modal.
+     *
+     */
     public function saveTeamNameAction(Request $request, CredentialService $credentialService){
         return $credentialService->saveTeamName($request);
+    }
+
+    /**
+     *
+     * Gets the modal to alter or create a new needed expertise.
+     *
+     */
+    public function editNeededExpertiseModal(Request $request, TeamExpertisesService $teamExpertisesService){
+        return $teamExpertisesService->getEditNeededExpertiseModal($request);
     }
 
     /**
@@ -185,31 +205,8 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function saveNeededExpertiseAction(Request $request)
-    {
-        // saves the description + requirements for the expertises the team decided to change
-        $team_id = $request->input("team_id");
-        $expertise_id = $request->input("expertise_id");
-        $requirements = $request->input("requirements");
-        $amountNeeded = $request->input("amountExpertise");
-        $description = $request->input("description_needed_expertise");
-        $requirementString = "";
-        foreach($requirements as $requirement){
-            if($requirement != "") {
-                if ($requirementString == "") {
-                    $requirementString = $requirement;
-                } else {
-                    $requirementString = $requirementString . "," . $requirement;
-                }
-            }
-        }
-
-        $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
-        $neededExpertise->requirements = $requirementString;
-        $neededExpertise->description = $description;
-        $neededExpertise->amount = $amountNeeded;
-        $neededExpertise->save();
-        return redirect($_SERVER["HTTP_REFERER"]);
+    public function saveNeededExpertiseAction(Request $request, TeamExpertisesService $teamExpertisesService) {
+        return $teamExpertisesService->saveNeededExpertises($request);
     }
 
     /**
