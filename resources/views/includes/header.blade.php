@@ -34,7 +34,7 @@
 
                                     <a class="btn btn-inno btn-sm" href="/expertises">Discover</a>
                                     <? if($user->team_id != null) { ?>
-                                        <a class="btn btn-inno btn-sm" href="/my-team">Team</a>
+                                        <a class="btn btn-inno btn-sm" href="/team/<?= \Illuminate\Support\Facades\Session::get("team_name")?>">Team</a>
                                     <? } else { ?>
                                         <a class="btn btn-inno btn-sm" href="/my-account/teamInfo">Create team</a>
                                     <? } ?>

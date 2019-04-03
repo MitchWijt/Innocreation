@@ -34,6 +34,12 @@
                         <? if($user && $user->id == $team->ceo_user_id) { ?>
                             <div class="col-sm-12 m-t-10 m-b-20 navbarBox">
                                 <div class="navbar-user-desktop">
+                                    <? if($team->split_the_bill == 1 && $team->packageDetails()) { ?>
+                                        <a href="/my-team/payment-details"><span class="iconCTA pull-right m-r-10 " >Payment details</span></a>
+                                    <? } ?>
+                                    <? if(count($team->getMembers()) > 1 && $team->packageDetails()) { ?>
+                                        <a href="/my-team/payment-settings"><span class="iconCTA pull-right m-r-10 " >Payment settings</span></a>
+                                    <? } ?>
                                     <a href="#" class="teamPrivacySettings" data-id="<?= $team->id?>"><span class="iconCTA pull-right m-r-10 " >Privacy settings</span></a>
                                 </div>
                                 <div class="navbar-user-mobile" style="display: none">

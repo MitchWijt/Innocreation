@@ -103,11 +103,17 @@ $(".chatItem").on("click",function () {
        var user1 = client.feed('user', userId, streamToken);
 
        function callback(data) {
-           // var message = $('.messageReceivedAjax').first().clone();
-           // var allMessages = $(".chatContent");
-           // $(message).appendTo(allMessages);
-           // message.find(".messageReceived").find(".message").text(data["new"][0]["message"]);
-           // message.find(".messageReceived").find(".timeSent").text(data["new"][0]["timeSent"]);
+           var message = $('.messageReceivedAjax').first().clone();
+           var allMessages = $(".chatContent");
+           $(message).appendTo(allMessages);
+           message.find(".messageReceived").find(".message").text(data["new"][0]["message"]);
+           message.find(".messageReceived").find(".timeSent").text(data["new"][0]["timeSent"]);
+           setTimeout(function(){
+               var objDiv = $(".chatContent");
+               if (objDiv.length > 0) {
+                   objDiv[0].scrollTop = objDiv[0].scrollHeight;
+               }
+           }, 1000);
        }
 
        function successCallback() {
