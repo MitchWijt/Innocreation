@@ -41,6 +41,9 @@
         <link rel="stylesheet" href="/css/user/user.css">
         <link rel="stylesheet" href="/css/activityTimeline.css">
 
+
+        <link rel="stylesheet" href="/css/pages/teamsPage.css">
+
         {{--checkout--}}
         <link rel="stylesheet" href="/css/checkout/pricing.css">
         <link rel="stylesheet" href="/css/checkout/selectPackage.css">

@@ -86,6 +86,16 @@ class User extends Authenticatable
         }
     }
 
+    public function getExpertisesArray(){
+        $array = [];
+        $expertises = expertises_linktable::select("*")->where("user_id", $this->id)->with("Expertises")->get();
+        foreach($expertises as $expertise){
+            array_push($array, $expertise->id);
+        }
+
+        return $array;
+    }
+
     public function getJoinedExpertise(){
         $expertise = JoinRequestLinktable::select("*")->where("user_id", $this->id)->where("accepted", 1)->first();
         if(!$expertise){

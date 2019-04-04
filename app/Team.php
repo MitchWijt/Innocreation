@@ -203,4 +203,13 @@ class Team extends Model {
         }
     }
 
+    public function checkNeededExpertises($expertiseIds){
+        $neededExpertises = NeededExpertiseLinktable::select("*")->where("team_id", $this->id)->whereIn("expertise_id", $expertiseIds)->get();
+        if(count($neededExpertises) > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

@@ -56,4 +56,10 @@ class TeamExpertisesService {
         $neededExpertise->save();
     }
 
+    public static function getMaxNeededExpertises($team){
+        $neededExpertises = NeededExpertiseLinktable::select("*")->where("team_id", $team->id)->limit(4)->get();
+        return $neededExpertises;
+
+    }
+
 }
