@@ -103,7 +103,7 @@
             $streamService->addActivityToFeed($userWorkComment->userWork->user_id, $data);
 
 
-            $messageArray = ["message" => $comment, "timeSent" => $timeSent->time];
+            $messageArray = ["message" => $comment, "timeSent" => $timeSent->time, "userProfilePic" => $userWorkComment->user->getProfilePicture(), 'userName' => $userWorkComment->user->getName()];
             echo json_encode($messageArray);
             die();
         }

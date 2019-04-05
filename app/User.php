@@ -25,7 +25,7 @@ class User extends Authenticatable
 
     public function getProfilePicture(){
         if($this->profile_picture != "defaultProfilePicture.png") {
-            echo env("DO_SPACES_URL") . "/users/$this->slug/profilepicture/$this->profile_picture";
+            return env("DO_SPACES_URL") . "/users/$this->slug/profilepicture/$this->profile_picture";
         } else {
             return "/images/profilePicturesUsers/defaultProfilePicture.png";
         }

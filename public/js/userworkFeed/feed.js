@@ -188,9 +188,10 @@ $(document).on("click", ".postComment", function () {
             message.attr("id", newId);
             var allMessages = $(".userWorkComments");
             $(message).appendTo(allMessages);
-            message.removeClass("hidden");
+            message.attr("style", "");
             message.find(".message").text(data['message']);
-            message.find(".timeSent").text(data['timeSent']);
+            message.find(".userNameComment").text(data['userName']);
+            message.find(".userProfilePic2").attr("style", "background: url('" + data['userProfilePic'] + "')");
             $("#" + newId).removeClass("hidden");
             $(".comment").val("");
         }

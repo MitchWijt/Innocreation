@@ -1,11 +1,14 @@
-<div class="row c-gray emptyMessage hidden">
-    <div class="col-md-12">
-        <div class="col-md-5 messageSent pull-right m-b-10">
-            <p class="message break-word"></p>
-            <span class="f-12 pull-right timeSent"></span>
+
+    <div class="row c-gray d-flex m-l-20 emptyMessage" style="display: none !important;">
+        <div class="d-flex">
+            <div class="avatar-sm m-r-5 userProfilePic2"></div>
+            <p class="m-0 userNameComment"></p>
+        </div>
+        <div class="col-md-10">
+            <p class="break-word message thin"></p>
         </div>
     </div>
-</div>
+
 <? foreach($userWork->getComments() as $comment) { ?>
     <div class="row c-gray d-flex m-l-20">
         <div class="d-flex">
