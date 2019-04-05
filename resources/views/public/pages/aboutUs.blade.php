@@ -4,26 +4,26 @@
 <div class="<?= \App\Services\UserAccount\UserAccount::getTheme();?>">
     <div class="grey-background vh85 o-hidden">
         <div class="container <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
-            <div class="row" style="margin-bottom: 230px">
+            <div class="row topRow" style="margin-bottom: 230px">
                 <div class="col-sm-12 text-center" style="margin-top: 130px;">
-                    <h1 class="f-50 bold">Collaborate on awesome projects.</h1>
-                    <p class="f-20 m-b-5">Collaborate and connect with creatives</p>
-                    <p class="f-20">active in <span class="bold"><?= $amountExpertises?></span> different and innovative expertises</p>
-                    <a href="/create-my-account" class="btn btn-inno-cta p-t-15 p-b-15 p-l-10 p-r-10 m-t-40">Join the creative community for free</a>
+                    <h1 class="bold aboutUsHeading" style="font-size: 50px;">Collaborate on awesome projects.</h1>
+                    <p class="m-b-5 subHeading" style="font-size: 20px;">Collaborate and connect with creatives</p>
+                    <p class="subHeading" style="font-size: 20px;">active in <span class="bold"><?= $amountExpertises?></span> different and innovative expertises</p>
+                    <a href="/create-my-account" class="btn joinButton btn-inno-cta p-t-15 p-b-15 p-l-10 p-r-10 m-t-40">Join the creative community for free</a>
                 </div>
             </div>
         </div>
         <div class="bannerImage img-responsive"></div>
         <div class="row" style="margin-bottom: 120px; margin-top: 120px;">
             <div class="col-sm-12 text-center">
-                <h1 class="f-50 bold">What can Innocreation do for me?</h1>
+                <h1 class="f-50 bold aboutUsHeading2">What can Innocreation do for me?</h1>
             </div>
         </div>
         <div class="container-fluid">
             <div class="row d-flex" style="margin-bottom: 220px;">
                 <div class="col-xl-7">
                     <div class="col-sm-8 textAbout" style="margin-left: 80px;">
-                        <p class="f-31 bold">Put together or join that team that you were searching for so long!</p>
+                        <p class="f-31 bold subHeading2">Put together or join that team that you were searching for so long!</p>
                         <p class="m-t-5 m-b-0">Been searching for that team of creative people
                             to help you on your project? Find them here on Innocreation.
                             Build a connection, Create a team and start planning.</p>
@@ -40,7 +40,7 @@
         </div>
         <div class="row p-10" style="margin-bottom: 20px;">
             <div class="col-sm-12 text-center">
-                <p class="f-31 bold">Collaborate and connect with other creative people.</p>
+                <p class="f-31 bold aboutUsHeading2">Collaborate and connect with other creative people.</p>
                 <p>Make connections and get to know the amazing creative community. They might be the next step of your amazing project!</p>
                 <a href="/expertises" class="btn btn-inno-cta p-t-15 p-b-15 p-l-10 p-r-10 m-t-10">Connect with the creatives</a>
             </div>
@@ -85,7 +85,7 @@
             </div>
             <div class="col-sm-6 d-flex jc-end">
                 <div class="col-sm-8 sharePassionText textAbout" style="margin-right: 80px;">
-                    <p class="f-31 bold">Share your passion. Help others with your passion.</p>
+                    <p class="f-31 bold aboutUsHeading2">Share your passion. Help others with your passion.</p>
                     <p class="m-t-5 m-b-0">Share your passion on the creatives feed. Let others
                         see why you are good at what you do so they can
                         make a connection with you.</p>
@@ -97,7 +97,7 @@
         </div>
         <div class="row" style="margin-bottom: 220px;">
             <div class="col-sm-12 text-center">
-                <h1 class="f-50 bold m-b-20">Have fun and share your creative passion!</h1>
+                <h1 class="f-50 bold m-b-20 aboutUsHeading">Have fun and share your creative passion!</h1>
                 <a href="/create-my-account" class="btn btn-inno-cta p-t-15 p-b-15 p-l-10 p-r-10 m-t-10">Lets start building awesome projects</a>
             </div>
         </div>
