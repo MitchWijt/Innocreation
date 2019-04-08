@@ -41,6 +41,12 @@
                                         <a href="/my-team/payment-settings"><span class="iconCTA pull-right m-r-10 " >Payment settings</span></a>
                                     <? } ?>
                                     <a href="#" class="teamPrivacySettings" data-id="<?= $team->id?>"><span class="iconCTA pull-right m-r-10 " >Privacy settings</span></a>
+                                    <? $workspaceShortTermPlanner = \App\WorkspaceShortTermPlannerBoard::select("*")->where("team_id", $team->id)->get()?>
+                                    <? if(count($workspaceShortTermPlanner) > 0) { ?>
+                                        <a href="/my-team/workspace/short-term-planner/<?= $workspaceShortTermPlanner->First()->id?>"><span class="iconCTA pull-right m-r-10 " >My workspace</span></a>
+                                    <? } else { ?>
+                                        <a href="/my-team/workspace"><span class="iconCTA pull-right m-r-10 " >My workspace</span></a>
+                                    <? } ?>
                                 </div>
                                 <div class="navbar-user-mobile" style="display: none">
                                     <a href="#" class="teamPrivacySettings" data-id="<?= $team->id?>"><span class="iconCTA pull-right m-r-10"><i class="zmdi zmdi-settings"></i></span></a>
