@@ -56,8 +56,15 @@
         display: none;
     }
 }
-@media screen and (max-width: 888px) {
+@media screen and (max-width: 1200px) {
     .userName p {
         margin-left: 3% !important;
+    }
+}
+
+@media screen and (max-width: 771px) {
+    .navbarBox{
+        display: flex;
+        justify-content: center;
     }
 }
