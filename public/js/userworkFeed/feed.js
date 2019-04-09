@@ -242,6 +242,7 @@ if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigat
     var eventTrigger = "click";
 }
 $(document).on(eventTrigger, ".fave", function () {
+    var id = $(this).data("id");
     if ($(this).hasClass("normal-fave")) {
         $(this).addClass("fave-animation");
         plus_minus_post("/feed/plusPointPost", $(this));
@@ -250,7 +251,7 @@ $(document).on(eventTrigger, ".fave", function () {
         plus_minus_post("/feed/minusPointPost", $(this));
     }
 
-    var _this = $(this);
+    var _this = $(".fave-" + id);
     setTimeout(function () {
         if (_this.hasClass("normal-fave")) {
             _this.removeClass("fave-animation");

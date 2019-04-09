@@ -44,9 +44,9 @@
                         </div>
                         <? if(isset($user)) { ?>
                             <? if($user->hasPlusPointed($userWorkPost->id)) { ?>
-                                <section class="fave active-fave c-pointer" data-id="<?= $userWorkPost->id?>"></section>
+                                <section class="fave active-fave fave-<?= $userWorkPost->id?> c-pointer" data-id="<?= $userWorkPost->id?>"></section>
                             <? } else { ?>
-                                <section class="fave normal-fave c-pointer" data-id="<?= $userWorkPost->id?>"></section>
+                                <section class="fave normal-fave fave-<?= $userWorkPost->id?> c-pointer" data-id="<?= $userWorkPost->id?>"></section>
                             <? } ?>
                         <? } ?>
                     </div>
