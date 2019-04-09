@@ -31,14 +31,26 @@
 
         <link  rel="stylesheet" href="/css/home/home.css" media="none" onload="if(media!=='all')media='all'">
         <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/newStyle/style.css">
+        <link rel="stylesheet" href="/css/general/modals.css">
+        <link rel="stylesheet" href="/css/pages/aboutUs.css">
+        <link rel="stylesheet" href="/css/pages/singleUserPage.css">
+        <link rel="stylesheet" href="/css/header/style.css">
+        <link rel="stylesheet" href="/css/footer/style.css">
         <link rel="stylesheet" href="/css/general.css">
         <link rel="stylesheet" href="/css/user/user.css">
         <link rel="stylesheet" href="/css/activityTimeline.css">
+
+
+        <link rel="stylesheet" href="/css/pages/teamsPage.css">
+
+        {{--checkout--}}
         <link rel="stylesheet" href="/css/checkout/pricing.css">
         <link rel="stylesheet" href="/css/checkout/selectPackage.css">
+        <link rel="stylesheet" href="/css/checkout/donePayment.css">
+
         <link rel="stylesheet" href="/css/registerProcess/index.css">
         <link rel="stylesheet" href="/css/userworkFeed/index.css">
-        <link rel="stylesheet" href="/css/userworkFeed/newIndex2.css">
         <link rel="stylesheet" href="/css/popovers.css">
         <link rel="stylesheet" href="/css/responsiveness/sidebar.css">
     {{--CSS MEDIA QUERIES--}}
@@ -71,7 +83,7 @@
         <script src="/js/bootstrap-tokenfield.min.js"></script>
         <script defer async src="/js/fontawesome-all.js"></script>
         <script defer async src="/js/jquery.timepicker.min.js"></script>
-        <script defer async src="/js/floatingcarousel.min.js"></script>
+        <script src="/js/floatingcarousel.min.js"></script>
         <script src="/js/jquery-ui.min.js"></script>
     {{--ANIMATION--}}
         <script defer async src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
@@ -92,7 +104,7 @@
     {{--==============--}}
 </head>
 <body>
-<div class="overlayContent theme-light">
+<div class="overlayContent <?= \App\Services\UserAccount\UserAccount::getTheme();?>">
 <? if(\Illuminate\Support\Facades\Session::has("user_id")) {
     $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
     $userChats = \App\UserChat::select("*")->where("creator_user_id", $user->id)->orWhere("receiver_user_id", $user->id)->get();

@@ -1,6 +1,7 @@
 @extends("layouts.app")
 @section("content")
-    <div class="d-flex grey-background vh100">
+    <div class="<?= \App\Services\UserAccount\UserAccount::getTheme()?>">
+    <div class="d-flex grey-background vh100 <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
         <div class="container">
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black @handheld f-25 @endhandheld">@notmobile You're team is almost a <? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo "innovator"; else echo str_replace("-", " ", lcfirst($membershipPackage->title))?> @elsemobile almost a <? if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo "innovator"; else echo str_replace("-", " ", lcfirst($membershipPackage->title))?> @endnotmobile</h1>
@@ -12,121 +13,53 @@
             </div>
             <hr class="m-b-20">
             <div class="row">
-                <? if(!\Illuminate\Support\Facades\Session::has("customPackagesArray")) { ?>
-                    <div class="col-sm-5 @tablet m-15 @endtablet">
-                        <div class="row @nontablet d-flex js-center @endnontablet">
-                            <? $descriptions = explode(",",$membershipPackage->description);
-                                $counter = 0;
-                            ?>
-                            <? foreach($descriptions as $description) { ?>
-                                <? $counter++?>
-                            <? } ?>
-                            <div class="card m-t-0 p-10 @desktop <? if($membershipPackage->id == 1 || $membershipPackage->id == 3) echo "card-small-price"; else echo "card-populair-price"?> @elsehandheld  @tablet<? if($membershipPackage->id == 1 || $membershipPackage->id == 3) echo "card-small-price-tablet"; else echo "card-populair-price-tablet"?>@elsemobile <?= "m-b-20"?>@endtablet @enddesktop no-hover">
-                                <div class="card-block">
-                                    <div class="text-center">
-                                        <p class="f-20 m-t-15"><?= str_replace("-", " ", $membershipPackage->title)?></p>
-                                    </div>
-                                    <hr>
-                                    <ul class="instructions-list @tablet <? if($membershipPackage->id == 3) echo "m-b-0"?> @endtablet">
-                                        <? for($i = 0; $i < $counter; $i++) { ?>
-                                        <li class="instructions-list-item">
-                                            <p class="instructions-text f-13 m-0 p-b-10"><?= $descriptions[$i]?></p>
-                                        </li>
-                                        <? } ?>
-                                    </ul>
-                                </div>
-                                <div class="row @notmobile @desktop <? if($membershipPackage->id == 1 || $membershipPackage->id == 2) echo "m-t-70"?> @elsetablet  <? if($membershipPackage->id == 1 || $membershipPackage->id == 2) echo "m-t-50"?> @enddesktop @endnotmobile">
-                                    <div class="col-sm-12">
-                                        <? if(isset($teamPackage)) { ?>
-                                            <? if($teamPackage->payment_preference == "monthly") { ?>
-                                                <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= $membershipPackage->getPrice()?></span><span class="packagePreference">/Month</span></p>
-                                            <? } else { ?>
-                                                <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= $membershipPackage->getPrice(true)?></span><span class="packagePreference">/Year</span></p>
-                                            <? } ?>
-                                        <? } else { ?>
-                                            <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= $membershipPackage->getPrice()?></span><span class="packagePreference">/Month</span></p>
-                                        <? } ?>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 text-center m-t-50">
-                                        <i class="regular-link c-orange f-12" data-toggle="modal" data-target="#companyDetails">Details of Innocreation</i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-sm-5 m-t-20 @mobile p-l-15 @elsedesktop p-l-5 @enddesktop @tablet p-10 @endtablet">
+                    <div class="text-center">
+                        <p class="<? if($membershipPackage->id == 2) echo "f-20"; else echo "f-15"?> m-t-15 bold m-b-5"><?= str_replace("-", " ", $membershipPackage->title) ?></p>
                     </div>
-                <? } else { ?>
-                    <div class="col-sm-5">
-                        <div class="row">
-                            <div class="card card-small-price-tablet m-t-0 p-10 no-hover">
-                                <div class="card-block">
-                                    <div class="text-center">
-                                        <p class="f-20 m-t-15">Custom package</p>
-                                    </div>
-                                    <hr>
-                                    <ul class="instructions-list">
-                                        <? foreach($customPackageData as $key => $value) { ?>
-                                            <? if($key == "Create team newsletters" && $value == 1) { ?>
-                                            <li class="instructions-list-item">
-                                                <p class="instructions-text f-13 m-0 p-b-10">Create your own team newsletters</p>
-                                            </li>
-                                            <? } else if($value == '0'){ ?>
 
-                                            <? } else if($value == "Unlimited") { ?>
-                                                <li class="instructions-list-item">
-                                                    <p class="instructions-text f-13 m-0 p-b-10"><?= $key . " "?> <?= $value . " "?>  </p>
-                                                </li>
-                                            <? } else { ?>
-                                                <li class="instructions-list-item">
-                                                    <p class="instructions-text f-13 m-0 p-b-10">Max. amount of <?= $value . " "?> <?=$key . " "?> </p>
-                                                </li>
-                                            <? } ?>
-                                        <? } ?>
-                                    </ul>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <p class="f-20 m-b-0 text-center"><?= "&euro;"?><span class="packagePrice"><?= number_format(\Illuminate\Support\Facades\Session::get("customPackagesArray")["price"], 2, ".", ".") ?></span><span class="packagePreference">/Month</span></p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 text-center m-t-50">
-                                        <i class="regular-link c-orange f-12" data-toggle="modal" data-target="#companyDetails">Details of Innocreation</i>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="row ">
+                        <div class="col-sm-12">
+                            <p class="<? if($membershipPackage->id == 2) echo "f-31"; else echo "f-25"?> bold m-b-0 text-center"><?="&euro;"?><span class="packagePrice bold"><?= $membershipPackage->getPrice()?></span><span class="packagePreference bold">/Month</span></p>
+                        </div>
+                        <div class="col-sm-12 d-flex js-center fd-column @mobile m-t-5 m-b-20 @endmobile">
+                            <a class="text-center f-12 m-t-5"><span class="c-pointer thin openFunctionsModal" data-membership-package-id="<?= $membershipPackage->id?>">+ show functions</span></a>
                         </div>
                     </div>
-                <? } ?>
-                <div class="col-sm-6 @mobile p-30 @endmobile">
-                    <div class="row">
+                </div>
+                <div class="col-sm-6 m-t-40 p-relative @mobile p-30 @endmobile">
+                    <div class="row" style="margin-bottom: 50px;">
                         <? if(isset($teamPackage) && $team->split_the_bill == 1) { ?>
-                            <div class="col-sm-6 m-0 p-0">
-                                <p class="bcg-black <? if($step == 1) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">@tablet 1/2 @endtablet @nottablet Credentials (1/2) @endnottablet</p>
-                            </div>
-                            <div class="col-sm-6 m-0 p-0">
-                                <p class="bcg-black <? if($step == 2) echo "c-gray"; else echo "c-dark-grey"?> text-center border-sides m-b-0">@tablet 2/2 @endtablet @nottablet Payment info (2/2) @endnottablet</p>
+                            <div class="line d-flex js-between p-relative" style="border-bottom: 2px solid black; width: 100%"></div>
+                            <div class="p-absolute d-flex js-between" style="top: -12%; width: 100%; z-index: 20">
+                                <div class="circle m-r-0 p-relative bcg-cover <? if($step == 1) echo "actionBorder" ;?>" style="width: 50px; height: 50px;">
+                                    <p class="p-absolute absolute-center m-0">1</p>
+                                </div>
+                                <div class="circle m-r-0 p-relative bcg-cover <? if($step == 1) echo "actionBorder" ;?>" style="width: 50px; height: 50px;">
+                                    <p class="p-absolute absolute-center m-0">2</p>
+                                </div>
                             </div>
                         <? } else { ?>
-                            <div class="col-sm-4 m-0 p-0">
-                                <p class="bcg-black <? if($step == 1) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">@tablet 1/3 @endtablet  @nottablet Credentials (1/3) @endnottablet</p>
-                            </div>
-                            <div class="col-sm-4 m-0 p-0">
-                                <p class="bcg-black <? if($step == 2) echo "c-gray"; else echo "c-dark-grey"?> text-center border-sides m-b-0">@tablet 2/3 @endtablet @nottablet Payment info (2/3) @endnottablet</p>
-                            </div>
-                            <div class="col-sm-4 m-0 p-0">
-                                <p class="bcg-black <? if($step == 3) echo "c-gray"; else echo "c-dark-grey"?> text-center m-b-0">@tablet 3/3 @endtablet @nottablet Method (3/3) @endnottablet</p>
+                            <div class="line d-flex js-between p-relative" style="border-bottom: 2px solid black; width: 100%"></div>
+                            <div class="p-absolute d-flex js-between" style="top: -23px; width: 100%; z-index: 20">
+                                <div class="circle m-r-0 p-relative bcg-cover <? if($step == 1) echo "actionBorder" ;?>" style="width: 50px; height: 50px; ">
+                                    <p class="p-absolute absolute-center m-0">1</p>
+                                </div>
+                                <div class="circle m-r-0 p-relative bcg-cover <? if($step == 2) echo "actionBorder" ;?>" style="width: 50px; height: 50px;">
+                                    <p class="p-absolute absolute-center m-0">2</p>
+                                </div>
+                                <div class="circle m-r-0 p-relative bcg-cover <? if($step == 3) echo "actionBorder" ;?>" style="width: 50px; height: 50px;">
+                                    <p class="p-absolute absolute-center m-0">3</p>
+                                </div>
                             </div>
                         <? } ?>
                     </div>
                     <div class="row m-t-0">
-                        <div class="card shadow no-hover col-sm-12 m-t-0">
+                        <div class="card no-hover col-sm-12 m-t-0" style="border: 1px solid #000; border-radius: 10px;">
                             <div class="card-block">
                                 <? if($step == 1) { ?>
-                                    <div class="text-center m-t-10">
-                                        <h5>Your credentials</h5>
-                                        <hr>
+                                    <div class="m-t-10">
+                                        <p class="bold f-25">Your credentials</p>
                                     </div>
                                     <? if(!isset($user)){ ?>
                                         <div class="text-center m-t-20 m-b-20">
@@ -134,79 +67,7 @@
                                             <p>you can <span class="regular-link accountCardToggle login">login</span> or <span class="regular-link register accountCardToggle">create an account</span> to continue</p>
                                         </div>
                                     <? } else { ?>
-                                        <form action="checkout/saveUserFromCheckout" method="POST" class="m-t-20">
-                                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                            <input type="hidden" name="user_id" value="<?= $user->id?>">
-                                            <input type="hidden" name="backlink" value="<?= $backlink?>">
-                                            <div class="form-group d-flex js-center m-b-10">
-                                                <div class="row d-flex js-center col-sm-12">
-                                                    <div class="col-sm-3 @desktop p-l-0 @elsemobile p-0 @enddesktop">
-                                                        <label class="m-0">First name</label>
-                                                        <input type="text" name="firstname" class="firstname input col-sm-12" value="<? if(isset($user->firstname)) echo $user->firstname?>">
-                                                    </div>
-                                                    <div class="col-sm-3 @desktop p-l-0 @elsemobile p-0 @enddesktop">
-                                                        <label class="m-0">Middle name</label>
-                                                        <input type="text" name="middlename" class="middlename input col-sm-12" value="<? if(isset($user->middlename)) echo $user->middlename?>">
-                                                    </div>
-                                                    <div class="col-sm-3 @desktop p-r-0 @elsemobile p-0 @enddesktop">
-                                                        <label class="m-0">Last name</label>
-                                                        <input type="text" name="lastname" class="lastname input col-sm-12" value="<? if(isset($user->lastname)) echo $user->lastname?>">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group m-b-10 d-flex js-center">
-                                                <div class="row d-flex js-center col-sm-9">
-                                                    <label class="m-0 col-sm-12 p-0">Email</label>
-                                                    <input type="email" name="email" class="email input col-sm-12" value="<? if(isset($user->email)) echo $user->email?>">
-                                                </div>
-                                            </div>
-                                            <div class="form-group d-flex js-center m-b-10 ">
-                                                <div class="row d-flex js-center col-sm-12">
-                                                    <div class="col-sm-3 @desktop p-l-0 @elsemobile p-0 @enddesktop">
-                                                        <label class="m-0">City</label>
-                                                        <input type="text" name="city" class="city input col-sm-12" value="<? if(isset($user->city)) echo $user->city?>">
-                                                    </div>
-                                                    <div class="col-sm-3 @desktop p-l-0 @elsemobile p-0 @enddesktop">
-                                                        <label class="m-0">Postcode</label>
-                                                        <input type="text" name="postcode" class="postcode input col-sm-12" value="<? if(isset($user->postalcode)) echo $user->postalcode?>">
-                                                    </div>
-                                                    <div class="col-sm-3 @desktop p-r-0 @elsemobile p-0 @enddesktop">
-                                                        <label class="m-0">State</label>
-                                                        <input type="text" name="state" class="state input col-sm-12" value="<? if(isset($user->state)) echo $user->state?>">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group m-b-0 d-flex js-center m-b-10">
-                                                <div class="row d-flex js-center col-sm-9">
-                                                    <label class="m-0 col-sm-12 p-0">Country</label>
-                                                    <select name="country" class="input col-sm-12">
-                                                        <? foreach($countries as $country) { ?>
-                                                            <option <? if(isset($user->country_id) && $user->country->country == $country->country) echo "selected"?> data-country-code="<?= $country->country_code?>" value="<?= $country->id?>"><?= $country->country?></option>
-                                                        <? } ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group m-b-0 d-flex js-center">
-                                                <div class="row d-flex js-center col-sm-9">
-                                                    <label class="m-0 col-sm-12 p-0">Phonenumber</label>
-                                                    <input type="text" name="phonenumber" class="phonenumber input col-sm-12" value="<? if(isset($user->phonenumber)) echo $user->phonenumber?>">
-                                                </div>
-                                            </div>
-                                            <? if(isset($user) && $user->team_id == null) { ?>
-                                                <div class="form-group m-b-0 d-flex js-center m-t-15">
-                                                    <div class="row d-flex js-center col-sm-9">
-                                                        <p class="m-b-10">You are not part of a team yet. <br> But luckily you can create one here!</p>
-                                                        <label class="m-0 col-sm-12 p-0">Team name</label>
-                                                        <input type="text" name="team_name" class="team_name input col-sm-12" value="">
-                                                    </div>
-                                                </div>
-                                            <? } ?>
-                                            <div class="row m-t-20 d-flex js-center">
-                                                <div class="col-sm-8 m-b-20 ">
-                                                    <button class="btn btn-inno pull-right">Next step</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                        <?= view("/public/checkout/shared/_saveUserFromCheckout", compact('countries', 'expertises', 'user', 'backlink'))?>
                                     <? } ?>
                                 <? } else if($step == 2) { ?>
                                     <form action="/checkout/savePaymentInfo" method="post" class="savePaymentInfoForm">
@@ -228,9 +89,8 @@
                                             <input type="hidden" name="membership_package_id" value="custom">
                                         <? } ?>
                                         <input type="hidden" name="backlink" value="<?= $backlink?>">
-                                        <div class="text-center m-t-10">
-                                            <h5>Payment info</h5>
-                                            <hr>
+                                        <div class="m-t-10">
+                                            <p class="bold f-25">Payment info</p>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-5">
@@ -265,7 +125,7 @@
                                         <? } ?>
                                         <div class="row">
                                             <div class="col-sm-12 m-t-10 m-b-15">
-                                                <button class="btn btn-inno btn-sm pull-right toStep3" type="button">Next step</button>
+                                                <button class="btn btn-inno-cta btn-sm pull-right toStep3" type="button">Next step</button>
                                             </div>
                                         </div>
                                     </form>
@@ -292,16 +152,15 @@
                         </div>
                         <? if(isset($team) && isset($user) && count($team->getMembers()) > 1 && $step == 2) { ?>
                             <? if(isset($teamPackage) && $step == 2 && $team->split_the_bill == 1) { ?>
-                                <div id="splitTheBillCollapse" class="collapsed collapseExample card-sm shadow no-hover col-sm-12 m-t-0 splitTheBillCard">
+                                <div id="splitTheBillCollapse" class="collapsed collapseExample card col-sm-12 m-t-0 splitTheBillCard" style="border: 1px solid #000; border-radius: 10px;">
                             <? } else { ?>
-                                <div id="splitTheBillCollapse" class="collapse collapseExample card-sm shadow no-hover col-sm-12 m-t-0 splitTheBillCard">
+                                <div id="splitTheBillCollapse" class="collapse collapseExample card col-sm-12 m-t-0 splitTheBillCard" style="border: 1px solid #000; border-radius: 10px;">
                             <? } ?>
                                 <div class="card-block">
-                                    <div class="text-center m-t-15">
-                                        <h5>Split the bill</h5>
-                                        <hr>
+                                    <div class="m-t-15">
+                                        <p class="bold f-25">Split the bill</p>
                                     </div>
-                                    <i class="c-dark-grey">Amount left to split: <i class="packagePrice totalPrice"><?if(\Illuminate\Support\Facades\Session::has("customPackagesArray")) echo number_format(\Illuminate\Support\Facades\Session::get("customPackagesArray")["price"], 2,".", "."); else echo $membershipPackage->getPrice()?></i></i><br>
+                                    <i class="c-black">Amount left to split: <i class="packagePrice totalPrice c-black"><? echo $membershipPackage->getPrice()?></i></i><br>
                                     <i class="c-orange amountExceeded hidden">Amount exceeded: <i class="exceededAmount"></i></i>
                                     <button class="btn btn-sm btn-inno pull-right m-b-20 m-t-5 splitEqually">Split equally</button>
                                     <? foreach($team->getMembers() as $member) { ?>
@@ -327,19 +186,19 @@
                             </div>
                         <? } ?>
                         <? if(!isset($user) && $step == 1){ ?>
-                            <div id="accountCollapse" class="collapse collapseExample card-sm shadow no-hover col-sm-12 m-t-0 accountCard">
-                                <div class="card-block">
-                                    <div class="m-b-20">
-                                        <?= view("/public/shared/_loginRegister", compact("countries", "expertises", "pageType", "backlink"));?>
+                                <div class="<?= \App\Services\UserAccount\UserAccount::getTheme()?>">
+                                    <div id="accountCollapse" class="collapse collapseExample card shadow no-hover col-sm-12 m-t-0 accountCard">
+                                        <div class="card-block">
+
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                         <? } ?>
                     </div>
                 </div>
             </div>
-            <div class="modal fade splitTheBillInfoModal" id="splitTheBillInfoModal" tabindex="-1" role="dialog" aria-labelledby="splitTheBillInfoModal" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+            <div class="modal fade splitTheBillInfoModal fade-scale" id="splitTheBillInfoModal" tabindex="-1" role="dialog" aria-labelledby="splitTheBillInfoModal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-body ">
                             <p>Split the bill allows you to split the monthly/yearly recurring bill with your team members if they allow to.</p>
@@ -367,6 +226,26 @@
             </div>
         </div>
     </div>
+    </div>
+        <? if(!isset($user) && $step == 1){ ?>
+            <div class="modal fade fade-scale loginRegisterModal" id="loginRegisterModal" tabindex="-1" role="dialog" aria-labelledby="loginRegisterModal" aria-hidden="true">
+                <div class="modal-dialog-centered modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body ">
+                            <div class="m-b-20 <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
+                                <div class="loginForm hidden ">
+                                    <?= view("/public/shared/_loginRegister", compact("countries", "expertises", "pageType", "backlink"));?>
+                                </div>
+                                <div class="registerForm hidden">
+                                    <?= view("/public/shared/_register", compact('countries', 'expertises', 'pageType', 'backlink'))?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <? } ?>
+    </div>
     <script>
         $('#tokenfield').tokenfield({
             autocomplete: {
@@ -388,4 +267,6 @@
 @endsection
 @section('pagescript')
     <script src="/js/checkout/selectPackage.js"></script>
+    <script src="/js/checkout/packages.js"></script>
+    <script src="/js/register/index.js"></script>
 @endsection

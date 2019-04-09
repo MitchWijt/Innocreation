@@ -1,0 +1,37 @@
+.slideImage1 {
+  min-height: 800px;
+  background: url("/images/checkout/donePayment/SideImage1.png");
+  width: 100%;
+  background-size: contain !important;
+  background-repeat: no-repeat;
+  background-position: top, left;
+}
+
+.slideImage2 {
+  min-height: 800px;
+  background: url("/images/checkout/donePayment/SideImage2.png");
+  width: 100%;
+  background-size: contain !important;
+  background-repeat: no-repeat;
+  background-position: top, right;
+}
+
+@media screen and (max-width: 580px) {
+  .slideImage1 {
+    background-position: top, left !important;
+  }
+
+  .slideImage2 {
+    background-position: top, right !important;
+  }
+
+  .desktopView {
+    display: none !important;
+  }
+
+  .mobileView {
+    display: block !important;
+  }
+}
+
+/*# sourceMappingURL=donePayment.css.map */

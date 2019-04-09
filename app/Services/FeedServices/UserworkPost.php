@@ -8,6 +8,8 @@
 
     namespace App\Services\FeedServices;
     use App\Emoji;
+    use App\Expertises;
+    use App\Services\Frontend\ExpertiseSphere;
     use App\Services\Images\ImageProcessor;
     use App\Services\Paths\PublicPaths;
     use App\Services\TimeSent;
@@ -60,6 +62,9 @@
             $userWorkId = $request->input("userworkId");
             $hash = $this->encrypt_decrypt("encrypt", $userWorkId);
             $userWorkPost = UserWork::select("*")->where("id", $userWorkId)->first();
+            $userWorkPost->views = $userWorkPost->views + 1;
+            $userWorkPost->save();
+            
             $emojis = Emoji::select("*")->get();
             if(Session::has("user_id")) {
                 $user = User::select("*")->where("id", Session::get("user_id"))->first();
@@ -98,46 +103,9 @@
             $streamService->addActivityToFeed($userWorkComment->userWork->user_id, $data);
 
 
-            $messageArray = ["message" => $comment, "timeSent" => $timeSent->time];
+            $messageArray = ["message" => $comment, "timeSent" => $timeSent->time, "userProfilePic" => $userWorkComment->user->getProfilePicture(), 'userName' => $userWorkComment->user->getName()];
             echo json_encode($messageArray);
             die();
-        }
-
-        public function plusPointPost($request, $streamService){
-            $userWorkId = $request->input("user_work_id");
-
-            $userId = Session::get("user_id");
-            $user = User::select("*")->where("id", $userId)->first();
-
-            $existingPoint = UserWorkInterestsLinktable::select("*")->where("user_work_id", $userWorkId)->where("user_id", $user->id)->count();
-            if($existingPoint < 1 ) {
-                $userWorkInterestsLinktable = new UserWorkInterestsLinktable();
-                $userWorkInterestsLinktable->user_work_id = $userWorkId;
-                $userWorkInterestsLinktable->user_id = $user->id;
-                $userWorkInterestsLinktable->save();
-            }
-            $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
-
-            $notificationMessage = sprintf("%s is interested in your post!", $user->firstname);
-                    $timeSent = new TimeSent();
-                    $data = ["actor" => $userWork->user_id , "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time", "verb" => "notification", "object" => "3", "link" => "innocreatives/" . self::encrypt_decrypt("encrypt", $userWork->id)];
-                    $streamService->addActivityToFeed($userWork->user_id, $data);
-
-            return count($userWork->getInterests());
-        }
-
-        public function minusPointPost($request){
-            $userWorkId = $request->input("user_work_id");
-
-            $userId = Session::get("user_id");
-            $user = User::select("*")->where("id", $userId)->first();
-
-            $existingPoint = UserWorkInterestsLinktable::select("*")->where("user_work_id", $userWorkId)->where("user_id", $user->id)->first();
-            if(count($existingPoint) > 0 ) {
-                $existingPoint->delete();
-            }
-            $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
-            return count($userWork->getInterests());
         }
 
         public function interestModal($request){
@@ -151,5 +119,50 @@
             }
 
             return view("/public/userworkFeed/shared/_interestModal", compact("users", "loggedIn"));
+        }
+
+        public static function getRelatedExpertises($userWorkId){
+            $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
+            $expertisesIds = explode(",", $userWork->related_expertises_ids);
+
+            $expertises = Expertises::select("*")->whereIn("id", $expertisesIds)->get();
+
+            return $expertises;
+        }
+
+        public function interestPost($request, $streamService){
+            $userWorkId = $request->input("user_work_id");
+            $interest = new UserWorkInterestsLinktable();
+            $interest->user_id = Session::get("user_id");
+            $interest->user_work_id = $userWorkId;
+            $interest->created_at = date("Y-m-d H:i:s");
+            $interest->save();
+
+
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+            $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
+
+            $hash = self::encrypt_decrypt('encrypt', $userWorkId);
+
+            $notificationMessage = sprintf("%s is interested in your post!", $user->firstname);
+            $timeSent = new TimeSent();
+            $data = ["actor" => $userWork->user_id , "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time",'link' => '/innocreatives/' . $hash, "verb" => "notification", "object" => "3"];
+            $streamService->addActivityToFeed($userWork->user_id, $data);
+
+            $allInterests = UserWorkInterestsLinktable::select("*")->where("user_work_id", $userWorkId)->get();
+            return count($allInterests);
+
+        }
+
+        public function disInterestPost($request){
+            $userWorkId = $request->input("user_work_id");
+            $user = User::select("*")->where("id", Session::get("user_id"))->first();
+
+            $interest = UserWorkInterestsLinktable::select("*")->where("user_work_id", $userWorkId)->where("user_id", $user->id)->first();
+            $interest->delete();
+
+            $allInterests = UserWorkInterestsLinktable::select("*")->where("user_work_id", $userWorkId)->get();
+
+            return count($allInterests);
         }
     }

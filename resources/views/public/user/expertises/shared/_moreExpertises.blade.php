@@ -27,7 +27,7 @@
                 <? if($user->team_id == null) { ?>
                     <? if($loggedIn) { ?>
                         <? if($team) { ?>
-                            <? if($team->checkInvite($expertise->expertise_id, $team->id, $user->id) == false) { ?>
+                            <? if($team->checkInvite($team->id, $user->id) == false) { ?>
                                 <? if(\App\Services\TeamServices\TeamPackage::checkPackageAndPayment($team->id, $expertise)) { ?>
                                     <form action="/my-team/inviteUserForTeam" method="post" class="m-0">
                                         <input type="hidden" name="_token" value="<?= csrf_token()?>">

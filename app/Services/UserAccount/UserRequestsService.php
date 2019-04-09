@@ -159,22 +159,28 @@ class UserRequestsService
         $invite->save();
 
         $ceo = User::select("*")->where("id", $invite->teams->ceo_user_id)->First();
-        $timeNow = date("H:i:s");
-        $time = (date("g:i a", strtotime($timeNow)));
+        $ceoName = $ceo->getName();
+        $time = new TimeSent();
+
+        $existingUserChat = UserChat::select("*")->where("creator_user_id", $invite->user_id)->where("receiver_user_id", $invite->teams->ceo_user_id)->orWhere("creator_user_id", $invite->teams->ceo_user_id)->where("receiver_user_id", $invite->user_id)->first();
+        if(count($existingUserChat) > 0){
+            $userChat = $existingUserChat;
+        } else {
+            $userChat = new UserChat();
+            $userChat->creator_user_id = $invite->user_id;
+            $userChat->receiver_user_id = $invite->teams->ceo_user_id;
+            $userChat->created_at = date("Y-m-d H:i:s");
+            $userChat->save();
+        }
 
         $message = new UserMessage();
         $message->sender_user_id = $invite->user_id;
-        $message->message = "Hey $ceo I decided to reject your invite";
-        $message->time_sent = $time;
+        $message->message = "Hey $ceoName I decided to reject your invite";
+        $message->time_sent = $time->time;
+        $message->user_chat_id = $userChat->id;
         $message->created_at = date("Y-m-d H:i:s");
         $message->save();
 
-        $message = new UserMessage();
-        $message->sender_user_id = $invite->teams->ceo_user_id;
-        $message->message = null;
-        $message->time_sent = null;
-        $message->created_at = date("Y-m-d H:i:s");
-        $message->save();
         return redirect($_SERVER["HTTP_REFERER"]);
     }
 }

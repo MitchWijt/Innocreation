@@ -1,4 +1,4 @@
-@media screen and (max-width: 545px) {
+@media screen and (max-width: 770px) {
     .absolutePF{
         left: 0;
         right: 0;
@@ -54,5 +54,17 @@
 
     .collapseExpertise{
         display: none;
+    }
+}
+@media screen and (max-width: 1200px) {
+    .userName p {
+        margin-left: 3% !important;
+    }
+}
+
+@media screen and (max-width: 771px) {
+    .navbarBox{
+        display: flex;
+        justify-content: center;
     }
 }

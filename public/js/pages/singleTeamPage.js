@@ -19,53 +19,6 @@ $(".openApplyModal").on("click",function () {
     });
 });
 
-$(".triggerLike").on("click",function () {
-    var postData = "";
-    var team_id = $(this).data("team-id");
-    $.ajax({
-        method: "POST",
-        beforeSend: function (xhr) {
-            var token = $('meta[name="csrf_token"]').attr('content');
-
-            if (token) {
-                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-            }
-        },
-        url: "/favoriteTeam",
-        data: {'team_id': team_id},
-        success: function (data) {
-            if(data == 1) {
-                var _this = $(".favoriteIconLiked");
-                _this.unbind('mouseleave');
-                _this.removeClass("hidden");
-                $(".favoriteIcon").addClass("hidden");
-            } else if(data == 2){
-                $(".favAfterLike").addClass("hidden");
-                $(".favoriteIcon").removeClass("hidden");
-            }
-        }
-    });
-});
-
-
-
-$(".star").on('mouseover', function () {
-   $(this).addClass("zmdi-star");
-   $(this).prevAll().addClass("zmdi-star");
-});
-
-$(".star").on('mouseleave', function () {
-    $(this).removeClass("zmdi-star");
-});
-
-$(".star").on("click",function () {
-    var value = $(this).data("star-value");
-    $(".star_value").val(value);
-    $(this).addClass("zmdi-star");
-    $(this).unbind("mouseleave");
-    $(this).prevAll().unbind("mouseleave");
-});
-
 $(".collapseExpertise").on("click",function () {
     var id = $(this).data("user-id");
     var _this = $(this);
@@ -95,3 +48,70 @@ $(".editBannerImage").on("click",function () {
 $('.bannerImgInput').on("change", function () {
     $(".bannerImgForm").submit();
 });
+
+// Opens popup to kick member from team.
+$('.popoverMember').popover({ trigger: "click" , html: true, animation:false, placement: 'bottom'})
+    .on("click", function () {
+    });
+$(".popoverMember").on("click", function (e) {
+    e.preventDefault();
+});
+
+$(document).on("click", ".popoverMember, .memberName", function (e) {
+    e.preventDefault();
+});
+
+$(document).on("click", ".teamPrivacySettings", function () {
+    var teamId = $(this).data("id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/my-team/getPrivacySettingsModal",
+        data: {'team_id': teamId},
+        success: function (data) {
+            $("body").append(data);
+            $(".privacySettingsModalTeam").modal("toggle");
+        }
+    });
+});
+
+$(document).on("hidden.bs.modal", ".privacySettingsModalTeam", function () {
+    $(".privacySettingsModalTeam").remove();
+});
+
+$(document).on("click",".editNeededExpertise", function () {
+    if($(this).data("needed-expertise-id")){
+        var neededExpertiseId = $(this).data("needed-expertise-id");
+    } else {
+        var neededExpertiseId = null;
+    }
+    var teamId = $(this).data("team-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/my-team/editNeededExpertiseModal",
+        data: {'neededExpertiseId': neededExpertiseId, "teamId": teamId},
+        success: function (data) {
+            $("body").append(data);
+            $(".editNeededExpertiseModal").modal("toggle");
+        }
+    });
+});
+
+$(document).on("hidden.bs.modal", ".editNeededExpertiseModal", function () {
+    $(".editNeededExpertiseModal").remove();
+});
+
+

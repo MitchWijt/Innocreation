@@ -15,51 +15,47 @@
             @include("includes.teamPage_sidebar")
             @endmobile
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">Team Payment details</h1>
+                <h1 class="sub-title-black bold">Team Payment details</h1>
             </div>
             <?
                 $counterValidated = 0;
             ?>
             <div class="hr p-b-20 col-md-10"></div>
-            <? if($team->split_the_bill == 1) { ?>
-                <div class="row d-flex js-center m-t-20">
+            <? if($team->split_the_bill == 1 && $team->packageDetails()) { ?>
+                <div class="row d-flex js-center m-t-40">
                     <div class="col-md-10">
-                        <div class="card card-lg">
-                            <div class="card-block">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <p class="m-l-10 m-t-10 f-18 m-b-10">Split the bill</p>
-                                    </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="m-t-10 f-18 m-b-10 bold f-25">Split the bill validation</p>
+                            </div>
+                        </div>
+                        <div class="hr p-b-20 col-md-12 m-t-20"></div>
+                        <? foreach($splitTheBillDetails as $splitTheBillDetail) { ?>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <p><?= $splitTheBillDetail->user->getName()?></p>
                                 </div>
-                                <div class="hr p-b-20 col-md-12"></div>
-                                <? foreach($splitTheBillDetails as $splitTheBillDetail) { ?>
-                                    <div class="row text-center">
-                                        <div class="col-sm-6">
-                                            <p><?= $splitTheBillDetail->user->getName()?></p>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="d-flex fd-row js-center">
-                                                <? if($splitTheBillDetail->accepted == 1) { ?>
-                                                    <? $counterValidated++ ?>
-                                                    <p class="c-green">Validated <i class="zmdi zmdi-check c-green"></i> </p>
-                                                <? } else { ?>
-                                                    <p>Waiting to be validated</p>
-                                                <? } ?>
-                                            </div>
-                                        </div>
+                                <div class="col-sm-6">
+                                    <div class="d-flex fd-row js-center">
+                                        <? if($splitTheBillDetail->accepted == 1) { ?>
+                                            <? $counterValidated++ ?>
+                                            <p class="c-green">Validated <i class="zmdi zmdi-check c-green"></i> </p>
+                                        <? } else { ?>
+                                            <p>Waiting to be validated</p>
+                                        <? } ?>
                                     </div>
-                                <? } ?>
-                                <div class="hr p-b-20 col-md-12"></div>
-                                <div class="col-sm-12">
-                                    <p>Payment will automatically pursue when all members have verified their payment details.</p>
-                                    <p>Payment status: <? if ($counterValidated >= count($team->getMembers())) echo "<span class='c-green'> Payment pursued</span>"; else echo " <span class='c-orange'> On hold</span>";?></p>
                                 </div>
                             </div>
+                        <? } ?>
+                        <div class="hr p-b-20 col-md-12 p-l-0 m-t-20"></div>
+                        <div class="col-sm-12 p-l-0">
+                            <p>Payment will automatically pursue when all members have verified their payment details.</p>
+                            <p>Payment status: <? if ($counterValidated >= count($team->getMembers())) echo "<span class='c-green'> Payment pursued</span>"; else echo " <span class='c-orange'> On hold</span>";?></p>
                         </div>
                     </div>
                 </div>
             <? } ?>
-            <? if($teamPackage->change_package == 1) { ?>
+            <? if(isset($teamPackage) && $teamPackage->change_package == 1) { ?>
                 <? if($splitTheBillDetails->First()->reserved_changed_amount != null) { ?>
                     <div class="row d-flex js-center m-t-20">
                         <div class="col-md-10">

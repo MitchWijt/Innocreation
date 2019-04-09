@@ -110,9 +110,9 @@ class Team extends Model {
         return $support;
     }
 
-    public function checkInvite($expertise_id, $team_id, $user_id){
+    public function checkInvite($team_id, $user_id){
         $bool = false;
-        $invite = InviteRequestLinktable::select("*")->where("expertise_id", $expertise_id)->where("team_id", $team_id)->where("user_id", $user_id)->where("accepted", 0)->get();
+        $invite = InviteRequestLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->where("accepted", 0)->get();
         if(count($invite) > 0){
             $bool = true;
         }
@@ -200,6 +200,15 @@ class Team extends Model {
             } else {
                 return false;
             }
+        }
+    }
+
+    public function checkNeededExpertises($expertiseIds){
+        $neededExpertises = NeededExpertiseLinktable::select("*")->where("team_id", $this->id)->whereIn("expertise_id", $expertiseIds)->get();
+        if(count($neededExpertises) > 0){
+            return true;
+        } else {
+            return false;
         }
     }
 

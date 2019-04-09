@@ -30,4 +30,9 @@ class CredentialService
         $team->save();
         return 0;
     }
+
+    public function getPrivacySettingsModal($request){
+        $team = Team::select("*")->where("id", $request->input("team_id"))->first();
+        return view("/public/team/shared/_teamPrivacySettingsModal", compact("team"));
+    }
 }

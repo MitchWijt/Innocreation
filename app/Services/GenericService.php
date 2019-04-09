@@ -9,6 +9,7 @@
 namespace App\Services;
 
 use App\ConnectRequestLinktable;
+use App\Payments;
 use App\User;
 use App\UserChat;
 use App\UserMessage;
@@ -42,4 +43,5 @@ class GenericService
 
         return $string;
     }
+
 }

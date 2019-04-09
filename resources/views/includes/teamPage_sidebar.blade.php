@@ -14,56 +14,6 @@
     </div>
     <hr>
     <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-team">My Team</a>
-    </div>
-    <hr>
-    <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-team/members">Team members</a>
-    </div>
-    <hr>
-    <div class="sidebar-tab text-center p-relative">
-        <?
-            $team = \App\Team::select("*")->where("team_name", $user->team->team_name)->first();
-            $unseenMessages = \App\UserMessage::select("*")->where("team_id", $team->id)->where("seen_at" ,null)->get();
-        ?>
-        <a class="regular-link c-gray" href="/my-team/team-chat">Team chat</a>
-
-    </div>
-    <hr>
-    <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-team/team-products">My team products</a>
-    </div>
-    <hr>
-    <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-team/payment-details">Payment details</a>
-    </div>
-    <hr>
-    <? if($user->id == $team->ceo_user_id) { ?>
-        <div class="sidebar-tab text-center">
-            <a class="regular-link c-gray" href="/my-team/payment-settings">Payment settings</a>
-        </div>
-        <hr>
-    <? } ?>
-    <div class="sidebar-tab text-center">
-        <div class="d-flex js-center">
-            <a class="regular-link c-gray m-r-10" href="/my-team/user-join-requests">Team join requests </a>
-            <? if($teamJoinRequestsCounter > 0) { ?>
-                <div class="circle circleNotification c-orange text-center">
-                    <span><?= $teamJoinRequestsCounter?></span>
-                </div>
-            <? } ?>
-        </div>
-    </div>
-    <hr>
-    <div class="sidebar-tab text-center">
-        <a class="regular-link c-gray" href="/my-team/neededExpertises">My needed expertises</a>
-    </div>
-    <hr>
-    {{--<div class="sidebar-tab text-center">--}}
-        {{--<a class="regular-link c-gray" href="">My team newsletters</a>--}}
-    {{--</div>--}}
-    {{--<hr>--}}
-    <div class="sidebar-tab text-center">
         <? $workspaceShortTermPlanner = \App\WorkspaceShortTermPlannerBoard::select("*")->where("team_id", $team->id)->get()?>
         <? if(count($workspaceShortTermPlanner) > 0) { ?>
             <a class="regular-link c-gray" href="/my-team/workspace/short-term-planner/<?= $workspaceShortTermPlanner->First()->id?>">My workspace</a>
@@ -98,39 +48,6 @@
                         <a class="regular-link c-gray" href="/my-team">My Team</a>
                     </div>
                     <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="/my-team/members">Team members</a>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center p-relative">
-                        <?
-                        $team = \App\Team::select("*")->where("team_name", \Illuminate\Support\Facades\Session::get("team_name"))->first();
-                        $unseenMessages = \App\UserMessage::select("*")->where("team_id", $team->id)->where("seen_at" ,null)->get();
-                        ?>
-                        <a class="regular-link c-gray" href="/my-team/team-chat">Team chat</a>
-
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="/my-team/team-products">My team products</a>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="">Payments</a>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="/my-team/user-join-requests">Team join requests</a>
-                    </div>
-                    <hr>
-                    <div class="sidebar-tab text-center">
-                        <a class="regular-link c-gray" href="/my-team/neededExpertises">My needed expertises</a>
-                    </div>
-                    <hr>
-                    {{--<div class="sidebar-tab text-center">--}}
-                        {{--<a class="regular-link c-gray" href="">My team newsletters</a>--}}
-                    {{--</div>--}}
-                    {{--<hr>--}}
                     <div class="sidebar-tab text-center">
                         <? $workspaceShortTermPlanner = \App\WorkspaceShortTermPlannerBoard::select("*")->where("team_id", $user->team->id)->get()?>
                         <? if(count($workspaceShortTermPlanner) > 0) { ?>

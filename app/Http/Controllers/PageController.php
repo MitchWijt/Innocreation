@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CustomerIdea;
+use App\Expertises;
 use App\Expertises_linktable;
 use App\Faq;
 use App\FaqType;
@@ -59,7 +60,7 @@ class PageController extends Controller
             $user  = User::select("*")->where("slug", $slug)->first();
         }
         $loggedIn = UserAccount::isLoggedIn();
-        $expertise_linktable = Expertises_linktable::select("*")->where("user_id", $user->id)->orderBy("created_at", "DESC")->limit(3)->get();
+        $expertise_linktable = Expertises_linktable::select("*")->where("user_id", $user->id)->orderBy("created_at", "DESC")->get();
         $portfolios = UserPortfolio::select("*")->where("user_id", $user->id)->get();
         if($loggedIn) {
             $team = Team::select("*")->where("ceo_user_id", $loggedIn)->first();
@@ -128,7 +129,10 @@ class PageController extends Controller
 
     public function pagesAboutUsAction(){
         $title = "what is Innocreation?";
-       return view("/public/pages/aboutUs");
+
+        $amountExpertises = Expertises::count();
+        $expertiseLinktables = Expertises_linktable::select("*")->limit(3)->inRandomOrder()->get();
+        return view("/public/pages/aboutUs", compact("title", "amountExpertises", "expertiseLinktables"));
     }
 
     /**

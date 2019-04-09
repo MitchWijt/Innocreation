@@ -28,6 +28,6 @@
         <env name="QUEUE_DRIVER" value="sync"/>
     </php>
     <php>
-        <server name='HTTP_HOST' value='http://localhost' />
+        <server name='HTTP_HOST' value='http://innocreation.net' />
     </php>
 </phpunit>

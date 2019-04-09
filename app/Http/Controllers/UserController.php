@@ -16,6 +16,10 @@ use App\MembershipPackage;
 use App\Page;
 use App\ServiceReview;
 use App\Services\AppServices\MailgunService;
+use App\Services\AppServices\MollieService;
+use App\Services\Payments\PaymentService;
+use App\Services\Payments\SplitTheBillService;
+use App\Services\TimeSent;
 use App\Services\UserAccount\UserAccountPortfolioService;
 use App\Services\UserAccount\UserChatsService;
 use App\SplitTheBillLinktable;
@@ -376,129 +380,8 @@ class UserController extends Controller
         }
     }
 
-    public function validateSplitTheBillAction(Request $request){
-        if($this->authorized()) {
-            $userId = $request->input("user_id");
-            $splitTheBillId = $request->input("split_the_bill_linktable_id");
-            $termsPayment = $request->input("paymentTermsCheck");
-            $termsPrivacy = $request->input("privacyTermsCheck");
-
-            $referenceObject = Payments::select("*")->orderBy("id", "DESC")->first();
-            $reference = $referenceObject->reference + 1;
-
-            if($termsPayment == 1 && $termsPrivacy == 1){
-                $user = User::select("*")->where("id", $userId)->first();
-                $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $user->id)->where("team_id", $user->team_id)->first();
-                $splitTheBillLinktable->accepted = 1;
-                $splitTheBillLinktable->save();
-
-                if($user->getMostRecentPayment()){
-                    $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
-                    if ($teamPackage->custom_team_package_id == null) {
-                        $description = $teamPackage->title . " for team " . $teamPackage->team->team_name . "2";
-                    } else {
-                        $description =  " custom package for team " . $teamPackage->team->team_name . "2";
-                    }
-
-                    if($teamPackage->payment_preference == "monthly"){
-                        $range = "1 months";
-                    } else {
-                        $range = "12 months";
-                    }
-
-                    // no active subscriptions
-                    $mollie = $this->getService("mollie");
-                    $customer = $mollie->customers->get($user->mollie_customer_id);
-                    $mandates = $customer->mandates();
-                    if($mandates[0]->status == "valid" || !$user->hasValidSubscription()) {
-                        $customer = $mollie->customers->get($user->mollie_customer_id);
-                        $customer->createSubscription([
-                            "amount" => [
-                                "currency" => "EUR",
-                                "value" => number_format($splitTheBillLinktable->amount, 2, ".", "."),
-                            ],
-                            "interval" => "$range",
-                            "description" => $description . $reference . "recurring",
-                            "webhookUrl" => $this->getWebhookUrl(true),
-                        ]);
-
-                    }
-                    $subscriptions = $customer->subscriptions();
-
-                    $paymentTable = new Payments();
-                    $paymentTable->user_id = $user->id;
-                    $paymentTable->team_id = $user->team_id;
-                    $paymentTable->payment_url = null;
-                    $paymentTable->payment_method = "creditcard";
-                    $paymentTable->amount = $user->getMostRecentPayment()->amount;
-                    $paymentTable->reference = $reference;
-                    $paymentTable->payment_status = "paid";
-                    $paymentTable->sub_id = $subscriptions[0]->id;
-                    $paymentTable->created_at = date("Y-m-d H:i:s");
-                    $paymentTable->save();
-                } else {
-                    $user = User::select("*")->where("id", $userId)->first();
-                    $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $user->id)->where("team_id", $user->team_id)->first();
-                    $splitTheBillLinktable->accepted = 1;
-                    $splitTheBillLinktable->save();
-
-
-                    $teamPackage = TeamPackage::select("*")->where("team_id", $user->team_id)->first();
-                    $fullDomain = $_SERVER['HTTP_HOST'];
-                    $domainExplode = explode(".", $fullDomain);
-                    if($domainExplode[0] == "secret") {
-                        $redirectUrl = "http://secret.innocreation.net/my-account/payment-details";
-                    } else {
-                        $redirectUrl = "http://innocreation.net/my-account/payment-details";
-                    }
-                    if ($teamPackage->custom_team_package_id == null) {
-                        $description = $teamPackage->title . " for team " . $user->team->team_name;
-                    } else {
-                        $description =  " custom package for team " . $user->team->team_name;
-                    }
-
-                    $price = number_format($splitTheBillLinktable->amount, 2, ".", ".");
-                    $payment = Payments::select("*")->orderBy("id", "DESC")->first();
-                    $reference = $payment->reference + 1;
-
-                    $mollie = $this->getService("mollie");
-                    $paymentMollie = $mollie->payments->create([
-                        "amount" => [
-                            "currency" => "EUR",
-                            "value" => $price
-                        ],
-                        "description" => $description,
-                        "redirectUrl" => $redirectUrl,
-                        "webhookUrl" => $this->getWebhookUrl(),
-                        "method" => "creditcard",
-                        "sequenceType" => "first",
-                        "customerId" => "$user->mollie_customer_id",
-                        "metadata" => [
-                            "referenceAndUserId" => $reference . "-" . $user->id,
-                        ],
-                    ]);
-
-                    if($paymentMollie->status == "open") {
-                        $payment = new Payments();
-                        $payment->user_id = $user->id;
-                        $payment->team_id = $user->team_id;
-                        $payment->payment_id = $paymentMollie->id;
-                        $payment->payment_url = $paymentMollie->_links->checkout->href;
-                        $payment->payment_method = $paymentMollie->method;
-                        $payment->amount = $price;
-                        $payment->reference = $reference;
-                        $payment->payment_status = "Open";
-                        $payment->created_at = date("Y-m-d H:i:s");
-                        $payment->save();
-                    }
-                    return redirect($payment->payment_url);
-                }
-                return redirect($_SERVER["HTTP_REFERER"]);
-
-            } else {
-                return redirect($_SERVER["HTTP_REFERER"])->withErrors("Agree with the Term to continue");
-            }
-        }
+    public function validateSplitTheBillAction(Request $request, SplitTheBillService $splitTheBillService){
+        return $splitTheBillService->validateSplitTheBill($request);
     }
 
 
@@ -535,11 +418,12 @@ class UserController extends Controller
 
             $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->where("accepted_change", 1)->get();
             if (count($allSplitTheBillLinktables) >= count($user->team->getMembers())) {
+                $timeSent = new TimeSent();
                 $userChat = UserChat::select("*")->where("receiver_user_id", $user->team->ceo_user_id)->where("creator_user_id", 1)->first();
                 $userMessage = new UserMessage();
                 $userMessage->sender_user_id = 1;
                 $userMessage->user_chat_id = $userChat->id;
-                $userMessage->time_sent = $this->getTimeSent();
+                $userMessage->time_sent = $timeSent->time;
                 if($teamPackage->changed_payment_settings == 1){
                     $userMessage->message = "The verification to change your payment settings has been succesfuly validated by all your members! everything changed automatically you don't have to do anything :)";
                 } else {
@@ -612,11 +496,12 @@ class UserController extends Controller
             $teamPackage->save();
 
             $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $user->team_id)->get();
+            $timeSent = new TimeSent();
             $userChat = UserChat::select("*")->where("receiver_user_id", $user->team->ceo_user_id)->where("creator_user_id", 1)->first();
             $userMessage = new UserMessage();
             $userMessage->sender_user_id = 1;
             $userMessage->user_chat_id = $userChat->id;
-            $userMessage->time_sent = $this->getTimeSent();
+            $userMessage->time_sent = $timeSent->time;
             if ($teamPackage->changed_payment_settings == 1) {
                 $userMessage->message = $user->getName() . " has rejected the request to change your payment settings. Change has been aborted. still want to change the payment settings? send another request.";
             } else {
@@ -653,38 +538,14 @@ class UserController extends Controller
         }
     }
 
-    public function rejectSplitTheBillAction(Request $request){
+    public function rejectSplitTheBillAction(Request $request, MailgunService $mailgunService){
         if($this->authorized()) {
             $userId = $request->input("user_id");
             $teamId = $request->input("team_id");
             $user = User::select("*")->where("id", $userId)->first();
-            $allSplitTheBillLinktables = SplitTheBillLinktable::select("*")->where("team_id", $teamId)->get();
-            foreach ($allSplitTheBillLinktables as $allSplitTheBillLinktable) {
-                $recentPayment = $allSplitTheBillLinktable->user->getMostRecentOpenPayment();
-                $recentPayment->payment_status = "Canceled";
-                $recentPayment->save();
-                $mollie = $this->getService("mollie");
-                $mollie->payments->delete($recentPayment->payment_id);
+            $team = Team::select("*")->where("id", $teamId)->first();
 
-                $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("id", $allSplitTheBillLinktable->id)->first();
-                $splitTheBillLinktable->accepted = 0;
-                $splitTheBillLinktable->save();
-            }
-
-            $team = $team = Team::select("*")->where("id", $user->team_id)->first();
-            $team->split_the_bill = 0;
-            $team->save();
-
-            $this->saveAndSendEmail($user, "Payment has been rejected", view("/templates/sendSplitTheBillRejected", compact("user", "team")));
-
-            $userChat = UserChat::select("*")->where("receiver_user_id", $team->ceo_user_id)->where("creator_user_id", 1)->first();
-            $userMessage = new UserMessage();
-            $userMessage->sender_user_id = 1;
-            $userMessage->user_chat_id = $userChat->id;
-            $userMessage->time_sent = $this->getTimeSent();
-            $userMessage->message = "The payment for your team has been rejected because one of your team members rejected the validation request.";
-            $userMessage->created_at = date("Y-m-d H:i:s");
-            $userMessage->save();
+            PaymentService::rejectSplitTheBillPayment($user, $team, $mailgunService);
             return redirect($_SERVER["HTTP_REFERER"]);
         }
     }

@@ -1,20 +1,124 @@
 $themes: (
         light: (
                 backgroundColor: #fff,
-                textColor: #408bbd,
-                buttonTextColor: #408bbd,
-                buttonTextTransform: none,
-                buttonTextHoverColor: #61b0e7,
-                buttonColor: #fff,
-                buttonBorder: 2px solid #FF6100,
+                gradient: linear-gradient(#ededed, #fff),
+                headerBackgroundColor: #fff,
+                textColor: #000,
+                ButtonTextColor: #575757,
+                ParagraphColor: #000,
+                descriptionColor: #000,
+                TitleColor: #000,
+
+                linkColor: #575757 ,
+                linkColorHover: #000 ,
+
+                navItemColor: #575757,
+                navItemColorHover: #000,
+
+                ctaTextColor: #FF6100,
+                buttonTextHoverColor: #000000 ,
+                buttonBorderColorHover: 1px solid #000000 ,
+                buttonBackground: #fff ,
+                buttonBackgroundHover: #fff ,
+                buttonBorder: 1px solid #B4B4B4,
+                ctaButtonBorder:  1px solid #FF6100 !important,
+                ctaButtonBackground: #fff !important,
+
+                inputTextBackground: #fff ,
+                inputTextBorder: 1px solid #000 ,
+                inputTextBorderRadius: 2px ,
+
+                inputGreyBackground: #EAEAEA,
+                inputGreyTextBorder: 1px solid #707070 ,
+                inputGreyTextBorderRadius: 3px ,
+
+                hr: 1px solid #C9CCCF,
+
+                navTitleColor: #000,
+                logoTextColor: #000,
+
+                //CARD
+                cardBorder: 0,
+                paddingLeftCard: 20px,
+                paddingRightCard: 20px,
+                paddingTopCard: 20px,
+                webkitShadow: 0px 0px 32px -13px rgba(0,0,0,0.75),
+                mozBoxShadow: 0px 0px 32px -13px rgba(0,0,0,0.75),
+                boxShadow: 0px 0px 32px -13px rgba(0,0,0,0.75),
+
+                //icons
+                iconColor: #C9CCCF,
+                iconColorHover: #000,
+                activeIconsBackground: #fff,
+
+                //editButtons
+                borderEditIcon: 1px solid #C9CCCF,
+                borderHoverColor: 1px solid #000,
+
+                //modals
+                backgroundModal: #fff,
+
+                //border
+                actionBorder: 1px solid #FF6100,
+
+
+
         ),
         dark: (
-                backgroundColor: #222,
-                textColor: #ddd,
-                buttonTextColor: #aaa,
-                buttonTextTransform: uppercase,
-                buttonTextHoverColor: #ddd,
-                buttonColor: #333,
-                buttonBorder: 1px solid blue,
+                backgroundColor: #C9CCCF,
+                gradient: linear-gradient(#ededed, #fff),
+                headerBackgroundColor: #000,
+                textColor: #C9CCCF,
+                ButtonTextColor: #C9CCCF,
+                ParagraphColor: #000,
+                descriptionColor: #C9CCCF,
+                TitleColor: #000,
+
+                linkColor: #FF6100,
+                linkColorHover: #FF6100,
+
+                navItemColor: #C9CCCF,
+                navItemColorHover: #C9CCCF,
+
+                ctaTextColor: #fff,
+                buttonTextHoverColor: #000000,
+                buttonBorderColorHover: 2px solid #FF6100,
+                buttonBackground: #000 ,
+                buttonBackgroundHover: #C9CCCF,
+                buttonBorder: 2px solid #FF6100,
+                ctaButtonBorder: 1px solid #FF6100,
+                ctaButtonBackground: #269A35,
+                inputTextBackground: #C9CCCF,
+                inputTextBorder: 1px solid black,
+                inputTextBorderRadius: 3px,
+                hr: 1px solid #FF6100,
+
+                navTitleColor: #FF6100,
+                logoTextColor: #C9CCCF,
+
+                //CARD
+                cardBorder: 0,
+                paddingLeftCard: 0,
+                paddingRightCard: 0,
+                paddingTopCard: 0,
+                webkitShadow: 0,
+                mozBoxShadow: 0,
+                boxShadow: 0,
+
+                //icons
+                iconColor: #C9CCCF,
+                iconColorHover: #C9CCCF,
+                activeIconsBackground: #C9CCCF,
+
+                //editButtons
+                borderEditIcon: 1px solid #000,
+                borderHoverColor: 1px solid #FF6100,
+                buttonColor: #000,
+
+                //modals
+                backgroundModal: #C9CCCF,
+
+                //border
+                actionBorder: 1px solid #FF6100,
         ),
 );

@@ -11,6 +11,7 @@ use App\Expertises_linktable;
 use App\Favorite_expertises_linktable;
 use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
+use App\User;
 use App\UserChat;
 use GetStream;
 use Illuminate\Support\Facades\Session;
@@ -33,6 +34,7 @@ class UserNotifications
 
     public function returnViewWithData($notifications, $userId, $switchUserWork){
         $connections = $switchUserWork->listConnectionRequests($userId);
+
         return view("/public/shared/_popoverNotificationsData", compact('notifications', 'connections'));
     }
 
@@ -48,6 +50,11 @@ class UserNotifications
 
     public function getTeamInvites($userId){
         $teamInvites = $invites = InviteRequestLinktable::select("*")->where("user_id", $userId)->where("accepted", 0)->get();
+        $user = User::select("*")->where("id", $userId)->first();
+        if($user->team_id != null && $user->id == $user->team->ceo_user_id){
+            $joinRequests = $requests = JoinRequestLinktable::select("*")->where("team_id", $user->team_id)->where("accepted", 0)->get();
+            return view("/public/shared/teamInvitesHeaderBox/_popoverData", compact("teamInvites", "joinRequests"));
+        }
         return view("/public/shared/teamInvitesHeaderBox/_popoverData", compact("teamInvites"));
     }
 }

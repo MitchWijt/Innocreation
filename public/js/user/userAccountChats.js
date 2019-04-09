@@ -11,9 +11,15 @@ $('.searchChatUsers').keyup(function(){
 });
 
 $(document).ready(function () {
-   var userChatId = $(".userChatId").val();
-   if(userChatId != 0){
-       $(".chat-" + userChatId).click();
+    if($(".userChatId").val() != 0){
+        var id = $(".userChatId").val();
+    } else if($(".teamId").val() != 0){
+        var id = $(".teamId").val();
+    } else {
+        var id = 0;
+    }
+   if(id != 0){
+       $(".chat-" + id).click();
    }
 });
 //user is "finished typing," do something
@@ -33,6 +39,7 @@ $(".chatItem").on("click",function () {
     var user_id = $(this).data("user-id");
     var streamToken = $(".streamToken").val();
     var userId = $(".userId").val();
+    var teamId = $(this).data('team-id');
     var user_chat_id = $(this).data("chat-id");
     var receiver_user_id = $(this).data("receiver-user-id");
     var admin = 0;
@@ -47,7 +54,7 @@ $(".chatItem").on("click",function () {
                    }
                },
                url: "/message/getUserChatMessages",
-               data: {'user_chat_id': user_chat_id, 'admin' : admin, 'receiverUserId': receiver_user_id},
+               data: {'user_chat_id': user_chat_id, 'admin' : admin, 'receiverUserId': receiver_user_id, 'teamId': teamId},
                success: function (data) {
                    $(".chatContent").html(data);
                    $(".userMessageInput").removeClass("hidden");
@@ -67,7 +74,7 @@ $(".chatItem").on("click",function () {
                    }
                },
                url: "/message/getUserChatReceiver",
-               data: {'receiverUserId': receiver_user_id, 'userChatId': user_chat_id},
+               data: {'receiverUserId': receiver_user_id, 'userChatId': user_chat_id, 'teamId': teamId},
                success: function (data) {
                    $(".chatContentHeader").html(data);
                }
@@ -77,6 +84,7 @@ $(".chatItem").on("click",function () {
            getUserChatMessages();
            getUserChatReceiver();
            $(".sendUserMessage").attr("data-chat-id", user_chat_id);
+           $(".sendUserMessage").attr("data-team-id", teamId);
            $(".unseen-" + user_chat_id).addClass("hidden");
            $(".actions").removeClass("hidden");
            if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
@@ -100,6 +108,12 @@ $(".chatItem").on("click",function () {
            $(message).appendTo(allMessages);
            message.find(".messageReceived").find(".message").text(data["new"][0]["message"]);
            message.find(".messageReceived").find(".timeSent").text(data["new"][0]["timeSent"]);
+           setTimeout(function(){
+               var objDiv = $(".chatContent");
+               if (objDiv.length > 0) {
+                   objDiv[0].scrollTop = objDiv[0].scrollHeight;
+               }
+           }, 1000);
        }
 
        function successCallback() {
@@ -114,6 +128,7 @@ $(".chatItem").on("click",function () {
 
 $(".sendUserMessage").on("click",function () {
     var user_chat_id = $(this).data("chat-id");
+    var teamId = $(this).data("team-id");
     var sender_user_id = $(".sender_user_id").val();
     var message = $(".userMessageInput").val();
     $(".userMessageInput").val("");
@@ -127,7 +142,7 @@ $(".sendUserMessage").on("click",function () {
             }
         },
         url: "/sendMessageUser",
-        data: {'user_chat_id': user_chat_id, 'sender_user_id' : sender_user_id, 'message' : message},
+        data: {'user_chat_id': user_chat_id, 'sender_user_id' : sender_user_id, 'message' : message, 'team_id': teamId},
         dataType: "JSON",
         success: function (data) {
             var message = $('.newChatMessage').first().clone();

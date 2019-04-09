@@ -1,0 +1,47 @@
+@media screen and (max-width: 991px) {
+    .aboutUsHeading{
+        font-size: 40px !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .aboutUsHeading{
+        font-size: 30px !important;
+    }
+}
+
+@media screen and (max-width: 530px) {
+    .aboutUsHeading{
+        font-size: 25px !important;
+    }
+
+    .aboutUsHeading2{
+        font-size: 30px !important;
+    }
+
+    .subHeading2{
+        font-size: 20px !important;
+    }
+
+    .subHeading{
+        font-size: 15px !important;
+    }
+
+    .bannerImage{
+        height: 450px !important;
+    }
+
+    .topRow{
+        margin-bottom: 130px !important;
+    }
+}
+
+@media screen and (max-width: 446px) {
+    .aboutUsHeading{
+        font-size: 20px !important;
+    }
+
+    .subHeading{
+        font-size: 12px !important;
+    }
+}

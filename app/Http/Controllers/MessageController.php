@@ -54,11 +54,21 @@ class MessageController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function userChatMessagesAction(Request $request) {
-        return UserChatsService::getUserChatMessages($request->input("user_chat_id"), Session::get("user_id") , $request->input("admin"));
+        if($request->input("teamId") != 0){
+            $team = Team::select("*")->where("id", $request->input("teamId"))->first();
+            return UserChatsService::getUserChatMessages(false, Session::get("user_id") , $request->input("admin"), $team);
+        } else {
+            return UserChatsService::getUserChatMessages($request->input("user_chat_id"), Session::get("user_id") , $request->input("admin"));
+        }
     }
 
     public function getUserChatReceiver(Request $request){
-        return UserChatsService::getUserChatReceiver($request->input("receiverUserId"), $request->input("userChatId"));
+        if($request->input("teamId") != 0){
+            $team = Team::select("*")->where("id", $request->input("teamId"))->first();
+            return UserChatsService::getUserChatReceiver($request->input("receiverUserId"), $request->input("userChatId"), $team);
+        } else {
+            return UserChatsService::getUserChatReceiver($request->input("receiverUserId"), $request->input("userChatId"));
+        }
     }
 
     /**
@@ -125,7 +135,6 @@ class MessageController extends Controller
      */
     public function getUserWorkCommentsAction(Request $request){
         $userWorkId = $request->input("user_work_id");
-
 
         $userWork = UserWork::select("*")->where("id", $userWorkId)->first();
         if(Session::has("user_id")) {

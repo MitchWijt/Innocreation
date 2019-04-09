@@ -1,0 +1,49 @@
+.theme-light header {
+  background: #fff;
+}
+.theme-dark header {
+  background: #000;
+}
+
+#tagsHeader {
+  border-left: 0 !important;
+}
+.theme-light #tagsHeader {
+  background: #fff;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  border-right: 1px solid #000;
+}
+.theme-dark #tagsHeader {
+  background: #C9CCCF;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+
+#tagsHeader:focus {
+  outline: 0px !important;
+  -webkit-appearance: none;
+}
+
+.input-group-text {
+  color: black !important;
+}
+.theme-light .input-group-text {
+  background: #fff;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  border-left: 1px solid #000;
+}
+.theme-dark .input-group-text {
+  background: #C9CCCF;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+}
+
+.input-group-text:hover {
+  color: #77787a !important;
+}
+
+/*# sourceMappingURL=style.css.map */

@@ -23,7 +23,8 @@ class TeamPackage
             array_push($neededExpertisesArray, $neededExpertise->expertise_id);
         }
 
-         if(in_array($expertise->expertise_id, $neededExpertisesArray)) {
+
+         if(in_array($expertise->First()->id, $neededExpertisesArray)) {
              if(!$team->packageDetails() || !$team->hasPaid()) {
                  if(count($team->getMembers()) >= 2) {
                      return false;
