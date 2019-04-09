@@ -23,9 +23,16 @@ class User extends Authenticatable
         return $this->hasMany("\App\UserRole", "id","role");
     }
 
-    public function getProfilePicture(){
+    public function getProfilePicture($size = "normal", $rawPath = false){
         if($this->profile_picture != "defaultProfilePicture.png") {
-            return env("DO_SPACES_URL") . "/users/$this->slug/profilepicture/$this->profile_picture";
+            if($this->extension == null){
+                return env("DO_SPACES_URL") . "/users/$this->slug/profilepicture/$this->profile_picture";
+            }
+            if($rawPath){
+                return "users/$this->slug/profilepicture/$this->profile_picture-$size.$this->extension";
+            } else {
+                return env("DO_SPACES_URL") . "/users/$this->slug/profilepicture/$this->profile_picture-$size.$this->extension";
+            }
         } else {
             return "/images/profilePicturesUsers/defaultProfilePicture.png";
         }

@@ -11,6 +11,8 @@ use App\NeededExpertiseLinktable;
 use App\Payments;
 use App\Services\AppServices\MollieService;
 use App\Services\Checkout\AuthorisePaymentRequest;
+use App\Services\Images\ImageProcessor;
+use App\Services\Paths\PublicPaths;
 use App\Services\TeamServices\JoinRequests;
 use App\Services\TeamServices\MemberService;
 use App\Services\TeamServices\TeamExpertisesService;
@@ -29,6 +31,7 @@ use Faker\Provider\Payment;
 use GuzzleHttp\Psr7\Stream;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use PhpParser\Node\Stmt\Return_;
 use Session;
 use App\Services\TeamServices\CredentialService as CredentialService;
 use App\Services\AppServices\MailgunService as MailgunService;
@@ -58,26 +61,8 @@ class TeamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function saveTeamProfilePictureAction(Request $request){
-        // grabs the uploaded file moves it into the correct folder and adds it to the database for the team
-        $team_id = $request->input("team_id");
-        $file = $request->file("profile_picture");
-        $size = $this->formatBytes($file->getSize());
-        if($size < 8) {
-            $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
-            $team = Team::select("*")->where("id", $team_id)->first();
-            $exists = Storage::disk('spaces')->exists("teams/" . $team->slug . "/profilepicture/" . $filename);
-            if (!$exists) {
-                Storage::disk('spaces')->delete("teams/" . $team->slug . "/profilepicture/" . $team->team_profile_picture);
-                $image = $request->file('profile_picture');
-                Storage::disk('spaces')->put("teams/" . $team->slug . "/profilepicture/" . $filename, file_get_contents($image->getRealPath()), "public");
-            }
-            $team->team_profile_picture = $filename;
-            $team->save();
-            return redirect($_SERVER["HTTP_REFERER"]);
-        } else {
-            return redirect("/my-team")->withErrors("Image is too large. The max upload size is 8MB");
-        }
+    public function saveTeamProfilePictureAction(Request $request, EditPageImageService $editPageImage){
+        return $editPageImage->editProfilePicture($request);
     }
 
     public function editBannerImage(Request $request, EditPageImageService $editPageImage){

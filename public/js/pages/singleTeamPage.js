@@ -44,9 +44,16 @@ $(".collapseExpertise").on("click",function () {
 $(".editBannerImage").on("click",function () {
     $(".bannerImgInput").click();
 });
+$("#editProfilePicture").on("click",function () {
+    $(".profile_picture").click();
+});
 
 $('.bannerImgInput').on("change", function () {
     $(".bannerImgForm").submit();
+});
+
+$('.profile_picture').on("change", function () {
+    $(".profileImageForm").submit();
 });
 
 // Opens popup to kick member from team.

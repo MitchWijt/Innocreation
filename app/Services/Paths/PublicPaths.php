@@ -31,6 +31,18 @@ class PublicPaths
     }
 
     /**
+     * Returns the filename without spaces and weird characters and resized name based on the uploaded filename
+     */
+    public static function getFilenameResized($uniqueId, $file, $target, $extension = true){
+        if($extension){
+            $name = sprintf('%s-%s.%s', preg_replace('/[^a-zA-Z0-9-_\.]/', '', $uniqueId), $target, $file->getClientOriginalExtension());
+        } else {
+            $name = sprintf('%s-%s', preg_replace('/[^a-zA-Z0-9-_\.]/', '', $uniqueId), $target);
+        }
+        return $name;
+    }
+
+    /**
      * Returns the directory for the userPortfolio for the Space
      */
     public static function userPortfolioPath($user, $portfolioDirName, $filename, $file, $uniqueId, $audio = false, $video = false){
@@ -75,6 +87,11 @@ class PublicPaths
      */
     public static function getUserProfilePicturePath($filename, $user){
         $path = sprintf("users/%s/profilepicture/%s", $user->slug, $filename);
+        return $path;
+    }
+
+    public static function getTeamProfilePicturePath($filename, $team){
+        $path = sprintf('teams/%s/profilepicture/%s', $team->slug, $filename);
         return $path;
     }
 

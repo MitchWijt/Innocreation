@@ -15,7 +15,22 @@
                         <? } ?>
                     </div>
                 </div>
-                <div class="banner p-relative " style="background: url('<?= $user->getBanner()?>');">
+            </div>
+            <div class="row">
+                <div class="col-sm-12 d-flex js-center">
+                    @include("includes.flash")
+                </div>
+            </div>
+            <div class="banner p-relative " style="background: url('<?= $user->getBanner()?>');">
+                <? if(isset($loggedIn) && $loggedIn == $user->id) { ?>
+                    <form action="/user/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
+                        <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                        <input type="hidden" name="user_id" value="<?= $user->id?>">
+                        <input type="file" name="bannerImg" class="bannerImgInput">
+                    </form>
+                    <i class="zmdi zmdi-edit editBtn editBannerImage @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
+                <? } ?>
+                <div class="avatar-med absolutePF p-absolute" style="background: url('<?= $user->getProfilePicture('extra-small')?>'); z-index: 100 !important">
                     <? if(isset($loggedIn) && $loggedIn == $user->id) { ?>
                         <form action="/user/editBannerImage" method="post" class="hidden bannerImgForm" enctype="multipart/form-data">
                             <input type="hidden" name="_token" value="<?= csrf_token()?>">

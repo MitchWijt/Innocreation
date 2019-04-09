@@ -21,7 +21,16 @@
                     </form>
                     <i class="zmdi zmdi-edit editBtn editBannerImage c-black @handheld no-hover @endhandheld" @handheld style="display: block !important;"@endhandheld></i>
                 <? } ?>
-                <div class="avatar-med absolutePF p-absolute" style="background: url('<?= $team->getProfilePicture()?>');"></div>
+                <div class="avatar-med absolutePF p-absolute" style="background: url('<?= $team->getProfilePicture('extra-small')?>'); z-index: 100 !important">
+                    <? if($user && $user->id == $team->ceo_user_id) { ?>
+                        <form action="/my-team/saveTeamProfilePicture" method="post" class="hidden profileImageForm" enctype="multipart/form-data">
+                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                            <input type="hidden" name="team_id" value="<?= $team->id?>">
+                            <input type="file" name="profile_picture" class="profile_picture">
+                        </form>
+                        <i class="zmdi zmdi-edit c-black editBtn shadow @handheld no-hover @endhandheld" id="editProfilePicture"></i>
+                    <? } ?>
+                </div>
             </div>
             <div class="row">
                 <div class="col-xl-4">
