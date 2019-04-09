@@ -93,14 +93,18 @@ $(".descDesktop").on("focus",function () {
 });
 
 $('.triggerSlider, .closeSlider').click(function() {
-    $('.sliderUpDown').toggleClass('close');
-    $(".sliderContent").toggleClass('hidden');
-    if($(".sliderUpDown").hasClass("close")){
-        bodyScrollLock.clearAllBodyScrollLocks();
-    } else {
-        const slider = document.querySelector(".sliderUpDown");
-        bodyScrollLock.disableBodyScroll(slider);
-    }
+    window.scrollTo(0,0);
+    setTimeout(function () {
+        $('.sliderUpDown').toggleClass('close');
+        $(".sliderContent").toggleClass('hidden');
+        if($(".sliderUpDown").hasClass("close")){
+            bodyScrollLock.clearAllBodyScrollLocks();
+        } else {
+            const slider = document.querySelector(".sliderUpDown");
+            bodyScrollLock.disableBodyScroll(slider);
+        }
+    }, 100);
+
 });
 
 $(".postInnocreativePost").on("click",function () {

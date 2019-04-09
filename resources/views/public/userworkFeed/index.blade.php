@@ -1,9 +1,10 @@
 @extends("layouts.app")
 <link rel="stylesheet" href="/css/responsiveness/innocreativeFeed/index.css">
+<link rel="stylesheet" href="/css/userworkFeed/newIndex2.css">
 @section("content")
     @mobile
     <? if(isset($user)) { ?>
-        <div class="sliderUpDown close">
+        <div class="sliderUpDown close p-relative">
             <div class="sliderContent hidden">
                 <div class="row p-l-10 p-r-10 m-t-10">
                     <div class="col-6">
@@ -60,7 +61,7 @@
     <? if(isset($sharedUserWorkId)) { ?>
         <input type="hidden" class="sharedLinkId" value="<?= $sharedUserWorkId?>">
     <? } ?>
-    <div class="d-flex grey-background">
+    <div class="d-flex grey-background theme-light">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 d-flex js-center">
@@ -87,7 +88,7 @@
                                 <div class="col-md-8 m-t-5 @notmobile contentActive @endnotmobile">
                                     <div class="row contentClick">
                                         <div class="@handheld col-6 m-b-10 @elsedesktop col-6 @endhandheld contentActive">
-                                            <div class="fileUpload p-relative contentActiveIcons d-flex">
+                                            <div class="fileUpload p-relative contentActiveIcons d-flex theme-light">
                                                 <input type="file" class="userwork_image hidden" accept=".jpg, .jpeg" name="image">
                                                 <i class="zmdi zmdi-camera-add iconCTA addPicture c-pointer m-r-5"></i>
                                                 <i class="zmdi zmdi-mood iconCTA c-pointer popoverEmojis " data-toggle="popover" data-content='<?= view("/public/userworkFeed/shared/_popoverEmojis", compact("emojis"))?>'></i>

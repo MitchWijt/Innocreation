@@ -4,7 +4,7 @@
                 <div class="col-sm-12  m-t-10 p-0 p-absolute d-flex js-between align-start">
                     <div class="d-flex">
                         <a href="<?= $userWorkPost->user->getUrl()?>" target="_blank">
-                            <div class="avatar-header m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture()?>')"></div>
+                            <div class="avatar-header m-r-10 m-l-10 popoverUser" style="background: url('<?= $userWorkPost->user->getProfilePicture("extra-small")?>')"></div>
                         </a>
                         <div class="d-flex fd-column">
                             <p class="m-b-0"><a href="<?= $userWorkPost->user->getUrl()?>" target="_blank" class="c-gray"><?= $userWorkPost->user->getName()?></a></p>
@@ -17,7 +17,7 @@
                 </div>
                 <div class="col-sm-12 p-relative desc p-0">
                     <div style="max-width: 340px;">
-                        <p class="f-17 m-t-15 m-b-5 descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: normal"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
+                        <p class="f-17 m-t-15 m-b-5 descriptionUserWork-<?= $userWorkPost->id?>" style="padding: 5px !important; white-space: pre-line; word-break: break-word;"><?= htmlspecialchars_decode($userWorkPost->description)?></p>
                     </div>
                     <? if(isset($user) && $user->id == $userWorkPost->user_id) { ?>
                         <div class="m-t-15 m-b-5 editUserWork-<?= $userWorkPost->id?> hidden">

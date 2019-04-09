@@ -1,11 +1,4 @@
 @media screen and (max-width: 770px) {
-    .grid-container{
-        column-count: 1 !important;
-        column-gap: 10px !important;
-    }
-}
-
-@media screen and (max-width: 770px) {
     .messageReceived{
         flex: 0 0 70% !important;
         max-width: 70% !important;

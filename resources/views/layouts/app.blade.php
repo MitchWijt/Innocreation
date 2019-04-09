@@ -38,6 +38,7 @@
         <link rel="stylesheet" href="/css/checkout/selectPackage.css">
         <link rel="stylesheet" href="/css/registerProcess/index.css">
         <link rel="stylesheet" href="/css/userworkFeed/index.css">
+        <link rel="stylesheet" href="/css/userworkFeed/newIndex2.css">
         <link rel="stylesheet" href="/css/popovers.css">
         <link rel="stylesheet" href="/css/responsiveness/sidebar.css">
     {{--CSS MEDIA QUERIES--}}
@@ -91,7 +92,7 @@
     {{--==============--}}
 </head>
 <body>
-<div class="overlayContent ">
+<div class="overlayContent theme-light">
 <? if(\Illuminate\Support\Facades\Session::has("user_id")) {
     $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
     $userChats = \App\UserChat::select("*")->where("creator_user_id", $user->id)->orWhere("receiver_user_id", $user->id)->get();

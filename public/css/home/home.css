@@ -38,7 +38,18 @@
 }
 
 .ui-menu-home{
-    top: 120% !important;
+    top: 40px !important;
+    overflow: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+.ui-menu-home-mob{
+    top: 95px !important;
+    overflow: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
+    left:0;
+    width: 80vw !important;
+    right: 5px !important;
 }
 
 .ui-menu-item-wrapper{

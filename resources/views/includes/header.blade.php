@@ -172,6 +172,10 @@
         });
     }
     $(document).ready(function () {
-        $(".ui-menu").addClass("ui-menu-home");
+        if(window.mobilecheck()){
+            $(".ui-menu").addClass("ui-menu-home-mob");
+        } else {
+            $(".ui-menu").addClass("ui-menu-home");
+        }
     });
 </script>
