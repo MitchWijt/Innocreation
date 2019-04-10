@@ -100,26 +100,26 @@
                                         <i  style="z-index: 2;" class="editBtn zmdi zmdi-plus f-20 p-r-15 p-l-15 p-b-10 p-t-10 editExpertise @handheld no-hover @endhandheld"></i>
                                         <? } else { ?>
                                         <? if($user->team_id == null) { ?>
-                                        <? if($loggedIn) { ?>
-                                        <? if($team) { ?>
-                                        <? if($team->checkInvite($team->id, $user->id) == false) { ?>
-                                        <? if(\App\Services\TeamServices\TeamPackage::checkPackageAndPayment($team->id, $expertise_linktable->First())) { ?>
-                                        <form action="/my-team/inviteUserForTeam" method="post" class="m-0">
-                                            <input type="hidden" name="_token" value="<?= csrf_token()?>">
-                                            <input type="hidden" name="invite" value="1">
-                                            <input type="hidden" name="team_id" value="<?= $team->id?>">
-                                            <input type="hidden" name="user_id" value="<?= $user->id?>">
-                                            <button class="btn btn-inno btn-sm">Invite creator to my team</button>
-                                        </form>
-                                        <? } else { ?>
-                                        <button class="btn btn-inno btn-sm  openTeamLimitModal">Invite creator to my team</button>
-                                        <? } ?>
-                                        <? } else { ?>
-                                        <p class="c-orange m-b-0 vertically-center">User invited</p>
-                                        <? } ?>
-                                        <? } ?>
-                                        <? } ?>
-                                        <? } ?>
+                                            <? if($loggedIn) { ?>
+                                                <? if($team) { ?>
+                                                    <? if($team->checkInvite($team->id, $user->id) == false) { ?>
+                                                        <? if(\App\Services\TeamServices\TeamPackage::checkPackageAndPayment($team->id, $expertise_linktable->First())) { ?>
+                                                            <form action="/my-team/inviteUserForTeam" method="post" class="m-0">
+                                                                <input type="hidden" name="_token" value="<?= csrf_token()?>">
+                                                                <input type="hidden" name="invite" value="1">
+                                                                <input type="hidden" name="team_id" value="<?= $team->id?>">
+                                                                <input type="hidden" name="user_id" value="<?= $user->id?>">
+                                                                <button class="btn btn-inno btn-sm">Invite creator to my team</button>
+                                                            </form>
+                                                        <? } else { ?>
+                                                            <button class="btn btn-inno btn-sm  openTeamLimitModal">Invite creator to my team</button>
+                                                        <? } ?>
+                                                        <? } else { ?>
+                                                            <p class="c-orange m-b-0 vertically-center">User invited</p>
+                                                        <? } ?>
+                                                    <? } ?>
+                                                <? } ?>
+                                            <? } ?>
                                         <? } ?>
                                     </div>
                                 </div>

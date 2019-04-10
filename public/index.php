@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
@@ -18,7 +17,6 @@
 | loading any of our classes later on. It feels nice to relax.
 |
 */
-
 require __DIR__.'/../bootstrap/autoload.php';
 
 /*
@@ -34,7 +32,6 @@ require __DIR__.'/../bootstrap/autoload.php';
 */
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
-
 /*
 |--------------------------------------------------------------------------
 | Run The Application

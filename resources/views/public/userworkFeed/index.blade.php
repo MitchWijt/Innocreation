@@ -110,7 +110,7 @@
                                 expertisesArray.push("<?= $title?>"),
                             <? if(strpos($expertise->title,"-") !== false) { ?>
                                <? $title = str_replace("-"," ",$title); ?>
-                                expertisesArray.push("<?= $title?>")
+                                expertisesArray.push("<?= $title?>"),
                             <? } ?>
                             <?= "'$title'"?>,
                             <? } ?>
