@@ -15,6 +15,7 @@ use App\UserChat;
 use App\UserMessage;
 use Illuminate\Http\Request;
 use Auth;
+use Str;
 use Session;
 
 class DebugController extends Controller
@@ -27,14 +28,7 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, MailgunService $mailgunService) {
-//        $paymentTable = Payments::select("*")->where("payment_id", "tr_7BzCGMKTud")->first();
-//        $user = User::select("*")->where("id", 11)->first();
-//        $mollie = new MollieService();
-//        $mollie->cancelAllSubscriptions($user);
-
-
-        dd(error_log("error moite", 3, "/var/log/mollie/error_log.txt"));
-
+      
 
         die('test');
     }
