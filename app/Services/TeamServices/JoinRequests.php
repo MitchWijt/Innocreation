@@ -33,7 +33,6 @@ class JoinRequests
     public function inviteUser($request, $mailgunService){
         $team_id = $request->input("team_id");
         $user_id = $request->input("user_id");
-        $expertise_id = $request->input("expertise_id");
 
         $checkJoinInvites = InviteRequestLinktable::select("*")->where("team_id",$team_id)->where("user_id", $user_id)->where("accepted", 0)->get();
         if(count($checkJoinInvites) == 0) {
@@ -42,7 +41,6 @@ class JoinRequests
             $invite = new InviteRequestLinktable();
             $invite->team_id = $team_id;
             $invite->user_id = $user_id;
-            $invite->expertise_id = $expertise_id;
             $invite->accepted = 0;
             $invite->save();
 

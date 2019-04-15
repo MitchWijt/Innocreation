@@ -188,9 +188,10 @@ $(document).on("click", ".postComment", function () {
             message.attr("id", newId);
             var allMessages = $(".userWorkComments");
             $(message).appendTo(allMessages);
-            message.removeClass("hidden");
+            message.attr("style", "");
             message.find(".message").text(data['message']);
-            message.find(".timeSent").text(data['timeSent']);
+            message.find(".userNameComment").text(data['userName']);
+            message.find(".userProfilePic2").attr("style", "background: url('" + data['userProfilePic'] + "')");
             $("#" + newId).removeClass("hidden");
             $(".comment").val("");
         }
@@ -203,7 +204,7 @@ $(document).on("click", ".postComment", function () {
     }, 1000);
 });
 
-function plus_minus_post(formUrl, _this){
+function plus_minus_interest(formUrl, _this){
     var userWorkId = _this.data("id");
     $.ajax({
         method: "POST",
@@ -222,35 +223,22 @@ function plus_minus_post(formUrl, _this){
     });
 }
 
-$(document).on("click", ".plusPointPost", function () {
-    plus_minus_post("/feed/plusPointPost", $(this));
-    var userWorkId = $(this).data("id");
-    $(".icon-" + userWorkId).removeClass("zmdi-plus").addClass("zmdi-minus");
-    $(".plusMinusBtn-" + userWorkId).attr("style", "padding-top: 3px !important; border: 1px solid #FF6100").removeClass("plusPointPost").addClass("minusPointPost");
-});
-
-$(document).on("click", ".minusPointPost", function () {
-    plus_minus_post("/feed/minusPointPost", $(this));
-    var userWorkId = $(this).data("id");
-    $(".icon-" + userWorkId).removeClass("zmdi-minus").addClass("zmdi-plus");
-    $(".plusMinusBtn-" + userWorkId).attr("style", "padding-top: 3px !important;").removeClass("minusPointPost").addClass("plusPointPost");
-});
-
 if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
     var eventTrigger = "touchstart";
 } else {
     var eventTrigger = "click";
 }
 $(document).on(eventTrigger, ".fave", function () {
+    var id = $(this).data("id");
     if ($(this).hasClass("normal-fave")) {
         $(this).addClass("fave-animation");
-        plus_minus_post("/feed/plusPointPost", $(this));
+        plus_minus_interest("/feed/interestPost", $(this));
     } else {
         $(this).addClass("fave-revert");
-        plus_minus_post("/feed/minusPointPost", $(this));
+        plus_minus_interest("/feed/disInterestPost", $(this));
     }
 
-    var _this = $(this);
+    var _this = $(".fave-" + id);
     setTimeout(function () {
         if (_this.hasClass("normal-fave")) {
             _this.removeClass("fave-animation");
@@ -260,4 +248,18 @@ $(document).on(eventTrigger, ".fave", function () {
             _this.removeClass("active-fave").addClass("normal-fave");
         }
     }, 1000);
+});
+
+$(document).on("mouseover", ".zoom, .interestedButtonPost, .commentsButtonPost, .postedUser", function () {
+    $(this).parents(".image").find(".imageOverlay").addClass("fadeIn");
+    $(this).parents(".image").find(".interestedButtonPost").addClass("fadeInContent");
+    $(this).parents(".image").find(".commentsButtonPost").addClass("fadeInContent");
+    $(this).parents(".image").find(".postedUser").addClass("fadeInContent");
+});
+
+$(document).on("mouseleave", ".zoom, .interestedButtonPost, .commentsButtonPost, .postedUser", function () {
+    $(this).parents(".image").find(".imageOverlay").removeClass("fadeIn");
+    $(this).parents(".image").find(".interestedButtonPost").removeClass("fadeInContent");
+    $(this).parents(".image").find(".commentsButtonPost").removeClass("fadeInContent");
+    $(this).parents(".image").find(".postedUser").removeClass("fadeInContent");
 });

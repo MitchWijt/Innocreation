@@ -17,6 +17,11 @@ class Expertises extends Model
         return $users;
     }
 
+    public function getTop3ActiveUsers(){
+        $expertiseLinktable = expertises_linktable::select("*")->where("expertise_id", $this->id)->limit(3)->get();
+        return $expertiseLinktable;
+    }
+
     public function getTags(){
         $tagsExplode = explode(",", $this->tags);
         $temp = "";

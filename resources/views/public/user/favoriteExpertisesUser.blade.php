@@ -1,10 +1,10 @@
 @extends("layouts.app")
 @section("content")
-    <div class="d-flex grey-background vh85">
+    <div class="d-flex grey-background vh85 <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
         <div class="container">
             <input type="hidden" class="totalChosen">
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black @mobile f-25 @endmobile">My favorite expertises</h1>
+                <h1 class="sub-title-black bold @mobile f-25 @endmobile">My favorite expertises</h1>
             </div>
             <hr class="p-b-20">
             <? if(count($favoriteExpertisesUser) < 4) { ?>
@@ -59,7 +59,7 @@
                 <? } ?>
                         <div class="col-sm-4">
                             <div class="card m-t-20 m-b-20">
-                                <div class="card expertiseCard p-relative c-pointer" data-url="/" style="max-height: 210px !important">
+                                <div class="card-block expertiseCard p-relative c-pointer" data-url="/" style="max-height: 210px !important">
                                     <form action="/deleteFavoriteExpertisesUser" method="post" class="editFavExpertises">
                                         <input type="hidden" name="_token" value="<?= csrf_token()?>">
                                         <input type="hidden" name="expertise_id" value="<?= $favExpertise->expertise_id?>">
@@ -81,11 +81,10 @@
                                             <p class="c-white @handheld f-15 @elsedesktop f-20 @endhandheld"><?= $favExpertise->expertises->first()->title?></p>
                                         </div>
                                     </a>
-                                    <div class="overlay">
-                                        <a href="/<?= $favExpertise->expertises->first()->slug?>/users" style="z-index: 400;">
-                                            <div class="contentExpertise" style="background: url('<?= $favExpertise->expertises->first()->image?>');"></div>
-                                        </a>
-                                    </div>
+                                    <div class="overlay"></div>
+                                    <a href="/<?= $favExpertise->expertises->first()->slug?>/users" style="z-index: 400;">
+                                        <div class="contentExpertise" style="background: url('<?= $favExpertise->expertises->first()->image?>');"></div>
+                                    </a>
                                 </div>
                             </div>
                         </div>

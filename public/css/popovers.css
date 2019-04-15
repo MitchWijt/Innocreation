@@ -15,7 +15,6 @@
 .popover-black{
     margin-top: 20px !important;
     background-color: #000 !important;
-    border-color: #FF6100 !important;
     color: #C9CCCF !important;
 }
 
@@ -30,7 +29,6 @@
 .popover-notification{
     margin-top: 20px !important;
     background-color: #C9CCCF !important;
-    border-color: #FF6100 !important;
     color: #C9CCCF !important;
     min-width: 450px !important;
     max-height: 250px !important;

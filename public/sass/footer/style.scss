@@ -1,0 +1,25 @@
+@import "../themify";
+
+footer{
+  @include themify($themes) {
+    background: themed('headerBackgroundColor');
+  }
+  min-height: 100px;
+}
+
+.footer{
+  justify-content: space-between;
+  margin: 0 30px 0 30px;
+}
+
+.textFooter{
+  @include themify($themes) {
+    color: themed('logoTextColor');
+  }
+}
+
+.navTitle{
+  @include themify($themes) {
+    color: themed('navTitleColor');
+  }
+}

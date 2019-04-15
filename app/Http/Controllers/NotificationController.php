@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\AssistanceTicket;
 use App\Services\AppServices\StreamService;
 use App\Services\FeedServices\SwitchUserWork;
+use App\Services\UserAccount\UserChatsService;
 use App\SupportTicket;
 use App\SupportTicketMessage;
 use App\TeamProduct;

@@ -14,11 +14,18 @@ class Team extends Model {
         return "/team/$this->slug";
     }
 
-    public function getProfilePicture(){
-        if($this->team_profile_picture != "defaultProfilePicture.png") {
-            return "https://space-innocreation.ams3.cdn.digitaloceanspaces.com/teams/$this->slug/profilepicture/$this->team_profile_picture";
+    public function getProfilePicture($size = "normal", $rawPath = false){
+        if($this->profile_picture != "defaultProfilePicture.png") {
+            if($this->extension == null){
+                return env("DO_SPACES_URL") . "/teams/$this->slug/profilepicture/$this->team_profile_picture";
+            }
+            if($rawPath){
+                return "teams/$this->slug/profilepicture/$this->team_profile_picture-$size.$this->extension";
+            } else {
+                return env("DO_SPACES_URL") . "/teams/$this->slug/profilepicture/$this->team_profile_picture-$size.$this->extension";
+            }
         } else {
-            return "/images/profilePicturesTeams/defaultProfilePicture.png";
+            return "/images/profilePicturesUsers/defaultProfilePicture.png";
         }
     }
 
@@ -110,9 +117,9 @@ class Team extends Model {
         return $support;
     }
 
-    public function checkInvite($expertise_id, $team_id, $user_id){
+    public function checkInvite($team_id, $user_id){
         $bool = false;
-        $invite = InviteRequestLinktable::select("*")->where("expertise_id", $expertise_id)->where("team_id", $team_id)->where("user_id", $user_id)->where("accepted", 0)->get();
+        $invite = InviteRequestLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->where("accepted", 0)->get();
         if(count($invite) > 0){
             $bool = true;
         }
@@ -200,6 +207,15 @@ class Team extends Model {
             } else {
                 return false;
             }
+        }
+    }
+
+    public function checkNeededExpertises($expertiseIds){
+        $neededExpertises = NeededExpertiseLinktable::select("*")->where("team_id", $this->id)->whereIn("expertise_id", $expertiseIds)->get();
+        if(count($neededExpertises) > 0){
+            return true;
+        } else {
+            return false;
         }
     }
 

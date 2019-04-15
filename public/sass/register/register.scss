@@ -1,0 +1,30 @@
+@import "../themify";
+
+
+.half-circle {
+  width: 200px;
+  height: 100px;
+  background-color: gold;
+  border-top-left-radius: 100px;
+  border-top-right-radius: 100px;
+  border: 1px solid gray;
+  border-bottom: 0;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.half-circle2 {
+  width: 200px;
+  height: 100px;
+  background-color: gold;
+  border-bottom-left-radius: 100px;
+  border-bottom-right-radius: 100px;
+  border: 1px solid gray;
+  border-top: 0;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}

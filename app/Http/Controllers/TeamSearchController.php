@@ -20,10 +20,9 @@ class TeamSearchController extends Controller
     public function index() {
         $title = "Find your team and participate with an idea!";
         $og_description = "Search and find a creative and innovative team and help build their idea/dream!";
-        $allNeededExpertises = $this->getAllNeededExpertises();
         $user = User::select("*")->where("id", Session::get("user_id"))->first(); // gets the user who is logged in at the moment
-        $topTeams = Team::select("*")->orderBy("support","DESC")->limit(3)->get(); // gets the top 3 teams ordered by Support points descending
-        return view("/public/home/teamSearch",compact("topTeams", "user", "title", "og_description", "allNeededExpertises"));
+        $teams = Team::select("*")->get(); // gets the top 3 teams ordered by Support points descending
+        return view("/public/pages/teamsPage",compact("teams", "user", "title", "og_description"));
     }
 
     /**

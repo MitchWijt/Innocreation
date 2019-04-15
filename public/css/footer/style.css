@@ -1,0 +1,30 @@
+footer {
+  min-height: 100px;
+}
+.theme-light footer {
+  background: #fff;
+}
+.theme-dark footer {
+  background: #000;
+}
+
+.footer {
+  justify-content: space-between;
+  margin: 0 30px 0 30px;
+}
+
+.theme-light .textFooter {
+  color: #000;
+}
+.theme-dark .textFooter {
+  color: #C9CCCF;
+}
+
+.theme-light .navTitle {
+  color: #000;
+}
+.theme-dark .navTitle {
+  color: #FF6100;
+}
+
+/*# sourceMappingURL=style.css.map */

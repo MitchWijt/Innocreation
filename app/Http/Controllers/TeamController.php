@@ -8,7 +8,14 @@ use App\InviteRequestLinktable;
 use App\JoinRequestLinktable;
 use App\MailMessage;
 use App\NeededExpertiseLinktable;
+use App\Payments;
+use App\Services\AppServices\MollieService;
+use App\Services\Checkout\AuthorisePaymentRequest;
+use App\Services\Images\ImageProcessor;
+use App\Services\Paths\PublicPaths;
 use App\Services\TeamServices\JoinRequests;
+use App\Services\TeamServices\MemberService;
+use App\Services\TeamServices\TeamExpertisesService;
 use App\Services\TimeSent;
 use App\SplitTheBillLinktable;
 use App\Team;
@@ -20,9 +27,11 @@ use App\User;
 use App\UserChat;
 use App\UserMessage;
 use App\UserRole;
+use Faker\Provider\Payment;
 use GuzzleHttp\Psr7\Stream;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use PhpParser\Node\Stmt\Return_;
 use Session;
 use App\Services\TeamServices\CredentialService as CredentialService;
 use App\Services\AppServices\MailgunService as MailgunService;
@@ -52,26 +61,8 @@ class TeamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function saveTeamProfilePictureAction(Request $request){
-        // grabs the uploaded file moves it into the correct folder and adds it to the database for the team
-        $team_id = $request->input("team_id");
-        $file = $request->file("profile_picture");
-        $size = $this->formatBytes($file->getSize());
-        if($size < 8) {
-            $filename = preg_replace('/[^a-zA-Z0-9-_\.]/','', $file->getClientOriginalName());
-            $team = Team::select("*")->where("id", $team_id)->first();
-            $exists = Storage::disk('spaces')->exists("teams/" . $team->slug . "/profilepicture/" . $filename);
-            if (!$exists) {
-                Storage::disk('spaces')->delete("teams/" . $team->slug . "/profilepicture/" . $team->team_profile_picture);
-                $image = $request->file('profile_picture');
-                Storage::disk('spaces')->put("teams/" . $team->slug . "/profilepicture/" . $filename, file_get_contents($image->getRealPath()), "public");
-            }
-            $team->team_profile_picture = $filename;
-            $team->save();
-            return redirect($_SERVER["HTTP_REFERER"]);
-        } else {
-            return redirect("/my-team")->withErrors("Image is too large. The max upload size is 8MB");
-        }
+    public function saveTeamProfilePictureAction(Request $request, EditPageImageService $editPageImage){
+        return $editPageImage->editProfilePicture($request);
     }
 
     public function editBannerImage(Request $request, EditPageImageService $editPageImage){
@@ -101,8 +92,31 @@ class TeamController extends Controller
 
     }
 
+    /**
+     *
+     * Gets the modal and sends it to the ajax success response to edit team information fields
+     *
+     */
+    public function getPrivacySettingsModal(Request $request, CredentialService $credentialService){
+        return $credentialService->getPrivacySettingsModal($request);
+    }
+
+    /**
+     *
+     * Saves the team fields edited in the modal.
+     *
+     */
     public function saveTeamNameAction(Request $request, CredentialService $credentialService){
         return $credentialService->saveTeamName($request);
+    }
+
+    /**
+     *
+     * Gets the modal to alter or create a new needed expertise.
+     *
+     */
+    public function editNeededExpertiseModal(Request $request, TeamExpertisesService $teamExpertisesService){
+        return $teamExpertisesService->getEditNeededExpertiseModal($request);
     }
 
     /**
@@ -176,31 +190,8 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function saveNeededExpertiseAction(Request $request)
-    {
-        // saves the description + requirements for the expertises the team decided to change
-        $team_id = $request->input("team_id");
-        $expertise_id = $request->input("expertise_id");
-        $requirements = $request->input("requirements");
-        $amountNeeded = $request->input("amountExpertise");
-        $description = $request->input("description_needed_expertise");
-        $requirementString = "";
-        foreach($requirements as $requirement){
-            if($requirement != "") {
-                if ($requirementString == "") {
-                    $requirementString = $requirement;
-                } else {
-                    $requirementString = $requirementString . "," . $requirement;
-                }
-            }
-        }
-
-        $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
-        $neededExpertise->requirements = $requirementString;
-        $neededExpertise->description = $description;
-        $neededExpertise->amount = $amountNeeded;
-        $neededExpertise->save();
-        return redirect($_SERVER["HTTP_REFERER"]);
+    public function saveNeededExpertiseAction(Request $request, TeamExpertisesService $teamExpertisesService) {
+        return $teamExpertisesService->saveNeededExpertises($request);
     }
 
     /**
@@ -236,82 +227,9 @@ class TeamController extends Controller
         return $joinRequests->inviteUser($request, $mailgunService);
     }
 
-    public function teamMembersPage(){
-        $title = "My team members. Join my team!";
-        $user = User::select("*")->where("id", Session::get("user_id"))->first();
-        $team = Team::select("*")->where("id", $user->team_id)->first();
-        $teamRoles = UserRole::select("*")->where("team_role", 1)->get();
-        return view("/public/team/teamPageMembers", compact("team", "user","teamRoles", "title"));
-    }
 
-    public function kickMemberFromTeamAction(Request $request){
-        $user_id = $request->input("user_id");
-        $team_id = $request->input("team_id");
-        $expertise_id = $request->input("joined_expertise_id");
-        $kickMessage = $request->input("kickMessage");
-
-        $team = Team::select("*")->where("id", $team_id)->first();
-
-        $neededExpertise = NeededExpertiseLinktable::select("*")->where("team_id", $team_id)->where("expertise_id", $expertise_id)->first();
-        $neededExpertise->amount = $neededExpertise->amount + 1;
-        $neededExpertise->save();
-
-        $user = User::select("*")->where("id", $user_id)->first();
-        $user->team_id = null;
-        $user->save();
-
-        $joinrequest = JoinRequestLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->where("accepted", 1)->first();
-        if(!$joinrequest){
-            $joinrequest = InviteRequestLinktable::select("*")->where("team_id", $team_id)->where("user_id", $user_id)->where("accepted", 1)->first();
-        }
-        if($joinrequest) {
-            $joinrequest->delete();
-        }
-
-        if($team->split_the_bill == 1 && $user->getMostRecentPayment()){
-            $splitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $user->id)->where("team_id", $team->id)->first();
-            if($splitTheBillLinktable) {
-                $teamLeaderSplitTheBillLinktable = SplitTheBillLinktable::select("*")->where("user_id", $team->ceo_user_id)->where("team_id", $team->id)->first();
-
-                $memberAmount = $splitTheBillLinktable->amount;
-                $leaderAmount = $teamLeaderSplitTheBillLinktable->amount;
-                $newLeaderPrice = $leaderAmount + $memberAmount;
-
-                $splitTheBillLinktable->delete();
-
-                $mollie = $this->getService("mollie");
-                $sub = $teamLeaderSplitTheBillLinktable->user->getMostRecentPayment();
-                $customer = $mollie->customers->get($teamLeaderSplitTheBillLinktable->user->mollie_customer_id);
-                $subscription = $customer->getSubscription($sub->sub_id);
-                $subscription->amount = (object) [
-                    "currency" => "EUR",
-                    "value" => number_format($newLeaderPrice, 2, ".", "."),
-                ];
-                $subscription->webhookUrl = $this->getWebhookUrl(true);
-                $subscription->update();
-
-                $teamLeaderSplitTheBillLinktable->amount = $newLeaderPrice;
-                $teamLeaderSplitTheBillLinktable->save();
-            }
-
-            $mollie = $this->getService("mollie");
-            $customer = $mollie->customers->get($user->mollie_customer_id);
-            $customer->cancelSubscription($user->getMostRecentPayment()->sub_id);
-
-            $user->subscription_canceled = 1;
-            $user->save();
-        }
-
-        $userChat = UserChat::select("*")->where("receiver_user_id", $user->id)->where("creator_user_id", 1)->first();
-        $userMessage = new UserMessage();
-        $userMessage->sender_user_id = 1;
-        $userMessage->user_chat_id = $userChat->id;
-        $userMessage->time_sent = $this->getTimeSent();
-        $userMessage->message = "We are sorry to say that $team->team_name has decided to kick you from their team. their reason is: $kickMessage";
-        $userMessage->created_at = date("Y-m-d H:i:s");
-        $userMessage->save();
-
-        return redirect($_SERVER["HTTP_REFERER"]);
+    public function kickMemberFromTeamAction(Request $request, MemberService $memberService){
+        return $memberService->kickMemberFromTeam($request);
     }
 
     public function teamChatAction(){
@@ -574,7 +492,11 @@ class TeamController extends Controller
         $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
 
         $splitTheBillDetails = SplitTheBillLinktable::select("*")->where("team_id", $team->id)->get();
-        return view("/public/team/teamPaymentDetails", compact("splitTheBillDetails", "team", "teamPackage"));
+        if($teamPackage) {
+            return view("/public/team/teamPaymentDetails", compact("splitTheBillDetails", "team", "teamPackage"));
+        } else{
+            return view("/public/team/teamPaymentDetails", compact("splitTheBillDetails", "team"));
+        }
     }
 
     public function teamPaymentSettingsAction(){
@@ -590,6 +512,9 @@ class TeamController extends Controller
         $splitTheBill = $request->input("splitTheBillOnOff");
         $team = Team::select("*")->where("id", $teamId)->first();
         if ($splitTheBill == 1) {
+            $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
+            $teamPackage->changed_payment_settings = 1;
+            $teamPackage->save();
             foreach (Session::get("splitTheBillData") as $key => $value) {
                 $existingSplitTheBill = SplitTheBillLinktable::select("*")->where("user_id", $key)->where("team_id", $teamId)->first();
                 if (count($existingSplitTheBill) > 0) {
@@ -608,9 +533,6 @@ class TeamController extends Controller
             }
             $team->split_the_bill = 1;
 
-            $teamPackage = TeamPackage::select("*")->where("team_id", $team->id)->first();
-            $teamPackage->changed_payment_settings = 1;
-            $teamPackage->save();
         } else {
             $team->split_the_bill = 0;
         }

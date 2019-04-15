@@ -1,0 +1,13 @@
+@import "themify";
+
+.iconCTA:hover{
+  @include themify($themes){
+    border: themed('buttonBorder');
+  }
+}
+
+.iconCTA{
+  @include themify($themes){
+    color: themed('buttonColor');
+  }
+}

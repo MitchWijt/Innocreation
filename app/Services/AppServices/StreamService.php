@@ -29,4 +29,11 @@ class StreamService
         $feed = self::getStreamFeed($userId);
         $feed->addActivity($data);
     }
+
+    public function generateStreamToken($user){
+        $streamFeed = $this->client->feed('user', $user->id);
+        $token = $streamFeed->getToken();
+
+        return $token;
+    }
 }

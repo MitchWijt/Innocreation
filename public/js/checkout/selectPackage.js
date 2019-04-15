@@ -1,21 +1,21 @@
 $(".register").on("click",function () {
   $(".loginForm").addClass("hidden");
   $(".registerForm").removeClass("hidden");
-  $(".collapse").collapse("show");
+  $(".loginRegisterModal").modal("toggle");
 });
 
 $(".login").on("click",function () {
     $(".loginForm").removeClass("hidden");
     $(".registerForm").addClass("hidden");
-    $(".collapse").collapse("show");
+    $(".loginRegisterModal").modal("toggle");
 });
-$(document).ready(function () {
-    $(".ui-menu").appendTo(".expertises");
-    $(".token-input").attr("style", "");
-
-    $(".tokenfield").removeClass("form-control");
-    $(".tokenfield").addClass("col-sm-12");
-});
+// $(document).ready(function () {
+//     $(".ui-menu").appendTo(".expertises");
+//     $(".token-input").attr("style", "");
+//
+//     $(".tokenfield").removeClass("form-control");
+//     $(".tokenfield").addClass("col-sm-12");
+// });
 
 $(".paymentPreference").on("click",function () {
     var package_id = $(this).data("package-id");

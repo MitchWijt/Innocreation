@@ -1,0 +1,407 @@
+@import "themify";
+
+@font-face {
+  font-family: Corbert-Regular;
+  src: url(../../fonts/Corbert-Regular.otf);
+}
+@font-face {
+  font-family: Corbert-Heavy;
+  src: url(../../fonts/Corbert-Heavy.otf);
+}
+@font-face {
+  font-family: Corbert-Bold;
+  src: url(../../fonts/Corbert-Bold.otf);
+}
+@font-face {
+  font-family: Corbert-Thin;
+  src: url(../../fonts/Corbert-Thin.otf);
+}
+* {
+  font-family: Corbert-Regular;
+}
+
+.heavy{
+  font-family: Corbert-Heavy;
+}
+
+.bold{
+  font-family: Corbert-Bold;
+}
+
+.thin{
+  font-family: Corbert-Thin;
+}
+
+
+.form-control-inno{
+  @include themify($themes){
+    background: themed('inputTextBackground');
+    border: themed("inputTextBorder");
+    border-radius: themed('inputTextBorderRadius');
+  }
+  display:block;
+  width:100%;
+  height:34px;
+  padding:6px 12px;
+  font-size:14px;
+  line-height:1.42857143;
+  color:#555 !important;
+  -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition:border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  -o-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s
+}
+
+.form-control-inno:focus{
+  @include themify($themes){
+    border: themed("inputTextBorder");
+  }
+  outline:0;
+  -webkit-box-shadow:none !important;
+  box-shadow:none!important;
+}
+
+.btn-inno{
+  @include themify($themes){
+    background: themed('buttonBackground');
+    border: themed('buttonBorder');
+    color: themed('ButtonTextColor');
+  }
+}
+
+.btn-inno:hover{
+  @include themify($themes){
+    border: themed('buttonBorderColorHover');
+    color: themed('buttonTextHoverColor');
+    background: themed('buttonBackgroundHover');
+    transition: all 0.3s;
+  }
+}
+
+.btn-inno-cta{
+  @include themify($themes){
+    background: themed('ctaButtonBackground');
+    border: themed('ctaButtonBorder');
+    color: themed('ctaTextColor');
+  }
+  border-radius: 0 !important;
+}
+
+.input{
+  @include themify($themes){
+    background: themed('inputTextBackground');
+    border: themed("inputTextBorder");
+    border-radius: themed('inputTextBorderRadius');
+  }
+}
+
+
+/*the container must be positioned relative:*/
+.custom-select {
+  @include themify($themes){
+    background-color: themed('inputTextBackground') !important;
+    border-radius: themed('inputTextBorderRadius') !important;
+    border: themed('inputTextBorder') !important;
+  }
+  position: relative;
+}
+
+.custom-select select {
+  display: none !important; /*hide original SELECT element:*/
+}
+
+.select-selected {
+  @include themify($themes){
+    background-color: themed('inputTextBackground');
+  }
+  padding: 0 !important;
+}
+
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute !important;
+  content: "" !important;
+  top: 14px !important;
+  right: 10px !important;
+  width: 0 !important;
+  height: 0 !important;
+  border: 6px solid transparent !important;
+}
+
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/*style the items (options), including the selected item:*/
+.select-items div,.select-selected {
+  color: #000;
+  padding: 8px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/*style items (options):*/
+.select-items {
+  @include themify($themes){
+    background: themed('inputTextBackground');
+  }
+  max-height: 300px;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch !important;
+  -webkit-transform: translate3d(0,0,0);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+.select-items div{
+  @include themify($themes) {
+    border-bottom: themed('inputTextBorder') !important;
+  }
+}
+
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+
+.tokenfield{
+  @include themify($themes){
+    background: themed('inputTextBackground');
+    border: themed("inputTextBorder");
+    border-radius: themed('inputTextBorderRadius');
+  }
+}
+
+.input-grey{
+  @include themify($themes){
+    background: themed('inputGreyBackground');
+    border: themed("inputGreyTextBorder");
+    border-radius: themed('inputGreyTextBorderRadius');
+  }
+}
+
+.grey-background{
+  @include themify($themes){
+    background: themed('backgroundColor');
+  }
+}
+
+.container{
+  font-family: Corbert;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.container-fluid{
+  font-family: Corbert;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.regular-link{
+  @include themify($themes){
+    color: themed('linkColor');
+    text-decoration: underline;
+  }
+}
+
+.regular-link:hover{
+  @include themify($themes){
+    color: themed('linkColorHover');
+    transition: all 0.5s;
+  }
+}
+
+a span{
+  @include themify($themes){
+    color: themed('navItemColor');
+  }
+}
+
+a span:hover{
+  @include themify($themes){
+    color: themed('navItemColorHover');
+    transition: all 0.5s;
+  }
+}
+
+//hr
+hr{
+  @include themify($themes){
+    border-top: themed('hr');
+    margin-bottom: 5px !important;
+    margin-top: 5px !important;
+  }
+}
+
+.hr{
+  @include themify($themes) {
+    border-top: themed('hr');
+  }
+  margin: 0 auto;
+  text-align: center;
+  width: 800px;
+}
+
+.theme-background{
+  @include themify($themes) {
+    background: themed('gradient');
+  }
+}
+
+i{
+  @include themify($themes) {
+    color: themed('iconColor');
+  }
+}
+
+i:hover{
+  @include themify($themes) {
+    color: themed('iconColorHover');
+    transition: all 0.5s;
+  }
+}
+
+.active{
+  color: #000 !important;
+}
+
+//=====================================CARD=====================
+
+.card{
+  @include themify($themes) {
+    background:  themed('headerBackgroundColor');
+    border: themed('cardBorder');
+    color: themed('textColor');
+  }
+}
+
+.card-lg{
+  @include themify($themes) {
+    background:  themed('headerBackgroundColor');
+    border: themed('cardBorder');
+    color: themed('textColor');
+  }
+  -webkit-box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
+}
+
+.card-block{
+  @include themify($themes) {
+
+  }
+}
+
+.contentExpertise{
+  //border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 9px -1px rgba(0,0,0,0.75);
+}
+
+.contentExpertise:hover{
+  box-shadow: 0 40px 100px -20px rgba(0,0,10,.15),0 30px 70px -30px rgba(0,0,0,.3);
+  transform: translateY(-2%);
+  transition: all 1s;
+
+}
+
+.userCardContent{
+  width: 100%;
+  min-height: 210px !important;
+  max-height: 210px !important;
+
+  background-size:     cover !important;
+  background-repeat:   no-repeat !important;
+  background-position: center center !important;
+  border-radius: 10px !important;
+}
+
+.userCard{
+  transition: all 0.5s;
+}
+
+.userCard:hover{
+  box-shadow: 0 40px 100px -20px rgba(0,0,10,.15),0 30px 70px -30px rgba(0,0,0,.3);
+  transform: translateY(-2%);
+  transition: all 0.5s;
+}
+
+.overlay{
+  //border-radius: 10px;
+}
+
+.overlay {
+  background: #000 !important;
+  z-index: 1 !important;
+  opacity: 0.5 !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 210px;
+  position: absolute;
+}
+
+p{
+  @include themify($themes) {
+    color: themed('ParagraphColor');
+  }
+}
+
+.descriptions{
+  @include themify($themes) {
+    color: themed('descriptionColor');
+  }
+}
+
+.titleGrayBlack{
+  @include themify($themes) {
+    color: themed('textColor');
+  }
+}
+
+h3 {
+  @include themify($themes) {
+    color: themed('textColor');
+  }
+
+  font-family: Corbert-Bold;
+}
+
+li{
+  @include themify($themes) {
+    color: themed('textColor');
+  }
+}
+
+.absolute-center{
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.bcg-cover{
+  @include themify($themes) {
+    background: themed('backgroundColor');
+  }
+}
+
+.actionBorder{
+  @include themify($themes) {
+    border: themed('actionBorder') !important;
+  }
+}

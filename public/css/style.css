@@ -1,67 +1,5 @@
-@font-face {
-    font-family: Corbert;
-    src: url(../fonts/Corbert-Regular.otf);
-}
-
-header{
-    font-family: Corbert;
-    background: #000000;
-}
-
-footer{
-    font-family: Corbert;
-    background: #000000;
-    min-height: 100px;
-}
-
-.header{
-    display: flex;
-    justify-content: space-between;
-    margin: 0 30px 0 30px;
-}
-
-.footer{
-    justify-content: space-between;
-    margin: 0 30px 0 30px;
-}
-
-.lower-header{
-    /*display: flex;*/
-    /*justify-content: center;*/
-    background: #C9CCCF;
-    -webkit-box-shadow: 0px 7px 24px 1px rgba(201,204,207,1);
-    -moz-box-shadow: 0px 7px 24px 1px rgba(201,204,207,1);
-    box-shadow: 0px 7px 24px 1px rgba(201,204,207,1);
-}
-
-*{
-    font-family: Corbert;
-}
-
-.container{
-    /*width: 1200px !important;*/
-    font-family: Corbert;
-    margin: 0 auto;
-    padding: 0;
-}
-
-.container-fluid{
-    font-family: Corbert;
-    margin: 0 auto;
-    padding: 0;
-}
-
 .hidden{
-    position: absolute !important;
-    top: -9999px !important;
-    left: -9999px !important;
-}
-
-.hr{
-    border-top: 1px solid #FF6100;
-    margin: 0 auto;
-    text-align: center;
-    width: 800px;
+    display: none !important;
 }
 
 .hr-sm{
@@ -93,7 +31,7 @@ footer{
 }
 
 .sub-title-black{
-    font-weight: lighter;
+    font-weight: bold;
     font-size: 40px;
     color: #000000;
 }
@@ -101,22 +39,6 @@ footer{
 .sub-title-container{
     display: flex;
     justify-content: center;
-}
-
-.regular-link{
-    text-decoration: none;
-    cursor: pointer !important;
-    color: #FF6100 !important;
-    padding: 0 !important;
-}
-
-.regular-link:hover{
-    text-decoration: underline ;
-    color: #FF6100;
-}
-
-.grey-background{
-    background: #C9CCCF !important;
 }
 
 .cartwheelLogo{
@@ -134,22 +56,7 @@ footer{
     height:45px;
 }
 
-.btn-inno{
-    background: #000000;
-    border: 2px solid #FF6100 !important;
-    color: #C9CCCF;
-}
 
-.btn-inno:hover{
-    color: #000000 !important;
-    background: #C9CCCF !important;
-    cursor: pointer;
-}
-.btn-normal{
-    background: transparent;
-    border: 2px solid #77787a !important;
-    color: #C9CCCF;
-}
 .menu-item:hover{
     color: #000000 !important;
     background: #C9CCCF !important;
@@ -161,11 +68,6 @@ footer{
     cursor: pointer;
 }
 
-.input{
-    border: 1px solid #000000 !important;
-    border-radius: 3px !important;
-    background: #C9CCCF !important;
-}
 .input-fat{
     border: 1px solid #000000 !important;
     border-radius: 10px !important;
@@ -173,11 +75,6 @@ footer{
     height: 50px;
 }
 
-.tokenfield{
-    border: 1px solid #000000 !important;
-    border-radius: 10px !important;
-    background: #C9CCCF !important;
-}
 
 .sidebar{
     min-width: 210px;
@@ -199,22 +96,6 @@ footer{
     background: #000000 !important;
     color: #C9CCCF !important;
     /*width: 360px !important;*/
-    border: 1px solid #FF6100 !important;
-    -webkit-box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
-    box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
-}
-.card{
-    background: #000000 !important;
-    color: #C9CCCF !important;
-    /*width: 640px !important;*/
-    border: 1px solid #FF6100 !important;
-}
-
-.card-lg{
-    background: #000000 !important;
-    color: #C9CCCF !important;
-    /*width: 800px !important;*/
     border: 1px solid #FF6100 !important;
     -webkit-box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 0px 25px -7px rgba(0,0,0,0.75);
@@ -277,19 +158,6 @@ footer{
     color: #000000 !important;
 }
 /*=========================================MODAL STYLE===============================*/
-.modal-header{
-    background: #C9CCCF !important;
-    border-bottom: 1px solid #FF6100 !important;
-}
-
-.modal-footer{
-    background: #C9CCCF !important;
-    border-top: 1px solid #FF6100 !important;
-}
-
-.modal-body{
-    background: #C9CCCF !important;
-}
 /*=======================================JQUERY UI===========================*/
 .ui-menu{
     margin-top: 0px !important;
@@ -306,7 +174,7 @@ footer{
     overflow: scroll;
     position: absolute !important;
     top: 65px;
-    z-index: 300 !important;
+    z-index: 3000 !important;
     padding-left: 0 !important;
 }
 
@@ -439,7 +307,6 @@ footer{
     color: #00C5DE;
 }
 .title-black{
-    font-weight: bold;
     font-size: 60px;
 }
 
@@ -583,7 +450,7 @@ footer{
 
 /*===========================================HOMEPAGE=============================================*/
 .home-background-wrapper{
-    background: url("/images/homepage.png");
+    background: url("/images/homepage2.jpeg");
 }
 
 .home-background-wrapper {
@@ -593,7 +460,7 @@ footer{
 
     /* Set up proportionate scaling */
     width: 100%;
-    height: 100vh;
+    height: 88vh;
     /*max-height: 85vh;*/
     /*min-height: 40vh;*/
     /*overflow: hidden;*/
@@ -605,7 +472,9 @@ footer{
 }
 
 .home-background-wrapper{
-    background-size: cover;
+    background-size:     cover !important;                      /* <------ */
+    background-repeat:   no-repeat !important;
+    background-position: top !important;
     /*background-size:100% auto;*/
 }
 
@@ -988,12 +857,13 @@ footer{
     float: left !important;
     background-size: cover !important;
     background-repeat:no-repeat !important;
-    /*background-attachment:fixed !important;*/
     background-position:center,center !important;
 }
 
 .messageInputDynamic {
     height:40px;
+    resize: none;
+    border: 0 !important;
     transition: all 0.5s;
     -webkit-transition: all 0.5s; /* Safari */
 }
@@ -1063,17 +933,6 @@ ul.dashed > li:before {
     /*width: 100%;*/
 /*}*/
 
-.overlay {
-    background: #000 !important;
-    z-index: 1 !important;
-    opacity: 0.5 !important;
-    top: 0;
-    left: 0;
-    width: 100%;
-    max-height: 210px;
-    position: relative;
-}
-
 
 .overlay-users {
     background: #000 !important;
@@ -1082,8 +941,8 @@ ul.dashed > li:before {
     top: 0;
     left: 0;
     width: 100%;
-    max-height: 150px;
-    position: relative;
+    height: 150px;
+    position: absolute;
 }
 
 .userExpImg:hover{

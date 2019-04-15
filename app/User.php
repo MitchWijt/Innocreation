@@ -23,9 +23,16 @@ class User extends Authenticatable
         return $this->hasMany("\App\UserRole", "id","role");
     }
 
-    public function getProfilePicture(){
+    public function getProfilePicture($size = "normal", $rawPath = false){
         if($this->profile_picture != "defaultProfilePicture.png") {
-            echo env("DO_SPACES_URL") . "/users/$this->slug/profilepicture/$this->profile_picture";
+            if($this->extension == null){
+                return env("DO_SPACES_URL") . "/users/$this->slug/profilepicture/$this->profile_picture";
+            }
+            if($rawPath){
+                return "users/$this->slug/profilepicture/$this->profile_picture-$size.$this->extension";
+            } else {
+                return env("DO_SPACES_URL") . "/users/$this->slug/profilepicture/$this->profile_picture-$size.$this->extension";
+            }
         } else {
             return "/images/profilePicturesUsers/defaultProfilePicture.png";
         }
@@ -84,6 +91,16 @@ class User extends Authenticatable
         } else {
             return $expertiseArray;
         }
+    }
+
+    public function getExpertisesArray(){
+        $array = [];
+        $expertises = expertises_linktable::select("*")->where("user_id", $this->id)->with("Expertises")->get();
+        foreach($expertises as $expertise){
+            array_push($array, $expertise->id);
+        }
+
+        return $array;
     }
 
     public function getJoinedExpertise(){
@@ -186,7 +203,11 @@ class User extends Authenticatable
 
     public function getMostRecentPayment(){
         $payment = Payments::select("*")->where("user_id", $this->id)->where("payment_status", "paid")->orderBy("created_at", "DESC")->first();
-        return $payment;
+        if($payment){
+            return $payment;
+        } else {
+            return false;
+        }
 
     }
 

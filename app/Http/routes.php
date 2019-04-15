@@ -10,6 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+
 Route::get("/","HomeController@index");
 
 Route::get("/debug/test", "DebugController@test");
@@ -46,6 +47,9 @@ Route::get("/contact-us", "HomeController@contactAction");
 Route::post("/home/sendContactForm", "HomeController@sendContactFormAction");
 
 Route::get("/faq", "PageController@faqAction");
+
+
+
 
 
 //========================NOTIFICATIONS================================
@@ -208,6 +212,10 @@ Route::post("/my-team/saveTeamProfilePicture", "TeamController@saveTeamProfilePi
 
 Route::post("/my-team/saveTeamPage", "TeamController@saveTeamPageAction");
 
+Route::post("/my-team/getPrivacySettingsModal", "TeamController@getPrivacySettingsModal");
+
+Route::post("/my-team/editNeededExpertiseModal", "TeamController@editNeededExpertiseModal");
+
 Route::get("/my-team/neededExpertises", "TeamController@neededExpertisesAction");
 
 Route::post("/my-team/addNeededExpertise", "TeamController@addNeededExpertiseAction");
@@ -223,8 +231,6 @@ Route::post("/my-team/rejectUserFromTeam", "TeamController@rejectUserFromTeamAct
 Route::post("/my-team/acceptUserInteam", "TeamController@acceptUserInteamAction");
 
 Route::post("/my-team/inviteUserForTeam", "TeamController@inviteUserForTeamAction");
-
-Route::get("/my-team/members", "TeamController@teamMembersPage");
 
 Route::post("/my-team/kickMemberFromTeam", "TeamController@kickMemberFromTeamAction");
 
@@ -251,8 +257,6 @@ Route::post("/my-team/muteMemberFromTeamChat", "TeamController@muteMemberFromTea
 Route::post("/my-team/unmuteMemberFromTeamChat", "TeamController@unmuteMemberFromTeamChatAction");
 
 Route::post("/my-team/editMemberPermissions", "TeamController@editMemberPermissionsAction");
-
-Route::get("/my-team/team-products", "TeamController@teamProductsIndexAction");
 
 Route::post("/my-team/saveTeamProduct", "TeamController@saveTeamProductAction");
 
@@ -614,6 +618,17 @@ Route::post("/admin/randomImagesExpertises", "AdminController@randomImagesExpert
 
 Route::post("/admin/randomImagesExpertiseLinktables", "AdminController@randomImagesExpertiseLinktablesAction");
 
+//feed posts
+Route::get("/admin/innocreatives-posts", "AdminFeedPostsController@indexAction");
+
+Route::post("/adminFeedPosts/approvePost", "AdminFeedPostsController@approvePostAction");
+
+Route::post("/adminFeedPosts/declinePost", "AdminFeedPostsController@declinePostAction");
+
+
+
+
+
 
 //=======================FEED=============================
 Route::get("/team-products", "FeedController@TeamProductsAction");
@@ -631,17 +646,13 @@ Route::get("/team-product/{slug?}", "FeedController@TeamProductsAction");
 //=======================WORKFEED=============================
 Route::get("/innocreatives", "FeedController@workFeedIndexAction");
 
-Route::post("/feed/plusPointPost", "FeedController@plusPointPostAction");
-
-Route::post("/feed/minusPointPost", "FeedController@minusPointPostAction");
-
 Route::post("/feed/getUserworkPosts", "FeedController@getUserworkPostsAction");
 
 Route::post("/feed/getMoreUserworkPosts", "FeedController@getMoreUserworkPostsAction");
 
 Route::get("/innocreatives/{id?}", "FeedController@workFeedIndexAction");
 
-Route::post("/feed/postUserWork", "FeedController@postUserWorkAction");
+Route::post("/feed/requestPostUserWork", "FeedController@requestPostUserWorkAction");
 
 Route::post("/feed/postUserWorkComment", "FeedController@postUserWorkCommentAction");
 
@@ -654,6 +665,10 @@ Route::post("/getUserWorkPostModal", "FeedController@getUserWorkPostModal");
 Route::post("/openInterestsModal", "FeedController@openInterestsModal");
 
 Route::post("/feed/unhashId", "FeedController@unhashId");
+
+Route::post("/feed/interestPost", "FeedController@interestPostAction");
+
+Route::post("/feed/disInterestPost", "FeedController@disInterestPostAction");
 
 //========================CHECKOUT/PACKAGES========================
 
@@ -674,6 +689,8 @@ Route::post("/checkout/savePaymentInfo", "CheckoutController@savePaymentInfoActi
 Route::post("/checkout/setDataCustomPackage", "CheckoutController@setDataCustomPackageAction");
 
 Route::post("/checkout/authorisePaymentRequest", "CheckoutController@authorisePaymentRequestAction");
+
+Route::post("/checkout/getFunctionsModal", "CheckoutController@getFunctionsModalAction");
 
 Route::get("/thank-you", "CheckoutController@donePaymentAction");
 

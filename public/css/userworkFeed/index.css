@@ -1,238 +1,296 @@
-.light-border-gray{
-    border: 1px solid #C9CCCF;
-    border-radius: 10px !important;
+.switch {
+  --uiSwitchSize: var(--switchSize, 64px);
+  --uiSwitchBgColor: var(--switchBgColor, #f1f1f1);
+  --uiSwitchBgColorActive: var(--switchBgColorActive, #4ed164);
+  --uiSwitchBorderColorActive: var(--switchBorderColorActive, #fff);
+  --uiSwitchBorderColorFocus: var(--switchBgColorFocus, #43b556);
+  --uiSwitchButtonBgColor: var(--switchButtonBgColor, #FF6100);
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.switch{
-    --uiSwitchSize: var(--switchSize, 64px);
-    --uiSwitchBgColor: var(--switchBgColor, #f1f1f1);
-    --uiSwitchBgColorActive: var(--switchBgColorActive, #4ed164);
-    --uiSwitchBorderColorActive: var(--switchBorderColorActive, #fff);
-    --uiSwitchBorderColorFocus: var(--switchBgColorFocus, #43b556);
-    --uiSwitchButtonBgColor: var(--switchButtonBgColor, #FF6100);
-
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
+.switch__label {
+  display: block;
+  width: 50%;
+  height: 50%;
 }
 
-.switch__label{
-    display: block;
-    width: 50%;
-    height: 50%;
+.switch__toggle {
+  width: 0;
+  height: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-.switch__toggle{
-    width: 0;
-    height: 0;
-    opacity: 0;
-
-    position: absolute;
-    top: 0;
-    left: 0;
+.switch__toggle:focus ~ .switch__label {
+  box-shadow: 0 0 0 var(--uiSwitchThickFocus, 4px) var(--uiSwitchBorderColorFocus);
 }
 
-.switch__toggle:focus ~ .switch__label{
-    box-shadow: 0 0 0 var(--uiSwitchThickFocus, 4px) var(--uiSwitchBorderColorFocus);
+.switch__toggle:checked:focus ~ .switch__label {
+  box-shadow: 0 0 0 var(--uiSwitchThickFocus, 4px) var(--uiSwitchBorderColorActive);
 }
 
-.switch__toggle:checked:focus ~ .switch__label{
-    box-shadow: 0 0 0 var(--uiSwitchThickFocus, 4px) var(--uiSwitchBorderColorActive);
+.switch__label:before, .switch__label:after {
+  content: "";
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-.switch__label:before, .switch__label:after{
-    content: "";
-    cursor: pointer;
-
-    position: absolute;
-    top: 0;
-    left: 0;
+.switch__label:after {
+  font-size: 15px !important;
+  color: #C9CCCF !important;
+  content: "Connect";
 }
 
-.switch__label:after{
-    font-size: 15px !important;
-    color: #C9CCCF !important;
-    content: "Connect";
+.switch__label:before {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: var(--uiSwitchBgColor);
 }
 
-
-.switch__label:before{
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    background-color: var(--uiSwitchBgColor);
+.switch__label:after {
+  top: 50%;
+  z-index: 3;
+  transition: transform 0.4s cubic-bezier(0.44, -0.12, 0.07, 1.15);
 }
 
-.switch__label:after{
-    top: 50%;
-    z-index: 3;
-    transition: transform .4s cubic-bezier(0.44,-0.12, 0.07, 1.15);
+.switch_type2 {
+  --uiSwitchIndent: var(--switchIndent, 8px);
+  --uiSwitchBorderRadius: var(--switchBorderRadius, 60px);
+  width: calc((var(--uiSwitchSize) * 3));
+  height: 30px !important;
+  border-radius: var(--uiSwitchBorderRadius);
+  background-color: var(--uiSwitchBgColorActive);
+  padding-bottom: 30px !important;
 }
 
-.switch_type2{
-    --uiSwitchIndent: var(--switchIndent, 8px);
-    --uiSwitchBorderRadius: var(--switchBorderRadius, 60px);
-
-    width: calc((var(--uiSwitchSize) * 3));
-    height: 30px; !important;
-    border-radius: var(--uiSwitchBorderRadius);
-    background-color: var(--uiSwitchBgColorActive);
-    padding-bottom: 30px!important;
+.switch_type2 .switch__label {
+  border-radius: var(--uiSwitchBorderRadius);
 }
 
-.switch_type2 .switch__label{
-    border-radius: var(--uiSwitchBorderRadius);
+.switch_type2 .switch__label:before {
+  border-radius: var(--uiSwitchBorderRadius);
+  transition: opacity 0.2s ease-out 0.1s, transform 0.2s ease-out 0.1s;
+  transform: scale(1);
+  opacity: 1;
 }
 
-.switch_type2 .switch__label:before{
-    border-radius: var(--uiSwitchBorderRadius);
-    transition: opacity .2s ease-out .1s, transform .2s ease-out .1s;
-    transform: scale(1);
-    opacity: 1;
+.switch_type2 .switch__toggle:checked ~ .switch__label:before {
+  transform: scale(0);
+  opacity: 0.7;
 }
 
-.switch_type2 .switch__toggle:checked ~ .switch__label:before{
-    transform: scale(0);
-    opacity: .7;
+.switch_type2 .switch__toggle ~ .switch__label:after {
+  width: calc((var(--uiSwitchSize) / 2) - calc(var(--uiSwitchIndent) * 0.1 - 3));
+  height: calc((var(--uiSwitchSize) / 2) - calc(var(--uiSwitchIndent) * 1 - 0.2));
+  transform: translate3d(var(--uiSwitchIndent), -50%, 0);
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  background-color: var(--uiSwitchButtonBgColor);
+  border-radius: 10px !important;
 }
 
-.switch_type2 .switch__toggle ~ .switch__label:after{
-    width: calc((var(--uiSwitchSize) / 2) - calc(var(--uiSwitchIndent) * 0.1 - 3));
-    height: calc((var(--uiSwitchSize) / 2) - calc(var(--uiSwitchIndent) * 1 - 0.2));
-    transform: translate3d(var(--uiSwitchIndent), -50%, 0);
-    padding-left: 10px !important;
-    padding-right: 10px !important;
-
-    background-color: var(--uiSwitchButtonBgColor);
-    border-radius: 10px !important
+.switch_type2 .switch__toggle:checked ~ .switch__label:after {
+  transform: translate3d(calc(var(--uiSwitchSize) + calc((var(--uiSwitchSize) / 2) - calc(var(--uiSwitchIndent) * 2) * 0.1) - var(--uiSwitchIndent)), -50%, 0);
+  background-color: #000 !important;
 }
 
-.switch_type2 .switch__toggle:checked ~ .switch__label:after{
-    transform: translate3d(calc(var(--uiSwitchSize) + calc((var(--uiSwitchSize) / 2) - calc(var(--uiSwitchIndent) * 2)  * 0.1) - var(--uiSwitchIndent)), -50%, 0);
-    background-color: #000 !important;
+.switch {
+  --switchSize: 50px;
+  margin-top: 40px;
 }
 
-.switch{
-    --switchSize: 50px;
-    margin-top: 40px;
+.switch_type2 {
+  --switchBgColorActive: #e85c3f;
+  --switchBgColorFocus: #d54b2e;
 }
 
-.switch_type2{
-    --switchBgColorActive: #e85c3f;
-    --switchBgColorFocus: #d54b2e;
+.iconCTA {
+  padding-top: 5px !important;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-bottom: 5px;
+  border: 1px solid #77787a;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
-
-.iconCTA{
-    padding-top: 5px !important;
-    padding-right: 15px;
-    padding-left: 15px;
-    padding-bottom: 5px;
-    border: 1px solid #77787a;
-    border-radius: 10px;
-    cursor: pointer;
+.iconCTA:hover {
+  border: 1px solid #000000 !important;
 }
 
-.iconCTA:hover{
-    border: 1px solid #000000 !important;
+.activeIcons i {
+  z-index: 1200 !important;
+  color: #000 !important;
+}
+.theme-light .activeIcons i {
+  background: #fff;
+}
+.theme-dark .activeIcons i {
+  background: #C9CCCF;
 }
 
-.iconCTAComments{
-    padding-top: 5px !important;
-    padding-right: 15px;
-    padding-left: 15px;
-    padding-bottom: 5px !important;
-    border: 1px solid #77787a;
-    border-radius: 10px;
+#description_id::placeholder {
+  color: #77787a !important;
+  font-size: 16px !important;
 }
 
-.iconCTAComments:hover{
-    border: 1px solid #FF6100 !important;
+.emojidiv {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -o-user-select: none;
 }
 
-#description_id::placeholder{
-    color: #77787a!important;
-    font-size: 16px !important;
-}
-
-.emojidiv{
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select:none;
-    user-select:none;
-    -o-user-select:none;
-}
-
-.input-group-text{
-    background: #C9CCCF !important;
-    border: none !important;
-    color: black !important;
-}
-
-.input-group-text:hover{
-    color: #77787a !important;
-}
-
-#tagsHeader:focus{
-    outline:0px !important;
-    -webkit-appearance:none;
-}
-
-.form-control-inno{
-    display:block;
-    width:100%;
-    height:34px;
-    padding:6px 12px;
-    font-size:14px;
-    line-height:1.42857143;
-    color:#555 !important;
-    background-color:#C9CCCF !important;
-    background-image:none;
-    border:none !important;
-    border-radius:4px;
-    -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
-    box-shadow:inset 0 1px 1px rgba(0,0,0,.075);
-    -webkit-transition:border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-    -o-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-    transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s
-}
-
-.form-control-inno:focus{
-    border-color:#C9CCCF !important;
-    outline:0;
-    -webkit-box-shadow:none !important;
-    box-shadow:none!important;
-}
-
-.activeContent{
-    z-index: 1200 !important;
-    position: relative !important;
-}
-
-.activeIcons i{
-    z-index: 1200 !important;
-    color: #000 !important;
-    background: #C9CCCF !important;
+.activeContent {
+  z-index: 1200 !important;
+  position: relative !important;
 }
 
 .sliderUpDown {
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    z-index: 1;
-    background-color: #C9CCCF;
-    display:block;
-    transition: all 0.5s;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  z-index: 1;
+  background-color: #C9CCCF;
+  display: block;
+  transition: all 0.5s;
 }
 
 .sliderUpDown.close {
-    top: 100vh;
-    height: 0;
+  top: 100vh;
+  height: 0;
 }
 
 .grid-container {
-    column-count: 3;
-    column-gap: 10px;
+  column-count: 3;
+  column-gap: 10px;
 }
+
+.fadeIn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0, rgba(0, 0, 0, 0.199) 3.5%, rgba(0, 0, 0, 0.195) 7%, rgba(0, 0, 0, 0.19) 10.35%, rgba(0, 0, 0, 0.182) 13.85%, rgba(0, 0, 0, 0.174) 17.35%, rgba(0, 0, 0, 0.165) 20.85%, rgba(0, 0, 0, 0.155) 24.35%, rgba(0, 0, 0, 0.145) 27.85%, rgba(0, 0, 0, 0.135) 31.35%, rgba(0, 0, 0, 0.126) 34.85%, rgba(0, 0, 0, 0.118) 38.35%, rgba(0, 0, 0, 0.11) 41.85%, rgba(0, 0, 0, 0.105) 45.35%, rgba(0, 0, 0, 0.1) 48.85%, rgba(0, 0, 0, 0.103) 52.35%, rgba(0, 0, 0, 0.112) 55.85%, rgba(0, 0, 0, 0.126) 59.35%, rgba(0, 0, 0, 0.144) 62.85%, rgba(0, 0, 0, 0.165) 66.35%, rgba(0, 0, 0, 0.188) 69.85%, rgba(0, 0, 0, 0.213) 73.35%, rgba(0, 0, 0, 0.237) 76.85%, rgba(0, 0, 0, 0.262) 80.35%, rgba(0, 0, 0, 0.285) 83.85%, rgba(0, 0, 0, 0.306) 87.35%, rgba(0, 0, 0, 0.324) 90.85%, rgba(0, 0, 0, 0.338) 94.35%, rgba(0, 0, 0, 0.347) 97.85%, rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+}
+
+.interestedButtonPost {
+  background: #fff;
+  border-radius: 10px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  opacity: 0;
+  padding-right: 20px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  display: block;
+  transition: all 0.5s;
+}
+
+.commentsButtonPost {
+  background: #fff;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  opacity: 0;
+  padding-right: 40px;
+  padding-bottom: 11px;
+  padding-top: 11px;
+  display: block;
+  transition: all 0.5s;
+}
+
+.postedUser {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  opacity: 0;
+  display: block;
+  transition: all 0.5s;
+}
+
+.fadeInContent {
+  opacity: 1;
+  transition: all 0.5s;
+}
+
+@media screen and (max-width: 990px) {
+  .grid-container {
+    column-count: 2;
+    column-gap: 10px;
+  }
+}
+@media screen and (max-width: 770px) {
+  .grid-container {
+    column-count: 1;
+    column-gap: 10px;
+  }
+
+  .postedUser {
+    position: relative;
+    top: 2px;
+    left: 5px;
+    opacity: 1;
+  }
+
+  .feedPostsContainer {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  .commentsButtonPost {
+    opacity: 1;
+    border-radius: 5px;
+    border: 1px solid #B4B4B4;
+    bottom: -55px;
+    left: 10px;
+  }
+
+  .interestedButtonPost {
+    opacity: 1;
+    border-radius: 5px;
+    border: 1px solid #B4B4B4;
+    bottom: -55px;
+    right: 10px;
+  }
+
+  .userWorkPost {
+    margin-bottom: 100px !important;
+  }
+
+  .userNamePost {
+    color: #000 !important;
+    margin-top: 6px !important;
+  }
+
+  .usernameDiv {
+    margin-left: 10px;
+    margin-bottom: 10px;
+  }
+
+  .usernameDiv .avatar-sm {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .imageOverlay {
+    display: none;
+  }
+}
+
+/*# sourceMappingURL=index.css.map */

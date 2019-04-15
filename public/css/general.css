@@ -180,7 +180,7 @@
     padding-top: 10px !important;
 }
 .p-t-15{
-    padding-top: 15px !important;
+    padding-top: 15px;
 }
 
 .p-t-20{
@@ -206,7 +206,7 @@
     padding-bottom: 20px !important;
 }
 .p-b-15{
-    padding-bottom: 15px !important;
+    padding-bottom: 15px;
 }
 .p-b-10{
     padding-bottom: 10px !important;
@@ -225,7 +225,7 @@
     padding-left: 8px !important;
 }
 .p-l-10 {
-    padding-left: 10px !important;
+    padding-left: 10px;
 }
 .p-l-15{
     padding-left: 15px !important;
@@ -255,7 +255,7 @@
     padding-right:  5px !important;
 }
 .p-r-10{
-    padding-right: 10px !important;
+    padding-right: 10px;
 }
 .p-r-15{
     padding-right: 15px !important;
@@ -436,11 +436,6 @@
 .p-absolute{
     position: absolute;
 }
-hr{
- border-top: 1px solid #FF6100 !important;
-    margin-bottom: 5px !important;
-    margin-top: 5px !important;
-}
 
 .hr-white{
     border-top: 1px solid #C9CCCF !important;
@@ -618,14 +613,14 @@ hr{
     font-size: 30px !important;
 }
 .f-31{
-    font-size: 31px !important;
+    font-size: 31px;
 }
 .f-40{
     font-size: 40px !important;
 }
 
 .f-50{
-    font-size: 50px !important;
+    font-size: 50px;
 }
 
 .f-z-rem{
@@ -638,51 +633,6 @@ hr{
 
 .autocomplete-black{
     color: #000 !important;
-}
-
-
-.modal-backdrop.show{
-    opacity: 0.8;
-}
-
-.modal-backdrop-light{
-    opacity: 0.5;
-}
-
-.fade-scale {
-    transform: scale(0) !important;
-    -webkit-transition: all .25s linear !important ;
-    -o-transition: all .25s linear !important ;
-    transition: all .25s ease-out !important;
-}
-.modal-content{
-    background: #C9CCCF !important;
-}
-.modal-content-border{
-    -webkit-border-radius: 40px !important;
-    -moz-border-radius: 40px !important;
-    border-radius: 40px !important;
-}
-
-.modal-header-border{
-    border-top-left-radius: 40px !important;
-    border-top-right-radius: 40px !important;
-}
-
-.modal-body-border{
-    border-bottom-left-radius: 40px !important;
-    border-bottom-right-radius: 40px !important;
-}
-
-.modal-body-border-full{
-    -webkit-border-radius: 40px !important;
-    -moz-border-radius: 40px !important;
-    border-radius: 40px !important;
-}
-
-.fixed-modal{
-    min-width: 80vw !important;
-    max-width: 500px !important;
 }
 
 .custom-dialog{
