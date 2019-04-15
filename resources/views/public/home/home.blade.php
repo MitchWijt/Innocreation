@@ -1,6 +1,11 @@
 @extends("layouts.app")
 <link rel="stylesheet" href="/css/home/home.css">
 @section("content")
+    @mobile
+    <span class="mobile hidden">1</span>
+    @elsedesktop
+    <span class="mobile hidden">0</span>
+    @endmobile
 <div class="p-relative home-background-wrapper">
     <div class="container">
         <div class="row">
