@@ -39,64 +39,71 @@
             $expertises = $request->input('expertises');
 
             $existingUser = User::select("*")->where("email", $email)->first();
-            if (!$existingUser) {
-                $user = New User();
-                $user->role = 2;
-                $user->firstname = ucfirst($firstname);
-                $user->lastname = ucfirst($lastname);
-                $user->password = bcrypt($password);
-                $user->country_id = $country;
-                $user->email = $email;
-                $user->slug = str_replace(" ", "_", $username);
-                $user->hash = bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM));
-                $user->profile_picture = "defaultProfilePicture.png";
-                $user->banner = "banner-default.jpg";
-                $user->created_at = date("Y-m-d H:i:s");
-                $user->save();
+            $existingUsername = User::select("*")->where("slug", str_replace(" ", "_", $username))->first();
 
-                if (Auth::attempt(['email' => $email, 'password' => $password])) {
-                    $user = User::select("*")->where("email", $email)->with("team")->first();
-                    Session::set('user_name', $user->getName());
-                    Session::set('user_role', $user->role);
-                    Session::set('user_id', $user->id);
-                }
-
-                self::saveUserExpertises($expertises, $user);
-
-                $stream = new StreamService();
-                $token = $stream->generateStreamToken($user);
-
-                $mollie = new MollieService();
-                $customer = $mollie->generateNewCustomer($user);
-                $newCustomer = User::select("*")->where("id", $user->id)->first();
-                $newCustomer->mollie_customer_id = $customer->id;
-                $newCustomer->stream_token = $token;
-                $newCustomer->save();
-
-                $userChat = new UserChat();
-                $userChat->creator_user_id = 1;
-                $userChat->receiver_user_id = $user->id;
-                $userChat->created_at = date("Y-m-d H:i:s");
-                $userChat->save();
-
-                $timeSent = new TimeSent();
-
-                $message = "Hey $user->firstname!<br><br> Welcome to Innocreation! <br> We're very excited to see you taking the step to take action on your dreams and ideas! <br> Here are some tips for you to be noticed even quiker: <br><br> 1. Fill in your motivation and introduction <br> 2. Fill in your work experience with your expertises why are you the best in what you do? <br> 3. Network and connect fellow Innocreatives to perhaps help you create your dream! <br> 4. Reach out to people and teams via the chat system <br> 5. Have fun and be creative! <br><br> If you have any more questions, feel free to ask them! <br><br> Best regards - Innocreation";
-                $userMessage = new UserMessage();
-                $userMessage->sender_user_id = 1;
-                $userMessage->user_chat_id = $userChat->id;
-                $userMessage->time_sent = $timeSent->time;
-                $userMessage->message = $message;
-                $userMessage->created_at = date("Y-m-d H:i:s");
-                $userMessage->save();
-
-
-                $mailgun = new MailgunService();
-                $mailgun->saveAndSendEmail($user, "Welcome to Innocreation!", view("/templates/sendWelcomeMail", compact("user")));
-                return json_encode(['slug' => $user->slug]);
-            } else {
-                return 0;
+            if($existingUser){
+                return json_encode(['error' => "existingUser"]);
             }
+
+            if($existingUsername){
+                return json_encode(['error' => "existingUsername"]);
+            }
+
+            $user = New User();
+            $user->role = 2;
+            $user->firstname = ucfirst($firstname);
+            $user->lastname = ucfirst($lastname);
+            $user->password = bcrypt($password);
+            $user->country_id = $country;
+            $user->email = $email;
+            $user->slug = str_replace(" ", "_", $username);
+            $user->hash = bin2hex(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM));
+            $user->profile_picture = "defaultProfilePicture.png";
+            $user->banner = "banner-default.jpg";
+            $user->created_at = date("Y-m-d H:i:s");
+            $user->save();
+
+            if (Auth::attempt(['email' => $email, 'password' => $password])) {
+                $user = User::select("*")->where("email", $email)->with("team")->first();
+                Session::set('user_name', $user->getName());
+                Session::set('user_role', $user->role);
+                Session::set('user_id', $user->id);
+            }
+
+            self::saveUserExpertises($expertises, $user);
+
+            $stream = new StreamService();
+            $token = $stream->generateStreamToken($user);
+
+            $mollie = new MollieService();
+            $customer = $mollie->generateNewCustomer($user);
+            $newCustomer = User::select("*")->where("id", $user->id)->first();
+            $newCustomer->mollie_customer_id = $customer->id;
+            $newCustomer->stream_token = $token;
+            $newCustomer->save();
+
+            $userChat = new UserChat();
+            $userChat->creator_user_id = 1;
+            $userChat->receiver_user_id = $user->id;
+            $userChat->created_at = date("Y-m-d H:i:s");
+            $userChat->save();
+
+            $timeSent = new TimeSent();
+
+            $message = "Hey $user->firstname!<br><br> Welcome to Innocreation! <br> We're very excited to see you taking the step to take action on your dreams and ideas! <br> Here are some tips for you to be noticed even quiker: <br><br> 1. Fill in your motivation and introduction <br> 2. Fill in your work experience with your expertises why are you the best in what you do? <br> 3. Network and connect fellow Innocreatives to perhaps help you create your dream! <br> 4. Reach out to people and teams via the chat system <br> 5. Have fun and be creative! <br><br> If you have any more questions, feel free to ask them! <br><br> Best regards - Innocreation";
+            $userMessage = new UserMessage();
+            $userMessage->sender_user_id = 1;
+            $userMessage->user_chat_id = $userChat->id;
+            $userMessage->time_sent = $timeSent->time;
+            $userMessage->message = $message;
+            $userMessage->created_at = date("Y-m-d H:i:s");
+            $userMessage->save();
+
+
+            $mailgun = new MailgunService();
+            $mailgun->saveAndSendEmail($user, "Welcome to Innocreation!", view("/templates/sendWelcomeMail", compact("user")));
+            return json_encode(['slug' => $user->slug]);
+
         }
 
         private function saveUserExpertises($expertises, $user){

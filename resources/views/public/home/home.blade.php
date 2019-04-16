@@ -78,7 +78,7 @@
                                     </a>
                                     <div class="overlay"></div>
                                     <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
-                                        <div class="contentExpertise lazyLoad" data-src="<?= $expertise->image?>"></div>
+                                        <div class="contentExpertise @mobile lazyLoadHomeMobile @elsedesktop lazyLoadHome @endmobile" data-src="<?= $expertise->image?>"></div>
                                     </a>
                                 </div>
                             </div>
@@ -104,7 +104,7 @@
                                 </a>
                                 <div class="overlay"> </div>
                                 <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
-                                    <div class="contentExpertise lazyLoad" data-src="<?= $expertise->image?>"></div>
+                                    <div class="contentExpertise @mobile lazyLoadHomeMobile @elsedesktop lazyLoadHome @endmobile" data-src="<?= $expertise->image?>"></div>
                                 </a>
                             </div>
                         </div>

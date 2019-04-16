@@ -1,6 +1,6 @@
 @extends("layouts.app")
 @section("content")
-    <div class="d-flex grey-background vh85">
+    <div class="grey-background vh85 <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 d-flex js-center">
@@ -8,39 +8,31 @@
                 </div>
             </div>
             <div class="sub-title-container p-t-20">
-                <h1 class="sub-title-black">Teams</h1>
+                <h1 class="sub-title-black">Benefits of a team</h1>
             </div>
-            <div class="hr p-b-20"></div>
-            <div class="d-flex js-around p-b-20">
-                <a href="/teams" class="btn btn-inno c-gray joinTeamBtn">Join a team</a>
-                <a class="btn btn-inno c-gray" data-toggle="modal" data-target="#myModal">Create a team</a>
+            <div class="hr p-b-20 col-sm-12"></div>
+            <div class="d-flex js-between p-b-20">
+                <a href="/teams" class="btn btn-inno joinTeamBtn">Join a team</a>
+                <a class="btn btn-inno-cta" data-toggle="modal" data-target="#myModal">Create a team</a>
             </div>
-            <div class="row d-flex js-center p-b-20">
-                <div class="card card-lg text-center">
-                    <div class="card-block">
-                        <div class="sub-title-container p-t-20">
-                            <h1 class="sub-title-black c-gray">Benefits</h1>
-                        </div>
-                        <div class="hr-card p-b-20"></div>
-                        <ul class="instructions-list">
-                           <li class="instructions-list-item">
-                               <p class="instructions-text f-19 m-0 p-b-10">Develop your ideas with your own team</p>
-                           </li>
-                           <li class="instructions-list-item">
-                               <p class="instructions-text f-19 m-0 p-b-10">Build your own team with creative and smart people</p>
-                           </li>
-                           <li class="instructions-list-item">
-                               <p class="instructions-text f-19 m-0 p-b-10">Getting your ideas or products out there</p>
-                           </li>
-                            <li class="instructions-list-item">
-                                <p class="instructions-text f-19 m-0 p-b-10">Share your team products on the feed</p>
-                            </li>
-                           <li class="instructions-list-item">
-                               <p class="instructions-text f-19 m-0 p-b-10">Be a team leader of your own team</p>
-                           </li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="d-flex js-center">
+                <ul class="instructions-list">
+                    <li class="instructions-list-item">
+                        <p class="instructions-text f-19 m-0 p-b-10">Develop your ideas with your own team</p>
+                    </li>
+                    <li class="instructions-list-item">
+                        <p class="instructions-text f-19 m-0 p-b-10">Build your own team with creative and smart people</p>
+                    </li>
+                    <li class="instructions-list-item">
+                        <p class="instructions-text f-19 m-0 p-b-10">Getting your ideas or products out there</p>
+                    </li>
+                    <li class="instructions-list-item">
+                        <p class="instructions-text f-19 m-0 p-b-10">Share your team products on the feed</p>
+                    </li>
+                    <li class="instructions-list-item">
+                        <p class="instructions-text f-19 m-0 p-b-10">Be a team leader of your own team</p>
+                    </li>
+                </ul>
             </div>
 
             <!-- MODAL CREATE A TEAM -->

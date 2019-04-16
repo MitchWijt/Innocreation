@@ -9,8 +9,8 @@
                             <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 40%; left: 50%; transform: translate(-50%, -50%)">
                                 <div class="avatar" style="background: url('<?= $team->getProfilePicture()?>'); z-index: 2000000; opacity: 1 !important"></div>
                             </div>
-                            <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 64%; left: 50%; transform: translate(-50%, -50%)">
-                                <p class="c-black bold f-20"><?= $team->team_name?></p>
+                            <div class="o-hidden p-absolute c-black" style="white-space: nowrap; text-overflow: ellipsis; max-width: 130px; top: 60%; left: 50%; transform: translate(-50%, -50%); z-index: 200;">
+                                <span class="c-black bold f-20"><?= $team->team_name?></span>
                             </div>
                             <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 84%; left: 50%; transform: translate(-50%, -50%)">
                                 <div class="d-flex expertiseCirclesDiv">
