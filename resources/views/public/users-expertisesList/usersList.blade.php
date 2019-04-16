@@ -20,11 +20,11 @@
                                         <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 39%; left: 50%; transform: translate(-50%, -50%)">
                                             <div class="avatar" style="background: url('<?= $user->getProfilePicture()?>'); z-index: 2000000; opacity: 1 !important"></div>
                                         </div>
-                                        <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 66%; left: 50%; transform: translate(-50%, -50%)">
-                                            <p class="c-white f-16"><?= $user->getName()?></p>
+                                        <div class="o-hidden p-absolute c-white" style="white-space: nowrap; text-overflow: ellipsis; max-width: 130px; top: 63%; left: 50%; transform: translate(-50%, -50%); z-index: 200;">
+                                            <span class="f-16 m-t-0 c-white"><?= $user->getName()?></span>
                                         </div>
-                                        <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 77%; left: 50%; transform: translate(-50%, -50%)">
-                                            <p class="c-orange f-11">@<?= $user->slug?></p>
+                                        <div class="o-hidden p-absolute c-white" style="white-space: nowrap; text-overflow: ellipsis; max-width: 130px; top: 73%; left: 50%; transform: translate(-50%, -50%); z-index: 200;">
+                                            <span class="f-11 m-t-0 c-orange">@<?= $user->slug?></span>
                                         </div>
                                         <div class="p-absolute" style="z-index: 2000000; opacity: 1 !important; top: 98%; left: 50%; transform: translate(-50%, -50%)">
                                             <button class="btn btn-inno-cta btn-sm">More info</button>
