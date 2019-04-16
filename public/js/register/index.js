@@ -75,6 +75,9 @@ $(".submitRegisterForm").on("click",function () {
         var country = $(".country option:selected").val();
         var username = $(".username").val();
         var expertises =  $('.expertises').val();
+
+        $(".submitRegisterForm").addClass("hidden");
+        $(".loadingGear").removeClass("hidden");
         $.ajax({
             method: "POST",
             dataType: "JSON",
@@ -88,10 +91,20 @@ $(".submitRegisterForm").on("click",function () {
             url: "/registerProcess/saveUserCredentials",
             data: {'firstname': firstname, 'lastname' : lastname, 'password': password, 'email': email, 'username' : username, 'country' : country, 'expertises' : expertises},
             success: function (data) {
-                if(data != 0) {
+                if(data['error']){
+                    if(data['error'] == "existingUsername"){
+                        $(".existingErrorUsername").text("There already seems to be an existing account with the username " + username);
+                        $(".submitRegisterForm").removeClass("hidden");
+                        $(".loadingGear").addClass("hidden");
+                    } else {
+                        $(".existingError").text("There already seems to be an existing account with the email " + email);
+                        $(".submitRegisterForm").removeClass("hidden");
+                        $(".loadingGear").addClass("hidden");
+                    }
+                } else{
+                    $(".submitRegisterForm").addClass("hidden");
+                    $(".loadingGear").removeClass("hidden");
                     window.location.href = "user/" + data['slug'];
-                } else {
-                    $(".existingError").text("There already seems to be an existing account with the email " + email);
                 }
             }
         });
