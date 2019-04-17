@@ -13,9 +13,7 @@ use Http\Client\Common\HttpClientPoolItem;
  *
  * @author Joel Wurtz <joel.wurtz@gmail.com>
  */
-final class
-
-LeastUsedClientPool extends HttpClientPool
+final class LeastUsedClientPool extends HttpClientPool
 {
     /**
      * {@inheritdoc}

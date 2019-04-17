@@ -1,18 +1,7 @@
 @extends("layouts.app")
 @section("content")
     <div class="d-flex grey-background vh85 <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
-        @notmobile
-            @include("includes.teamPage_sidebar")
-        @endnotmobile
         <div class="container">
-            <div class="row">
-                <div class="col-sm-12 d-flex js-center">
-                    @include("includes.flash")
-                </div>
-            </div>
-            @mobile
-                @include("includes.teamPage_sidebar")
-            @endmobile
             <div class="sub-title-container p-t-20">
                 <h1 class="sub-title-black bold">Team Payment settings</h1>
             </div>

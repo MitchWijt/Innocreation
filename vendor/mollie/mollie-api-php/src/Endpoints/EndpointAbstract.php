@@ -43,7 +43,7 @@ abstract class EndpointAbstract
      * @param array $filters
      * @return string
      */
-    private function buildQueryString(array $filters)
+    protected function buildQueryString(array $filters)
     {
         if (empty($filters)) {
             return "";
@@ -217,7 +217,7 @@ abstract class EndpointAbstract
         try {
             $encoded = \GuzzleHttp\json_encode($body);
         } catch (\InvalidArgumentException $e) {
-            throw new ApiException("Error encoding parameters into JSON: '" . $e->getMessage() . "'.");
+            throw new ApiException("Error encoding parameters into JSON: '".$e->getMessage()."'.");
         }
 
         return $encoded;
