@@ -13,9 +13,8 @@ use Illuminate\Support\Facades\Session;
 class TeamProjectService {
     public function index(){
         $userId = Session::get("user_id");
-        $teamProjectService = new TeamProjectApi();
-        $projects  = $teamProjectService->getProjects($userId);
-
-
+        $teamProjectApi = new TeamProjectApi();
+        $projects  = $teamProjectApi->getProjects($userId);
+        return view("/public/teamProjects/index", compact("projects"));
     }
 }

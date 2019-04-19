@@ -12,7 +12,6 @@ class TeamProjectController extends Controller
 {
     public function indexAction(){
         $teamProjectService = new TeamProjectService();
-
-        $teamProjectService->index();
+        return $teamProjectService->index();
     }
 }
