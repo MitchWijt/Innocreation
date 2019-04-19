@@ -76,7 +76,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     {{--JS PLUGINS--}}
         <script src="/js/assets/jquery-lazy.min.js"></script>
-        {{--<script src="/js/assets/lazyr.min.js"></script>--}}
+        <script src="/js/assets/lazyr.min.js"></script>
         <script src="/js/assets/bodyLockScroll.min.js"></script>
         <script defer async src="/assets/build/content-tools.js"></script>
         <script defer async src="/assets/build/editor.js"></script>
