@@ -28,8 +28,6 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, MailgunService $mailgunService) {
-      
-
         die('test');
     }
 }

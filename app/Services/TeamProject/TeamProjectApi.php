@@ -35,6 +35,12 @@ class TeamProjectApi {
 
     }
 
+
+    /**
+     * Opens a new session for the API
+     * Returns a token and user_id of the user connecting to the API
+     *
+     */
     private function openSession($userId){
         $user = User::select("*")->where("id", $userId)->first();
 

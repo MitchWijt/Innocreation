@@ -4,7 +4,7 @@
         <div class="d-flex grey-background vh85">
             <div class="container">
                 <div class="sub-title-container p-t-20">
-                    <h1 class="sub-title-black bold @mobile f-20 @endmobile">All users active in <?= $expertise->title?></h1>
+                    <h1 class="sub-title-black @mobile f-20 @endmobile">All users active in <?= $expertise->title?></h1>
                 </div>
                 <hr style="margin-bottom: 100px !important;">
                 <div class="row">

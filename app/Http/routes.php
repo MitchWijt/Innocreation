@@ -738,5 +738,7 @@ Route::post("/registerProcess/saveUserTexts", "RegisterProcessController@saveUse
 
 Route::get("/my-team/projects", "TeamProjectController@indexAction");
 
+Route::get("/my-team/project/{slug}", "TeamProjectController@teamProjectPlannerAction");
+
 //==
 

@@ -13,6 +13,6 @@ class TeamProjectLinktable extends Model
     }
 
     public function teamProject(){
-        return $this->hasMany("\App\TeamProject", "id","team_project_id");
+        return $this->hasOne("\App\TeamProject", "id","team_project_id");
     }
 }

@@ -14,4 +14,9 @@ class TeamProjectController extends Controller
         $teamProjectService = new TeamProjectService();
         return $teamProjectService->index();
     }
+
+    public function teamProjectPlannerAction($slug){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->teamProjectPlannerIndex($slug);
+    }
 }

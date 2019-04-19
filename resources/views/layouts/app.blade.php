@@ -76,7 +76,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     {{--JS PLUGINS--}}
         <script src="/js/assets/jquery-lazy.min.js"></script>
-        {{--<script src="/js/assets/lazyr.min.js"></script>--}}
+        <script src="/js/assets/lazyr.min.js"></script>
         <script src="/js/assets/bodyLockScroll.min.js"></script>
         <script defer async src="/assets/build/content-tools.js"></script>
         <script defer async src="/assets/build/editor.js"></script>
@@ -106,6 +106,9 @@
 <body>
 <div class="overlayContent <?= \App\Services\UserAccount\UserAccount::getTheme();?>">
 <? if(\Illuminate\Support\Facades\Session::has("user_id")) {
+    if(\Illuminate\Support\Facades\Session::has("team_id")) {
+        $team = \App\Team::select("*")->where("id", \Illuminate\Support\Facades\Session::get("team_id"))->first();
+    }
     $user = \App\User::select("*")->where("id", \Illuminate\Support\Facades\Session::get("user_id"))->first();
     $userChats = \App\UserChat::select("*")->where("creator_user_id", $user->id)->orWhere("receiver_user_id", $user->id)->get();
     $counterMessages = 0;
@@ -120,7 +123,11 @@
 } ?>
 <? if(!isset($pageType) || $pageType != "clean") { ?>
     <? if(!isset($pageType) || $pageType != "checkout") { ?>
-        @include('includes.header')
+        <? if(isset($pageType) && $pageType == "planner") { ?>
+            @include('includes.headerPlanner')
+        <? } else { ?>
+            @include('includes.header')
+        <? } ?>
     <? } else { ?>
         @include('includes.headerCheckout')
     <? } ?>
