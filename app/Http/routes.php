@@ -740,5 +740,7 @@ Route::get("/my-team/projects", "TeamProjectController@indexAction");
 
 Route::get("/my-team/project/{slug}", "TeamProjectController@teamProjectPlannerAction");
 
+Route::post("/teamProject/getFoldersAndTasks", "TeamProjectController@getFoldersAndTasksProject");
+
 //==
 

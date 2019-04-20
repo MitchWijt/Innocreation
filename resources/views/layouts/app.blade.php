@@ -33,6 +33,7 @@
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="/css/newStyle/style.css">
         <link rel="stylesheet" href="/css/general/modals.css">
+        <link rel="stylesheet" href="/css/teamProject/plannerIndex.css">
         <link rel="stylesheet" href="/css/pages/aboutUs.css">
         <link rel="stylesheet" href="/css/pages/singleUserPage.css">
         <link rel="stylesheet" href="/css/header/style.css">
