@@ -4,4 +4,12 @@
   min-width: 210px;
 }
 
+.plannerTask:hover {
+  background: #77787a;
+}
+
+.taskContent {
+  width: 100vw;
+}
+
 /*# sourceMappingURL=plannerIndex.css.map */

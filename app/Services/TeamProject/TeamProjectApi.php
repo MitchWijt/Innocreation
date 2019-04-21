@@ -34,6 +34,16 @@ class TeamProjectApi {
         return json_decode($result);
     }
 
+    public function getTaskData($userId, $request){
+        $sessionData = self::openSession($userId);
+        $post = [
+            'user_id' => $sessionData['uid'],
+            'task_id' => $request->input("task_id")
+        ];
+        $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/getTaskData', $post, $sessionData['token']);
+        return json_decode($result);
+    }
+
 
 
     // Gets the PostFIELDS, curl_url and api_token from parameters, sends Curl request to the API domain and returns data.
@@ -49,6 +59,7 @@ class TeamProjectApi {
             'Content-Type: application/json',
             'Authorization: Bearer ' . $token,
         ));
+
         $result = curl_exec($ch);
         curl_close($ch);
 

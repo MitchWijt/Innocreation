@@ -9,6 +9,9 @@
 namespace App\Services\TeamProject;
 
 use App\TeamProject;
+use App\TeamProjectFolder;
+use App\TeamProjectTask;
+use function GuzzleHttp\json_encode;
 use Illuminate\Support\Facades\Session;
 
 class TeamProjectService {
@@ -39,6 +42,38 @@ class TeamProjectService {
         return view('/public/teamProjects/shared/_foldersAndTasks', compact("foldersAndTasks"));
     }
 
+    public function getTaskData($request){
+        $userId = Session::get("user_id");
+        $teamProjectApi = new TeamProjectApi();
+
+        // gets the "success" index from the returned json array from the API to get a normal array of data
+        if(self::getErrorResponse($teamProjectApi->getTaskData($userId, $request))){
+            return self::getErrorResponse($teamProjectApi->getTaskData($userId, $request));
+        }
+
+        $taskData = self::getSuccessResponse($teamProjectApi->getTaskData($userId, $request));
+        return view("/public/teamProjects/shared/_taskData", compact("taskData"));
+    }
+
+    public function openRecentTask(){
+        if(Session::has("recent_task_id")) {
+
+            $task_id = Session::get("recent_task_id");
+            $task = TeamProjectTask::select("*")->where("id", $task_id)->first();
+            $folderId = $task->team_project_folder_id;
+            $array = [
+                'task_id' => $task_id,
+                'folder_id' => $folderId
+            ];
+            return json_encode($array);
+        }
+    }
+
+    public function setRecentTask($request){
+        Session::set("recent_task_id", $request->input("task_id"));
+        $id = Session::get("recent_task_id");
+        return $id;
+    }
 
 
     public function teamProjectPlannerIndex($slug){

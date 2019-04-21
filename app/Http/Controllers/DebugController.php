@@ -28,6 +28,7 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, MailgunService $mailgunService) {
+        dd(Session::get("recent_task_id"));
         die('test');
     }
 }

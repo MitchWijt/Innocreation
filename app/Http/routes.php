@@ -742,5 +742,11 @@ Route::get("/my-team/project/{slug}", "TeamProjectController@teamProjectPlannerA
 
 Route::post("/teamProject/getFoldersAndTasks", "TeamProjectController@getFoldersAndTasksProject");
 
+Route::post("/teamProject/getTaskData", "TeamProjectController@getTaskData");
+
+Route::post("/teamProject/openRecentTask", "TeamProjectController@openRecentTask");
+
+Route::post("/teamProject/setRecentTask", "TeamProjectController@setRecentTask");
+
 //==
 
