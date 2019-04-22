@@ -50,9 +50,10 @@ function getTaskData(task_id){
 }
 $(document).on("click", ".plannerTask", function () {
     var task_id = $(this).data("task-id");
-    getTaskData(task_id);
+    console.log(task_id);
     setRecentTask(task_id);
     setActiveTask(task_id);
+    getTaskData(task_id);
 });
 
 function setRecentTask(task_id){
@@ -68,7 +69,7 @@ function setRecentTask(task_id){
         url: "/teamProject/setRecentTask",
         data: {'task_id': task_id},
         success: function (data) {
-
+            console.log(data);
         }
     });
 }
@@ -104,4 +105,56 @@ function setActiveTask(task_id){
         $(this).attr("style", "");
     });
     $(".task-" + task_id).attr("style", "background: #77787a");
+}
+
+
+//setup before functions
+var typingTimerContent;
+var typingTimerTitle;
+
+
+// updates the content of the content of the task every 2 seconds when user stops typing
+$(document).on("keyup", ".taskContentEditor", function () {
+    var content = $(this).html();
+    var task_id = $(this).data("task-id");
+
+    clearTimeout(typingTimerContent);
+    if (content) {
+        typingTimerContent = setTimeout(function () {
+            doneTyping(content, task_id, "content")
+        }, 2000);
+    }
+});
+
+
+// updates the title of the task every 2 seconds when user stops typing
+$(document).on("keyup", ".titleTask", function () {
+    var content = $(this).val();
+    var task_id = $(this).data("task-id");
+
+    clearTimeout(typingTimerTitle);
+    if (content) {
+        typingTimerTitle = setTimeout(function () {
+            doneTyping(content, task_id, "title")
+        }, 2000);
+    }
+});
+
+//user is "finished typing," do something
+function doneTyping (contentHtml, task_id, category) {
+    console.log("gfdsa");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/teamProject/updateTaskContent",
+        data: {'contentHtml' : contentHtml, 'task_id' : task_id, "category": category},
+        success: function (data) {
+        }
+    });
 }

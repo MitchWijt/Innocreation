@@ -43,4 +43,9 @@ class TeamProjectController extends Controller
         $teamProjectService = new TeamProjectService();
         return $teamProjectService->setRecentTask($request);
     }
+
+    public function updateTaskContent(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->updateTaskContent($request);
+    }
 }

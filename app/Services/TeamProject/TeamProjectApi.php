@@ -44,6 +44,18 @@ class TeamProjectApi {
         return json_decode($result);
     }
 
+    public function updateTaskContent($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'task_id' => $request->input("task_id"),
+            'content' => $request->input("contentHtml"),
+            'category' => $request->input("category")
+        ];
+        $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/updateTaskContent', $post, $user->api_token);
+        return json_decode($result);
+    }
+
 
 
     // Gets the PostFIELDS, curl_url and api_token from parameters, sends Curl request to the API domain and returns data.

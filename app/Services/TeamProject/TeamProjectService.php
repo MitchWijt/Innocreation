@@ -70,9 +70,24 @@ class TeamProjectService {
     }
 
     public function setRecentTask($request){
+        Session::remove("recent_task_id");
+        sleep(1);
         Session::set("recent_task_id", $request->input("task_id"));
         $id = Session::get("recent_task_id");
         return $id;
+    }
+
+
+    public function updateTaskContent($request){
+        $userId = Session::get("user_id");
+        $teamProjectApi = new TeamProjectApi();
+
+        // gets the "success" index from the returned json array from the API to get a normal array of data
+        if(self::getErrorResponse($teamProjectApi->updateTaskContent($userId, $request))){
+            return self::getErrorResponse($teamProjectApi->updateTaskContent($userId, $request));
+        }
+
+        return self::getSuccessResponse($teamProjectApi->updateTaskContent($userId, $request));
     }
 
 

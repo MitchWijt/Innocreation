@@ -22,5 +22,11 @@
     </div>
 </div>
 <hr>
+<div class="col-sm-12 m-l-10 m-t-5">
+    <input type="text" class="input-transparant titleTask c-black f-40" data-task-id="<?= $taskData->task->id?>" value="<?= $taskData->task->title?>">
+    <div contenteditable="true" class="col-sm-12 taskContentEditor m-l-0 p-l-0 m-t-10 no-focus" data-task-id="<?= $taskData->task->id?>">
+        <?= $taskData->task->content?>
+    </div>
+</div>
 
 <?//= dd($taskData)?>
