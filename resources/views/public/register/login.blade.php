@@ -1,5 +1,6 @@
 @extends("layouts.app")
 @section("content")
+<link rel="stylesheet" href="/css/selects/custom-select-normal.css">
 <div class="grey-background vh100" >
     <div class="container" style="position: absolute; top: 35%; left: 50%; transform: translateX(-50%) translateY(-50%);">
         <div class="row">

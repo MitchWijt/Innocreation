@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/css/selects/custom-select-normal.css">
 <div class="row d-flex js-center">
     <div class="col-sm-10 m-t-20">
         <h1 class="bold text-center">Join Innocreation</h1>

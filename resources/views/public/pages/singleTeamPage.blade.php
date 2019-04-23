@@ -1,5 +1,6 @@
 @extends("layouts.app")
 <link rel="stylesheet" href="/css/responsiveness/singleTeamPage.css">
+<link rel="stylesheet" href="/css/selects/custom-select-normal.css">
 @section("content")
     <div class="d-flex grey-background <?= \App\Services\UserAccount\UserAccount::getTheme()?>">
         <div class="container">

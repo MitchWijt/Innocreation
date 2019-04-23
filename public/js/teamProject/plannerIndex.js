@@ -142,7 +142,6 @@ $(document).on("keyup", ".titleTask", function () {
 
 //user is "finished typing," do something
 function doneTyping (contentHtml, task_id, category) {
-    console.log("gfdsa");
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -158,3 +157,13 @@ function doneTyping (contentHtml, task_id, category) {
         }
     });
 }
+$(document).on("click", ".taskContentEditor", function () {
+    console.log(getSelectedText());
+});
+
+function getSelectedText(){
+    var selObj = window.getSelection();
+    var selRange = selObj.toString();
+    return selRange;
+}
+

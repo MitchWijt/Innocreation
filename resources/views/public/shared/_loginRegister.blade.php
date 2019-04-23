@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/css/selects/custom-select-normal.css">
 <? if($pageType == "checkout") { ?>
     <h1 class="bold text-center">Login</h1>
 <? } ?>
