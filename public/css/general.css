@@ -487,6 +487,9 @@
 .bcg-dark-grey{
     background: #77787a;
 }
+.bcg-grey{
+    background: #C9CCCF;
+}
 .bcg-orange{
     background: #FF6100 !important;
 }
@@ -662,4 +665,19 @@
     background-size:     cover !important;
     background-repeat:   no-repeat !important;
     background-position: center center !important;
+}
+
+.no-button-style{
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    text-align: start;
+    vertical-align: top;
+    line-height: 0;
+    letter-spacing: 0;
+    display: block;
 }

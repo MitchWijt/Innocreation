@@ -8,6 +8,7 @@
 
 namespace App\Services\TeamProject;
 
+use App\Team;
 use App\TeamProject;
 use App\TeamProjectFolder;
 use App\TeamProjectTask;
@@ -52,7 +53,8 @@ class TeamProjectService {
         }
 
         $taskData = self::getSuccessResponse($teamProjectApi->getTaskData($userId, $request));
-        return view("/public/teamProjects/shared/_taskData", compact("taskData"));
+        $team = Team::select("*")->where("id", $taskData->team_id)->first();
+        return view("/public/teamProjects/shared/_taskData", compact("taskData", "team"));
     }
 
     public function openRecentTask(){

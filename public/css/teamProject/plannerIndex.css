@@ -12,4 +12,8 @@
   width: 100vw;
 }
 
+.active-edit {
+  color: #FF6100 !important;
+}
+
 /*# sourceMappingURL=plannerIndex.css.map */

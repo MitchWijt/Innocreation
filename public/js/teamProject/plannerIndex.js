@@ -50,7 +50,6 @@ function getTaskData(task_id){
 }
 $(document).on("click", ".plannerTask", function () {
     var task_id = $(this).data("task-id");
-    console.log(task_id);
     setRecentTask(task_id);
     setActiveTask(task_id);
     getTaskData(task_id);
@@ -129,7 +128,7 @@ $(document).on("keyup", ".taskContentEditor", function () {
 
 // updates the title of the task every 2 seconds when user stops typing
 $(document).on("keyup", ".titleTask", function () {
-    var content = $(this).val();
+    var content = $(this).html();
     var task_id = $(this).data("task-id");
 
     clearTimeout(typingTimerTitle);
@@ -157,13 +156,67 @@ function doneTyping (contentHtml, task_id, category) {
         }
     });
 }
-$(document).on("click", ".taskContentEditor", function () {
-    console.log(getSelectedText());
+
+function toggleIconTextEdit(element){
+    if(element.hasClass("active-edit")){
+        element.removeClass("active-edit");
+    } else {
+        element.addClass("active-edit");
+    }
+}
+
+$(document).on("click", ".boldText", function () {
+    toggleIconTextEdit($(this));
+    var selection = window.getSelection();
+    var text = selection.toString();
+
+    if($(this).hasClass("active-edit")){
+        var newElement = "<span class='bold'>" + text + "</span>";
+    } else {
+        var newElement = "<span>" + text + "</span>";
+    }
+
+    pasteHtmlAtCaret(newElement);
+
 });
 
-function getSelectedText(){
-    var selObj = window.getSelection();
-    var selRange = selObj.toString();
-    return selRange;
+function pasteHtmlAtCaret(html) {
+    var sel, range;
+    if (window.getSelection) {
+        // IE9 and non-IE
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            range.deleteContents();
+
+            // Range.createContextualFragment() would be useful here but is
+            // non-standard and not supported in all browsers (IE9, for one)
+            var el = document.createElement("div");
+            el.innerHTML = html;
+            var frag = document.createDocumentFragment(), node, lastNode;
+            while ( (node = el.firstChild) ) {
+                lastNode = frag.appendChild(node);
+            }
+            range.insertNode(frag);
+
+            // Preserve the selection
+            if (lastNode) {
+                range = range.cloneRange();
+                range.setStartAfter(lastNode);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        }
+    } else if (document.selection && document.selection.type != "Control") {
+        // IE < 9
+        document.selection.createRange().pasteHTML(html);
+    }
 }
+
+$(document).on("click", ".toggleAssignMemberDropdown", function () {
+
+        $(".assignMemberBox").toggleClass("hidden");
+
+});
 
