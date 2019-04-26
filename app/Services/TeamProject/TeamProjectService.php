@@ -12,6 +12,7 @@ use App\Team;
 use App\TeamProject;
 use App\TeamProjectFolder;
 use App\TeamProjectTask;
+use App\User;
 use function GuzzleHttp\json_encode;
 use Illuminate\Support\Facades\Session;
 
@@ -90,6 +91,23 @@ class TeamProjectService {
         }
 
         return self::getSuccessResponse($teamProjectApi->updateTaskContent($userId, $request));
+    }
+
+    public function assignUserToTask($request){
+        $userId = Session::get("user_id");
+        $teamProjectApi = new TeamProjectApi();
+
+        if(self::getErrorResponse($teamProjectApi->assignUserToTask($userId, $request))){
+            return self::getErrorResponse($teamProjectApi->assignUserToTask($userId, $request));
+        }
+
+        $returnData = self::getSuccessResponse($teamProjectApi->assignUserToTask($userId, $request));
+        $user = User::select("*")->where("id", $returnData)->first();
+        $dataArray = [
+            'profilePicture' => $user->getProfilePicture(),
+            'name' => $user->getName()
+        ];
+        return json_encode($dataArray);
     }
 
 

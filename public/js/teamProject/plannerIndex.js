@@ -215,8 +215,34 @@ function pasteHtmlAtCaret(html) {
 }
 
 $(document).on("click", ".toggleAssignMemberDropdown", function () {
-
-        $(".assignMemberBox").toggleClass("hidden");
-
+    $(".assignMemberBox").toggleClass("hidden");
 });
+
+$(document).on("click", ".assignUser", function () {
+    var user_id = $(this).data("member-id");
+    var task_id = $(this).data("task-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/teamProject/assignUserToTask",
+        dataType: "JSON",
+        data: {'memberId' : user_id, "taskId": task_id},
+        success: function (data) {
+            var name = data['name'];
+            var profilePicture = data['profilePicture'];
+
+            $(".avatar-assigner-user").attr("style", "background: url('" + profilePicture + "')").removeClass("hidden");
+            $(".name-assigned-user").text(name).removeClass("hidden");
+            $(".assignMemberPlaceholder").addClass("hidden");
+            $(".assignMemberIcon").addClass("hidden");
+        }
+    });
+});
+
 

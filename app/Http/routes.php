@@ -750,5 +750,7 @@ Route::post("/teamProject/setRecentTask", "TeamProjectController@setRecentTask")
 
 Route::post("/teamProject/updateTaskContent", "TeamProjectController@updateTaskContent");
 
+Route::post("/teamProject/assignUserToTask", "TeamProjectController@assignUserToTask");
+
 //==
 

@@ -6,12 +6,29 @@
                 <i class="zmdi zmdi-folder-outline c-black f-25 m-r-10"></i><?= $taskData->folder->title?>
             </div>
             <div class="col-sm-3 p-relative toggleAssignMemberDropdown">
-                <div class="toggleAssignMemberDropdown no-select c-pointer">
-                    <i class="zmdi zmdi-account-o c-black f-25 m-r-10 toggleAssignMemberDropdown no-select"></i><span class="thin toggleAssignMemberDropdown no-select">Assign to member</span>
+                <div class="d-flex toggleAssignMemberDropdown no-select c-pointer">
+                    <? if($taskData->assigned_user == null) { ?>
+                        <div>
+                            <i class="zmdi zmdi-account-o c-black f-25 m-r-10 toggleAssignMemberDropdown no-select assignMemberIcon"></i>
+                        </div>
+                        <span class="thin toggleAssignMemberDropdown no-select assignMemberPlaceholder">Assign to member</span>
+                    <? } ?>
+
+                    <? if($taskData->assigned_user == null) { ?>
+                        <div class="d-flex toggleAssignMemberDropdown" style="z-index: 200;">
+                            <div class="avatar-header avatar-assigner-user img m-b-10 p-t-0 m-r-10 hidden toggleAssignMemberDropdown"></div>
+                            <p class="m-t-6 name-assigned-user hidden toggleAssignMemberDropdown"></p>
+                        </div>
+                    <? } else { ?>
+                        <div class="d-flex toggleAssignMemberDropdown" style="z-index: 200;">
+                            <div class="avatar-header avatar-assigner-user img m-b-10 p-t-0 m-r-10 toggleAssignMemberDropdown" style="background: url('<?= $taskData->assigned_user_profilepicture?>');"></div>
+                            <p class="m-t-6 name-assigned-user toggleAssignMemberDropdown"><?= $taskData->assigned_user->firstname . " " . $taskData->assigned_user->lastname?></p>
+                        </div>
+                    <? } ?>
                 </div>
-                <div class="assignMemberBox p-absolute bcg-grey hidden" style="max-width: 200px; border-radius: 5px;">
+                <div class="assignMemberBox p-absolute bcg-grey hidden" style="max-width: 200px; border-radius: 5px; z-index: 200;">
                     <? foreach($team->getMembers() as $member) { ?>
-                        <div class="d-flex p-t-10 p-r-10 p-l-10" data-member-id="<?= $member->id?>">
+                        <div class="d-flex p-t-10 p-r-10 p-l-10 dark-hover c-pointer assignUser" data-member-id="<?= $member->id?>" data-task-id="<?= $taskData->task->id?>">
                             <div class="avatar-header img m-b-10 p-t-0 m-r-10" style="background: url('<?= $member->getProfilePicture()?>')"></div>
                             <p class="m-t-6"><?= $member->getName()?></p>
                         </div>

@@ -56,6 +56,18 @@ class TeamProjectApi {
         return json_decode($result);
     }
 
+    public function assignUserToTask($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'memberId' => $request->input("memberId"),
+            "taskId" => $request->input("taskId")
+        ];
+        $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/assignUserToTask', $post, $user->api_token);
+        return json_decode($result);
+
+    }
+
 
 
     // Gets the PostFIELDS, curl_url and api_token from parameters, sends Curl request to the API domain and returns data.

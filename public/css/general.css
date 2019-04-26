@@ -681,3 +681,7 @@
     letter-spacing: 0;
     display: block;
 }
+
+.dark-hover:hover{
+    background: #77787a;
+}

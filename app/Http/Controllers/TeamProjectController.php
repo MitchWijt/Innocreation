@@ -48,4 +48,9 @@ class TeamProjectController extends Controller
         $teamProjectService = new TeamProjectService();
         return $teamProjectService->updateTaskContent($request);
     }
+
+    public function assignUserToTask(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->assignUserToTask($request);
+    }
 }
