@@ -68,7 +68,7 @@ function setRecentTask(task_id){
         url: "/teamProject/setRecentTask",
         data: {'task_id': task_id},
         success: function (data) {
-            console.log(data);
+           
         }
     });
 }
@@ -170,10 +170,18 @@ $(document).on("click", ".boldText", function () {
     var selection = window.getSelection();
     var text = selection.toString();
 
-    if($(this).hasClass("active-edit")){
-        var newElement = "<span class='bold'>" + text + "</span>";
+    if(text.length > 0) {
+        if ($(this).hasClass("active-edit")) {
+            var newElement = "<span class='bold'>" + text + "</span>";
+        } else {
+            var newElement = "<span>" + text + "</span>";
+        }
     } else {
-        var newElement = "<span>" + text + "</span>";
+        if ($(this).hasClass("active-edit")) {
+            var newElement = "<span class='bold'></span>";
+        } else {
+            var newElement = "<span></span>";
+        }
     }
 
     pasteHtmlAtCaret(newElement);
@@ -245,4 +253,19 @@ $(document).on("click", ".assignUser", function () {
     });
 });
 
+
+$(document).on("click", ".taskContentEditor", function () {
+    var element =  getSelectionStart();
+    if(element.indexOf("bold") > 0){
+        $(".boldText").addClass("active-edit");
+    } else {
+        $(".boldText").removeClass("active-edit");
+    }
+});
+
+//get current html element that carret(cursor) is in. This so it can detect Bold text etc.
+function getSelectionStart() {
+    var node = document.getSelection().anchorNode;
+    return (node.nodeType == 3 ? node.parentNode.outerHTML : node.outerHTML);
+}
 

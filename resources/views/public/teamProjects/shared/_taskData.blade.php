@@ -15,15 +15,11 @@
                     <? } ?>
 
                     <? if($taskData->assigned_user == null) { ?>
-                        <div class="d-flex toggleAssignMemberDropdown" style="z-index: 200;">
-                            <div class="avatar-header avatar-assigner-user img m-b-10 p-t-0 m-r-10 hidden toggleAssignMemberDropdown"></div>
-                            <p class="m-t-6 name-assigned-user hidden toggleAssignMemberDropdown"></p>
-                        </div>
+                        <div class="avatar-header avatar-assigner-user img m-b-10 p-t-0 m-r-10 hidden toggleAssignMemberDropdown"></div>
+                        <p class="m-t-6 name-assigned-user hidden toggleAssignMemberDropdown"></p>
                     <? } else { ?>
-                        <div class="d-flex toggleAssignMemberDropdown" style="z-index: 200;">
-                            <div class="avatar-header avatar-assigner-user img m-b-10 p-t-0 m-r-10 toggleAssignMemberDropdown" style="background: url('<?= $taskData->assigned_user_profilepicture?>');"></div>
-                            <p class="m-t-6 name-assigned-user toggleAssignMemberDropdown"><?= $taskData->assigned_user->firstname . " " . $taskData->assigned_user->lastname?></p>
-                        </div>
+                        <div class="avatar-header avatar-assigner-user img m-b-10 p-t-0 m-r-10 toggleAssignMemberDropdown c-pointer" style="background: url('<?= $taskData->assigned_user_profilepicture?>');"></div>
+                        <p class="m-t-6 name-assigned-user toggleAssignMemberDropdown c-pointer"><?= $taskData->assigned_user->firstname . " " . $taskData->assigned_user->lastname?></p>
                     <? } ?>
                 </div>
                 <div class="assignMemberBox p-absolute bcg-grey hidden" style="max-width: 200px; border-radius: 5px; z-index: 200;">
