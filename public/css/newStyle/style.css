@@ -26,6 +26,14 @@
   font-family: Corbert-Bold;
 }
 
+.italic {
+  font-style: italic;
+}
+
+.underlined {
+  text-decoration: underline;
+}
+
 .thin {
   font-family: Corbert-Thin;
 }

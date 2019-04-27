@@ -165,28 +165,35 @@ function toggleIconTextEdit(element){
     }
 }
 
-$(document).on("click", ".boldText", function () {
+$(document).on("click", ".textEditor", function () {
+    var type = $(this).data("type");
     toggleIconTextEdit($(this));
     var selection = window.getSelection();
     var text = selection.toString();
 
     if(text.length > 0) {
         if ($(this).hasClass("active-edit")) {
-            var newElement = "<span class='bold'>" + text + "</span>";
+            var newElement = getNewElement(type, text);
+            pasteHtmlAtCaret(newElement);
         } else {
-            var newElement = "<span>" + text + "</span>";
-        }
-    } else {
-        if ($(this).hasClass("active-edit")) {
-            var newElement = "<span class='bold'></span>";
-        } else {
-            var newElement = "<span></span>";
+            var newObject = document.createElement("span");
+            newObject.innerHTML = text;
+            getSelectionStart("true").replaceWith(newObject);
         }
     }
-
-    pasteHtmlAtCaret(newElement);
-
 });
+
+function getNewElement(type, text){
+    if(type == "bold"){
+        var element = "<span class='bold'>" + text + "</span>";
+    } else if(type == "italic"){
+        var element = "<span class='italic'>" + text + "</span>";
+    } else if(type == "underlined"){
+        var element = "<span class='underlined'>" + text + "</span>";
+    }
+
+    return element;
+}
 
 function pasteHtmlAtCaret(html) {
     var sel, range;
@@ -255,17 +262,25 @@ $(document).on("click", ".assignUser", function () {
 
 
 $(document).on("click", ".taskContentEditor", function () {
-    var element =  getSelectionStart();
-    if(element.indexOf("bold") > 0){
-        $(".boldText").addClass("active-edit");
-    } else {
-        $(".boldText").removeClass("active-edit");
-    }
+    var element = getSelectionStart();
+    $(".textEditor").each(function () {
+        var type = $(this).data("type");
+        if(element.indexOf(type) > 0){
+            $(this).addClass("active-edit");
+        } else {
+            $(this).removeClass("active-edit");
+        }
+    });
 });
 
 //get current html element that carret(cursor) is in. This so it can detect Bold text etc.
-function getSelectionStart() {
+function getSelectionStart(object) {
     var node = document.getSelection().anchorNode;
-    return (node.nodeType == 3 ? node.parentNode.outerHTML : node.outerHTML);
+
+    if(object == "true"){
+        return (node.nodeType == 3 ? node.parentNode : node);
+    } else {
+        return (node.nodeType == 3 ? node.parentNode.outerHTML : node.outerHTML);
+    }
 }
 

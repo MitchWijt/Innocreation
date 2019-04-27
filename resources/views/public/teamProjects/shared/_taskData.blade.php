@@ -69,9 +69,9 @@
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-sm-4 d-flex m-t-20">
-                        <button class="no-button-style"><i class="zmdi zmdi-format-bold f-14 m-r-10 c-pointer boldText" style="color: black"></i></button>
-                        <button class="no-button-style"><i class="zmdi zmdi-format-italic f-14 m-r-10 c-pointer" style="color: black"></i></button>
-                        <button class="no-button-style"><i class="zmdi zmdi-format-underlined f-14 c-pointer" style="color: black"></i></button>
+                        <button class="no-button-style"><i class="zmdi zmdi-format-bold f-14 m-r-10 c-pointer textEditor boldText" data-type="bold" style="color: black"></i></button>
+                        <button class="no-button-style"><i class="zmdi zmdi-format-italic f-14 m-r-10 c-pointer textEditor italicText" data-type="italic" style="color: black"></i></button>
+                        <button class="no-button-style"><i class="zmdi zmdi-format-underlined f-14 c-pointer textEditor underlinedText" data-type="underlined" style="color: black"></i></button>
                     </div>
                     <div class="col-sm-4 d-flex m-t-20">
                         <button class="no-button-style"><i class="zmdi zmdi-format-color-text f-14 m-r-10 c-pointer" style="color: black"></i></button>
