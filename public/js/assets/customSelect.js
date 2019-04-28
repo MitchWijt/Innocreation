@@ -49,6 +49,10 @@ for (i = 0; i < x.length; i++) {
         this.nextSibling.classList.toggle("select-hide");
         this.classList.toggle("select-arrow-active");
     });
+
+    a.addEventListener("change", function (e) {
+        console.log('fdsa');
+    });
 }
 function closeAllSelect(elmnt) {
     /*a function that will close all select boxes in the document,

@@ -16,6 +16,8 @@
 }
 * {
   font-family: Corbert-Regular;
+  font-style: normal;
+  text-decoration: none;
 }
 
 .heavy {

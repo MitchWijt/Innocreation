@@ -170,26 +170,66 @@ $(document).on("click", ".textEditor", function () {
     toggleIconTextEdit($(this));
     var selection = window.getSelection();
     var text = selection.toString();
+    var temp = getExistingStylesOnElement(type);
 
     if(text.length > 0) {
         if ($(this).hasClass("active-edit")) {
-            var newElement = getNewElement(type, text);
+            var newElement = getNewElement(temp, text);
             pasteHtmlAtCaret(newElement);
         } else {
-            var newObject = document.createElement("span");
-            newObject.innerHTML = text;
-            getSelectionStart("true").replaceWith(newObject);
+
+            var stylesTemp = getExistingStylesOnElement();
+            stylesTemp.splice($.inArray(type, stylesTemp),1);
+
+            var newElement = getNewElement(stylesTemp, text);
+            pasteHtmlAtCaret(newElement);
+
+            // var styleString = "";
+            // $.each(stylesTemp, function(index, value) {
+            //     styleString = styleString + " " + value;
+            // });
+            //
+            // var newObject = document.createElement("span");
+            // newObject.innerHTML = text;
+            // newObject.className = styleString;
+            // getSelectionStart("true").replaceWith(newObject);
         }
     }
 });
 
-function getNewElement(type, text){
-    if(type == "bold"){
-        var element = "<span class='bold'>" + text + "</span>";
-    } else if(type == "italic"){
-        var element = "<span class='italic'>" + text + "</span>";
-    } else if(type == "underlined"){
-        var element = "<span class='underlined'>" + text + "</span>";
+//Gets existing styles on selected element and returns them in a array based upon the selection and types of .textEditor
+function getExistingStylesOnElement(type){
+    var temp = [];
+    var element = getSelectionStart();
+    $(".textEditor").each(function () {
+        var existingType = $(this).data("type");
+        if(element.indexOf(existingType) > 0){
+            temp.push(existingType);
+            if(type) {
+                temp.push(type);
+            }
+        } else {
+            if(type) {
+                temp.push(type);
+            }
+        }
+    });
+    return temp;
+}
+
+//return new element to replace the old one with the existing styles array and new style in parameter.
+function getNewElement(temp, text, css){
+    var typeString = "";
+    //loops through the existing style classes in array from selected element.
+    $.each(temp, function(index, value ) {
+        //adds the current style text (bold, italic etc...) to a string next to each other
+        typeString = typeString + " " + value;
+    });
+    // creates new element with class name and css based upon the created string above.
+    if(css){
+        var element = "<span style='" + css + "' class='" + typeString + "'>" + text + "</span>";
+    } else {
+        var element = "<span class='" + typeString + "'>" + text + "</span>";
     }
 
     return element;
@@ -262,9 +302,15 @@ $(document).on("click", ".assignUser", function () {
 
 
 $(document).on("click", ".taskContentEditor", function () {
+    //gets current element that is clicked on.
     var element = getSelectionStart();
+
+    //loops through all the text editor function (bold, italic, underlined)
     $(".textEditor").each(function () {
+        //grabs the type (bold, italic, etc...) from the textEditor element data type
         var type = $(this).data("type");
+
+        //checks if styleType is applied on current selected element and makes corresponding textEditor icon active if applied to element.
         if(element.indexOf(type) > 0){
             $(this).addClass("active-edit");
         } else {
@@ -284,3 +330,28 @@ function getSelectionStart(object) {
     }
 }
 
+
+// ==================== font size + font style =====================
+
+$(document).on("click", ".custom-select", function () {
+    var selection = window.getSelection();
+    var text = selection.toString();
+
+    var selectedOption = $(this).find(".select-selected").text();
+    var selectType = $(this).data("type");
+
+    if(selectType == "fontSize"){
+        var css = 'font-size:' + selectedOption + 'px';
+    } else {
+        var css = 'font-family:' + selectedOption;
+    }
+
+    var stylesTemp = getExistingStylesOnElement();
+
+    var styleString = "";
+    $.each(stylesTemp, function(index, value) {
+        styleString = styleString + " " + value;
+    });
+    var newElement = getNewElement(stylesTemp, text, css);
+    pasteHtmlAtCaret(newElement);
+});

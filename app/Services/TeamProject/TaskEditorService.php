@@ -17,7 +17,7 @@ class TaskEditorService {
     }
 
     public static function getFontStyles(){
-        $styles = ["Verdana", "Georgia", "Comic Sans", "Trebucket", "Arial black", "Impact", "Helvetica", "Corbert"];
+        $styles = ["Verdana", "Georgia", "Comic Sans", "Trebucket", "Arial black", "Impact", "Helvetica", "Corbert-Regular"];
         return $styles;
     }
 }

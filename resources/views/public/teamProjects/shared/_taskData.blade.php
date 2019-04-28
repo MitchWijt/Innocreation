@@ -50,20 +50,24 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="row d-flex">
-                    <div class="custom-select col-sm-3 font p-b-0 m-t-5">
-                        <select name="fontStyle" class="fontStyle">
-                            <? foreach(\App\Services\TeamProject\TaskEditorService::getFontStyles() as $fontStyle) { ?>
-                            <option value="<?= $fontStyle?>"><?= $fontStyle?></option>
-                            <? } ?>
-                        </select>
-                    </div>
-                    <div class="custom-select col-sm-2 fontSize p-b-0 m-t-5">
-                        <select name="fontSize" class="fontSize">
-                            <? foreach(\App\Services\TeamProject\TaskEditorService::getFontSizes() as $fontSize) { ?>
-                                <option value="<?= $fontSize?>"><?= $fontSize?></option>
-                            <? } ?>
-                        </select>
-                    </div>
+                    <button class="no-button-style">
+                        <div class="custom-select font p-b-0 m-t-5" data-type="fontStyle">
+                            <select name="fontStyle" class="fontStyle">
+                                <? foreach(\App\Services\TeamProject\TaskEditorService::getFontStyles() as $fontStyle) { ?>
+                                    <option value="<?= $fontStyle?>"><?= $fontStyle?></option>
+                                <? } ?>
+                            </select>
+                        </div>
+                    </button>
+                    <button class="no-button-style">
+                        <div class="custom-select fontSize p-b-0 m-t-5" data-type="fontSize">
+                            <select name="fontSize" class="fontSizeSelect">
+                                <? foreach(\App\Services\TeamProject\TaskEditorService::getFontSizes() as $fontSize) { ?>
+                                    <option value="<?= $fontSize?>"><?= $fontSize?></option>
+                                <? } ?>
+                            </select>
+                        </div>
+                    </button>
                 </div>
             </div>
             <div class="col-sm-6">
