@@ -51,19 +51,19 @@
             <div class="col-sm-6">
                 <div class="row d-flex">
                     <button class="no-button-style">
-                        <div class="custom-select font p-b-0 m-t-5" data-type="fontStyle">
+                        <div class="custom-select font p-b-0 m-t-5" data-type="fontStyle" data-task-id="<?= $taskData->task->id?>">
                             <select name="fontStyle" class="fontStyle">
                                 <? foreach(\App\Services\TeamProject\TaskEditorService::getFontStyles() as $fontStyle) { ?>
-                                    <option value="<?= $fontStyle?>"><?= $fontStyle?></option>
+                                    <option <? if($fontStyle == "Corbert-Regular") echo "selected"?> value="<?= $fontStyle?>"><?= $fontStyle?></option>
                                 <? } ?>
                             </select>
                         </div>
                     </button>
                     <button class="no-button-style">
-                        <div class="custom-select fontSize p-b-0 m-t-5" data-type="fontSize">
+                        <div class="custom-select fontSize p-b-0 m-t-5" data-type="fontSize" data-task-id="<?= $taskData->task->id?>">
                             <select name="fontSize" class="fontSizeSelect">
                                 <? foreach(\App\Services\TeamProject\TaskEditorService::getFontSizes() as $fontSize) { ?>
-                                    <option value="<?= $fontSize?>"><?= $fontSize?></option>
+                                    <option <? if($fontSize == 14) echo "selected"?> value="<?= $fontSize?>"><?= $fontSize?></option>
                                 <? } ?>
                             </select>
                         </div>
@@ -73,17 +73,17 @@
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-sm-4 d-flex m-t-20">
-                        <button class="no-button-style"><i class="zmdi zmdi-format-bold f-14 m-r-10 c-pointer textEditor boldText" data-type="bold" style="color: black"></i></button>
-                        <button class="no-button-style"><i class="zmdi zmdi-format-italic f-14 m-r-10 c-pointer textEditor italicText" data-type="italic" style="color: black"></i></button>
-                        <button class="no-button-style"><i class="zmdi zmdi-format-underlined f-14 c-pointer textEditor underlinedText" data-type="underlined" style="color: black"></i></button>
+                        <button class="no-button-style"><i class="zmdi zmdi-format-bold f-14 m-r-10 c-pointer textEditor boldText" data-task-id="<?= $taskData->task->id?>" data-type="bold" style="color: black"></i></button>
+                        <button class="no-button-style"><i class="zmdi zmdi-format-italic f-14 m-r-10 c-pointer textEditor italicText" data-task-id="<?= $taskData->task->id?>" data-type="italic" style="color: black"></i></button>
+                        <button class="no-button-style"><i class="zmdi zmdi-format-underlined f-14 c-pointer textEditor underlinedText" data-task-id="<?= $taskData->task->id?>" data-type="underline" style="color: black"></i></button>
                     </div>
                     <div class="col-sm-4 d-flex m-t-20">
                         <button class="no-button-style"><i class="zmdi zmdi-format-color-text f-14 m-r-10 c-pointer" style="color: black"></i></button>
                         <button class="no-button-style"><i class="zmdi zmdi-code f-14 c-pointer" style="color: black"></i></button>
                     </div>
                     <div class="col-sm-4 d-flex m-t-15">
-                        <button class="no-button-style"><span><i class="zmdi zmdi-format-list-bulleted f-14 m-r-10 c-pointer c-black" style="margin-top: 2px;"></i></span></button>
-                        <button class="no-button-style"><span><i class="zmdi zmdi-format-list-numbered f-14 c-pointer c-black" style="margin-top: 2px; margin-right: 6px;"></i></span></button>
+                        <button class="no-button-style"><span><i class="zmdi zmdi-format-list-bulleted f-14 m-r-10 c-pointer c-black textEditor" data-task-id="<?= $taskData->task->id?>" data-type="insertUnorderedList" style="margin-top: 2px;"></i></span></button>
+                        <button class="no-button-style"><span><i class="zmdi zmdi-format-list-numbered f-14 c-pointer c-black textEditor" data-task-id="<?= $taskData->task->id?>" data-type="insertOrderedList" style="margin-top: 2px; margin-right: 6px;"></i></span></button>
                         <button class="no-button-style"><i class="c-black"><?= \App\Services\CustomIconService::getIcon("checkbox-list", "18px");?></i></button>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
 <hr>
 <div class="col-sm-12 m-t-5 p-r-0">
     <div contenteditable="true" class="input-transparant titleTask c-black f-40 bold" data-task-id="<?= $taskData->task->id?>"><?= $taskData->task->title?></div>
-    <div contenteditable="true" class="col-sm-12 taskContentEditor m-l-0 p-l-0 m-t-10 no-focus p-r-0" data-task-id="<?= $taskData->task->id?>">
+    <div contenteditable="true" id="editable" class="col-sm-12 taskContentEditor m-l-0 p-l-0 m-t-10 no-focus p-r-0" data-task-id="<?= $taskData->task->id?>">
         <?= $taskData->task->content?>
     </div>
 </div>

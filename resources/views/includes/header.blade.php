@@ -26,11 +26,11 @@
                     <div class="pull-right">
                         <? if(\Illuminate\Support\Facades\Session::has("user_name")) { ?>
                                 <div class="m-t-20 pull-right m-r-30 p-relative <?= \App\Services\UserAccount\UserAccount::getTheme();?>">
-                                    <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications f-25 c-pointer moreChev p-absolute" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>' style="top: 23% !important; left: -32%"></i>
+                                    <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications f-25 c-pointer moreChev p-absolute actionIcon" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>' style="top: 23% !important; left: -32%"></i>
                                     <i class="zmdi zmdi-circle c-orange f-13 p-absolute z-index notificationIndicator hidden" style="top: 22%; left: -29%;"></i>
                                     <i class="zmdi zmdi-circle c-orange f-13 p-absolute z-index <? if($counterMessages < 1) echo "hidden";?> messageIndicator" style="top: 22%; left: -18.5%;"></i>
-                                    <i class="zmdi zmdi-comment-text f-20 c-pointer p-absolute popoverMessages" data-toggle="popover" data-content='<?= view("/public/shared/messagesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -22%"></i>
-                                    <i class="zmdi zmdi-accounts-add f-20 c-pointer popoverRequests p-absolute" data-user-id="<?= $user->id?>" data-toggle="popover" data-content='<?= view("/public/shared/teamInvitesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -12%"></i>
+                                    <i class="zmdi zmdi-comment-text f-20 c-pointer p-absolute popoverMessages actionIcon" data-toggle="popover" data-content='<?= view("/public/shared/messagesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -22%"></i>
+                                    <i class="zmdi zmdi-accounts-add f-20 c-pointer popoverRequests p-absolute actionIcon" data-user-id="<?= $user->id?>" data-toggle="popover" data-content='<?= view("/public/shared/teamInvitesHeaderBox/_popoverBox")?>' style="top: 30% !important; left: -12%"></i>
 
                                     <a class="btn btn-inno btn-sm" href="/expertises">Discover</a>
                                     <? if($user->team_id != null) { ?>
@@ -50,7 +50,7 @@
                                 <div class="m-t-25 pull-right m-r-30 c-gray <?= \App\Services\UserAccount\UserAccount::getTheme();?>" style="width: 100%">
                                     <a class="m-r-5 usersHeader td-none" href="/expertises"><span>Discover</span></a>
                                     <a class="btn btn-inno btn-sm feedHeader" href="/innocreatives">Share your passion</a>
-                                    <i class="popoverHeader zmdi zmdi-chevron-down c-gray f-20 m-l-15 m-t-5 c-pointer moreChev" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
+                                    <i class="popoverHeader zmdi zmdi-chevron-down c-gray f-20 m-l-15 m-t-5 c-pointer moreChev actionIcon" data-toggle="popover" data-content='<?= view("/public/shared/_popoverHeaderMenu")?>'></i>
                                     <span class="btn-seperator m-l-15 m-r-10"></span>
                                     <a class="td-none m-l-10 m-r-10 loginBtn" href="/login"><span>Login</span></a>
                                     <a class="btn btn-inno-cta joinBtn" href="/create-my-account">Join for free</a>
@@ -106,7 +106,7 @@
                     </a>
 
 
-                    <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications f-22 m-r-5 c-pointer moreChev m-t-5" style="width: 16% !important;" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>'></i>
+                    <i class="@mobile popoverNotificationsMob @elsenotmobile popoverNotifications @endmobile zmdi zmdi-notifications f-22 m-r-5 c-pointer moreChev m-t-5 actionIcon" style="width: 16% !important;" data-toggle="popover" data-content='<?= view("/public/shared/_popoverNotificationBox")?>'></i>
 
                     <div style="width: 16%;">
                         <i class="zmdi zmdi-comment-text f-22 c-pointer popoverMessagesMob m-t-5 p-relative"  data-toggle="popover" data-content='<?= view("/public/shared/messagesHeaderBox/_popoverBox")?>'>

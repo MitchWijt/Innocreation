@@ -16,8 +16,6 @@
 }
 * {
   font-family: Corbert-Regular;
-  font-style: normal;
-  text-decoration: none;
 }
 
 .heavy {
@@ -26,6 +24,14 @@
 
 .bold {
   font-family: Corbert-Bold;
+}
+
+b {
+  font-family: Corbert-Bold;
+}
+
+i {
+  font-style: italic;
 }
 
 .italic {
@@ -225,18 +231,18 @@
   background: linear-gradient(#ededed, #fff);
 }
 
-.theme-light i {
+.theme-light .actionIcon {
   color: #C9CCCF;
 }
-.theme-dark i {
+.theme-dark .actionIcon {
   color: #C9CCCF;
 }
 
-.theme-light i:hover {
+.theme-light .actionIcon:hover {
   color: #000;
   transition: all 0.5s;
 }
-.theme-dark i:hover {
+.theme-dark .actionIcon:hover {
   color: #C9CCCF;
   transition: all 0.5s;
 }

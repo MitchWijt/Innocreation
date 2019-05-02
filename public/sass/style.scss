@@ -28,6 +28,14 @@
   font-family: Corbert-Bold;
 }
 
+b{
+  font-family: Corbert-Bold;
+}
+
+i{
+  font-style: italic;
+}
+
 .italic{
   font-style: italic;
 }
@@ -188,13 +196,13 @@ hr{
   }
 }
 
-i{
+.actionIcon{
   @include themify($themes) {
     color: themed('iconColor');
   }
 }
 
-i:hover{
+.actionIcon:hover{
   @include themify($themes) {
     color: themed('iconColorHover');
     transition: all 0.5s;
