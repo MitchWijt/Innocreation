@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/css/selects/custom-select-clean.css">
+<input type="hidden" id="taskId" value="<?= $taskData->task->id?>">
 <div class="row col-sm-12">
     <div class="col-sm-8">
         <div class="row">
@@ -73,13 +74,14 @@
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-sm-4 d-flex m-t-20">
-                        <button class="no-button-style"><i class="zmdi zmdi-format-bold f-14 m-r-10 c-pointer textEditor boldText" data-task-id="<?= $taskData->task->id?>" data-type="bold" style="color: black"></i></button>
-                        <button class="no-button-style"><i class="zmdi zmdi-format-italic f-14 m-r-10 c-pointer textEditor italicText" data-task-id="<?= $taskData->task->id?>" data-type="italic" style="color: black"></i></button>
-                        <button class="no-button-style"><i class="zmdi zmdi-format-underlined f-14 c-pointer textEditor underlinedText" data-task-id="<?= $taskData->task->id?>" data-type="underline" style="color: black"></i></button>
+                        <button class="no-button-style"><i class="zmdi zmdi-format-bold f-14 m-r-10 c-pointer textEditor boldText" data-task-id="<?= $taskData->task->id?>" data-detector="<b>" data-type="bold" style="color: black"></i></button>
+                        <button class="no-button-style"><i class="zmdi zmdi-format-italic f-14 m-r-10 c-pointer textEditor italicText" data-task-id="<?= $taskData->task->id?>" data-detector="<i>" data-type="italic" style="color: black"></i></button>
+                        <button class="no-button-style"><i class="zmdi zmdi-format-underlined f-14 c-pointer textEditor underlinedText" data-task-id="<?= $taskData->task->id?>" data-detector="<u>" data-type="underline" style="color: black"></i></button>
                     </div>
-                    <div class="col-sm-4 d-flex m-t-20">
-                        <button class="no-button-style"><i class="zmdi zmdi-format-color-text f-14 m-r-10 c-pointer" style="color: black"></i></button>
-                        <button class="no-button-style"><i class="zmdi zmdi-code f-14 c-pointer" style="color: black"></i></button>
+                    <div class="col-sm-4 d-flex m-t-20 p-relative">
+                        <button class="no-button-style"><i class="zmdi zmdi-format-color-text f-14 m-r-10 c-pointer font-color-icon" style="color: black"></i></button>
+                        <div id="color-picker-container" style="left: -35px; top: 20px; z-index: 900" class="p-absolute hidden colorpicker"></div>
+                        <button class="no-button-style"><i class="zmdi zmdi-code f-14 c-pointer codeToggleIcon" style="color: black"></i></button>
                     </div>
                     <div class="col-sm-4 d-flex m-t-15">
                         <button class="no-button-style"><span><i class="zmdi zmdi-format-list-bulleted f-14 m-r-10 c-pointer c-black textEditor" data-task-id="<?= $taskData->task->id?>" data-type="insertUnorderedList" style="margin-top: 2px;"></i></span></button>
@@ -100,4 +102,4 @@
 </div>
 
 <script defer async src="/js/assets/customSelect.js"></script>
-<?//= dd($taskData)?>
+<script defer async src="/js/assets/colorpicker.js"></script>

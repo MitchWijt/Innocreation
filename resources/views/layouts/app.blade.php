@@ -86,6 +86,9 @@
         <script defer async src="/js/jquery.timepicker.min.js"></script>
         <script src="/js/floatingcarousel.min.js"></script>
         <script src="/js/jquery-ui.min.js"></script>
+        <script src="/js/assets/iro.min.js"></script>
+        <script src="/js/assets/keymaster.js"></script>
+
     {{--ANIMATION--}}
         <script defer async src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
         <script defer async src="/assets/innocreation-animation.js"></script>

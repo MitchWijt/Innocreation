@@ -169,140 +169,11 @@ $(document).on("click", ".textEditor", function () {
     var task_id = $(this).data("task-id");
     var type = $(this).data("type");
     toggleIconTextEdit($(this));
-    var selection = window.getSelection();
-    var text = selection.toString();
-    // var temp = getExistingStylesOnElement(type);
 
-    if(text.length > 0) {
-        var element = getSelectionStart("true");
-        execCommandOnElement(element, type);
-        doneTyping($(".taskContentEditor").html(), task_id, 'content');
-    } else {
-        document.execCommand(type, false, null);
-        doneTyping($(".taskContentEditor").html(), task_id, 'content');
-    }
-
-    //
-    // if(text.length > 0) {
-    //     if ($(this).hasClass("active-edit")) {
-    //         var newElement = getNewElement(temp, text);
-    //         pasteHtmlAtCaret(newElement);
-    //     } else {
-    //
-    //         if(type == "underlined") {
-    //             var selectedElement = getSelectionStart("true");
-    //             selectedElement.classList.remove("underlined");
-    //         }
-    //         var stylesTemp = getExistingStylesOnElement();
-    //         stylesTemp.splice($.inArray(type, stylesTemp),1);
-    //
-    //         var newElement = getNewElement(stylesTemp, text);
-    //         pasteHtmlAtCaret(newElement);
-    //
-    //     }
-    //     var task_id = $(this).data("task-id");
-    //     doneTyping($(".taskContentEditor").html(), task_id, 'content');
-    // } else {
-    //     var uniqueId = createUniqueId();
-    //     var newElement = getNewElement(temp, text, false, uniqueId);
-    //     pasteHtmlAtCaret(newElement);
-    //     var currentElement = document.getElementById(uniqueId);
-    //     currentElement.tabIndex = 0;
-    //     setTimeout(function () {
-    //         document.getElementById(uniqueId).focus();
-    //     }, 1000);
-    //
-    //
-    //     // var p = document.getElementById(uniqueId),
-    //     //     s = window.getSelection(),
-    //     //     r = document.createRange();
-    //     // r.setStart(p, 0);
-    //     // r.setEnd(p, 0);
-    //     // s.removeAllRanges();
-    //     // s.addRange(r);
-    //
-    // }
+    document.execCommand(type, false, null);
+    doneTyping($(".taskContentEditor").html(), task_id, 'content');
 });
 
-function execCommandOnElement(el, commandName, value) {
-    if (typeof value == "undefined") {
-        value = null;
-    }
-
-    if (typeof window.getSelection != "undefined") {
-        // Non-IE case
-        var sel = window.getSelection();
-
-        // Save the current selection
-        var savedRanges = [];
-        for (var i = 0, len = sel.rangeCount; i < len; ++i) {
-            savedRanges[i] = sel.getRangeAt(i).cloneRange();
-        }
-
-        // Temporarily enable designMode so that
-        // document.execCommand() will work
-        document.designMode = "on";
-
-        // Select the element's content
-        sel = window.getSelection();
-        var range = document.createRange();
-        range.selectNodeContents(el);
-        sel.removeAllRanges();
-        sel.addRange(range);
-
-        // Execute the command
-        document.execCommand(commandName, false, value);
-
-        // Disable designMode
-        document.designMode = "off";
-
-        // Restore the previous selection
-        sel = window.getSelection();
-        sel.removeAllRanges();
-        for (var i = 0, len = savedRanges.length; i < len; ++i) {
-            sel.addRange(savedRanges[i]);
-        }
-    } else if (typeof document.body.createTextRange != "undefined") {
-        // IE case
-        var textRange = document.body.createTextRange();
-        textRange.moveToElementText(el);
-        textRange.execCommand(commandName, false, value);
-    }
-}
-
-function createUniqueId(){
-    function Generator() {}
-
-    Generator.prototype.rand =  Math.floor(Math.random() * 26) + Date.now();
-
-    Generator.prototype.getId = function() {
-        return this.rand++;
-    };
-    var idGen =new Generator();
-    var newId = idGen.getId();
-
-    return newId;
-}
-
-//Gets existing styles on selected element and returns them in a array based upon the selection and types of .textEditor
-function getExistingStylesOnElement(type){
-    var temp = [];
-    var element = getSelectionStart();
-    $(".textEditor").each(function () {
-        var existingType = $(this).data("type");
-        if(element.indexOf(existingType) > 0){
-            temp.push(existingType);
-            if(type) {
-                temp.push(type);
-            }
-        } else {
-            if(type) {
-                temp.push(type);
-            }
-        }
-    });
-    return temp;
-}
 
 //return new element to replace the old one with the existing styles array and new style in parameter.
 function getNewElement(temp, text, css, id){
@@ -322,40 +193,6 @@ function getNewElement(temp, text, css, id){
     }
 
     return element;
-}
-
-function pasteHtmlAtCaret(html) {
-    var sel, range;
-    if (window.getSelection) {
-        // IE9 and non-IE
-        sel = window.getSelection();
-        if (sel.getRangeAt && sel.rangeCount) {
-            range = sel.getRangeAt(0);
-            range.deleteContents();
-
-            // Range.createContextualFragment() would be useful here but is
-            // non-standard and not supported in all browsers (IE9, for one)
-            var el = document.createElement("div");
-            el.innerHTML = html;
-            var frag = document.createDocumentFragment(), node, lastNode;
-            while ( (node = el.firstChild) ) {
-                lastNode = frag.appendChild(node);
-            }
-            range.insertNode(frag);
-
-            // Preserve the selection
-            if (lastNode) {
-                range = range.cloneRange();
-                range.setStartAfter(lastNode);
-                range.collapse(true);
-                sel.removeAllRanges();
-                sel.addRange(range);
-            }
-        }
-    } else if (document.selection && document.selection.type != "Control") {
-        // IE < 9
-        document.selection.createRange().pasteHTML(html);
-    }
 }
 
 $(document).on("click", ".toggleAssignMemberDropdown", function () {
@@ -397,14 +234,15 @@ $(document).on("click", ".taskContentEditor", function () {
 
     //loops through all the text editor function (bold, italic, underlined)
     $(".textEditor").each(function () {
+        var _this = $(this);
         //grabs the type (bold, italic, etc...) from the textEditor element data type
-        var type = $(this).data("type");
+        var type = $(this).data("detector");
 
         //checks if styleType is applied on current selected element and makes corresponding textEditor icon active if applied to element.
-        if(element.indexOf(type) > 0){
-            $(this).addClass("active-edit");
+        if(element.indexOf("b") > 0){
+            _this.addClass("active-edit");
         } else {
-            $(this).removeClass("active-edit");
+            _this.removeClass("active-edit");
         }
     });
 
@@ -428,6 +266,11 @@ $(document).on("click", ".taskContentEditor", function () {
             $(".fontSize").find(".select-selected").text("14");
         }
     }
+
+    if(element.indexOf("color")){
+        var color = object.getAttribute("color");
+        updateColor(color);
+    }
 });
 
 //get current html element that carret(cursor) is in. This so it can detect Bold text etc.
@@ -441,14 +284,25 @@ function getSelectionStart(object) {
     }
 }
 
+function uniqueId(){
+    function Generator() {}
+
+    Generator.prototype.rand =  Math.floor(Math.random() * 26) + Date.now();
+
+    Generator.prototype.getId = function() {
+        return this.rand++;
+    };
+    var idGen =new Generator();
+    var newId = idGen.getId();
+
+    return newId;
+}
 
 // ==================== font size + font style =====================
 
 $(document).on("click", ".custom-select", function () {
     var selection = window.getSelection();
     var text = selection.toString();
-
-    var element = getSelectionStart("true");
 
     var selectedOption = $(this).find(".select-selected").text();
     var selectType = $(this).data("type");
@@ -460,8 +314,66 @@ $(document).on("click", ".custom-select", function () {
     }
 
     var newElement = getNewElement(null, text, css);
-    execCommandOnElement(element, "insertHTML", newElement);
+    document.execCommand("insertHTML", false, newElement);
 
     var task_id = $(this).data("task-id");
     doneTyping($(".taskContentEditor").html(), task_id, 'content');
 });
+
+//color picker
+$(document).on("click", ".font-color-icon", function () {
+    $(".colorpicker").toggleClass("hidden");
+});
+
+$(document).on("click", ".codeToggleIcon", function () {
+    toggleIconTextEdit($(this));
+    if($(this).hasClass("active-edit")){
+        document.execCommand('formatBlock', false, "<blockquote>");
+    } else {
+        document.execCommand('formatBlock', false, "<div>");
+    }
+});
+
+function saveContent(){
+    var task_id = $("#taskId").val();
+    var content = $(".taskContentEditor").html();
+    doneTyping(content, task_id, "content");
+}
+
+//keyboard keys defined
+key('⌘+b, ctrl+b', function(event){
+    document.execCommand("bold", false, null);
+    event.preventDefault();
+    saveContent();
+    return false;
+});
+
+key('⌘+i, ctrl+i', function(event){
+    document.execCommand("italic", false, null);
+    event.preventDefault();
+    saveContent();
+    return false;
+});
+
+key('⌘+u, ctrl+u', function(event){
+    document.execCommand("underline", false, null);
+    event.preventDefault();
+    saveContent();
+    return false;
+});
+
+$(document).on("keyup", ".taskContentEditor", function () {
+    if(key.isPressed(32))
+        var element = getSelectionStart();
+        if(element) {
+            if (element.indexOf("-") > 0) {
+                document.execCommand("insertUnorderedList", false, null);
+                event.preventDefault();
+                var elementObject = getSelectionStart("true");
+                elementObject.innerHTML = "";
+                saveContent();
+                return false;
+            }
+        }
+});
+

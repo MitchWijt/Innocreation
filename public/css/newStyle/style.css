@@ -18,6 +18,17 @@
   font-family: Corbert-Regular;
 }
 
+blockquote {
+  margin-bottom: 0 !important;
+  background: #77787a;
+  padding-left: 5px;
+  color: #ffffff !important;
+}
+
+blockquote > font {
+  font-family: Monaco !important;
+}
+
 .heavy {
   font-family: Corbert-Heavy;
 }
