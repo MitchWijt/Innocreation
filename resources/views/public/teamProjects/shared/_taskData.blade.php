@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/css/selects/custom-select-clean.css">
+<link rel="stylesheet" href="/assets/datepicker/datepicker.min.css">
 <input type="hidden" id="taskId" value="<?= $taskData->task->id?>">
 <div class="row col-sm-12">
     <div class="col-sm-8">
@@ -33,14 +34,18 @@
                 </div>
             </div>
             <div class="col-sm-3">
-                <i class="zmdi zmdi-time c-black f-25 m-r-10"></i><span class="thin">Add due date</span>
+                <div class="d-flex">
+                    <i class="zmdi zmdi-time c-black f-25 m-r-10"></i>
+                    <input type='text' placeholder="Add due date..."  class="datepicker-here datepickerClass input-transparant c-black thin  no-cursor" data-language='en' />
+                    <span class="hidden due_date_val"><? if(isset($taskData->task->due_date)) echo date("d F Y", strtotime($taskData->task->due_date))?></span>
+                </div>
             </div>
             <div class="col-sm-3">
                 <div class="d-flex">
                     <div>
                         <?= \App\Services\CustomIconService::getIcon("tag-outline")?>
                     </div>
-                    <input type="text" class="input-transparant c-black m-l-5" placeholder="Add label...">
+                    <input type="text" placeholder="Add label..." class="input-transparant c-black m-l-5 labelsTask" name="labels" id="tokenfieldLabels" value=""/>
                 </div>
             </div>
         </div>
@@ -84,9 +89,9 @@
                         <button class="no-button-style"><i class="zmdi zmdi-code f-14 c-pointer codeToggleIcon" style="color: black"></i></button>
                     </div>
                     <div class="col-sm-4 d-flex m-t-15">
-                        <button class="no-button-style"><span><i class="zmdi zmdi-format-list-bulleted f-14 m-r-10 c-pointer c-black textEditor" data-task-id="<?= $taskData->task->id?>" data-type="insertUnorderedList" style="margin-top: 2px;"></i></span></button>
-                        <button class="no-button-style"><span><i class="zmdi zmdi-format-list-numbered f-14 c-pointer c-black textEditor" data-task-id="<?= $taskData->task->id?>" data-type="insertOrderedList" style="margin-top: 2px; margin-right: 6px;"></i></span></button>
-                        <button class="no-button-style"><i class="c-black"><?= \App\Services\CustomIconService::getIcon("checkbox-list", "18px");?></i></button>
+                        <button class="no-button-style"><span><i class="zmdi zmdi-format-list-bulleted f-14 m-r-10 c-pointer textEditor" data-task-id="<?= $taskData->task->id?>" data-type="insertUnorderedList" style="margin-top: 2px;"></i></span></button>
+                        <button class="no-button-style"><span><i class="zmdi zmdi-format-list-numbered f-14 c-pointer textEditor" data-task-id="<?= $taskData->task->id?>" data-type="insertOrderedList" style="margin-top: 2px; margin-right: 6px;"></i></span></button>
+                        <button class="no-button-style"><i class="c-black" id="checkboxListToggle"><?= \App\Services\CustomIconService::getIcon("checkbox-list", "18px");?></i></button>
                     </div>
                 </div>
             </div>
@@ -100,6 +105,123 @@
         <?= $taskData->task->content?>
     </div>
 </div>
+<script>
+
+    $('#tokenfieldLabels')
+        .on('tokenfield:createdtoken', function (e) {
+            var tokens = $('#tokenfieldLabels').tokenfield('getTokensList');
+            if(getExistingTokens().indexOf(tokens) < 0){
+                saveLabels();
+            }
+        })
+        .on('tokenfield:removedtoken', function (e) {
+            saveLabels();
+        })
+        .tokenfield({
+        autocomplete: {
+            source: [
+
+            ],
+            delay: 100
+        },
+        showAutocompleteOnFocus: true,
+        createTokensOnBlur: true
+    });
+
+    $('#tokenfieldLabels').tokenfield('setTokens', '<?= $taskData->labels?>');
+
+    function getExistingTokens(){
+        var array = "";
+        <? $allLabels = explode(", ", $taskData->labels)?>
+        <? foreach($allLabels as $label){ ?>
+            if(array == ""){
+               array = '<?= $label?>';
+            } else {
+                array = array + ", " + '<?= $label?>';
+            }
+        <? } ?>
+
+        return array;
+    }
+    function saveLabels(){
+        var tokens = $('#tokenfieldLabels').tokenfield('getTokensList');
+        var task_id = $("#taskId").val();
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/teamProject/editLabelsTask",
+            data: {'tokens' : tokens, "taskId": task_id},
+            success: function (data) {
+            }
+        });
+    }
+
+    var counter = 0;
+    $('.datepickerClass').datepicker({
+        language: 'en',
+        minDate: new Date(), // Now can select only dates, which goes after today
+        onSelect: function onSelect(fd, date) {
+            counter++;
+            if(counter == 1) {
+                $(".datepickerClass").val("");
+                var assignedDate = fd;
+                var task_id = $("#taskId").val();
+                $.ajax({
+                    method: "POST",
+                    beforeSend: function (xhr) {
+                        var token = $('meta[name="csrf_token"]').attr('content');
+
+                        if (token) {
+                            return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                        }
+                    },
+                    url: "/teamProject/addDueDate",
+                    dataType: "JSON",
+                    data: {'date': assignedDate, "taskId": task_id},
+                    success: function (data) {
+                        var day = data["day"];
+                        var month = data['month'];
+                        var year = data['year'];
+                        var textDate = data['textDate'];
+                        setDate(day, month, year);
+                        $(".datepickerClass").val(textDate);
+                    }
+                });
+            } else {
+                counter = 0;
+            }
+        }
+    });
+
+    function setDate(day, month, year){
+        var dp = $('.datepickerClass').datepicker().data('datepicker');
+        dp.selectDate(new Date(year, month, day));
+        return false;
+    }
+
+    $(document).ready(function () {
+        setTimeout(function () {
+            var date = $(".due_date_val").text();
+            var dp = $('.datepickerClass').datepicker().data('datepicker');
+            dp.selectDate(new Date(date));
+        }, 500);
+    });
+
+
+    //set set for datepicker. By example after the ajax call. :)
+
+
+
+
+</script>
 
 <script defer async src="/js/assets/customSelect.js"></script>
 <script defer async src="/js/assets/colorpicker.js"></script>
+<script src="/assets/datepicker/datepicker.min.js"></script>
+<script src="/assets/datepicker/datepicker.en.js"></script>

@@ -68,6 +68,39 @@ class TeamProjectApi {
 
     }
 
+    public function editLabelsTask($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'tokens' => $request->input("tokens"),
+            "taskId" => $request->input("taskId")
+        ];
+        $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/editLabelsTask', $post, $user->api_token);
+        return json_decode($result);
+    }
+
+    public function addDueDate($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'date' => $request->input("date"),
+            "taskId" => $request->input("taskId")
+        ];
+        $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/addDueDate', $post, $user->api_token);
+        return json_decode($result);
+    }
+
+    public function addFolderToProject($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'folderName' => $request->input("folderName"),
+            "teamProjectId" => $request->input("teamProjectId")
+        ];
+        $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/addFolderToProject', $post, $user->api_token);
+        return json_decode($result);
+    }
+
 
 
     // Gets the PostFIELDS, curl_url and api_token from parameters, sends Curl request to the API domain and returns data.

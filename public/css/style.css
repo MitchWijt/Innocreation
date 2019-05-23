@@ -956,6 +956,9 @@ ul.dashed > li:before {
 
 .no-focus:focus{
     outline: none !important;
+    border: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
 }
 
 .has-overlay::after {

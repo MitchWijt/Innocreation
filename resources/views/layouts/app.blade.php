@@ -62,6 +62,8 @@
         <link rel="stylesheet" href="/css/bootstrap-tokenfield.css">
         <link rel="stylesheet" href="/css/jquery.timepicker.css">
         <link rel="stylesheet" href="/css/musicPlayer.css">
+        <link rel="stylesheet" href="/assets/datepicker/datepicker.min.css">
+
     {{------------------------}}
     {{--BOOTSTRAP SWITCH/TOGGLE--}}
         <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -88,6 +90,7 @@
         <script src="/js/jquery-ui.min.js"></script>
         <script src="/js/assets/iro.min.js"></script>
         <script src="/js/assets/keymaster.js"></script>
+        <script src="/assets/datepicker/datepicker.min.js"></script>
 
     {{--ANIMATION--}}
         <script defer async src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>

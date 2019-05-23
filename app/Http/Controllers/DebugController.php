@@ -28,7 +28,9 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, MailgunService $mailgunService) {
-        dd(Session::get("recent_task_id"));
+        $date = "05/09/2019";
+        $newDate = date("d F", strtotime($date));
+        dd($newDate);
         die('test');
     }
 }

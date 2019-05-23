@@ -53,4 +53,19 @@ class TeamProjectController extends Controller
         $teamProjectService = new TeamProjectService();
         return $teamProjectService->assignUserToTask($request);
     }
+
+    public function editLabelsTask(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->editLabelsTask($request);
+    }
+
+    public function addDueDate(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->addDueDate($request);
+    }
+
+    public function addFolderToProject(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->addFolderToProject($request);
+    }
 }

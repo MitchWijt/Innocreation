@@ -117,6 +117,43 @@ class TeamProjectService {
         return view("/public/teamProjects/teamProjectPlanner", compact("teamProject", "pageType"));
     }
 
+    public function editLabelsTask($request){
+        $userId = Session::get("user_id");
+        $teamProjectApi = new TeamProjectApi();
+
+        // gets the "success" index from the returned json array from the API to get a normal array of data
+        if(self::getErrorResponse($teamProjectApi->editLabelsTask($userId, $request))){
+            return self::getErrorResponse($teamProjectApi->editLabelsTask($userId, $request));
+        }
+
+        return self::getSuccessResponse($teamProjectApi->editLabelsTask($userId, $request));
+    }
+
+    public function addDueDate($request){
+        $userId = Session::get("user_id");
+        $teamProjectApi = new TeamProjectApi();
+
+        // gets the "success" index from the returned json array from the API to get a normal array of data
+        if(self::getErrorResponse($teamProjectApi->addDueDate($userId, $request))){
+            return self::getErrorResponse($teamProjectApi->addDueDate($userId, $request));
+        }
+
+        $results = self::getSuccessResponse($teamProjectApi->addDueDate($userId, $request));
+
+        return json_encode($results);
+    }
+
+    public function addFolderToProject($request){
+        $userId = Session::get("user_id");
+        $teamProjectApi = new TeamProjectApi();
+
+        if(self::getErrorResponse($teamProjectApi->addFolderToProject($userId, $request))){
+            return self::getErrorResponse($teamProjectApi->addFolderToProject($userId, $request));
+        }
+
+        return self::getSuccessResponse($teamProjectApi->addFolderToProject($userId, $request));
+    }
+
 
     // Gets the success data from the json reponse from the API
     private static function getSuccessResponse($response){

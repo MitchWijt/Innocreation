@@ -168,9 +168,12 @@ function toggleIconTextEdit(element){
 $(document).on("click", ".textEditor", function () {
     var task_id = $(this).data("task-id");
     var type = $(this).data("type");
-    toggleIconTextEdit($(this));
 
-    document.execCommand(type, false, null);
+
+    if(document.execCommand(type, false, null)){
+        toggleIconTextEdit($(this));
+    }
+
     doneTyping($(".taskContentEditor").html(), task_id, 'content');
 });
 
@@ -236,10 +239,10 @@ $(document).on("click", ".taskContentEditor", function () {
     $(".textEditor").each(function () {
         var _this = $(this);
         //grabs the type (bold, italic, etc...) from the textEditor element data type
-        var type = $(this).data("detector");
+        var type = $(this).data("type");
 
         //checks if styleType is applied on current selected element and makes corresponding textEditor icon active if applied to element.
-        if(element.indexOf("b") > 0){
+        if(document.queryCommandState(type)){
             _this.addClass("active-edit");
         } else {
             _this.removeClass("active-edit");
@@ -263,6 +266,10 @@ $(document).on("click", ".taskContentEditor", function () {
             var numberSize = size.replace("px", "");
             $(".fontSize").find(".select-selected").text(numberSize);
         } else {
+            $(".fontSize").find(".select-selected").text("14");
+        }
+
+        if(size.indexOf("rem") > 0){
             $(".fontSize").find(".select-selected").text("14");
         }
     }
@@ -370,10 +377,93 @@ $(document).on("keyup", ".taskContentEditor", function () {
                 document.execCommand("insertUnorderedList", false, null);
                 event.preventDefault();
                 var elementObject = getSelectionStart("true");
-                elementObject.innerHTML = "";
                 saveContent();
                 return false;
             }
         }
 });
 
+
+//Checkbox list
+
+//Adds a class to the LI and the UL
+//This class modifies that specific UL and changes the li bullet to a checkbox icon
+//When click on this icon the icon changes to a checked icon also by a custom toggled class
+$(document).on("click", "#checkboxListToggle", function () {
+    document.execCommand("insertUnorderedList", false, null);
+    var liElement = getSelectionStart("true").parentNode;
+    var ulElement = liElement.parentNode;
+    ulElement.classList.add("checkboxlist");
+
+    var items = $('.checkboxlist>li');
+    $.each(items,function(){
+        $(this).addClass("liCheck");
+    });
+    saveContent();
+});
+
+
+$(document).on("click", ".liCheck", function (e) {
+    if (e.offsetX < e.target.offsetLeft) {
+        $(this).toggleClass("checkedCheckbox");
+    }
+    saveContent();
+});
+
+$(document).ready(function () {
+    setTimeout(function () {
+        var tokenfieldInput = document.getElementById("tokenfieldLabels-tokenfield");
+        tokenfieldInput.classList.add("no-focus");
+        var parent = tokenfieldInput.parentNode;
+        parent.classList.add("input-transparant");
+        parent.classList.add("no-focus");
+    }, 400);
+});
+
+$(document).on("click", ".addNewFolder", function () {
+    var folder = $(".singleFolder").first().clone();
+    folder.find(".collapse").remove();
+    folder.find(".zmdi-chevron-right").remove();
+    var folderId = folder.find(".collapseFolderButton").data('id');
+    folder.find(".collapseFolderButton").removeClass("folder-" + folderId);
+    folder.find(".collapseFolderButton").removeAttr("data-id");
+    folder.find(".collapseFolderButton").removeAttr("data-target");
+    folder.find(".collapseFolderButton").removeAttr("data-id");
+    folder.find(".collapseFolderButton").removeAttr("data-toggle");
+    folder.find(".collapseFolderButton").removeAttr("aria-expanded");
+    $(".foldersAndTasks").append(folder);
+
+    var inputBox = document.createElement("INPUT");
+    inputBox.setAttribute("type", "text");
+    inputBox.classList.add("input");
+    inputBox.classList.add("newFolderInput");
+    inputBox.classList.add("col-sm-12");
+    inputBox.classList.add("p-l-5");
+    inputBox.classList.add("input-transparant");
+    inputBox.classList.add("c-black");
+    folder.find(".collapseFolderButton").addClass("d-flex");
+    folder.find(".collapseFolderButton").find(".folderTitle").text("");
+    folder.find(".collapseFolderButton").find(".folderTitle").append(inputBox);
+    $(".newFolderInput").focus();
+});
+
+$(document).on("change", ".newFolderInput", function () {
+    var folderName = $(this).val();
+    var team_project_id = $(".teamProjectId").val();
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/teamProject/addFolderToProject",
+        data: {"folderName": folderName, "teamProjectId": team_project_id},
+        success: function (data) {
+            var folderId = data;
+            
+        }
+    });
+});

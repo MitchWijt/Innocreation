@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @font-face {
   font-family: Corbert-Regular;
   src: url(../../fonts/Corbert-Regular.otf);
@@ -27,6 +28,36 @@ blockquote {
 
 blockquote > font {
   font-family: Monaco !important;
+}
+
+.checkboxlist li:before {
+  content: "☐";
+  margin-right: 5px !important;
+  font-size: 25px;
+}
+
+.checkboxlist li {
+  cursor: pointer !important;
+}
+
+.checkboxlist .checkedCheckbox::before {
+  content: "☑" !important;
+  margin-right: 5px !important;
+  font-size: 25px;
+}
+
+.checkboxlist {
+  list-style-type: none;
+  padding-left: 15px;
+}
+
+.no-cursor {
+  border: none;
+  color: transparent;
+  text-shadow: 0 0 0 #000 !important;
+}
+.no-cursor:focus {
+  outline: none;
 }
 
 .heavy {
