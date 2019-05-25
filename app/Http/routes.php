@@ -758,6 +758,10 @@ Route::post("/teamProject/addDueDate", "TeamProjectController@addDueDate");
 
 Route::post("/teamProject/addFolderToProject", "TeamProjectController@addFolderToProject");
 
+Route::post("/teamProject/getTasksOfFolder", "TeamProjectController@getTasksOfFolder");
+
+Route::post("/teamProject/addTask", "TeamProjectController@addTask");
+
 
 //==
 

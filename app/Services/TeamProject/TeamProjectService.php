@@ -76,8 +76,14 @@ class TeamProjectService {
         Session::remove("recent_task_id");
         sleep(1);
         Session::set("recent_task_id", $request->input("task_id"));
+
+        //gets task and sets a selected folder id.
+        $task = TeamProjectTask::select("*")->where("id", $request->input("task_id"))->first();
+        $folderId = $task->team_project_folder_id;
+        Session::set("folder_id", $folderId);
+
         $id = Session::get("recent_task_id");
-        return $id;
+        return $folderId;
     }
 
 
@@ -147,11 +153,53 @@ class TeamProjectService {
         $userId = Session::get("user_id");
         $teamProjectApi = new TeamProjectApi();
 
-        if(self::getErrorResponse($teamProjectApi->addFolderToProject($userId, $request))){
-            return self::getErrorResponse($teamProjectApi->addFolderToProject($userId, $request));
-        }
+//        if(self::getErrorResponse($teamProjectApi->addFolderToProject($userId, $request))){
+//            return self::getErrorResponse($teamProjectApi->addFolderToProject($userId, $request));
+//        }
 
         return self::getSuccessResponse($teamProjectApi->addFolderToProject($userId, $request));
+    }
+
+    public function getTasksOfFolder($request){
+        $userId = Session::get("user_id");
+        $teamProjectApi = new TeamProjectApi();
+
+        if(self::getErrorResponse($teamProjectApi->getTasksOfFolder($userId, $request))){
+            return self::getErrorResponse($teamProjectApi->getTasksOfFolder($userId, $request));
+        }
+
+        $data = self::getSuccessResponse($teamProjectApi->getTasksOfFolder($userId, $request));
+        $tasks = $data->tasks;
+        $folderId = $data->folderId;
+        return view("/public/teamProjects/shared/_taskCollapse", compact("tasks", "folderId"));
+
+    }
+
+    public function addTask($request){
+        $userId = Session::get("user_id");
+        $teamProjectApi = new TeamProjectApi();
+
+//        if(self::getErrorResponse($teamProjectApi->addTask($userId))){
+//            return self::getErrorResponse($teamProjectApi->addTask($userId));
+//        }
+
+         if(!Session::has("folder_id")){
+            $projectId = $request->input("teamProjectId");
+            $myTasksFolder = TeamProjectFolder::select("*")->where("team_project_id", $projectId)->where("title", "My tasks")->first();
+            Session::set("folder_id", $myTasksFolder->id);
+         }
+        $data = self::getSuccessResponse($teamProjectApi->addTask($userId));
+        $taskId = $data->task_id;
+        $folderId = Session::get("folder_id");
+        $tasks = TeamProjectTask::select("*")->where("team_project_folder_id", $folderId)->get();
+
+        $view = view("/public/teamProjects/shared/_taskCollapse", compact("tasks", "folderId"));
+        $viewData = $view->render();
+        $dataArray = ['taskId' => $taskId, "view" => $viewData, 'folderId' => $folderId];
+        return json_encode($dataArray);
+
+
+
     }
 
 

@@ -211,6 +211,8 @@
             var dp = $('.datepickerClass').datepicker().data('datepicker');
             dp.selectDate(new Date(date));
         }, 500);
+
+//        window.open("www.google.com", "myWindowName", "width=800, height=600");
     });
 
 

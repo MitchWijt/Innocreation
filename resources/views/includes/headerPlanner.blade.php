@@ -40,7 +40,7 @@
                                         <i class="zmdi zmdi-plus p-absolute c-black f-18" style="top: -13px; right: 9px;"></i>
                                         <i class="zmdi zmdi-attachment-alt f-25 c-black m-r-15 c-pointer"></i>
                                     </span>
-                                <span class="p-relative m-r-15 c-pointer">
+                                <span class="p-relative m-r-15 c-pointer addTask">
                                         <i class="zmdi zmdi-plus p-absolute c-black f-18" style="top: -13px; right: -3px;"></i>
                                     <?= \App\Services\CustomIconService::getIcon("file-outline")?>
                                     </span>

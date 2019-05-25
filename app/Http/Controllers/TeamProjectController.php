@@ -68,4 +68,14 @@ class TeamProjectController extends Controller
         $teamProjectService = new TeamProjectService();
         return $teamProjectService->addFolderToProject($request);
     }
+
+    public function getTasksOfFolder(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->getTasksOfFolder($request);
+    }
+
+    public function addTask(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->addTask($request);
+    }
 }

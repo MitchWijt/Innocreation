@@ -10,6 +10,7 @@ namespace App\Services\TeamProject;
 
 
 use App\User;
+use Illuminate\Support\Facades\Session;
 
 class TeamProjectApi {
 
@@ -99,6 +100,27 @@ class TeamProjectApi {
         ];
         $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/addFolderToProject', $post, $user->api_token);
         return json_decode($result);
+    }
+
+    public function getTasksOfFolder($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'folderId' => $request->input("folder_id"),
+        ];
+        $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/getTasksOfFolder', $post, $user->api_token);
+        return json_decode($result);
+    }
+
+    public function addTask($userId){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'folderId' => Session::get("folder_id")
+        ];
+        $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/addTask', $post, $user->api_token);
+        return json_decode($result);
+
     }
 
 

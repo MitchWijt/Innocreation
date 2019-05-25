@@ -19,15 +19,37 @@ $(document).ready(function () {
 });
 
 $(document).on("click", ".collapseFolderButton", function () {
-    var id = $(this).data("id");
     var _this = $(this);
-    $("#folderCollapse-" + id).on("shown.bs.collapse",function () {
-        _this.find(".zmdi-chevron-right").removeClass("zmdi-chevron-right").addClass("zmdi-chevron-down");
+    var id = $(this).attr("id");
+    console.log(_this);
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/teamProject/getTasksOfFolder",
+        data: {'folder_id': id},
+        success: function (data) {
+            _this.parents(".singleFolder").append(data);
+            var collapseItem =  $("#folderCollapse-" + id);
+            collapseItem.collapse("toggle");
+
+            collapseItem.on("shown.bs.collapse",function () {
+                _this.find(".zmdi-chevron-right").removeClass("zmdi-chevron-right").addClass("zmdi-chevron-down");
+            });
+
+            collapseItem.on("hidden.bs.collapse",function () {
+                _this.find(".zmdi-chevron-down").removeClass("zmdi-chevron-down").addClass("zmdi-chevron-right");
+                $("#folderCollapse-" + id).remove();
+            });
+        }
     });
 
-    $("#folderCollapse-" + id).on("hidden.bs.collapse",function () {
-        _this.find(".zmdi-chevron-down").removeClass("zmdi-chevron-down").addClass("zmdi-chevron-right");
-    });
+
 });
 
 
@@ -68,7 +90,7 @@ function setRecentTask(task_id){
         url: "/teamProject/setRecentTask",
         data: {'task_id': task_id},
         success: function (data) {
-           
+            $("#selectedFolder").val(data);
         }
     });
 }
@@ -420,17 +442,15 @@ $(document).ready(function () {
     }, 400);
 });
 
+//on click of button to add a new folder. Affs a folder input type to give the folder a name.
 $(document).on("click", ".addNewFolder", function () {
     var folder = $(".singleFolder").first().clone();
     folder.find(".collapse").remove();
     folder.find(".zmdi-chevron-right").remove();
+    folder.find(".zmdi-chevron-down").remove();
     var folderId = folder.find(".collapseFolderButton").data('id');
     folder.find(".collapseFolderButton").removeClass("folder-" + folderId);
-    folder.find(".collapseFolderButton").removeAttr("data-id");
-    folder.find(".collapseFolderButton").removeAttr("data-target");
-    folder.find(".collapseFolderButton").removeAttr("data-id");
-    folder.find(".collapseFolderButton").removeAttr("data-toggle");
-    folder.find(".collapseFolderButton").removeAttr("aria-expanded");
+    folder.find(".collapseFolderButton").attr("data-id", null);
     $(".foldersAndTasks").append(folder);
 
     var inputBox = document.createElement("INPUT");
@@ -447,7 +467,9 @@ $(document).on("click", ".addNewFolder", function () {
     $(".newFolderInput").focus();
 });
 
+// On change of input box new folder.
 $(document).on("change", ".newFolderInput", function () {
+    var _this = $(this);
     var folderName = $(this).val();
     var team_project_id = $(".teamProjectId").val();
     $.ajax({
@@ -463,7 +485,56 @@ $(document).on("change", ".newFolderInput", function () {
         data: {"folderName": folderName, "teamProjectId": team_project_id},
         success: function (data) {
             var folderId = data;
-            
+            var folderTitle = _this.parents(".folderTitle");
+            var collapseButton = folderTitle.parents(".collapseFolderButton");
+            var chevron = document.createElement("i");
+            chevron.classList.add("zmdi");
+            chevron.classList.add("zmdi-chevron-right");
+            chevron.classList.add("f-20");
+            chevron.classList.add("c-black");
+            chevron.classList.add("m-r-5");
+            collapseButton.prepend(chevron);
+            collapseButton.attr("id", folderId);
+            collapseButton.addClass("folder-" + data);
+            _this.parents(".folderTitle").text(folderName);
+        }
+    });
+});
+
+
+//Adds a new task to a folder.
+$(document).on("click", ".addTask", function () {
+    var team_project_id = $(".teamProjectId").val();
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/teamProject/addTask",
+        data: {"teamProjectId": team_project_id},
+        dataType: "JSON",
+        success: function (data) {
+            var folderId = data['folderId'];
+            var collapse = $("#folderCollapse-" + folderId);
+            if(collapse.length < 1){
+                var parent = $(".singleFolder-" + folderId);
+            } else {
+                var parent = collapse.parents(".singleFolder");
+                collapse.remove();
+            }
+
+            console.log(parent);
+
+            parent.append(data['view']);
+            $(".collapse-" + folderId).addClass("show");
+            var task_id = data['taskId'];
+            setRecentTask(task_id);
+            setActiveTask(task_id);
+            getTaskData(task_id);
         }
     });
 });
