@@ -738,6 +738,8 @@ Route::post("/registerProcess/saveUserTexts", "RegisterProcessController@saveUse
 
 Route::get("/my-team/projects", "TeamProjectController@indexAction");
 
+Route::post("/teamProject/getProjects", "TeamProjectController@getProjects");
+
 Route::get("/my-team/project/{slug}", "TeamProjectController@teamProjectPlannerAction");
 
 Route::post("/teamProject/getFoldersAndTasks", "TeamProjectController@getFoldersAndTasksProject");
@@ -761,6 +763,14 @@ Route::post("/teamProject/addFolderToProject", "TeamProjectController@addFolderT
 Route::post("/teamProject/getTasksOfFolder", "TeamProjectController@getTasksOfFolder");
 
 Route::post("/teamProject/addTask", "TeamProjectController@addTask");
+
+Route::post("/teamProject/setRecentFolder", "TeamProjectController@setRecentFolder");
+
+Route::post("/teamProject/removeRecentFolderSession", "TeamProjectController@removeRecentFolderSession");
+
+Route::post("/teamProject/changeFolderOfTask", "TeamProjectController@changeFolderOfTask");
+
+Route::post("/teamProject/addProject", "TeamProjectController@addProject");
 
 
 //==

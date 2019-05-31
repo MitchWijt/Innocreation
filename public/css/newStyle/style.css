@@ -52,12 +52,12 @@ blockquote > font {
 }
 
 .no-cursor {
-  border: none;
-  color: transparent;
+  border: none !important;
+  color: transparent !important;
   text-shadow: 0 0 0 #000 !important;
 }
 .no-cursor:focus {
-  outline: none;
+  outline: none !important;
 }
 
 .heavy {

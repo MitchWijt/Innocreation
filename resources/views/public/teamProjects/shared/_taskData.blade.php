@@ -1,11 +1,22 @@
 <link rel="stylesheet" href="/css/selects/custom-select-clean.css">
 <link rel="stylesheet" href="/assets/datepicker/datepicker.min.css">
 <input type="hidden" id="taskId" value="<?= $taskData->task->id?>">
+<input type="hidden" id="folderId" name="currentFolderId" value="<?= $taskData->folder->id?>">
 <div class="row col-sm-12">
     <div class="col-sm-8">
         <div class="row">
-            <div class="col-sm-3">
-                <i class="zmdi zmdi-folder-outline c-black f-25 m-r-10"></i><?= $taskData->folder->title?>
+            <div class="col-sm-3 p-relative">
+                <div class="changeFolderBtn c-pointer">
+                    <i class="zmdi zmdi-folder-outline c-black f-25 m-r-10 c-pointer"></i><span id="folderTitle"><?= $taskData->folder->title?></span>
+                </div>
+                <div class="folderList p-absolute bcg-grey hidden" style="max-width: 200px; border-radius: 5px; z-index: 200;">
+                    <? foreach($teamProject->getFolders() as $folder) { ?>
+                        <div class="d-flex p-t-10 p-r-10 p-l-10 dark-hover c-pointer assignNewFolder <? if($folder->id == $taskData->folder->id) echo "bcg-dark-grey"?>" data-new-folder-id="<?= $folder->id?>" data-task-id="<?= $taskData->task->id?>">
+                            <i class="zmdi zmdi-folder-outline c-black f-25 m-r-10"></i>
+                            <p class="m-t-6"><?= $folder->title?></p>
+                        </div>
+                    <? } ?>
+                </div>
             </div>
             <div class="col-sm-3 p-relative toggleAssignMemberDropdown">
                 <div class="d-flex toggleAssignMemberDropdown no-select c-pointer">
@@ -36,7 +47,7 @@
             <div class="col-sm-3">
                 <div class="d-flex">
                     <i class="zmdi zmdi-time c-black f-25 m-r-10"></i>
-                    <input type='text' placeholder="Add due date..."  class="datepicker-here datepickerClass input-transparant c-black thin  no-cursor" data-language='en' />
+                    <input type='text' placeholder="Add due date..."  class="datepicker-here datepickerClass input-transparant thin  no-cursor c-pointer" data-language='en' />
                     <span class="hidden due_date_val"><? if(isset($taskData->task->due_date)) echo date("d F Y", strtotime($taskData->task->due_date))?></span>
                 </div>
             </div>
@@ -120,7 +131,9 @@
         .tokenfield({
         autocomplete: {
             source: [
-
+                <? foreach($allLabels as $label) { ?>
+                    <?= "'" . $label ."'"?>,
+                <? } ?>
             ],
             delay: 100
         },
@@ -208,8 +221,10 @@
     $(document).ready(function () {
         setTimeout(function () {
             var date = $(".due_date_val").text();
-            var dp = $('.datepickerClass').datepicker().data('datepicker');
-            dp.selectDate(new Date(date));
+            if(date != "01 January 1970"){
+                var dp = $('.datepickerClass').datepicker().data('datepicker');
+                dp.selectDate(new Date(date));
+            }
         }, 500);
 
 //        window.open("www.google.com", "myWindowName", "width=800, height=600");

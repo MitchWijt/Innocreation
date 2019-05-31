@@ -17,6 +17,11 @@ class TeamProjectController extends Controller
         return $teamProjectService->index();
     }
 
+    public function getProjects(){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->getProjects();
+    }
+
     // Returns a shared_view in the sidebar for all the folders and tasks of the project.
     public function getFoldersAndTasksProject(Request $request){
         $teamProjectService = new TeamProjectService();
@@ -77,5 +82,25 @@ class TeamProjectController extends Controller
     public function addTask(Request $request){
         $teamProjectService = new TeamProjectService();
         return $teamProjectService->addTask($request);
+    }
+
+    public function setRecentFolder(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->setRecentFolder($request);
+    }
+
+    public function removeRecentFolderSession(){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->removeRecentFolderSession();
+    }
+
+    public function changeFolderOfTask(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->changeFolderOfTask($request);
+    }
+
+    public function addProject(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->addProject($request);
     }
 }

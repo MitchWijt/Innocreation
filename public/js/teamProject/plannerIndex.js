@@ -21,7 +21,6 @@ $(document).ready(function () {
 $(document).on("click", ".collapseFolderButton", function () {
     var _this = $(this);
     var id = $(this).attr("id");
-    console.log(_this);
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -34,17 +33,22 @@ $(document).on("click", ".collapseFolderButton", function () {
         url: "/teamProject/getTasksOfFolder",
         data: {'folder_id': id},
         success: function (data) {
-            _this.parents(".singleFolder").append(data);
+            if($("#folderCollapse-" + id).length < 1) {
+                _this.parents(".singleFolder").append(data);
+            }
             var collapseItem =  $("#folderCollapse-" + id);
             collapseItem.collapse("toggle");
 
             collapseItem.on("shown.bs.collapse",function () {
+                setRecentFolder(id);
                 _this.find(".zmdi-chevron-right").removeClass("zmdi-chevron-right").addClass("zmdi-chevron-down");
             });
 
             collapseItem.on("hidden.bs.collapse",function () {
-                _this.find(".zmdi-chevron-down").removeClass("zmdi-chevron-down").addClass("zmdi-chevron-right");
                 $("#folderCollapse-" + id).remove();
+                removeRecentFolderSession();
+                _this.find(".zmdi-chevron-down").removeClass("zmdi-chevron-down").addClass("zmdi-chevron-right");
+
             });
         }
     });
@@ -54,6 +58,7 @@ $(document).on("click", ".collapseFolderButton", function () {
 
 
 function getTaskData(task_id){
+    var team_project_id = $(".teamProjectId").val();
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -64,7 +69,7 @@ function getTaskData(task_id){
             }
         },
         url: "/teamProject/getTaskData",
-        data: {'task_id': task_id},
+        data: {'task_id': task_id, "team_project_id" : team_project_id},
         success: function (data) {
             $(".taskContent").html(data);
         }
@@ -95,6 +100,41 @@ function setRecentTask(task_id){
     });
 }
 
+function setRecentFolder(folder_id){
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/teamProject/setRecentFolder",
+        data: {'folder_id': folder_id},
+        success: function (data) {
+            console.log(data);
+        }
+    });
+}
+
+function removeRecentFolderSession(folder_id){
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/teamProject/removeRecentFolderSession",
+        data: "",
+        success: function (data) {
+        }
+    });
+}
+
 function openRecentTask(){
     $.ajax({
         method: "POST",
@@ -112,10 +152,12 @@ function openRecentTask(){
             var task_id = data['task_id'];
             var folder_id = data['folder_id'];
             setTimeout(function () {
-                $("#folderCollapse-" + folder_id).collapse("show");
+                $(".folder-" + folder_id).click();
             }, 500);
 
-            setActiveTask(task_id);
+            setTimeout(function () {
+                setActiveTask(task_id);
+            }, 1000);
             getTaskData(task_id);
         }
     });
@@ -153,11 +195,21 @@ $(document).on("keyup", ".titleTask", function () {
     var content = $(this).html();
     var task_id = $(this).data("task-id");
 
-    clearTimeout(typingTimerTitle);
-    if (content) {
-        typingTimerTitle = setTimeout(function () {
-            doneTyping(content, task_id, "title")
-        }, 2000);
+    if(key.isPressed("enter")){
+        $(".taskContentEditor").focus();
+
+        //deleted the white enter placed in title and focusses on the editable content of the task.
+        var titleVal =  $(this).text();
+        $(".titleTask").html(titleVal);
+    }
+
+    if(!key.isPressed("enter")) {
+        clearTimeout(typingTimerTitle);
+        if (content) {
+            typingTimerTitle = setTimeout(function () {
+                doneTyping(content, task_id, "title")
+            }, 2000);
+        }
     }
 });
 
@@ -518,23 +570,61 @@ $(document).on("click", ".addTask", function () {
         data: {"teamProjectId": team_project_id},
         dataType: "JSON",
         success: function (data) {
-            var folderId = data['folderId'];
-            var collapse = $("#folderCollapse-" + folderId);
-            if(collapse.length < 1){
-                var parent = $(".singleFolder-" + folderId);
-            } else {
-                var parent = collapse.parents(".singleFolder");
-                collapse.remove();
-            }
+            getTasksAndCollapseForFolder(data['folderId'], data['view']);
 
-            console.log(parent);
-
-            parent.append(data['view']);
-            $(".collapse-" + folderId).addClass("show");
             var task_id = data['taskId'];
             setRecentTask(task_id);
             setActiveTask(task_id);
             getTaskData(task_id);
+        }
+    });
+});
+
+function getTasksAndCollapseForFolder(folderId, tasksSharedView){
+    var collapse = $("#folderCollapse-" + folderId);
+    if(collapse.length < 1){
+        var parent = $(".singleFolder-" + folderId);
+    } else {
+        var parent = collapse.parents(".singleFolder");
+        collapse.remove();
+    }
+
+    parent.append(tasksSharedView);
+    $(".collapse-" + folderId).addClass("show");
+}
+
+$(document).on("click", ".changeFolderBtn", function () {
+   $(".folderList").toggleClass("hidden");
+});
+
+$(document).on("click", ".assignNewFolder", function () {
+    var currentFolderId = $("#folderId").val();
+    var newFolderId = $(this).data("new-folder-id");
+    var taskId = $(this).data("task-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/teamProject/changeFolderOfTask",
+        data: {"currentFolder": currentFolderId, "newFolder" : newFolderId, "taskId" : taskId},
+        dataType: "JSON",
+        success: function (data) {
+            var newFolderId = data['newFolderId'];
+            var newView = data['newView'];
+            getTasksAndCollapseForFolder(newFolderId, newView);
+            setRecentTask(taskId);
+            setActiveTask(taskId);
+
+            var oldFolderId = data['oldFolderId'];
+            var oldView = data['oldView'];
+            getTasksAndCollapseForFolder(oldFolderId, oldView);
+
+            $("#folderTitle").text(data['newFolderName']);
         }
     });
 });

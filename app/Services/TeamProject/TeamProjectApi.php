@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Session;
 
 class TeamProjectApi {
 
+    public function validateUser($userId){
+        $sessionData = self::openSession($userId);
+        $post = [
+            'user_id' => $sessionData['uid']
+        ];
+        $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/validateUser', $post, $sessionData['token']);
+        return json_decode($result);
+    }
+
     // sends the appropiate data to the curl call and returns data in json format
     public function getProjects($userId){
         $sessionData = self::openSession($userId);
@@ -122,6 +131,30 @@ class TeamProjectApi {
         return json_decode($result);
 
     }
+
+    public function changeFolderOfTask($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'currentFolderId' => $request->input("currentFolder"),
+            'newFolderId' => $request->input('newFolder'),
+            'taskId' => $request->input("taskId")
+        ];
+        $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/changeFolderOfTask', $post, $user->api_token);
+        return json_decode($result);
+
+    }
+
+    public function addProject($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'projectTitle' => $request->input("projectTitle")
+        ];
+        $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/addProject', $post, $user->api_token);
+        return json_decode($result);
+    }
+
 
 
 
