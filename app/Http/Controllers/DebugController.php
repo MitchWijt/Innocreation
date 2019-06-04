@@ -10,6 +10,7 @@ use App\Services\TimeSent;
 use App\SplitTheBillLinktable;
 use App\Team;
 use App\TeamPackage;
+use App\TeamProjectTask;
 use App\User;
 use App\UserChat;
 use App\UserMessage;
@@ -28,9 +29,15 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, MailgunService $mailgunService) {
-        $date = "05/09/2019";
-        $newDate = date("d F", strtotime($date));
-        dd($newDate);
+        $tasksArray = [];
+        $allTasks = TeamProjectTask::select("*")->get();
+        foreach($allTasks as $task){
+            if($task->folder && $task->folder->team_project_id == 1){
+                array_push($tasksArray, $task);
+            }
+        }
+
+        dd($tasksArray);
         die('test');
     }
 }

@@ -33,6 +33,7 @@ $(document).on("click", ".collapseFolderButton", function () {
         url: "/teamProject/getTasksOfFolder",
         data: {'folder_id': id},
         success: function (data) {
+            console.log(data);
             if($("#folderCollapse-" + id).length < 1) {
                 _this.parents(".singleFolder").append(data);
             }

@@ -421,4 +421,8 @@ h3 {
   border: 1px solid #FF6100 !important;
 }
 
+.theme-light .tokenfield{
+  border: none !important;
+}
+
 /*# sourceMappingURL=style.css.map */
