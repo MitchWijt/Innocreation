@@ -157,6 +157,7 @@ $(".sendUserMessage").on("click",function () {
             var newId = idGen.getId();
             message.attr("id", newId);
             var allMessages = $(".chatContent");
+            console.log(message);
             $(message).appendTo(allMessages);
             message.find(".message").text(data['message']);
             message.find(".timeSent").text(data['timeSent']);

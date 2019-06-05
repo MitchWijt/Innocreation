@@ -164,7 +164,7 @@ class UserChatsService
         $team = Team::select("*")->where('id', $teamId)->first();
         $timeSent = new TimeSent();
 
-        foreach($team->getMembers() as $member){
+        foreach($team->getMembers(true) as $member){
             $data = ["actor" => $member->id, "receiver" => $userMessage->sender_user_id, "userChat" => 0, 'teamId' => $teamId, "message" => "$userMessage->message", "timeSent" => "$timeSent->time", "verb" => "userMessage", "object" => "3",];
             $stream->addActivityToFeed($member->id, $data);
 

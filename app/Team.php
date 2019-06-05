@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use DateTime;
+use Illuminate\Support\Facades\Session;
 
 class Team extends Model {
     public function users(){
@@ -37,9 +38,15 @@ class Team extends Model {
         }
     }
 
-    public function getMembers(){
+    public function getMembers($excludeSessionMember = false){
         // gets all the members in the current team
-        $users = User::select("*")->where("team_id", $this->id)->get();
+        if($excludeSessionMember){
+            $userId = Session::get("user_id");
+            $users = User::select("*")->where("team_id", $this->id)->where("id", '!=', $userId)->get();
+        } else{
+            $users = User::select("*")->where("team_id", $this->id)->get();
+        }
+
         return $users;
     }
 
