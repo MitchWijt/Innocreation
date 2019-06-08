@@ -198,7 +198,7 @@ class TeamProjectService {
             $myTasksFolder = TeamProjectFolder::select("*")->where("team_project_id", $projectId)->where("title", "My tasks")->first();
             Session::set("folder_id", $myTasksFolder->id);
          }
-        $data = self::getSuccessResponse($teamProjectApi->addTask($userId));
+        $data = self::getSuccessResponse($teamProjectApi->addTask($userId, $request));
         $taskId = $data->task_id;
         $folderId = Session::get("folder_id");
         $tasks = TeamProjectTask::select("*")->where("team_project_folder_id", $folderId)->get();

@@ -9,9 +9,12 @@
 namespace App;
 
 
+use App\Services\TeamProject\TaskEditorService;
 use Illuminate\Database\Eloquent\Model;
 
 class TeamProjectTask extends Model {
+    const PRIVATE_TASK = 2;
+    const PUBLIC_TASK = 1;
 
     public $table = "team_project_task";
 

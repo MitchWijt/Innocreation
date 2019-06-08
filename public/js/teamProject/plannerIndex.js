@@ -445,17 +445,17 @@ key('⌘+u, ctrl+u', function(event){
 });
 
 $(document).on("keyup", ".taskContentEditor", function () {
-    if(key.isPressed(32))
-        var element = getSelectionStart();
-        if(element) {
+    if(key.isPressed(32)) {
+        var element = getSelectionStart("true").innerHTML;
+        if (element) {
             if (element.indexOf("-") > 0) {
                 document.execCommand("insertUnorderedList", false, null);
                 event.preventDefault();
-                var elementObject = getSelectionStart("true");
                 saveContent();
                 return false;
             }
         }
+    }
 });
 
 
@@ -557,6 +557,11 @@ $(document).on("change", ".newFolderInput", function () {
 
 //Adds a new task to a folder.
 $(document).on("click", ".addTask", function () {
+    var type = $(this).data("task-category");
+    addNewTask(type);
+});
+
+function addNewTask(type){
     var team_project_id = $(".teamProjectId").val();
     $.ajax({
         method: "POST",
@@ -568,7 +573,7 @@ $(document).on("click", ".addTask", function () {
             }
         },
         url: "/teamProject/addTask",
-        data: {"teamProjectId": team_project_id},
+        data: {"teamProjectId": team_project_id, "type" : type},
         dataType: "JSON",
         success: function (data) {
             getTasksAndCollapseForFolder(data['folderId'], data['view']);
@@ -579,7 +584,7 @@ $(document).on("click", ".addTask", function () {
             getTaskData(task_id);
         }
     });
-});
+}
 
 function getTasksAndCollapseForFolder(folderId, tasksSharedView){
     var collapse = $("#folderCollapse-" + folderId);
@@ -628,4 +633,16 @@ $(document).on("click", ".assignNewFolder", function () {
             $("#folderTitle").text(data['newFolderName']);
         }
     });
+});
+
+var hoverTimer;
+$(document).on("mouseenter", ".addTaskMenuToggle", function () {
+    hoverTimer = setTimeout(function () {
+        $(".createTasksBox").fadeIn();
+    }, 1000);
+
+});
+$(document).on("mouseleave", ".addTaskMenuToggle", function () {
+    $(".createTasksBox").fadeOut();
+    clearTimeout(hoverTimer);
 });

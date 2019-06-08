@@ -9,6 +9,7 @@
 namespace App\Services\TeamProject;
 
 
+use App\TeamProjectTaskType;
 use App\User;
 use Illuminate\Support\Facades\Session;
 
@@ -121,11 +122,13 @@ class TeamProjectApi {
         return json_decode($result);
     }
 
-    public function addTask($userId){
+    public function addTask($userId, $request){
+        $type = TeamProjectTaskType::select("*")->where("title", ucfirst($request->input("type")))->first();
         $user = User::select("*")->where("id", $userId)->first();
         $post = [
             'user_id' => $userId,
-            'folderId' => Session::get("folder_id")
+            'folderId' => Session::get("folder_id"),
+            'type' => $type->id
         ];
         $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/addTask', $post, $user->api_token);
         return json_decode($result);
@@ -173,6 +176,7 @@ class TeamProjectApi {
         ));
 
         $result = curl_exec($ch);
+//        dd($result);
         curl_close($ch);
 
         return $result;
