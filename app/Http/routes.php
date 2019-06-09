@@ -772,6 +772,12 @@ Route::post("/teamProject/changeFolderOfTask", "TeamProjectController@changeFold
 
 Route::post("/teamProject/addProject", "TeamProjectController@addProject");
 
+Route::post("/teamProject/getTaskContextMenu", "TeamProjectController@getTaskContextMenu");
+
+Route::post("/teamProject/setTaskPrivate", "TeamProjectController@setTaskPrivate");
+
+Route::post("/teamProject/setTaskPublic", "TeamProjectController@setTaskPublic");
+
 
 //==
 

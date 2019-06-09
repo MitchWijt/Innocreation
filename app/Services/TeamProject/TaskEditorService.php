@@ -9,6 +9,8 @@
 namespace App\Services\TeamProject;
 
 
+use Illuminate\Support\Facades\Session;
+
 class TaskEditorService {
 
     public static function getFontSizes(){
@@ -19,5 +21,24 @@ class TaskEditorService {
     public static function getFontStyles(){
         $styles = ["Verdana", "Georgia", "Comic Sans", "Trebucket", "Arial black", "Impact", "Helvetica", "Corbert-Regular"];
         return $styles;
+    }
+
+    public static function getTaskContextmenuOptions($task){
+        if($task->created_user_id == Session::get("user_id")) {
+            if ($task->type == 2) {
+                $array = [['title' => "Set to public", "action" => "form", "formUrl" => "/teamProject/setTaskPublic"], ['title' => "Copy link", "action" => "copy"]];
+            } else if ($task->type == 1) {
+                $array = [['title' => "Set to private", "action" => "form", "formUrl" => "/teamProject/setTaskPrivate"], ['title' => "Copy link", "action" => "copy"]];
+            } else {
+                $array = [['title' => "Set to private", "action" => "form", "formUrl" => "/teamProject/setTaskPrivate"], ['title' => "Set to public", "action" => "form", "formUrl" => "/teamProject/setTaskPublic"], ['title' => "Copy link", "action" => "copy"]];
+            }
+        } else {
+            $array = [
+                ['title' => "Copy link", "action" => "copy"]
+            ];
+        }
+
+
+        return $array;
     }
 }

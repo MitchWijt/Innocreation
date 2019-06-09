@@ -9,9 +9,9 @@
                 <div class="changeFolderBtn c-pointer">
                     <i class="zmdi zmdi-folder-outline c-black f-25 m-r-10 c-pointer"></i><span id="folderTitle"><?= $taskData->folder->title?></span>
                 </div>
-                <div class="folderList p-absolute bcg-grey hidden" style="max-width: 200px; border-radius: 5px; z-index: 200;">
+                <div class="folderList p-absolute contextMenu hidden" style="max-width: 200px; z-index: 200;">
                     <? foreach($teamProject->getFolders() as $folder) { ?>
-                        <div class="d-flex p-t-10 p-r-10 p-l-10 dark-hover c-pointer assignNewFolder <? if($folder->id == $taskData->folder->id) echo "bcg-dark-grey"?>" data-new-folder-id="<?= $folder->id?>" data-task-id="<?= $taskData->task->id?>">
+                        <div class="d-flex p-t-10 p-r-10 p-l-10 dark-hover transition c-pointer assignNewFolder <? if($folder->id == $taskData->folder->id) echo "active"?>" data-new-folder-id="<?= $folder->id?>" data-task-id="<?= $taskData->task->id?>">
                             <i class="zmdi zmdi-folder-outline c-black f-25 m-r-10"></i>
                             <p class="m-t-6"><?= $folder->title?></p>
                         </div>
@@ -35,9 +35,9 @@
                         <p class="m-t-6 name-assigned-user toggleAssignMemberDropdown c-pointer"><?= $taskData->assigned_user->firstname . " " . $taskData->assigned_user->lastname?></p>
                     <? } ?>
                 </div>
-                <div class="assignMemberBox p-absolute bcg-grey hidden" style="max-width: 200px; border-radius: 5px; z-index: 200;">
+                <div class="assignMemberBox p-absolute contextMenu hidden" style="max-width: 200px; z-index: 100;">
                     <? foreach($team->getMembers() as $member) { ?>
-                        <div class="d-flex p-t-10 p-r-10 p-l-10 dark-hover c-pointer assignUser" data-member-id="<?= $member->id?>" data-task-id="<?= $taskData->task->id?>">
+                        <div class="d-flex p-t-10 p-r-10 p-l-10 dark-hover transition c-pointer assignUser" data-member-id="<?= $member->id?>" data-task-id="<?= $taskData->task->id?>">
                             <div class="avatar-header img m-b-10 p-t-0 m-r-10" style="background: url('<?= $member->getProfilePicture()?>')"></div>
                             <p class="m-t-6"><?= $member->getName()?></p>
                         </div>

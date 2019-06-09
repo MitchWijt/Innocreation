@@ -6,14 +6,16 @@
   min-width: 210px;
 }
 
-.plannerTask:hover{
-  background: #77787a;
-}
-
 .taskContent{
   width: 100vw;
 }
 
 .active-edit{
   color: #FF6100 !important;
+}
+
+.contextMenu{
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 0 0 6px rgba(0,0,0,.3);
 }

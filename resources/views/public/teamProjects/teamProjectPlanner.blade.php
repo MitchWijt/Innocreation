@@ -2,12 +2,13 @@
 @section("content")
     <div class="d-flex grey-background vh85">
         <input type="hidden" class="teamProjectId" value="<?= $teamProject->id?>">
+        <? if(isset($activeTaskId) && isset($activeFolderId)) { ?>
+            <input type="hidden" id="activeTaskId" value="<?= $activeTaskId?>">
+            <input type="hidden" id="activeFolderId" value="<?= $activeFolderId?>">
+        <? } else if(isset($activeFolderId)) { ?>
+            <input type="hidden" id="activeFolderId" value="<?= $activeFolderId?>">
+        <?}  ?>
         <?= view("public/teamProjects/shared/_sidebar")?>
-        <div class="row">
-            <div class="col-sm-12 d-flex js-center">
-                @include("includes.flash")
-            </div>
-        </div>
         <div class="taskContent">
 
         </div>

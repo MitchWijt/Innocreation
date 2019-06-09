@@ -122,12 +122,12 @@ class TeamProjectApi {
         return json_decode($result);
     }
 
-    public function addTask($userId, $request){
+    public function addTask($userId, $request, $folderId){
         $type = TeamProjectTaskType::select("*")->where("title", ucfirst($request->input("type")))->first();
         $user = User::select("*")->where("id", $userId)->first();
         $post = [
             'user_id' => $userId,
-            'folderId' => Session::get("folder_id"),
+            'folderId' => $folderId,
             'type' => $type->id
         ];
         $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/addTask', $post, $user->api_token);
@@ -155,6 +155,26 @@ class TeamProjectApi {
             'projectTitle' => $request->input("projectTitle")
         ];
         $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/addProject', $post, $user->api_token);
+        return json_decode($result);
+    }
+
+    public function setTaskPrivate($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'taskId' => $request->input("taskId")
+        ];
+        $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/setTaskPrivate', $post, $user->api_token);
+        return json_decode($result);
+    }
+
+    public function setTaskPublic($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'taskId' => $request->input("taskId")
+        ];
+        $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/setTaskPublic', $post, $user->api_token);
         return json_decode($result);
     }
 

@@ -29,15 +29,7 @@ class DebugController extends Controller
      */
 
     public function test(Request $request, MailgunService $mailgunService) {
-        $tasksArray = [];
-        $allTasks = TeamProjectTask::select("*")->get();
-        foreach($allTasks as $task){
-            if($task->folder && $task->folder->team_project_id == 1){
-                array_push($tasksArray, $task);
-            }
-        }
-
-        dd($tasksArray);
+        dd(file_get_contents("https://www.bol.com/nl/l/likeur/N/36806//?promo=dranken_360_5_likeur_afbeelding"));
         die('test');
     }
 }

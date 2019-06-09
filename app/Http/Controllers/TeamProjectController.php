@@ -29,9 +29,9 @@ class TeamProjectController extends Controller
     }
 
     // sends a request with the teams project slug to the teamprojectService to return the planner page
-    public function teamProjectPlannerAction($slug){
+    public function teamProjectPlannerAction($slug, Request $request){
         $teamProjectService = new TeamProjectService();
-        return $teamProjectService->teamProjectPlannerIndex($slug);
+        return $teamProjectService->teamProjectPlannerIndex($slug, $request);
     }
 
     public function getTaskData(Request $request){
@@ -89,9 +89,9 @@ class TeamProjectController extends Controller
         return $teamProjectService->setRecentFolder($request);
     }
 
-    public function removeRecentFolderSession(){
+    public function removeRecentFolderSession(Request $request){
         $teamProjectService = new TeamProjectService();
-        return $teamProjectService->removeRecentFolderSession();
+        return $teamProjectService->removeRecentFolderSession($request);
     }
 
     public function changeFolderOfTask(Request $request){
@@ -102,5 +102,20 @@ class TeamProjectController extends Controller
     public function addProject(Request $request){
         $teamProjectService = new TeamProjectService();
         return $teamProjectService->addProject($request);
+    }
+
+    public function getTaskContextMenu(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->getTaskContextMenu($request);
+    }
+
+    public function setTaskPrivate(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->setTaskPrivate($request);
+    }
+
+    public function setTaskPublic(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->setTaskPublic($request);
     }
 }

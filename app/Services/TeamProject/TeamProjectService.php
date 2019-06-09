@@ -8,9 +8,11 @@
 
 namespace App\Services\TeamProject;
 
+use App\Services\Encrypter;
 use App\Team;
 use App\TeamProject;
 use App\TeamProjectFolder;
+use App\TeamProjectLinktable;
 use App\TeamProjectTask;
 use App\User;
 use function GuzzleHttp\json_encode;
@@ -59,6 +61,12 @@ class TeamProjectService {
         return view("/public/teamProjects/shared/_taskData", compact("taskData", "team", "allLabels", "teamProject"));
     }
 
+    public function getTaskContextMenu($request){
+        $taskId = $request->input("taskId");
+        $task = TeamProjectTask::select("*")->where("id", $taskId)->first();
+        return view("public/teamProjects/shared/_taskContextMenu", compact("task"));
+    }
+
     public function openRecentTask(){
         if(Session::has("recent_task_id")) {
 
@@ -74,25 +82,31 @@ class TeamProjectService {
     }
 
     public function setRecentTask($request){
-        Session::remove("recent_task_id");
-        sleep(1);
-        Session::set("recent_task_id", $request->input("task_id"));
-
-        $id = Session::get("recent_task_id");
-        return $id;
+        //Get the clicked taskId and enrypts it to a hash together with the folderId hash and returns it to the success of the ajax function.
+        $task = TeamProjectTask::select("*")->where("id", $request->input("task_id"))->first();
+        $teamProject = $task->folder->teamProject;
+        $taskHash = Encrypter::encrypt_decrypt("encrypt", $request->input("task_id"));
+        $folderHash = Encrypter::encrypt_decrypt("encrypt", $task->team_project_folder_id);
+        $data = ["teamProjectSlug" => $teamProject->slug, "taskHash" => $taskHash, "folderHash" => $folderHash];
+        return json_encode($data);
     }
 
     public function setRecentFolder($request){
         //gets task and sets a selected folder id.
         $folder = TeamProjectFolder::select("*")->where("id", $request->input("folder_id"))->first();
-        Session::set("folder_id", $folder->id);
-
-        return Session::get("folder_id");
+        $folderHash = Encrypter::encrypt_decrypt("encrypt", $folder->id);
+        $teamProject = $folder->teamProject;
+        $data = ['teamProjectSlug' => $teamProject->slug, "folderHash" => $folderHash];
+        return json_encode($data);
     }
 
-    public function removeRecentFolderSession(){
-        Session::remove("folder_id");
-        return "TRUE";
+    public function removeRecentFolderSession($request){
+        $folderId = $request->input("folderId");
+        $folder = TeamProjectFolder::select("*")->where("id", $folderId)->first();
+        $teamProject = $folder->teamProject;
+        if(isset($folderId)){
+            return json_encode(['teamProjectSlug' => $teamProject->slug]);
+        }
     }
 
 
@@ -103,8 +117,13 @@ class TeamProjectService {
 
         $userId = Session::get("user_id");
         $teamProjectApi = new TeamProjectApi();
+        self::getSuccessResponse($teamProjectApi->updateTaskContent($userId, $request));
 
-        return self::getSuccessResponse($teamProjectApi->updateTaskContent($userId, $request));
+        $task = TeamProjectTask::select("*")->where("id", $request->input("task_id"))->first();
+        $view = self::getTasksForFolderReturnView($task->folder->id);
+        $folderId = $task->folder->id;
+
+        return json_encode(['folderId' => $folderId, "view" => $view]);
     }
 
     public function assignUserToTask($request){
@@ -125,14 +144,34 @@ class TeamProjectService {
     }
 
 
-    public function teamProjectPlannerIndex($slug){
+    public function teamProjectPlannerIndex($slug, $request){
         if(self::checkForError()){
             return self::checkForError();
         }
 
         $teamProject = TeamProject::select("*")->where("slug", $slug)->first();
         $pageType = "planner";
-        return view("/public/teamProjects/teamProjectPlanner", compact("teamProject", "pageType"));
+
+        // Checks if logged in user with team has access to enter this project. else it will return a forbidden page.
+        if(self::validProjectWithTeam($teamProject->id)) {
+            $taskHash = $request->get("th");
+            $folderHash = $request->get("fh");
+            // checks if there is a recentFolder hash or recentTaskHash in the url GET parameters. If its the case it will decrypt the hash to an id and send them as a variable to the view.
+            if (isset($taskHash) && isset($folderHash)) {
+                $activeTaskId = Encrypter::encrypt_decrypt("decrypt", $taskHash);
+                $activeFolderId = Encrypter::encrypt_decrypt("decrypt", $folderHash);
+
+                return view("/public/teamProjects/teamProjectPlanner", compact("teamProject", "pageType", "activeTaskId", "activeFolderId"));
+            } else if (isset($folderHash)) {
+                $activeFolderId = Encrypter::encrypt_decrypt("decrypt", $folderHash);
+
+                return view("/public/teamProjects/teamProjectPlanner", compact("teamProject", "pageType", "activeFolderId"));
+            } else {
+                return view("/public/teamProjects/teamProjectPlanner", compact("teamProject", "pageType"));
+            }
+        } else {
+            return abort(403);
+        }
     }
 
     public function editLabelsTask($request){
@@ -192,15 +231,16 @@ class TeamProjectService {
 
         $userId = Session::get("user_id");
         $teamProjectApi = new TeamProjectApi();
-
-         if(!Session::has("folder_id")){
+        $folderId = $request->input("folderId");
+         if(!isset($folderId)){
             $projectId = $request->input("teamProjectId");
             $myTasksFolder = TeamProjectFolder::select("*")->where("team_project_id", $projectId)->where("title", "My tasks")->first();
-            Session::set("folder_id", $myTasksFolder->id);
+            $folderId = $myTasksFolder->id;
+         } else {
+             $folderId = $request->input("folderId");
          }
-        $data = self::getSuccessResponse($teamProjectApi->addTask($userId, $request));
+        $data = self::getSuccessResponse($teamProjectApi->addTask($userId, $request, $folderId));
         $taskId = $data->task_id;
-        $folderId = Session::get("folder_id");
         $tasks = TeamProjectTask::select("*")->where("team_project_folder_id", $folderId)->get();
 
         $view = view("/public/teamProjects/shared/_taskCollapse", compact("tasks", "folderId"));
@@ -239,13 +279,52 @@ class TeamProjectService {
         return view("/public/teamProjects/shared/_teamProjects", compact("projects"));
     }
 
+    public function setTaskPrivate($request){
+        if(self::checkForError()){
+            return self::checkForError();
+        }
+
+        $userId = Session::get("user_id");
+        $teamProjectApi = new TeamProjectApi();
+        $data = self::getSuccessResponse($teamProjectApi->setTaskPrivate($userId, $request));
+        $view = self::getTasksForFolderReturnView($data->folder_id);
+
+        return json_encode(['view' => $view, "folderId" => $data->folder_id]);
+
+
+    }
+
+    public function setTaskPublic($request){
+        if(self::checkForError()){
+            return self::checkForError();
+        }
+
+        $userId = Session::get("user_id");
+        $teamProjectApi = new TeamProjectApi();
+        $data = self::getSuccessResponse($teamProjectApi->setTaskPublic($userId, $request));
+        $view = self::getTasksForFolderReturnView($data->folder_id);
+
+        return json_encode(['view' => $view, "folderId" => $data->folder_id]);
+    }
+
     // static funnction to retreve tasks from folder in paramters and return a rendered view with the collapse of the tasks.
     public static function getTasksForFolderReturnView($folderId){
-        $tasks = TeamProjectTask::select("*")->where("team_project_folder_id", $folderId)->get();
+        $folder = TeamProjectFolder::select("*")->where("id", $folderId)->first();
+        $tasks = $folder->getAllTasks(Session::get("user_id"));
         $view = view("/public/teamProjects/shared/_taskCollapse", compact("tasks", "folderId"));
         $viewData = $view->render();
 
         return $viewData;
+    }
+
+    private static function validProjectWithTeam($projectId){
+        $user = User::select("*")->where("id", Session::get("user_id"))->first();
+        $teamProjectLinktable = TeamProjectLinktable::select("*")->where("team_id", $user->team_id)->where("team_project_id", $projectId)->first();
+        if($teamProjectLinktable){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private static function checkForError(){

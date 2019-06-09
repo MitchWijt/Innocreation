@@ -12,8 +12,15 @@ $(document).ready(function () {
         url: "/teamProject/getFoldersAndTasks",
         data: {'team_project_id': team_project_id},
         success: function (data) {
+            // checks if values activeTaskId and activeFolderId are set in the input fields in the view that come from the controller.
+            // if so it will Collapse the recent folder and select the recentTask.
             $(".foldersAndTasks").html(data);
-            openRecentTask();
+            if (typeof $("#activeTaskId").val() !== "undefined" && typeof $("#activeFolderId").val().length !== "undefined") {
+                openRecentTask($("#activeTaskId").val(), $("#activeFolderId").val());
+            } else if(typeof $("#activeFolderId").val().length !== "undefined"){
+                openRecentFolder($("#activeFolderId").val());
+            }
+            setContextmenuEvent();
         }
     });
 });
@@ -33,7 +40,6 @@ $(document).on("click", ".collapseFolderButton", function () {
         url: "/teamProject/getTasksOfFolder",
         data: {'folder_id': id},
         success: function (data) {
-            console.log(data);
             if($("#folderCollapse-" + id).length < 1) {
                 _this.parents(".singleFolder").append(data);
             }
@@ -51,6 +57,7 @@ $(document).on("click", ".collapseFolderButton", function () {
                 _this.find(".zmdi-chevron-down").removeClass("zmdi-chevron-down").addClass("zmdi-chevron-right");
 
             });
+            setContextmenuEvent();
         }
     });
 
@@ -95,8 +102,9 @@ function setRecentTask(task_id){
         },
         url: "/teamProject/setRecentTask",
         data: {'task_id': task_id},
+        dataType: "JSON",
         success: function (data) {
-            $("#selectedFolder").val(data);
+            window.history.pushState(null, null, '/my-team/project/' + data['teamProjectSlug'] + "?th=" + data['taskHash'] + "&fh=" + data['folderHash']);
         }
     });
 }
@@ -113,13 +121,21 @@ function setRecentFolder(folder_id){
         },
         url: "/teamProject/setRecentFolder",
         data: {'folder_id': folder_id},
+        dataType: "JSON",
         success: function (data) {
-            console.log(data);
+            $("#activeFolderId").val(folder_id);
+            window.history.pushState(null, null, '/my-team/project/' + data['teamProjectSlug'] + "?fh=" + data['folderHash']);
         }
     });
 }
 
-function removeRecentFolderSession(folder_id){
+function removeRecentFolderSession(){
+    if(typeof $("#activeFolderId").val() !== "undefined"){
+        var folderId = $("#activeFolderId").val();
+        var postData = {"folderId" : folderId};
+    } else {
+        postData = null;
+    }
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -130,45 +146,37 @@ function removeRecentFolderSession(folder_id){
             }
         },
         url: "/teamProject/removeRecentFolderSession",
-        data: "",
+        data: postData,
+        dataType: "JSON",
         success: function (data) {
+            window.history.pushState(null, null, '/my-team/project/' + data['teamProjectSlug']);
         }
     });
 }
 
-function openRecentTask(){
-    $.ajax({
-        method: "POST",
-        beforeSend: function (xhr) {
-            var token = $('meta[name="csrf_token"]').attr('content');
+function openRecentTask(task_id, folder_id){
+    setTimeout(function () {
+        $(".folder-" + folder_id).click();
+    }, 500);
 
-            if (token) {
-                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-            }
-        },
-        url: "/teamProject/openRecentTask",
-        dataType: "JSON",
-        data: "",
-        success: function (data) {
-            var task_id = data['task_id'];
-            var folder_id = data['folder_id'];
-            setTimeout(function () {
-                $(".folder-" + folder_id).click();
-            }, 500);
+    setTimeout(function () {
+        setRecentTask(task_id);
+        setActiveTask(task_id);
+    }, 1000);
+    getTaskData(task_id);
+}
 
-            setTimeout(function () {
-                setActiveTask(task_id);
-            }, 1000);
-            getTaskData(task_id);
-        }
-    });
+function openRecentFolder(folder_id){
+    setTimeout(function () {
+        $(".folder-" + folder_id).click();
+    }, 500);
 }
 
 function setActiveTask(task_id){
     $(".plannerTask").each(function () {
         $(this).attr("style", "");
     });
-    $(".task-" + task_id).attr("style", "background: #77787a");
+    $(".task-" + task_id).attr("style", "background: #B4B7BA");
 }
 
 
@@ -209,7 +217,7 @@ $(document).on("keyup", ".titleTask", function () {
         if (content) {
             typingTimerTitle = setTimeout(function () {
                 doneTyping(content, task_id, "title")
-            }, 2000);
+            }, 1000);
         }
     }
 });
@@ -227,7 +235,11 @@ function doneTyping (contentHtml, task_id, category) {
         },
         url: "/teamProject/updateTaskContent",
         data: {'contentHtml' : contentHtml, 'task_id' : task_id, "category": category},
+        dataType: "JSON",
         success: function (data) {
+            var folderId = data['folderId'];
+            var view = data['view'];
+            getTasksAndCollapseForFolder(folderId, view);
         }
     });
 }
@@ -563,6 +575,10 @@ $(document).on("click", ".addTask", function () {
 
 function addNewTask(type){
     var team_project_id = $(".teamProjectId").val();
+    var folderId = $("#activeFolderId").val();
+    if(typeof folderId === "undefined"){
+        folderId = null;
+    }
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -573,15 +589,17 @@ function addNewTask(type){
             }
         },
         url: "/teamProject/addTask",
-        data: {"teamProjectId": team_project_id, "type" : type},
+        data: {"teamProjectId": team_project_id, "type" : type, "folderId" : folderId},
         dataType: "JSON",
         success: function (data) {
             getTasksAndCollapseForFolder(data['folderId'], data['view']);
 
             var task_id = data['taskId'];
+            console.log(task_id);
             setRecentTask(task_id);
             setActiveTask(task_id);
             getTaskData(task_id);
+            setContextmenuEvent();
         }
     });
 }
@@ -597,6 +615,7 @@ function getTasksAndCollapseForFolder(folderId, tasksSharedView){
 
     parent.append(tasksSharedView);
     $(".collapse-" + folderId).addClass("show");
+    setContextmenuEvent();
 }
 
 $(document).on("click", ".changeFolderBtn", function () {
@@ -645,4 +664,93 @@ $(document).on("mouseenter", ".addTaskMenuToggle", function () {
 $(document).on("mouseleave", ".addTaskMenuToggle", function () {
     $(".createTasksBox").fadeOut();
     clearTimeout(hoverTimer);
+});
+
+// custom right click menu
+
+
+function setContextmenuEvent() {
+    if (document.addEventListener) { // IE >= 9; other browsers
+        setTimeout(function () {
+            var tasks = $(".plannerTask");
+            tasks.each(function () {
+                var id = $(this).attr("id");
+                var newContextmenu = document.getElementById(id);
+                newContextmenu.addEventListener("contextmenu", function (e) {
+                    var task_id = $(this).data("task-id");
+                    $.ajax({
+                        method: "POST",
+                        beforeSend: function (xhr) {
+                            var token = $('meta[name="csrf_token"]').attr('content');
+
+                            if (token) {
+                                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                            }
+                        },
+                        url: "/teamProject/getTaskContextMenu",
+                        data: {"taskId": task_id},
+                        success: function (data) {
+                            $("body").append(data);
+                            var x = e.clientX;
+                            var y = e.clientY;
+                            $(".task-click-menu").css("top", y);
+                            $(".task-click-menu").css("left", x);
+                            $(".task-click-menu").removeClass("hidden");
+                        }
+                    });
+                    e.preventDefault();
+                });
+            });
+        }, 1000);
+    } else { // IE < 9
+        $(".plannerTask").attachEvent('oncontextmenu', function () {
+            alert("You've tried to open context menu");
+            window.event.returnValue = false;
+        });
+    }
+}
+
+$(document).on("click", "body", function () {
+   $(".task-click-menu").remove();
+});
+
+$(document).on("click", ".contextMenuAction", function () {
+    var formUrl = $(this).data("form-url");
+    var taskId = $(this).data("task-id");
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: formUrl,
+        data: {"taskId": taskId},
+        dataType: "JSON",
+        success: function (data) {
+            var folderId = data['folderId'];
+            var view = data['view'];
+            getTasksAndCollapseForFolder(folderId, view);
+        }
+    });
+});
+
+$(document).on("click", ".copyLink", function () {
+    var link = $(this).data("link");
+    var input = document.createElement("input");
+    input.setAttribute("type", "text");
+    input.setAttribute("id", "taskLink");
+    input.classList.add("input-transparant");
+    input.classList.add("no-focus");
+    input.setAttribute("style", "color: transparant !important; border: none");
+    input.value = link;
+    $("body").append(input);
+
+    var copyLink = document.getElementById("taskLink");
+    copyLink.select();
+    document.execCommand("copy");
+    $("#taskLink").remove();
+
 });
