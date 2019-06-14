@@ -62,7 +62,7 @@
         </div>
     </div>
 </div>
-<div class="row m-t-20 col-sm-12">
+<div class="row m-t-20 col-sm-12 contentEditFunctions hidden">
     <div class="col-sm-8">
         <div class="row">
             <div class="col-sm-6">
@@ -108,11 +108,16 @@
             </div>
         </div>
     </div>
+    <? if($taskData->task->validation_needed == null) { ?>
+        <div class="col-sm-4 p-0 d-flex jc-end">
+            <button class="btn-inno-cta m-b-5 validateTask">Task completed <i class="zmdi zmdi-check"></i> </button>
+        </div>
+    <? } ?>
 </div>
 <hr>
 <div class="col-sm-12 m-t-5 p-r-0">
     <div contenteditable="true" class="input-transparant titleTask c-black f-40 bold" data-task-id="<?= $taskData->task->id?>"><?= $taskData->task->title?></div>
-    <div contenteditable="true" id="editable" class="col-sm-12 taskContentEditor m-l-0 p-l-0 m-t-10 no-focus p-r-0" data-task-id="<?= $taskData->task->id?>">
+    <div contenteditable="true" style="height: 100vh;" id="editable" class="col-sm-12 taskContentEditor m-l-0 p-l-0 m-t-10 no-focus p-r-0" data-task-id="<?= $taskData->task->id?>">
         <?= $taskData->task->content?>
     </div>
 </div>

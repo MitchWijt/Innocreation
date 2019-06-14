@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Session;
 
 class TeamProjectService {
     public function index(){
-        return view("/public/teamProjects/index", compact("projects"));
+        return view("/public/teamProjects/index", compact("pageType"));
     }
 
     public function getProjects(){
@@ -305,6 +305,23 @@ class TeamProjectService {
         $view = self::getTasksForFolderReturnView($data->folder_id);
 
         return json_encode(['view' => $view, "folderId" => $data->folder_id]);
+    }
+
+    public function addTaskToValidationProcess($request){
+        if(self::checkForError()){
+            return self::checkForError();
+        }
+
+        $userId = Session::get("user_id");
+        $teamProjectApi = new TeamProjectApi();
+
+        $data = self::getSuccessResponse($teamProjectApi->addTaskToValidationProcess($userId, $request));
+        $folderId = $data->folder_id;
+        $oldFolderId = $data->old_folder_id;
+        $oldFolderView = self::getTasksForFolderReturnView($oldFolderId);
+        $view = self::getTasksForFolderReturnView($folderId);
+
+        return json_encode(['folderId' => $folderId, "view" => $view, "oldFolderId" => $oldFolderId, "oldFolderView" => $oldFolderView]);
     }
 
     // static funnction to retreve tasks from folder in paramters and return a rendered view with the collapse of the tasks.

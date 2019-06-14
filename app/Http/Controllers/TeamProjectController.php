@@ -118,4 +118,9 @@ class TeamProjectController extends Controller
         $teamProjectService = new TeamProjectService();
         return $teamProjectService->setTaskPublic($request);
     }
+
+    public function addTaskToValidationProcess(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->addTaskToValidationProcess($request);
+    }
 }

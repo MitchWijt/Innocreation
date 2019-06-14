@@ -25,6 +25,7 @@ $(document).ready(function () {
     });
 });
 
+//gets task of clicked folder and appends a collapse with tasks as a shared view to the folder + collapses the collapse with tasks.
 $(document).on("click", ".collapseFolderButton", function () {
     var _this = $(this);
     var id = $(this).attr("id");
@@ -84,6 +85,7 @@ function getTaskData(task_id){
     });
 }
 $(document).on("click", ".plannerTask", function () {
+    $(".contentEditFunctions").addClass("hidden");
     var task_id = $(this).data("task-id");
     setRecentTask(task_id);
     setActiveTask(task_id);
@@ -321,6 +323,9 @@ $(document).on("click", ".taskContentEditor", function () {
     //gets current element that is clicked on.
     var element = getSelectionStart();
     var object = getSelectionStart("true");
+
+    //show edit functions
+    $(".contentEditFunctions").removeClass("hidden");
 
     //loops through all the text editor function (bold, italic, underlined)
     $(".textEditor").each(function () {
@@ -753,4 +758,29 @@ $(document).on("click", ".copyLink", function () {
     document.execCommand("copy");
     $("#taskLink").remove();
 
+});
+
+$(document).on("click", ".validateTask", function () {
+    var taskId = $("#taskId").val();
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/teamProject/addTaskToValidationProcess",
+        data: {"taskId": taskId},
+        dataType: "JSON",
+        success: function (data) {
+            var folderId = data['folderId'];
+            var view = data['view'];
+            var oldView = data['oldFolderView'];
+            var oldFolderId = data['oldFolderId'];
+            getTasksAndCollapseForFolder(folderId, view);
+            getTasksAndCollapseForFolder(oldFolderId, oldView);
+        }
+    });
 });

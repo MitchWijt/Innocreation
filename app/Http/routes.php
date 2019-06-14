@@ -778,6 +778,8 @@ Route::post("/teamProject/setTaskPrivate", "TeamProjectController@setTaskPrivate
 
 Route::post("/teamProject/setTaskPublic", "TeamProjectController@setTaskPublic");
 
+Route::post("/teamProject/addTaskToValidationProcess", "TeamProjectController@addTaskToValidationProcess");
+
 
 //==
 

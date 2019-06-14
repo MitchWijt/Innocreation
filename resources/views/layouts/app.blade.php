@@ -142,7 +142,7 @@
 @yield('content')
 @yield('pagescript')
 <? if(!isset($pageType) || $pageType != "checkout") { ?>
-    <? if(!isset($pageType) || ($pageType != "noFooter" && $pageType != "clean")) { ?>
+    <? if(!isset($pageType) || ($pageType != "noFooter" && $pageType != "clean" && $pageType != "planner")) { ?>
         @include('includes/footer')
     <? } ?>
 <? }

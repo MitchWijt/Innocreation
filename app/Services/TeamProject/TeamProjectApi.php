@@ -178,6 +178,16 @@ class TeamProjectApi {
         return json_decode($result);
     }
 
+    public function addTaskToValidationProcess($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'taskId' => $request->input("taskId")
+        ];
+        $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/addTaskToValidationProcess', $post, $user->api_token);
+        return json_decode($result);
+    }
+
 
 
 
