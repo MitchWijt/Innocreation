@@ -61,8 +61,16 @@
             </div>
         </div>
     </div>
+    <div class="col-sm-4 d-flex jc-end">
+        <div class="input-group mb-3 no-focus" style="width: 15vw; height: 20px;">
+            <div class="input-group-prepend no-focus">
+                <span class="input-group-text no-focus c-pointer" id="basic-addon1"><i class="zmdi zmdi-search f-15 "></i></span>
+            </div>
+            <input style="outline: none !important; -webkit-appearance:none !important; width: 5vw !important; height: 20px;" type="search" id="searchBar" class="form-control form-control-inno input-grey" placeholder="Search tasks..." aria-label="Tasks" aria-describedby="basic-addon1">
+        </div>
+    </div>
 </div>
-<div class="row m-t-20 col-sm-12 contentEditFunctions hidden">
+<div class="row col-sm-12 contentEditFunctions hidden">
     <div class="col-sm-8">
         <div class="row">
             <div class="col-sm-6">
@@ -97,7 +105,9 @@
                     <div class="col-sm-4 d-flex m-t-20 p-relative">
                         <button class="no-button-style"><i class="zmdi zmdi-format-color-text f-14 m-r-10 c-pointer font-color-icon" style="color: black"></i></button>
                         <div id="color-picker-container" style="left: -35px; top: 20px; z-index: 900" class="p-absolute hidden colorpicker"></div>
-                        <button class="no-button-style"><i class="zmdi zmdi-code f-14 c-pointer codeToggleIcon" style="color: black"></i></button>
+                        <button class="no-button-style"><i class="zmdi zmdi-code f-14 c-pointer codeToggleIcon m-r-10" style="color: black"></i></button>
+                        <i class="zmdi zmdi-mic-outline f-14 c-black m-r-10 c-pointer"></i>
+                        <i class="zmdi zmdi-attachment-alt f-14 c-black m-r-10 c-pointer"></i>
                     </div>
                     <div class="col-sm-4 d-flex m-t-15">
                         <button class="no-button-style"><span><i class="zmdi zmdi-format-list-bulleted f-14 m-r-10 c-pointer textEditor" data-task-id="<?= $taskData->task->id?>" data-type="insertUnorderedList" style="margin-top: 2px;"></i></span></button>

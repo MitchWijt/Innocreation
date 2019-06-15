@@ -8,8 +8,8 @@
         <? } else if(isset($activeFolderId)) { ?>
             <input type="hidden" id="activeFolderId" value="<?= $activeFolderId?>">
         <?}  ?>
-        <?= view("public/teamProjects/shared/_sidebar")?>
-        <div class="taskContent">
+        <?= view("public/teamProjects/shared/_sidebar", compact("teamProject"))?>
+        <div class="taskContent m-t-20">
 
         </div>
     </div>

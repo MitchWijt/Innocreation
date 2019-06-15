@@ -21,7 +21,7 @@ header{
 
 }
 
-#tagsHeader:focus{
+#tagsHeader:focus #searchBar:focus{
   outline:0px !important;
   -webkit-appearance:none;
 }

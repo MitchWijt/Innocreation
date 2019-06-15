@@ -600,7 +600,6 @@ function addNewTask(type){
             getTasksAndCollapseForFolder(data['folderId'], data['view']);
 
             var task_id = data['taskId'];
-            console.log(task_id);
             setRecentTask(task_id);
             setActiveTask(task_id);
             getTaskData(task_id);

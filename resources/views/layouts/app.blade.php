@@ -131,7 +131,7 @@
 <? if(!isset($pageType) || $pageType != "clean") { ?>
     <? if(!isset($pageType) || $pageType != "checkout") { ?>
         <? if(isset($pageType) && $pageType == "planner") { ?>
-            @include('includes.headerPlanner')
+
         <? } else { ?>
             @include('includes.header')
         <? } ?>

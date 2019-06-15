@@ -31,6 +31,27 @@ blockquote > font {
   font-family: Monaco !important;
 }
 
+#searchBar{
+  @include themify($themes){
+    background: themed('inputTextBackground');
+    border-top: themed('inputTextBorder');
+    border-bottom: themed('inputTextBorder');
+    border-right: themed('inputTextBorder');
+  }
+  border-left: 0 !important;
+  padding: 0 13px;
+  font-size: 13px;
+}
+
+#searchBar:focus{
+  outline:0px !important;
+  -webkit-appearance:none;
+}
+
+#searchBar::placeholder{
+  font-size: 13px;
+}
+
 .checkboxlist li:before {
   content: "☐";
   margin-right: 5px !important;

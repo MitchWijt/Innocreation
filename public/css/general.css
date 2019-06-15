@@ -712,3 +712,10 @@
 .transition{
     transition: all .2s ease-in-out;
 }
+
+.cta-circle{
+    border: 1px solid #FF6100;
+    border-radius: 50%;
+    background: #fff;
+
+}

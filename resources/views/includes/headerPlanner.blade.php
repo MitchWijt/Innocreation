@@ -30,42 +30,7 @@
                 <div class="col-sm-4">
                     <div class="pull-right navBtns">
                         <div class="pull-right">
-                            <? if(\Illuminate\Support\Facades\Session::has("team_id")) { ?>
-                            <div class="m-t-20 pull-right m-r-30 p-relative <?= \App\Services\UserAccount\UserAccount::getTheme();?>">
-                                    <span class="p-relative">
-                                        <i class="zmdi zmdi-plus p-absolute c-black f-18" style="top: -13px; right: 17px;"></i>
-                                        <i class="zmdi zmdi-mic-outline f-25 c-black m-t-15 m-r-20 c-pointer"></i>
-                                    </span>
-                                <span class="p-relative">
-                                        <i class="zmdi zmdi-plus p-absolute c-black f-18" style="top: -13px; right: 9px;"></i>
-                                        <i class="zmdi zmdi-attachment-alt f-25 c-black m-r-15 c-pointer"></i>
-                                    </span>
-                                <span class="p-relative m-r-15 c-pointer addTaskMenuToggle">
-                                        <i class="zmdi zmdi-plus p-absolute c-black f-18" style="top: -13px; right: -3px;"></i>
-                                    <?= \App\Services\CustomIconService::getIcon("file-outline")?>
 
-                                    <div class="createTasksBox p-absolute bcg-grey" style="min-width: 135px; left:-110px; border-radius: 5px; z-index: 200; display: none">
-                                        <div class="d-flex p-t-10 p-r-10 p-l-10 dark-hover c-pointer">
-                                           <div class="privateTask addTask" data-task-category="private">
-                                               <i class="zmdi zmdi-lock-outline f-20"></i>
-                                               <span class="c-black">Private task</span>
-                                           </div>
-                                        </div>
-                                        <div class="d-flex p-t-10 p-r-10 p-l-10 dark-hover c-pointer">
-                                           <div class="publicTask addTask" data-task-category="public">
-                                              <i class="zmdi zmdi-lock-open f-20"></i>
-                                               <span class="c-black">Public task</span>
-                                           </div>
-                                        </div>
-                                    </div>
-                                </span>
-                                <div class="pull-right">
-                                    <a href="<?= $team->getUrl()?>">
-                                        <div class="avatar img m-t-0 p-t-0 m-l-15" style="background: url('<?= $team->getProfilePicture()?>')"></div>
-                                    </a>
-                                </div>
-                            </div>
-                            <? } ?>
                         </div>
                     </div>
             </div>

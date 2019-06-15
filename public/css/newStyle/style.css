@@ -30,6 +30,33 @@ blockquote > font {
   font-family: Monaco !important;
 }
 
+#searchBar {
+  border-left: 0 !important;
+  padding: 0 13px;
+  font-size: 13px;
+}
+.theme-light #searchBar {
+  background: #fff;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  border-right: 1px solid #000;
+}
+.theme-dark #searchBar {
+  background: #C9CCCF;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+
+#searchBar:focus {
+  outline: 0px !important;
+  -webkit-appearance: none;
+}
+
+#searchBar::placeholder {
+  font-size: 13px;
+}
+
 .checkboxlist li:before {
   content: "☐";
   margin-right: 5px !important;
@@ -52,12 +79,12 @@ blockquote > font {
 }
 
 .no-cursor {
-  border: none !important;
-  color: transparent !important;
-  text-shadow: 0 0 0 #000 !important;
+  border: none;
+  color: transparent;
+  text-shadow: 0 0 0 #000;
 }
 .no-cursor:focus {
-  outline: none !important;
+  outline: none;
 }
 
 .heavy {
@@ -419,10 +446,6 @@ h3 {
 }
 .theme-dark .actionBorder {
   border: 1px solid #FF6100 !important;
-}
-
-.theme-light .tokenfield{
-  border: none !important;
 }
 
 /*# sourceMappingURL=style.css.map */
