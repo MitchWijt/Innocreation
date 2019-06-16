@@ -76,9 +76,8 @@
                                             <p class="c-white @tablet f-15 @elsedesktop f-20 @endtablet"><?= $expertise->title?></p>
                                         </div>
                                     </a>
-                                    <div class="overlay"></div>
                                     <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
-                                        <div class="contentExpertise @mobile lazyLoadHomeMobile @elsedesktop lazyLoadHome @endmobile" data-src="<?= $expertise->image?>"></div>
+                                        <div class="contentExpertise @mobile lazyLoadHomeMobile @elsedesktop lazyLoadHome @endmobile" style="box-shadow:inset 0 0 0 2000px rgba(0,0,0,0.7);" data-src="<?= $expertise->image?>"></div>
                                     </a>
                                 </div>
                             </div>
@@ -102,9 +101,8 @@
                                         <p class="c-white @tablet f-15 @elsedesktop f-20 @endtablet"><?= $expertise->title?></p>
                                     </div>
                                 </a>
-                                <div class="overlay"> </div>
                                 <a href="/<?= $expertise->slug?>/users" style="z-index: 400;">
-                                    <div class="contentExpertise @mobile lazyLoadHomeMobile @elsedesktop lazyLoadHome @endmobile" data-src="<?= $expertise->image?>"></div>
+                                    <div class="contentExpertise @mobile lazyLoadHomeMobile @elsedesktop lazyLoadHome @endmobile" style="box-shadow:inset 0 0 0 2000px rgba(0,0,0,0.5);" data-src="<?= $expertise->image?>"></div>
                                 </a>
                             </div>
                         </div>

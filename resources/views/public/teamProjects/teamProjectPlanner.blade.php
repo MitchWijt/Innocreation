@@ -14,6 +14,7 @@
         </div>
     </div>
 @endsection
+
 @section('pagescript')
     <script defer async src="/js/teamProject/plannerIndex.js"></script>
 @endsection

@@ -692,18 +692,6 @@
 .dark-hover:hover{
     background: #DFE1E3;
 }
-.btn-inno-cta{
-    cursor: pointer;
-    transition: all 0.2s;
-}
-.btn-inno-cta:hover{
-    transition: all 0.2s;
-    font-size: 16px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-}
 
 .active{
     background: #DFE1E3;
@@ -717,5 +705,10 @@
     border: 1px solid #FF6100;
     border-radius: 50%;
     background: #fff;
+}
 
+.overflow-ellipsis{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }

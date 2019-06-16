@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\TeamProject\TeamProjectService;
+use App\Services\TeamProject\TeamProjectTaskService;
 use App\Services\TeamServices\TeamExpertisesService;
 use App\Team;
 use App\TeamProjectFolder;
@@ -122,5 +123,20 @@ class TeamProjectController extends Controller
     public function addTaskToValidationProcess(Request $request){
         $teamProjectService = new TeamProjectService();
         return $teamProjectService->addTaskToValidationProcess($request);
+    }
+
+    public function saveImprovementTasks(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->saveImprovementTasks($request);
+    }
+
+    public function savePassedTask(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->savePassedTask($request);
+    }
+
+    public function disableCompleteNotification(Request $request){
+        $taskService = new TeamProjectTaskService();
+        return $taskService->disableCompleteNotification($request);
     }
 }

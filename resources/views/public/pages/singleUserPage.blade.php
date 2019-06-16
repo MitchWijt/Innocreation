@@ -157,9 +157,9 @@
                                         </div>
                                         <hr>
                                         <? if($expertise->description) { ?>
-                                        <p class="wp-pre-wrap"><?= $expertise->description?></p>
+                                            <p class="wp-pre-wrap"><?= $expertise->description?></p>
                                         <? } else { ?>
-                                        <i class="c-dark-grey f-12 text-center">No experience given yet</i>
+                                            <i class="c-dark-grey f-12 text-center">No experience given yet</i>
                                         <? } ?>
                                     </div>
                                 </div>

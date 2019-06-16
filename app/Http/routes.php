@@ -780,6 +780,12 @@ Route::post("/teamProject/setTaskPublic", "TeamProjectController@setTaskPublic")
 
 Route::post("/teamProject/addTaskToValidationProcess", "TeamProjectController@addTaskToValidationProcess");
 
+Route::post("/teamProject/saveImprovementTask", "TeamProjectController@saveImprovementTasks");
+
+Route::post("/teamProject/savePassedTask", "TeamProjectController@savePassedTask");
+
+Route::post("/teamProject/disableCompleteNotification", "TeamProjectController@disableCompleteNotification");
+
 
 //==
 

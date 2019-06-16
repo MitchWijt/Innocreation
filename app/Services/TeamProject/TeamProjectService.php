@@ -8,6 +8,7 @@
 
 namespace App\Services\TeamProject;
 
+use App\Http\Requests\Request;
 use App\Services\Encrypter;
 use App\Team;
 use App\TeamProject;
@@ -54,11 +55,13 @@ class TeamProjectService {
         $teamProjectApi = new TeamProjectApi();
 
 
+
+        $user = User::select("*")->where("id", $userId)->first();
         $taskData = self::getSuccessResponse($teamProjectApi->getTaskData($userId, $request));
         $team = Team::select("*")->where("id", $taskData->team_id)->first();
         $teamProject = TeamProject::select("*")->where("id", $request->input("team_project_id"))->first();
         $allLabels = $teamProject->getAllLabels();
-        return view("/public/teamProjects/shared/_taskData", compact("taskData", "team", "allLabels", "teamProject"));
+        return view("/public/teamProjects/shared/_taskData", compact("taskData", "team", "allLabels", "teamProject", "user"));
     }
 
     public function getTaskContextMenu($request){
@@ -241,7 +244,7 @@ class TeamProjectService {
          }
         $data = self::getSuccessResponse($teamProjectApi->addTask($userId, $request, $folderId));
         $taskId = $data->task_id;
-        $tasks = TeamProjectTask::select("*")->where("team_project_folder_id", $folderId)->get();
+        $tasks = TeamProjectTaskService::getTasks($folderId);
 
         $view = view("/public/teamProjects/shared/_taskCollapse", compact("tasks", "folderId"));
         $viewData = $view->render();
@@ -324,6 +327,45 @@ class TeamProjectService {
         return json_encode(['folderId' => $folderId, "view" => $view, "oldFolderId" => $oldFolderId, "oldFolderView" => $oldFolderView]);
     }
 
+
+    public function saveImprovementTasks($request){
+        if(self::checkForError()){
+            return self::checkForError();
+        }
+
+        $userId = Session::get("user_id");
+        $teamProject = TeamProject::select("*")->where("id", $request->input("project_id"))->first();
+
+        $teamProjectApi = new TeamProjectApi();
+        $teamProjectApi->saveImprovementTasks($userId, $request);
+
+        $redirectUrl = "/my-team/project/$teamProject->slug";
+        return redirect($redirectUrl);
+    }
+
+    public function savePassedTask($request){
+        if(self::checkForError()){
+            return self::checkForError();
+        }
+
+        $userId = Session::get("user_id");
+        $teamProject = TeamProject::select("*")->where("id", $request->input("project_id"))->first();
+
+        $teamProjectApi = new TeamProjectApi();
+        $teamProjectApi->savePassedTask($userId, $request);
+
+        $redirectUrl = "/my-team/project/$teamProject->slug";
+        return redirect($redirectUrl);
+    }
+
+
+
+
+
+
+
+
+
     // static funnction to retreve tasks from folder in paramters and return a rendered view with the collapse of the tasks.
     public static function getTasksForFolderReturnView($folderId){
         $folder = TeamProjectFolder::select("*")->where("id", $folderId)->first();
@@ -333,6 +375,7 @@ class TeamProjectService {
 
         return $viewData;
     }
+
 
     private static function validProjectWithTeam($projectId){
         $user = User::select("*")->where("id", Session::get("user_id"))->first();

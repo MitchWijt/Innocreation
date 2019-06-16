@@ -190,6 +190,14 @@ i {
   color: #fff;
 }
 
+.btn-inno-success {
+  border-radius: 0 !important;
+}
+.theme-light .btn-inno-success {
+  background: #fff;
+  border: 1px solid #25FF1C;
+  color: #000;
+}
 .theme-light .input {
   background: #fff;
   border: 1px solid #000;

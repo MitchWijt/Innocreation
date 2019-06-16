@@ -166,6 +166,15 @@ i{
   border-radius: 0 !important;
 }
 
+.btn-inno-success{
+  @include themify($themes){
+    background: themed('successButtonBackground');
+    border: themed('successButtonBorder');
+    color: themed('fontColor');
+  }
+  border-radius: 0 !important;
+}
+
 .input{
   @include themify($themes){
     background: themed('inputTextBackground');

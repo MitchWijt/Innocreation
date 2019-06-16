@@ -19,3 +19,30 @@
   border-radius: 3px;
   box-shadow: 0 0 6px rgba(0,0,0,.3);
 }
+
+.overlay-disabled{
+  background: rgba(255, 255, 255, 0.6);
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+  position: absolute;
+}
+
+.modal-dialog-centered-custom{
+  height: calc(60vh - (.5rem * 2)) !important;
+  display: flex;
+  align-items: center;
+}
+
+.modal-lg-custom{
+  min-width: 1500px;
+}
+
+.modalImage{
+  height: 250px;
+  background: url('/images/checkout/slide_image_pricing.png') repeat-x;
+  width: 11664px;
+  background-size: contain !important;
+  background-position:top,top !important;
+  animation: slide 200s linear infinite;
+}

@@ -761,6 +761,48 @@ $(document).on("click", ".copyLink", function () {
 
 $(document).on("click", ".validateTask", function () {
     var taskId = $("#taskId").val();
+    if($("#assignedUserId").val() != 0) {
+        $(".complete-error").addClass("hidden");
+        $.ajax({
+            method: "POST",
+            beforeSend: function (xhr) {
+                var token = $('meta[name="csrf_token"]').attr('content');
+
+                if (token) {
+                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                }
+            },
+            url: "/teamProject/addTaskToValidationProcess",
+            data: {"taskId": taskId},
+            dataType: "JSON",
+            success: function (data) {
+                var folderId = data['folderId'];
+                var view = data['view'];
+                var oldView = data['oldFolderView'];
+                var oldFolderId = data['oldFolderId'];
+                getTasksAndCollapseForFolder(folderId, view);
+                getTasksAndCollapseForFolder(oldFolderId, oldView);
+                if ($("#showCompleteInfo").val() == 1) {
+                    $("#completedTaskInfo").modal("toggle");
+                }
+
+                getTaskData(taskId);
+                openRecentTask(taskId, folderId);
+            }
+        });
+    } else {
+        $(".complete-error").removeClass("hidden");
+    }
+});
+
+$(document).on("change", "#doNotShowTaskInfo", function () {
+    var userId = $("#userId").val();
+    var value = 0;
+    if($(this).is(":checked")) {
+        value = 0;
+    } else {
+        value = 1;
+    }
     $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
@@ -770,16 +812,9 @@ $(document).on("click", ".validateTask", function () {
                 return xhr.setRequestHeader('X-CSRF-TOKEN', token);
             }
         },
-        url: "/teamProject/addTaskToValidationProcess",
-        data: {"taskId": taskId},
-        dataType: "JSON",
+        url: "/teamProject/disableCompleteNotification",
+        data: {"userId": userId, "value" : value},
         success: function (data) {
-            var folderId = data['folderId'];
-            var view = data['view'];
-            var oldView = data['oldFolderView'];
-            var oldFolderId = data['oldFolderId'];
-            getTasksAndCollapseForFolder(folderId, view);
-            getTasksAndCollapseForFolder(oldFolderId, oldView);
         }
     });
 });

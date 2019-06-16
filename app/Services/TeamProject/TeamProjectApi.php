@@ -188,6 +188,27 @@ class TeamProjectApi {
         return json_decode($result);
     }
 
+    public function saveImprovementTasks($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'taskId' => $request->input("task_id"),
+            "improvementPoints" => $request->input("improvement_points")
+        ];
+        self::sendRequestAndReturnData('https://api.innocreation.net/api/saveImprovementTasks', $post, $user->api_token);
+        return "TRUE";
+    }
+
+    public function savePassedTask($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'taskId' => $request->input("task_id")
+        ];
+        self::sendRequestAndReturnData('https://api.innocreation.net/api/savePassedTask', $post, $user->api_token);
+        return "TRUE";
+    }
+
 
 
 

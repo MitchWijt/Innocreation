@@ -60,7 +60,7 @@
                     <div class="expertiseCircle m-l-20">
                         <div class="half-circle-expertise-img" style="background: url('<?= $expertise->image?>')"></div>
                         <div class="half-circle-expertise-title p-relative">
-                            <p class="p-absolute f-12 m-0" style="top: 40%; left: 50%; transform: translate(-50%, -50%);"><?= $expertise->title?></p>
+                            <span class="p-absolute f-12 m-0" style="top: 40%; left: 50%; transform: translate(-50%, -50%);"><?= $expertise->title?></span>
                         </div>
                     </div>
                 <? } ?>

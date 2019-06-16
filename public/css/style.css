@@ -961,6 +961,11 @@ ul.dashed > li:before {
     box-shadow: none !important;
 }
 
+.no-focus-border:focus{
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 .has-overlay::after {
     content: "";
     display: block;
