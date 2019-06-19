@@ -108,7 +108,7 @@
 <? } ?>
 <hr>
 <div class="col-sm-12 m-t-5 p-r-0">
-    <? if($taskData->task->validation_needed != null) { ?>
+    <? if($taskData->task->validation_needed != null || $taskData->task->completed != null) { ?>
         <div class="overlay-disabled"></div>
     <? } ?>
     <div contenteditable="true" class="input-transparant titleTask c-black f-40 bold" data-task-id="<?= $taskData->task->id?>"><?= $taskData->task->title?></div>
