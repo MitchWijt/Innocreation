@@ -25,6 +25,7 @@ $(document).ready(function () {
     });
 });
 
+
 //gets task of clicked folder and appends a collapse with tasks as a shared view to the folder + collapses the collapse with tasks.
 $(document).on("click", ".collapseFolderButton", function () {
     var _this = $(this);

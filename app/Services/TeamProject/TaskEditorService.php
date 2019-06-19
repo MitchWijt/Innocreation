@@ -9,6 +9,7 @@
 namespace App\Services\TeamProject;
 
 
+use App\TeamProjectTask;
 use Illuminate\Support\Facades\Session;
 
 class TaskEditorService {
@@ -40,5 +41,33 @@ class TaskEditorService {
 
 
         return $array;
+    }
+
+    public static function isDisabled($taskId){
+
+        $bool = false;
+        $task = TeamProjectTask::select("*")->where("id", $taskId)->first();
+
+        // task in completed stage
+        if($task->completed == 1){
+            $bool = true;
+        }
+
+        // task in changes needed stage
+        if($task->changes_needed == 1){
+            $bool = true;
+        }
+
+        // task in validation stage
+        if($task->validation_needed == 1){
+            $bool = true;
+        }
+
+        // task folder in my tasks
+        if($task->folder->title == FixedTitles::myTasksFolder()){
+            $bool = true;
+        }
+
+        return $bool;
     }
 }

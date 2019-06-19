@@ -38,17 +38,17 @@ class Team extends Model {
         }
     }
 
-    public function getMembers($excludeSessionMember = false){
+    public function getMembers($excludedId = false){
         // gets all the members in the current team
-        if($excludeSessionMember){
-            $userId = Session::get("user_id");
-            $users = User::select("*")->where("team_id", $this->id)->where("id", '!=', $userId)->get();
-        } else{
+        if($excludedId){
+            $users = User::select("*")->where("team_id", $this->id)->where("id", "!=", $excludedId)->get();
+        } else {
             $users = User::select("*")->where("team_id", $this->id)->get();
         }
 
         return $users;
     }
+
 
     public function calculateAge(){
         // returns the age of the team on date of creation

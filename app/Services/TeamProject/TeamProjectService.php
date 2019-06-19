@@ -9,7 +9,9 @@
 namespace App\Services\TeamProject;
 
 use App\Http\Requests\Request;
+use App\Services\AppServices\StreamService;
 use App\Services\Encrypter;
+use App\Services\TimeSent;
 use App\Team;
 use App\TeamProject;
 use App\TeamProjectFolder;
@@ -17,6 +19,7 @@ use App\TeamProjectLinktable;
 use App\TeamProjectTask;
 use App\User;
 use function GuzzleHttp\json_encode;
+use GuzzleHttp\Psr7\Stream;
 use Illuminate\Support\Facades\Session;
 
 class TeamProjectService {
@@ -316,6 +319,9 @@ class TeamProjectService {
         }
 
         $userId = Session::get("user_id");
+        $user = User::select("*")->where("id", $userId)->first();
+        $team = Team::select("*")->where("id", $user->team_id)->first();
+
         $teamProjectApi = new TeamProjectApi();
 
         $data = self::getSuccessResponse($teamProjectApi->addTaskToValidationProcess($userId, $request));
@@ -323,6 +329,21 @@ class TeamProjectService {
         $oldFolderId = $data->old_folder_id;
         $oldFolderView = self::getTasksForFolderReturnView($oldFolderId);
         $view = self::getTasksForFolderReturnView($folderId);
+
+        $task = TeamProjectTask::select("*")->where("id",  $request->input("taskId"))->first();
+
+        $stream = new StreamService();
+        $notificationMessage = "The task of " . $task->assignedUser->getName() . " is now in the validation process. Please validate the task in order for it to be completed.";
+        $timeSent = new TimeSent();
+
+        //creates link for notification with hash of folder and hash of task.
+        $link = sprintf("/my-team/project/%s?fh=%s&th=%s", $task->folder->teamProject->slug,  Encrypter::encrypt_decrypt("encrypt", $task->team_project_folder_id), Encrypter::encrypt_decrypt("encrypt", $task->id));
+
+        //send notification to all team members except assigned_user user to validate the task
+        foreach($team->getMembers($task->assigned_user_id) as $member) {
+            $data = ["actor" => $member->id , "category" => "notification", "message" => $notificationMessage, "timeSent" => "$timeSent->time", "verb" => "notification", "object" => "3", "link" => $link];
+            $stream->addActivityToFeed($member->id, $data);
+        }
 
         return json_encode(['folderId' => $folderId, "view" => $view, "oldFolderId" => $oldFolderId, "oldFolderView" => $oldFolderView]);
     }
