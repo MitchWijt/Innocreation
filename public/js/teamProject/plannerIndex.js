@@ -82,6 +82,7 @@ function getTaskData(task_id){
         data: {'task_id': task_id, "team_project_id" : team_project_id},
         success: function (data) {
             $(".taskContent").html(data);
+            allImprovementPointsChecked(task_id);
         }
     });
 }
@@ -243,6 +244,8 @@ function doneTyping (contentHtml, task_id, category) {
             var folderId = data['folderId'];
             var view = data['view'];
             getTasksAndCollapseForFolder(folderId, view);
+            setRecentTask(task_id);
+            setActiveTask(task_id);
         }
     });
 }
@@ -492,6 +495,9 @@ $(document).on("click", "#checkboxListToggle", function () {
     $.each(items,function(){
         $(this).addClass("liCheck");
     });
+
+
+    //wrap text from LI inside a span. This way only checkbox will be clickable and text is not.
     saveContent();
 });
 
@@ -818,4 +824,56 @@ $(document).on("change", "#doNotShowTaskInfo", function () {
         success: function (data) {
         }
     });
+});
+
+function allImprovementPointsChecked(task_id){
+    var value = "";
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/teamProject/allImprovementPointsChecked",
+        data: {"task_id": task_id},
+        success: function (data) {
+            if(data == "TRUE"){
+                $(".validateTask").attr("disabled", false);
+                $(".validateTask").removeClass("disabled-btn");
+            } else{
+                $(".validateTask").attr("disabled", true);
+                $(".validateTask").addClass("disabled-btn");
+
+            }
+        }
+    });
+}
+
+$(document).on("click", ".liCheckImprovementPoint", function () {
+    var id = $(this).data("id");
+    var task_id = $(this).data("task-id");
+    if($(this).hasClass("checkedCheckbox")){
+       var checked = 1;
+    } else {
+        var checked = 0;
+    }
+    $.ajax({
+        method: "POST",
+        beforeSend: function (xhr) {
+            var token = $('meta[name="csrf_token"]').attr('content');
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+            }
+        },
+        url: "/teamProject/triggerImprovementPoint",
+        data: {"checked": checked, "id" : id},
+        success: function (data) {
+            allImprovementPointsChecked(task_id);
+        }
+    });
+
 });

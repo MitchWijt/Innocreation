@@ -112,11 +112,11 @@ class TeamProjectApi {
         return json_decode($result);
     }
 
-    public function getTasksOfFolder($userId, $request){
+    public function getTasksOfFolder($userId, $folderId){
         $user = User::select("*")->where("id", $userId)->first();
         $post = [
             'user_id' => $userId,
-            'folderId' => $request->input("folder_id"),
+            'folderId' => $folderId,
         ];
         $result = self::sendRequestAndReturnData('https://api.innocreation.net/api/getTasksOfFolder', $post, $user->api_token);
         return json_decode($result);
@@ -207,6 +207,27 @@ class TeamProjectApi {
         ];
         self::sendRequestAndReturnData('https://api.innocreation.net/api/savePassedTask', $post, $user->api_token);
         return "TRUE";
+    }
+
+    public function triggerImprovementPoint($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'validationId' => $request->input("id"),
+            'checked' => $request->input("checked")
+        ];
+        self::sendRequestAndReturnData('https://api.innocreation.net/api/triggerImprovementPoint', $post, $user->api_token);
+        return "TRUE";
+    }
+
+    public function allImprovementPointsChecked($userId, $request){
+        $user = User::select("*")->where("id", $userId)->first();
+        $post = [
+            'user_id' => $userId,
+            'task_id' => $request->input("task_id"),
+        ];
+        $res = self::sendRequestAndReturnData('https://api.innocreation.net/api/allImprovementPointsChecked', $post, $user->api_token);
+        return json_decode($res);
     }
 
 

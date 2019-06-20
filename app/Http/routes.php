@@ -786,6 +786,10 @@ Route::post("/teamProject/savePassedTask", "TeamProjectController@savePassedTask
 
 Route::post("/teamProject/disableCompleteNotification", "TeamProjectController@disableCompleteNotification");
 
+Route::post("/teamProject/triggerImprovementPoint", "TeamProjectController@triggerImprovementPoint");
+
+Route::post("/teamProject/allImprovementPointsChecked", "TeamProjectController@allImprovementPointsChecked");
+
 
 //==
 

@@ -223,7 +223,8 @@ class TeamProjectService {
         $userId = Session::get("user_id");
         $teamProjectApi = new TeamProjectApi();
 
-        $data = self::getSuccessResponse($teamProjectApi->getTasksOfFolder($userId, $request));
+        $folderId = $request->input("folder_id");
+        $data = self::getSuccessResponse($teamProjectApi->getTasksOfFolder($userId, $folderId));
         $tasks = $data->tasks;
         $folderId = $data->folderId;
         return view("/public/teamProjects/shared/_taskCollapse", compact("tasks", "folderId"));
@@ -379,6 +380,26 @@ class TeamProjectService {
         return redirect($redirectUrl);
     }
 
+    public function triggerImprovementPoint($request){
+        if(self::checkForError()){
+            return self::checkForError();
+        }
+        $userId = Session::get("user_id");
+        $teamProjectApi = new TeamProjectApi();
+        $teamProjectApi->triggerImprovementPoint($userId, $request);
+        return "TRUE";
+    }
+
+    public function allImprovementPointsChecked($request){
+        if(self::checkForError()){
+            return self::checkForError();
+        }
+        $userId = Session::get("user_id");
+        $teamProjectApi = new TeamProjectApi();
+        $data = self::getSuccessResponse($teamProjectApi->allImprovementPointsChecked($userId, $request));
+        return $data;
+
+    }
 
 
 
@@ -389,8 +410,11 @@ class TeamProjectService {
 
     // static funnction to retreve tasks from folder in paramters and return a rendered view with the collapse of the tasks.
     public static function getTasksForFolderReturnView($folderId){
+        $teamProjectApi = new TeamProjectApi();
         $folder = TeamProjectFolder::select("*")->where("id", $folderId)->first();
-        $tasks = $folder->getAllTasks(Session::get("user_id"));
+
+        $data = self::getSuccessResponse($teamProjectApi->getTasksOfFolder(Session::get("user_id"), $folderId));
+        $tasks = $data->tasks;
         $view = view("/public/teamProjects/shared/_taskCollapse", compact("tasks", "folderId"));
         $viewData = $view->render();
 

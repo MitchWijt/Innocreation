@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\TeamProject\TeamProjectService;
 use App\Services\TeamProject\TeamProjectTaskService;
+use App\Services\TeamProject\TeamProjectTaskValidationService;
 use App\Services\TeamServices\TeamExpertisesService;
 use App\Team;
 use App\TeamProjectFolder;
@@ -138,5 +139,15 @@ class TeamProjectController extends Controller
     public function disableCompleteNotification(Request $request){
         $taskService = new TeamProjectTaskService();
         return $taskService->disableCompleteNotification($request);
+    }
+
+    public function triggerImprovementPoint(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->triggerImprovementPoint($request);
+    }
+
+    public function allImprovementPointsChecked(Request $request){
+        $teamProjectService = new TeamProjectService();
+        return $teamProjectService->allImprovementPointsChecked($request);
     }
 }

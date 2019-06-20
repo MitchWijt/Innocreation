@@ -58,9 +58,9 @@
         </div>
     </div>
     <div class="col-sm-4 d-flex jc-end">
-        <div class="input-group mb-3 no-focus" style="width: 15vw; height: 20px;">
+        <div class="input-group mb-3 no-focus h-20" style="width: 15vw;">
             <div class="input-group-prepend no-focus">
-                <span class="input-group-text no-focus c-pointer" id="basic-addon1"><i class="zmdi zmdi-search f-15 "></i></span>
+                <span class="input-group-text no-focus c-pointer h-20" id="basic-addon1"><i class="zmdi zmdi-search f-15 "></i></span>
             </div>
             <input style="outline: none !important; -webkit-appearance:none !important; width: 5vw !important; height: 20px;" type="search" id="searchBar" class="form-control form-control-inno input-grey" placeholder="Search tasks..." aria-label="Tasks" aria-describedby="basic-addon1">
         </div>

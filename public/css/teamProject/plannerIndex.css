@@ -45,4 +45,13 @@
   animation: slide 200s linear infinite;
 }
 
+.task_improvementPointsBox {
+  height: 30vh;
+  width: 100%;
+  background: #F5F5F5;
+  border-left: 1px solid #707000;
+  bottom: 0;
+  position: fixed;
+}
+
 /*# sourceMappingURL=plannerIndex.css.map */

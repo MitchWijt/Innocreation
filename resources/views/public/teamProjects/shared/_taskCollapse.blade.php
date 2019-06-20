@@ -4,6 +4,9 @@
             <div class="o-hidden wp-no-wrap m-l-20" style="text-overflow: ellipsis; max-width: 130px;">
                 <span class="c-black"><?= \App\Services\CustomIconService::getIcon("file-outline", '20px')?><?= $task->title?></span>
             </div>
+            <? if($task->changes_needed == 1) { ?>
+                <i class="zmdi zmdi-wrench m-l-10" title="Improvements needed" style="color: rgba(255,97,0, 0.5); margin-top: 3px;"></i>
+            <? } ?>
             <span><? if(\App\TeamProjectTask::PRIVATE_TASK == $task->type) { ?> <i class="zmdi zmdi-lock-outline m-l-10" style="color: rgba(255,97,0, 0.5); margin-top: 3px;"></i> <? } ?></span>
         </div>
     <? } ?>

@@ -43,7 +43,7 @@ class TaskEditorService {
         return $array;
     }
 
-    public static function isDisabled($taskId){
+    public static function isDisabled($taskId, $changes_needed){
 
         $bool = false;
         $task = TeamProjectTask::select("*")->where("id", $taskId)->first();
@@ -53,8 +53,7 @@ class TaskEditorService {
             $bool = true;
         }
 
-        // task in changes needed stage
-        if($task->changes_needed == 1){
+        if(!$changes_needed){
             $bool = true;
         }
 
@@ -63,9 +62,11 @@ class TaskEditorService {
             $bool = true;
         }
 
-        // task folder in my tasks
-        if($task->folder->title == FixedTitles::myTasksFolder()){
-            $bool = true;
+        if(!$changes_needed) {
+            // task folder in my tasks
+            if ($task->folder->title == FixedTitles::myTasksFolder()) {
+                $bool = true;
+            }
         }
 
         return $bool;

@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Session;
 
 class TeamProjectTaskValidationService {
     public static function getPercentagePassed($taskId){
-        $passed = TeamProjectTaskValidation::select("*")->where("team_project_task_id", $taskId)->where("type_review",1)->count();
-        $allReviewsFromTask = TeamProjectTaskValidation::select("*")->where("team_project_task_id", $taskId)->count();
+        $passed = TeamProjectTaskValidation::select("*")->where("team_project_task_id", $taskId)->where("type_review",1)->where("closed", null)->count();
+        $allReviewsFromTask = TeamProjectTaskValidation::select("*")->where("team_project_task_id", $taskId)->where("closed", null)->count();
 
         if($allReviewsFromTask == 0 ){
             return 0 . "%";
@@ -27,8 +27,8 @@ class TeamProjectTaskValidationService {
     }
 
     public static function getPercentageImprove($taskId){
-        $improvement = TeamProjectTaskValidation::select("*")->where("team_project_task_id", $taskId)->where("type_review",2)->count();
-        $allReviewsFromTask = TeamProjectTaskValidation::select("*")->where("team_project_task_id", $taskId)->count();
+        $improvement = TeamProjectTaskValidation::select("*")->where("team_project_task_id", $taskId)->where("type_review",2)->where("closed", null)->count();
+        $allReviewsFromTask = TeamProjectTaskValidation::select("*")->where("team_project_task_id", $taskId)->where("closed", null)->count();
 
         if($allReviewsFromTask == 0 ){
             return 0 . "%";
@@ -40,7 +40,7 @@ class TeamProjectTaskValidationService {
     }
 
     public static function getRespondedReviewPercentage($allMembers, $taskId){
-        $allReviewsFromTask = TeamProjectTaskValidation::select("*")->where("team_project_task_id", $taskId)->count();
+        $allReviewsFromTask = TeamProjectTaskValidation::select("*")->where("team_project_task_id", $taskId)->where("closed", null)->count();
         $percentage = ($allReviewsFromTask / $allMembers) * 100;
 
         return number_format($percentage, 0, ",", ".") . "%";
@@ -48,7 +48,7 @@ class TeamProjectTaskValidationService {
     }
 
     public static function hasReviewed($taskId){
-        $reviewedTask = TeamProjectTaskValidation::select("*")->where("team_project_task_id", $taskId)->where("user_id", Session::get("user_id"))->count();
+        $reviewedTask = TeamProjectTaskValidation::select("*")->where("team_project_task_id", $taskId)->where("user_id", Session::get("user_id"))->where("closed", null)->count();
         if($reviewedTask != 0){
             return true;
         } else {
@@ -58,7 +58,7 @@ class TeamProjectTaskValidationService {
     }
 
     public static function getSingleReview($taskId){
-        $reviewedTask = TeamProjectTaskValidation::select("*")->where("team_project_task_id", $taskId)->where("user_id", Session::get("user_id"))->first();
+        $reviewedTask = TeamProjectTaskValidation::select("*")->where("team_project_task_id", $taskId)->where("user_id", Session::get("user_id"))->where("closed", null)->first();
         return $reviewedTask;
     }
 }

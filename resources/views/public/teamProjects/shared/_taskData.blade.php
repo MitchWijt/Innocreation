@@ -7,15 +7,14 @@
 <input type="hidden" id="assignedUserId" value="<? if(isset($taskData->task->assigned_user_id)) echo $taskData->task->assigned_user_id; else echo 0?>">
 <?
 
-    if(\App\Services\TeamProject\TaskEditorService::isDisabled($taskData->task->id)) {
+    if(\App\Services\TeamProject\TaskEditorService::isDisabled($taskData->task->id, false)) {
         echo view("/public/teamProjects/shared/_taskDataHeaderMenuDisabled", compact("taskData", "teamProject", "team"));
     } else {
         echo view("/public/teamProjects/shared/_taskDataHeaderMenu", compact("taskData", "teamProject", "team"));
     }
-
  ?>
 <? if($taskData->task->validation_needed == null) { ?>
-    <? if(!\App\Services\TeamProject\TaskEditorService::isDisabled($taskData->task->id)) { ?>
+    <? if(!\App\Services\TeamProject\TaskEditorService::isDisabled($taskData->task->id, true)) { ?>
         <div class="row col-sm-12 contentEditFunctions hidden">
             <div class="col-sm-8">
                 <div class="row">
@@ -66,7 +65,7 @@
             </div>
             <div class="col-sm-4 p-0 ">
                 <div class="d-flex jc-end">
-                    <button class="btn-inno-cta m-b-5 validateTask">Task completed <i class="zmdi zmdi-check"></i> </button>
+                    <button class="btn-inno-cta m-b-5 validateTask c-pointer">Task completed <i class="zmdi zmdi-check"></i> </button>
                 </div>
                 <p class="f-10 c-red text-right hidden complete-error">Please assign a member before completing.</p>
             </div>
@@ -107,14 +106,21 @@
     </div>
 <? } ?>
 <hr>
-<div class="col-sm-12 m-t-5 p-r-0">
+<div class="col-sm-12 m-t-5 p-r-0 p-l-0 p-relative">
     <? if($taskData->task->validation_needed != null || $taskData->task->completed != null) { ?>
         <div class="overlay-disabled"></div>
     <? } ?>
-    <div contenteditable="true" class="input-transparant titleTask c-black f-40 bold" data-task-id="<?= $taskData->task->id?>"><?= $taskData->task->title?></div>
-    <div contenteditable="true" style="height: 100vh;" id="editable" class="col-sm-12 taskContentEditor m-l-0 p-l-0 m-t-10 no-focus p-r-0" data-task-id="<?= $taskData->task->id?>">
+    <div contenteditable="true" class="input-transparant titleTask c-black f-40 bold p-l-20" data-task-id="<?= $taskData->task->id?>"><?= $taskData->task->title?></div>
+    <div contenteditable="true" style="height: 100vh;" id="editable" class="col-sm-12 taskContentEditor p-l-30 m-l-0  m-t-10 no-focus p-r-0" data-task-id="<?= $taskData->task->id?>">
         <?= $taskData->task->content?>
     </div>
+    <?  if($taskData->task->changes_needed != null) { ?>
+        <div class="task_improvementPointsBox o-scroll">
+            <?
+                echo view("/public/teamProjects/shared/_improvementsChecklist", compact("taskData"));
+            ?>
+        </div>
+    <? } ?>
 </div>
 
 <div class="modal fade fade-scale taskReviewImprovement" id="taskReviewImprovement" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
