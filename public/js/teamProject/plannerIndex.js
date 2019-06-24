@@ -23,14 +23,59 @@ $(document).ready(function () {
             setContextmenuEvent();
         }
     });
+
+    // fetch("https://api.innocreation.net/api/testFunction", {
+    //     mode: 'cors',
+    //     method: 'POST',
+    //     headers: new Headers({
+    //         'Access-Control-Allow-Origin': '*',
+    //         'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjRmYTk3M2QyY2YyZTFiMjNhMmZkMDI1OGVmYjlmZTgyMTA0MWMyZDY5NDllNjFmYmU5Mzk5YTY0OThlNTJlZWU2NjIxZGYzOGJjNThjODk5In0.eyJhdWQiOiIxIiwianRpIjoiNGZhOTczZDJjZjJlMWIyM2EyZmQwMjU4ZWZiOWZlODIxMDQxYzJkNjk0OWU2MWZiZTkzOTlhNjQ5OGU1MmVlZTY2MjFkZjM4YmM1OGM4OTkiLCJpYXQiOjE1NTU5NDY1MzMsIm5iZiI6MTU1NTk0NjUzMywiZXhwIjoxNTg3NTY4OTMzLCJzdWIiOiIxMCIsInNjb3BlcyI6W119.avMX9UzExUBiZmpH5GeOGQqIswhWMtk2GUgXcosmccQKLgusN_QFPJGFajGunOG8cdm2E_yNx1q8fGB-9g7FUswM0kr-g5AyBKP5-_hRdyMOKV8-E64hI0W-FfPGMTq1FFAOTmg30SB3lJDMiihDJGem97KXbjAgHbmzWRCI7y09XTGGyXh7-2WdzwA6j5-jfT-WE5u-GzGow1vwr-XSBp9BHiQWbPuu8JYrUczkEEltzv-Wvf-NiNSQdAB3PhB2Q2l2dwUMbB8HwwLaqUsUVKwP0axtLDkXzQJo4S-FwOzbLmxebaYsrPjCbYBSIEBK6LnoPNcjOVWzqzTl0_qIEsPvUc2HuCrlpADclD1wJW0hxUJQ7S_snTRl0BGzkTgGmGLxj3aox4cybCa-2P0WcXWRnXb4zC0RFDl_VSLf_9k4JsXWU8hdRdU4yEZDdCz0x_jYka5_XMb3kkQpchraL1sEwT5MatqWPSmCbIWuzhGJJ6jhPZVRWeBZWiI6LdFLSnd_EEc_k1r8K-IsY4v-_YtjSp5caUo12yiQoSF5badUbZHstIiGl_aUh2QsMO8wiFNKbZJco4S_Yr-1JQf2ECRjzPGQFTq9Ov49h3iFJAx3xexQq5fp_gOxvDovemVDPIZ0QZaaO1cqYfMxpz5C4gyBEC7F5f1UaPiuwR9r3Vg' ,
+    //         'Content-Type': 'application/json',
+    //     }),
+    //     body: JSON.stringify({
+    //         name: 'any_token'
+    //     })
+    // })
+    // .then(response => console.log(response))
+    // .catch(console.error)
+
+    $.ajax({
+        type: "POST",
+        url: "https://api.innocreation.net/api/testFunction",
+        data: {'name': "gfdsa"},
+        headers: {
+            "content-type": "application/x-www-form-urlencoded",
+            "accept": "application/json",
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjRmYTk3M2QyY2YyZTFiMjNhMmZkMDI1OGVmYjlmZTgyMTA0MWMyZDY5NDllNjFmYmU5Mzk5YTY0OThlNTJlZWU2NjIxZGYzOGJjNThjODk5In0.eyJhdWQiOiIxIiwianRpIjoiNGZhOTczZDJjZjJlMWIyM2EyZmQwMjU4ZWZiOWZlODIxMDQxYzJkNjk0OWU2MWZiZTkzOTlhNjQ5OGU1MmVlZTY2MjFkZjM4YmM1OGM4OTkiLCJpYXQiOjE1NTU5NDY1MzMsIm5iZiI6MTU1NTk0NjUzMywiZXhwIjoxNTg3NTY4OTMzLCJzdWIiOiIxMCIsInNjb3BlcyI6W119.avMX9UzExUBiZmpH5GeOGQqIswhWMtk2GUgXcosmccQKLgusN_QFPJGFajGunOG8cdm2E_yNx1q8fGB-9g7FUswM0kr-g5AyBKP5-_hRdyMOKV8-E64hI0W-FfPGMTq1FFAOTmg30SB3lJDMiihDJGem97KXbjAgHbmzWRCI7y09XTGGyXh7-2WdzwA6j5-jfT-WE5u-GzGow1vwr-XSBp9BHiQWbPuu8JYrUczkEEltzv-Wvf-NiNSQdAB3PhB2Q2l2dwUMbB8HwwLaqUsUVKwP0axtLDkXzQJo4S-FwOzbLmxebaYsrPjCbYBSIEBK6LnoPNcjOVWzqzTl0_qIEsPvUc2HuCrlpADclD1wJW0hxUJQ7S_snTRl0BGzkTgGmGLxj3aox4cybCa-2P0WcXWRnXb4zC0RFDl_VSLf_9k4JsXWU8hdRdU4yEZDdCz0x_jYka5_XMb3kkQpchraL1sEwT5MatqWPSmCbIWuzhGJJ6jhPZVRWeBZWiI6LdFLSnd_EEc_k1r8K-IsY4v-_YtjSp5caUo12yiQoSF5badUbZHstIiGl_aUh2QsMO8wiFNKbZJco4S_Yr-1JQf2ECRjzPGQFTq9Ov49h3iFJAx3xexQq5fp_gOxvDovemVDPIZ0QZaaO1cqYfMxpz5C4gyBEC7F5f1UaPiuwR9r3Vg' ,
+        },
+        success: function (data) {
+          console.log(data);
+        }
+    });
+
+    // var settings = {
+    //     "async": true,
+    //     "crossDomain": true,
+    //     "url": "https://api.innocreation.net/api/testFunction",
+    //     "method": "POST",
+    //     "headers": {
+    //         "content-type": "application/x-www-form-urlencoded",
+    //         "accept": "application/json",
+    //         "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjRmYTk3M2QyY2YyZTFiMjNhMmZkMDI1OGVmYjlmZTgyMTA0MWMyZDY5NDllNjFmYmU5Mzk5YTY0OThlNTJlZWU2NjIxZGYzOGJjNThjODk5In0.eyJhdWQiOiIxIiwianRpIjoiNGZhOTczZDJjZjJlMWIyM2EyZmQwMjU4ZWZiOWZlODIxMDQxYzJkNjk0OWU2MWZiZTkzOTlhNjQ5OGU1MmVlZTY2MjFkZjM4YmM1OGM4OTkiLCJpYXQiOjE1NTU5NDY1MzMsIm5iZiI6MTU1NTk0NjUzMywiZXhwIjoxNTg3NTY4OTMzLCJzdWIiOiIxMCIsInNjb3BlcyI6W119.avMX9UzExUBiZmpH5GeOGQqIswhWMtk2GUgXcosmccQKLgusN_QFPJGFajGunOG8cdm2E_yNx1q8fGB-9g7FUswM0kr-g5AyBKP5-_hRdyMOKV8-E64hI0W-FfPGMTq1FFAOTmg30SB3lJDMiihDJGem97KXbjAgHbmzWRCI7y09XTGGyXh7-2WdzwA6j5-jfT-WE5u-GzGow1vwr-XSBp9BHiQWbPuu8JYrUczkEEltzv-Wvf-NiNSQdAB3PhB2Q2l2dwUMbB8HwwLaqUsUVKwP0axtLDkXzQJo4S-FwOzbLmxebaYsrPjCbYBSIEBK6LnoPNcjOVWzqzTl0_qIEsPvUc2HuCrlpADclD1wJW0hxUJQ7S_snTRl0BGzkTgGmGLxj3aox4cybCa-2P0WcXWRnXb4zC0RFDl_VSLf_9k4JsXWU8hdRdU4yEZDdCz0x_jYka5_XMb3kkQpchraL1sEwT5MatqWPSmCbIWuzhGJJ6jhPZVRWeBZWiI6LdFLSnd_EEc_k1r8K-IsY4v-_YtjSp5caUo12yiQoSF5badUbZHstIiGl_aUh2QsMO8wiFNKbZJco4S_Yr-1JQf2ECRjzPGQFTq9Ov49h3iFJAx3xexQq5fp_gOxvDovemVDPIZ0QZaaO1cqYfMxpz5C4gyBEC7F5f1UaPiuwR9r3Vg",
+    //     }
+    // };
+    //
+    // $.ajax(settings).done(function (response) {
+    //     console.log(response);
+    // });
 });
 
 
 //gets task of clicked folder and appends a collapse with tasks as a shared view to the folder + collapses the collapse with tasks.
-$(document).on("click", ".collapseFolderButton", function () {
+$(document).on("click", ".collapseFolderButton", async function () {
     var _this = $(this);
     var id = $(this).attr("id");
-    $.ajax({
+   await $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
             var token = $('meta[name="csrf_token"]').attr('content');
@@ -67,9 +112,9 @@ $(document).on("click", ".collapseFolderButton", function () {
 });
 
 
-function getTaskData(task_id){
+async function getTaskData(task_id){
     var team_project_id = $(".teamProjectId").val();
-    $.ajax({
+    await $.ajax({
         method: "POST",
         beforeSend: function (xhr) {
             var token = $('meta[name="csrf_token"]').attr('content');
